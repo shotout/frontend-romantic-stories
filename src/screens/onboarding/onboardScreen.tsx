@@ -18,8 +18,13 @@ import {
 } from 'react-native';
 import {bg, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
+import i18n from '../../i18n/index';
+import {getDefaultLanguange} from '../../utils/devices';
 
 const OnboardScreen = (props: any) => {
+  useEffect(() => {
+    getDefaultLanguange();
+  }, []);
   return (
     <ImageBackground
       source={bg}
@@ -37,7 +42,7 @@ const OnboardScreen = (props: any) => {
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
         }}>
-        {'Your Romance \n every day'}
+       {i18n.t('title')}
       </Text>
       <Image
         source={logo}
@@ -62,7 +67,7 @@ const OnboardScreen = (props: any) => {
           width: '90%',
         }}>
         <Text style={{fontFamily: 'Robotto', fontWeight: 'bold'}}>
-          Get Started
+          {i18n.t('getStarted')}
         </Text>
       </TouchableOpacity>
     </ImageBackground>
