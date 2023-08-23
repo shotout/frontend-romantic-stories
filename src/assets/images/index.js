@@ -1,2 +1,10 @@
 export const logo = require('./logo.png');
 export const bg = require('./bg.png');
+export const story1 = require('./story1.png');
+export const story2 = require('./story2.png');
+export const story3 = require('./story3.png');
+export const story4 = require('./story4.png');
+export const ava1 = require('./ava1.png');
+export const ava2 = require('./ava2.png');
+export const ava3 = require('./ava3.png');
+export const imgBottom = require('./imgBottom.png');

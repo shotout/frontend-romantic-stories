@@ -20,6 +20,8 @@ import {bg, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import {getDefaultLanguange} from '../../utils/devices';
+import Button from '../../components/buttons/Button';
+import {navigate} from '../../shared/navigationRef';
 
 const OnboardScreen = (props: any) => {
   useEffect(() => {
@@ -42,7 +44,7 @@ const OnboardScreen = (props: any) => {
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
         }}>
-       {i18n.t('title')}
+        {i18n.t('title')}
       </Text>
       <Image
         source={logo}
@@ -53,23 +55,11 @@ const OnboardScreen = (props: any) => {
           marginVertical: 120,
         }}
       />
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('Register')}
-        style={{
-          backgroundColor: code_color.yellow,
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: 52,
-          margin: 20,
-          borderRadius: 12,
-          position: 'absolute',
-          bottom: 20,
-          width: '90%',
-        }}>
-        <Text style={{fontFamily: 'Robotto', fontWeight: 'bold'}}>
-          {i18n.t('getStarted')}
-        </Text>
-      </TouchableOpacity>
+
+      <Button
+        title={i18n.t('getStarted')}
+        onPress={() => navigate('Register')}
+      />
     </ImageBackground>
   );
 };

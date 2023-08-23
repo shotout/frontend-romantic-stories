@@ -23,13 +23,6 @@ const screenOptionsDefault = {
 const Stack = createNativeStackNavigator();
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
-const LandingScreen = () => {
-  return (
-    <View>
-      <Text>Test</Text>
-    </View>
-  );
-};
 
 export default ({reduxDispatch}) => {
   return (

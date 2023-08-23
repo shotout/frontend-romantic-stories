@@ -2,14 +2,14 @@ import React from 'react';
 import {Image, View} from 'react-native';
 import styles from './styles';
 
-const activeLamp = require('../../../assets/icons/register_step/lamp_light.png');
-const lampUnactive = require('../../../assets/icons/register_step/lamp_tutorial.png');
-const lampActiveAnimation = require('../../../assets/icons/register_step/tutorial_lamp_once.gif');
+const activeLamp = require('../../../assets/icons/register_step/singleLove.png');
+const lampUnactive = require('../../../assets/icons/register_step/unactiveLove.png');
+const lampActiveAnimation = require('../../../assets/icons/register_step/activeLove.png');
 
 export default function HeaderStep({currentStep}) {
   const activeGift = () => (
     <View style={styles.ctnGift}>
-      <Image source={lampActiveAnimation} style={styles.ctnGiftLamp} />
+      <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} />
     </View>
   );
 

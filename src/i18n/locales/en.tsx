@@ -9,9 +9,11 @@ export default {
     female: 'Female',
     bepartstory: 'Be part of the story',
     whatsname: 'What‘s your name?',
-    usingyrname: 'Using your real name creates a {{field}} with the story.',
+    usingyrname: 'Using your real name creates',
     bttrexp: 'better experience',
+    wthstry: 'a with the story.',
     skipfrnw: 'Skip for now',
     continue: 'Continue',
+    wyfs: 'What’s your favorite story?',
   },
 };

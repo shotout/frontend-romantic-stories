@@ -10,6 +10,8 @@ import {
   SafeAreaView,
   useColorScheme,
   StatusBar,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {bg, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -18,10 +20,18 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {isIphoneXorAbove} from '../../utils/devices';
 import {backLeft, female, male} from '../../assets/icons';
 import Register1 from '../../layout/register/register1';
-import { goBack, navigate } from '../../shared/navigationRef';
+import {goBack, navigate} from '../../shared/navigationRef';
+import Register2 from '../../layout/register/register2';
+import i18n from '../../i18n';
+import Button from '../../components/buttons/Button';
+import register from '.';
+import Register3 from '../../layout/register/register3';
+import Register4 from '../../layout/register/register4';
+import Register5 from '../../layout/register/register5';
 const RegisterScreen = (props: any) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [stepRegister, setStepRegister] = useState(1);
+  const [gender, setGender] = useState('Male');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -29,8 +39,22 @@ const RegisterScreen = (props: any) => {
 
   const renderLayout = () => {
     if (stepRegister === 1) {
-      return <Register1 currentStep={stepRegister} />;
-    }
+      return (
+        <Register1
+          setGender={text => {
+            setGender(text), setStepRegister(stepRegister + 1);
+          }}
+        />
+      );
+    } else if (stepRegister === 2) {
+      return <Register2 currentStep={stepRegister} />;
+    } else if (stepRegister === 3) {
+      return <Register3 currentStep={stepRegister} />;
+    } else if (stepRegister === 4) {
+      return <Register4 gender={gender} />;
+    } else if (stepRegister === 5) {
+        return <Register5 gender={gender} />;
+      }
   };
   return (
     <View style={{backgroundColor: code_color.white, flex: 1}}>
@@ -38,70 +62,105 @@ const RegisterScreen = (props: any) => {
         barStyle={'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View
-        style={{
-          backgroundColor: code_color.headerBlack,
-          paddingTop: isIphoneXorAbove() ? 40 : 0,
-        }}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginHorizontal: 20,
-            marginTop: 20,
+            backgroundColor: code_color.headerBlack,
+            paddingTop: isIphoneXorAbove() ? 40 : 0,
           }}>
-            {stepRegister > 1 ? 
-            <TouchableOpacity onPress={() => goBack()}>
-            <Image source={backLeft} />
-            </TouchableOpacity> : null }
-          
-          <Text
+          <View
             style={{
-              color: code_color.white,
-              textAlign: 'center',
-              fontSize: 18,
-              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 20,
+              marginTop: 20,
             }}>
-            Let’s get to know you
-          </Text>
+            {stepRegister > 1 ? (
+              <TouchableOpacity
+                onPress={() => setStepRegister(stepRegister - 1)}>
+                <Image source={backLeft} />
+              </TouchableOpacity>
+            ) : null}
+
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                flex: 1,
+              }}>
+              Let’s get to know you
+            </Text>
+          </View>
+
+          <HeaderStep currentStep={stepRegister} />
         </View>
 
-        <HeaderStep currentStep={stepRegister} />
-      </View>
-
-      <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
-        <Text
-          style={{
-            color: code_color.blueDark,
-            fontSize: 32,
-            fontFamily: 'Comfortaa-SemiBold',
-            textAlign: 'center',
-            marginTop: 40,
-          }}>
-          {'What‘s your \n gender?'}
-        </Text>
-        {renderLayout()}
-        <TouchableOpacity
-          onPress={() => setStepRegister(stepRegister + 1)}
-          style={{
-            position: 'absolute',
-            alignItems: 'center',
-            alignContent: 'center',
-            justifyContent: 'center',
-            bottom: 40,
-          }}>
+        <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
             style={{
-              color: code_color.grey,
-              fontSize: 18,
-              fontFamily: 'Roboto',
+              color: code_color.blueDark,
+              fontSize: 32,
+              fontFamily: 'Comfortaa-SemiBold',
               textAlign: 'center',
-              marginTop: 10,
+              marginTop: 20,
             }}>
-            {'Prefer not to say'}
+            {i18n.t(
+              stepRegister === 1
+                ? 'register.titleRegister1'
+                : stepRegister === 2
+                ? 'register.whatsname'
+                : stepRegister === 3
+                ? 'register.wyfs'
+                : 'What should your character look like?',
+            )}
           </Text>
-        </TouchableOpacity>
-      </View>
+          {renderLayout()}
+          <View style={{position: 'absolute', bottom: 40, width: '80%'}}>
+            {stepRegister === 1 ? (
+              <TouchableOpacity
+                onPress={() => setStepRegister(stepRegister + 1)}
+                style={{
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: code_color.grey,
+                    fontSize: 18,
+                    fontFamily: 'Roboto',
+                    textAlign: 'center',
+                    marginTop: 10,
+                  }}>
+                  {i18n.t(
+                    stepRegister === 1
+                      ? 'register.preferNottosay'
+                      : 'register.skipfrnw',
+                  )}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
+            {stepRegister != 1 ? (
+              <Button
+                style={{
+                  backgroundColor: code_color.yellow,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 52,
+                  borderRadius: 12,
+                  width: '100%',
+                  marginTop: 10,
+                }}
+                onPress={() => setStepRegister(stepRegister + 1)}
+                title={i18n.t('register.continue')}
+              />
+            ) : null}
+          </View>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };

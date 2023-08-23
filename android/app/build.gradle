@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.shortstory"
+    namespace "com.romanticstory"
     defaultConfig {
-        applicationId "com.shortstory"
+        applicationId "com.romanticstory"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

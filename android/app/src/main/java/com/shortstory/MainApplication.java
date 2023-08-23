@@ -1,4 +1,4 @@
-package com.shortstory;
+package com.romanticstory;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

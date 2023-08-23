@@ -1,4 +1,4 @@
-package com.shortstory;
+package com.romanticstory;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
