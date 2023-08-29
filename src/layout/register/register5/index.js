@@ -14,33 +14,28 @@ import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
-import {ava1, ava2, ava3, imgBottom} from '../../../assets/images';
+import {avam1, avam2, avam3, avam4} from '../../../assets/images';
 import Carousel from 'react-native-reanimated-carousel';
 import {opacity, useSharedValue} from 'react-native-reanimated';
 
-export default function Register5({gender}) {
-  const [colorsDefault, setColorsDefault] = useState(code_color.white);
-
-  const [colorsBg, setColorsBg] = useState([
+export default function Register4({gender}) {
+  const [progressValue, setProgress] = useState(0);
+  const [dataAva, setDataAva] = useState([
     {
-      code: code_color.white,
+      image: avam1,
     },
     {
-      code: code_color.blueDark,
+      image: avam4,
     },
     {
-      code: code_color.yellow,
-    },
-    {
-      code: code_color.splash,
+      image: avam3,
     },
   ]);
-
   return (
     <>
       <View
         style={{
-          backgroundColor: 'white',
+          backgroundColor: code_color.splash,
           flex: 1,
           position: 'absolute',
           top: 0,
@@ -51,72 +46,56 @@ export default function Register5({gender}) {
         }}>
         <Text
           style={{
-            color: code_color.blueDark,
+            color: 'black',
             fontSize: 32,
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
             marginTop: 20,
           }}>
-          {'Choose color \n theme'}
+          What should your partner look like?
         </Text>
-
-        <View
-          style={{
-            margin: 20,
-            marginHorizontal: 100,
-            borderWidth: 1,
-            borderColor: 'black',
-            padding: 10,
-            backgroundColor: colorsDefault,
-          }}>
-          <Text style={{fontSize: 9}}>
-            Fistful of Reefer: A Pulpy Action Series from Schism 8
-          </Text>
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: code_color.blueDark,
-              marginVertical: 10,
+        <View style={{flex: 0, alignItems: 'center'}}>
+          <Carousel
+            loop={false}
+            width={Dimensions.get('window').width / 1.5}
+            height={Dimensions.get('window').height / 2}
+            // autoPlay={true}
+            data={dataAva}
+            // scrollAnimationDuration={1000}
+            // onScrollBegin={(_, absoluteProgress) =>
+            //   (progressValue.value = absoluteProgress)
+            
+            // }
+            onSnapToItem={(index) => setProgress(index)}
+            modeConfig={{
+              parallaxScrollingScale: 0.8,
+              parallaxScrollingOffset: 160,
             }}
-          />
-          <Text style={{fontSize: 9, textAlign: 'justify'}}>
-            {' '}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed
-            fringilla orci metus ac ex. Nunc pharetra, lacus in egestas
-            vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et
-            ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo
-            congue, aliquet tellus eget, consectetur metus.
-            {'\n'} In hac habitasse platea dictumst. Aenean in congue orci.
-            Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum
-            primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut
-            ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus
-            libero. Curabitur porttitor lorem non felis porta, ut ultricies sem
-            maximus. et, dapibus libero. Curabitur.
-          </Text>
-          <Image
-            source={imgBottom}
-            resizeMode="contain"
-            style={{width: '100%', height: '20%'}}
-          />
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', marginHorizontal: 20 }}>
-          {colorsBg.map((item, i) => {
-            return (
-              <TouchableOpacity
-              onPress={() => setColorsDefault(item.code)}
+            mode="parallax"
+            // style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center'}}
+            renderItem={({item, index}) => (
+              <Pressable
                 style={{
-                  backgroundColor: item.code,
-                  width: 30,
-                  height: 30,
-                  borderRadius: 20,
-                  borderWidth: 1,
-                  borderColor: code_color.grey,
-                  marginHorizontal: 10
-                }}
-              />
-            );
-          })}
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  opacity: 1,
+                }}>
+                <Image
+                  blurRadius={progressValue != index ? 2 : null}
+                  source={item.image}
+                  resizeMode="contain"
+                  style={[
+                    // progressValue ? StyleSheet.absoluteFill : null,
+                    {
+                      height: '100%',
+                      width: '10000%',
+                      // backgroundColor: 'rgba( 0, 0, 0, 0.1 )',
+                    },
+                  ]}
+                />
+              </Pressable>
+            )}
+          />
         </View>
       </View>
     </>

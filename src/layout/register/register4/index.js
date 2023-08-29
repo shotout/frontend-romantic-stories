@@ -35,7 +35,7 @@ export default function Register4({gender}) {
     <>
       <View
         style={{
-          backgroundColor: gender === 'Male' ? code_color.yellow : code_color.splash,
+          backgroundColor: code_color.yellow,
           flex: 1,
           position: 'absolute',
           top: 0,

@@ -1,3 +1,11 @@
 export const male = require('./register_step/male.png');
 export const female = require('./register_step/female.png');
+export const ind = require('./register_step/flagin.png');
+export const eng = require('./register_step/flagen.png');
+export const speaker = require('./register_step/speaker.png');
 export const backLeft = require('./backLeft.png');
+export const font = require('./font.png');
+export const library = require('./library.png');
+export const love = require('./love.png');
+export const paper = require('./paper.png');
+export const settings = require('./settings.png');

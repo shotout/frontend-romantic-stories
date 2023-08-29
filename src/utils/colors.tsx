@@ -5,4 +5,8 @@ export let code_color = {
   white: '#ffffff',
   blueDark: '#3F58DD',
   grey: '#7F7F7F',
+  greenDark: '#2C8272',
+  purpleDark: '#942AA7',
+  darkTosca: '#0D648B',
+  purple: '#604A9E',
 };

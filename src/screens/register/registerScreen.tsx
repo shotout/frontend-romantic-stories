@@ -28,6 +28,11 @@ import register from '.';
 import Register3 from '../../layout/register/register3';
 import Register4 from '../../layout/register/register4';
 import Register5 from '../../layout/register/register5';
+import Register6 from '../../layout/register/register6';
+import Register7 from '../../layout/register/register7';
+import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
+import Register8 from '../../layout/register/register8';
+
 const RegisterScreen = (props: any) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [stepRegister, setStepRegister] = useState(1);
@@ -53,8 +58,14 @@ const RegisterScreen = (props: any) => {
     } else if (stepRegister === 4) {
       return <Register4 gender={gender} />;
     } else if (stepRegister === 5) {
-        return <Register5 gender={gender} />;
-      }
+      return <Register5 gender={gender} />;
+    } else if (stepRegister === 6) {
+      return <Register6 gender={gender} />;
+    } else if (stepRegister === 7) {
+      return <Register7 gender={gender} />;
+    } else if (stepRegister === 8) {
+      return <Register8 gender={gender} />;
+    }
   };
   return (
     <View style={{backgroundColor: code_color.white, flex: 1}}>
@@ -65,6 +76,7 @@ const RegisterScreen = (props: any) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+           {stepRegister != 8 ?
         <View
           style={{
             backgroundColor: code_color.headerBlack,
@@ -94,9 +106,38 @@ const RegisterScreen = (props: any) => {
               Let’s get to know you
             </Text>
           </View>
+          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+        </View> :   <View
+          style={{
+            backgroundColor: code_color.white,
+            paddingTop: isIphoneXorAbove() ? 40 : 0,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 20,
+              marginTop: 20,
+            }}>
+           
+              <TouchableOpacity
+                onPress={() => setStepRegister(stepRegister - 1)}>
+                <BackLeft />
+              </TouchableOpacity>
+           
 
-          <HeaderStep currentStep={stepRegister} />
-        </View>
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                flex: 1,
+              }}>
+              Let’s get to know you
+            </Text>
+          </View>
+          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+        </View>}
 
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
@@ -155,8 +196,28 @@ const RegisterScreen = (props: any) => {
                   marginTop: 10,
                 }}
                 onPress={() => setStepRegister(stepRegister + 1)}
-                title={i18n.t('register.continue')}
+                title={stepRegister === 8 ? 'Ok, let’s do it' : i18n.t('register.continue')}
               />
+            ) : null}
+            {stepRegister === 8 ? (
+              <TouchableOpacity
+                onPress={() => setStepRegister(stepRegister + 1)}
+                style={{
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: code_color.grey,
+                    fontSize: 14,
+                    fontFamily: 'Roboto',
+                    textAlign: 'center',
+                    marginTop: 10,
+                  }}>
+                  {'Maybe later'}
+                </Text>
+              </TouchableOpacity>
             ) : null}
           </View>
         </View>
