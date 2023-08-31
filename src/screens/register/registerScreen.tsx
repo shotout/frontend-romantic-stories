@@ -195,7 +195,10 @@ const RegisterScreen = (props: any) => {
                   width: '100%',
                   marginTop: 10,
                 }}
-                onPress={() => setStepRegister(stepRegister + 1)}
+                onPress={() => {
+                  setStepRegister(stepRegister + 1);
+                  stepRegister === 8 ? navigate('Bottom') : null;
+                }}
                 title={stepRegister === 8 ? 'Ok, let’s do it' : i18n.t('register.continue')}
               />
             ) : null}

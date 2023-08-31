@@ -12,3 +12,6 @@ export const avam2 = require('./avam2.png');
 export const avam3 = require('./avam3.png');
 export const avam4 = require('./avam4.png');
 export const imgBottom = require('./imgBottom.png');
+export const cover1 = require('./cover1.png');
+export const cover2 = require('./cover2.png');
+export const libraryAdd = require('./libraryAdd.png');

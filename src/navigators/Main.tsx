@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useCallback} from 'react';
+import React, {useRef, useEffect, useCallback, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {BackHandler, Text, View} from 'react-native';
@@ -10,6 +10,8 @@ import ReduxThunk from 'redux-thunk';
 import OnboardScreen from '../screens/onboarding/index';
 import RegisterScreen from '../screens/register/index';
 import { navigationRef } from '../shared/navigationRef';
+import MyTabsComponent from './BottomNavigator';
+import { BottomBarProvider } from './BottomBarContex';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -23,10 +25,11 @@ const screenOptionsDefault = {
 const Stack = createNativeStackNavigator();
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
-
 export default ({reduxDispatch}) => {
+  const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   return (
     <Provider store={store}>
+      <BottomBarProvider value={{ isBottomBarVisible, setBottomBarVisibility }}>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
           screenOptions={screenOptionsDefault}
@@ -34,8 +37,12 @@ export default ({reduxDispatch}) => {
           <Stack.Screen name={'Splash'} component={App} />
           <Stack.Screen name={'Onboard'} component={OnboardScreen} />
           <Stack.Screen name={'Register'} component={RegisterScreen} />
+          <Stack.Screen name="Bottom" component={MyTabsComponent} />
+      
         </Stack.Navigator>
       </NavigationContainer>
+      </BottomBarProvider>
+     
     </Provider>
   );
 };

@@ -2,13 +2,13 @@ import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
 function SvgComponent(props) {
-    const {width = 13, height = 12, fill = '#ffd500'} = props;
+    const {width = 13, height = 12,  fill = '#3F58DD'} = props;
   return (
     
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={14}
-      height={14}
+      width={width}
+      height={height}
       viewBox="0 0 14 14"
       fill="none"
       >
