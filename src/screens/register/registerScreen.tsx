@@ -34,10 +34,10 @@ import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
 
 const RegisterScreen = (props: any) => {
-  const isDarkMode = useColorScheme() === 'dark';
+  
   const [stepRegister, setStepRegister] = useState(1);
   const [gender, setGender] = useState('Male');
-
+  const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -159,7 +159,7 @@ const RegisterScreen = (props: any) => {
             )}
           </Text>
           {renderLayout()}
-          <View style={{position: 'absolute', bottom: 40, width: '80%'}}>
+          <View style={{position: 'absolute', bottom: 15, width: '80%'}}>
             {stepRegister === 1 ? (
               <TouchableOpacity
                 onPress={() => setStepRegister(stepRegister + 1)}

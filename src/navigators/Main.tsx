@@ -12,6 +12,7 @@ import RegisterScreen from '../screens/register/index';
 import { navigationRef } from '../shared/navigationRef';
 import MyTabsComponent from './BottomNavigator';
 import { BottomBarProvider } from './BottomBarContex';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -28,7 +29,8 @@ const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 export default ({reduxDispatch}) => {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   return (
-    <Provider store={store}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+  <Provider store={store}>
       <BottomBarProvider value={{ isBottomBarVisible, setBottomBarVisibility }}>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
@@ -44,5 +46,7 @@ export default ({reduxDispatch}) => {
       </BottomBarProvider>
      
     </Provider>
+    </GestureHandlerRootView>
+  
   );
 };

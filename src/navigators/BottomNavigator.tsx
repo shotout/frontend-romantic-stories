@@ -19,6 +19,9 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {navigate} from '../shared/navigationRef';
 import BottomBarContext from './BottomBarContex';
 import LibraryScreen from '../screens/libraryPage/libraryScreen';
+import MainScreen from '../screens/mainPage/mainScreen';
+import Main from './Main';
+import FontScreen from '../screens/fontPage/fontScreen';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,39 +34,39 @@ const Home = () => {
     </View>
   );
 };
-const Library = () => {
+const Library = props => {
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
       name: 'SAVE',
+      value: 'Main',
     },
     {
       image: LibrarySvg,
       name: 'MY LIBRARY',
+      value: 'Library',
     },
     {
       image: FontSvg,
       name: 'TEXT',
+      value: 'Font',
     },
     {
       image: SettingSvg,
       name: 'SETTINGS',
+      value: 'Settings',
     },
   ]);
-  const [screen, setScreen] = useState('SAVE')
+  const [screen, setScreen] = useState('SAVE');
   const bottomBarContext = React.useContext(BottomBarContext);
-  const {setBottomBarVisibility} = bottomBarContext;
-
-  const handleSomeAction = (value) => {
+  const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
+  const handleSomeAction = (value: string) => {
     // misalnya setelah mengklik suatu tombol
-    if(value == 'SAVE'){
-        setBottomBarVisibility(true);
-        navigate('homeStack');
-    }else{
-        setBottomBarVisibility(false);
+    setBottomBarVisibility(value);
+    if (value == 'Main') {
+      navigate('Main');
     }
     // Memunculkan bottom bar
-   
   };
   return (
     <View
@@ -74,6 +77,10 @@ const Library = () => {
         bottom: 0,
         flexDirection: 'column',
       }}>
+      <View style={{position: 'absolute', bottom: 150}}>
+        <MainScreen />
+      </View>
+
       <View
         style={{
           flexDirection: 'row',
@@ -92,7 +99,7 @@ const Library = () => {
         {menu.map((item, i) => {
           return (
             <TouchableOpacity
-              onPress={() => handleSomeAction(item.name)}
+              onPress={() => handleSomeAction(item.value)}
               style={{
                 flex: 1,
                 alignItems: 'center',
@@ -102,13 +109,15 @@ const Library = () => {
                 borderTopRightRadius: 20,
                 marginHorizontal: 10,
                 backgroundColor:
-                  item.name === 'MY LIBRARY' ? code_color.blueDark : null,
+                  item.value === isBottomBarVisible
+                    ? code_color.blueDark
+                    : null,
               }}>
               <item.image
                 width={20}
                 height={20}
                 fill={
-                  item.name === 'MY LIBRARY'
+                  item.value === isBottomBarVisible
                     ? code_color.white
                     : code_color.splash
                 }
@@ -117,7 +126,7 @@ const Library = () => {
                 style={{
                   fontSize: 10,
                   color:
-                    item.name === 'MY LIBRARY'
+                    item.value === isBottomBarVisible
                       ? code_color.white
                       : code_color.splash,
                 }}>
@@ -127,23 +136,18 @@ const Library = () => {
           );
         })}
       </View>
-      <LibraryScreen />
+      {isBottomBarVisible === 'Library' ? (
+        <LibraryScreen />
+      ) : isBottomBarVisible === 'Font' ? (
+        <FontScreen />
+      ) : (
+        <LibraryScreen />
+      )}
     </View>
   );
 };
 
-function HomeStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={() => ({
-        headerShown: false,
-      })}>
-      <Stack.Screen name={'Home'} component={Home} />
-    </Stack.Navigator>
-  );
-}
-
-function MyTabs(props) {
+function MyTabs(props: any) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
   let height = 0;
@@ -154,16 +158,15 @@ function MyTabs(props) {
   }
   const [visible, setVisible] = useState(true);
 
-
-  const handleSomeAction = () => {
+  const handleSomeAction = value => {
     // misalnya setelah mengklik suatu tombol
-    setBottomBarVisibility(false); // Memunculkan bottom bar
+    setBottomBarVisibility(value); // Memunculkan bottom bar
   };
 
   return (
     <Tab.Navigator
       backBehavior="none"
-      initialRouteName="homeStack"
+      initialRouteName="Main"
       detachInactiveScreens
       //initialRouteName={screenName.HOMEPAGE}
       screenOptions={{
@@ -176,12 +179,12 @@ function MyTabs(props) {
         },
         tabBarStyle: {
           height,
-          display: isBottomBarVisible ? 'flex' : 'none',
+          display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
         },
       }}>
       <Tab.Screen
-        name="homeStack"
-        component={HomeStack}
+        name="Main"
+        component={MainScreen}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -203,9 +206,16 @@ function MyTabs(props) {
             </View>
           ),
         })}
+        listeners={({route, navigation}) => ({
+          state: state => {
+            handleSomeAction(
+              state.data.state.routes[state.data.state.index].name,
+            );
+          },
+        })}
       />
       <Tab.Screen
-        name="favoriteStack"
+        name="Library"
         component={Library}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => (
@@ -229,13 +239,15 @@ function MyTabs(props) {
         })}
         listeners={({route, navigation}) => ({
           state: state => {
-            handleSomeAction();
+            handleSomeAction(
+              state.data.state.routes[state.data.state.index].name,
+            );
           },
         })}
       />
 
       <Tab.Screen
-        name="riwayatStack"
+        name="Font"
         component={Library}
         options={({route}) => ({
           headerShown: false,
@@ -259,13 +271,15 @@ function MyTabs(props) {
           ),
         })}
         listeners={({route, navigation}) => ({
-            state: state => {
-              handleSomeAction();
-            },
-          })}
+          state: state => {
+            handleSomeAction(
+              state.data.state.routes[state.data.state.index].name,
+            );
+          },
+        })}
       />
       <Tab.Screen
-        name="profile"
+        name="Settings"
         component={Library}
         options={({route}) => ({
           headerShown: false,
@@ -289,10 +303,12 @@ function MyTabs(props) {
           ),
         })}
         listeners={({route, navigation}) => ({
-            state: state => {
-              handleSomeAction();
-            },
-          })}
+          state: state => {
+            handleSomeAction(
+              state.data.state.routes[state.data.state.index].name,
+            );
+          },
+        })}
       />
     </Tab.Navigator>
   );
