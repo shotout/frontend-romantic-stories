@@ -24,9 +24,6 @@ import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
 
 const OnboardScreen = (props: any) => {
-  useEffect(() => {
-    getDefaultLanguange();
-  }, []);
   return (
     <ImageBackground
       source={bg}
@@ -50,7 +47,7 @@ const OnboardScreen = (props: any) => {
         source={logo}
         style={{
           resizeMode: 'contain',
-          width: '30%',
+          width: '40%',
           height: '20%',
           marginVertical: 120,
         }}

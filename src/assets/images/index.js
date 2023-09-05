@@ -1,4 +1,4 @@
-export const logo = require('./logo.png');
+export const logo = require('./logo2.png');
 export const bg = require('./bg.png');
 export const story1 = require('./story1.png');
 export const story2 = require('./story2.png');

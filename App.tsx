@@ -30,6 +30,7 @@ import {
 import {code_color} from './src/utils/colors';
 import {logo} from './src/assets/images';
 import { navigate } from './src/shared/navigationRef';
+import { getDefaultLanguange } from './src/utils/devices';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -68,6 +69,9 @@ function App(props): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
   useEffect(() => {
+    getDefaultLanguange();
+  }, []);
+  useEffect(() => {
     setTimeout(() => {
       navigate('Onboard');
     }, 500);
@@ -82,7 +86,7 @@ function App(props): JSX.Element {
       }}>
       <Image
         source={logo}
-        style={{resizeMode: 'contain', width: '30%', height: '100%'}}
+        style={{resizeMode: 'contain', width: '40%', height: '100%'}}
       />
      
     </View>

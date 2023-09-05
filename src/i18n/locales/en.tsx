@@ -1,5 +1,5 @@
 export default {
-  title: 'Your Romance \n every day',
+  title: 'Your everyday \n Fantasy',
   getStarted: 'Get Started',
   register: {
     letsGets: 'Let’s get to know you',

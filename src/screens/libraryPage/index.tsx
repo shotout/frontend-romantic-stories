@@ -1,4 +1,4 @@
-import OnboardScreen from './onboardScreen';
+import OnboardScreen from './libraryScreen';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => ({});

@@ -20,6 +20,7 @@ export default function Register1({setGender}) {
               fontFamily: 'Roboto',
               textAlign: 'center',
               marginTop: 10,
+              fontWeight: 'bold',
             }}>
             {'Male'}
           </Text>
@@ -33,6 +34,7 @@ export default function Register1({setGender}) {
               fontFamily: 'Roboto',
               textAlign: 'center',
               marginTop: 10,
+              fontWeight: 'bold',
             }}>
             {'Female'}
           </Text>
