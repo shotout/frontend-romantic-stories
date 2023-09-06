@@ -43,8 +43,8 @@ export default function QuotesContent({
     if (isActive && isAnimationStart) {
       // startAnimation();
       // activeStatus.current = true;
-    // } else {
-    //   // stopAnimation();
+      // } else {
+      //   // stopAnimation();
     }
   }, [isActive, isAnimationStart]);
   const startAnimation = () => {
@@ -61,18 +61,47 @@ export default function QuotesContent({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
+  function renderBackgroundImage() {
+    if (isActive) {
+      return (
+        <Image
+          source={ava1}
+          // style={[styles.ctnAbsolute]}
+        />
+      );
+    }
+    return null;
+  }
   return (
-    <View>
-      {/* {renderBackgroundImage()} */}
+    <View
+      style={{
+        position: 'relative',
+        paddingHorizontal: 30,
+        paddingTop: 30,
+        flex: 1,
+      }}>
       <Animated.View
         style={{
           width: '100%',
-          height: sizing.getDimensionHeight(Platform.OS === 'android' ? 0.82 : 0.84),
-          // backgroundColor: 'red',
-          // borderBottomColor: 'black',
-          // borderWidth: 1,
-          transform: [{rotateX: rotation}],
+          height: sizing.getDimensionHeight(0.84),
+          transform: [{translateY: translateX}],
         }}>
+          <Text
+            style={{
+              marginHorizontal: 50,
+              textAlign: 'center',
+              fontWeight: 'bold',
+            }}>
+            {item?.title}
+          </Text>
+          <View style={{borderWidth: 1, borderColor: code_color.grey}} />
+          <View style={styles.ctnIcon}>
+            <View style={styles.quotesWrapper}>
+              <View style={styles.txtQuotesWrapper}>
+                <Text style={[styles.ctnQuotes]}>{item?.detail}</Text>
+              </View>
+            </View>
+          </View>
         <View
           style={{
             alignItems: 'center',
@@ -92,22 +121,7 @@ export default function QuotesContent({
             }}
           />
         </View>
-        <Text
-          style={{
-            marginHorizontal: 50,
-            textAlign: 'center',
-            fontWeight: 'bold',
-          }}>
-          {item?.title}
-        </Text>
-        <View style={{borderWidth: 1, borderColor: code_color.grey}} />
-        <View style={styles.ctnIcon}>
-          <View style={styles.quotesWrapper}>
-            <View style={styles.txtQuotesWrapper}>
-              <Text style={[styles.ctnQuotes]}>{item?.detail}</Text>
-            </View>
-          </View>
-        </View>
+
         {/* </ImageBackground> */}
       </Animated.View>
     </View>

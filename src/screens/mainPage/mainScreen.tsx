@@ -20,7 +20,7 @@ import {
   ScrollView,
   FlatList,
   Animated,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import {ava1, bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -42,7 +42,7 @@ import {
 import {sizing} from '../../utils/styling';
 import QuotesContent from '../../components/quotes-content-fast-image';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const MainScreen = (_props: any) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -77,7 +77,7 @@ const MainScreen = (_props: any) => {
       dataBook?.length || 0,
     );
     setActiveSlide(pageNumber - 1);
-    startAnimation()
+    startAnimation();
     if (pageNumber - 1 !== activeSlide && !isUserHasScroll) {
       setUserScrollQuotes(true);
     }
@@ -110,11 +110,12 @@ const MainScreen = (_props: any) => {
   });
   const renderFactItem = ({item, index, disableAnimation}) => {
     return (
-      
-       <QuotesContent   item={item}   isActive={activeSlide === index} isAnimationStart={true
-      } />
-     
-      
+      <QuotesContent
+        item={item}
+        isActive={activeSlide === index}
+        isAnimationStart={true}
+      />
+
       // <View style={{ flex: 1 }}>
       //   <Text
       //     style={{
@@ -181,19 +182,24 @@ const MainScreen = (_props: any) => {
     );
   }
   return (
-    <View style={{backgroundColor: code_color.white, flex: 1, paddingHorizontal: 20, paddingTop: 20}}>
+    <View
+      style={{
+        backgroundColor: code_color.white,
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+      }}>
       <StatusBar
         barStyle={'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
 
-      <View
+      {/* <View
         style={{
           backgroundColor: code_color.white,
-          paddingTop: isIphoneXorAbove() ? 40 : 0,
+          // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
-      />
-      
+      /> */}
 
       {renderFlatList()}
     </View>

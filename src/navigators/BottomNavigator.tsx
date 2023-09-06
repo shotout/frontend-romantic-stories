@@ -77,7 +77,8 @@ const Library = props => {
         bottom: 0,
         flexDirection: 'column',
       }}>
-      <View style={{position: 'absolute', bottom: 150}}>
+      
+      <View style={{position: 'absolute', top: -300}}>
         <MainScreen />
       </View>
 

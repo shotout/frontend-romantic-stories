@@ -22,10 +22,10 @@ export default function Register4({gender}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState([
     {
-      image: ava1,
+      image: ava2,
     },
     {
-      image: ava2,
+      image: ava1,
     },
     {
       image: ava3,

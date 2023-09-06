@@ -11,7 +11,10 @@ import MyTabsComponent from './BottomNavigator';
 import {BottomBarProvider} from './BottomBarContex';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import store, {persistor} from '../store/configure-store';
-import { PersistGate } from "redux-persist/lib/integration/react";
+import {PersistGate} from 'redux-persist/lib/integration/react';
+import messaging from '@react-native-firebase/messaging';
+import { checkDeviceRegister } from '../shared/request';
+import DeviceInfo from 'react-native-device-info';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -26,6 +29,26 @@ const Stack = createNativeStackNavigator();
 
 export default ({reduxDispatch}) => {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
+  useEffect(() => {
+    checkDevice()
+    // const checkFirebase = async () => {
+    //   const fcmToken = await messaging().getToken();
+    //   alert(fcmToken);
+    // };
+    // checkFirebase();
+  });
+  const checkDevice = async () => {
+    const device = await  DeviceInfo.getUniqueId();
+    try {
+      const res = await checkDeviceRegister({
+        device_id: device,
+      });
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
+   
+    
+  }
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>

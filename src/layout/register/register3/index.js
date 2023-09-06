@@ -13,6 +13,7 @@ import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
 import {story1, story2, story3, story4} from '../../../assets/images';
+import ChecklistSvg from './../../../assets/icons/checklist'
 
 export default function Register3({currentStep}) {
   const [dataStory, setDataStory] = useState([
@@ -67,8 +68,12 @@ export default function Register3({currentStep}) {
                 position: 'absolute',
                 top: 35,
                 left: 20,
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
-            />
+            >
+              <ChecklistSvg />
+            </TouchableOpacity>
           </TouchableOpacity>
         );
       })}
