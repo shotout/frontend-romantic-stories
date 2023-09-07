@@ -31,11 +31,11 @@ export default ({reduxDispatch}) => {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
     checkDevice()
-    // const checkFirebase = async () => {
-    //   const fcmToken = await messaging().getToken();
-    //   alert(fcmToken);
-    // };
-    // checkFirebase();
+    const checkFirebase = async () => {
+      const fcmToken = await messaging().getToken();
+      alert(fcmToken);
+    };
+    checkFirebase();
   });
   const checkDevice = async () => {
     const device = await  DeviceInfo.getUniqueId();

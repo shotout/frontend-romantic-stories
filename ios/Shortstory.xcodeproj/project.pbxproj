@@ -16,6 +16,7 @@
 		7C0445F931256932F47F6D76 /* libPods-Shortstory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF894184A503BA0D4FD57C6C /* libPods-Shortstory.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		845DE37C2A8CBAE900951DEC /* libReact-RCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 845DE37B2A8CBAE900951DEC /* libReact-RCTNetwork.a */; };
+		84A9975B2AA8A86F008CB946 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		845DE3772A8CBA7500951DEC /* libFlipper-Folly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-Folly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		845DE3792A8CBA7A00951DEC /* libFlipper-PeerTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-PeerTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		845DE37B2A8CBAE900951DEC /* libReact-RCTNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTNetwork.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B33B9A70A3AE954B034B5957 /* Pods-Shortstory-ShortstoryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shortstory-ShortstoryTests.release.xcconfig"; path = "Target Support Files/Pods-Shortstory-ShortstoryTests/Pods-Shortstory-ShortstoryTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF894184A503BA0D4FD57C6C /* libPods-Shortstory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shortstory.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE4CDC753B64D2639E8A474 /* libPods-Shortstory-ShortstoryTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shortstory-ShortstoryTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +142,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Shortstory */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ShortstoryTests */,
@@ -268,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A9975B2AA8A86F008CB946 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				575FD6B6611F4CCBB5477FA6 /* Comfortaa-SemiBold.ttf in Resources */,

@@ -6,7 +6,7 @@ import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
 
-export default function Register2({currentStep}) {
+export default function Register2({currentStep, name, changeText}) {
   return (
     <>
       <View
@@ -50,6 +50,8 @@ export default function Register2({currentStep}) {
             padding: 10,
             marginVertical: 10,
           }}
+          value={name}
+          onChangeText={(text) => changeText(text)}
           placeholder="Your name"
         />
       </View>

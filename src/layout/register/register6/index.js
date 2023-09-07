@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -29,27 +29,12 @@ import LoveSvg from '../../../assets/icons/bottom/love.jsx';
 import FontSvg from '../../../assets/icons/bottom/font.jsx';
 import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
+import { getListTheme } from '../../../shared/request';
 
-export default function Register5({gender}) {
+export default function Register5({gender, setTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
 
-  const [colorsBg, setColorsBg] = useState([
-    {
-      code: code_color.splash,
-    },
-    {
-      code: code_color.greenDark,
-    },
-    {
-      code: code_color.purpleDark,
-    },
-    {
-      code: code_color.darkTosca,
-    },
-    {
-      code: code_color.purple,
-    },
-  ]);
+  const [colorsBg, setColorsBg] = useState([]);
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
@@ -68,6 +53,22 @@ export default function Register5({gender}) {
       name: 'SETTINGS',
     },
   ]);
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  const fetchCategory = async () => {
+    try {
+      const avatar = await getListTheme();
+      setColorsBg(avatar?.data);
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+  };
+  // const handleChange = index => {
+  //   setAvatar(dataAva[index].id);
+  // };
 
   return (
     <>
@@ -182,9 +183,12 @@ export default function Register5({gender}) {
           {colorsBg.map((item, i) => {
             return (
               <TouchableOpacity
-                onPress={() => setColorsDefault(item.code)}
+                onPress={() => {
+                  setTheme(item.id);
+                  setColorsDefault(item.theme_color);
+                }}
                 style={{
-                  backgroundColor: item.code,
+                  backgroundColor: item.theme_color,
                   width: 30,
                   height: 30,
                   borderRadius: 20,

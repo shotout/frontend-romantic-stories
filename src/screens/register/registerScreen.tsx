@@ -32,14 +32,40 @@ import Register6 from '../../layout/register/register6';
 import Register7 from '../../layout/register/register7';
 import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
+import moment from 'moment';
 
 const RegisterScreen = (props: any) => {
-  
   const [stepRegister, setStepRegister] = useState(1);
-  const [gender, setGender] = useState('Male');
+  // const [gender, setGender] = useState('Male');
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  const [values, setFormValues] = useState({
+    name: '',
+    gender: '',
+    device_id: '',
+    start: moment(new Date(2018, 11, 24, 8, 0, 30, 0)).format(
+      'YYYY-MM-DD HH:mm',
+    ),
+    end: moment(new Date(2018, 11, 24, 20, 0, 30, 0)).format(
+      'YYYY-MM-DD HH:mm',
+    ),
+    fcm_token: '',
+    category_id: '',
+    avatar_male: 1,
+    avatar_female: 1,
+    theme_id: 1,
+    language_id: 2,
+    often: 3,
+  });
+
+  const handleChange = (setText, text) => {
+    setFormValues({
+      ...values,
+      [setText]: text,
+    });
+    alert(JSON.stringify(values))
   };
 
   const renderLayout = () => {
@@ -47,24 +73,56 @@ const RegisterScreen = (props: any) => {
       return (
         <Register1
           setGender={text => {
-            setGender(text), setStepRegister(stepRegister + 1);
+            handleChange('gender', text), setStepRegister(stepRegister + 1);
           }}
         />
       );
     } else if (stepRegister === 2) {
-      return <Register2 currentStep={stepRegister} />;
+      return (
+        <Register2
+          name={values.name}
+          changeText={text => handleChange('name', text)}
+          currentStep={stepRegister}
+        />
+      );
     } else if (stepRegister === 3) {
-      return <Register3 currentStep={stepRegister} />;
+      return (
+        <Register3
+          setCategoryId={text => {
+            handleChange('category_id', text);
+          }}
+        />
+      );
     } else if (stepRegister === 4) {
-      return <Register4 gender={gender} />;
+      return (
+        <Register4
+          gender={values.gender}
+          setAvatar={text =>
+            handleChange(
+              values.gender === 'female' ? 'avatar_female' : 'avatar_male',
+              text,
+            )
+          }
+        />
+      );
     } else if (stepRegister === 5) {
-      return <Register5 gender={gender} />;
+      return (
+        <Register5
+          gender={values.gender}
+          setAvatar={text =>
+            handleChange(
+              values.gender === 'female' ? 'avatar_male' : 'avatar_female',
+              text,
+            )
+          }
+        />
+      );
     } else if (stepRegister === 6) {
-      return <Register6 gender={gender} />;
+      return <Register6   gender={values.gender} />;
     } else if (stepRegister === 7) {
-      return <Register7 gender={gender} />;
+      return <Register7  gender={values.gender} />;
     } else if (stepRegister === 8) {
-      return <Register8 gender={gender} />;
+      return <Register8  gender={values.gender} />;
     }
   };
   return (
@@ -76,68 +134,73 @@ const RegisterScreen = (props: any) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-           {stepRegister != 8 ?
-        <View
-          style={{
-            backgroundColor: code_color.headerBlack,
-            paddingTop: isIphoneXorAbove() ? 40 : 0,
-          }}>
+        {stepRegister != 8 ? (
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 20,
-              marginTop: 20,
+              backgroundColor: code_color.headerBlack,
+              paddingTop: isIphoneXorAbove() ? 40 : 0,
             }}>
-            {stepRegister > 1 ? (
-              <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister - 1)}>
-                <Image source={backLeft} />
-              </TouchableOpacity>
-            ) : null}
-
-            <Text
+            <View
               style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 20,
+                marginTop: 20,
               }}>
-              Let’s get to know you
-            </Text>
+              {stepRegister > 1 ? (
+                <TouchableOpacity
+                  onPress={() => setStepRegister(stepRegister - 1)}>
+                  <Image source={backLeft} />
+                </TouchableOpacity>
+              ) : null}
+
+              <Text
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  flex: 1,
+                }}>
+                Let’s get to know you
+              </Text>
+            </View>
+            {stepRegister != 8 ? (
+              <HeaderStep currentStep={stepRegister} />
+            ) : null}
           </View>
-          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
-        </View> :   <View
-          style={{
-            backgroundColor: code_color.white,
-            paddingTop: isIphoneXorAbove() ? 40 : 0,
-          }}>
+        ) : (
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 20,
-              marginTop: 20,
+              backgroundColor: code_color.white,
+              paddingTop: isIphoneXorAbove() ? 40 : 0,
             }}>
-           
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 20,
+                marginTop: 20,
+              }}>
               <TouchableOpacity
                 onPress={() => setStepRegister(stepRegister - 1)}>
                 <BackLeft />
               </TouchableOpacity>
-           
 
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                flex: 1,
-              }}>
-              Let’s get to know you
-            </Text>
+              <Text
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  flex: 1,
+                }}>
+                Let’s get to know you
+              </Text>
+            </View>
+            {stepRegister != 8 ? (
+              <HeaderStep currentStep={stepRegister} />
+            ) : null}
           </View>
-          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
-        </View>}
+        )}
 
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
@@ -199,7 +262,11 @@ const RegisterScreen = (props: any) => {
                   setStepRegister(stepRegister + 1);
                   stepRegister === 8 ? navigate('Bottom') : null;
                 }}
-                title={stepRegister === 8 ? 'Ok, let’s do it' : i18n.t('register.continue')}
+                title={
+                  stepRegister === 8
+                    ? 'Ok, let’s do it'
+                    : i18n.t('register.continue')
+                }
               />
             ) : null}
             {stepRegister === 8 ? (

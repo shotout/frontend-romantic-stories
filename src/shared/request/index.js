@@ -1,16 +1,46 @@
 import Wrap from './axiosWrapper';
 
-export const checkVersion = () =>
-  Wrap({
-    url: '/list/versions',
-    method: 'GET',
-  });
-
 export const checkDeviceRegister = (data = {}) =>
   Wrap({
     url: '/auth/check',
     method: 'POST',
     data,
+  });
+
+export const postRegister = data =>
+  Wrap({
+    url: '/auth/register',
+    method: 'POST',
+    data,
+  });
+
+export const getListCategory = (params = {}) =>
+  Wrap({
+    url: '/list/categories',
+    method: 'get',
+    params,
+  });
+export const getListAvatar = (params = {}) =>
+  Wrap({
+    url: '/list/avatars',
+    method: 'get',
+    params,
+  });
+export const getListTheme = () =>
+  Wrap({
+    url: '/list/themes',
+    method: 'get',
+  });
+export const getListLanguange = () =>
+  Wrap({
+    url: '/list/languages',
+    method: 'get',
+  });
+
+export const checkVersion = () =>
+  Wrap({
+    url: '/list/versions',
+    method: 'GET',
   });
 
 export const getlistFeel = () =>
@@ -38,12 +68,6 @@ export const getListWays = () =>
     method: 'get',
   });
 
-export const getListCategory = (params = {}) =>
-  Wrap({
-    url: '/list/categories',
-    method: 'get',
-    params,
-  });
 
 export const getListFactRegister = (params = {}) =>
   Wrap({
@@ -64,19 +88,6 @@ export const getListArea = (params = {}) =>
     url: '/list/areas',
     method: 'get',
     params,
-  });
-
-export const postRegister = data =>
-  Wrap({
-    url: '/auth/register',
-    method: 'POST',
-    data,
-  });
-
-export const getListTheme = () =>
-  Wrap({
-    url: '/list/themes',
-    method: 'get',
   });
 
 export const updateCategory = data =>
