@@ -33,44 +33,7 @@ import FontSvg from '../../../assets/icons/bottom/font.jsx';
 import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
 
-export default function Register8({gender}) {
-  const [colorsDefault, setColorsDefault] = useState(code_color.white);
-
-  const [colorsBg, setColorsBg] = useState([
-    {
-      code: code_color.splash,
-    },
-    {
-      code: code_color.greenDark,
-    },
-    {
-      code: code_color.purpleDark,
-    },
-    {
-      code: code_color.darkTosca,
-    },
-    {
-      code: code_color.purple,
-    },
-  ]);
-  const [menu, setMenu] = useState([
-    {
-      image: LoveSvg,
-      name: 'SAVE',
-    },
-    {
-      image: LibrarySvg,
-      name: 'MY LIBRARY',
-    },
-    {
-      image: FontSvg,
-      name: 'TEXT',
-    },
-    {
-      image: SettingSvg,
-      name: 'SETTINGS',
-    },
-  ]);
+export default function Register8({activeNotif}) {
 
   return (
     <>
@@ -113,7 +76,7 @@ export default function Register8({gender}) {
             flex: 0,
             marginTop: 80,
           }}>
-          <TouchableOpacity onPress={() => setGender('Male')}>
+          <TouchableOpacity onPress={() => activeNotif()}>
             <Image source={speaker} />
           
           </TouchableOpacity>

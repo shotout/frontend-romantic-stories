@@ -13,8 +13,11 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import store, {persistor} from '../store/configure-store';
 import {PersistGate} from 'redux-persist/lib/integration/react';
 import messaging from '@react-native-firebase/messaging';
-import { checkDeviceRegister } from '../shared/request';
+import {checkDeviceRegister} from '../shared/request';
 import DeviceInfo from 'react-native-device-info';
+import PropTypes from 'prop-types';
+import dispatcher from './dispatcher';
+import states from './states';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -27,47 +30,48 @@ const screenOptionsDefault = {
 
 const Stack = createNativeStackNavigator();
 
-export default ({reduxDispatch}) => {
+function Main({registerData, userProfile, props}) {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
-    checkDevice()
+    checkDevice();
     const checkFirebase = async () => {
       const fcmToken = await messaging().getToken();
-      alert(fcmToken);
+     
     };
     checkFirebase();
   });
   const checkDevice = async () => {
-    const device = await  DeviceInfo.getUniqueId();
+    const device = await DeviceInfo.getUniqueId();
     try {
       const res = await checkDeviceRegister({
         device_id: device,
       });
     } catch (error) {
-      alert(JSON.stringify(error))
+      alert(JSON.stringify(error));
     }
-   
-    
-  }
+  };
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <BottomBarProvider
-            value={{isBottomBarVisible, setBottomBarVisibility}}>
-            <NavigationContainer ref={navigationRef}>
-              <Stack.Navigator
-                screenOptions={screenOptionsDefault}
-                initialRouteName={'Splash'}>
-                <Stack.Screen name={'Splash'} component={App} />
-                <Stack.Screen name={'Onboard'} component={OnboardScreen} />
-                <Stack.Screen name={'Register'} component={RegisterScreen} />
-                <Stack.Screen name="Bottom" component={MyTabsComponent} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </BottomBarProvider>
-        </PersistGate>
-      </Provider>
-    </GestureHandlerRootView>
+    <BottomBarProvider value={{isBottomBarVisible, setBottomBarVisibility}}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator
+          screenOptions={screenOptionsDefault}
+          initialRouteName={'Splash'}>
+          <Stack.Screen name={'Splash'} component={App} />
+          <Stack.Screen name={'Onboard'} component={OnboardScreen} />
+          <Stack.Screen name={'Register'} component={RegisterScreen} />
+          <Stack.Screen name="Bottom" component={MyTabsComponent} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </BottomBarProvider>
   );
+}
+
+Main.propTypes = {
+  activeVersion: PropTypes.any,
 };
+
+Main.defaultProps = {
+  activeVersion: null,
+};
+
+export default connect(states, dispatcher)(Main);

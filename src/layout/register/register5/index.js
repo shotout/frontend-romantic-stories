@@ -31,9 +31,8 @@ export default function Register4({gender, setAvatar}) {
   const fetchCategory = async () => {
     try {
       const params = {
-        gender: gender === 'female' ? 'male' : 'female',
+        gender: gender === 'Female' ? 'male' : 'female',
       };
-      alert(params?.gender)
       const avatar = await getListAvatar(params);
       setDataAva(avatar?.data);
     } catch (error) {

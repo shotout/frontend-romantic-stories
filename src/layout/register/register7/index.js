@@ -34,7 +34,7 @@ import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
 import {getListLanguange} from '../../../shared/request';
 import {BACKEND_URL} from '../../../shared/static';
 
-export default function Register7({gender}) {
+export default function Register7({languange}) {
   const [lang, setLang] = useState(null);
   const [dataLang, setDataLang] = useState([]);
 
@@ -94,9 +94,13 @@ export default function Register7({gender}) {
           }}>
           {dataLang.map((item, idx) => {
             return (
-              <View style={{ flex: 1, width: '90%',  }}>
-                <TouchableOpacity style={{    justifyContent: 'center',
-            alignItems: 'center', }} onPress={() => setLang(item.id)}>
+              <View style={{flex: 1, width: '90%'}}>
+                <TouchableOpacity
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={() => {
+                    setLang(item.id);
+                    languange(item.id);
+                  }}>
                   <View
                     style={
                       lang === item.id
@@ -136,15 +140,14 @@ export default function Register7({gender}) {
                     }}>
                     {item.name}
                   </Text>
-                 
                 </TouchableOpacity>
                 <View
-                    style={{
-                      borderColor: code_color.grey,
-                      borderWidth: idx === 0 ? 1 : 0,
-                      marginVertical: 10,
-                    }}
-                  />
+                  style={{
+                    borderColor: code_color.grey,
+                    borderWidth: idx === 0 ? 1 : 0,
+                    marginVertical: 10,
+                  }}
+                />
               </View>
             );
           })}

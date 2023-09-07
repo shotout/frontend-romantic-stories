@@ -30,6 +30,7 @@ import FontSvg from '../../../assets/icons/bottom/font.jsx';
 import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
 import { getListTheme } from '../../../shared/request';
+import ChecklistSvg from './../../../assets/icons/checklist';
 
 export default function Register5({gender, setTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
@@ -195,8 +196,12 @@ export default function Register5({gender, setTheme}) {
                   borderWidth: 1,
                   borderColor: code_color.grey,
                   marginHorizontal: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
-              />
+              >
+                  {colorsDefault === item.theme_color ? <ChecklistSvg /> : null}
+                </TouchableOpacity>
             );
           })}
         </View>

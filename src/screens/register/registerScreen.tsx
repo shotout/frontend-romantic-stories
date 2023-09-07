@@ -33,8 +33,13 @@ import Register7 from '../../layout/register/register7';
 import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
 import moment from 'moment';
+import DeviceInfo from 'react-native-device-info';
+import {postRegister} from '../../shared/request';
+import {connect} from 'react-redux';
+import dispatcher from './dispatcher';
+import states from './states';
 
-const RegisterScreen = (props: any) => {
+function RegisterScreen({handleSetProfile}) {
   const [stepRegister, setStepRegister] = useState(1);
   // const [gender, setGender] = useState('Male');
   const isDarkMode = useColorScheme() === 'dark';
@@ -60,12 +65,29 @@ const RegisterScreen = (props: any) => {
     often: 3,
   });
 
+  useEffect(() => {
+    fetchDeviceId();
+  }, []);
+
+  const fetchDeviceId = async () => {
+    const data = await DeviceInfo.getUniqueId();
+    setFormValues({
+      ...values,
+      device_id: data,
+    });
+  };
+
   const handleChange = (setText, text) => {
     setFormValues({
       ...values,
       [setText]: text,
     });
-    alert(JSON.stringify(values))
+  };
+
+  const onSubmit = async () => {
+    const res = await postRegister(values);
+    alert(JSON.stringify(res));
+    handleSetProfile(res);
   };
 
   const renderLayout = () => {
@@ -118,11 +140,18 @@ const RegisterScreen = (props: any) => {
         />
       );
     } else if (stepRegister === 6) {
-      return <Register6   gender={values.gender} />;
+      return (
+        <Register6
+          gender={values.gender}
+          setTheme={text => handleChange('theme_id', text)}
+        />
+      );
     } else if (stepRegister === 7) {
-      return <Register7  gender={values.gender} />;
+      return (
+        <Register7 languange={text => handleChange('language_id', text)} />
+      );
     } else if (stepRegister === 8) {
-      return <Register8  gender={values.gender} />;
+      return <Register8 activeNotif={() => onSubmit()} />;
     }
   };
   return (
@@ -260,7 +289,8 @@ const RegisterScreen = (props: any) => {
                 }}
                 onPress={() => {
                   setStepRegister(stepRegister + 1);
-                  stepRegister === 8 ? navigate('Bottom') : null;
+
+                  stepRegister === 8 ? onSubmit() : null;
                 }}
                 title={
                   stepRegister === 8
@@ -294,6 +324,9 @@ const RegisterScreen = (props: any) => {
       </KeyboardAvoidingView>
     </View>
   );
-};
-const styles = StyleSheet.create({});
-export default RegisterScreen;
+}
+RegisterScreen.propTypes = {};
+
+RegisterScreen.defaultProps = {};
+
+export default connect(states, dispatcher)(RegisterScreen);
