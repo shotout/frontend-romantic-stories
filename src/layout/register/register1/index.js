@@ -10,9 +10,12 @@ export default function Register1({setGender}) {
     <>
       <View style={{justifyContent: 'center', flex: 0, marginTop: 80}}>
         <TouchableOpacity
-          style={{marginBottom: 20}}
+          style={{marginBottom: 40, alignItems: 'center'}}
           onPress={() => setGender('Male')}>
-          <Image source={male} />
+          <Image
+            source={male}
+            style={{width: 120, height: 120, resizeMode: 'contain'}}
+          />
           <Text
             style={{
               color: code_color.grey,
@@ -26,7 +29,10 @@ export default function Register1({setGender}) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setGender('Female')}>
-          <Image source={female} />
+          <Image
+            source={female}
+            style={{width: 120, height: 120, resizeMode: 'contain'}}
+          />
           <Text
             style={{
               color: code_color.grey,

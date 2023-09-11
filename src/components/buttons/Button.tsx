@@ -25,7 +25,7 @@ export default function Button({style, onPress, title}) {
                 width: '90%',
               }
         }>
-        <Text style={{fontFamily: 'Robotto', fontWeight: 'bold'}}>{title}</Text>
+        <Text style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: 15}}>{title}</Text>
       </TouchableOpacity>
     </>
   );

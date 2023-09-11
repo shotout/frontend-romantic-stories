@@ -8,7 +8,7 @@ export default {
     male: 'Male',
     female: 'Female',
     bepartstory: 'Be part of the story',
-    whatsname: 'What‘s your name?',
+    whatsname: 'What‘s your \n name?',
     usingyrname: 'Using your real name creates',
     bttrexp: 'better experience',
     wthstry: 'a with the story.',

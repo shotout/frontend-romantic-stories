@@ -2,9 +2,9 @@ import React from 'react';
 import {Image, View} from 'react-native';
 import styles from './styles';
 
-const activeLamp = require('../../../assets/icons/register_step/singleLove.png');
-const lampUnactive = require('../../../assets/icons/register_step/unactiveLove.png');
-const lampActiveAnimation = require('../../../assets/icons/register_step/activeLove.png');
+const activeLamp = require('../../../assets/icons/register_step/singleLove1.png');
+const lampUnactive = require('../../../assets/icons/register_step/unactiveLove1.png');
+const lampActiveAnimation = require('../../../assets/icons/register_step/activeLove1.png');
 
 export default function HeaderStep({currentStep}) {
   const activeGift = () => (

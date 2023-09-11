@@ -34,14 +34,14 @@ import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
-import {postRegister} from '../../shared/request';
+import {checkDeviceRegister, postRegister} from '../../shared/request';
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
 import states from './states';
 
 function RegisterScreen({handleSetProfile}) {
   const [stepRegister, setStepRegister] = useState(1);
-  // const [gender, setGender] = useState('Male');
+  const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -57,7 +57,7 @@ function RegisterScreen({handleSetProfile}) {
       'YYYY-MM-DD HH:mm',
     ),
     fcm_token: '',
-    category_id: '',
+    category_id: 1,
     avatar_male: 1,
     avatar_female: 1,
     theme_id: 1,
@@ -85,9 +85,24 @@ function RegisterScreen({handleSetProfile}) {
   };
 
   const onSubmit = async () => {
-    const res = await postRegister(values);
-    alert(JSON.stringify(res));
-    handleSetProfile(res);
+    console.log(values);
+    try {
+      const res = await postRegister(values);
+      handleSetProfile(res);
+      navigate('Bottom');
+    } catch (error) {
+      checkDevice();
+    }
+  };
+  const checkDevice = async () => {
+    const device = await DeviceInfo.getUniqueId();
+    try {
+      const res = await checkDeviceRegister({
+        device_id: device,
+      });
+      handleSetProfile(res);
+      navigate('Bottom');
+    } catch (error) {}
   };
 
   const renderLayout = () => {
@@ -190,7 +205,21 @@ function RegisterScreen({handleSetProfile}) {
                   fontSize: 18,
                   flex: 1,
                 }}>
-                Let’s get to know you
+                {stepRegister === 1
+                  ? titleHeader
+                  : stepRegister === 2
+                  ? 'Be part of the story'
+                  : stepRegister === 3
+                  ? 'Select your favorite genre'
+                  : stepRegister === 4
+                  ? 'Select your look'
+                  : stepRegister === 5
+                  ? 'Select your partner'
+                  : stepRegister === 6
+                  ? 'Customize your page'
+                  : stepRegister === 7
+                  ? 'For effective expression'
+                  : null}
               </Text>
             </View>
             {stepRegister != 8 ? (
@@ -222,7 +251,11 @@ function RegisterScreen({handleSetProfile}) {
                   fontSize: 18,
                   flex: 1,
                 }}>
-                Let’s get to know you
+                {stepRegister === 1
+                  ? titleHeader
+                  : stepRegister === 2
+                  ? 'Be part of the story'
+                  : ''}
               </Text>
             </View>
             {stepRegister != 8 ? (
@@ -252,7 +285,7 @@ function RegisterScreen({handleSetProfile}) {
           </Text>
           {renderLayout()}
           <View style={{position: 'absolute', bottom: 15, width: '80%'}}>
-            {stepRegister === 1 ? (
+            {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => setStepRegister(stepRegister + 1)}
                 style={{
@@ -286,11 +319,12 @@ function RegisterScreen({handleSetProfile}) {
                   borderRadius: 12,
                   width: '100%',
                   marginTop: 10,
+                  marginBottom: 10
                 }}
                 onPress={() => {
-                  setStepRegister(stepRegister + 1);
-
-                  stepRegister === 8 ? onSubmit() : null;
+                  stepRegister === 8
+                    ? onSubmit()
+                    : setStepRegister(stepRegister + 1);
                 }}
                 title={
                   stepRegister === 8
@@ -301,7 +335,7 @@ function RegisterScreen({handleSetProfile}) {
             ) : null}
             {stepRegister === 8 ? (
               <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister + 1)}
+                onPress={() => onSubmit()}
                 style={{
                   alignItems: 'center',
                   alignContent: 'center',

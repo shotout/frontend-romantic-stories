@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
@@ -10,12 +10,12 @@ export default function Register2({currentStep, name, changeText}) {
   return (
     <>
       <View
-        style={{justifyContent: 'center', marginTop: 40, marginHorizontal: 50}}>
-        <View style={{flexDirection: 'row', flex: 0}}>
+        style={{ marginTop: 40, marginHorizontal: 20, }}>
+        <View style={{flexDirection: 'row', flex: 0, justifyContent: 'center' }}>
           <Text
             style={{
-              color: code_color.grey,
-              fontSize: 14,
+              color: code_color.blackDark,
+              fontSize: 16,
               fontFamily: 'Roboto',
               textAlign: 'center',
             }}>
@@ -23,7 +23,7 @@ export default function Register2({currentStep, name, changeText}) {
             <Text
               style={{
                 color: code_color.blueDark,
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: 'Roboto',
                 textAlign: 'center',
                 fontWeight: 'bold',
@@ -33,8 +33,8 @@ export default function Register2({currentStep, name, changeText}) {
             </Text>
             <Text
               style={{
-                color: code_color.grey,
-                fontSize: 14,
+                color: code_color.blackDark,
+                fontSize: 16,
                 fontFamily: 'Roboto',
                 textAlign: 'center',
               }}>
@@ -48,7 +48,8 @@ export default function Register2({currentStep, name, changeText}) {
             borderWidth: 1,
             borderRadius: 5,
             padding: 10,
-            marginVertical: 10,
+            marginVertical: 30,
+            width: Dimensions.get('window').width - 60
           }}
           value={name}
           onChangeText={(text) => changeText(text)}

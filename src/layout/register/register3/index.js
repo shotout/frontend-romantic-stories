@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -31,7 +32,6 @@ export default function Register3({setCategoryId}) {
     try {
       const category = await getListCategory();
       setDataStory(category?.data);
-      alert(JSON.stringify(category?.data));
     } catch (error) {
       alert(JSON.stringify(error));
     }
@@ -39,7 +39,7 @@ export default function Register3({setCategoryId}) {
   return (
     <>
       <FlatList
-        style={{flex: 1}}
+        style={{flex: 1, marginTop: 20}}
         data={dataStory}
         renderItem={({item, index}) => {
           return (
@@ -66,12 +66,23 @@ export default function Register3({setCategoryId}) {
                 //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
                 // }}
                 style={{
-                  width: 300,
-                  height: 90,
+                  width: Dimensions.get('window').width - 30,
+                  height: 95,
                   // backgroundColor:
                   //   selectStory === item.name ? code_color.splash : 'white',
                 }}
               />
+              <Text
+                style={{
+                  position: 'absolute',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: code_color.white,
+                }}>
+                {item?.name}
+              </Text>
               <TouchableOpacity
                 onPress={() => setSelectStory(item.name)}
                 style={{

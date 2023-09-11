@@ -35,6 +35,7 @@ export default function Register4({gender, setAvatar}) {
       };
       const avatar = await getListAvatar(params);
       setDataAva(avatar?.data);
+      setProgress(1);
     } catch (error) {
       alert(JSON.stringify(error));
     }
@@ -71,7 +72,7 @@ export default function Register4({gender, setAvatar}) {
             loop={false}
             width={Dimensions.get('window').width / 1.5}
             height={Dimensions.get('window').height / 2}
-            // autoPlay={true}
+            defaultIndex={1}
             data={dataAva}
             // scrollAnimationDuration={1000}
             // onScrollBegin={(_, absoluteProgress) =>

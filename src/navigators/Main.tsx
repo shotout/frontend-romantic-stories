@@ -50,6 +50,7 @@ function Main({registerData, userProfile, props}) {
       alert(JSON.stringify(error));
     }
   };
+  
   return (
     <BottomBarProvider value={{isBottomBarVisible, setBottomBarVisibility}}>
       <NavigationContainer ref={navigationRef}>

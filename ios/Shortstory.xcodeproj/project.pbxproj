@@ -51,6 +51,7 @@
 		845DE3792A8CBA7A00951DEC /* libFlipper-PeerTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-PeerTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		845DE37B2A8CBAE900951DEC /* libReact-RCTNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTNetwork.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		84A9975E2AAB2774008CB946 /* Shortstory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Shortstory.entitlements; path = Shortstory/Shortstory.entitlements; sourceTree = "<group>"; };
 		B33B9A70A3AE954B034B5957 /* Pods-Shortstory-ShortstoryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shortstory-ShortstoryTests.release.xcconfig"; path = "Target Support Files/Pods-Shortstory-ShortstoryTests/Pods-Shortstory-ShortstoryTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF894184A503BA0D4FD57C6C /* libPods-Shortstory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shortstory.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE4CDC753B64D2639E8A474 /* libPods-Shortstory-ShortstoryTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shortstory-ShortstoryTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +99,7 @@
 		13B07FAE1A68108700A75B9A /* Shortstory */ = {
 			isa = PBXGroup;
 			children = (
+				84A9975E2AAB2774008CB946 /* Shortstory.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -528,8 +530,10 @@
 			baseConfigurationReference = 08E4C47EC100E6B3494C83DF /* Pods-Shortstory.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -557,8 +561,10 @@
 			baseConfigurationReference = 01853DD1959CEB296F81D22A /* Pods-Shortstory.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Shortstory/Info.plist;

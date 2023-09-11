@@ -29,8 +29,12 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {code_color} from './src/utils/colors';
 import {logo} from './src/assets/images';
-import { navigate } from './src/shared/navigationRef';
-import { getDefaultLanguange } from './src/utils/devices';
+import {navigate} from './src/shared/navigationRef';
+import {getDefaultLanguange} from './src/utils/devices';
+import PropTypes from 'prop-types';
+import dispatcher from './src/navigators/dispatcher';
+import states from './src/navigators/states';
+import {connect} from 'react-redux';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -62,9 +66,8 @@ function Section({children, title}: SectionProps): JSX.Element {
   );
 }
 
-function App(props): JSX.Element {
+function App({userProfile}): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -72,11 +75,19 @@ function App(props): JSX.Element {
     getDefaultLanguange();
   }, []);
   useEffect(() => {
-    setTimeout(() => {
-      navigate('Onboard');
-    }, 500);
+    getInitialRoute();
   }, []);
-
+  function getInitialRoute() {
+    if (userProfile?.token) {
+      setTimeout(() => {
+        navigate('Onboard');
+      }, 500);
+    } else {
+      setTimeout(() => {
+        navigate('Onboard');
+      }, 500);
+    }
+  }
   return (
     <View
       style={{
@@ -88,7 +99,6 @@ function App(props): JSX.Element {
         source={logo}
         style={{resizeMode: 'contain', width: '40%', height: '100%'}}
       />
-     
     </View>
   );
 }
@@ -111,5 +121,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+App.propTypes = {
+  activeVersion: PropTypes.any,
+};
 
-export default App;
+App.defaultProps = {
+  activeVersion: null,
+};
+
+export default connect(states, dispatcher)(App);
