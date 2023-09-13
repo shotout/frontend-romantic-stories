@@ -20,13 +20,7 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {code_color} from './src/utils/colors';
 import {logo} from './src/assets/images';
 import {navigate} from './src/shared/navigationRef';
@@ -35,6 +29,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './src/navigators/dispatcher';
 import states from './src/navigators/states';
 import {connect} from 'react-redux';
+import {getStoryList} from './src/shared/request';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -65,8 +60,7 @@ function Section({children, title}: SectionProps): JSX.Element {
     </View>
   );
 }
-
-function App({userProfile}): JSX.Element {
+function App({userProfile, handleSetStory}) {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -77,10 +71,13 @@ function App({userProfile}): JSX.Element {
   useEffect(() => {
     getInitialRoute();
   }, []);
-  function getInitialRoute() {
+  async function getInitialRoute() {
     if (userProfile?.token) {
+      
+      const res = await getStoryList();
+      handleSetStory(res.data);
       setTimeout(() => {
-        navigate('Onboard');
+        navigate('Bottom');
       }, 500);
     } else {
       setTimeout(() => {

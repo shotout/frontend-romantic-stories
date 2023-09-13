@@ -64,7 +64,7 @@ export default function Register5({gender, setTheme}) {
       const avatar = await getListTheme();
       setColorsBg(avatar?.data);
     } catch (error) {
-      alert(JSON.stringify(error));
+      // alert(JSON.stringify(error));
     }
   };
   // const handleChange = index => {

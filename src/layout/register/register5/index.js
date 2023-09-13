@@ -37,7 +37,7 @@ export default function Register4({gender, setAvatar}) {
       setDataAva(avatar?.data);
       setProgress(1);
     } catch (error) {
-      alert(JSON.stringify(error));
+      // alert(JSON.stringify(error));
     }
   };
   const handleChange = index => {

@@ -20,16 +20,9 @@ export default function QuotesContent({
   source,
   isActive,
   isAnimationStart,
-  showButtonOption,
-  isYellowTrace,
-  onPressRating,
-  handleShowInterstialAdsLearn,
-  main,
-  handleShare,
-  handleLike,
-  showSharePopup,
-  quoteLikeStatus,
+  fontSize
 }) {
+  console.log('ini datanya', JSON.stringify(fontSize));
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -38,6 +31,12 @@ export default function QuotesContent({
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const activeStatus = useRef(false);
+  const content = `Matahari bersinar terik di Lampung. Sinarnya terhalang rimbunnya pepohonan, sehingga hanya menyisakan berkas tipis. Burung-burung berkicau seolah sedang menyanyikan lagu untuk alam. Bunyi riak jernih sungai beradu dengan batu kali berpadu dengan sahutan dari beberapa penghuni hutan yang lainnya. Ya, inilah tempat tinggal Bora, si anak gajah Lampung yang sekarang tengah asyik bermain bersama teman-temannya di sebuah sungai.
+  Ketika Bora menyemprotkan air ke arah Dodo—anak gajah lainnya—dengan belalainya, ia pun memekik nyaring. Sampai akhirnya, kegembiraan mereka terpecah oleh bunyi bising dari sebelah utara hutan. Bunyi bising itu bercampur dengan deru sesuatu yang sama sekali tidak Bora kenal.
+  “Hei, lihat itu!”
+  Semua serentak menghentikan kegiatan mereka dan menengok ke langit yang ditunjuk Dodo. Asap hitam tebal yang membumbung tinggi dari sana. Asap itu semakin tebal dan terus menebal. Itu merupakan fenomena aneh yang baru pertama kali mereka saksikan. Selama ini yang mereka .
+`
+console.log(content.length)
 
   useEffect(() => {
     if (isActive && isAnimationStart) {
@@ -86,22 +85,35 @@ export default function QuotesContent({
           height: sizing.getDimensionHeight(0.84),
           transform: [{translateY: translateX}],
         }}>
-          <Text
-            style={{
-              marginHorizontal: 50,
-              textAlign: 'center',
-              fontWeight: 'bold',
-            }}>
-            {item?.title}
-          </Text>
-          <View style={{borderWidth: 1, borderColor: code_color.grey}} />
-          <View style={styles.ctnIcon}>
-            <View style={styles.quotesWrapper}>
-              <View style={styles.txtQuotesWrapper}>
-                <Text style={[styles.ctnQuotes]}>{item?.detail}</Text>
-              </View>
+        <Text
+          style={{
+            marginHorizontal: 50,
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: fontSize,
+            fontFamily: themeUser?.theme?.font_family,
+          }}>
+          {themeUser?.language_id === "2" ? item?.title_id : item?.title_en}
+        </Text>
+        <View
+          style={{borderWidth: 1, borderColor: themeUser?.theme?.theme_color}}
+        />
+        <View style={styles.ctnIcon}>
+          <View style={styles.quotesWrapper}>
+            <View style={styles.txtQuotesWrapper}>
+              <Text
+                style={[
+                  styles.ctnQuotes,
+                  {fontFamily: themeUser?.theme?.font_family, fontSize: fontSize,},
+                ]}>
+                {/* {themeUser?.language_id === "2"
+                  ? item?.content_id
+                  : item?.content_en} */}
+                  {content}
+              </Text>
             </View>
           </View>
+        </View>
         <View
           style={{
             alignItems: 'center',

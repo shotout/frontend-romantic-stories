@@ -34,12 +34,19 @@ import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
-import {checkDeviceRegister, postRegister} from '../../shared/request';
+import {checkDeviceRegister, getStoryList, postRegister} from '../../shared/request';
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
 import states from './states';
 
-function RegisterScreen({handleSetProfile}) {
+function RegisterScreen({
+  handleSetProfile,
+  handleSetBackground,
+  handleSetFontSize,
+  handleSetColorTheme,
+  handleSetFontFamily,
+  handleSetStory
+}) {
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
@@ -89,6 +96,12 @@ function RegisterScreen({handleSetProfile}) {
     try {
       const res = await postRegister(values);
       handleSetProfile(res);
+      handleSetBackground(res?.data?.theme?.bg_color);
+      handleSetFontSize(res?.data?.theme?.font_size);
+      handleSetColorTheme(res?.data?.theme?.theme_color);
+      handleSetFontFamily(res?.data?.theme?.font_family);
+      const resp = await getStoryList();
+      handleSetStory(resp.data);
       navigate('Bottom');
     } catch (error) {
       checkDevice();
@@ -101,6 +114,12 @@ function RegisterScreen({handleSetProfile}) {
         device_id: device,
       });
       handleSetProfile(res);
+      handleSetBackground(res?.data?.theme?.bg_color);
+      handleSetFontSize(res?.data?.theme?.font_size);
+      handleSetColorTheme(res?.data?.theme?.theme_color);
+      handleSetFontFamily(res?.data?.theme?.font_family);
+      const resp = await getStoryList();
+      handleSetStory(resp.data);
       navigate('Bottom');
     } catch (error) {}
   };
@@ -319,7 +338,7 @@ function RegisterScreen({handleSetProfile}) {
                   borderRadius: 12,
                   width: '100%',
                   marginTop: 10,
-                  marginBottom: 10
+                  marginBottom: 10,
                 }}
                 onPress={() => {
                   stepRegister === 8

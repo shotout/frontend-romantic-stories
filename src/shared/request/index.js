@@ -36,6 +36,12 @@ export const getListLanguange = () =>
     url: '/list/languages',
     method: 'get',
   });
+export const getStoryList = (params = {}) =>
+  Wrap({
+    url: '/stories?&notif=',
+    method: 'get',
+    params,
+  });
 
 export const checkVersion = () =>
   Wrap({
@@ -67,7 +73,6 @@ export const getListWays = () =>
     url: '/list/ways',
     method: 'get',
   });
-
 
 export const getListFactRegister = (params = {}) =>
   Wrap({
@@ -127,7 +132,7 @@ export const dislikeQuotes = (data, idQuote) =>
 
 export const selectTheme = data =>
   Wrap({
-    url: `/theme`,
+    url: '/theme',
     method: 'POST',
     data,
   });
@@ -175,7 +180,7 @@ export const removeQuoteCollection = ({idCollection, idQuote}) => {
 
 export const getListPastQuotes = (params = {}) =>
   Wrap({
-    url: `/past-quote`,
+    url: '/past-quote',
     method: 'get',
     params,
   });
@@ -203,7 +208,7 @@ export const addPastQuotes = idQuote => {
 
 export const getListLiked = (params = {}) =>
   Wrap({
-    url: `/like`,
+    url: '/like',
     method: 'get',
     params,
   });
@@ -217,7 +222,7 @@ export const removeLikeQuote = idQuote => {
 
 export const getListRepeat = (params = {}) =>
   Wrap({
-    url: `/repeat`,
+    url: '/repeat',
     method: 'get',
     params,
   });
@@ -263,13 +268,13 @@ export const deleteUserCollection = (id = null) =>
 
 export const getSetting = () =>
   Wrap({
-    url: `/setting/paywall`,
+    url: '/setting/paywall',
     method: 'GET',
   });
 
 export const resetBadge = (data = {}) =>
   Wrap({
-    url: `/notif/reset-badge`,
+    url: '/notif/reset-badge',
     method: 'POST',
     data,
   });

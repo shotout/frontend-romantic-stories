@@ -47,7 +47,7 @@ export default function Register7({languange}) {
       const avatar = await getListLanguange();
       setDataLang(avatar?.data);
     } catch (error) {
-      alert(JSON.stringify(error));
+      // alert(JSON.stringify(error));
     }
   };
   return (

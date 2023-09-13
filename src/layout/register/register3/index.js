@@ -33,7 +33,7 @@ export default function Register3({setCategoryId}) {
       const category = await getListCategory();
       setDataStory(category?.data);
     } catch (error) {
-      alert(JSON.stringify(error));
+      // alert(JSON.stringify(error));
     }
   };
   return (
@@ -51,7 +51,7 @@ export default function Register3({setCategoryId}) {
               }}
               style={{
                 alignItems: 'center',
-                marginVertical: 3,
+                marginVertical: 2,
                 backgroundColor:
                   selectStory === item.name ? code_color.splash : 'white',
                 padding: 2,
@@ -66,8 +66,8 @@ export default function Register3({setCategoryId}) {
                 //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
                 // }}
                 style={{
-                  width: Dimensions.get('window').width - 30,
-                  height: 95,
+                  width: Dimensions.get('window').width - 45,
+                  height: 98,
                   // backgroundColor:
                   //   selectStory === item.name ? code_color.splash : 'white',
                 }}

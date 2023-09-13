@@ -1,15 +1,13 @@
 import {
-  handleSetProfile,
+  handleSetStory,
   handleSetBackground,
   handleSetColorTheme,
   handleSetFontFamily,
   handleSetFontSize,
-  handleSetStory
 } from '../../store/defaultState/actions';
 
 export default dispatch => ({
   handleSetStory: (...args) => dispatch(handleSetStory(...args)),
-  handleSetProfile: (...args) => dispatch(handleSetProfile(...args)),
   handleSetBackground: (...args) => dispatch(handleSetBackground(...args)),
   handleSetColorTheme: (...args) => dispatch(handleSetColorTheme(...args)),
   handleSetFontFamily: (...args) => dispatch(handleSetFontFamily(...args)),

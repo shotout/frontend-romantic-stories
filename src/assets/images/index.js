@@ -15,3 +15,4 @@ export const imgBottom = require('./imgBottom.png');
 export const cover1 = require('./cover1.png');
 export const cover2 = require('./cover2.png');
 export const libraryAdd = require('./libraryAdd.png');
+export const bgSettings = require('./bg_settings.png');

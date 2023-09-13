@@ -47,7 +47,7 @@ function Main({registerData, userProfile, props}) {
         device_id: device,
       });
     } catch (error) {
-      alert(JSON.stringify(error));
+      // alert(JSON.stringify(error));
     }
   };
   
