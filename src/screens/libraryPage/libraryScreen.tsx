@@ -77,6 +77,10 @@ const LibraryScreen = ({colorTheme}) => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: bgTheme,
+          borderColor: '#778DFF', 
+          borderTopWidth: 1,
+          borderBottomWidth: 1,
+          paddingVertical: 10,
         }}>
         <Image source={cover1} />
         <View
@@ -104,9 +108,9 @@ const LibraryScreen = ({colorTheme}) => {
 
         <DotSvg />
       </View>
-      <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
-      />
+      {/* <View
+        style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
+      /> */}
     </View>
   );
 
@@ -150,9 +154,6 @@ const LibraryScreen = ({colorTheme}) => {
         </View>
         <DescendingSvg fill={code_color.white} />
       </View>
-      <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
-      />
       <SwipeListView
         data={listLibrary}
         renderItem={item => renderContent(item)}
