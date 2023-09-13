@@ -73,6 +73,7 @@ export default function Register3({setCategoryId}) {
                 }}
               />
               <Text
+              allowFontScaling={false}
                 style={{
                   position: 'absolute',
                   alignItems: 'center',

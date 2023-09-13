@@ -64,6 +64,7 @@ export default function Register7({languange}) {
           borderBottomLeftRadius: 50,
         }}>
         <Text
+        allowFontScaling={false}
           style={{
             color: code_color.blueDark,
             fontSize: 32,
@@ -74,6 +75,7 @@ export default function Register7({languange}) {
           {'Select the language \n of your stories'}
         </Text>
         <Text
+        allowFontScaling={false}
           style={{
             color: code_color.grey,
             fontSize: 14,
@@ -130,6 +132,7 @@ export default function Register7({languange}) {
                     />
                   </View>
                   <Text
+                  allowFontScaling={false}
                     style={{
                       color:
                         lang === item.id ? code_color.splash : code_color.grey,

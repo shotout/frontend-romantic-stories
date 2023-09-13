@@ -84,7 +84,7 @@ const Library = props => {
         flexDirection: 'column',
       }}>
       
-      <View style={{position: 'absolute', top: -300, width: '100%'}}>
+      <View style={{position: 'absolute', top:  isBottomBarVisible === 'Settings' ? -70 : -300, width: '100%'}}>
         <MainScreen />
       </View>
 
@@ -130,6 +130,7 @@ const Library = props => {
                 }
               />
               <Text
+              allowFontScaling={false}
                 style={{
                   fontSize: 10,
                   color:
@@ -203,6 +204,7 @@ function MyTabs(props) {
               }}>
               <LoveSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
+              allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -235,6 +237,7 @@ function MyTabs(props) {
               }}>
               <LibrarySvg width={20} height={20} fill={props?.colorTheme}  />
               <Text
+              allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -268,6 +271,7 @@ function MyTabs(props) {
               }}>
               <FontSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
+              allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -300,6 +304,7 @@ function MyTabs(props) {
               }}>
               <SettingSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
+              allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,

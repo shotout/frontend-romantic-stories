@@ -35,6 +35,7 @@ const OnboardScreen = (props: any) => {
         justifyContent: 'center',
       }}>
       <Text
+      allowFontScaling={false}
         style={{
           color: 'white',
           fontSize: 36,

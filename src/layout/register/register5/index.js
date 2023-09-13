@@ -57,6 +57,7 @@ export default function Register4({gender, setAvatar}) {
           borderBottomLeftRadius: 50,
         }}>
         <Text
+        allowFontScaling={false}
           style={{
             color: 'black',
             fontSize: 32,

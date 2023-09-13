@@ -13,7 +13,7 @@ const ProgressBar = ({progress}) => {
   const InfoCard = ({position, message}) => {
     return (
       <View style={[styles.infoCard, position]}>
-        <Text style={{ color: code_color.white }}>{message}</Text>
+        <Text allowFontScaling={false} style={{ color: code_color.white }}>{message}</Text>
       </View>
     );
   };

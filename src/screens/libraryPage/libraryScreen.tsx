@@ -15,6 +15,8 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  TextInput,
+  Alert,
 } from 'react-native';
 import {bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -26,14 +28,20 @@ import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import SearchSvg from '../../assets/icons/search.jsx';
 import DescendingSvg from '../../assets/icons/descending.jsx';
 import BackRightSvg from '../../assets/icons/backRight.jsx';
+import LibraryAddSvg from '../../assets/icons/libraryAdd';
+import ShareSvg from '../../assets/icons/share';
+import DeleteSvg from '../../assets/icons/delete';
 import DotSvg from '../../assets/icons/dot.jsx';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import ModalLibrary from '../../components/modal-library';
+
 const LibraryScreen = ({colorTheme}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
+  const [showModal, setShowModal] = useState(false)
   const [listLibrary, setListLibrary] = useState([
     {
       name: 'Recently added collection',
@@ -63,7 +71,7 @@ const LibraryScreen = ({colorTheme}) => {
         marginHorizontal: 20,
       }}>
       <LibrarySvg fill={code_color.white} width={20} height={20} />
-      <Text style={{marginLeft: 20, flex: 1}}>{item.name}</Text>
+      <Text allowFontScaling={false} style={{marginLeft: 20, flex: 1}}>{item.name}</Text>
       <BackRightSvg />
     </View>
   );
@@ -90,8 +98,8 @@ const LibraryScreen = ({colorTheme}) => {
             justifyContent: 'center',
             alignContent: 'center',
           }}>
-          <Text style={{color: code_color.white}}>Fistful of Reefer</Text>
-          <Text style={{color: code_color.white}}>I Miss You</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>Fistful of Reefer</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>I Miss You</Text>
           <View
             style={{
               backgroundColor: '#ED5267',
@@ -100,7 +108,7 @@ const LibraryScreen = ({colorTheme}) => {
               marginVertical: 5,
               width: 150,
             }}>
-            <Text style={{color: code_color.white, fontSize: 10}}>
+            <Text allowFontScaling={false} style={{color: code_color.white, fontSize: 10}}>
               USD 0,50 For 1 Week Access
             </Text>
           </View>
@@ -118,6 +126,7 @@ const LibraryScreen = ({colorTheme}) => {
     // if (rowMap[rowKey]) {
     //     rowMap[rowKey].closeRow();
     // }
+    setShowModal(true)
   };
 
   const deleteRow = (rowMap, rowKey) => {
@@ -132,6 +141,7 @@ const LibraryScreen = ({colorTheme}) => {
   };
   return (
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
+      <ModalLibrary isVisible={showModal} onClose={() => setShowModal(false)} />
       <View
         style={{
           flexDirection: 'row',
@@ -150,7 +160,9 @@ const LibraryScreen = ({colorTheme}) => {
             alignItems: 'center',
           }}>
           <SearchSvg />
-          <Text style={{marginLeft: 10, fontSize: 14}}>Search</Text>
+          <TextInput placeholder='Search' allowFontScaling={false} style={{marginLeft: 10, fontSize: 14}}>
+
+          </TextInput>
         </View>
         <DescendingSvg fill={code_color.white} />
       </View>
@@ -161,65 +173,36 @@ const LibraryScreen = ({colorTheme}) => {
           <View style={styles.rowBack}>
             <TouchableOpacity
               style={[styles.backRightBtn, styles.backRightBtnLeft]}
-              onPress={() => closeRow(_rowMap, _data.name)}>
-              <Text style={styles.backTextWhite}>Close</Text>
+              onPress={() => setShowModal()}>
+              <LibraryAddSvg />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.backRightBtn, styles.backRightCenter]}
+              onPress={() => deleteRow(_rowMap, _data.name)}>
+             <ShareSvg />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.backRightBtn, styles.backRightBtnRight]}
-              onPress={() => deleteRow(_rowMap, _data.name)}>
-              <Text style={styles.backTextWhite}>Delete</Text>
-            </TouchableOpacity>
+              onPress={() => {
+                Alert.alert('Are you sure you want to remove this story from your library?', '', [
+                  {
+                    text: 'Yes',
+                    onPress: () => {
+                      // handleDelete(item.id);
+                    },
+                  },
+                  {text: 'Cancel', onPress: () => {}},
+                ]);
+              }}>
+              <DeleteSvg />
+            </TouchableOpacity> 
           </View>
         )}
-        rightOpenValue={-150}
+        rightOpenValue={-180}
         previewRowKey={'0'}
         previewOpenValue={-40}
         previewOpenDelay={3000}
       />
-
-      {/* <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
-      />
-
-      <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
-      />
-      <View
-        style={{
-          marginHorizontal: 10,
-          marginBottom: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        <Image source={cover2} />
-        <View
-          style={{
-            marginLeft: 20,
-            flex: 1,
-            justifyContent: 'center',
-            alignContent: 'center',
-          }}>
-          <Text style={{color: code_color.white}}>Fistful of Reefer</Text>
-          <Text style={{color: code_color.white}}>I Miss You</Text>
-          <View
-            style={{
-              backgroundColor: '#ED5267',
-              padding: 5,
-              borderRadius: 10,
-              marginVertical: 5,
-              width: 150,
-            }}>
-            <Text style={{color: code_color.white, fontSize: 10}}>
-              USD 0,50 For 1 Week Access
-            </Text>
-          </View>
-        </View>
-
-        <DotSvg />
-      </View>
-      <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
-      /> */}
     </View>
   );
 };
@@ -239,15 +222,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     top: 0,
-    width: 75,
+    width: 60,
     // height: 40
   },
   backRightBtnLeft: {
-    backgroundColor: 'blue',
-    right: 75,
+    backgroundColor: '#797BFE',
+    right: 120,
+  },
+  backRightCenter: {
+    backgroundColor: '#3493FD',
+    right: 60,
   },
   backRightBtnRight: {
-    backgroundColor: 'red',
+    backgroundColor: '#FF453B',
     right: 0,
   },
   backTextWhite: {

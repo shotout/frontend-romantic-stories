@@ -5,6 +5,7 @@ export let code_color = {
   white: '#FFFFFF',
   black: '#000000',
   blueDark: '#3F58DD',
+  greyDefault: '#CCCCCC',
   grey: '#7F7F7F',
   greenDark: '#2C8272',
   purpleDark: '#942AA7',

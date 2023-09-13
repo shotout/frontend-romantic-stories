@@ -85,6 +85,7 @@ export default function Register5({gender, setTheme}) {
           borderBottomLeftRadius: 50,
         }}>
         <Text
+        allowFontScaling={false}
           style={{
             color: code_color.blueDark,
             fontSize: 32,
@@ -104,7 +105,7 @@ export default function Register5({gender, setTheme}) {
             // padding: 10,
             backgroundColor: code_color.white,
           }}>
-          <Text style={{fontSize: 9, paddingHorizontal: 10, paddingTop: 10}}>
+          <Text allowFontScaling={false} style={{fontSize: 9, paddingHorizontal: 10, paddingTop: 10}}>
             Fistful of Reefer: A Pulpy Action Series from Schism 8
           </Text>
           <View
@@ -114,7 +115,7 @@ export default function Register5({gender, setTheme}) {
               marginVertical: 10,
             }}
           />
-          <Text
+          <Text allowFontScaling={false}
             style={{fontSize: 9, textAlign: 'justify', paddingHorizontal: 10}}>
             {' '}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
@@ -169,7 +170,7 @@ export default function Register5({gender, setTheme}) {
                     justifyContent: 'center',
                   }}>
                   <item.image width={15} height={15} fill={colorsDefault} />
-                  <Text style={{fontSize: 7}}>{item.name}</Text>
+                  <Text allowFontScaling={false} style={{fontSize: 7}}>{item.name}</Text>
                 </View>
               );
             })}

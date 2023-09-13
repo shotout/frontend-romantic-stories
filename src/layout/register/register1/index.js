@@ -17,6 +17,7 @@ export default function Register1({setGender}) {
             style={{width: 120, height: 120, resizeMode: 'contain'}}
           />
           <Text
+          allowFontScaling={false}
             style={{
               color: code_color.grey,
               fontSize: 14,
@@ -34,6 +35,7 @@ export default function Register1({setGender}) {
             style={{width: 120, height: 120, resizeMode: 'contain'}}
           />
           <Text
+          allowFontScaling={false}
             style={{
               color: code_color.grey,
               fontSize: 14,

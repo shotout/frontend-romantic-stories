@@ -218,6 +218,7 @@ function RegisterScreen({
               ) : null}
 
               <Text
+              allowFontScaling={false}
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
@@ -264,6 +265,7 @@ function RegisterScreen({
               </TouchableOpacity>
 
               <Text
+              allowFontScaling={false}
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
@@ -285,6 +287,7 @@ function RegisterScreen({
 
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
+          allowFontScaling={false}
             style={{
               color: code_color.blueDark,
               fontSize: 32,
@@ -313,6 +316,7 @@ function RegisterScreen({
                   justifyContent: 'center',
                 }}>
                 <Text
+                allowFontScaling={false}
                   style={{
                     color: code_color.grey,
                     fontSize: 18,

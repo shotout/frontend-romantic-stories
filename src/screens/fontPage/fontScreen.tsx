@@ -111,7 +111,7 @@ const FontScreen = ({
           margin: 20,
         }}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text style={{color: code_color.white}}>BACKGROUND</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>BACKGROUND</Text>
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => setBg(code_color.white)}
@@ -163,11 +163,12 @@ const FontScreen = ({
           }}
         />
         <View style={{flex: 1}}>
-          <Text style={{color: code_color.white}}>TEXT SIZE</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>TEXT SIZE</Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
-            <Text style={{flex: 1, color: code_color.white}}>A-</Text>
+            <Text allowFontScaling={false} style={{flex: 1, color: code_color.white}}>A-</Text>
             <Text
+            allowFontScaling={false}
               style={{
                 flex: 1,
                 textAlign: 'right',
@@ -201,10 +202,10 @@ const FontScreen = ({
             alignItems: 'center',
             marginHorizontal: 20,
           }}>
-          <Text style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
+          <Text allowFontScaling={false} style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
             CHANGE FONT
           </Text>
-          <Text style={{color: code_color.white}}>Georgia</Text>
+          <Text  allowFontScaling={false} style={{color: code_color.white}}>Georgia</Text>
           <Pressable
             onPress={() => setShow(!show)}
             style={{
@@ -236,6 +237,7 @@ const FontScreen = ({
                 height: 40,
               }}>
               <Text
+              allowFontScaling={false}
                 style={{
                   paddingHorizontal: 20,
                   paddingVertical: 0,
@@ -255,7 +257,7 @@ const FontScreen = ({
         style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
       />
       <View style={{flex: 1, marginHorizontal: 20}}>
-        <Text style={{color: code_color.white, textAlign: 'left'}}>
+        <Text allowFontScaling={false} style={{color: code_color.white, textAlign: 'left'}}>
           CHANGE THEME COLOR
         </Text>
         <View

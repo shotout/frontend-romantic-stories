@@ -20,7 +20,8 @@ export default function QuotesContent({
   source,
   isActive,
   isAnimationStart,
-  fontSize
+  fontSize,
+  bgTheme
 }) {
   console.log('ini datanya', JSON.stringify(fontSize));
   const [isRepeat, setRepeat] = useState(
@@ -36,7 +37,7 @@ export default function QuotesContent({
   “Hei, lihat itu!”
   Semua serentak menghentikan kegiatan mereka dan menengok ke langit yang ditunjuk Dodo. Asap hitam tebal yang membumbung tinggi dari sana. Asap itu semakin tebal dan terus menebal. Itu merupakan fenomena aneh yang baru pertama kali mereka saksikan. Selama ini yang mereka .
 `
-console.log(content.length)
+
 
   useEffect(() => {
     if (isActive && isAnimationStart) {
@@ -86,6 +87,7 @@ console.log(content.length)
           transform: [{translateY: translateX}],
         }}>
         <Text
+        allowFontScaling={false}
           style={{
             marginHorizontal: 50,
             textAlign: 'center',
@@ -96,12 +98,13 @@ console.log(content.length)
           {themeUser?.language_id === "2" ? item?.title_id : item?.title_en}
         </Text>
         <View
-          style={{borderWidth: 1, borderColor: themeUser?.theme?.theme_color}}
+          style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}}
         />
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.ctnQuotes,
                   {fontFamily: themeUser?.theme?.font_family, fontSize: fontSize,},

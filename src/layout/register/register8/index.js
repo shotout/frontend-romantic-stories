@@ -49,6 +49,7 @@ export default function Register8({activeNotif}) {
           borderBottomLeftRadius: 50,
         }}>
         <Text
+        allowFontScaling={false}
           style={{
             color: code_color.grey,
             fontSize: 14,
@@ -59,6 +60,7 @@ export default function Register8({activeNotif}) {
           {'Be the first to get new content'}
         </Text>
         <Text
+        allowFontScaling={false}
           style={{
             color: code_color.blueDark,
             fontSize: 32,

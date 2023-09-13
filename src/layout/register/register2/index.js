@@ -13,6 +13,7 @@ export default function Register2({currentStep, name, changeText}) {
         style={{ marginTop: 40, marginHorizontal: 20, }}>
         <View style={{flexDirection: 'row', flex: 0, justifyContent: 'center' }}>
           <Text
+          allowFontScaling={false}
             style={{
               color: code_color.blackDark,
               fontSize: 16,
@@ -21,6 +22,7 @@ export default function Register2({currentStep, name, changeText}) {
             }}>
             {i18n.t('register.usingyrname')}
             <Text
+            allowFontScaling={false}
               style={{
                 color: code_color.blueDark,
                 fontSize: 16,
@@ -32,6 +34,7 @@ export default function Register2({currentStep, name, changeText}) {
               {i18n.t('register.bttrexp')}{' '}
             </Text>
             <Text
+            allowFontScaling={false}
               style={{
                 color: code_color.blackDark,
                 fontSize: 16,
@@ -43,6 +46,7 @@ export default function Register2({currentStep, name, changeText}) {
           </Text>
         </View>
         <TextInput
+        allowFontScaling={false}
           style={{
             borderColor: code_color.blueDark,
             borderWidth: 1,

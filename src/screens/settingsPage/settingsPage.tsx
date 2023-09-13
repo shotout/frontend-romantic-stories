@@ -115,7 +115,7 @@ const SettingsPage = ({colorTheme}) => {
         }}>
         <View style={{marginTop: 30}}>
           <View style={{marginTop: 40}}>
-            <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
+            <Text allowFontScaling={false} style={{fontWeight: 'bold', textAlign: 'center'}}>
               John Smith • Noob • 10 XP
             </Text>
           </View>
@@ -162,7 +162,7 @@ const SettingsPage = ({colorTheme}) => {
       {menu.map((item, i) => (
         <View style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
           {item.icon}
-          <Text style={{marginLeft: 10, color: code_color.white}}>
+          <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
             {item.name}
           </Text>
         </View>
@@ -174,7 +174,7 @@ const SettingsPage = ({colorTheme}) => {
       {menuTwo.map((item, i) => (
         <View style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
           {item.icon}
-          <Text style={{marginLeft: 10, color: code_color.white}}>
+          <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
             {item.name}
           </Text>
         </View>
@@ -195,29 +195,29 @@ const SettingsPage = ({colorTheme}) => {
       <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
       <View>
         <View style={{margin: 10}}>
-          <Text style={{marginLeft: 10, color: code_color.white}}>
+          <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
             Follow us
           </Text>
           <View style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
             <InstagramSvg />
-            <Text style={{marginLeft: 10, color: code_color.white}}>
+            <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
               Instagram
             </Text>
           </View>
           <View style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
             <FacebookSvg />
-            <Text style={{marginLeft: 10, color: code_color.white}}>
+            <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
               Facebook
             </Text>
           </View>
         </View>
         <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
         <View style={{margin: 10}}>
-          <Text style={{marginLeft: 10, color: code_color.white}}>
+          <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
             Privacy Policy
           </Text>
           <View style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
-            <Text style={{marginLeft: 10, color: code_color.white}}>
+            <Text allowFontScaling={false} style={{marginLeft: 10, color: code_color.white}}>
               Terms & Conditions
             </Text>
           </View>
