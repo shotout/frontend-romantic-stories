@@ -21,7 +21,7 @@ export default function QuotesContent({
   isActive,
   isAnimationStart,
   fontSize,
-  bgTheme
+  bgTheme,
 }) {
   console.log('ini datanya', JSON.stringify(fontSize));
   const [isRepeat, setRepeat] = useState(
@@ -36,8 +36,7 @@ export default function QuotesContent({
   Ketika Bora menyemprotkan air ke arah Dodo—anak gajah lainnya—dengan belalainya, ia pun memekik nyaring. Sampai akhirnya, kegembiraan mereka terpecah oleh bunyi bising dari sebelah utara hutan. Bunyi bising itu bercampur dengan deru sesuatu yang sama sekali tidak Bora kenal.
   “Hei, lihat itu!”
   Semua serentak menghentikan kegiatan mereka dan menengok ke langit yang ditunjuk Dodo. Asap hitam tebal yang membumbung tinggi dari sana. Asap itu semakin tebal dan terus menebal. Itu merupakan fenomena aneh yang baru pertama kali mereka saksikan. Selama ini yang mereka .
-`
-
+`;
 
   useEffect(() => {
     if (isActive && isAnimationStart) {
@@ -83,23 +82,21 @@ export default function QuotesContent({
       <Animated.View
         style={{
           width: '100%',
-          height: sizing.getDimensionHeight(0.84),
+          height: sizing.getDimensionHeight(0.7),
           transform: [{translateY: translateX}],
         }}>
         <Text
-        allowFontScaling={false}
+          allowFontScaling={false}
           style={{
             marginHorizontal: 50,
             textAlign: 'center',
             fontWeight: 'bold',
-            fontSize: fontSize,
+            fontSize: Number(fontSize),
             fontFamily: themeUser?.theme?.font_family,
           }}>
-          {themeUser?.language_id === "2" ? item?.title_id : item?.title_en}
+          {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
         </Text>
-        <View
-          style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}}
-        />
+        <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
@@ -107,12 +104,15 @@ export default function QuotesContent({
                 allowFontScaling={false}
                 style={[
                   styles.ctnQuotes,
-                  {fontFamily: themeUser?.theme?.font_family, fontSize: fontSize,},
+                  {
+                    fontFamily: themeUser?.theme?.font_family,
+                    fontSize: Number(fontSize),
+                  },
                 ]}>
                 {/* {themeUser?.language_id === "2"
                   ? item?.content_id
                   : item?.content_en} */}
-                  {content}
+                {content}
               </Text>
             </View>
           </View>

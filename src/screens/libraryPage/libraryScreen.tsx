@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Pressable,
 } from 'react-native';
 import {bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -38,10 +39,14 @@ import states from './states';
 import {connect} from 'react-redux';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import ModalLibrary from '../../components/modal-library';
+import ModalNewLibrary from '../../components/modal-new-library';
+import ModalSorting from '../../components/modal-sorting';
 
 const LibraryScreen = ({colorTheme}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [showModalNew, setShowModalNew] = useState(false);
+  const [showModalSort, setShowModalSort] = useState(false);
   const [listLibrary, setListLibrary] = useState([
     {
       name: 'Recently added collection',
@@ -71,7 +76,9 @@ const LibraryScreen = ({colorTheme}) => {
         marginHorizontal: 20,
       }}>
       <LibrarySvg fill={code_color.white} width={20} height={20} />
-      <Text allowFontScaling={false} style={{marginLeft: 20, flex: 1}}>{item.name}</Text>
+      <Text allowFontScaling={false} style={{marginLeft: 20, flex: 1}}>
+        {item.name}
+      </Text>
       <BackRightSvg />
     </View>
   );
@@ -85,7 +92,7 @@ const LibraryScreen = ({colorTheme}) => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: bgTheme,
-          borderColor: '#778DFF', 
+          borderColor: '#778DFF',
           borderTopWidth: 1,
           borderBottomWidth: 1,
           paddingVertical: 10,
@@ -98,8 +105,12 @@ const LibraryScreen = ({colorTheme}) => {
             justifyContent: 'center',
             alignContent: 'center',
           }}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>Fistful of Reefer</Text>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>I Miss You</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
+            Fistful of Reefer
+          </Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
+            I Miss You
+          </Text>
           <View
             style={{
               backgroundColor: '#ED5267',
@@ -108,7 +119,9 @@ const LibraryScreen = ({colorTheme}) => {
               marginVertical: 5,
               width: 150,
             }}>
-            <Text allowFontScaling={false} style={{color: code_color.white, fontSize: 10}}>
+            <Text
+              allowFontScaling={false}
+              style={{color: code_color.white, fontSize: 10}}>
               USD 0,50 For 1 Week Access
             </Text>
           </View>
@@ -126,7 +139,7 @@ const LibraryScreen = ({colorTheme}) => {
     // if (rowMap[rowKey]) {
     //     rowMap[rowKey].closeRow();
     // }
-    setShowModal(true)
+    setShowModal(true);
   };
 
   const deleteRow = (rowMap, rowKey) => {
@@ -142,29 +155,46 @@ const LibraryScreen = ({colorTheme}) => {
   return (
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
       <ModalLibrary isVisible={showModal} onClose={() => setShowModal(false)} />
+      <ModalNewLibrary
+        isVisible={showModalNew}
+        onClose={() => setShowModalNew(false)}
+      />
+      <ModalSorting
+        isVisible={showModalSort}
+        onClose={() => setShowModalSort(false)}
+      />
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           marginHorizontal: 10,
         }}>
-        <Image source={libraryAdd} />
+        <Pressable onPress={() => setShowModalNew(true)}>
+          <Image source={libraryAdd} />
+        </Pressable>
+
         <View
           style={{
             backgroundColor: code_color.white,
             flex: 1,
-            padding: 10,
+            // padding: 10,
             borderRadius: 10,
             margin: 10,
             flexDirection: 'row',
             alignItems: 'center',
+            paddingLeft: 10,
+            height: 40,
           }}>
           <SearchSvg />
-          <TextInput placeholder='Search' allowFontScaling={false} style={{marginLeft: 10, fontSize: 14}}>
-
-          </TextInput>
+          <TextInput
+            placeholder="Search"
+            allowFontScaling={false}
+            style={{marginLeft: 10, fontSize: 14}}
+          />
         </View>
+        <Pressable onPress={() => setShowModalSort(true)}>
         <DescendingSvg fill={code_color.white} />
+        </Pressable>
       </View>
       <SwipeListView
         data={listLibrary}
@@ -179,23 +209,27 @@ const LibraryScreen = ({colorTheme}) => {
             <TouchableOpacity
               style={[styles.backRightBtn, styles.backRightCenter]}
               onPress={() => deleteRow(_rowMap, _data.name)}>
-             <ShareSvg />
+              <ShareSvg />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.backRightBtn, styles.backRightBtnRight]}
               onPress={() => {
-                Alert.alert('Are you sure you want to remove this story from your library?', '', [
-                  {
-                    text: 'Yes',
-                    onPress: () => {
-                      // handleDelete(item.id);
+                Alert.alert(
+                  'Are you sure you want to remove this story from your library?',
+                  '',
+                  [
+                    {
+                      text: 'Yes',
+                      onPress: () => {
+                        // handleDelete(item.id);
+                      },
                     },
-                  },
-                  {text: 'Cancel', onPress: () => {}},
-                ]);
+                    {text: 'Cancel', onPress: () => {}},
+                  ],
+                );
               }}>
               <DeleteSvg />
-            </TouchableOpacity> 
+            </TouchableOpacity>
           </View>
         )}
         rightOpenValue={-180}

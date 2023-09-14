@@ -82,11 +82,14 @@ function ModalLibrary({isVisible, onClose}) {
           style={{
             backgroundColor: code_color.white,
             flex: 1,
-            padding: 10,
+         
+      
             borderRadius: 10,
             margin: 10,
             flexDirection: 'row',
             alignItems: 'center',
+            paddingLeft: 10,
+            height: 40
           }}>
           <SearchSvg />
           <TextInput
@@ -128,8 +131,7 @@ function ModalLibrary({isVisible, onClose}) {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-          
-            {select ? <ChecklistSvg  fill={code_color.white} /> : null}
+            {select ? <ChecklistSvg fill={code_color.white} /> : null}
           </Pressable>
         </View>
       ))}
@@ -142,31 +144,35 @@ function ModalLibrary({isVisible, onClose}) {
       animationType="slide"
       transparent
       onDismiss={handleClose}>
-      <View
-        style={{
-          height: '60%',
-          backgroundColor: code_color.white,
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-        }}>
-        {header()}
-        {renderList()}
-        <Button
-          title={'Move the story to this collection'}
+      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+        <View
           style={{
-            backgroundColor: select ? code_color.yellow : code_color.greyDefault,
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 52,
-            margin: 20,
-            borderRadius: 12,
+            height: '60%',
+            backgroundColor: code_color.white,
             position: 'absolute',
-            bottom: 20,
-            width: '90%',
-          }}
-          onPress={() => {}}
-        />
+            bottom: 0,
+            width: '100%',
+          }}>
+          {header()}
+          {renderList()}
+          <Button
+            title={'Move the story to this collection'}
+            style={{
+              backgroundColor: select
+                ? code_color.yellow
+                : code_color.greyDefault,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 52,
+              margin: 20,
+              borderRadius: 12,
+              position: 'absolute',
+              bottom: 20,
+              width: '90%',
+            }}
+            onPress={() => {}}
+          />
+        </View>
       </View>
     </Modal>
   );
