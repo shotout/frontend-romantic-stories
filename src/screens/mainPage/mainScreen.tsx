@@ -127,6 +127,7 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
         themeUser={userProfile?.data}
         fontSize={fontSize}
         bgTheme={colorTheme}
+        bg={backgroundColor}
       />
 
       // <View style={{ flex: 1 }}>

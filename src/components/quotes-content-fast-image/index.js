@@ -22,8 +22,8 @@ export default function QuotesContent({
   isAnimationStart,
   fontSize,
   bgTheme,
+  bg
 }) {
-  console.log('ini datanya', JSON.stringify(fontSize));
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -56,6 +56,7 @@ export default function QuotesContent({
     }).start();
     // animationValue.stopAnimation();
   };
+
   const rotation = animationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
@@ -82,42 +83,10 @@ export default function QuotesContent({
       <Animated.View
         style={{
           width: '100%',
-          height: sizing.getDimensionHeight(0.7),
+          height: sizing.getDimensionHeight(0.84),
           transform: [{translateY: translateX}],
         }}>
-        <Text
-          allowFontScaling={false}
-          style={{
-            marginHorizontal: 50,
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: Number(fontSize),
-            fontFamily: themeUser?.theme?.font_family,
-          }}>
-          {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
-        </Text>
-        <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
-        <View style={styles.ctnIcon}>
-          <View style={styles.quotesWrapper}>
-            <View style={styles.txtQuotesWrapper}>
-              <Text
-                allowFontScaling={false}
-                style={[
-                  styles.ctnQuotes,
-                  {
-                    fontFamily: themeUser?.theme?.font_family,
-                    fontSize: Number(fontSize),
-                  },
-                ]}>
-                {/* {themeUser?.language_id === "2"
-                  ? item?.content_id
-                  : item?.content_en} */}
-                {content}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
+             <View
           style={{
             alignItems: 'center',
             position: 'absolute',
@@ -136,6 +105,47 @@ export default function QuotesContent({
             }}
           />
         </View>
+        <Text
+          allowFontScaling={false}
+          style={{
+            marginHorizontal: 50,
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: Number(fontSize),
+            fontFamily: themeUser?.theme?.font_family,
+            color:
+            bg === '#2C3439'
+                ? code_color.white
+                : code_color.blackDark,
+          }}>
+          {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
+        </Text>
+        <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
+        <View style={styles.ctnIcon}>
+          <View style={styles.quotesWrapper}>
+            <View style={styles.txtQuotesWrapper}>
+              <Text
+                allowFontScaling={false}
+                style={[
+                  styles.ctnQuotes,
+                  {
+                    fontFamily: themeUser?.theme?.font_family,
+                    fontSize: Number(fontSize),
+                    color:
+                    bg === '#2C3439'
+                        ? code_color.white
+                        : code_color.blackDark,
+                  },
+                ]}>
+                {/* {themeUser?.language_id === "2"
+                  ? item?.content_id
+                  : item?.content_en} */}
+                {content}
+              </Text>
+            </View>
+          </View>
+        </View>
+     
 
         {/* </ImageBackground> */}
       </Animated.View>

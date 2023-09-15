@@ -34,7 +34,12 @@ import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
-import {checkDeviceRegister, getStoryList, postRegister} from '../../shared/request';
+import {
+  checkDeviceRegister,
+  getListAvatar,
+  getStoryList,
+  postRegister,
+} from '../../shared/request';
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
 import states from './states';
@@ -45,11 +50,13 @@ function RegisterScreen({
   handleSetFontSize,
   handleSetColorTheme,
   handleSetFontFamily,
-  handleSetStory
+  handleSetStory,
 }) {
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
+  const [dataAva, setDataAva] = useState([]);
+  const [dataAva2, setDataAva2] = useState([]);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -89,6 +96,39 @@ function RegisterScreen({
       ...values,
       [setText]: text,
     });
+  };
+
+  useEffect(() => {
+    if (values.gender === '') {
+      fetchAva1('male');
+      fetchAva2('female');
+    } else {
+      fetchAva1(values.gender === 'Male' ? 'male' : 'female');
+      fetchAva2(values.gender === 'Male' ? 'female' : 'male');
+    }
+  }, [values.gender]);
+
+  const fetchAva1 = async value => {
+    try {
+      const params = {
+        gender: value,
+      };
+      const avatar = await getListAvatar(params);
+      setDataAva(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
+  const fetchAva2 = async value => {
+    try {
+      const params = {
+        gender: value,
+      };
+      const avatar = await getListAvatar(params);
+      setDataAva2(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
   };
 
   const onSubmit = async () => {
@@ -153,6 +193,7 @@ function RegisterScreen({
       return (
         <Register4
           gender={values.gender}
+          dataAvatar={dataAva}
           setAvatar={text =>
             handleChange(
               values.gender === 'female' ? 'avatar_female' : 'avatar_male',
@@ -165,6 +206,7 @@ function RegisterScreen({
       return (
         <Register5
           gender={values.gender}
+          dataAvatar={dataAva2}
           setAvatar={text =>
             handleChange(
               values.gender === 'female' ? 'avatar_male' : 'avatar_female',
@@ -218,7 +260,7 @@ function RegisterScreen({
               ) : null}
 
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
@@ -265,7 +307,7 @@ function RegisterScreen({
               </TouchableOpacity>
 
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
@@ -287,7 +329,7 @@ function RegisterScreen({
 
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
-          allowFontScaling={false}
+            allowFontScaling={false}
             style={{
               color: code_color.blueDark,
               fontSize: 32,
@@ -316,13 +358,13 @@ function RegisterScreen({
                   justifyContent: 'center',
                 }}>
                 <Text
-                allowFontScaling={false}
+                  allowFontScaling={false}
                   style={{
                     color: code_color.grey,
                     fontSize: 18,
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginTop: 10,
+                    marginVertical: 15,
                   }}>
                   {i18n.t(
                     stepRegister === 1

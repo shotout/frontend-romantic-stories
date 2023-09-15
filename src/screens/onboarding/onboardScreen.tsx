@@ -48,7 +48,7 @@ const OnboardScreen = (props: any) => {
         source={logo}
         style={{
           resizeMode: 'contain',
-          width: '60%',
+          width: '50%',
           height: '30%',
           // marginVertical: 100,
           marginBottom: 160

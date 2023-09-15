@@ -20,26 +20,26 @@ import {opacity, useSharedValue} from 'react-native-reanimated';
 import {getListAvatar, getListCategory} from '../../../shared/request';
 import {BACKEND_URL} from '../../../shared/static';
 
-export default function Register4({gender, setAvatar}) {
+export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
-  const [dataAva, setDataAva] = useState([]);
+  const [dataAva, setDataAva] = useState(dataAvatar);
 
   useEffect(() => {
-    fetchCategory();
+    setProgress(1);
   }, []);
 
-  const fetchCategory = async () => {
-    try {
-      const params = {
-        gender,
-      };
-      const avatar = await getListAvatar(params);
-      setDataAva(avatar?.data);
-      setProgress(1);
-    } catch (error) {
-      // alert(JSON.stringify(error));
-    }
-  };
+  // const fetchCategory = async () => {
+  //   try {
+  //     const params = {
+  //       gender,
+  //     };
+  //     const avatar = await getListAvatar(params);
+  //     setDataAva(avatar?.data);
+  //     setProgress(1);
+  //   } catch (error) {
+  //     // alert(JSON.stringify(error));
+  //   }
+  // };
   const handleChange = (index) => {
     setAvatar(dataAva[index].id);
   };

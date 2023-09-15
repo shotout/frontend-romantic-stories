@@ -49,12 +49,14 @@ export default function Register2({currentStep, name, changeText}) {
         allowFontScaling={false}
           style={{
             borderColor: code_color.blueDark,
+            color: code_color.blackDark,
             borderWidth: 1,
             borderRadius: 5,
             padding: 10,
             marginVertical: 30,
             width: Dimensions.get('window').width - 60
           }}
+          placeholderTextColor={code_color.blackDark}
           value={name}
           onChangeText={(text) => changeText(text)}
           placeholder="Your name"

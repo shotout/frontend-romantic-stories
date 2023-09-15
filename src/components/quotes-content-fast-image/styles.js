@@ -34,8 +34,7 @@ export default StyleSheet.create({
  
   },
   ctnQuotes: {
-    color: 'black',
-    textAlign: 'justify',
+    // textAlign: 'justify',
     // fontFamily: fonts.QuotesText,
     lineHeight: 24,
     
