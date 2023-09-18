@@ -22,7 +22,7 @@ export default function QuotesContent({
   isAnimationStart,
   fontSize,
   bgTheme,
-  bg
+  bg,
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -86,7 +86,7 @@ export default function QuotesContent({
           height: sizing.getDimensionHeight(0.84),
           transform: [{translateY: translateX}],
         }}>
-             <View
+        <View
           style={{
             alignItems: 'center',
             position: 'absolute',
@@ -113,10 +113,7 @@ export default function QuotesContent({
             fontWeight: 'bold',
             fontSize: Number(fontSize),
             fontFamily: themeUser?.theme?.font_family,
-            color:
-            bg === '#2C3439'
-                ? code_color.white
-                : code_color.blackDark,
+            color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
           }}>
           {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
         </Text>
@@ -125,14 +122,18 @@ export default function QuotesContent({
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
               <Text
+                selectable={true}
+                userSelect
+                selectionColor={code_color.splash}
                 allowFontScaling={false}
+                suppressHighlighting
                 style={[
                   styles.ctnQuotes,
                   {
                     fontFamily: themeUser?.theme?.font_family,
                     fontSize: Number(fontSize),
                     color:
-                    bg === '#2C3439'
+                      bg === '#2C3439'
                         ? code_color.white
                         : code_color.blackDark,
                   },
@@ -145,7 +146,6 @@ export default function QuotesContent({
             </View>
           </View>
         </View>
-     
 
         {/* </ImageBackground> */}
       </Animated.View>
