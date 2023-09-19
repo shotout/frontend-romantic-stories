@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator \"iPhone 14\"",
     "lint": "eslint .",
-    "start": "react-native start",
+    "start": "react-native start --reset-cache",
     "test": "jest",
     "pod": "rm -rf ios/Pods ios/Podfile.lock && cd ios && pod install",
     "link-font": "npx react-native-asset"
