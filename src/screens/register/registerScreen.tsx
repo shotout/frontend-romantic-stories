@@ -167,11 +167,14 @@ function RegisterScreen({
   const renderLayout = () => {
     if (stepRegister === 1) {
       return (
-        <Register1
-          setGender={text => {
-            handleChange('gender', text), setStepRegister(stepRegister + 1);
-          }}
-        />
+        <View style={{justifyContent: 'center', flex: 0, marginTop: 80}}>
+          <Register1
+            setGender={text => {
+              handleChange('gender', text), setStepRegister(stepRegister + 1);
+            }}
+            selectedGender={values.gender}
+          />
+        </View>
       );
     } else if (stepRegister === 2) {
       return (

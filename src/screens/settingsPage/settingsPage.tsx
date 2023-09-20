@@ -16,6 +16,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import {
   bg,
@@ -44,10 +45,20 @@ import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import ProgressBar from '../../components/ProgressBar';
-import ModalEditProfile from '../../components/modal-edit-profile';
+import ModalEditProfile from '../../layout/settings/modal-edit-profile';
+import ModalEditName from '../../layout/settings/modal-edit-name';
+import ModalEditGender from '../../layout/settings/modal-edit-gender';
+import ModalEditCharacter from '../../layout/settings/modal-edit-character';
+import ModalEditPartner from '../../layout/settings/modal-edit-partner';
+import ModalEditLanguage from '../../layout/settings/modal-edit-language';
 
 const SettingsPage = ({colorTheme}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
+  const [showModalGender, setShowModalGender] = useState<boolean>(false);
+  const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
+  const [showModalPartner, setShowModalPartner] = useState<boolean>(false);
+  const [showModalName, setShowModalName] = useState<boolean>(false);
+  const [showModalLanguage, setShowModalLanguage] = useState<boolean>(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [menu, setlistMenu] = useState([
     {
@@ -166,6 +177,26 @@ const SettingsPage = ({colorTheme}) => {
       case 'Edit Profile':
         setShowModalProfile(true);
         break;
+      case 'Edit Name':
+        setShowModalProfile(false);
+        setShowModalName(true);
+        break;
+      case 'Gender':
+        setShowModalProfile(false);
+        setShowModalGender(true);
+        break;
+      case 'Select your character':
+        setShowModalProfile(false);
+        setShowModalCharacter(true);
+        break;
+      case 'Select partner character':
+        setShowModalProfile(false);
+        setShowModalPartner(true);
+        break;
+      case 'Select language':
+        setShowModalProfile(false);
+        setShowModalLanguage(true);
+        break;
       default:
         break;
     }
@@ -209,9 +240,31 @@ const SettingsPage = ({colorTheme}) => {
         height: Dimensions.get('window').height - 130,
         backgroundColor: bgTheme,
       }}>
+      <ModalEditName
+        isVisible={showModalName}
+        onClose={() => setShowModalName(false)}
+      />
       <ModalEditProfile
         isVisible={showModalProfile}
         onClose={() => setShowModalProfile(false)}
+        handleOpenModal={tab => handleOpenModal(tab)}
+      />
+      <ModalEditGender
+        isVisible={showModalGender}
+        onClose={() => setShowModalGender(false)}
+        handleOpenModal={tab => handleOpenModal(tab)}
+      />
+      <ModalEditCharacter
+        isVisible={showModalCharacter}
+        onClose={() => setShowModalCharacter(false)}
+      />
+      <ModalEditPartner
+        isVisible={showModalPartner}
+        onClose={() => setShowModalPartner(false)}
+      />
+      <ModalEditLanguage
+        isVisible={showModalLanguage}
+        onClose={() => setShowModalLanguage(false)}
       />
       {header()}
       {listMenu()}

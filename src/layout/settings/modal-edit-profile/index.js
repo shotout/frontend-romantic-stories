@@ -13,21 +13,25 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
-import BackLeft from './../../assets/icons/bottom/backLeft';
-import {code_color} from '../../utils/colors';
-import LibrarySvg from '../../assets/icons/bottom/library.jsx';
-import BackRightSvg from '../../assets/icons/backRight';
-import IdCardSvg from '../../assets/icons/idCard';
-import GenderSvg from '../../assets/icons/gender';
-import ProfileSvg from '../../assets/icons/profile';
-import PartnerSvg from '../../assets/icons/partner';
-import FlagSvg from '../../assets/icons/flag';
-import {ava1, avam1} from '../../assets/images';
+import BackLeft from '../../../assets/icons/bottom/backLeft';
+import {code_color} from '../../../utils/colors';
+import IdCardSvg from '../../../assets/icons/idCard';
+import GenderSvg from '../../../assets/icons/gender';
+import ProfileSvg from '../../../assets/icons/profile';
+import PartnerSvg from '../../../assets/icons/partner';
+import FlagSvg from '../../../assets/icons/flag';
+import {ava1, avam1} from '../../../assets/images';
 
-function ModalEditProfile({isVisible, onClose}) {
+function ModalEditProfile({isVisible, onClose, handleOpenModal}) {
   const handleClose = () => {
     if (typeof onClose === 'function') {
       onClose();
+    }
+  };
+
+  const handleClick = tab => {
+    if (typeof handleOpenModal === 'function') {
+      handleOpenModal(tab);
     }
   };
 
@@ -112,6 +116,7 @@ function ModalEditProfile({isVisible, onClose}) {
       {menuEditList.map((edit, i) => (
         <View key={i}>
           <TouchableOpacity
+            onPress={() => handleClick(edit.title)}
             style={{flexDirection: 'row', alignItems: 'center', height: 70}}>
             {edit.icon}
             <Text
@@ -194,6 +199,7 @@ function ModalEditProfile({isVisible, onClose}) {
 ModalEditProfile.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  handleOpenModal: PropTypes.func.isRequired,
 };
 
 ModalEditProfile.defaultProps = {};

@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
-import BackLeft from './../../assets/icons/bottom/backLeft';
+import BackLeft from '../../assets/icons/bottom/backLeft';
 import {code_color} from '../../utils/colors';
 import {libraryAdd} from '../../assets/images';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
