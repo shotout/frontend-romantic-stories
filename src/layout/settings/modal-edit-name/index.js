@@ -1,15 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  Modal,
-  TouchableOpacity,
-  View,
-  Text,
-  Pressable,
-  Image,
-  TextInput,
-  Dimensions,
-} from 'react-native';
+import {Modal, View, Text, Pressable, TextInput} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -18,8 +9,30 @@ import states from './states';
 import BackLeft from '../../../assets/icons/bottom/backLeft';
 import {code_color} from '../../../utils/colors';
 import Button from '../../../components/buttons/Button';
+import {updateProfile} from '../../../shared/request';
+import {reloadUserProfile} from '../../../utils/user';
 
-function ModalEditName({isVisible, onClose}) {
+function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
+  const [name, setName] = useState(userProfile.name);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        name: name,
+        _method: 'PATCH',
+      };
+      await updateProfile(payload);
+      reloadUserProfile();
+      setLoading(false);
+      handleClose();
+    } catch (err) {
+      setLoading(false);
+      console.log('Error select:', err);
+    }
+  };
+
   const handleClose = () => {
     if (typeof onClose === 'function') {
       onClose();
@@ -29,9 +42,7 @@ function ModalEditName({isVisible, onClose}) {
   const header = () => (
     <View
       style={{
-        backgroundColor: code_color.blueDark,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
+        backgroundColor: colorTheme,
       }}>
       <View style={{height: 30}} />
       <View
@@ -52,7 +63,7 @@ function ModalEditName({isVisible, onClose}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={code_color.blueDark} />
+            <BackLeft width={20} height={20} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -115,8 +126,8 @@ function ModalEditName({isVisible, onClose}) {
           marginBottom: 40,
         }}
         placeholderTextColor={code_color.blackDark}
-        // value={name}
-        // onChangeText={text => changeText(text)}
+        value={name}
+        onChangeText={text => setName(text)}
         placeholder="Your name"
       />
       <Button
@@ -129,8 +140,10 @@ function ModalEditName({isVisible, onClose}) {
           width: '100%',
           marginTop: 10,
           marginBottom: 10,
+          opacity: loading ? 0.5 : 1,
         }}
-        title={'Save'}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
       />
     </View>
   );

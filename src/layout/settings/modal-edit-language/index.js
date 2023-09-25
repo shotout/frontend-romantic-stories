@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   TouchableOpacity,
@@ -7,7 +7,6 @@ import {
   Text,
   Pressable,
   Image,
-  TextInput,
   Dimensions,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -19,9 +18,26 @@ import BackLeft from '../../../assets/icons/bottom/backLeft';
 import {code_color} from '../../../utils/colors';
 import Button from '../../../components/buttons/Button';
 import {BACKEND_URL} from '../../../shared/static';
+import {getListLanguange, updateProfile} from '../../../shared/request';
+import {reloadUserProfile} from '../../../utils/user';
 
-function ModalEditLanguage({isVisible, onClose}) {
-  const [lang, setLang] = useState(null);
+function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
+  const [lang, setLang] = useState(userProfile.language_id);
+  const [loading, setLoading] = useState(false);
+  const [dataLang, setDataLang] = useState();
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  const fetchCategory = async () => {
+    try {
+      const avatar = await getListLanguange();
+      setDataLang(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
 
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -29,53 +45,27 @@ function ModalEditLanguage({isVisible, onClose}) {
     }
   };
 
-  const handleChange = value => {
-    return;
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        language_id: lang,
+        _method: 'PATCH',
+      };
+      await updateProfile(payload);
+      reloadUserProfile();
+      setLoading(false);
+      handleClose();
+    } catch (err) {
+      setLoading(false);
+      console.log('Error select:', err);
+    }
   };
-
-  const dataLang = [
-    {
-      id: 1,
-      code: 'EN',
-      name: 'English',
-      status: 2,
-      created_at: '2023-09-13T07:48:32.000000Z',
-      updated_at: null,
-      image: {
-        id: 21,
-        owner_id: 1,
-        type: 'lang',
-        name: 'en.png',
-        url: '/assets/images/langs/en.png',
-        created_at: '2023-09-13T07:48:32.000000Z',
-        updated_at: null,
-      },
-    },
-    {
-      id: 2,
-      code: 'ID',
-      name: 'Indonesia',
-      status: 2,
-      created_at: '2023-09-13T07:48:32.000000Z',
-      updated_at: null,
-      image: {
-        id: 22,
-        owner_id: 2,
-        type: 'lang',
-        name: 'id.png',
-        url: '/assets/images/langs/id.png',
-        created_at: '2023-09-13T07:48:32.000000Z',
-        updated_at: null,
-      },
-    },
-  ];
 
   const header = () => (
     <View
       style={{
-        backgroundColor: code_color.blueDark,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
+        backgroundColor: colorTheme,
       }}>
       <View style={{height: 30}} />
       <View
@@ -96,7 +86,7 @@ function ModalEditLanguage({isVisible, onClose}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={code_color.blueDark} />
+            <BackLeft width={20} height={20} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -140,69 +130,69 @@ function ModalEditLanguage({isVisible, onClose}) {
           alignItems: 'center',
           marginTop: 50,
         }}>
-        {dataLang.map((item, idx) => {
-          return (
-            <View style={{width: '90%'}}>
-              <TouchableOpacity
-                style={{justifyContent: 'center', alignItems: 'center'}}
-                onPress={() => {
-                  setLang(item.id);
-                  // languange(item.id);
-                }}>
-                <View
-                  style={
-                    lang === item.id
-                      ? {
-                          backgroundColor: code_color.splash,
-                          borderRadius: 35,
-                          width: 65,
-                          padding: 10,
-                          height: 65,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }
-                      : {
-                          backgroundColor: code_color.white,
-                          borderRadius: 35,
-                          width: 65,
-                          padding: 10,
-                          height: 65,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderColor: code_color.grey,
-                          borderWidth: 0.3,
-                        }
-                  }>
-                  <Image
-                    resizeMode="contain"
-                    style={{width: 60, height: 60}}
-                    source={{uri: `${BACKEND_URL}${item.image.url}`}}
-                  />
-                </View>
-                <Text
-                  allowFontScaling={false}
-                  style={{
-                    color:
-                      lang === item.id ? code_color.splash : code_color.grey,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    fontFamily: 'Roboto',
-                    textAlign: 'center',
-                    marginTop: 10,
+        {dataLang &&
+          dataLang.map((item, idx) => {
+            return (
+              <View style={{width: '90%'}}>
+                <TouchableOpacity
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={() => {
+                    setLang(item.id);
                   }}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  borderColor: code_color.grey,
-                  borderWidth: idx === 0 ? 1 : 0,
-                  marginVertical: 40,
-                }}
-              />
-            </View>
-          );
-        })}
+                  <View
+                    style={
+                      lang === item.id
+                        ? {
+                            backgroundColor: code_color.splash,
+                            borderRadius: 35,
+                            width: 65,
+                            padding: 10,
+                            height: 65,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }
+                        : {
+                            backgroundColor: code_color.white,
+                            borderRadius: 35,
+                            width: 65,
+                            padding: 10,
+                            height: 65,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderColor: code_color.grey,
+                            borderWidth: 0.3,
+                          }
+                    }>
+                    <Image
+                      resizeMode="contain"
+                      style={{width: 60, height: 60}}
+                      source={{uri: `${BACKEND_URL}${item.image.url}`}}
+                    />
+                  </View>
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color:
+                        lang === item.id ? code_color.splash : code_color.grey,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      fontFamily: 'Roboto',
+                      textAlign: 'center',
+                      marginTop: 10,
+                    }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    borderColor: code_color.grey,
+                    borderWidth: idx === 0 ? 1 : 0,
+                    marginVertical: 40,
+                  }}
+                />
+              </View>
+            );
+          })}
       </View>
 
       <Button
@@ -216,8 +206,8 @@ function ModalEditLanguage({isVisible, onClose}) {
           marginTop: 50,
           marginBottom: 10,
         }}
-        onPress={() => console.log('')}
-        title={'Save'}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
       />
     </View>
   );

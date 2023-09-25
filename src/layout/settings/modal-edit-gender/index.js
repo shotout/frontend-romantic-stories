@@ -1,13 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  Modal,
-  TouchableOpacity,
-  View,
-  Text,
-  Pressable,
-  Image,
-} from 'react-native';
+import {Modal, TouchableOpacity, View, Text, Pressable} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -17,9 +10,29 @@ import BackLeft from '../../../assets/icons/bottom/backLeft';
 import {code_color} from '../../../utils/colors';
 import Button from '../../../components/buttons/Button';
 import Register1 from '../../../layout/register/register1';
+import {updateProfile} from '../../../shared/request';
+import {reloadUserProfile} from '../../../utils/user';
 
-function ModalEditGender({isVisible, onClose}) {
-  const [gender, setGender] = useState('Male');
+function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
+  const [gender, setGender] = useState(userProfile.gender);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        gender: gender,
+        _method: 'PATCH',
+      };
+      await updateProfile(payload);
+      reloadUserProfile();
+      setLoading(false);
+      handleClose();
+    } catch (err) {
+      setLoading(false);
+      console.log('Error select:', err);
+    }
+  };
 
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -30,9 +43,7 @@ function ModalEditGender({isVisible, onClose}) {
   const header = () => (
     <View
       style={{
-        backgroundColor: code_color.blueDark,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
+        backgroundColor: colorTheme,
       }}>
       <View style={{height: 30}} />
       <View
@@ -53,7 +64,7 @@ function ModalEditGender({isVisible, onClose}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={code_color.blueDark} />
+            <BackLeft width={20} height={20} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -95,7 +106,7 @@ function ModalEditGender({isVisible, onClose}) {
           selectedGender={gender}
         />
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onClose}>
         <Text
           style={{
             color: code_color.grey,
@@ -118,8 +129,8 @@ function ModalEditGender({isVisible, onClose}) {
           marginTop: 10,
           marginBottom: 10,
         }}
-        onPress={() => alert('save')}
-        title={'Save'}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
       />
     </View>
   );
@@ -149,7 +160,6 @@ function ModalEditGender({isVisible, onClose}) {
 ModalEditGender.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  handleOpenModal: PropTypes.func.isRequired,
 };
 
 ModalEditGender.defaultProps = {};

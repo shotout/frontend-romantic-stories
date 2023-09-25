@@ -7,30 +7,17 @@
  * @flow strict-local
  */
 
-import React, {useEffect, Fragment, useState, useRef} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
   ImageBackground,
   Text,
-  Image,
   TouchableOpacity,
   Dimensions,
-  StatusBar,
 } from 'react-native';
-import {
-  bg,
-  bgSettings,
-  cover1,
-  cover2,
-  libraryAdd,
-  logo,
-} from '../../assets/images';
+import {bgSettings} from '../../assets/images';
 import {code_color} from '../../utils/colors';
-import i18n from '../../i18n/index';
-import {getDefaultLanguange} from '../../utils/devices';
-import Button from '../../components/buttons/Button';
-import {navigate} from '../../shared/navigationRef';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import LockSvg from '../../assets/icons/lock.jsx';
 import AppiconSvg from '../../assets/icons/appIcon';
@@ -252,7 +239,6 @@ const SettingsPage = ({colorTheme}) => {
       <ModalEditGender
         isVisible={showModalGender}
         onClose={() => setShowModalGender(false)}
-        handleOpenModal={tab => handleOpenModal(tab)}
       />
       <ModalEditCharacter
         isVisible={showModalCharacter}

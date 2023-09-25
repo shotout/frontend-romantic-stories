@@ -1,15 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {
-  Modal,
-  TouchableOpacity,
-  View,
-  Text,
-  Pressable,
-  Image,
-  TextInput,
-  Dimensions,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Modal, View, Text, Pressable, Image, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -20,9 +12,56 @@ import {code_color} from '../../../utils/colors';
 import Button from '../../../components/buttons/Button';
 import {BACKEND_URL} from '../../../shared/static';
 import Carousel from 'react-native-reanimated-carousel';
+import {getListAvatar, updateProfile} from '../../../shared/request';
+import {reloadUserProfile} from '../../../utils/user';
 
-function ModalEditCharacter({isVisible, onClose}) {
+function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
   const [progressValue, setProgress] = useState(0);
+  const [dataAva, setDataAva] = useState(null);
+  const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setProgress(
+      userProfile.gender === 'Male'
+        ? userProfile.avatar_male - 1
+        : userProfile.avatar_female - 1,
+    );
+  }, [userProfile.gender]);
+
+  useEffect(() => {
+    fetchAva();
+  }, [userProfile.gender]);
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        [userProfile.gender === 'Male' ? 'avatar_male' : 'avatar_female']:
+          avatar,
+        _method: 'PATCH',
+      };
+      await updateProfile(payload);
+      reloadUserProfile();
+      setLoading(false);
+      handleClose();
+    } catch (err) {
+      setLoading(false);
+      console.log('Error select:', err);
+    }
+  };
+
+  const fetchAva = async value => {
+    try {
+      const params = {
+        gender: userProfile.gender === 'Male' ? 'male' : 'female',
+      };
+      const avatar = await getListAvatar(params);
+      setDataAva(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
 
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -31,15 +70,13 @@ function ModalEditCharacter({isVisible, onClose}) {
   };
 
   const handleChange = value => {
-    return;
+    setAvatar(dataAva[value].id);
   };
 
   const header = () => (
     <View
       style={{
-        backgroundColor: code_color.blueDark,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
+        backgroundColor: colorTheme,
       }}>
       <View style={{height: 30}} />
       <View
@@ -60,7 +97,7 @@ function ModalEditCharacter({isVisible, onClose}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={code_color.blueDark} />
+            <BackLeft width={20} height={20} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -76,60 +113,6 @@ function ModalEditCharacter({isVisible, onClose}) {
       </View>
     </View>
   );
-
-  const dataAva = [
-    {
-      id: 1,
-      name: 'avatar1',
-      gender: 'male',
-      status: 2,
-      created_at: '2023-09-13T07:48:32.000000Z',
-      updated_at: null,
-      image: {
-        id: 15,
-        owner_id: 1,
-        type: 'avatar',
-        name: '1.png',
-        url: '/assets/images/avatars/1.png',
-        created_at: '2023-09-13T07:48:32.000000Z',
-        updated_at: null,
-      },
-    },
-    {
-      id: 2,
-      name: 'avatar2',
-      gender: 'male',
-      status: 2,
-      created_at: '2023-09-13T07:48:32.000000Z',
-      updated_at: null,
-      image: {
-        id: 16,
-        owner_id: 2,
-        type: 'avatar',
-        name: '2.png',
-        url: '/assets/images/avatars/2.png',
-        created_at: '2023-09-13T07:48:32.000000Z',
-        updated_at: null,
-      },
-    },
-    {
-      id: 3,
-      name: 'avatar3',
-      gender: 'male',
-      status: 2,
-      created_at: '2023-09-13T07:48:32.000000Z',
-      updated_at: null,
-      image: {
-        id: 17,
-        owner_id: 3,
-        type: 'avatar',
-        name: '3.png',
-        url: '/assets/images/avatars/3.png',
-        created_at: '2023-09-13T07:48:32.000000Z',
-        updated_at: null,
-      },
-    },
-  ];
 
   const form = () => (
     <View
@@ -161,49 +144,46 @@ function ModalEditCharacter({isVisible, onClose}) {
         }}>
         What should your character look like?
       </Text>
-      <View style={{flex: 0, alignItems: 'center'}}>
-        <Carousel
-          loop={false}
-          width={Dimensions.get('window').width / 1.5}
-          height={Dimensions.get('window').height / 2}
-          defaultIndex={1}
-          data={dataAva}
-          // scrollAnimationDuration={1000}
-          // onScrollBegin={(_, absoluteProgress) =>
-          //   (progressValue.value = absoluteProgress)
-
-          // }
-          onSnapToItem={index => {
-            setProgress(index);
-            handleChange(index);
-          }}
-          modeConfig={{
-            parallaxScrollingScale: 0.8,
-            parallaxScrollingOffset: 160,
-          }}
-          mode="parallax"
-          renderItem={({item, index}) => (
-            <Pressable
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                opacity: 1,
-              }}>
-              <Image
-                source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
-                resizeMode="contain"
-                style={[
-                  {
-                    height: '100%',
-                    width: '10000%',
-                    opacity: progressValue !== index ? 0.5 : 1,
-                  },
-                ]}
-              />
-            </Pressable>
-          )}
-        />
-      </View>
+      {dataAva && (
+        <View style={{flex: 0, alignItems: 'center'}}>
+          <Carousel
+            loop={false}
+            width={Dimensions.get('window').width / 1.5}
+            height={Dimensions.get('window').height / 2}
+            defaultIndex={1}
+            data={dataAva}
+            onSnapToItem={index => {
+              setProgress(index);
+              handleChange(index);
+            }}
+            modeConfig={{
+              parallaxScrollingScale: 0.8,
+              parallaxScrollingOffset: 160,
+            }}
+            mode="parallax"
+            renderItem={({item, index}) => (
+              <Pressable
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  opacity: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
+                  resizeMode="contain"
+                  style={[
+                    {
+                      height: '100%',
+                      width: '10000%',
+                      opacity: progressValue !== index ? 0.5 : 1,
+                    },
+                  ]}
+                />
+              </Pressable>
+            )}
+          />
+        </View>
+      )}
       <Button
         style={{
           backgroundColor: code_color.yellow,
@@ -214,9 +194,10 @@ function ModalEditCharacter({isVisible, onClose}) {
           width: '100%',
           marginTop: 50,
           marginBottom: 10,
+          display: dataAva ? undefined : 'none',
         }}
-        onPress={() => console.log('')}
-        title={'Save'}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
       />
     </View>
   );

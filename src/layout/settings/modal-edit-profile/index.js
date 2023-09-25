@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Modal,
   TouchableOpacity,
@@ -20,9 +20,17 @@ import GenderSvg from '../../../assets/icons/gender';
 import ProfileSvg from '../../../assets/icons/profile';
 import PartnerSvg from '../../../assets/icons/partner';
 import FlagSvg from '../../../assets/icons/flag';
-import {ava1, avam1} from '../../../assets/images';
+import {BACKEND_URL} from '../../../shared/static';
 
-function ModalEditProfile({isVisible, onClose, handleOpenModal}) {
+function ModalEditProfile({
+  isVisible,
+  onClose,
+  handleOpenModal,
+  userProfile,
+  getAvatarFemale,
+  getAvatarMale,
+  colorTheme,
+}) {
   const handleClose = () => {
     if (typeof onClose === 'function') {
       onClose();
@@ -38,7 +46,7 @@ function ModalEditProfile({isVisible, onClose, handleOpenModal}) {
   const header = () => (
     <View
       style={{
-        backgroundColor: code_color.blueDark,
+        backgroundColor: colorTheme,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
       }}>
@@ -60,7 +68,7 @@ function ModalEditProfile({isVisible, onClose, handleOpenModal}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={code_color.blueDark} />
+            <BackLeft width={20} height={20} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -81,27 +89,27 @@ function ModalEditProfile({isVisible, onClose, handleOpenModal}) {
     {
       title: 'Edit Name',
       icon: <IdCardSvg width={24} height={24} />,
-      value: 'John Smith',
+      value: userProfile.name,
     },
     {
       title: 'Gender',
       icon: <GenderSvg width={24} height={24} fill={code_color.black} />,
-      value: 'Male',
+      value: userProfile.gender,
     },
     {
       title: 'Select your character',
       icon: <ProfileSvg width={22} height={22} />,
-      value: ava1,
+      value: userProfile.gender === 'Male' ? getAvatarMale : getAvatarFemale,
     },
     {
       title: 'Select partner character',
       icon: <PartnerSvg width={20} height={20} />,
-      value: avam1,
+      value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
     },
     {
       title: 'Select language',
       icon: <FlagSvg width={24} height={24} />,
-      value: 'English',
+      value: userProfile?.language?.name,
     },
   ];
 
@@ -140,7 +148,7 @@ function ModalEditProfile({isVisible, onClose, handleOpenModal}) {
                   overflow: 'hidden',
                 }}>
                 <Image
-                  source={edit.value}
+                  source={{uri: `${BACKEND_URL}${edit.value}`}}
                   style={{
                     width: 40,
                     height: 150,
