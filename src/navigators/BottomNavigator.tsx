@@ -7,6 +7,7 @@ import {
   Platform,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -22,7 +23,11 @@ import LibraryScreen from '../screens/libraryPage/libraryScreen';
 import MainScreen from '../screens/mainPage/mainScreen';
 import Main from './Main';
 import FontScreen from '../screens/fontPage/fontScreen';
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import dispatcher from './dispatcher';
+import states from './states';
+import SettingsPage from '../screens/settingsPage/settingsPage';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,6 +65,7 @@ const Library = props => {
   const [screen, setScreen] = useState('SAVE');
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
+  
   const handleSomeAction = (value: string) => {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value);
@@ -77,7 +83,8 @@ const Library = props => {
         bottom: 0,
         flexDirection: 'column',
       }}>
-      <View style={{position: 'absolute', bottom: 150}}>
+      
+      <View style={{position: 'absolute', top:  isBottomBarVisible === 'Settings' ? -70 : -300, width: '100%'}}>
         <MainScreen />
       </View>
 
@@ -110,7 +117,7 @@ const Library = props => {
                 marginHorizontal: 10,
                 backgroundColor:
                   item.value === isBottomBarVisible
-                    ? code_color.blueDark
+                    ? props?.userProfile?.colorTheme
                     : null,
               }}>
               <item.image
@@ -119,16 +126,17 @@ const Library = props => {
                 fill={
                   item.value === isBottomBarVisible
                     ? code_color.white
-                    : code_color.splash
+                    : props?.userProfile?.colorTheme
                 }
               />
               <Text
+              allowFontScaling={false}
                 style={{
                   fontSize: 10,
                   color:
                     item.value === isBottomBarVisible
                       ? code_color.white
-                      : code_color.splash,
+                      : props?.userProfile?.colorTheme
                 }}>
                 {item.name}
               </Text>
@@ -141,13 +149,13 @@ const Library = props => {
       ) : isBottomBarVisible === 'Font' ? (
         <FontScreen />
       ) : (
-        <LibraryScreen />
+        <SettingsPage />
       )}
     </View>
   );
 };
 
-function MyTabs(props: any) {
+function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
   let height = 0;
@@ -162,7 +170,7 @@ function MyTabs(props: any) {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
-
+  //console.log(JSON.stringify(props?.userProfile?.data?.theme))
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -171,7 +179,7 @@ function MyTabs(props: any) {
       //initialRouteName={screenName.HOMEPAGE}
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: '#3AC5D1',
+        tabBarActiveTintColor: props?.colorTheme,
         tabBarInactiveTintColor: '#C4C4C4',
         headerShown: false,
         headerStyle: {
@@ -194,10 +202,11 @@ function MyTabs(props: any) {
                 justifyContent: 'center',
                 // display: !onhideBottom ? 'flex' : 'none',
               }}>
-              <LoveSvg width={20} height={20} />
+              <LoveSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
+              allowFontScaling={false}
                 style={{
-                  color: focused ? code_color.splash : '#C4C4C4',
+                  color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -216,7 +225,8 @@ function MyTabs(props: any) {
       />
       <Tab.Screen
         name="Library"
-        component={Library}
+        children={() => <Library userProfile={props} />}
+        // component={Library}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => (
             <View
@@ -225,10 +235,11 @@ function MyTabs(props: any) {
                 justifyContent: 'center',
                 display: 'flex',
               }}>
-              <LibrarySvg width={20} height={20} />
+              <LibrarySvg width={20} height={20} fill={props?.colorTheme}  />
               <Text
+              allowFontScaling={false}
                 style={{
-                  color: focused ? code_color.splash : '#C4C4C4',
+                  color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -248,7 +259,7 @@ function MyTabs(props: any) {
 
       <Tab.Screen
         name="Font"
-        component={Library}
+        children={() => <Library userProfile={props} />}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -258,10 +269,11 @@ function MyTabs(props: any) {
                 justifyContent: 'center',
                 display: 'flex',
               }}>
-              <FontSvg width={20} height={20} />
+              <FontSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
+              allowFontScaling={false}
                 style={{
-                  color: focused ? code_color.splash : '#C4C4C4',
+                  color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -280,7 +292,7 @@ function MyTabs(props: any) {
       />
       <Tab.Screen
         name="Settings"
-        component={Library}
+        children={() => <Library userProfile={props} />}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -290,10 +302,11 @@ function MyTabs(props: any) {
                 justifyContent: 'center',
                 display: 'flex',
               }}>
-              <SettingSvg width={20} height={20} />
+              <SettingSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
+              allowFontScaling={false}
                 style={{
-                  color: focused ? code_color.splash : '#C4C4C4',
+                  color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -330,36 +343,18 @@ const styles = StyleSheet.create({
 });
 
 class MyTabsComponent extends Component {
-  shouldComponentUpdate(nextProps: {onhideBottom: any}) {
-    let shouldComponentUpdate = false;
 
-    const {onhideBottom, token, profile, profileActive} = this.props;
-    if (onhideBottom !== nextProps?.onhideBottom) {
-      shouldComponentUpdate = true;
-    }
-    // if (token !== nextProps?.token) {
-    //   shouldComponentUpdate = true;
-    // }
-    // if (
-    //   profile?.data?.profile_picture !==
-    //   nextProps?.profile?.data?.profile_picture
-    // ) {
-    //   shouldComponentUpdate = true;
-    // }
-    // if (
-    //   JSON.stringify(profileActive) !== JSON.stringify(nextProps?.profileActive)
-    // ) {
-    //   shouldComponentUpdate = true;
-    // }
-    return shouldComponentUpdate;
-  }
 
+ 
   render() {
-    const {onhideBottom} = this.props;
+    const { userProfile, colorTheme } = this.props;
     const tapProps = {
-      onhideBottom,
+      userProfile,
+      colorTheme
     };
     return <MyTabs {...tapProps} />;
   }
 }
-export default MyTabsComponent;
+
+
+export default connect(states, dispatcher)(MyTabsComponent);

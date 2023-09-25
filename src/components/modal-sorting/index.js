@@ -1,0 +1,158 @@
+import React, {useEffect, useState} from 'react';
+import {
+  Modal,
+  FlatList,
+  TouchableWithoutFeedback,
+  View,
+  Text,
+  Pressable,
+  Image,
+  TextInput,
+} from 'react-native';
+import {connect} from 'react-redux';
+
+import PropTypes from 'prop-types';
+import dispatcher from './dispatcher';
+import states from './states';
+import BackLeft from '../../assets/icons/bottom/backLeft';
+import {code_color} from '../../utils/colors';
+import {libraryAdd} from '../../assets/images';
+import LibrarySvg from '../../assets/icons/libraryAdd';
+import SearchSvg from '../../assets/icons/search.jsx';
+import DescendingSvg from '../../assets/icons/descending.jsx';
+import Button from '../buttons/Button';
+import CloseSvg from '../../assets/icons/close';
+import ChecklistSvg from '../../assets/icons/checklist';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+function ModalSorting({isVisible, onClose}) {
+  const [select, setSelect] = useState('');
+  const [listSort, setSort] = useState([
+    {
+      name: 'A to Z',
+      icon: <LibrarySvg />,
+    },
+    {
+      name: 'Z to A',
+      icon: <LibrarySvg />,
+    },
+    {
+      name: 'Newest First',
+      icon: <LibrarySvg />,
+    },
+    {
+      name: 'Oldest First',
+      icon: <LibrarySvg />,
+    },
+  ]);
+  const handleClose = () => {
+    onClose();
+  };
+  const renderList = () => (
+    <View style={{alignItems: 'center', flex: 1}}>
+      {listSort.map(item => (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: 20,
+            flex: 1,
+            paddingBottom: 10,
+            marginVertical: 10
+          }}>
+          <LibrarySvg fill={code_color.blackDark} width={20} height={20} />
+         
+            <Text
+              allowFontScaling={false}
+              style={{flex: 1, marginLeft: 10,color: code_color.blackDark}}>
+              {item.name}
+            </Text>
+         
+
+          <Pressable
+            onPress={() => setSelect(item.name)}
+            style={{
+              borderWidth: 1,
+              borderColor: code_color.blackDark,
+              backgroundColor: select === item.name ? code_color.splash : null,
+              width: 20,
+              height: 20,
+              borderRadius: 20,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            {select ? <ChecklistSvg fill={code_color.white} /> : null}
+          </Pressable>
+        </View>
+      ))}
+    </View>
+  );
+  return (
+    <Modal
+      visible={isVisible}
+      animationType="fade"
+      transparent
+      onDismiss={handleClose}>
+      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="handled"
+          style={{flex: 1}}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              alignContent: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                width: '70%',
+                backgroundColor: code_color.white,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+                elevation: 3,
+                borderRadius: 10,
+                padding: 10,
+              }}>
+              <Pressable
+                onPress={() => handleClose()}
+                style={{alignItems: 'flex-end'}}>
+                <CloseSvg width={15} height={15} />
+              </Pressable>
+              <View style={{alignItems: 'center', flex: 1}}>
+                <Text
+                  style={{
+                    color: code_color.blackDark,
+                    marginVertical: 10,
+                    fontWeight: 'bold',
+                    fontSize: 16,
+
+                  }}>
+                  Sort by
+                </Text>
+                {renderList()}
+              </View>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </View>
+    </Modal>
+  );
+}
+
+ModalSorting.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+ModalSorting.defaultProps = {};
+
+export default connect(states, dispatcher)(ModalSorting);

@@ -10,6 +10,7 @@ import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Image,
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -20,51 +21,20 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {code_color} from './src/utils/colors';
-import {logo} from './src/assets/images';
-import { navigate } from './src/shared/navigationRef';
-import { getDefaultLanguange } from './src/utils/devices';
+import {bg_splash, logo} from './src/assets/images';
+import {navigate} from './src/shared/navigationRef';
+import {getDefaultLanguange} from './src/utils/devices';
+import PropTypes from 'prop-types';
+import dispatcher from './src/navigators/dispatcher';
+import states from './src/navigators/states';
+import {connect} from 'react-redux';
+import {getStoryList} from './src/shared/request';
+import i18n from './src/i18n/index';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
+function App({userProfile, handleSetStory}) {
   const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(props): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -72,24 +42,47 @@ function App(props): JSX.Element {
     getDefaultLanguange();
   }, []);
   useEffect(() => {
-    setTimeout(() => {
-      navigate('Onboard');
-    }, 500);
+    getInitialRoute();
   }, []);
-
+  async function getInitialRoute() {
+    if (userProfile?.token) {
+      // const res = await getStoryList();
+      // handleSetStory(res.data);
+      setTimeout(() => {
+        navigate('Bottom');
+      }, 500);
+    } else {
+      setTimeout(() => {
+        navigate('Onboard');
+      }, 500);
+    }
+  }
   return (
-    <View
-      style={{
-        backgroundColor: code_color.splash,
-        flex: 0,
-        alignItems: 'center',
-      }}>
-      <Image
-        source={logo}
-        style={{resizeMode: 'contain', width: '40%', height: '100%'}}
-      />
-     
-    </View>
+    <ImageBackground source={bg_splash} style={{width: '100%', height: '100%'}}>
+      <View
+        style={{
+          // backgroundColor: code_color.splash,
+          alignItems: 'center',
+          flex: 1,
+          justifyContent: 'center',
+        }}>
+        <Image
+          source={logo}
+          style={{resizeMode: 'contain', width: '40%', height: 200}}
+        />
+        <Text
+          allowFontScaling={false}
+          style={{
+            color: 'white',
+            fontSize: 28,
+            marginTop: 20,
+            fontFamily: 'Comfortaa-SemiBold',
+            textAlign: 'center',
+          }}>
+          {'Your everyday \n Fantasy'}
+        </Text>
+      </View>
+    </ImageBackground>
   );
 }
 
@@ -111,5 +104,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+App.propTypes = {
+  activeVersion: PropTypes.any,
+};
 
-export default App;
+App.defaultProps = {
+  activeVersion: null,
+};
+
+export default connect(states, dispatcher)(App);

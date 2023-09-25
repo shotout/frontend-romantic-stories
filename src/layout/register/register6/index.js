@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -29,27 +29,13 @@ import LoveSvg from '../../../assets/icons/bottom/love.jsx';
 import FontSvg from '../../../assets/icons/bottom/font.jsx';
 import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
+import { getListTheme } from '../../../shared/request';
+import ChecklistSvg from './../../../assets/icons/checklist';
 
-export default function Register5({gender}) {
+export default function Register5({gender, setTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
 
-  const [colorsBg, setColorsBg] = useState([
-    {
-      code: code_color.splash,
-    },
-    {
-      code: code_color.greenDark,
-    },
-    {
-      code: code_color.purpleDark,
-    },
-    {
-      code: code_color.darkTosca,
-    },
-    {
-      code: code_color.purple,
-    },
-  ]);
+  const [colorsBg, setColorsBg] = useState([]);
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
@@ -69,6 +55,22 @@ export default function Register5({gender}) {
     },
   ]);
 
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  const fetchCategory = async () => {
+    try {
+      const avatar = await getListTheme();
+      setColorsBg(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
+  // const handleChange = index => {
+  //   setAvatar(dataAva[index].id);
+  // };
+
   return (
     <>
       <View
@@ -83,6 +85,7 @@ export default function Register5({gender}) {
           borderBottomLeftRadius: 50,
         }}>
         <Text
+        allowFontScaling={false}
           style={{
             color: code_color.blueDark,
             fontSize: 32,
@@ -102,7 +105,7 @@ export default function Register5({gender}) {
             // padding: 10,
             backgroundColor: code_color.white,
           }}>
-          <Text style={{fontSize: 9, paddingHorizontal: 10, paddingTop: 10}}>
+          <Text allowFontScaling={false} style={{fontSize: 9, paddingHorizontal: 10, paddingTop: 10}}>
             Fistful of Reefer: A Pulpy Action Series from Schism 8
           </Text>
           <View
@@ -112,7 +115,7 @@ export default function Register5({gender}) {
               marginVertical: 10,
             }}
           />
-          <Text
+          <Text allowFontScaling={false}
             style={{fontSize: 9, textAlign: 'justify', paddingHorizontal: 10}}>
             {' '}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
@@ -167,7 +170,7 @@ export default function Register5({gender}) {
                     justifyContent: 'center',
                   }}>
                   <item.image width={15} height={15} fill={colorsDefault} />
-                  <Text style={{fontSize: 7}}>{item.name}</Text>
+                  <Text allowFontScaling={false} style={{fontSize: 7}}>{item.name}</Text>
                 </View>
               );
             })}
@@ -182,17 +185,24 @@ export default function Register5({gender}) {
           {colorsBg.map((item, i) => {
             return (
               <TouchableOpacity
-                onPress={() => setColorsDefault(item.code)}
+                onPress={() => {
+                  setTheme(item.id);
+                  setColorsDefault(item.theme_color);
+                }}
                 style={{
-                  backgroundColor: item.code,
+                  backgroundColor: item.theme_color,
                   width: 30,
                   height: 30,
                   borderRadius: 20,
                   borderWidth: 1,
                   borderColor: code_color.grey,
                   marginHorizontal: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
-              />
+              >
+                  {colorsDefault === item.theme_color ? <ChecklistSvg /> : null}
+                </TouchableOpacity>
             );
           })}
         </View>

@@ -20,7 +20,7 @@ import {
   ScrollView,
   FlatList,
   Animated,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import {ava1, bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -41,10 +41,16 @@ import {
 } from 'react-native-gesture-handler';
 import {sizing} from '../../utils/styling';
 import QuotesContent from '../../components/quotes-content-fast-image';
+import PropTypes from 'prop-types';
+import dispatcher from './dispatcher';
+import states from './states';
+import {connect} from 'react-redux';
+import {checkDeviceRegister, getStoryList} from '../../shared/request';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const MainScreen = (_props: any) => {
+const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroundColor, colorTheme}) => {
+  console.log(JSON.stringify(userStory));
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -56,28 +62,18 @@ const MainScreen = (_props: any) => {
   const [showModalSubscribe, setShowModalSubscribe] = useState(false);
   const [activeSlide, setActiveSlide] = useState(initialIndexContent);
   const [isUserHasScroll, setUserScrollQuotes] = useState(false);
-  const [dataBook, setBook] = useState([
-    {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
-      detail: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum`,
-    },
-    {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
-      detail: `hemmm`,
-    },
-    {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
-      detail: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum`,
-    },
-  ]);
+  const [dataBook, setBook] = useState(userStory);
+
+  // const [dataBook]
   const onMomentoumScrollEnd = e => {
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
       Math.max(Math.floor(e.nativeEvent.contentOffset.y / height + 0.5) + 1, 0),
-      dataBook?.length || 0,
+      dataBook?.data?.length || 0,
     );
     setActiveSlide(pageNumber - 1);
-    startAnimation()
+    startAnimation();
+    handleLoadMore(pageNumber);
     if (pageNumber - 1 !== activeSlide && !isUserHasScroll) {
       setUserScrollQuotes(true);
     }
@@ -104,17 +100,36 @@ const MainScreen = (_props: any) => {
       useNativeDriver: false, // Set this to true for better performance, but note that not all properties are supported with native driver
     }).start();
   };
+  const handleLoadMore = async value => {
+    // const params = {
+    //   page: userStory?.current_page + 1,
+    // };
+    // try {
+    //   const res = await getStoryList(params);
+    //   // alert(JSON.stringify(res))
+    //   setBook(res.data);
+    //   handleSetStory(res.data);
+    // } catch (error) {
+    //   // alert(error)
+    // }
+  };
   const rotation = animationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
+
   const renderFactItem = ({item, index, disableAnimation}) => {
     return (
-      
-       <QuotesContent   item={item}   isActive={activeSlide === index} isAnimationStart={true
-      } />
-     
-      
+      <QuotesContent
+        item={item}
+        isActive={activeSlide === index}
+        isAnimationStart={true}
+        themeUser={userProfile?.data}
+        fontSize={fontSize}
+        bgTheme={colorTheme}
+        bg={backgroundColor}
+      />
+
       // <View style={{ flex: 1 }}>
       //   <Text
       //     style={{
@@ -155,9 +170,9 @@ const MainScreen = (_props: any) => {
             ref={flatListRef}
             style={{
               flex: 1,
-              backgroundColor: '#fff',
+              backgroundColor: backgroundColor,
             }}
-            data={dataBook}
+            data={dataBook?.data}
             pagingEnabled
             onMomentumScrollEnd={onMomentoumScrollEnd}
             scrollsToTop={false}
@@ -181,19 +196,24 @@ const MainScreen = (_props: any) => {
     );
   }
   return (
-    <View style={{backgroundColor: code_color.white, flex: 1, paddingHorizontal: 20, paddingTop: 20}}>
+    <View
+      style={{
+        backgroundColor: backgroundColor,
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+      }}>
       <StatusBar
         barStyle={'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
 
-      <View
+      {/* <View
         style={{
           backgroundColor: code_color.white,
-          paddingTop: isIphoneXorAbove() ? 40 : 0,
+          // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
-      />
-      
+      /> */}
 
       {renderFlatList()}
     </View>
@@ -202,4 +222,12 @@ const MainScreen = (_props: any) => {
 
 const styles = StyleSheet.create({});
 
-export default MainScreen;
+MainScreen.propTypes = {
+  activeVersion: PropTypes.any,
+};
+
+MainScreen.defaultProps = {
+  activeVersion: null,
+};
+
+export default connect(states, dispatcher)(MainScreen);

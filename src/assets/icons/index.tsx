@@ -1,5 +1,5 @@
-export const male = require('./register_step/male.png');
-export const female = require('./register_step/female.png');
+export const male = require('./register_step/male2.png');
+export const female = require('./register_step/female2.png');
 export const ind = require('./register_step/flagin.png');
 export const eng = require('./register_step/flagen.png');
 export const speaker = require('./register_step/speaker.png');

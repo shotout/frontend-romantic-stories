@@ -1,5 +1,6 @@
-export const logo = require('./logo2.png');
+export const logo = require('./logo3.png');
 export const bg = require('./bg.png');
+export const bg_splash = require('./bg_splash.png');
 export const story1 = require('./story1.png');
 export const story2 = require('./story2.png');
 export const story3 = require('./story3.png');
@@ -15,3 +16,4 @@ export const imgBottom = require('./imgBottom.png');
 export const cover1 = require('./cover1.png');
 export const cover2 = require('./cover2.png');
 export const libraryAdd = require('./libraryAdd.png');
+export const bgSettings = require('./bg_settings.png');

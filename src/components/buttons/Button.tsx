@@ -3,7 +3,7 @@ import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {female, male} from '../../../assets/icons';
-import { code_color } from '../../utils/colors';
+import {code_color} from '../../utils/colors';
 
 export default function Button({style, onPress, title}) {
   return (
@@ -25,7 +25,11 @@ export default function Button({style, onPress, title}) {
                 width: '90%',
               }
         }>
-        <Text style={{fontFamily: 'Robotto', fontWeight: 'bold'}}>{title}</Text>
+        <Text
+          allowFontScaling={false}
+          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: 15}}>
+          {title}
+        </Text>
       </TouchableOpacity>
     </>
   );

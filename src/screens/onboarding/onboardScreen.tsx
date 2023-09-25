@@ -35,9 +35,10 @@ const OnboardScreen = (props: any) => {
         justifyContent: 'center',
       }}>
       <Text
+      allowFontScaling={false}
         style={{
           color: 'white',
-          fontSize: 32,
+          fontSize: 36,
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
         }}>
@@ -47,9 +48,10 @@ const OnboardScreen = (props: any) => {
         source={logo}
         style={{
           resizeMode: 'contain',
-          width: '40%',
-          height: '20%',
-          marginVertical: 120,
+          width: '50%',
+          height: '30%',
+          // marginVertical: 100,
+          marginBottom: 160
         }}
       />
 

@@ -32,39 +32,205 @@ import Register6 from '../../layout/register/register6';
 import Register7 from '../../layout/register/register7';
 import BackLeft from '../../assets/icons/bottom/backLeft.jsx';
 import Register8 from '../../layout/register/register8';
+import moment from 'moment';
+import DeviceInfo from 'react-native-device-info';
+import {
+  checkDeviceRegister,
+  getListAvatar,
+  getStoryList,
+  postRegister,
+} from '../../shared/request';
+import {connect} from 'react-redux';
+import dispatcher from './dispatcher';
+import states from './states';
 
-const RegisterScreen = (props: any) => {
-  
+function RegisterScreen({
+  handleSetProfile,
+  handleSetBackground,
+  handleSetFontSize,
+  handleSetColorTheme,
+  handleSetFontFamily,
+  handleSetStory,
+}) {
   const [stepRegister, setStepRegister] = useState(1);
-  const [gender, setGender] = useState('Male');
+  const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
+  const [dataAva, setDataAva] = useState([]);
+  const [dataAva2, setDataAva2] = useState([]);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  const [values, setFormValues] = useState({
+    name: '',
+    gender: '',
+    device_id: '',
+    start: moment(new Date(2018, 11, 24, 8, 0, 30, 0)).format(
+      'YYYY-MM-DD HH:mm',
+    ),
+    end: moment(new Date(2018, 11, 24, 20, 0, 30, 0)).format(
+      'YYYY-MM-DD HH:mm',
+    ),
+    fcm_token: '',
+    category_id: 1,
+    avatar_male: 1,
+    avatar_female: 1,
+    theme_id: 1,
+    language_id: 2,
+    often: 3,
+  });
+
+  useEffect(() => {
+    fetchDeviceId();
+  }, []);
+
+  const fetchDeviceId = async () => {
+    const data = await DeviceInfo.getUniqueId();
+    setFormValues({
+      ...values,
+      device_id: data,
+    });
+  };
+
+  const handleChange = (setText, text) => {
+    setFormValues({
+      ...values,
+      [setText]: text,
+    });
+  };
+
+  useEffect(() => {
+    if (values.gender === '') {
+      fetchAva1('male');
+      fetchAva2('female');
+    } else {
+      fetchAva1(values.gender === 'Male' ? 'male' : 'female');
+      fetchAva2(values.gender === 'Male' ? 'female' : 'male');
+    }
+  }, [values.gender]);
+
+  const fetchAva1 = async value => {
+    try {
+      const params = {
+        gender: value,
+      };
+      const avatar = await getListAvatar(params);
+      setDataAva(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
+  const fetchAva2 = async value => {
+    try {
+      const params = {
+        gender: value,
+      };
+      const avatar = await getListAvatar(params);
+      setDataAva2(avatar?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
+
+  const onSubmit = async () => {
+    console.log(values);
+    try {
+      const res = await postRegister(values);
+      handleSetProfile(res);
+      handleSetBackground(res?.data?.theme?.bg_color);
+      handleSetFontSize(res?.data?.theme?.font_size);
+      handleSetColorTheme(res?.data?.theme?.theme_color);
+      handleSetFontFamily(res?.data?.theme?.font_family);
+      const resp = await getStoryList();
+      handleSetStory(resp.data);
+      navigate('Bottom');
+    } catch (error) {
+      checkDevice();
+    }
+  };
+  const checkDevice = async () => {
+    const device = await DeviceInfo.getUniqueId();
+    try {
+      const res = await checkDeviceRegister({
+        device_id: device,
+      });
+      handleSetProfile(res);
+      handleSetBackground(res?.data?.theme?.bg_color);
+      handleSetFontSize(res?.data?.theme?.font_size);
+      handleSetColorTheme(res?.data?.theme?.theme_color);
+      handleSetFontFamily(res?.data?.theme?.font_family);
+      const resp = await getStoryList();
+      handleSetStory(resp.data);
+      navigate('Bottom');
+    } catch (error) {}
   };
 
   const renderLayout = () => {
     if (stepRegister === 1) {
       return (
-        <Register1
-          setGender={text => {
-            setGender(text), setStepRegister(stepRegister + 1);
+        <View style={{justifyContent: 'center', flex: 0, marginTop: 80}}>
+          <Register1
+            setGender={text => {
+              handleChange('gender', text), setStepRegister(stepRegister + 1);
+            }}
+            selectedGender={values.gender}
+          />
+        </View>
+      );
+    } else if (stepRegister === 2) {
+      return (
+        <Register2
+          name={values.name}
+          changeText={text => handleChange('name', text)}
+          currentStep={stepRegister}
+        />
+      );
+    } else if (stepRegister === 3) {
+      return (
+        <Register3
+          setCategoryId={text => {
+            handleChange('category_id', text);
           }}
         />
       );
-    } else if (stepRegister === 2) {
-      return <Register2 currentStep={stepRegister} />;
-    } else if (stepRegister === 3) {
-      return <Register3 currentStep={stepRegister} />;
     } else if (stepRegister === 4) {
-      return <Register4 gender={gender} />;
+      return (
+        <Register4
+          gender={values.gender}
+          dataAvatar={dataAva}
+          setAvatar={text =>
+            handleChange(
+              values.gender === 'female' ? 'avatar_female' : 'avatar_male',
+              text,
+            )
+          }
+        />
+      );
     } else if (stepRegister === 5) {
-      return <Register5 gender={gender} />;
+      return (
+        <Register5
+          gender={values.gender}
+          dataAvatar={dataAva2}
+          setAvatar={text =>
+            handleChange(
+              values.gender === 'female' ? 'avatar_male' : 'avatar_female',
+              text,
+            )
+          }
+        />
+      );
     } else if (stepRegister === 6) {
-      return <Register6 gender={gender} />;
+      return (
+        <Register6
+          gender={values.gender}
+          setTheme={text => handleChange('theme_id', text)}
+        />
+      );
     } else if (stepRegister === 7) {
-      return <Register7 gender={gender} />;
+      return (
+        <Register7 languange={text => handleChange('language_id', text)} />
+      );
     } else if (stepRegister === 8) {
-      return <Register8 gender={gender} />;
+      return <Register8 activeNotif={() => onSubmit()} />;
     }
   };
   return (
@@ -76,71 +242,97 @@ const RegisterScreen = (props: any) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-           {stepRegister != 8 ?
-        <View
-          style={{
-            backgroundColor: code_color.headerBlack,
-            paddingTop: isIphoneXorAbove() ? 40 : 0,
-          }}>
+        {stepRegister != 8 ? (
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 20,
-              marginTop: 20,
+              backgroundColor: code_color.headerBlack,
+              paddingTop: isIphoneXorAbove() ? 40 : 0,
             }}>
-            {stepRegister > 1 ? (
-              <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister - 1)}>
-                <Image source={backLeft} />
-              </TouchableOpacity>
-            ) : null}
-
-            <Text
+            <View
               style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 20,
+                marginTop: 20,
               }}>
-              Let’s get to know you
-            </Text>
+              {stepRegister > 1 ? (
+                <TouchableOpacity
+                  onPress={() => setStepRegister(stepRegister - 1)}>
+                  <Image source={backLeft} />
+                </TouchableOpacity>
+              ) : null}
+
+              <Text
+                allowFontScaling={false}
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  flex: 1,
+                }}>
+                {stepRegister === 1
+                  ? titleHeader
+                  : stepRegister === 2
+                  ? 'Be part of the story'
+                  : stepRegister === 3
+                  ? 'Select your favorite genre'
+                  : stepRegister === 4
+                  ? 'Select your look'
+                  : stepRegister === 5
+                  ? 'Select your partner'
+                  : stepRegister === 6
+                  ? 'Customize your page'
+                  : stepRegister === 7
+                  ? 'For effective expression'
+                  : null}
+              </Text>
+            </View>
+            {stepRegister != 8 ? (
+              <HeaderStep currentStep={stepRegister} />
+            ) : null}
           </View>
-          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
-        </View> :   <View
-          style={{
-            backgroundColor: code_color.white,
-            paddingTop: isIphoneXorAbove() ? 40 : 0,
-          }}>
+        ) : (
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 20,
-              marginTop: 20,
+              backgroundColor: code_color.white,
+              paddingTop: isIphoneXorAbove() ? 40 : 0,
             }}>
-           
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 20,
+                marginTop: 20,
+              }}>
               <TouchableOpacity
                 onPress={() => setStepRegister(stepRegister - 1)}>
                 <BackLeft />
               </TouchableOpacity>
-           
 
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                flex: 1,
-              }}>
-              Let’s get to know you
-            </Text>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  flex: 1,
+                }}>
+                {stepRegister === 1
+                  ? titleHeader
+                  : stepRegister === 2
+                  ? 'Be part of the story'
+                  : ''}
+              </Text>
+            </View>
+            {stepRegister != 8 ? (
+              <HeaderStep currentStep={stepRegister} />
+            ) : null}
           </View>
-          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
-        </View>}
+        )}
 
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
+            allowFontScaling={false}
             style={{
               color: code_color.blueDark,
               fontSize: 32,
@@ -160,7 +352,7 @@ const RegisterScreen = (props: any) => {
           </Text>
           {renderLayout()}
           <View style={{position: 'absolute', bottom: 15, width: '80%'}}>
-            {stepRegister === 1 ? (
+            {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => setStepRegister(stepRegister + 1)}
                 style={{
@@ -169,12 +361,13 @@ const RegisterScreen = (props: any) => {
                   justifyContent: 'center',
                 }}>
                 <Text
+                  allowFontScaling={false}
                   style={{
                     color: code_color.grey,
                     fontSize: 18,
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginTop: 10,
+                    marginVertical: 15,
                   }}>
                   {i18n.t(
                     stepRegister === 1
@@ -194,17 +387,23 @@ const RegisterScreen = (props: any) => {
                   borderRadius: 12,
                   width: '100%',
                   marginTop: 10,
+                  marginBottom: 10,
                 }}
                 onPress={() => {
-                  setStepRegister(stepRegister + 1);
-                  stepRegister === 8 ? navigate('Bottom') : null;
+                  stepRegister === 8
+                    ? onSubmit()
+                    : setStepRegister(stepRegister + 1);
                 }}
-                title={stepRegister === 8 ? 'Ok, let’s do it' : i18n.t('register.continue')}
+                title={
+                  stepRegister === 8
+                    ? 'Ok, let’s do it'
+                    : i18n.t('register.continue')
+                }
               />
             ) : null}
             {stepRegister === 8 ? (
               <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister + 1)}
+                onPress={() => onSubmit()}
                 style={{
                   alignItems: 'center',
                   alignContent: 'center',
@@ -227,6 +426,9 @@ const RegisterScreen = (props: any) => {
       </KeyboardAvoidingView>
     </View>
   );
-};
-const styles = StyleSheet.create({});
-export default RegisterScreen;
+}
+RegisterScreen.propTypes = {};
+
+RegisterScreen.defaultProps = {};
+
+export default connect(states, dispatcher)(RegisterScreen);

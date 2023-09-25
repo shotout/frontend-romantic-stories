@@ -39,6 +39,11 @@ const INITIAL_STATE = {
   paywallNotifcation: null,
   animationCounter: true,
   freeUserPremium: false,
+  userStory: null,
+  colorTheme: null,
+  fontFamily: null,
+  fontSize: null,
+  backgroundColor: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -226,6 +231,31 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userProfile: action.payload,
+      };
+      case types.SET_STORY_DATA:
+        return {
+          ...state,
+          userStory: action.payload,
+        };
+    case types.SET_BACKGROUND_COLOR:
+      return {
+        ...state,
+        backgroundColor: action.payload,
+      };
+    case types.SET_FONT_FAMILY:
+      return {
+        ...state,
+        fontFamily: action.payload,
+      };
+    case types.SET_FONT_SIZE:
+      return {
+        ...state,
+        fontSize: action.payload,
+      };
+    case types.SET_COLOR_THEME:
+      return {
+        ...state,
+        colorTheme: action.payload,
       };
     case types.SET_STORAGE_STATUS:
       return {

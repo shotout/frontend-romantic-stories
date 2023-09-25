@@ -6,3 +6,33 @@ export const setStorageStatus = payload => ({
   type: types.SET_STORAGE_STATUS,
   payload,
 });
+
+export const handleSetProfile = payload => ({
+  type: types.SET_PROFILE_DATA,
+  payload,
+});
+
+export const handleSetStory = payload => ({
+  type: types.SET_STORY_DATA,
+  payload,
+});
+
+export const handleSetBackground = payload => ({
+  type: types.SET_BACKGROUND_COLOR,
+  payload,
+});
+
+export const handleSetColorTheme = payload => ({
+  type: types.SET_COLOR_THEME,
+  payload,
+});
+
+export const handleSetFontFamily = payload => ({
+  type: types.SET_FONT_FAMILY,
+  payload,
+});
+
+export const handleSetFontSize = payload => ({
+  type: types.SET_FONT_SIZE,
+  payload,
+});
