@@ -24,11 +24,42 @@ import Button from '../buttons/Button';
 import CloseSvg from '../../assets/icons/close';
 import ChecklistSvg from '../../assets/icons/checklist';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {addNewCollection, updateMyCollection} from '../../shared/request';
 
-function ModaNewLibrary({isVisible, onClose}) {
-  const [collect, setCollect] = useState('');
+function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
+ 
+  const [collect, setCollect] = useState(!data?.name ?  '' : data?.name);
   const handleClose = () => {
-    onClose()
+    onClose();
+  };
+
+  const AddCollection = async () => {
+    if(collect != ''){
+      if(edit){
+        const payload = {
+          name: collect,
+          _method: 'PATCH'
+        }
+        try {
+          const res = await updateMyCollection(
+            payload,
+            data?.id,
+          );
+          restart()
+        } catch (error) {
+          console.log(error)
+        }
+      }else{
+        try {
+          const res = await addNewCollection({
+            name: collect,
+          });
+          restart()
+        } catch (error) {}
+      }
+      
+    }
+    
   };
 
   return (
@@ -50,7 +81,6 @@ function ModaNewLibrary({isVisible, onClose}) {
               alignContent: 'center',
               justifyContent: 'center',
               alignItems: 'center',
-             
             }}>
             <View
               style={{
@@ -65,9 +95,11 @@ function ModaNewLibrary({isVisible, onClose}) {
                 shadowRadius: 2.22,
                 elevation: 3,
                 borderRadius: 10,
-                padding: 10
+                padding: 10,
               }}>
-              <Pressable onPress={() => handleClose()} style={{alignItems: 'flex-end'}}>
+              <Pressable
+                onPress={() => handleClose()}
+                style={{alignItems: 'flex-end'}}>
                 <CloseSvg width={15} height={15} />
               </Pressable>
               <View style={{alignItems: 'center', flex: 1}}>
@@ -88,7 +120,7 @@ function ModaNewLibrary({isVisible, onClose}) {
                     textAlign: 'center',
                     marginHorizontal: 40,
                   }}>
-                  Add a name for your new collection. You can edit it later.
+                  {edit ? 'Edit a name for your new collection. You can edit it later.' : 'Add a name for your new collection. You can edit it later.'}
                 </Text>
                 <TextInput
                   style={{
@@ -104,11 +136,12 @@ function ModaNewLibrary({isVisible, onClose}) {
                   onChangeText={text => setCollect(text)}
                 />
                 <Button
-                  title={'Add collection'}
+                  title={edit ? 'Edit collection' : 'Add collection'}
                   style={{
                     backgroundColor: !collect
-                      ? code_color.yellow
-                      : code_color.greyDefault,
+                      ?
+                      code_color.greyDefault :
+                      code_color.yellow,
                     alignItems: 'center',
                     justifyContent: 'center',
                     // height: 52,
@@ -116,7 +149,7 @@ function ModaNewLibrary({isVisible, onClose}) {
                     borderRadius: 12,
                     width: '90%',
                   }}
-                  onPress={() => {}}
+                  onPress={() => AddCollection()}
                 />
               </View>
             </View>

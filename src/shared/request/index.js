@@ -43,10 +43,29 @@ export const getStoryList = (params = {}) =>
     params,
   });
 
-export const checkVersion = () =>
+export const getMyCollection = (params = {}) =>
   Wrap({
-    url: '/list/versions',
-    method: 'GET',
+    url: `/collection`,
+    method: 'get',
+    params,
+  });
+
+export const createCollection = data =>
+  Wrap({
+    url: `/collection`,
+    method: 'POST',
+    data,
+  });
+  export const deleteMyCollection = (id) =>
+  Wrap({
+    url: `/collection/${id}`,
+    method: 'DELETE',
+  });
+export const updateMyCollection = (data, id) => 
+  Wrap({
+    url: `/collection/${id}`,
+    method: 'POST',
+    data,
   });
 
 export const getlistFeel = () =>
@@ -154,13 +173,6 @@ export const addToCollection = ({idCollection, idQuote}) =>
   Wrap({
     url: `/collection/quote/${idCollection}/${idQuote}`,
     method: 'POST',
-  });
-
-export const getMyCollection = (id, params = {}) =>
-  Wrap({
-    url: `/collection/${id}`,
-    method: 'get',
-    params,
   });
 
 export const renameCollection = (data, idCollection) => {
