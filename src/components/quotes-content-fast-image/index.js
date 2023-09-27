@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
@@ -10,10 +11,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
 import {ava1} from '../../assets/images';
 import {code_color} from '../../utils/colors';
+import ModalShare from '../modal-share';
 export default function QuotesContent({
   item,
   themeUser,
@@ -24,15 +27,17 @@ export default function QuotesContent({
   bgTheme,
   bg,
 }) {
+  const [showModalShare, setShowModalShare] = useState(false);
+  const [selectedText, setSelectedText] = useState('');
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
-  const animationValue = useRef(new Animated.Value(0)).current;
   const [folded, setFolded] = useState(false);
+  const animationValue = useRef(new Animated.Value(0)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const activeStatus = useRef(false);
-  const content = `Matahari bersinar terik di Lampung. Sinarnya terhalang rimbunnya pepohonan, sehingga hanya menyisakan berkas tipis. Burung-burung berkicau seolah sedang menyanyikan lagu untuk alam. Bunyi riak jernih sungai beradu dengan batu kali berpadu dengan sahutan dari beberapa penghuni hutan yang lainnya. Ya, inilah tempat tinggal Bora, si anak gajah Lampung yang sekarang tengah asyik bermain bersama teman-temannya di sebuah sungai.
+  const contentData = `Matahari bersinar terik di Lampung. Sinarnya terhalang rimbunnya pepohonan, sehingga hanya menyisakan berkas tipis. Burung-burung berkicau seolah sedang menyanyikan lagu untuk alam. Bunyi riak jernih sungai beradu dengan batu kali berpadu dengan sahutan dari beberapa penghuni hutan yang lainnya. Ya, inilah tempat tinggal Bora, si anak gajah Lampung yang sekarang tengah asyik bermain bersama teman-temannya di sebuah sungai.
   Ketika Bora menyemprotkan air ke arah Dodo—anak gajah lainnya—dengan belalainya, ia pun memekik nyaring. Sampai akhirnya, kegembiraan mereka terpecah oleh bunyi bising dari sebelah utara hutan. Bunyi bising itu bercampur dengan deru sesuatu yang sama sekali tidak Bora kenal.
   “Hei, lihat itu!”
   Semua serentak menghentikan kegiatan mereka dan menengok ke langit yang ditunjuk Dodo. Asap hitam tebal yang membumbung tinggi dari sana. Asap itu semakin tebal dan terus menebal. Itu merupakan fenomena aneh yang baru pertama kali mereka saksikan. Selama ini yang mereka .
@@ -80,6 +85,12 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
+      <ModalShare
+        isVisible={showModalShare}
+        onClose={() => setShowModalShare(false)}
+        fullContent="asdasd asd asd asd asd asd "
+        selectedContent={selectedText}
+      />
       <Animated.View
         style={{
           width: '100%',
@@ -92,7 +103,6 @@ export default function QuotesContent({
             position: 'absolute',
             bottom: 0,
             left: '50%',
-            alignItems: 'center',
             justifyContent: 'center',
           }}>
           <Image
@@ -121,8 +131,8 @@ export default function QuotesContent({
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
-              <Text
-                selectable={true}
+              {/* <Text
+                selectable
                 userSelect
                 selectionColor={code_color.splash}
                 allowFontScaling={false}
@@ -138,11 +148,35 @@ export default function QuotesContent({
                         : code_color.blackDark,
                   },
                 ]}>
-                {/* {themeUser?.language_id === "2"
+                {themeUser?.language_id === "2"
                   ? item?.content_id
-                  : item?.content_en} */}
-                {content}
-              </Text>
+                  : item?.content_en}
+                {contentData}
+              </Text> */}
+              <SelectableText
+                style={[
+                  styles.ctnQuotes,
+                  {
+                    fontFamily: themeUser?.theme?.font_family,
+                    fontSize: Number(fontSize),
+                    color:
+                      bg === '#2C3439'
+                        ? code_color.white
+                        : code_color.blackDark,
+                  },
+                ]}
+                menuItems={['Share']}
+                onSelection={({
+                  eventType,
+                  content,
+                  selectionStart,
+                  selectionEnd,
+                }) => {
+                  setSelectedText(content);
+                  setShowModalShare(true);
+                }}
+                value={contentData}
+              />
             </View>
           </View>
         </View>
