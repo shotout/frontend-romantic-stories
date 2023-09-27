@@ -14,6 +14,8 @@ import {BACKEND_URL} from '../../../shared/static';
 import Carousel from 'react-native-reanimated-carousel';
 import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
+import {isIphoneXorAbove} from '../../../utils/devices';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
   const [progressValue, setProgress] = useState(0);
@@ -77,8 +79,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
     <View
       style={{
         backgroundColor: colorTheme,
+        paddingTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
       }}>
-      <View style={{height: 30}} />
       <View
         style={{
           flexDirection: 'row',

@@ -11,6 +11,8 @@ import {code_color} from '../../../utils/colors';
 import Button from '../../../components/buttons/Button';
 import {updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
+import {isIphoneXorAbove} from '../../../utils/devices';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
   const [name, setName] = useState(userProfile.name);
@@ -43,8 +45,8 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
     <View
       style={{
         backgroundColor: colorTheme,
+        paddingTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
       }}>
-      <View style={{height: 30}} />
       <View
         style={{
           flexDirection: 'row',

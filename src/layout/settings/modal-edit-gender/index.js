@@ -12,6 +12,8 @@ import Button from '../../../components/buttons/Button';
 import Register1 from '../../../layout/register/register1';
 import {updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
+import {isIphoneXorAbove} from '../../../utils/devices';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
   const [gender, setGender] = useState(userProfile.gender);
@@ -44,8 +46,8 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
     <View
       style={{
         backgroundColor: colorTheme,
+        paddingTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
       }}>
-      <View style={{height: 30}} />
       <View
         style={{
           flexDirection: 'row',
