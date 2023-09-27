@@ -15,6 +15,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingTop: moderateScale(30),
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    borderRadius: moderateScale(24),
+  },
+  blur: {
+    fontSize: moderateScale(18),
+    color: 'rgba(0, 0, 0, 0.2)',
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: {width: 0, height: 0},
+    textShadowRadius: 6,
+  },
   hr: {
     width: '90%',
     height: 2,
@@ -29,6 +41,11 @@ export default StyleSheet.create({
     paddingRight: moderateScale(30),
     paddingLeft: (width * 38) / 100,
     marginBottom: moderateScale(20),
+  },
+  rowCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(20),
   },
   textTitle: {
     fontSize: moderateScale(16),

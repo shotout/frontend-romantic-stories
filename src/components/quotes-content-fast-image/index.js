@@ -29,6 +29,7 @@ export default function QuotesContent({
 }) {
   const [showModalShare, setShowModalShare] = useState(false);
   const [selectedText, setSelectedText] = useState('');
+  const [startEndText, setStartEndText] = useState({start: 0, end: 0});
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -88,8 +89,12 @@ export default function QuotesContent({
       <ModalShare
         isVisible={showModalShare}
         onClose={() => setShowModalShare(false)}
-        fullContent="asdasd asd asd asd asd asd "
         selectedContent={selectedText}
+        start={contentData.substring(
+          startEndText.start - 30,
+          startEndText.start,
+        )}
+        end={contentData.substring(startEndText.end, startEndText.end + 30)}
       />
       <Animated.View
         style={{
@@ -172,6 +177,7 @@ export default function QuotesContent({
                   selectionStart,
                   selectionEnd,
                 }) => {
+                  setStartEndText({start: selectionStart, end: selectionEnd});
                   setSelectedText(content);
                   setShowModalShare(true);
                 }}
