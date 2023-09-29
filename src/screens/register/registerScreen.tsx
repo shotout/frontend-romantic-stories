@@ -43,6 +43,8 @@ import {
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
 import states from './states';
+import notifee from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
 
 function RegisterScreen({
   handleSetProfile,
@@ -85,9 +87,11 @@ function RegisterScreen({
 
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
+    const fcmToken = await messaging().getToken();
     setFormValues({
       ...values,
       device_id: data,
+      fcm_token: fcmToken,
     });
   };
 
@@ -133,6 +137,7 @@ function RegisterScreen({
 
   const onSubmit = async () => {
     console.log(values);
+    await notifee.requestPermission();
     try {
       const res = await postRegister(values);
       handleSetProfile(res);
