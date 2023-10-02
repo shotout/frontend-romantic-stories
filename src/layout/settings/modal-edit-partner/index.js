@@ -55,11 +55,17 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
 
   const fetchAva = async value => {
     try {
-      const params = {
-        gender: userProfile.gender === 'Female' ? 'male' : 'female',
-      };
-      const avatar = await getListAvatar(params);
-      setDataAva(avatar?.data);
+      if (!userProfile.gender) {
+        const avaMale = await getListAvatar({gender: 'male'});
+        const avaFemale = await getListAvatar({gender: 'female'});
+        setDataAva([...avaMale?.data, ...avaFemale?.data]);
+      } else {
+        const params = {
+          gender: userProfile.gender === 'Female' ? 'male' : 'female',
+        };
+        const avatar = await getListAvatar(params);
+        setDataAva(avatar?.data);
+      }
     } catch (error) {
       // alert(JSON.stringify(error));
     }

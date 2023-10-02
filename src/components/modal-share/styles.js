@@ -22,10 +22,13 @@ export default StyleSheet.create({
   },
   blur: {
     fontSize: moderateScale(18),
-    color: 'rgba(0, 0, 0, 0.2)',
-    textShadowColor: 'rgba(0, 0, 0, 1)',
+    color: 'grey',
+    textShadowColor: 'rgba(3, 5, 2, 10)',
     textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 6,
+    textShadowRadius: 4,
+    // textShadowRadius: 6,
+    // color: 'rgba(0, 0, 0, 0.2)',
+    // textShadowColor: 'rgba(3, 5, 2, 10)',
   },
   hr: {
     width: '90%',

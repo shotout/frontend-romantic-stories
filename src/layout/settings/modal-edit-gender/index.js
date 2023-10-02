@@ -108,7 +108,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
           selectedGender={gender}
         />
       </View>
-      <TouchableOpacity onPress={onClose}>
+      <TouchableOpacity onPress={() => setGender(null)}>
         <Text
           style={{
             color: code_color.grey,
