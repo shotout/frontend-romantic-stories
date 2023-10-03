@@ -2,8 +2,24 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/Arialn.ttf",
+      "sha1": "64f6c2438da82137c60843a966c67c0378d01c64"
+    },
+    {
+      "path": "src/assets/fonts/BigshotOne-Regular.ttf",
+      "sha1": "809b625f414b4f22b6af356a25094621ded8dc33"
+    },
+    {
       "path": "src/assets/fonts/Comfortaa-SemiBold.ttf",
       "sha1": "8aa11f225d34b7d4e25aec3ca6b5cae30a444ce8"
+    },
+    {
+      "path": "src/assets/fonts/GentiumBookPlus-Regular.ttf",
+      "sha1": "656eab8c4fa36934d8ace73b2c08b393e4ee4b19"
+    },
+    {
+      "path": "src/assets/fonts/GeorgiaEstate-w15Mn.ttf",
+      "sha1": "cb2acf17e5532f18b6fdd464b494233807815d0f"
     }
   ]
 }

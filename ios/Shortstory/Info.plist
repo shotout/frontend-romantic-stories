@@ -38,10 +38,14 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-SemiBold.ttf</string>
+		<string>Arialn.ttf</string>
+		<string>BigshotOne-Regular.ttf</string>
+		<string>GentiumBookPlus-Regular.ttf</string>
+		<string>GeorgiaEstate-w15Mn.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -26,7 +26,9 @@ export default function QuotesContent({
   fontSize,
   bgTheme,
   bg,
+  fontFamily
 }) {
+  console.log('INI LOH FONT'+fontFamily)
   const [showModalShare, setShowModalShare] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const [startEndText, setStartEndText] = useState({start: 0, end: 0});
@@ -127,7 +129,7 @@ export default function QuotesContent({
             textAlign: 'center',
             fontWeight: 'bold',
             fontSize: Number(fontSize),
-            fontFamily: themeUser?.theme?.font_family,
+            fontFamily: fontFamily,
             color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
           }}>
           {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
@@ -162,7 +164,7 @@ export default function QuotesContent({
                 style={[
                   styles.ctnQuotes,
                   {
-                    fontFamily: themeUser?.theme?.font_family,
+                    fontFamily: fontFamily,
                     fontSize: Number(fontSize),
                     color:
                       bg === '#2C3439'

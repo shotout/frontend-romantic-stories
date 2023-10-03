@@ -36,7 +36,8 @@ const FontScreen = ({
   handleSetColorTheme,
   colorTheme,
   fontSize,
-  backgroundColor
+  backgroundColor,
+  handleSetFontFamily
 }) => {
   console.log(JSON.stringify(userProfile?.data?.theme));
   const [show, setShow] = useState(false);
@@ -44,15 +45,19 @@ const FontScreen = ({
   const [fontList, setFontList] = useState([
     {
       name: 'Georgia',
+      value: 'GeorgiaEstate-w15Mn'
     },
     {
       name: 'Arial',
+      value: 'Arial'
     },
     {
-      name: 'Robotto',
+      name: 'Bigshot',
+      value: 'BigshotOne-Regular'
     },
     {
-      name: 'Time News Roman',
+      name: 'Gentium',
+      value: 'GentiumBookPlus-Regular'
     },
   ]);
   const [colorsBg, setColorsBg] = useState([
@@ -205,7 +210,7 @@ const FontScreen = ({
           <Text allowFontScaling={false} style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
             CHANGE FONT
           </Text>
-          <Text  allowFontScaling={false} style={{color: code_color.white}}>Georgia</Text>
+          <Text  allowFontScaling={false} style={{color: code_color.white}}>{fontSelect}</Text>
           <Pressable
             onPress={() => setShow(!show)}
             style={{
@@ -225,6 +230,11 @@ const FontScreen = ({
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {fontList.map((item, index) => (
             <Pressable
+              onPress={() => {
+                setSelectFont(item.name);
+                handleSetFontFamily(item.value);
+              }
+              }
               style={{
                 backgroundColor:
                   fontSelect === item.name ? code_color.white : null,

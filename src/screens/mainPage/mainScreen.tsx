@@ -49,8 +49,8 @@ import {checkDeviceRegister, getStoryList} from '../../shared/request';
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroundColor, colorTheme}) => {
-  console.log(JSON.stringify(userStory));
+const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroundColor, colorTheme, fontFamily}) => {
+  console.log('INI FONT'+JSON.stringify(fontFamily));
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -128,6 +128,7 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
         fontSize={fontSize}
         bgTheme={colorTheme}
         bg={backgroundColor}
+        fontFamily={fontFamily}
       />
 
       // <View style={{ flex: 1 }}>
