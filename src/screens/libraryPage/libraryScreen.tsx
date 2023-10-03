@@ -54,6 +54,7 @@ const LibraryScreen = ({colorTheme}) => {
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(null);
   const [listCollection, setListCollection] = useState([]);
+  const [keyword, setKeyword] = useState('')
   const [listLibrary, setListLibrary] = useState([
    
   ]);
@@ -185,7 +186,6 @@ const LibraryScreen = ({colorTheme}) => {
   };
 
   const deleteRowCollection =  async (rowMap) => {
-    console.log(JSON.stringify(rowMap.item.id))
     try {
       const res = await deleteMyCollection(rowMap.item.id)
       handleRestart()
@@ -194,18 +194,20 @@ const LibraryScreen = ({colorTheme}) => {
     }
   };
   const handleEditCollect = (rowMap) => {
-    console.log(JSON.stringify(rowMap.item.id))
     setId(rowMap.item)
     setShowModalNew(true)
     setEdit(true)
   }
   useEffect(() => {
     handleRestart();
-  }, []);
+  }, [keyword]);
   const handleRestart = async () => {
     setShowModalNew(false);
     try {
-      const res = await getMyCollection();
+      let params = {
+        keyword
+      }
+      const res = await getMyCollection(params);
       setListCollection(res.data);
       setListLibrary(res.outsides);
     } catch (error) {
@@ -255,6 +257,8 @@ const LibraryScreen = ({colorTheme}) => {
           <TextInput
             placeholder="Search"
             allowFontScaling={false}
+            value={keyword}
+            onChangeText={(value) => setKeyword(value)}
             style={{marginLeft: 10, fontSize: 14}}
           />
         </View>
