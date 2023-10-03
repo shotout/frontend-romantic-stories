@@ -77,7 +77,6 @@ export default StyleSheet.create({
   textQuote: {
     fontSize: moderateScale(18),
     fontWeight: 400,
-    fontFamily: 'Comfortaa-SemiBold',
     marginHorizontal: moderateScale(20),
     lineHeight: moderateScale(34),
     marginTop: moderateScale(40),
@@ -106,5 +105,19 @@ export default StyleSheet.create({
     width: '100%',
     height: 75,
     paddingHorizontal: '5%',
+  },
+  conListFont: {
+    width: '90%',
+    height: 50,
+    marginTop: moderateScale(10),
+  },
+  btnFont: {
+    borderColor: code_color.white,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    margin: 10,
+    height: 40,
   },
 });

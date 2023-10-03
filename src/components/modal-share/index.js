@@ -34,9 +34,15 @@ import {
   bgShare4,
 } from '../../assets/images';
 import Card from '../card';
+import {fontList} from '../../utils/constants';
 
 function ModalSorting({isVisible, onClose, selectedContent, start, end}) {
   const [selectedBg, setSetselectedBg] = useState(null);
+  const [show, setShow] = useState(true);
+  const [fontSelect, setSelectFont] = useState({
+    name: 'Georgia',
+    value: 'GeorgiaEstate-w15Mn',
+  });
   const backgroundList = [bg, story2, bgShare1, bgShare2, bgShare3, bgShare4];
 
   const handleClose = () => {
@@ -120,7 +126,7 @@ function ModalSorting({isVisible, onClose, selectedContent, start, end}) {
                 }}
               />
               <View style={styles.overlay} />
-              <Text style={styles.textQuote}>
+              <Text style={{...styles.textQuote, fontFamily: fontSelect.value}}>
                 <Text style={styles.blur}>{start}</Text> {selectedContent}{' '}
                 <Text style={styles.blur}>{end}</Text>
               </Text>
@@ -129,17 +135,54 @@ function ModalSorting({isVisible, onClose, selectedContent, start, end}) {
             <View style={styles.conFont}>
               <Text style={styles.title}>CHANGE FONT</Text>
               <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{...styles.title, fontFamily: 'Comfortaa-SemiBold'}}>
-                  Comfortaa
+                <Text style={{...styles.title, fontFamily: fontSelect.value}}>
+                  {fontSelect.name}
                 </Text>
                 <Pressable
-                  // onPress={() => setShow(!show)}
+                  onPress={() => setShow(!show)}
                   style={styles.dropDown}>
-                  <DownChevron height={10} width={10} />
+                  {show ? (
+                    <UpChevron height={10} width={10} />
+                  ) : (
+                    <DownChevron height={10} width={10} />
+                  )}
                 </Pressable>
               </View>
             </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={[
+                styles.conListFont,
+                {
+                  display: show ? undefined : 'none',
+                },
+              ]}>
+              {fontList.map((item, index) => (
+                <Pressable
+                  onPress={() => {
+                    setSelectFont(item);
+                  }}
+                  style={{
+                    ...styles.btnFont,
+                    backgroundColor:
+                      fontSelect.value === item.value ? code_color.white : null,
+                  }}>
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      paddingHorizontal: 20,
+                      paddingVertical: 0,
+                      color:
+                        fontSelect.value === item.value
+                          ? code_color.blackDark
+                          : code_color.white,
+                    }}>
+                    {item.name}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
             <View style={styles.hr} />
             <Text style={{...styles.title, textAlign: 'center'}}>
               Choose Background
