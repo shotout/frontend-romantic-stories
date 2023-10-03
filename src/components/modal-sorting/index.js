@@ -25,29 +25,44 @@ import CloseSvg from '../../assets/icons/close';
 import ChecklistSvg from '../../assets/icons/checklist';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-function ModalSorting({isVisible, onClose}) {
+function ModalSorting({isVisible, onClose, items}) {
   const [select, setSelect] = useState('');
+  const [selectItem, setSelectItem] = useState(null);
   const [listSort, setSort] = useState([
     {
       name: 'A to Z',
+      value: 'asc',
+      column: 'name',
       icon: <LibrarySvg />,
     },
     {
       name: 'Z to A',
+      value: 'desc',
+      column: 'name',
       icon: <LibrarySvg />,
     },
     {
       name: 'Newest First',
+      value: 'desc',
+      column: 'id',
       icon: <LibrarySvg />,
     },
     {
       name: 'Oldest First',
+      value: 'asc',
+      column: 'id',
       icon: <LibrarySvg />,
     },
   ]);
   const handleClose = () => {
     onClose();
   };
+
+  const handleSelect = (item) => {
+    setSelect(item.name)
+    setSelectItem(item)
+    items(item)
+  }
   const renderList = () => (
     <View style={{alignItems: 'center', flex: 1}}>
       {listSort.map(item => (
@@ -70,7 +85,9 @@ function ModalSorting({isVisible, onClose}) {
          
 
           <Pressable
-            onPress={() => setSelect(item.name)}
+            onPress={() => {
+             handleSelect(item)
+            }}
             style={{
               borderWidth: 1,
               borderColor: code_color.blackDark,

@@ -55,6 +55,7 @@ const LibraryScreen = ({colorTheme}) => {
   const [id, setId] = useState(null);
   const [listCollection, setListCollection] = useState([]);
   const [keyword, setKeyword] = useState('')
+  const [items, setItems] = useState(null)
   const [listLibrary, setListLibrary] = useState([
    
   ]);
@@ -200,12 +201,14 @@ const LibraryScreen = ({colorTheme}) => {
   }
   useEffect(() => {
     handleRestart();
-  }, [keyword]);
+  }, [keyword, items]);
   const handleRestart = async () => {
     setShowModalNew(false);
     try {
       let params = {
-        keyword
+        search: keyword,
+        column: items?.column,
+        dir: items?.value,
       }
       const res = await getMyCollection(params);
       setListCollection(res.data);
@@ -214,6 +217,7 @@ const LibraryScreen = ({colorTheme}) => {
       console.log(JSON.stringify(error))
     }
   };
+
   return (
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
       <ModalLibrary isVisible={showModal} onClose={() => setShowModal(false)} />
@@ -230,6 +234,7 @@ const LibraryScreen = ({colorTheme}) => {
       <ModalSorting
         isVisible={showModalSort}
         onClose={() => setShowModalSort(false)}
+        items={(value: any) => setItems(value) }
       />
       <View
         style={{
