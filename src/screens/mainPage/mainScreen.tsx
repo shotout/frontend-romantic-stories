@@ -62,9 +62,22 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
   const [showModalSubscribe, setShowModalSubscribe] = useState(false);
   const [activeSlide, setActiveSlide] = useState(initialIndexContent);
   const [isUserHasScroll, setUserScrollQuotes] = useState(false);
-  const [dataBook, setBook] = useState(userStory);
+  // const [dataBook, setBook] = useState(userStory);
 
-  // const [dataBook]
+  const [dataBook, setBook] = useState([
+    {
+      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      detail: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum`,
+    },
+    {
+      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      detail: `hemmm`,
+    },
+    {
+      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      detail: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum`,
+    },
+  ]);
   const onMomentoumScrollEnd = e => {
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
@@ -173,7 +186,7 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
               flex: 1,
               backgroundColor: backgroundColor,
             }}
-            data={dataBook?.data}
+            data={dataBook}
             pagingEnabled
             onMomentumScrollEnd={onMomentoumScrollEnd}
             scrollsToTop={false}

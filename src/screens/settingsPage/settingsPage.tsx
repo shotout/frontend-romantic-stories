@@ -15,6 +15,7 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -38,6 +39,8 @@ import ModalEditGender from '../../layout/settings/modal-edit-gender';
 import ModalEditCharacter from '../../layout/settings/modal-edit-character';
 import ModalEditPartner from '../../layout/settings/modal-edit-partner';
 import ModalEditLanguage from '../../layout/settings/modal-edit-language';
+import {ScrollView} from 'react-native-gesture-handler';
+import {navigate} from '../../shared/navigationRef';
 
 const SettingsPage = ({colorTheme}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
@@ -184,6 +187,12 @@ const SettingsPage = ({colorTheme}) => {
         setShowModalProfile(false);
         setShowModalLanguage(true);
         break;
+      case 'My Library':
+        navigate('Library');
+        break;
+      case 'Text Settings':
+        navigate('Font');
+        break;
       default:
         break;
     }
@@ -209,14 +218,16 @@ const SettingsPage = ({colorTheme}) => {
   const listMenuTwo = () => (
     <View>
       {menuTwo.map((item, i) => (
-        <View style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
+        <Pressable
+          onPress={() => handleOpenModal(item.name)}
+          style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
           {item.icon}
           <Text
             allowFontScaling={false}
             style={{marginLeft: 10, color: code_color.white}}>
             {item.name}
           </Text>
-        </View>
+        </Pressable>
       ))}
     </View>
   );
@@ -253,50 +264,55 @@ const SettingsPage = ({colorTheme}) => {
         onClose={() => setShowModalLanguage(false)}
       />
       {header()}
-      {listMenu()}
-      <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
-      {listMenuTwo()}
-      <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
-      <View>
-        <View style={{margin: 10}}>
-          <Text
-            allowFontScaling={false}
-            style={{marginLeft: 10, color: code_color.white}}>
-            Follow us
-          </Text>
-          <View style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
-            <InstagramSvg />
-            <Text
-              allowFontScaling={false}
-              style={{marginLeft: 10, color: code_color.white}}>
-              Instagram
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
-            <FacebookSvg />
-            <Text
-              allowFontScaling={false}
-              style={{marginLeft: 10, color: code_color.white}}>
-              Facebook
-            </Text>
-          </View>
-        </View>
+      <ScrollView>
+        {listMenu()}
         <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
-        <View style={{margin: 10}}>
-          <Text
-            allowFontScaling={false}
-            style={{marginLeft: 10, color: code_color.white}}>
-            Privacy Policy
-          </Text>
-          <View style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+        {listMenuTwo()}
+        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
+        <View>
+          <View style={{margin: 10}}>
             <Text
               allowFontScaling={false}
               style={{marginLeft: 10, color: code_color.white}}>
-              Terms & Conditions
+              Follow us
             </Text>
+            <View
+              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+              <InstagramSvg />
+              <Text
+                allowFontScaling={false}
+                style={{marginLeft: 10, color: code_color.white}}>
+                Instagram
+              </Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+              <FacebookSvg />
+              <Text
+                allowFontScaling={false}
+                style={{marginLeft: 10, color: code_color.white}}>
+                Facebook
+              </Text>
+            </View>
+          </View>
+          <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
+          <View style={{margin: 10}}>
+            <Text
+              allowFontScaling={false}
+              style={{marginLeft: 10, color: code_color.white}}>
+              Privacy Policy
+            </Text>
+            <View
+              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+              <Text
+                allowFontScaling={false}
+                style={{marginLeft: 10, color: code_color.white}}>
+                Terms & Conditions
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

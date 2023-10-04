@@ -132,7 +132,7 @@ export default function QuotesContent({
             fontFamily: fontFamily,
             color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
           }}>
-          {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
+          {themeUser?.language_id === '2' ? item?.title : item?.title}
         </Text>
         <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
         <View style={styles.ctnIcon}>
