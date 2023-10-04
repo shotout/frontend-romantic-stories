@@ -17,6 +17,7 @@ import {sizing} from '../../utils/styling';
 import {ava1} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import ModalShare from '../modal-share';
+import { BACKEND_URL } from '../../shared/static';
 export default function QuotesContent({
   item,
   themeUser,
@@ -26,9 +27,11 @@ export default function QuotesContent({
   fontSize,
   bgTheme,
   bg,
-  fontFamily
+  fontFamily,
+  me,
+  partner
 }) {
-  console.log('INI LOH FONT'+fontFamily)
+  console.log('INI LOH FONT'+me)
   const [showModalShare, setShowModalShare] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const [startEndText, setStartEndText] = useState({start: 0, end: 0});
@@ -109,15 +112,26 @@ export default function QuotesContent({
             alignItems: 'center',
             position: 'absolute',
             bottom: 0,
-            left: '50%',
+            left: '15%',
+            // left: 0,
             justifyContent: 'center',
+            flexDirection: 'row'
           }}>
           <Image
-            source={ava1}
+            source={{ uri: `${BACKEND_URL}/${me}`}}
             resizeMode="contain"
             style={{
               width: 100,
-              height: 200,
+              height: 300,
+              opacity: 0.6,
+            }}
+          />
+          <Image
+            source={{ uri: `${BACKEND_URL}/${partner}`}}
+            resizeMode="contain"
+            style={{
+              width: 100,
+              height: 300,
               opacity: 0.6,
             }}
           />

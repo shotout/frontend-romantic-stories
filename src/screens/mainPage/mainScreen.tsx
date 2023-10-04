@@ -45,7 +45,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
-import {checkDeviceRegister, getStoryList} from '../../shared/request';
+import {checkDeviceRegister, getListAvatarTheme, getStoryList} from '../../shared/request';
 
 const {width, height} = Dimensions.get('window');
 
@@ -63,6 +63,8 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
   const [activeSlide, setActiveSlide] = useState(initialIndexContent);
   const [isUserHasScroll, setUserScrollQuotes] = useState(false);
   // const [dataBook, setBook] = useState(userStory);
+  const [me, setMe] = useState(null)
+  const [partner, setPartner] = useState(null)
 
   const [dataBook, setBook] = useState([
     {
@@ -131,6 +133,27 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
     outputRange: ['0deg', '180deg'],
   });
 
+  const handleThemeAvatar = async() => {
+    let params = {
+      flag: 'book'
+    }
+    try {
+      const data = await getListAvatarTheme(params)
+      if(data?.data){
+        setMe(data?.data?.me)
+        setPartner(data?.data?.partner)
+      }
+    } catch (error) {
+      
+    }
+   
+   
+  }
+
+  useEffect(() => {
+    handleThemeAvatar()
+  }, [])
+
   const renderFactItem = ({item, index, disableAnimation}) => {
     return (
       <QuotesContent
@@ -142,6 +165,8 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
         bgTheme={colorTheme}
         bg={backgroundColor}
         fontFamily={fontFamily}
+        me={me}
+        partner={partner}
       />
 
       // <View style={{ flex: 1 }}>

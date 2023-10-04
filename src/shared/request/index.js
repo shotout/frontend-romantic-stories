@@ -26,6 +26,13 @@ export const getListAvatar = (params = {}) =>
     method: 'get',
     params,
   });
+export const getListAvatarTheme = (params = {}) =>
+  Wrap({
+    url: '/avatar',
+    method: 'get',
+    params,
+  });
+  
 export const getListTheme = () =>
   Wrap({
     url: '/list/themes',
@@ -56,12 +63,12 @@ export const createCollection = data =>
     method: 'POST',
     data,
   });
-  export const deleteMyCollection = (id) =>
+export const deleteMyCollection = id =>
   Wrap({
     url: `/collection/${id}`,
     method: 'DELETE',
   });
-export const updateMyCollection = (data, id) => 
+export const updateMyCollection = (data, id) =>
   Wrap({
     url: `/collection/${id}`,
     method: 'POST',
