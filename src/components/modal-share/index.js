@@ -140,7 +140,7 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
 
   const shareOptions = {
     url: base64CaptureImage.current,
-    message: downloadText,
+    // message: downloadText,
     social: Share.Social.WHATSAPP,
     filename: 'Shared-Short-Story.png',
     title: 'Shared-Short-Story',
