@@ -140,14 +140,21 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
 
   const shareOptions = {
     url: base64CaptureImage.current,
-    // url: captureUri,
     message: downloadText,
     social: Share.Social.WHATSAPP,
-    filename: 'Shared-Short-Story',
+    filename: 'Shared-Short-Story.png',
     title: 'Shared-Short-Story',
   };
   const handleWAShare = async () => {
-    Share.shareSingle(shareOptions);
+    try {
+      console.log('OKEOKE START', shareOptions.url.substring(0, 100));
+      await Share.shareSingle(shareOptions);
+      // await Share.open(shareOptions);
+      console.log('OKEOKE SUCCESS');
+    } catch (err) {
+      console.log('OKEOKE ERROR', err);
+      console.log('Error share whatsapp:', err);
+    }
   };
 
   const handleIGStoryShare = async () => {
