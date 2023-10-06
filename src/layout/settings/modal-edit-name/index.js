@@ -105,7 +105,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
         style={{
           textAlign: 'center',
           fontSize: 16,
-          fontWeight: 400,
+          fontWeight: '400',
           lineHeight: 22,
           marginTop: 30,
         }}>

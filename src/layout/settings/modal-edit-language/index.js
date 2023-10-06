@@ -177,7 +177,7 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
                       color:
                         lang === item.id ? code_color.splash : code_color.grey,
                       fontSize: 14,
-                      fontWeight: 600,
+                      fontWeight: '600',
                       fontFamily: 'Roboto',
                       textAlign: 'center',
                       marginTop: 10,

@@ -76,7 +76,7 @@ export default StyleSheet.create({
   },
   textQuote: {
     fontSize: moderateScale(18),
-    fontWeight: 400,
+    fontWeight: '400',
     marginHorizontal: moderateScale(20),
     lineHeight: moderateScale(34),
     marginTop: moderateScale(40),
@@ -97,7 +97,7 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: moderateScale(16),
-    fontWeight: 400,
+    fontWeight: '400',
     color: code_color.white,
     lineHeight: 20,
   },

@@ -112,7 +112,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
         <Text
           style={{
             color: code_color.grey,
-            fontWeight: 400,
+            fontWeight: '400',
             fontSize: 18,
             textAlign: 'center',
             marginVertical: 20,

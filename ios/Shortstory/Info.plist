@@ -39,6 +39,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Our application needs permission to share images.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Our application needs to access library to share images.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comfortaa-SemiBold.ttf</string>
