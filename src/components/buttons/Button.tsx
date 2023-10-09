@@ -5,7 +5,7 @@ import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../utils/colors';
 
-export default function Button({style, onPress, title}) {
+export default function Button({style, onPress, title, colorsText}) {
   return (
     <>
       <TouchableOpacity
@@ -27,7 +27,7 @@ export default function Button({style, onPress, title}) {
         }>
         <Text
           allowFontScaling={false}
-          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: 15}}>
+          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: 15, color: !!colorsText ? colorsText : code_color.black}}>
           {title}
         </Text>
       </TouchableOpacity>

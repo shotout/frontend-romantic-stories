@@ -147,7 +147,7 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
   };
   const handleWAShare = async () => {
     try {
-      console.log('OKEOKE START', shareOptions.url.substring(0, 100));
+      // console.log('OKEOKE START', shareOptions.url.substring(0, 100));
       await Share.shareSingle(shareOptions);
       // await Share.open(shareOptions);
       console.log('OKEOKE SUCCESS');

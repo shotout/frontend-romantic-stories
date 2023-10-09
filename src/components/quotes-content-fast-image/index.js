@@ -87,7 +87,7 @@ export default function QuotesContent({
     <View
       style={{
         position: 'relative',
-        paddingHorizontal: 30,
+        paddingHorizontal: 2,
         paddingTop: 30,
         flex: 1,
       }}>
@@ -139,7 +139,6 @@ export default function QuotesContent({
         <Text
           allowFontScaling={false}
           style={{
-            marginHorizontal: 50,
             textAlign: 'center',
             fontWeight: 'bold',
             fontSize: Number(fontSize),
