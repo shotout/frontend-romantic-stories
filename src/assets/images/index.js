@@ -21,3 +21,7 @@ export const bgShare1 = require('./bg_share_1.png');
 export const bgShare2 = require('./bg_share_2.jpeg');
 export const bgShare3 = require('./bg_share_3.jpeg');
 export const bgShare4 = require('./bg_share_4.jpeg');
+export const imgUnlock = require('./unlockImg.png')
+export const imgCongrats = require('./iconCongrats.png')
+export const imgLoveLeft = require('./iconLoveLeft.png')
+export const imgLoveRight = require('./iconLoveRight.png')

@@ -46,11 +46,14 @@ import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import {checkDeviceRegister, getListAvatarTheme, getStoryList} from '../../shared/request';
+import ModalStoryUnlock from '../../components/modal-story-unlock';
+import ModalCongrats from '../../components/modal-congrats';
 
 const {width, height} = Dimensions.get('window');
 
 const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroundColor, colorTheme, fontFamily}) => {
-  console.log('INI FONT'+JSON.stringify(fontFamily));
+  const [showModal, setShowModal] = useState(true);
+  const [showModalCongrats, setShowModalCongrats] = useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -84,11 +87,16 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
       Math.max(Math.floor(e.nativeEvent.contentOffset.y / height + 0.5) + 1, 0),
-      dataBook?.data?.length || 0,
+      dataBook?.length || 0,
     );
+    if(pageNumber === dataBook?.length - 1){
+      setShowModalCongrats(true)
+    }
+   
     setActiveSlide(pageNumber - 1);
     startAnimation();
     handleLoadMore(pageNumber);
+   
     if (pageNumber - 1 !== activeSlide && !isUserHasScroll) {
       setUserScrollQuotes(true);
     }
@@ -253,7 +261,8 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
           // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
       /> */}
-
+      <ModalStoryUnlock isVisible={showModal} onClose={() => setShowModal(false)} />
+      <ModalCongrats isVisible={showModalCongrats} onClose={() => setShowModalCongrats(false)} />
       {renderFlatList()}
     </View>
   );
