@@ -95,19 +95,22 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
               padding: 10,
               height: '100%',
             }}>
-              
             <View style={{backgroundColor: code_color.blueDark, flex: 1}}>
-            <Pressable
+              <Pressable
                 onPress={() => handleClose()}
-                style={{alignItems: 'flex-end', paddingRight: 20, paddingTop: 20}}>
+                style={{
+                  alignItems: 'flex-end',
+                  paddingRight: 20,
+                  paddingTop: 20,
+                }}>
                 <CloseSvg width={15} height={15} fill={code_color.white} />
               </Pressable>
               <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
-                <View style={{ flexDirection: 'column'}}>
-                <Image
+                <View style={{flexDirection: 'column'}}>
+                  <Image
                     source={imgCongrats}
                     resizeMode="contain"
-                    style={{width: '100%', height: '40%', }}
+                    style={{width: '100%', height: '45%'}}
                   />
                   <Image
                     source={imgLoveLeft}
@@ -117,11 +120,10 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                       height: 100,
                       position: 'absolute',
                       left: -10,
-                      bottom:120,
-                    
+                      bottom: 120,
                     }}
                   />
-                 
+
                   <Image
                     source={imgLoveRight}
                     resizeMode="contain"
@@ -130,49 +132,93 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                       height: 100,
                       position: 'absolute',
                       right: -12,
-                      bottom:120,
+                      bottom: 120,
                     }}
                   />
                 </View>
               </View>
-           
             </View>
-            <View style={{ backgroundColor: code_color.white, borderTopLeftRadius: 70, borderTopRightRadius: 70, position: 'absolute', top: '28%', left: 0, width: '100%', flex: 1 , height: '100%', alignItems: 'center'}}>
+            <View
+              style={{
+                backgroundColor: code_color.white,
+                borderTopLeftRadius: 70,
+                borderTopRightRadius: 70,
+                position: 'absolute',
+                top: '33%',
+                left: 0,
+                width: '100%',
+                flex: 1,
+                height: '100%',
+                alignItems: 'center',
+              }}>
               <View style={{marginTop: 100}}>
-              <ProgressBar progress={50} />
-              <Text
-                    style={{
-                      color: code_color.grey,
-                      marginTop: 10,
-                      fontSize: 12,
-                    }}>
-                   Earn more XP by reading stories and to level up. The higher your rank, the more exciting stories are coming up for you! Stay tuned for more exclusive features for our Experienced Members!
-                  </Text>
-              </View>
-             
-                
-                    
-                   
-                 
-                
-               
-
-                <Button
-                  title={'Got it'}
+                <View
                   style={{
-                    backgroundColor: code_color.yellow,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    // height: 52,
-                    padding: 10,
-                    borderRadius: 8,
-                    width: '90%',
-                    marginTop: 20,
-                  }}
-                 
-                  onPress={() => handleClose()}
-                />
+                    backgroundColor: '#FFD12F',
+                    flexDirection: 'row',
+                    marginHorizontal: 20,
+                    marginBottom: 20,
+                    padding: 30,
+                    borderRadius: 10,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.22,
+                    shadowRadius: 2.22,
+
+                    elevation: 3,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: code_color.blueDark,
+                      padding: 10,
+                      position: 'absolute',
+                      top: -15,
+                      left: '25%',
+                      right: 0,
+                      width: 200,
+                      alignItems: 'center',
+                      borderRadius: 15,
+                    }}>
+                    <Text style={{color: code_color.white}}>Username</Text>
+                  </View>
+                  <Text>10 XP</Text>
+                  <Text>Heartfelt Adventurer </Text>
+                </View>
+                <ProgressBar progress={50} />
+                <Text
+                  style={{
+                    color: code_color.grey,
+                    marginTop: 10,
+                    fontSize: 14,
+                    marginHorizontal: 30,
+                    lineHeight: 24,
+                    textAlign: 'center'
+                  }}>
+                  Earn more XP by reading stories and to level up. The higher
+                  your rank, the more exciting stories are coming up for you!
+                  Stay tuned for more exclusive features for our Experienced
+                  Members!
+                </Text>
               </View>
+
+              <Button
+                title={'Got it'}
+                style={{
+                  backgroundColor: code_color.yellow,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // height: 52,
+                  padding: 10,
+                  borderRadius: 8,
+                  width: '90%',
+                  marginTop: 20,
+                }}
+                onPress={() => handleClose()}
+              />
+            </View>
           </SafeAreaView>
         </View>
       </View>
