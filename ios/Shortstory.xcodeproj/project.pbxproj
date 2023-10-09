@@ -45,10 +45,10 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Shortstory/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Shortstory/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shortstory/main.m; sourceTree = "<group>"; };
-		1A5234CF88604F0EB6CCBA72 /* GentiumBookPlus-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "GentiumBookPlus-Regular.ttf"; path = "../src/assets/fonts/GentiumBookPlus-Regular.ttf"; sourceTree = "<group>"; };
+		1A5234CF88604F0EB6CCBA72 /* GentiumBookPlus-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GentiumBookPlus-Regular.ttf"; path = "../src/assets/fonts/GentiumBookPlus-Regular.ttf"; sourceTree = "<group>"; };
 		1CBDFFC3A15942679B55B0FA /* Comfortaa-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-SemiBold.ttf"; path = "../src/assets/fonts/Comfortaa-SemiBold.ttf"; sourceTree = "<group>"; };
-		2EF4997D8DA348309D6C054D /* BigshotOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BigshotOne-Regular.ttf"; path = "../src/assets/fonts/BigshotOne-Regular.ttf"; sourceTree = "<group>"; };
-		5373F7039CE844A98071B22E /* Arialn.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Arialn.ttf; path = ../src/assets/fonts/Arialn.ttf; sourceTree = "<group>"; };
+		2EF4997D8DA348309D6C054D /* BigshotOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "BigshotOne-Regular.ttf"; path = "../src/assets/fonts/BigshotOne-Regular.ttf"; sourceTree = "<group>"; };
+		5373F7039CE844A98071B22E /* Arialn.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Arialn.ttf; path = ../src/assets/fonts/Arialn.ttf; sourceTree = "<group>"; };
 		6FBA2F5EFE826AA2F89587D9 /* Pods-Shortstory-ShortstoryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shortstory-ShortstoryTests.debug.xcconfig"; path = "Target Support Files/Pods-Shortstory-ShortstoryTests/Pods-Shortstory-ShortstoryTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Shortstory/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		845DE3712A8CBA0E00951DEC /* libFlipperKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFlipperKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,7 +60,7 @@
 		84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84A9975E2AAB2774008CB946 /* Shortstory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Shortstory.entitlements; path = Shortstory/Shortstory.entitlements; sourceTree = "<group>"; };
 		B33B9A70A3AE954B034B5957 /* Pods-Shortstory-ShortstoryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shortstory-ShortstoryTests.release.xcconfig"; path = "Target Support Files/Pods-Shortstory-ShortstoryTests/Pods-Shortstory-ShortstoryTests.release.xcconfig"; sourceTree = "<group>"; };
-		DF1C6CD91BF24E12B75BDFFE /* GeorgiaEstate-w15Mn.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "GeorgiaEstate-w15Mn.ttf"; path = "../src/assets/fonts/GeorgiaEstate-w15Mn.ttf"; sourceTree = "<group>"; };
+		DF1C6CD91BF24E12B75BDFFE /* GeorgiaEstate-w15Mn.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GeorgiaEstate-w15Mn.ttf"; path = "../src/assets/fonts/GeorgiaEstate-w15Mn.ttf"; sourceTree = "<group>"; };
 		DF894184A503BA0D4FD57C6C /* libPods-Shortstory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shortstory.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE4CDC753B64D2639E8A474 /* libPods-Shortstory-ShortstoryTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shortstory-ShortstoryTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -549,7 +549,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -580,7 +580,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Shortstory/Info.plist;

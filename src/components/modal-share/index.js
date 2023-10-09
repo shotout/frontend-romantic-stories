@@ -72,17 +72,16 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
   };
 
   useEffect(() => {
-    if (captureUri) {
-      RNFS.readFile(captureUri, 'base64').then(res => {
-        const base64File = `data:image/png;base64,${res}`;
-        base64CaptureImage.current = base64File;
-      });
+    if (!isVisible) {
+      base64CaptureImage.current = null;
     }
-  }, [captureUri]);
+  }, [isVisible]);
 
   useEffect(() => {
     if (isVisible) {
-      handleShare();
+      setTimeout(async () => {
+        handleShare();
+      }, 1000);
     }
   }, [isVisible]);
 
@@ -114,8 +113,8 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
     }
   };
 
-  const handleScreenshot = () => {
-    captureRef.current
+  const handleScreenshot = async () => {
+    await captureRef.current
       .capture()
       .then(uri => {
         const uriArray = uri.split('/');
@@ -128,6 +127,11 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
         RNFS.copyFile(uri, renamedURI)
           .then(async () => {
             setCaptureUri(renamedURI);
+            RNFS.readFile(renamedURI, 'base64').then(res => {
+              const base64File = `data:image/png;base64,${res}`;
+              base64CaptureImage.current = base64File;
+              console.log('OKEOKE GASS', base64File.substring(0, 100));
+            });
           })
           .catch(err => {
             console.log('Error:', err.message);
@@ -138,21 +142,15 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
       });
   };
 
-  const shareOptions = {
-    url: base64CaptureImage.current,
-    // message: downloadText,
-    social: Share.Social.WHATSAPP,
-    filename: 'Shared-Short-Story.png',
-    title: 'Shared-Short-Story',
-  };
   const handleWAShare = async () => {
     try {
-      console.log('OKEOKE START', shareOptions.url.substring(0, 100));
-      await Share.shareSingle(shareOptions);
-      // await Share.open(shareOptions);
-      console.log('OKEOKE SUCCESS');
+      // await Share.shareSingle(shareOptions);
+      console.log('OKEOKE YAP', base64CaptureImage.current.substring(0, 100));
+      await Share.open({
+        url: base64CaptureImage.current,
+        title: 'Shared-Short-Story',
+      });
     } catch (err) {
-      console.log('OKEOKE ERROR', err);
       console.log('Error share whatsapp:', err);
     }
   };
@@ -213,27 +211,6 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
     }
   };
 
-  function renderScreenshot() {
-    return (
-      <ViewShot
-        // style={styles.ctnViewShot}
-        style={{
-          position: 'absolute',
-          top: sizing.getDimensionHeight(-100),
-          backgroundColor: code_color.white,
-          height: 'auto',
-        }}
-        ref={captureRef}
-        options={{
-          fileName: `Shortstory${Date.now()}`,
-          format: 'png',
-          quality: 1.0,
-        }}>
-        {renderShareContent()}
-      </ViewShot>
-    );
-  }
-
   function renderCard() {
     return (
       <View style={styles.rowCard}>
@@ -268,29 +245,6 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
     );
   }
 
-  const renderShareContent = () => {
-    return (
-      <>
-        <Image
-          source={selectedBg}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            borderRadius: 24,
-            resizeMode: 'cover',
-          }}
-        />
-        <View style={styles.overlay} />
-        <Text style={{...styles.textQuote, fontFamily: fontSelect.value}}>
-          <Text style={styles.blur}>{start}</Text> {selectedContent}{' '}
-          <Text style={styles.blur}>{end}</Text>
-        </Text>
-        <Text style={styles.textMarker}>@EroTales</Text>
-      </>
-    );
-  };
-
   return (
     <>
       <Modal
@@ -298,20 +252,23 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
         animationType="slide"
         transparent
         onDismiss={handleClose}>
-        {renderScreenshot()}
         <View style={styles.ctnContent}>
           <View style={styles.row}>
             <Text style={styles.textTitle}>Share Quote</Text>
             <TouchableOpacity onPress={handleClose}>
               <CloseIcon fill={code_color.white} />
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={handleShare}>
-              <CloseIcon fill={code_color.white} />
-            </TouchableOpacity> */}
           </View>
           <ScrollView style={{flex: 1, width: '100%'}} horizontal={false}>
             <View style={{flex: 1, alignItems: 'center'}}>
-              <View style={styles.conQuote}>
+              <ViewShot
+                style={styles.conQuote}
+                ref={captureRef}
+                options={{
+                  fileName: `Shortstory${Date.now()}`,
+                  format: 'png',
+                  quality: 1.0,
+                }}>
                 <Image
                   source={selectedBg}
                   style={{
@@ -329,7 +286,7 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
                   <Text style={styles.blur}>{end}</Text>
                 </Text>
                 <Text style={styles.textMarker}>@EroTales</Text>
-              </View>
+              </ViewShot>
               <View style={styles.conFont}>
                 <Text style={styles.title}>CHANGE FONT</Text>
                 <View style={{flexDirection: 'row'}}>
