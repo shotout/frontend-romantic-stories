@@ -33,6 +33,7 @@ import CloseSvg from '../../assets/icons/close';
 import ChecklistSvg from '../../assets/icons/checklist';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
+import ProgressBar from '../ProgressBar';
 
 function ModalCongrats({isVisible, onClose, restart, edit, data}) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
@@ -94,14 +95,20 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
               padding: 10,
               height: '100%',
             }}>
+              
             <View style={{backgroundColor: code_color.blueDark, flex: 1}}>
-              <Pressable
+            <Pressable
                 onPress={() => handleClose()}
-                style={{alignItems: 'flex-end', marginRight: 20}}>
-                <CloseSvg width={15} height={15} />
+                style={{alignItems: 'flex-end', paddingRight: 20, paddingTop: 20}}>
+                <CloseSvg width={15} height={15} fill={code_color.white} />
               </Pressable>
               <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
-                <View>
+                <View style={{ flexDirection: 'column'}}>
+                <Image
+                    source={imgCongrats}
+                    resizeMode="contain"
+                    style={{width: '100%', height: '40%', }}
+                  />
                   <Image
                     source={imgLoveLeft}
                     resizeMode="contain"
@@ -110,14 +117,11 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                       height: 100,
                       position: 'absolute',
                       left: -10,
-                      bottom: 0,
+                      bottom:120,
+                    
                     }}
                   />
-                  <Image
-                    source={imgCongrats}
-                    resizeMode="contain"
-                    style={{width: '100%', height: '40%'}}
-                  />
+                 
                   <Image
                     source={imgLoveRight}
                     resizeMode="contain"
@@ -126,71 +130,37 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                       height: 100,
                       position: 'absolute',
                       right: -12,
-                      bottom: 0,
+                      bottom:120,
                     }}
                   />
                 </View>
-
-                <Text
-                  style={{
-                    color: code_color.blackDark,
-                    marginTop: 10,
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                  }}>
-                  New Story Unlocked
-                </Text>
-                <View
-                  style={{
-                    backgroundColor: '#F5F5F6',
-                    width: '90%',
-                    alignItems: 'center',
-                    padding: 10,
-                    marginTop: 20,
-                    borderRadius: 10,
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Image
-                      source={cover1}
-                      resizeMode="contain"
-                      style={{width: 100, height: 100}}
-                    />
-                    <View style={{width: '70%'}}>
-                      <Text
-                        style={{
-                          color: code_color.blueDark,
-                          marginTop: 10,
-                          fontWeight: 'bold',
-                          fontSize: 14,
-                        }}>
-                        [Suggested story this user never read before]
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#3F58DD',
-                          marginTop: 10,
-                          fontSize: 12,
-                        }}>
-                        [Story category]
-                      </Text>
-                    </View>
-                  </View>
-                  <Text
+              </View>
+           
+            </View>
+            <View style={{ backgroundColor: code_color.white, borderTopLeftRadius: 70, borderTopRightRadius: 70, position: 'absolute', top: '28%', left: 0, width: '100%', flex: 1 , height: '100%', alignItems: 'center'}}>
+              <View style={{marginTop: 100}}>
+              <ProgressBar progress={50} />
+              <Text
                     style={{
                       color: code_color.grey,
                       marginTop: 10,
                       fontSize: 12,
                     }}>
-                    Lorem ipsum dolor sit amet consectetur. Pretium consequat
-                    odio ornare aliquet curabitur tincidunt ipsum. Nisi lectus a
-                    si...
+                   Earn more XP by reading stories and to level up. The higher your rank, the more exciting stories are coming up for you! Stay tuned for more exclusive features for our Experienced Members!
                   </Text>
-                </View>
+              </View>
+             
+                
+                    
+                   
+                 
+                
+               
 
                 <Button
-                  title={'Start reading'}
+                  title={'Got it'}
                   style={{
-                    backgroundColor: '#009A37',
+                    backgroundColor: code_color.yellow,
                     alignItems: 'center',
                     justifyContent: 'center',
                     // height: 52,
@@ -199,11 +169,10 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                     width: '90%',
                     marginTop: 20,
                   }}
-                  colorsText={code_color.white}
+                 
                   onPress={() => handleClose()}
                 />
               </View>
-            </View>
           </SafeAreaView>
         </View>
       </View>
