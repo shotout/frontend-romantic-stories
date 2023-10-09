@@ -152,7 +152,7 @@ function ModalUnlockStory({isVisible, onClose, restart, edit, data}) {
                   marginTop: 20
                 }}
                 colorsText={code_color.white}
-                onPress={() => handleClose()}
+                onPress={() => handleClose  ()}
               />
             </View>
           </View>
