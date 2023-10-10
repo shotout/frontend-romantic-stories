@@ -53,6 +53,7 @@ import {
 import ModalStoryUnlock from '../../components/modal-story-unlock';
 import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
+import ModalSuccessPurchase from '../../components/modal-success-purchase';
 
 const {width, height} = Dimensions.get('window');
 
@@ -65,9 +66,11 @@ const MainScreen = ({
   colorTheme,
   fontFamily,
 }) => {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
+  const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
+    useState(true);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -288,6 +291,19 @@ const MainScreen = ({
       <ModalNewStory
         isVisible={showModalNewStory}
         onClose={() => setShowModalNewStory(false)}
+        onWatchAds={() => {
+          setShowModal(true);
+          setShowModalNewStory(false);
+        }}
+        onUnlock={() => {
+          setShowModalSuccessPurchase(true);
+          setShowModalNewStory(false);
+        }}
+        onGetUnlimit={() => null}
+      />
+      <ModalSuccessPurchase
+        isVisible={showModalSuccessPurchase}
+        onClose={() => setShowModalSuccessPurchase(false)}
       />
       {renderFlatList()}
     </View>

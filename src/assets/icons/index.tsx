@@ -10,3 +10,4 @@ export const love = require('./love.png');
 export const paper = require('./paper.png');
 export const settings = require('./settings.png');
 export const book = require('./book.png');
+export const successPurchase = require('./successPurchase.png');

@@ -14,7 +14,13 @@ import {book} from '../../assets/icons';
 import WatchIcon from '../../assets/icons/watch';
 import BookLockIcon from '../../assets/icons/bookLock';
 
-function ModalNewStory({isVisible, onClose}) {
+function ModalNewStory({
+  isVisible,
+  onClose,
+  onWatchAds,
+  onUnlock,
+  onGetUnlimit,
+}) {
   const handleClose = () => {
     onClose();
   };
@@ -193,6 +199,7 @@ function ModalNewStory({isVisible, onClose}) {
                   UNLIMITED to unlock everything.
                 </Text>
                 <Pressable
+                  onPress={onWatchAds}
                   style={{
                     backgroundColor: '#ED5267',
                     width: '90%',
@@ -224,6 +231,7 @@ function ModalNewStory({isVisible, onClose}) {
                   </Text>
                 </Pressable>
                 <Pressable
+                  onPress={onUnlock}
                   style={{
                     backgroundColor: '#009A37',
                     width: '90%',
@@ -276,6 +284,7 @@ function ModalNewStory({isVisible, onClose}) {
                   />
                 </View>
                 <Pressable
+                  onPress={onGetUnlimit}
                   style={{
                     backgroundColor: '#ADC3D2',
                     width: '90%',
@@ -332,6 +341,9 @@ function ModalNewStory({isVisible, onClose}) {
 ModalNewStory.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onWatchAds: PropTypes.func,
+  onUnlock: PropTypes.func,
+  onGetUnlimit: PropTypes.func,
 };
 
 ModalNewStory.defaultProps = {};
