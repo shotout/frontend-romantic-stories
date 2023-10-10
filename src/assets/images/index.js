@@ -17,6 +17,7 @@ export const cover1 = require('./cover1.png');
 export const cover2 = require('./cover2.png');
 export const libraryAdd = require('./libraryAdd.png');
 export const bgSettings = require('./bg_settings.png');
+export const bgNewStory = require('./bg_new_story.png');
 export const bgShare1 = require('./bg_share_1.png');
 export const bgShare2 = require('./bg_share_2.jpeg');
 export const bgShare3 = require('./bg_share_3.jpeg');

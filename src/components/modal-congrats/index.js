@@ -35,7 +35,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
 import ProgressBar from '../ProgressBar';
 
-function ModalCongrats({isVisible, onClose, restart, edit, data}) {
+function ModalCongrats({isVisible, onClose, onGotIt, restart, edit, data}) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
@@ -195,7 +195,7 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                     fontSize: 14,
                     marginHorizontal: 30,
                     lineHeight: 24,
-                    textAlign: 'center'
+                    textAlign: 'center',
                   }}>
                   Earn more XP by reading stories and to level up. The higher
                   your rank, the more exciting stories are coming up for you!
@@ -216,7 +216,7 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
                   width: '90%',
                   marginTop: 20,
                 }}
-                onPress={() => handleClose()}
+                onPress={() => onGotIt()}
               />
             </View>
           </SafeAreaView>
@@ -229,6 +229,7 @@ function ModalCongrats({isVisible, onClose, restart, edit, data}) {
 ModalCongrats.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onGotIt: PropTypes.func.isRequired,
 };
 
 ModalCongrats.defaultProps = {};

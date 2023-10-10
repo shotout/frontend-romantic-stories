@@ -45,15 +45,29 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
-import {checkDeviceRegister, getListAvatarTheme, getStoryList} from '../../shared/request';
+import {
+  checkDeviceRegister,
+  getListAvatarTheme,
+  getStoryList,
+} from '../../shared/request';
 import ModalStoryUnlock from '../../components/modal-story-unlock';
 import ModalCongrats from '../../components/modal-congrats';
+import ModalNewStory from '../../components/modal-new-story';
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroundColor, colorTheme, fontFamily}) => {
+const MainScreen = ({
+  userProfile,
+  userStory,
+  handleSetStory,
+  fontSize,
+  backgroundColor,
+  colorTheme,
+  fontFamily,
+}) => {
   const [showModal, setShowModal] = useState(true);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
+  const [showModalNewStory, setShowModalNewStory] = useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -66,21 +80,23 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
   const [activeSlide, setActiveSlide] = useState(initialIndexContent);
   const [isUserHasScroll, setUserScrollQuotes] = useState(false);
   // const [dataBook, setBook] = useState(userStory);
-  const [me, setMe] = useState(null)
-  const [partner, setPartner] = useState(null)
+  const [me, setMe] = useState(null);
+  const [partner, setPartner] = useState(null);
 
   const [dataBook, setBook] = useState([
     {
       title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
-      detail: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum`,
+      detail:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
     {
       title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
-      detail: `hemmm`,
+      detail: 'hemmm',
     },
     {
       title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
-      detail: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum`,
+      detail:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
   ]);
   const onMomentoumScrollEnd = e => {
@@ -89,14 +105,14 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
       Math.max(Math.floor(e.nativeEvent.contentOffset.y / height + 0.5) + 1, 0),
       dataBook?.length || 0,
     );
-    if(pageNumber === dataBook?.length - 1){
-      setShowModalCongrats(true)
+    if (pageNumber === dataBook?.length - 1) {
+      setShowModalCongrats(true);
     }
-   
+
     setActiveSlide(pageNumber - 1);
     startAnimation();
     handleLoadMore(pageNumber);
-   
+
     if (pageNumber - 1 !== activeSlide && !isUserHasScroll) {
       setUserScrollQuotes(true);
     }
@@ -141,26 +157,22 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
     outputRange: ['0deg', '180deg'],
   });
 
-  const handleThemeAvatar = async() => {
+  const handleThemeAvatar = async () => {
     let params = {
-      flag: 'book'
-    }
+      flag: 'book',
+    };
     try {
-      const data = await getListAvatarTheme(params)
-      if(data?.data){
-        setMe(data?.data?.me)
-        setPartner(data?.data?.partner)
+      const data = await getListAvatarTheme(params);
+      if (data?.data) {
+        setMe(data?.data?.me);
+        setPartner(data?.data?.partner);
       }
-    } catch (error) {
-      
-    }
-   
-   
-  }
+    } catch (error) {}
+  };
 
   useEffect(() => {
-    handleThemeAvatar()
-  }, [])
+    handleThemeAvatar();
+  }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {
     return (
@@ -261,8 +273,22 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
           // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
       /> */}
-      <ModalStoryUnlock isVisible={showModal} onClose={() => setShowModal(false)} />
-      <ModalCongrats isVisible={showModalCongrats} onClose={() => setShowModalCongrats(false)} />
+      <ModalStoryUnlock
+        isVisible={showModal}
+        onClose={() => setShowModal(false)}
+      />
+      <ModalCongrats
+        isVisible={showModalCongrats}
+        onClose={() => setShowModalCongrats(false)}
+        onGotIt={() => {
+          setShowModalCongrats(false);
+          setShowModalNewStory(true);
+        }}
+      />
+      <ModalNewStory
+        isVisible={showModalNewStory}
+        onClose={() => setShowModalNewStory(false)}
+      />
       {renderFlatList()}
     </View>
   );
