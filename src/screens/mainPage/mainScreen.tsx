@@ -279,6 +279,7 @@ const MainScreen = ({
       <ModalStoryUnlock
         isVisible={showModal}
         onClose={() => setShowModal(false)}
+        isPremium={true}
       />
       <ModalCongrats
         isVisible={showModalCongrats}

@@ -19,10 +19,16 @@ import BackLeft from '../../assets/icons/bottom/backLeft';
 import {code_color} from '../../utils/colors';
 import {
   cover1,
+  imgAvaXp,
   imgCongrats,
+  imgGift1,
+  imgGift2,
+  imgInfo,
   imgLoveLeft,
   imgLoveRight,
+  imgStar,
   imgUnlock,
+  imgXp,
   libraryAdd,
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
@@ -63,6 +69,81 @@ function ModalCongrats({isVisible, onClose, onGotIt, restart, edit, data}) {
         } catch (error) {}
       }
     }
+  };
+
+  const renderIconTopCard = () => {
+    return (
+      <>
+        <Image
+          source={imgGift1}
+          resizeMode="contain"
+          style={{
+            width: 100,
+            height: 100,
+            position: 'absolute',
+            left: 50,
+            bottom: 70,
+          }}
+        />
+        <Image
+          source={imgGift2}
+          resizeMode="contain"
+          style={{
+            width: 80,
+            height: 80,
+            position: 'absolute',
+            right: 70,
+            bottom: 80,
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: code_color.blueDark,
+            padding: 10,
+            position: 'absolute',
+            top: -15,
+            left: '25%',
+            right: 0,
+            width: 200,
+            alignItems: 'center',
+            borderRadius: 15,
+          }}>
+          <Text
+            style={{
+              color: code_color.white,
+              fontWeight: 'bold',
+            }}>
+            Username
+          </Text>
+        </View>
+        <Image
+          source={imgAvaXp}
+          resizeMode="contain"
+          style={{
+            width: 80,
+            height: 80,
+            position: 'absolute',
+            right: '49%',
+            bottom: 100,
+            borderRadius: 100,
+            borderColor: code_color.blueDark,
+            borderWidth: 5,
+          }}
+        />
+        <Image
+          source={imgInfo}
+          resizeMode="contain"
+          style={{
+            width: 20,
+            height: 20,
+            marginRight: 10,
+            position: 'absolute',
+            top: 10,
+            right: 0,
+          }}
+        />
+      </>
+    );
   };
 
   return (
@@ -167,31 +248,61 @@ function ModalCongrats({isVisible, onClose, onGotIt, restart, edit, data}) {
                     },
                     shadowOpacity: 0.22,
                     shadowRadius: 2.22,
-
                     elevation: 3,
                   }}>
+                  {renderIconTopCard()}
+
                   <View
                     style={{
-                      backgroundColor: code_color.blueDark,
-                      padding: 10,
-                      position: 'absolute',
-                      top: -15,
-                      left: '25%',
-                      right: 0,
-                      width: 200,
+                      flexDirection: 'row',
                       alignItems: 'center',
-                      borderRadius: 15,
+                      flex: 1,
                     }}>
-                    <Text style={{color: code_color.white}}>Username</Text>
+                    <Image
+                      source={imgStar}
+                      resizeMode="contain"
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10,
+                      }}
+                    />
+                    <Text style={{fontWeight: 'bold', fontSize: 25}}>
+                      10{' '}
+                      <Text style={{fontWeight: 'bold', fontSize: 18}}>XP</Text>
+                    </Text>
                   </View>
-                  <Text>10 XP</Text>
-                  <Text>Heartfelt Adventurer </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      source={imgXp}
+                      resizeMode="contain"
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                      }}>{`Heartfelt \nAdventure`}</Text>
+                  </View>
                 </View>
-                <ProgressBar progress={50} />
+
+                <View style={{marginLeft: '30%', marginTop: 20}}>
+                  <ProgressBar progress={20} />
+                </View>
+
                 <Text
                   style={{
                     color: code_color.grey,
-                    marginTop: 10,
+                    marginTop: 40,
                     fontSize: 14,
                     marginHorizontal: 30,
                     lineHeight: 24,
