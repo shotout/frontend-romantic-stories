@@ -46,6 +46,7 @@ function ModalUnlockStory({
   isPremium,
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
+  const [premium, setPremium] = useState(true);
   const handleClose = () => {
     onClose();
   };
@@ -73,7 +74,6 @@ function ModalUnlockStory({
       }
     }
   };
-
   const renderPremium = () => {
     return (
       <View
@@ -187,7 +187,7 @@ function ModalUnlockStory({
                 marginBottom: moderateScale(10),
               }}
             />
-           
+
             <TouchableOpacity
               onPress={onClose}
               style={{
@@ -197,7 +197,7 @@ function ModalUnlockStory({
                 alignItems: 'center',
                 borderRadius: 8,
                 width: '80%',
-                marginBottom: 10
+                marginBottom: 10,
               }}>
               <Reading
                 style={{position: 'absolute', left: '15%', top: '40%'}}
@@ -211,19 +211,32 @@ function ModalUnlockStory({
                 Start reading
               </Text>
             </TouchableOpacity>
-            <View style={{backgroundColor: '#F0F2FF', width: '100%', borderRadius: 10, paddingBottom: 10}}>
+            <View
+              style={{
+                backgroundColor: '#F0F2FF',
+                width: '100%',
+                borderRadius: 10,
+                paddingBottom: 10,
+              }}>
               <Text
                 style={{
                   color: code_color.black,
                   fontWeight: 500,
                   fontSize: moderateScale(16),
                   textAlign: 'center',
-                  marginVertical: 10
+                  marginVertical: 10,
                 }}>
                 Other Stories you might like:
               </Text>
               <View style={{flexDirection: 'row'}}>
-              <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10}}>
+                <Pressable
+                  onPress={() => setPremium(false)}
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginHorizontal: 10,
+                  }}>
                   <Image
                     source={cover1}
                     resizeMode="contain"
@@ -238,13 +251,15 @@ function ModalUnlockStory({
                       color: code_color.black,
                       fontWeight: 500,
                       fontSize: moderateScale(14),
-                      textAlign: 'center'
+                      textAlign: 'center',
                     }}>
                     Title of the Story A
                   </Text>
-                </View>
+                </Pressable>
 
-                <View style={{flex: 1, alignItems: 'center',  marginHorizontal: 10}}>
+                <Pressable
+                  onPress={() => setPremium(false)}
+                  style={{flex: 1, alignItems: 'center', marginHorizontal: 10}}>
                   <Image
                     source={cover1}
                     resizeMode="contain"
@@ -259,12 +274,14 @@ function ModalUnlockStory({
                       color: code_color.black,
                       fontWeight: 500,
                       fontSize: moderateScale(14),
-                      textAlign: 'center'
+                      textAlign: 'center',
                     }}>
                     Title of the Story A
                   </Text>
-                </View>
-                <View style={{flex: 1, alignItems: 'center',  marginHorizontal: 10}}>
+                </Pressable>
+                <Pressable
+                  onPress={() => setPremium(false)}
+                  style={{flex: 1, alignItems: 'center', marginHorizontal: 10}}>
                   <Image
                     source={cover1}
                     resizeMode="contain"
@@ -279,46 +296,43 @@ function ModalUnlockStory({
                       color: code_color.black,
                       fontWeight: 500,
                       fontSize: moderateScale(14),
-                      textAlign: 'center'
+                      textAlign: 'center',
                     }}>
                     Title of the Story A
                   </Text>
-                </View>
+                </Pressable>
               </View>
 
               <TouchableOpacity
-              onPress={onClose}
-              style={{
-                backgroundColor: code_color.yellow,
-                marginTop: moderateScale(20),
-                padding: moderateScale(8),
-                alignItems: 'center',
-                borderRadius: 8,
-                width: '85%',
-                marginHorizontal: moderateScale(20),
-                marginBottom: 10,
-                flexDirection: 'row',
-                justifyContent: 'center'
-              }}>
-              <LibrarySvg
-               fill={code_color.black}
-              />
-              <Text
+                onPress={onClose}
                 style={{
-                  color: code_color.black,
-                  fontWeight: 500,
-                  fontSize: moderateScale(14),
+                  backgroundColor: code_color.yellow,
+                  marginTop: moderateScale(20),
+                  padding: moderateScale(8),
+                  alignItems: 'center',
+                  borderRadius: 8,
+                  width: '85%',
+                  marginHorizontal: moderateScale(20),
+                  marginBottom: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}>
-                Explore more Stories
-              </Text>
-            </TouchableOpacity>
+                <LibrarySvg fill={code_color.black} />
+                <Text
+                  style={{
+                    color: code_color.black,
+                    fontWeight: 500,
+                    fontSize: moderateScale(14),
+                  }}>
+                  Explore more Stories
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
       </View>
     );
   };
-
   return (
     <Modal
       visible={isVisible}
@@ -326,7 +340,7 @@ function ModalUnlockStory({
       transparent
       onDismiss={handleClose}>
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
-        {isPremium ? (
+        {premium ? (
           renderPremium()
         ) : (
           <View
