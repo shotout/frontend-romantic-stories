@@ -23,7 +23,7 @@ import LibraryScreen from '../screens/libraryPage/libraryScreen';
 import MainScreen from '../screens/mainPage/mainScreen';
 import Main from './Main';
 import FontScreen from '../screens/fontPage/fontScreen';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
@@ -65,12 +65,15 @@ const Library = props => {
   const [screen, setScreen] = useState('SAVE');
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
-  
+
   const handleSomeAction = (value: string) => {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value);
     if (value == 'Main') {
       navigate('Main');
+    }
+    if (value == 'ExploreLibrary') {
+      navigate('ExploreLibrary');
     }
     // Memunculkan bottom bar
   };
@@ -83,8 +86,12 @@ const Library = props => {
         bottom: 0,
         flexDirection: 'column',
       }}>
-      
-      <View style={{position: 'absolute', top:  isBottomBarVisible === 'Settings' ? -70 : -300, width: '100%'}}>
+      <View
+        style={{
+          position: 'absolute',
+          top: isBottomBarVisible === 'Settings' ? -70 : -300,
+          width: '100%',
+        }}>
         <MainScreen />
       </View>
 
@@ -130,13 +137,13 @@ const Library = props => {
                 }
               />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   fontSize: 10,
                   color:
                     item.value === isBottomBarVisible
                       ? code_color.white
-                      : props?.userProfile?.colorTheme
+                      : props?.userProfile?.colorTheme,
                 }}>
                 {item.name}
               </Text>
@@ -145,7 +152,7 @@ const Library = props => {
         })}
       </View>
       {isBottomBarVisible === 'Library' ? (
-        <LibraryScreen />
+        <LibraryScreen handleSomeAction={handleSomeAction} />
       ) : isBottomBarVisible === 'Font' ? (
         <FontScreen />
       ) : (
@@ -204,7 +211,7 @@ function MyTabs(props) {
               }}>
               <LoveSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -235,9 +242,9 @@ function MyTabs(props) {
                 justifyContent: 'center',
                 display: 'flex',
               }}>
-              <LibrarySvg width={20} height={20} fill={props?.colorTheme}  />
+              <LibrarySvg width={20} height={20} fill={props?.colorTheme} />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -271,7 +278,7 @@ function MyTabs(props) {
               }}>
               <FontSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -304,7 +311,7 @@ function MyTabs(props) {
               }}>
               <SettingSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : '#C4C4C4',
                   fontSize: 11,
@@ -343,18 +350,14 @@ const styles = StyleSheet.create({
 });
 
 class MyTabsComponent extends Component {
-
-
- 
   render() {
-    const { userProfile, colorTheme } = this.props;
+    const {userProfile, colorTheme} = this.props;
     const tapProps = {
       userProfile,
-      colorTheme
+      colorTheme,
     };
     return <MyTabs {...tapProps} />;
   }
 }
-
 
 export default connect(states, dispatcher)(MyTabsComponent);

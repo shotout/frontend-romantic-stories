@@ -130,7 +130,6 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
             RNFS.readFile(renamedURI, 'base64').then(res => {
               const base64File = `data:image/png;base64,${res}`;
               base64CaptureImage.current = base64File;
-              console.log('OKEOKE GASS', base64File.substring(0, 100));
             });
           })
           .catch(err => {
@@ -145,7 +144,6 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
   const handleWAShare = async () => {
     try {
       // await Share.shareSingle(shareOptions);
-      console.log('OKEOKE YAP', base64CaptureImage.current.substring(0, 100));
       await Share.open({
         url: base64CaptureImage.current,
         title: 'Shared-Short-Story',
