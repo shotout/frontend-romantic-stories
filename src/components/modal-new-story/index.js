@@ -284,7 +284,7 @@ function ModalNewStory({
                   />
                 </View>
                 <Pressable
-                  onPress={onGetUnlimit}
+                  onPress={() => onGetUnlimit()}
                   style={{
                     backgroundColor: '#ADC3D2',
                     width: '90%',
@@ -343,7 +343,7 @@ ModalNewStory.propTypes = {
   onClose: PropTypes.func.isRequired,
   onWatchAds: PropTypes.func,
   onUnlock: PropTypes.func,
-  onGetUnlimit: PropTypes.func,
+  onGetUnlimit: PropTypes.func.isRequired,
 };
 
 ModalNewStory.defaultProps = {};

@@ -13,11 +13,10 @@ import {successPurchase} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
 import LoveIcon from '../../assets/icons/loveOutline';
 
-function ModalSuccessPurchase({isVisible, onClose}) {
+function ModalSuccessPurchase({ isVisible, onClose }) {
   const handleClose = () => {
     onClose();
   };
-
   return (
     <Modal
       visible={isVisible}

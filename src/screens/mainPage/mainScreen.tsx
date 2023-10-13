@@ -66,11 +66,11 @@ const MainScreen = ({
   colorTheme,
   fontFamily,
 }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
-    useState(true);
+    useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -189,8 +189,7 @@ const MainScreen = ({
         bg={backgroundColor}
         fontFamily={fontFamily}
         me={me}
-        partner={partner}
-      />
+        partner={partner} source={undefined}      />
 
       // <View style={{ flex: 1 }}>
       //   <Text
@@ -279,28 +278,31 @@ const MainScreen = ({
       <ModalStoryUnlock
         isVisible={showModal}
         onClose={() => setShowModal(false)}
-        isPremium={true}
-      />
+        isPremium={false} data={undefined} restart={undefined} edit={undefined}      />
       <ModalCongrats
         isVisible={showModalCongrats}
         onClose={() => setShowModalCongrats(false)}
         onGotIt={() => {
           setShowModalCongrats(false);
           setShowModalNewStory(true);
-        }}
-      />
+        } }     />
       <ModalNewStory
         isVisible={showModalNewStory}
         onClose={() => setShowModalNewStory(false)}
         onWatchAds={() => {
-          setShowModal(true);
           setShowModalNewStory(false);
+          setShowModal(true);
         }}
         onUnlock={() => {
-          setShowModalSuccessPurchase(true);
           setShowModalNewStory(false);
+          setShowModalSuccessPurchase(true);
         }}
-        onGetUnlimit={() => null}
+        onGetUnlimit={() => {
+          setShowModalNewStory(false);
+         
+            setShowModalSuccessPurchase(true);
+        
+        }}
       />
       <ModalSuccessPurchase
         isVisible={showModalSuccessPurchase}

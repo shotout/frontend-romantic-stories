@@ -45,6 +45,7 @@ import ModalNewLibrary from '../../components/modal-new-library';
 import ModalSorting from '../../components/modal-sorting';
 import {deleteMyCollection, getMyCollection} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
+import { moderateScale } from 'react-native-size-matters';
 
 const LibraryScreen = ({colorTheme}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -350,7 +351,35 @@ const LibraryScreen = ({colorTheme}) => {
         previewOpenValue={-40}
         previewOpenDelay={3000}
       />
+      
       </ScrollView>
+      <TouchableOpacity
+                onPress={() => {}}
+                style={{
+                  backgroundColor: code_color.yellow,
+                  marginTop: moderateScale(20),
+                  padding: moderateScale(10),
+                  alignItems: 'center',
+                  borderRadius: 8,
+                  width: '85%',
+                  marginHorizontal: moderateScale(20),
+                  marginBottom:  moderateScale(20),
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  // position: 'absolute',
+                  // bottom: 0
+                }}>
+                <LibrarySvg fill={code_color.black} width={20} height={20} />
+                <Text
+                  style={{
+                    color: code_color.black,
+                    fontWeight: 500,
+                    fontSize: moderateScale(14),
+                    marginLeft: 20
+                  }}>
+                  Explore more Stories
+                </Text>
+              </TouchableOpacity>
      
     </View>
   );

@@ -41,35 +41,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
 import ProgressBar from '../ProgressBar';
 
-function ModalCongrats({isVisible, onClose, onGotIt, restart, edit, data}) {
-  const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
+function ModalCongrats({isVisible, onClose, onGotIt,}) {
+
   const handleClose = () => {
     onClose();
   };
 
-  const AddCollection = async () => {
-    if (collect != '') {
-      if (edit) {
-        const payload = {
-          name: collect,
-          _method: 'PATCH',
-        };
-        try {
-          const res = await updateMyCollection(payload, data?.id);
-          restart();
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          const res = await addNewCollection({
-            name: collect,
-          });
-          restart();
-        } catch (error) {}
-      }
-    }
-  };
+
 
   const renderIconTopCard = () => {
     return (
