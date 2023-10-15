@@ -92,7 +92,7 @@ const Library = props => {
           top: isBottomBarVisible === 'Settings' ? -70 : -300,
           width: '100%',
         }}>
-        <MainScreen />
+        <MainScreen pressScreen={() => handleSomeAction('Main')} />
       </View>
 
       <View

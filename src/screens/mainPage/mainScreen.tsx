@@ -21,6 +21,9 @@ import {
   FlatList,
   Animated,
   Dimensions,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import {ava1, bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -57,7 +60,7 @@ import ModalSuccessPurchase from '../../components/modal-success-purchase';
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen = ({
+const MainScreen =  ({
   userProfile,
   userStory,
   handleSetStory,
@@ -65,6 +68,8 @@ const MainScreen = ({
   backgroundColor,
   colorTheme,
   fontFamily,
+  pressScreen, 
+  route
 }) => {
   const [showModal, setShowModal] = useState(true);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
@@ -257,7 +262,8 @@ const MainScreen = ({
     );
   }
   return (
-    <View
+    <Pressable
+      onPress={() => route?.name != 'Main' ? pressScreen() : null}
       style={{
         backgroundColor: backgroundColor,
         flex: 1,
@@ -309,7 +315,7 @@ const MainScreen = ({
         onClose={() => setShowModalSuccessPurchase(false)}
       />
       {renderFlatList()}
-    </View>
+    </Pressable>
   );
 };
 
@@ -317,10 +323,12 @@ const styles = StyleSheet.create({});
 
 MainScreen.propTypes = {
   activeVersion: PropTypes.any,
+  pressScreen: PropTypes.any
 };
 
 MainScreen.defaultProps = {
   activeVersion: null,
+
 };
 
 export default connect(states, dispatcher)(MainScreen);
