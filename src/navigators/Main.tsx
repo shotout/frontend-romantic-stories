@@ -18,6 +18,7 @@ import DeviceInfo from 'react-native-device-info';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
+import ExploreLibraryScreen from '../screens/exploreLibrary/index';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -36,7 +37,6 @@ function Main({registerData, userProfile, props}) {
     checkDevice();
     const checkFirebase = async () => {
       const fcmToken = await messaging().getToken();
-     
     };
     checkFirebase();
   });
@@ -50,7 +50,7 @@ function Main({registerData, userProfile, props}) {
       // alert(JSON.stringify(error));
     }
   };
-  
+
   return (
     <BottomBarProvider value={{isBottomBarVisible, setBottomBarVisibility}}>
       <NavigationContainer ref={navigationRef}>
@@ -60,6 +60,10 @@ function Main({registerData, userProfile, props}) {
           <Stack.Screen name={'Splash'} component={App} />
           <Stack.Screen name={'Onboard'} component={OnboardScreen} />
           <Stack.Screen name={'Register'} component={RegisterScreen} />
+          <Stack.Screen
+            name={'ExploreLibrary'}
+            component={ExploreLibraryScreen}
+          />
           <Stack.Screen name="Bottom" component={MyTabsComponent} />
         </Stack.Navigator>
       </NavigationContainer>

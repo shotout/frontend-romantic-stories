@@ -28,6 +28,7 @@ import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import ChecklistSvg from './../../assets/icons/checklist';
+import {fontList} from '../../utils/constants';
 
 const FontScreen = ({
   userProfile,
@@ -36,25 +37,12 @@ const FontScreen = ({
   handleSetColorTheme,
   colorTheme,
   fontSize,
-  backgroundColor
+  backgroundColor,
+  handleSetFontFamily,
 }) => {
   console.log(JSON.stringify(userProfile?.data?.theme));
   const [show, setShow] = useState(false);
   const [fontSelect, setSelectFont] = useState('Georgia');
-  const [fontList, setFontList] = useState([
-    {
-      name: 'Georgia',
-    },
-    {
-      name: 'Arial',
-    },
-    {
-      name: 'Robotto',
-    },
-    {
-      name: 'Time News Roman',
-    },
-  ]);
   const [colorsBg, setColorsBg] = useState([
     {
       code: '#5873FF',
@@ -74,9 +62,7 @@ const FontScreen = ({
   ]);
 
   const [bg_color, set_bgColor] = useState(backgroundColor);
-  const [fontSizeDefault, setFontSize] = useState(
-    fontSize,
-  );
+  const [fontSizeDefault, setFontSize] = useState(fontSize);
   const [bgTheme, setBgTheme] = useState(colorTheme);
 
   const setBg = value => {
@@ -111,7 +97,9 @@ const FontScreen = ({
           margin: 20,
         }}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>BACKGROUND</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
+            BACKGROUND
+          </Text>
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => setBg(code_color.white)}
@@ -163,12 +151,18 @@ const FontScreen = ({
           }}
         />
         <View style={{flex: 1}}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>TEXT SIZE</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
+            TEXT SIZE
+          </Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
-            <Text allowFontScaling={false} style={{flex: 1, color: code_color.white}}>A-</Text>
             <Text
-            allowFontScaling={false}
+              allowFontScaling={false}
+              style={{flex: 1, color: code_color.white}}>
+              A-
+            </Text>
+            <Text
+              allowFontScaling={false}
               style={{
                 flex: 1,
                 textAlign: 'right',
@@ -202,10 +196,14 @@ const FontScreen = ({
             alignItems: 'center',
             marginHorizontal: 20,
           }}>
-          <Text allowFontScaling={false} style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
+          <Text
+            allowFontScaling={false}
+            style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
             CHANGE FONT
           </Text>
-          <Text  allowFontScaling={false} style={{color: code_color.white}}>Georgia</Text>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
+            {fontSelect}
+          </Text>
           <Pressable
             onPress={() => setShow(!show)}
             style={{
@@ -221,43 +219,50 @@ const FontScreen = ({
             {show ? <DownChevron /> : <UpChevron />}
           </Pressable>
         </View>
-        {!show ? 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {fontList.map((item, index) => (
-            <Pressable
-              style={{
-                backgroundColor:
-                  fontSelect === item.name ? code_color.white : null,
-                borderColor: code_color.white,
-                borderWidth: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 10,
-                margin: 10,
-                height: 40,
-              }}>
-              <Text
-              allowFontScaling={false}
+        {!show ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {fontList.map((item, index) => (
+              <Pressable
+                onPress={() => {
+                  setSelectFont(item.name);
+                  handleSetFontFamily(item.value);
+                }}
                 style={{
-                  paddingHorizontal: 20,
-                  paddingVertical: 0,
-                  color:
-                    fontSelect === item.name
-                      ? code_color.blackDark
-                      : code_color.white,
+                  backgroundColor:
+                    fontSelect === item.name ? code_color.white : null,
+                  borderColor: code_color.white,
+                  borderWidth: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 10,
+                  margin: 10,
+                  height: 40,
                 }}>
-                {item.name}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView> : null }
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingVertical: 0,
+                    color:
+                      fontSelect === item.name
+                        ? code_color.blackDark
+                        : code_color.white,
+                  }}>
+                  {item.name}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        ) : null}
       </View>
 
       <View
         style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
       />
       <View style={{flex: 1, marginHorizontal: 20}}>
-        <Text allowFontScaling={false} style={{color: code_color.white, textAlign: 'left'}}>
+        <Text
+          allowFontScaling={false}
+          style={{color: code_color.white, textAlign: 'left'}}>
           CHANGE THEME COLOR
         </Text>
         <View
@@ -284,10 +289,9 @@ const FontScreen = ({
                   borderColor: code_color.grey,
                   marginHorizontal: 10,
                   alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-               {bgTheme === item.code ? <ChecklistSvg /> : null }
+                  justifyContent: 'center',
+                }}>
+                {bgTheme === item.code ? <ChecklistSvg /> : null}
               </TouchableOpacity>
             );
           })}

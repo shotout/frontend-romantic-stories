@@ -21,6 +21,9 @@ import {
   FlatList,
   Animated,
   Dimensions,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import {ava1, bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -45,12 +48,34 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
-import {checkDeviceRegister, getStoryList} from '../../shared/request';
+import {
+  checkDeviceRegister,
+  getListAvatarTheme,
+  getStoryList,
+} from '../../shared/request';
+import ModalStoryUnlock from '../../components/modal-story-unlock';
+import ModalCongrats from '../../components/modal-congrats';
+import ModalNewStory from '../../components/modal-new-story';
+import ModalSuccessPurchase from '../../components/modal-success-purchase';
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroundColor, colorTheme}) => {
-  console.log(JSON.stringify(userStory));
+const MainScreen =  ({
+  userProfile,
+  userStory,
+  handleSetStory,
+  fontSize,
+  backgroundColor,
+  colorTheme,
+  fontFamily,
+  pressScreen, 
+  route
+}) => {
+  const [showModal, setShowModal] = useState(true);
+  const [showModalCongrats, setShowModalCongrats] = useState(false);
+  const [showModalNewStory, setShowModalNewStory] = useState(false);
+  const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
+    useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -62,18 +87,40 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
   const [showModalSubscribe, setShowModalSubscribe] = useState(false);
   const [activeSlide, setActiveSlide] = useState(initialIndexContent);
   const [isUserHasScroll, setUserScrollQuotes] = useState(false);
-  const [dataBook, setBook] = useState(userStory);
+  // const [dataBook, setBook] = useState(userStory);
+  const [me, setMe] = useState(null);
+  const [partner, setPartner] = useState(null);
 
-  // const [dataBook]
+  const [dataBook, setBook] = useState([
+    {
+      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      detail:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
+    },
+    {
+      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      detail: 'hemmm',
+    },
+    {
+      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      detail:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
+    },
+  ]);
   const onMomentoumScrollEnd = e => {
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
       Math.max(Math.floor(e.nativeEvent.contentOffset.y / height + 0.5) + 1, 0),
-      dataBook?.data?.length || 0,
+      dataBook?.length || 0,
     );
+    if (pageNumber === dataBook?.length - 1) {
+      setShowModalCongrats(true);
+    }
+
     setActiveSlide(pageNumber - 1);
     startAnimation();
     handleLoadMore(pageNumber);
+
     if (pageNumber - 1 !== activeSlide && !isUserHasScroll) {
       setUserScrollQuotes(true);
     }
@@ -118,6 +165,23 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
     outputRange: ['0deg', '180deg'],
   });
 
+  const handleThemeAvatar = async () => {
+    let params = {
+      flag: 'book',
+    };
+    try {
+      const data = await getListAvatarTheme(params);
+      if (data?.data) {
+        setMe(data?.data?.me);
+        setPartner(data?.data?.partner);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    handleThemeAvatar();
+  }, []);
+
   const renderFactItem = ({item, index, disableAnimation}) => {
     return (
       <QuotesContent
@@ -128,7 +192,9 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
         fontSize={fontSize}
         bgTheme={colorTheme}
         bg={backgroundColor}
-      />
+        fontFamily={fontFamily}
+        me={me}
+        partner={partner} source={undefined}      />
 
       // <View style={{ flex: 1 }}>
       //   <Text
@@ -172,7 +238,7 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
               flex: 1,
               backgroundColor: backgroundColor,
             }}
-            data={dataBook?.data}
+            data={dataBook}
             pagingEnabled
             onMomentumScrollEnd={onMomentoumScrollEnd}
             scrollsToTop={false}
@@ -196,7 +262,8 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
     );
   }
   return (
-    <View
+    <Pressable
+      onPress={() => route?.name != 'Main' ? pressScreen() : null}
       style={{
         backgroundColor: backgroundColor,
         flex: 1,
@@ -214,9 +281,41 @@ const MainScreen = ({userProfile, userStory, handleSetStory, fontSize, backgroun
           // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
       /> */}
-
+      <ModalStoryUnlock
+        isVisible={showModal}
+        onClose={() => setShowModal(false)}
+        isPremium={false} data={undefined} restart={undefined} edit={undefined}      />
+      <ModalCongrats
+        isVisible={showModalCongrats}
+        onClose={() => setShowModalCongrats(false)}
+        onGotIt={() => {
+          setShowModalCongrats(false);
+          setShowModalNewStory(true);
+        } }     />
+      <ModalNewStory
+        isVisible={showModalNewStory}
+        onClose={() => setShowModalNewStory(false)}
+        onWatchAds={() => {
+          setShowModalNewStory(false);
+          setShowModal(true);
+        }}
+        onUnlock={() => {
+          setShowModalNewStory(false);
+          setShowModalSuccessPurchase(true);
+        }}
+        onGetUnlimit={() => {
+          setShowModalNewStory(false);
+         
+            setShowModalSuccessPurchase(true);
+        
+        }}
+      />
+      <ModalSuccessPurchase
+        isVisible={showModalSuccessPurchase}
+        onClose={() => setShowModalSuccessPurchase(false)}
+      />
       {renderFlatList()}
-    </View>
+    </Pressable>
   );
 };
 
@@ -224,10 +323,12 @@ const styles = StyleSheet.create({});
 
 MainScreen.propTypes = {
   activeVersion: PropTypes.any,
+  pressScreen: PropTypes.any
 };
 
 MainScreen.defaultProps = {
   activeVersion: null,
+
 };
 
 export default connect(states, dispatcher)(MainScreen);

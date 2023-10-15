@@ -20,6 +20,8 @@ import Button from '../../../components/buttons/Button';
 import {BACKEND_URL} from '../../../shared/static';
 import {getListLanguange, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
+import {isIphoneXorAbove} from '../../../utils/devices';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
   const [lang, setLang] = useState(userProfile.language_id);
@@ -66,8 +68,8 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
     <View
       style={{
         backgroundColor: colorTheme,
+        paddingTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
       }}>
-      <View style={{height: 30}} />
       <View
         style={{
           flexDirection: 'row',
@@ -175,7 +177,7 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
                       color:
                         lang === item.id ? code_color.splash : code_color.grey,
                       fontSize: 14,
-                      fontWeight: 600,
+                      fontWeight: '600',
                       fontFamily: 'Roboto',
                       textAlign: 'center',
                       marginTop: 10,

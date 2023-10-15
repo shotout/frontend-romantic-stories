@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
@@ -10,10 +11,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
 import {ava1} from '../../assets/images';
 import {code_color} from '../../utils/colors';
+import ModalShare from '../modal-share';
+import { BACKEND_URL } from '../../shared/static';
 export default function QuotesContent({
   item,
   themeUser,
@@ -23,16 +27,23 @@ export default function QuotesContent({
   fontSize,
   bgTheme,
   bg,
+  fontFamily,
+  me,
+  partner
 }) {
+  console.log('INI LOH FONT'+me)
+  const [showModalShare, setShowModalShare] = useState(false);
+  const [selectedText, setSelectedText] = useState('');
+  const [startEndText, setStartEndText] = useState({start: 0, end: 0});
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
-  const animationValue = useRef(new Animated.Value(0)).current;
   const [folded, setFolded] = useState(false);
+  const animationValue = useRef(new Animated.Value(0)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const activeStatus = useRef(false);
-  const content = `Matahari bersinar terik di Lampung. Sinarnya terhalang rimbunnya pepohonan, sehingga hanya menyisakan berkas tipis. Burung-burung berkicau seolah sedang menyanyikan lagu untuk alam. Bunyi riak jernih sungai beradu dengan batu kali berpadu dengan sahutan dari beberapa penghuni hutan yang lainnya. Ya, inilah tempat tinggal Bora, si anak gajah Lampung yang sekarang tengah asyik bermain bersama teman-temannya di sebuah sungai.
+  const contentData = `Matahari bersinar terik di Lampung. Sinarnya terhalang rimbunnya pepohonan, sehingga hanya menyisakan berkas tipis. Burung-burung berkicau seolah sedang menyanyikan lagu untuk alam. Bunyi riak jernih sungai beradu dengan batu kali berpadu dengan sahutan dari beberapa penghuni hutan yang lainnya. Ya, inilah tempat tinggal Bora, si anak gajah Lampung yang sekarang tengah asyik bermain bersama teman-temannya di sebuah sungai.
   Ketika Bora menyemprotkan air ke arah Dodo—anak gajah lainnya—dengan belalainya, ia pun memekik nyaring. Sampai akhirnya, kegembiraan mereka terpecah oleh bunyi bising dari sebelah utara hutan. Bunyi bising itu bercampur dengan deru sesuatu yang sama sekali tidak Bora kenal.
   “Hei, lihat itu!”
   Semua serentak menghentikan kegiatan mereka dan menengok ke langit yang ditunjuk Dodo. Asap hitam tebal yang membumbung tinggi dari sana. Asap itu semakin tebal dan terus menebal. Itu merupakan fenomena aneh yang baru pertama kali mereka saksikan. Selama ini yang mereka .
@@ -76,10 +87,20 @@ export default function QuotesContent({
     <View
       style={{
         position: 'relative',
-        paddingHorizontal: 30,
+        paddingHorizontal: 2,
         paddingTop: 30,
         flex: 1,
       }}>
+      <ModalShare
+        isVisible={showModalShare}
+        onClose={() => setShowModalShare(false)}
+        selectedContent={selectedText}
+        start={contentData.substring(
+          startEndText.start - 30,
+          startEndText.start,
+        )}
+        end={contentData.substring(startEndText.end, startEndText.end + 30)}
+      />
       <Animated.View
         style={{
           width: '100%',
@@ -91,16 +112,26 @@ export default function QuotesContent({
             alignItems: 'center',
             position: 'absolute',
             bottom: 0,
-            left: '50%',
-            alignItems: 'center',
+            left: '15%',
+            // left: 0,
             justifyContent: 'center',
+            flexDirection: 'row'
           }}>
           <Image
-            source={ava1}
+            source={{ uri: `${BACKEND_URL}/${me}`}}
             resizeMode="contain"
             style={{
               width: 100,
-              height: 200,
+              height: 300,
+              opacity: 0.6,
+            }}
+          />
+          <Image
+            source={{ uri: `${BACKEND_URL}/${partner}`}}
+            resizeMode="contain"
+            style={{
+              width: 100,
+              height: 300,
               opacity: 0.6,
             }}
           />
@@ -108,21 +139,20 @@ export default function QuotesContent({
         <Text
           allowFontScaling={false}
           style={{
-            marginHorizontal: 50,
             textAlign: 'center',
             fontWeight: 'bold',
             fontSize: Number(fontSize),
-            fontFamily: themeUser?.theme?.font_family,
+            fontFamily: fontFamily,
             color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
           }}>
-          {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
+          {themeUser?.language_id === '2' ? item?.title : item?.title}
         </Text>
         <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
-              <Text
-                selectable={true}
+              {/* <Text
+                selectable
                 userSelect
                 selectionColor={code_color.splash}
                 allowFontScaling={false}
@@ -138,11 +168,36 @@ export default function QuotesContent({
                         : code_color.blackDark,
                   },
                 ]}>
-                {/* {themeUser?.language_id === "2"
+                {themeUser?.language_id === "2"
                   ? item?.content_id
-                  : item?.content_en} */}
-                {content}
-              </Text>
+                  : item?.content_en}
+                {contentData}
+              </Text> */}
+              <SelectableText
+                style={[
+                  styles.ctnQuotes,
+                  {
+                    fontFamily: fontFamily,
+                    fontSize: Number(fontSize),
+                    color:
+                      bg === '#2C3439'
+                        ? code_color.white
+                        : code_color.blackDark,
+                  },
+                ]}
+                menuItems={['Share']}
+                onSelection={({
+                  eventType,
+                  content,
+                  selectionStart,
+                  selectionEnd,
+                }) => {
+                  setStartEndText({start: selectionStart, end: selectionEnd});
+                  setSelectedText(content);
+                  setShowModalShare(true);
+                }}
+                value={contentData}
+              />
             </View>
           </View>
         </View>

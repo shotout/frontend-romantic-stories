@@ -43,6 +43,8 @@ import {
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
 import states from './states';
+import notifee from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
 
 function RegisterScreen({
   handleSetProfile,
@@ -62,7 +64,7 @@ function RegisterScreen({
   };
   const [values, setFormValues] = useState({
     name: '',
-    gender: '',
+    gender: null,
     device_id: '',
     start: moment(new Date(2018, 11, 24, 8, 0, 30, 0)).format(
       'YYYY-MM-DD HH:mm',
@@ -85,9 +87,11 @@ function RegisterScreen({
 
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
+    const fcmToken = await messaging().getToken();
     setFormValues({
       ...values,
       device_id: data,
+      fcm_token: fcmToken,
     });
   };
 
@@ -99,15 +103,24 @@ function RegisterScreen({
   };
 
   useEffect(() => {
-    if (values.gender === '') {
-      fetchAva1('male');
-      fetchAva2('female');
+    if (!values.gender) {
+      fetchAllAva();
     } else {
       fetchAva1(values.gender === 'Male' ? 'male' : 'female');
       fetchAva2(values.gender === 'Male' ? 'female' : 'male');
     }
   }, [values.gender]);
 
+  const fetchAllAva = async () => {
+    try {
+      const avatarMale = await getListAvatar({gender: 'male'});
+      const avatarFemale = await getListAvatar({gender: 'female'});
+      setDataAva([...avatarMale?.data, ...avatarFemale?.data]);
+      setDataAva2([...avatarMale?.data, ...avatarFemale?.data]);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
   const fetchAva1 = async value => {
     try {
       const params = {
@@ -133,6 +146,7 @@ function RegisterScreen({
 
   const onSubmit = async () => {
     console.log(values);
+    await notifee.requestPermission();
     try {
       const res = await postRegister(values);
       handleSetProfile(res);
@@ -354,7 +368,10 @@ function RegisterScreen({
           <View style={{position: 'absolute', bottom: 15, width: '80%'}}>
             {stepRegister <= 2 ? (
               <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister + 1)}
+                onPress={() => {
+                  handleChange('gender', null);
+                  setStepRegister(stepRegister + 1);
+                }}
                 style={{
                   alignItems: 'center',
                   alignContent: 'center',

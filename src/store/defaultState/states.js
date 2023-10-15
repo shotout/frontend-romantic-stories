@@ -243,6 +243,7 @@ export default (state = INITIAL_STATE, action) => {
         backgroundColor: action.payload,
       };
     case types.SET_FONT_FAMILY:
+      console.log('SET FONT'+action.payload)
       return {
         ...state,
         fontFamily: action.payload,

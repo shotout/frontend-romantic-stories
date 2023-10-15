@@ -14,6 +14,8 @@ import {BACKEND_URL} from '../../../shared/static';
 import Carousel from 'react-native-reanimated-carousel';
 import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
+import {isIphoneXorAbove} from '../../../utils/devices';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
   const [progressValue, setProgress] = useState(0);
@@ -53,11 +55,17 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
 
   const fetchAva = async value => {
     try {
-      const params = {
-        gender: userProfile.gender === 'Female' ? 'male' : 'female',
-      };
-      const avatar = await getListAvatar(params);
-      setDataAva(avatar?.data);
+      if (!userProfile.gender) {
+        const avaMale = await getListAvatar({gender: 'male'});
+        const avaFemale = await getListAvatar({gender: 'female'});
+        setDataAva([...avaMale?.data, ...avaFemale?.data]);
+      } else {
+        const params = {
+          gender: userProfile.gender === 'Female' ? 'male' : 'female',
+        };
+        const avatar = await getListAvatar(params);
+        setDataAva(avatar?.data);
+      }
     } catch (error) {
       // alert(JSON.stringify(error));
     }
@@ -77,8 +85,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
     <View
       style={{
         backgroundColor: colorTheme,
+        paddingTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
       }}>
-      <View style={{height: 30}} />
       <View
         style={{
           flexDirection: 'row',
