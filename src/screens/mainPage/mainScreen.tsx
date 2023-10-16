@@ -261,8 +261,11 @@ const MainScreen =  ({
       </PanGestureHandler>
     );
   }
-  return (
-    <Pressable
+
+  const renderView = () => {
+    if(route?.name != 'Main'){
+      return(
+<Pressable
       onPress={() => route?.name != 'Main' ? pressScreen() : null}
       style={{
         backgroundColor: backgroundColor,
@@ -315,8 +318,70 @@ const MainScreen =  ({
         onClose={() => setShowModalSuccessPurchase(false)}
       />
       {renderFlatList()}
-    </Pressable>
-  );
+    </ Pressable>
+      )
+      
+    }else{
+      return(
+        <View
+        style={{
+          backgroundColor: backgroundColor,
+          flex: 1,
+          paddingHorizontal: 20,
+          paddingTop: 20,
+        }}>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+  
+        {/* <View
+          style={{
+            backgroundColor: code_color.white,
+            // paddingTop: isIphoneXorAbove() ? 40 : 0,
+          }}
+        /> */}
+        <ModalStoryUnlock
+          isVisible={showModal}
+          onClose={() => setShowModal(false)}
+          isPremium={false} data={undefined} restart={undefined} edit={undefined}      />
+        <ModalCongrats
+          isVisible={showModalCongrats}
+          onClose={() => setShowModalCongrats(false)}
+          onGotIt={() => {
+            setShowModalCongrats(false);
+            setShowModalNewStory(true);
+          } }     />
+        <ModalNewStory
+          isVisible={showModalNewStory}
+          onClose={() => setShowModalNewStory(false)}
+          onWatchAds={() => {
+            setShowModalNewStory(false);
+            setShowModal(true);
+          }}
+          onUnlock={() => {
+            setShowModalNewStory(false);
+            setShowModalSuccessPurchase(true);
+          }}
+          onGetUnlimit={() => {
+            setShowModalNewStory(false);
+           
+              setShowModalSuccessPurchase(true);
+          
+          }}
+        />
+        <ModalSuccessPurchase
+          isVisible={showModalSuccessPurchase}
+          onClose={() => setShowModalSuccessPurchase(false)}
+        />
+        {renderFlatList()}
+      </ View>
+      )
+     
+    }
+  }
+  return renderView()
+
 };
 
 const styles = StyleSheet.create({});

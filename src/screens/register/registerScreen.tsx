@@ -45,6 +45,7 @@ import dispatcher from './dispatcher';
 import states from './states';
 import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
+import { ONBOARDING_COMPLETE, eventTracking } from '../../helpers/eventTracking';
 
 function RegisterScreen({
   handleSetProfile,
@@ -156,6 +157,7 @@ function RegisterScreen({
       handleSetFontFamily(res?.data?.theme?.font_family);
       const resp = await getStoryList();
       handleSetStory(resp.data);
+      eventTracking(ONBOARDING_COMPLETE)
       navigate('Bottom');
     } catch (error) {
       checkDevice();

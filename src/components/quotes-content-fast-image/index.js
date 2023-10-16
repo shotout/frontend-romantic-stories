@@ -18,6 +18,7 @@ import {ava1} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import ModalShare from '../modal-share';
 import { BACKEND_URL } from '../../shared/static';
+import { QUOTE_SHARED, eventTracking } from '../../helpers/eventTracking';
 export default function QuotesContent({
   item,
   themeUser,
@@ -31,7 +32,6 @@ export default function QuotesContent({
   me,
   partner
 }) {
-  console.log('INI LOH FONT'+me)
   const [showModalShare, setShowModalShare] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const [startEndText, setStartEndText] = useState({start: 0, end: 0});
@@ -195,6 +195,7 @@ export default function QuotesContent({
                   setStartEndText({start: selectionStart, end: selectionEnd});
                   setSelectedText(content);
                   setShowModalShare(true);
+                  eventTracking(QUOTE_SHARED)
                 }}
                 value={contentData}
               />

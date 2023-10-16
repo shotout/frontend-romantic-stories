@@ -32,13 +32,26 @@ import states from './src/navigators/states';
 import {connect} from 'react-redux';
 import {getStoryList} from './src/shared/request';
 import i18n from './src/i18n/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
 
-function App({userProfile, handleSetStory}) {
+function App({ userProfile }) {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
   useEffect(() => {
+    const handleAppInstalled = async () => {
+      const res = await AsyncStorage.getItem('isAppInstalled');
+      if (!res) {
+        eventTracking(APP_INSTALLED);
+        AsyncStorage.setItem('isAppInstalled', 'yap');
+      }
+    };
+    handleAppInstalled();
+  }, []);
+  useEffect(() => {
+    askTrackingPermission();
     getDefaultLanguange();
   }, []);
   useEffect(() => {
