@@ -44,6 +44,7 @@ const INITIAL_STATE = {
   fontFamily: null,
   fontSize: null,
   backgroundColor: null,
+  isPremium: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -232,18 +233,18 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         userProfile: action.payload,
       };
-      case types.SET_STORY_DATA:
-        return {
-          ...state,
-          userStory: action.payload,
-        };
+    case types.SET_STORY_DATA:
+      return {
+        ...state,
+        userStory: action.payload,
+      };
     case types.SET_BACKGROUND_COLOR:
       return {
         ...state,
         backgroundColor: action.payload,
       };
     case types.SET_FONT_FAMILY:
-      console.log('SET FONT'+action.payload)
+      console.log('SET FONT' + action.payload);
       return {
         ...state,
         fontFamily: action.payload,
@@ -299,6 +300,11 @@ export default (state = INITIAL_STATE, action) => {
             return item;
           }),
         },
+      };
+    case types.SET_USER_PREMIUM:
+      return {
+        ...state,
+        isPremium: action.payload,
       };
     default:
       return state;

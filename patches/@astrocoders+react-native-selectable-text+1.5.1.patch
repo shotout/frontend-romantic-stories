@@ -1,0 +1,12 @@
+diff --git a/node_modules/@astrocoders/react-native-selectable-text/ios/RNSelectableTextView.m b/node_modules/@astrocoders/react-native-selectable-text/ios/RNSelectableTextView.m
+index e1faa02..8f26345 100644
+--- a/node_modules/@astrocoders/react-native-selectable-text/ios/RNSelectableTextView.m
++++ b/node_modules/@astrocoders/react-native-selectable-text/ios/RNSelectableTextView.m
+@@ -34,7 +34,6 @@ UITextPosition* beginning;
+ {
+     if (self = [super initWithBridge:bridge]) {
+         // `blurOnSubmit` defaults to `false` for <TextInput multiline={true}> by design.
+-        self.blurOnSubmit = NO;
+         
+         _backedTextInputView = [[RCTUITextView alloc] initWithFrame:self.bounds];
+         _backedTextInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

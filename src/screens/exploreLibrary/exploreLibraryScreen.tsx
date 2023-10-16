@@ -22,6 +22,7 @@ import {
 import {cover2} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
+import LockFree from '../../assets/icons/lockFree';
 import DescendingSvg from '../../assets/icons/descending.jsx';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -30,7 +31,7 @@ import {connect} from 'react-redux';
 import BackRight from '../../assets/icons/backRight';
 import {navigate} from '../../shared/navigationRef';
 
-const ExploreLibraryScreen = ({colorTheme, categories}) => {
+const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -117,6 +118,18 @@ const ExploreLibraryScreen = ({colorTheme, categories}) => {
               }}>
               {[1, 2, 3, 4].map(itm => (
                 <View style={{width: 95}} key={itm}>
+                  {!isPremium && (
+                    <LockFree
+                      height={16}
+                      width={55}
+                      style={{
+                        marginBottom: -20,
+                        marginTop: 4,
+                        marginLeft: 4,
+                        zIndex: 1,
+                      }}
+                    />
+                  )}
                   <Image
                     source={cover2}
                     resizeMode="cover"
@@ -166,8 +179,8 @@ const ExploreLibraryScreen = ({colorTheme, categories}) => {
                 <View style={{width: 95}} key={itm}>
                   <View
                     style={{
-                      height: 25,
-                      width: 25,
+                      height: 18,
+                      width: 18,
                       backgroundColor: code_color.white,
                       borderRadius: 15,
                       position: 'absolute',
@@ -176,6 +189,18 @@ const ExploreLibraryScreen = ({colorTheme, categories}) => {
                       zIndex: 1,
                     }}
                   />
+                  {!isPremium && (
+                    <LockFree
+                      height={16}
+                      width={55}
+                      style={{
+                        marginBottom: -20,
+                        marginTop: 4,
+                        marginLeft: 4,
+                        zIndex: 1,
+                      }}
+                    />
+                  )}
                   <Image
                     source={cover2}
                     resizeMode="cover"
@@ -216,6 +241,18 @@ const ExploreLibraryScreen = ({colorTheme, categories}) => {
               }}>
               {[1, 2, 3, 4, 5].map(itm => (
                 <View style={{width: 95}} key={itm}>
+                  {!isPremium && (
+                    <LockFree
+                      height={16}
+                      width={55}
+                      style={{
+                        marginBottom: -20,
+                        marginTop: 4,
+                        marginLeft: 4,
+                        zIndex: 1,
+                      }}
+                    />
+                  )}
                   <Image
                     source={cover2}
                     resizeMode="cover"

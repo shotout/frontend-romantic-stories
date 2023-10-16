@@ -36,3 +36,8 @@ export const handleSetFontSize = payload => ({
   type: types.SET_FONT_SIZE,
   payload,
 });
+
+export const handleSetPremium = payload => ({
+  type: types.SET_USER_PREMIUM,
+  payload,
+});
