@@ -16,9 +16,10 @@ import styles from './styles';
 import {sizing} from '../../utils/styling';
 import {ava1} from '../../assets/images';
 import {code_color} from '../../utils/colors';
-import ModalShare from '../modal-share';
+import ModalShare from '../../screens/screenShare/Share';
 import { BACKEND_URL } from '../../shared/static';
 import { QUOTE_SHARED, eventTracking } from '../../helpers/eventTracking';
+import { navigate, navigationRef } from '../../shared/navigationRef';
 export default function QuotesContent({
   item,
   themeUser,
@@ -91,7 +92,7 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
-      <ModalShare
+      {/* <ModalShare
         isVisible={showModalShare}
         onClose={() => setShowModalShare(false)}
         selectedContent={selectedText}
@@ -100,7 +101,7 @@ export default function QuotesContent({
           startEndText.start,
         )}
         end={contentData.substring(startEndText.end, startEndText.end + 30)}
-      />
+      /> */}
       <Animated.View
         style={{
           width: '100%',
@@ -194,8 +195,12 @@ export default function QuotesContent({
                 }) => {
                   setStartEndText({start: selectionStart, end: selectionEnd});
                   setSelectedText(content);
-                  setShowModalShare(true);
-                  eventTracking(QUOTE_SHARED)
+navigate('Share', {
+  selectedContent: selectedText,
+        start: contentData?.substring(startEndText.start - 30,startEndText.start,),
+        end: contentData.substring(startEndText.end, startEndText.end + 30)
+})
+eventTracking(QUOTE_SHARED)
                 }}
                 value={contentData}
               />

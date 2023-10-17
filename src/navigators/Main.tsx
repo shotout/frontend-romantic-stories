@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import ExploreLibraryScreen from '../screens/exploreLibrary/index';
+import modalShare from '../screens/screenShare/index';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -63,6 +64,10 @@ function Main({registerData, userProfile, props}) {
           <Stack.Screen
             name={'ExploreLibrary'}
             component={ExploreLibraryScreen}
+          />
+           <Stack.Screen
+            name={'Share'}
+            component={modalShare}
           />
           <Stack.Screen name="Bottom" component={MyTabsComponent} />
         </Stack.Navigator>

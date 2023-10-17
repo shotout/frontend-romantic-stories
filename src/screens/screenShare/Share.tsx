@@ -36,8 +36,9 @@ import {
   bgShare2,
   bgShare3,
   bgShare4,
+  imgSticker
 } from '../../assets/images';
-import Card from '../card';
+import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ViewShot from 'react-native-view-shot';
@@ -45,8 +46,12 @@ import Share from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
+import { goBack, navigate } from '../../shared/navigationRef';
+import ModalStickers from '../../components/modal-stickers';
 
-function ModalShare({isVisible, onClose, selectedContent, start, end}) {
+
+function screenShare({ route }) {
+  const [isVisibleModal, setVisible] = useState(false)
   const [selectedBg, setSetselectedBg] = useState(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
@@ -71,19 +76,19 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
     handleScreenshot();
   };
 
-  useEffect(() => {
-    if (!isVisible) {
-      base64CaptureImage.current = null;
-    }
-  }, [isVisible]);
+  // useEffect(() => {
+  //   if (!isVisible) {
+  //     base64CaptureImage.current = null;
+  //   }
+  // }, [isVisible]);
 
-  useEffect(() => {
-    if (isVisible) {
-      setTimeout(async () => {
-        handleShare();
-      }, 1000);
-    }
-  }, [isVisible]);
+  // useEffect(() => {
+  //   if (isVisible) {
+  //     setTimeout(async () => {
+  //       handleShare();
+  //     }, 1000);
+  //   }
+  // }, [isVisible]);
 
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -121,7 +126,7 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
         const nameToChange = uriArray[uriArray.length - 1];
         const renamedURI = uri.replace(
           nameToChange,
-          `EroTales - ${selectedContent.substring(0, 10)} ${Date.now()}.png`,
+          `EroTales - ${route?.params?.selectedContent.substring(0, 10)} ${Date.now()}.png`,
         );
 
         RNFS.copyFile(uri, renamedURI)
@@ -244,16 +249,13 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
   }
 
   return (
-    <>
-      <Modal
-        visible={isVisible}
-        animationType="slide"
-        transparent
-        onDismiss={handleClose}>
         <View style={styles.ctnContent}>
+        <ModalStickers
+        visible={isVisibleModal}
+        onClose={() => setVisible(false)} />
           <View style={styles.row}>
             <Text style={styles.textTitle}>Share Quote</Text>
-            <TouchableOpacity onPress={handleClose}>
+            <TouchableOpacity onPress={() => goBack()}>
               <CloseIcon fill={code_color.white} />
             </TouchableOpacity>
           </View>
@@ -278,10 +280,27 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
                   }}
                 />
                 <View style={styles.overlay} />
+                <Pressable
+                 onPress={() => setVisible(true)}
+                >
+                <Image
+               
+                  source={imgSticker}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    position: 'absolute',
+                    right: 10,
+                    top: 10,
+                    resizeMode: 'contain',
+                  }}
+                />
+                </Pressable>
+                
                 <Text
                   style={{...styles.textQuote, fontFamily: fontSelect.value}}>
-                  <Text style={styles.blur}>{start}</Text> {selectedContent}{' '}
-                  <Text style={styles.blur}>{end}</Text>
+                  <Text style={styles.blur}>{route?.params?.start}</Text> {route?.params?.selectedContent}{' '}
+                  <Text style={styles.blur}>{route?.params?.end}</Text>
                 </Text>
                 <Text style={styles.textMarker}>@EroTales</Text>
               </ViewShot>
@@ -373,19 +392,11 @@ function ModalShare({isVisible, onClose, selectedContent, start, end}) {
             {renderCard()}
           </ScrollView>
         </View>
-      </Modal>
-    </>
+  
   );
 }
 
-ModalShare.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  selectedContent: PropTypes.string.isRequired,
-  start: PropTypes.string.isRequired,
-  end: PropTypes.string.isRequired,
-};
 
-ModalShare.defaultProps = {};
 
-export default connect(states, dispatcher)(ModalShare);
+export default connect(states, dispatcher)(screenShare);
+
