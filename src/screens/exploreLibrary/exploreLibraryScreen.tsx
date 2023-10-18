@@ -30,6 +30,9 @@ import states from './states';
 import {connect} from 'react-redux';
 import BackRight from '../../assets/icons/backRight';
 import {navigate} from '../../shared/navigationRef';
+import AnimatedLottieView from 'lottie-react-native';
+import {moderateScale} from 'react-native-size-matters';
+const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -214,9 +217,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
             </View>
           </View>
         </ScrollView>
-        <ScrollView
-          horizontal
-          style={{flex: 0, height: 270, marginBottom: 100}}>
+        <ScrollView horizontal style={{flex: 0, height: 270}}>
           <View
             style={{
               backgroundColor: '#F0F2FF',
@@ -275,6 +276,24 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
             </View>
           </View>
         </ScrollView>
+        <View
+          style={{
+            height: moderateScale(100),
+            width: moderateScale(100),
+            backgroundColor: bgTheme,
+            alignSelf: 'center',
+            marginBottom: 100,
+            borderRadius: moderateScale(8),
+          }}>
+          <AnimatedLottieView
+            source={swipeupIcon}
+            // style={styles.animationStyle}
+            autoPlay
+            // ref={firstStepTutorial}
+            duration={3000}
+            loop={true}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
