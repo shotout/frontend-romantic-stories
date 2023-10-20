@@ -11,6 +11,8 @@ import {
   SafeAreaView,
   PermissionsAndroid,
   Platform,
+  Animated,
+  PanResponder,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -36,7 +38,8 @@ import {
   bgShare2,
   bgShare3,
   bgShare4,
-  imgSticker
+  imgSticker,
+  imgGift1,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -46,12 +49,11 @@ import Share from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
-import { goBack, navigate } from '../../shared/navigationRef';
+import {goBack, navigate} from '../../shared/navigationRef';
 import ModalStickers from '../../components/modal-stickers';
 
-
-function screenShare({ route }) {
-  const [isVisibleModal, setVisible] = useState(false)
+function ScreenShare({route}) {
+  const [isVisibleModal, setVisible] = useState(false);
   const [selectedBg, setSetselectedBg] = useState(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
@@ -59,18 +61,75 @@ function screenShare({ route }) {
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
+  const [size, setSize] = useState({width: 100, height: 100});
+
+  // Konfigurasi Animated
+  const pan = useRef(new Animated.ValueXY()).current;
 
   const captureRef = useRef();
   const base64CaptureImage = useRef(null);
 
   const backgroundList = [bg, story2, bgShare1, bgShare2, bgShare3, bgShare4];
   const downloadText = 'I found this fact on the ShortStory App';
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}], {
+      useNativeDriver: false,
+    }),
+    onPanResponderRelease: () => {
+      // Mengatur posisi akhir setelah selesai dragging
+      pan.flattenOffset();
+    },
+  });
 
-  const handleClose = () => {
-    if (typeof onClose === 'function') {
-      onClose();
-    }
-  };
+  // PanResponder untuk resizing
+  const resizePanResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: (_, gestureState) => {
+      setSize(prevSize => ({
+        width: prevSize.width + gestureState.dx,
+        height: prevSize.height + gestureState.dy,
+      }));
+      pan.setValue({
+        x: pan.x._value + gestureState.dx / 2,
+        y: pan.y._value + gestureState.dy / 2,
+      });
+    },
+    onPanResponderRelease: (_, gestureState) => {
+      pan.setOffset({
+        x: pan.x._value + gestureState.dx / 2,
+        y: pan.y._value + gestureState.dy / 2,
+      });
+      pan.setValue({x: 0, y: 0});
+    },
+  });
+  //   const panResponder = PanResponder.create({
+  //     onStartShouldSetPanResponder: (evt, gestureState) => {
+  //       console.log('onStartShouldSetPanResponder');
+  //       return true;
+  //     },
+  //     onMoveShouldSetPanResponder: (evt, gestureState) => {
+  //       console.log('onMoveShouldSetPanResponder');
+  //       return true;
+  //     },
+  //     onPanResponderMove: Animated.event(
+  //       [null, {dx: stickerConfig.x, dy: stickerConfig.y}],
+  //       {useNativeDriver: false},
+  //   ),
+  //     // Add other callbacks as needed
+  //   });
+  //   const resizePanResponder = PanResponder.create({
+  //     onStartShouldSetPanResponder: () => true,
+  //     onMoveShouldSetPanResponder: () => true,
+  //     onPanResponderMove: (e, gestureState) => {
+  //       setSize(prevSize => ({
+  //         width: prevSize.width + gestureState.dx,
+  //         height: prevSize.height + gestureState.dy,
+  //     }));
+  //     },
+  // });
 
   const handleShare = () => {
     handleScreenshot();
@@ -82,13 +141,11 @@ function screenShare({ route }) {
   //   }
   // }, [isVisible]);
 
-  // useEffect(() => {
-  //   if (isVisible) {
-  //     setTimeout(async () => {
-  //       handleShare();
-  //     }, 1000);
-  //   }
-  // }, [isVisible]);
+  useEffect(() => {
+    setTimeout(async () => {
+      handleShare();
+    }, 1000);
+  }, [route.params.selectedContent]);
 
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -126,7 +183,10 @@ function screenShare({ route }) {
         const nameToChange = uriArray[uriArray.length - 1];
         const renamedURI = uri.replace(
           nameToChange,
-          `EroTales - ${route?.params?.selectedContent.substring(0, 10)} ${Date.now()}.png`,
+          `EroTales - ${route?.params?.selectedContent.substring(
+            0,
+            10,
+          )} ${Date.now()}.png`,
         );
 
         RNFS.copyFile(uri, renamedURI)
@@ -247,156 +307,184 @@ function screenShare({ route }) {
       </View>
     );
   }
+  function StickerComponent(props) {
+    // Ambil x, y, dan properti lain dari props
+    // Gunakan x dan y untuk mengatur posisi gambar/stiker
+    return (
+      // Asumsi Sticker adalah gambar
+      <Animated.View
+        style={{
+          transform: [
+            {translateX: pan.x},
+            {translateY: pan.y},
+            {scaleX: size.width / 100}, // asumsi ukuran awal sticker 100x100
+            {scaleY: size.height / 100},
+          ],
+          width: 100,
+          height: 100,
+          position: 'absolute',
+        }}
+        {...panResponder.panHandlers}>
+        <Image source={imgGift1} style={{flex: 1}} resizeMode="cover" />
+        <View
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: 0,
+            width: 30,
+            height: 30,
+            backgroundColor: 'blue',
+          }}
+          {...resizePanResponder.panHandlers}
+        />
+      </Animated.View>
+    );
+  }
 
   return (
-        <View style={styles.ctnContent}>
-        <ModalStickers
+    <View style={styles.ctnContent}>
+      <ModalStickers
         visible={isVisibleModal}
-        onClose={() => setVisible(false)} />
-          <View style={styles.row}>
-            <Text style={styles.textTitle}>Share Quote</Text>
-            <TouchableOpacity onPress={() => goBack()}>
-              <CloseIcon fill={code_color.white} />
-            </TouchableOpacity>
-          </View>
-          <ScrollView style={{flex: 1, width: '100%'}} horizontal={false}>
-            <View style={{flex: 1, alignItems: 'center'}}>
-              <ViewShot
-                style={styles.conQuote}
-                ref={captureRef}
-                options={{
-                  fileName: `Shortstory${Date.now()}`,
-                  format: 'png',
-                  quality: 1.0,
-                }}>
-                <Image
-                  source={selectedBg}
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 24,
-                    resizeMode: 'cover',
-                  }}
-                />
-                <View style={styles.overlay} />
-                <Pressable
-                 onPress={() => setVisible(true)}
-                >
-                <Image
-               
-                  source={imgSticker}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    position: 'absolute',
-                    right: 10,
-                    top: 10,
-                    resizeMode: 'contain',
-                  }}
-                />
-                </Pressable>
-                
-                <Text
-                  style={{...styles.textQuote, fontFamily: fontSelect.value}}>
-                  <Text style={styles.blur}>{route?.params?.start}</Text> {route?.params?.selectedContent}{' '}
-                  <Text style={styles.blur}>{route?.params?.end}</Text>
-                </Text>
-                <Text style={styles.textMarker}>@EroTales</Text>
-              </ViewShot>
-              <View style={styles.conFont}>
-                <Text style={styles.title}>CHANGE FONT</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={{...styles.title, fontFamily: fontSelect.value}}>
-                    {fontSelect.name}
-                  </Text>
-                  <Pressable
-                    onPress={() => setShow(!show)}
-                    style={styles.dropDown}>
-                    {show ? (
-                      <UpChevron height={10} width={10} />
-                    ) : (
-                      <DownChevron height={10} width={10} />
-                    )}
-                  </Pressable>
-                </View>
-              </View>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={[
-                  styles.conListFont,
-                  {
-                    display: show ? undefined : 'none',
-                  },
-                ]}>
-                {fontList.map((item, index) => (
-                  <Pressable
-                    onPress={() => {
-                      setSelectFont(item);
-                    }}
-                    style={{
-                      ...styles.btnFont,
-                      backgroundColor:
-                        fontSelect.value === item.value
-                          ? code_color.white
-                          : null,
-                    }}>
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        paddingHorizontal: 20,
-                        paddingVertical: 0,
-                        color:
-                          fontSelect.value === item.value
-                            ? code_color.blackDark
-                            : code_color.white,
-                      }}>
-                      {item.name}
-                    </Text>
-                  </Pressable>
-                ))}
-              </ScrollView>
-              <View style={styles.hr} />
-              <Text style={{...styles.title, textAlign: 'center'}}>
-                Choose Background
+        onClose={() => setVisible(false)}
+      />
+      <View style={styles.row}>
+        <Text style={styles.textTitle}>Share Quote</Text>
+        <TouchableOpacity onPress={() => goBack()}>
+          <CloseIcon fill={code_color.white} />
+        </TouchableOpacity>
+      </View>
+      <View style={{flex: 1, width: '100%'}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <ViewShot
+            style={styles.conQuote}
+            ref={captureRef}
+            options={{
+              fileName: `Shortstory${Date.now()}`,
+              format: 'png',
+              quality: 1.0,
+            }}>
+            <Image
+              source={selectedBg}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                borderRadius: 24,
+                resizeMode: 'cover',
+              }}
+            />
+            <View style={styles.overlay} />
+            <StickerComponent
+            // {...panResponder.panHandlers}
+            // {...resizePanResponder.panHandlers}
+            />
+
+            <Pressable onPress={() => setVisible(true)}>
+              <Image
+                source={imgSticker}
+                style={{
+                  width: 30,
+                  height: 30,
+                  position: 'absolute',
+                  right: 10,
+                  top: 10,
+                  resizeMode: 'contain',
+                }}
+              />
+            </Pressable>
+
+            <Text style={{...styles.textQuote, fontFamily: fontSelect.value}}>
+              <Text style={styles.blur}>{route?.params?.start}</Text>{' '}
+              {route?.params?.selectedContent}{' '}
+              <Text style={styles.blur}>{route?.params?.end}</Text>
+            </Text>
+            <Text style={styles.textMarker}>@EroTales</Text>
+          </ViewShot>
+          <View style={styles.conFont}>
+            <Text style={styles.title}>CHANGE FONT</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{...styles.title, fontFamily: fontSelect.value}}>
+                {fontSelect.name}
               </Text>
-              <SafeAreaView style={{width: '100%', height: 80, marginTop: 20}}>
-                <ScrollView horizontal style={styles.horizontalScroll}>
-                  {backgroundList.map((bgl, idx) => (
-                    <TouchableOpacity
-                      key={idx}
-                      style={{
-                        height: 75,
-                        width: 75,
-                        marginRight: 12,
-                      }}
-                      onPress={() => setSetselectedBg(bgl)}>
-                      <Image
-                        source={bgl}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                          objectFit: 'cover',
-                          borderRadius: 8,
-                          borderColor: code_color.yellow,
-                          borderWidth: bgl === selectedBg ? 2 : 0,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </SafeAreaView>
-              <View style={styles.hr} />
+              <Pressable onPress={() => setShow(!show)} style={styles.dropDown}>
+                {show ? (
+                  <UpChevron height={10} width={10} />
+                ) : (
+                  <DownChevron height={10} width={10} />
+                )}
+              </Pressable>
             </View>
-            {renderCard()}
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={[
+              styles.conListFont,
+              {
+                display: show ? undefined : 'none',
+              },
+            ]}>
+            {fontList.map((item, index) => (
+              <Pressable
+                onPress={() => {
+                  setSelectFont(item);
+                }}
+                style={{
+                  ...styles.btnFont,
+                  backgroundColor:
+                    fontSelect.value === item.value ? code_color.white : null,
+                }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingVertical: 0,
+                    color:
+                      fontSelect.value === item.value
+                        ? code_color.blackDark
+                        : code_color.white,
+                  }}>
+                  {item.name}
+                </Text>
+              </Pressable>
+            ))}
           </ScrollView>
+          <View style={styles.hr} />
+          <Text style={{...styles.title, textAlign: 'center'}}>
+            Choose Background
+          </Text>
+          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20}}>
+            <ScrollView horizontal style={styles.horizontalScroll}>
+              {backgroundList.map((bgl, idx) => (
+                <TouchableOpacity
+                  key={idx}
+                  style={{
+                    height: 75,
+                    width: 75,
+                    marginRight: 12,
+                  }}
+                  onPress={() => setSetselectedBg(bgl)}>
+                  <Image
+                    source={bgl}
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      objectFit: 'cover',
+                      borderRadius: 8,
+                      borderColor: code_color.yellow,
+                      borderWidth: bgl === selectedBg ? 2 : 0,
+                    }}
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </SafeAreaView>
+          <View style={styles.hr} />
         </View>
-  
+        {renderCard()}
+      </View>
+    </View>
   );
 }
 
-
-
-export default connect(states, dispatcher)(screenShare);
-
+export default connect(states, dispatcher)(ScreenShare);
