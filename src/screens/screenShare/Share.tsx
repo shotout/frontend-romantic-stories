@@ -13,6 +13,7 @@ import {
   Platform,
   Animated,
   PanResponder,
+  Dimensions,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -40,6 +41,11 @@ import {
   bgShare4,
   imgSticker,
   imgGift1,
+  imgSticker1,
+  imgSticker2,
+  imgSticker3,
+  imgSticker4,
+  imgSticker5,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -51,6 +57,7 @@ import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
 import {goBack, navigate} from '../../shared/navigationRef';
 import ModalStickers from '../../components/modal-stickers';
+import Gestures from '../../components/Gestures/gestures';
 
 function ScreenShare({route}) {
   const [isVisibleModal, setVisible] = useState(false);
@@ -61,6 +68,24 @@ function ScreenShare({route}) {
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
+  const [sticker, setSticker] = useState([])
+  const [stickers, setStickers] = useState([
+    {
+      image: imgSticker1,
+    },
+    {
+      image: imgSticker2,
+    },
+    {
+      image: imgSticker3,
+    },
+    {
+      image: imgSticker4,
+    },
+    {
+      image: imgSticker5,
+    },
+  ]);
   const [size, setSize] = useState({width: 100, height: 100});
 
   // Konfigurasi Animated
@@ -178,7 +203,7 @@ function ScreenShare({route}) {
   const handleScreenshot = async () => {
     await captureRef.current
       .capture()
-      .then(uri => {
+      .then((uri: string) => {
         const uriArray = uri.split('/');
         const nameToChange = uriArray[uriArray.length - 1];
         const renamedURI = uri.replace(
@@ -201,7 +226,7 @@ function ScreenShare({route}) {
             console.log('Error:', err.message);
           });
       })
-      .catch(err => {
+      .catch((err: { message: any; }) => {
         console.log('Capture Error:', err.message);
       });
   };
@@ -307,45 +332,100 @@ function ScreenShare({route}) {
       </View>
     );
   }
-  function StickerComponent(props) {
+  function StickerComponent(props: any) {
+    console.log(JSON.stringify(sticker))
+    return(
+<View >
+    {
+      sticker.map(
+        (el: any, i: any) => (
+          <Gestures
+            key={i}
+            style={el.styles}
+            onChange={(_event: any, styles: any) => {
+             
+              el = { ...el, ...{ styles: styles } };
+              // dispatch(saveItemSticker(el));
+              if (styles.top > windowHeight - 200) {
+                // setReadyToDeleteSticker(true);
+              } else {
+                // setReadyToDeleteSticker(false);
+              }
+            }}
+            onEnd={(_event: any, styles: any) => {
+              // setShowBottomMenu(true);
+              if (styles.top > windowHeight - 200) {
+                // dispatch(removeSticker(el));
+                console.log('Deleted');
+              }
+            }}
+          >
+            <Image
+              source={el.image}
+              style={{
+                alignContent: 'center',
+                justifyContent: 'center',
+                width: 150,
+                height: 150,
+              }}
+            />
+          </Gestures>
+        )
+      )}
+  </View>
+    )
+    
+
     // Ambil x, y, dan properti lain dari props
     // Gunakan x dan y untuk mengatur posisi gambar/stiker
-    return (
-      // Asumsi Sticker adalah gambar
-      <Animated.View
-        style={{
-          transform: [
-            {translateX: pan.x},
-            {translateY: pan.y},
-            {scaleX: size.width / 100}, // asumsi ukuran awal sticker 100x100
-            {scaleY: size.height / 100},
-          ],
-          width: 100,
-          height: 100,
-          position: 'absolute',
-        }}
-        {...panResponder.panHandlers}>
-        <Image source={imgGift1} style={{flex: 1}} resizeMode="cover" />
-        <View
-          style={{
-            position: 'absolute',
-            right: 0,
-            bottom: 0,
-            width: 30,
-            height: 30,
-            backgroundColor: 'blue',
-          }}
-          {...resizePanResponder.panHandlers}
-        />
-      </Animated.View>
-    );
+    // return (
+    //   // Asumsi Sticker adalah gambar
+    //   <Animated.View
+    //     style={{
+    //       transform: [
+    //         {translateX: pan.x},
+    //         {translateY: pan.y},
+    //         {scaleX: size.width / 100}, // asumsi ukuran awal sticker 100x100
+    //         {scaleY: size.height / 100},
+    //       ],
+    //       width: 100,
+    //       height: 100,
+    //       position: 'absolute',
+    //     }}
+    //     {...panResponder.panHandlers}>
+    //     <Image source={imgGift1} style={{flex: 1}} resizeMode="cover" />
+    //     <View
+    //       style={{
+    //         position: 'absolute',
+    //         right: 0,
+    //         bottom: 0,
+    //         width: 30,
+    //         height: 30,
+    //         backgroundColor: 'blue',
+    //       }}
+    //       {...resizePanResponder.panHandlers}
+    //     />
+    //   </Animated.View>
+    // );
   }
-
+  const windowHeight = Dimensions.get('window').height;
   return (
     <View style={styles.ctnContent}>
       <ModalStickers
         visible={isVisibleModal}
         onClose={() => setVisible(false)}
+        selectSticker={(selectedStickerImage) => {
+          setSticker(prevStickers => [
+            ...prevStickers,
+            {
+              image: selectedStickerImage?.image,
+              name: selectedStickerImage?.name,
+              x: 0,  // example initial position
+              y: 0,  // example initial position
+            },
+          ]);
+          setVisible(false)
+        }}
       />
       <View style={styles.row}>
         <Text style={styles.textTitle}>Share Quote</Text>
@@ -374,6 +454,7 @@ function ScreenShare({route}) {
               }}
             />
             <View style={styles.overlay} />
+           
             <StickerComponent
             // {...panResponder.panHandlers}
             // {...resizePanResponder.panHandlers}
