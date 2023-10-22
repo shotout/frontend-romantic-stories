@@ -197,6 +197,12 @@ export const removeQuoteCollection = ({idCollection, idQuote}) => {
   });
 };
 
+export const getExploreStory = ({search}) =>
+  Wrap({
+    url: `/stories/all?search=${search}`,
+    method: 'get',
+  });
+
 export const getListPastQuotes = (params = {}) =>
   Wrap({
     url: '/past-quote',

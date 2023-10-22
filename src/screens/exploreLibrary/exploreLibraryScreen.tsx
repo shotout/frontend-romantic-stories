@@ -7,7 +7,7 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -32,12 +32,27 @@ import BackRight from '../../assets/icons/backRight';
 import {navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
+import {getExploreStory} from '../../shared/request';
+import {BACKEND_URL} from '../../shared/static';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
+  const [data, setData] = useState<any>();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await getExploreStory({search: ''});
+        setData(res);
+      } catch (error) {
+        setData(null);
+      }
+    }
+    fetchData();
+  }, [keyword]);
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -96,186 +111,204 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
           backgroundColor: code_color.white,
           height: '100%',
         }}>
-        <ScrollView horizontal style={{flex: 0, height: 270}}>
-          <View
-            style={{
-              backgroundColor: '#F0F2FF',
-              marginTop: 11,
-              marginHorizontal: 13,
-              height: 250,
-              minWidth: Dimensions.get('screen').width - 26,
-              borderRadius: 8,
-              padding: 16,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                🔥 Most Read
-              </Text>
-            </View>
+        {data?.most_read?.length > 0 && (
+          <ScrollView horizontal style={{flex: 0, height: 270}}>
             <View
               style={{
-                flexDirection: 'row',
-                width: 'auto',
-                justifyContent: 'center',
-                gap: 16,
+                backgroundColor: '#F0F2FF',
+                marginTop: 11,
+                marginHorizontal: 13,
+                height: 250,
+                minWidth: Dimensions.get('screen').width - 26,
+                borderRadius: 8,
+                padding: 16,
               }}>
-              {[1, 2, 3, 4].map(itm => (
-                <View style={{width: 95}} key={itm}>
-                  {!isPremium && (
-                    <LockFree
-                      height={16}
-                      width={55}
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+                  🔥 Most Read
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: 'auto',
+                  justifyContent: 'center',
+                  gap: 16,
+                }}>
+                {data?.most_read.map((itm: any, idx) => (
+                  <View style={{width: 95}} key={idx}>
+                    {itm.is_free === 0 && (
+                      <LockFree
+                        height={16}
+                        width={55}
+                        style={{
+                          marginBottom: -20,
+                          marginTop: 4,
+                          marginLeft: 4,
+                          zIndex: 1,
+                        }}
+                      />
+                    )}
+                    <Image
+                      source={{
+                        uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                      }}
+                      resizeMode="cover"
+                      style={{height: 130, width: 95, borderRadius: 6}}
+                    />
+                    <Text
+                      allowFontScaling={false}
+                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      {itm.content_en.substring(0, 28) + '...'}
+                    </Text>
+                    <Text
                       style={{
-                        marginBottom: -20,
-                        marginTop: 4,
-                        marginLeft: 4,
+                        fontSize: 9,
+                        fontWeight: '400',
+                        marginTop: 6,
+                        opacity: 0.8,
+                      }}>
+                      {itm.category.name}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </ScrollView>
+        )}
+
+        {data?.category?.length > 0 && (
+          <ScrollView horizontal style={{flex: 0, height: 250}}>
+            <View
+              style={{
+                backgroundColor: '#F0F2FF',
+                marginTop: 11,
+                marginHorizontal: 13,
+                height: 230,
+                minWidth: Dimensions.get('screen').width - 26,
+                borderRadius: 8,
+                padding: 16,
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+                  📚 Try different story category
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  width: 'auto',
+                  gap: 16,
+                }}>
+                {data?.category.map((itm: any, idx: number) => (
+                  <View style={{width: 95}} key={idx}>
+                    <View
+                      style={{
+                        height: 18,
+                        width: 18,
+                        backgroundColor: code_color.white,
+                        borderRadius: 15,
+                        position: 'absolute',
+                        top: 4,
+                        right: 4,
                         zIndex: 1,
                       }}
                     />
-                  )}
-                  <Image
-                    source={cover2}
-                    resizeMode="cover"
-                    style={{height: 130, width: 95, borderRadius: 6}}
-                  />
-                  <Text style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                    Lorem Ipsum dol dolor Series...
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      fontWeight: '400',
-                      marginTop: 6,
-                      opacity: 0.8,
-                    }}>
-                    Relationship
-                  </Text>
-                </View>
-              ))}
+                    {!isPremium && (
+                      <LockFree
+                        height={16}
+                        width={55}
+                        style={{
+                          marginBottom: -20,
+                          marginTop: 4,
+                          marginLeft: 4,
+                          zIndex: 1,
+                        }}
+                      />
+                    )}
+                    <Image
+                      source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
+                      resizeMode="cover"
+                      style={{height: 130, width: 95, borderRadius: 6}}
+                    />
+                    <Text
+                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      {itm.name}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-        </ScrollView>
-        <ScrollView horizontal style={{flex: 0, height: 250}}>
-          <View
-            style={{
-              backgroundColor: '#F0F2FF',
-              marginTop: 11,
-              marginHorizontal: 13,
-              height: 230,
-              minWidth: Dimensions.get('screen').width - 26,
-              borderRadius: 8,
-              padding: 16,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                📚 Try different story category
-              </Text>
-            </View>
+          </ScrollView>
+        )}
+        {data?.most_share?.length > 0 && (
+          <ScrollView horizontal style={{flex: 0, height: 270}}>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                width: 'auto',
-                gap: 16,
+                backgroundColor: '#F0F2FF',
+                marginTop: 11,
+                marginHorizontal: 13,
+                height: 250,
+                minWidth: Dimensions.get('screen').width - 26,
+                borderRadius: 8,
+                padding: 16,
               }}>
-              {['Relationship', 'I miss you', 'Dirty Mind'].map(itm => (
-                <View style={{width: 95}} key={itm}>
-                  <View
-                    style={{
-                      height: 18,
-                      width: 18,
-                      backgroundColor: code_color.white,
-                      borderRadius: 15,
-                      position: 'absolute',
-                      top: 4,
-                      right: 4,
-                      zIndex: 1,
-                    }}
-                  />
-                  {!isPremium && (
-                    <LockFree
-                      height={16}
-                      width={55}
-                      style={{
-                        marginBottom: -20,
-                        marginTop: 4,
-                        marginLeft: 4,
-                        zIndex: 1,
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+                  ❤️ You might also like
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  width: 'auto',
+                  gap: 16,
+                }}>
+                {data.most_share.map((itm: any, idx: number) => (
+                  <View style={{width: 95}} key={idx}>
+                    {itm.is_free === 0 && (
+                      <LockFree
+                        height={16}
+                        width={55}
+                        style={{
+                          marginBottom: -20,
+                          marginTop: 4,
+                          marginLeft: 4,
+                          zIndex: 1,
+                        }}
+                      />
+                    )}
+                    <Image
+                      source={{
+                        uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                       }}
+                      resizeMode="cover"
+                      style={{height: 130, width: 95, borderRadius: 6}}
                     />
-                  )}
-                  <Image
-                    source={cover2}
-                    resizeMode="cover"
-                    style={{height: 130, width: 95, borderRadius: 6}}
-                  />
-                  <Text style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                    {itm}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        </ScrollView>
-        <ScrollView horizontal style={{flex: 0, height: 270}}>
-          <View
-            style={{
-              backgroundColor: '#F0F2FF',
-              marginTop: 11,
-              marginHorizontal: 13,
-              height: 250,
-              minWidth: Dimensions.get('screen').width - 26,
-              borderRadius: 8,
-              padding: 16,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                ❤️ You might also like
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                width: 'auto',
-                gap: 16,
-              }}>
-              {[1, 2, 3, 4, 5].map(itm => (
-                <View style={{width: 95}} key={itm}>
-                  {!isPremium && (
-                    <LockFree
-                      height={16}
-                      width={55}
+                    <Text
+                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      {itm.content_en.substring(0, 28) + '...'}
+                    </Text>
+                    <Text
                       style={{
-                        marginBottom: -20,
-                        marginTop: 4,
-                        marginLeft: 4,
-                        zIndex: 1,
-                      }}
-                    />
-                  )}
-                  <Image
-                    source={cover2}
-                    resizeMode="cover"
-                    style={{height: 130, width: 95, borderRadius: 6}}
-                  />
-                  <Text style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                    Lorem Ipsum dol dolor Series...
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      fontWeight: '400',
-                      marginTop: 6,
-                      opacity: 0.8,
-                    }}>
-                    Relationship
-                  </Text>
-                </View>
-              ))}
+                        fontSize: 9,
+                        fontWeight: '400',
+                        marginTop: 6,
+                        opacity: 0.8,
+                      }}>
+                      {itm?.category?.name}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
         <View
           style={{
             height: moderateScale(100),
