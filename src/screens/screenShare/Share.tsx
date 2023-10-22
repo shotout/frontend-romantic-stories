@@ -46,6 +46,7 @@ import {
   imgSticker3,
   imgSticker4,
   imgSticker5,
+  imgFont,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -58,17 +59,20 @@ import {isIphone} from '../../utils/devices';
 import {goBack, navigate} from '../../shared/navigationRef';
 import ModalStickers from '../../components/modal-stickers';
 import Gestures from '../../components/Gestures/gestures';
+import Slider from '@react-native-community/slider';
 
 function ScreenShare({route}) {
   const [isVisibleModal, setVisible] = useState(false);
+  const [isVisibleFont, setVisibleFont] = useState(false);
   const [selectedBg, setSetselectedBg] = useState(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
+  const [fontSizeDefault, setFontSize] = useState(18);
   const [fontSelect, setSelectFont] = useState({
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
-  const [sticker, setSticker] = useState([])
+  const [sticker, setSticker] = useState([]);
   const [stickers, setStickers] = useState([
     {
       image: imgSticker1,
@@ -226,7 +230,7 @@ function ScreenShare({route}) {
             console.log('Error:', err.message);
           });
       })
-      .catch((err: { message: any; }) => {
+      .catch((err: {message: any}) => {
         console.log('Capture Error:', err.message);
       });
   };
@@ -333,18 +337,15 @@ function ScreenShare({route}) {
     );
   }
   function StickerComponent(props: any) {
-    console.log(JSON.stringify(sticker))
-    return(
-<View >
-    {
-      sticker.map(
-        (el: any, i: any) => (
+    console.log(JSON.stringify(sticker));
+    return (
+      <View>
+        {sticker.map((el: any, i: any) => (
           <Gestures
             key={i}
             style={el.styles}
             onChange={(_event: any, styles: any) => {
-             
-              el = { ...el, ...{ styles: styles } };
+              el = {...el, ...{styles: styles}};
               // dispatch(saveItemSticker(el));
               if (styles.top > windowHeight - 200) {
                 // setReadyToDeleteSticker(true);
@@ -358,8 +359,7 @@ function ScreenShare({route}) {
                 // dispatch(removeSticker(el));
                 console.log('Deleted');
               }
-            }}
-          >
+            }}>
             <Image
               source={el.image}
               style={{
@@ -370,11 +370,9 @@ function ScreenShare({route}) {
               }}
             />
           </Gestures>
-        )
-      )}
-  </View>
-    )
-    
+        ))}
+      </View>
+    );
 
     // Ambil x, y, dan properti lain dari props
     // Gunakan x dan y untuk mengatur posisi gambar/stiker
@@ -408,23 +406,54 @@ function ScreenShare({route}) {
     //   </Animated.View>
     // );
   }
+  const handleFont = value => {
+    if (value === 0) {
+      setFontSize(Number(fontSizeDefault) - 2);
+    } else if (value === 1) {
+      setFontSize(18);
+    } else {
+      setFontSize(Number(fontSizeDefault) + 2);
+    }
+    // setFontSize(fontSizeDefault)
+  };
+  const renderFont = () => {
+    return (
+      <Slider
+        step={1}
+        style={{
+          width: '50%',
+          height: 100,
+          transform: [{rotate: '90deg'}],
+          marginRight: -50,
+          marginLeft: -90,
+        }}
+        minimumValue={0}
+        maximumValue={2}
+        value={fontSizeDefault === 12 ? 1 : fontSizeDefault === 10 ? 0 : 2}
+        minimumTrackTintColor="#FFFFFF"
+        maximumTrackTintColor="#FFFFFF"
+        onValueChange={value => handleFont(value)}
+        thumbTintColor="#ffd500"
+      />
+    );
+  };
   const windowHeight = Dimensions.get('window').height;
   return (
     <View style={styles.ctnContent}>
       <ModalStickers
         visible={isVisibleModal}
         onClose={() => setVisible(false)}
-        selectSticker={(selectedStickerImage) => {
+        selectSticker={selectedStickerImage => {
           setSticker(prevStickers => [
             ...prevStickers,
             {
               image: selectedStickerImage?.image,
               name: selectedStickerImage?.name,
-              x: 0,  // example initial position
-              y: 0,  // example initial position
+              x: 0, // example initial position
+              y: 0, // example initial position
             },
           ]);
-          setVisible(false)
+          setVisible(false);
         }}
       />
       <View style={styles.row}>
@@ -435,52 +464,125 @@ function ScreenShare({route}) {
       </View>
       <View style={{flex: 1, width: '100%'}}>
         <View style={{flex: 1, alignItems: 'center'}}>
-          <ViewShot
-            style={styles.conQuote}
-            ref={captureRef}
-            options={{
-              fileName: `Shortstory${Date.now()}`,
-              format: 'png',
-              quality: 1.0,
+          <View
+            style={{
+              flexDirection: isVisibleFont ? 'row' : 'column',
+              alignItems: 'center',
             }}>
-            <Image
-              source={selectedBg}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                borderRadius: 24,
-                resizeMode: 'cover',
-              }}
-            />
-            <View style={styles.overlay} />
-           
-            <StickerComponent
-            // {...panResponder.panHandlers}
-            // {...resizePanResponder.panHandlers}
-            />
-
-            <Pressable onPress={() => setVisible(true)}>
-              <Image
-                source={imgSticker}
+            {isVisibleFont ? (
+              <View
                 style={{
-                  width: 30,
-                  height: 30,
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: -20,
+                  marginLeft: -40
+                }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{color: code_color.white, marginBottom: 40}}>
+                  A-
+                </Text>
+
+                <Slider
+                  step={1}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    transform: [{rotate: '90deg'}],
+                    // marginLeft: -90,
+                  }}
+                  minimumValue={0}
+                  maximumValue={2}
+                  value={
+                    fontSizeDefault === 18 ? 1 : fontSizeDefault === 16 ? 0 : 2
+                  }
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#FFFFFF"
+                  onValueChange={value => handleFont(value)}
+                  thumbTintColor="#ffd500"
+                />
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    textAlign: 'right',
+                    color: code_color.white,
+                    fontSize: 18,
+                    marginTop: 40,
+                  }}>
+                  A+
+                </Text>
+              </View>
+            ) : null}
+            <ViewShot
+              style={styles.conQuote}
+              ref={captureRef}
+              options={{
+                fileName: `Shortstory${Date.now()}`,
+                format: 'png',
+                quality: 1.0,
+              }}>
+              <Image
+                source={selectedBg}
+                style={{
                   position: 'absolute',
-                  right: 10,
-                  top: 10,
-                  resizeMode: 'contain',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 24,
+                  resizeMode: 'cover',
                 }}
               />
-            </Pressable>
+              <View style={styles.overlay} />
 
-            <Text style={{...styles.textQuote, fontFamily: fontSelect.value}}>
-              <Text style={styles.blur}>{route?.params?.start}</Text>{' '}
-              {route?.params?.selectedContent}{' '}
-              <Text style={styles.blur}>{route?.params?.end}</Text>
-            </Text>
-            <Text style={styles.textMarker}>@EroTales</Text>
-          </ViewShot>
+              <StickerComponent
+              // {...panResponder.panHandlers}
+              // {...resizePanResponder.panHandlers}
+              />
+              {isVisibleFont ? null : 
+              <Pressable onPress={() => setVisible(true)}>
+                <Image
+                  source={imgSticker}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    position: 'absolute',
+                    right: 50,
+                    top: 10,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </Pressable> }
+              {isVisibleFont ? <Pressable onPress={() => 
+                setVisibleFont(false)
+                }>
+                <Text allowFontScaling={false} style={{color: code_color.black,  position: 'absolute',
+                    right: 10,
+                    fontSize: 18,
+                    top: 5,}}>Done</Text>
+                </Pressable> : 
+              <Pressable onPress={() => setVisibleFont(true)}>
+                <Image
+                  source={imgFont}
+                  style={{
+                    width: 30,
+                    height: 35,
+                    position: 'absolute',
+                    right: 10,
+                    top: 5,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </Pressable> }
+
+              <Text style={{...styles.textQuote, fontFamily: fontSelect.value, fontSize: fontSizeDefault}}>
+                <Text style={[styles.blur, { fontSize: fontSizeDefault}]}>{route?.params?.start}</Text>{' '}
+                {route?.params?.selectedContent}{' '}
+                <Text  style={[styles.blur, { fontSize: fontSizeDefault}]}>{route?.params?.end}</Text>
+              </Text>
+              <Text style={styles.textMarker}>@EroTales</Text>
+            </ViewShot>
+          </View>
+
           <View style={styles.conFont}>
             <Text style={styles.title}>CHANGE FONT</Text>
             <View style={{flexDirection: 'row'}}>
