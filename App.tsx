@@ -34,6 +34,7 @@ import {getStoryList} from './src/shared/request';
 import i18n from './src/i18n/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
+import { Adjust, AdjustConfig } from 'react-native-adjust';
 
 function App({ userProfile }) {
   const isDarkMode = useColorScheme() === 'dark';
@@ -56,7 +57,18 @@ function App({ userProfile }) {
   }, []);
   useEffect(() => {
     getInitialRoute();
+    configTracker()
   }, []);
+  const configTracker = () => {
+    const adjustConfig = new AdjustConfig(
+      'tuqglinbysxs',
+      AdjustConfig.EnvironmentSandbox,
+      // AdjustConfig.EnvironmentProduction,
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    Adjust.create(adjustConfig);
+    console.log("Finish set configtracker");
+  };
   async function getInitialRoute() {
     if (userProfile?.token) {
       // const res = await getStoryList();
