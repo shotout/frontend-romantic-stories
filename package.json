@@ -26,6 +26,7 @@
     "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "6.0.13",
     "@react-navigation/native-stack": "6.9.0",
+    "@sentry/react-native": "^5.7.1",
     "@shopify/react-native-skia": "^0.1.213",
     "axios": "^1.3.4",
     "i18n-js": "^3.3.0",

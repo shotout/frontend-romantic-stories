@@ -14,7 +14,7 @@ export const STORE = {
   appstore: 'https://apps.apple.com/us/app/mcsmart/id1658465230',
 };
 export const SENTRY_DSN =
-  'https://52acda8f3fcb423c98b934dbbf7dbc20@o4504954514898944.ingest.sentry.io/4505599691259904';
+  'https://f518c7bcaf12272f49b5b5b4a51b2cb9@o4504954514898944.ingest.sentry.io/4505798010208256';
 
 export const downloadText = `I found this fact on the McSmart App. Download now for the best facts:\n\nPlaystore: ${STORE.playstore}\nAppstore: ${STORE.appstore}\n`;
 

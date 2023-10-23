@@ -35,12 +35,20 @@ import i18n from './src/i18n/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
 import { Adjust, AdjustConfig } from 'react-native-adjust';
+import * as Sentry from '@sentry/react-native';
+import { SENTRY_DSN } from './src/shared/static';
 
 function App({ userProfile }) {
+  Sentry.init({
+    environment: 'development',
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  });
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
   useEffect(() => {
     const handleAppInstalled = async () => {
       const res = await AsyncStorage.getItem('isAppInstalled');
