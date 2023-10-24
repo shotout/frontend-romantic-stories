@@ -241,6 +241,7 @@ function ScreenShare({route}) {
       await Share.open({
         url: base64CaptureImage.current,
         title: 'Shared-Short-Story',
+        // message: 'OKE DI COBA'
       });
     } catch (err) {
       console.log('Error share whatsapp:', err);
@@ -290,13 +291,15 @@ function ScreenShare({route}) {
   const handleShareFBDefault = async () => {
     try {
       const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-      await Share.shareSingle({
+      await Share.open({
+        title: 'Share file',
+        message: 'Simple share with message',
         url: contentURL,
-        appId: '637815961525510', // facebook appId
-        backgroundBottomColor: '#fff',
-        backgroundTopColor: '#fff',
-        type: 'image/*',
-        social: Share.Social.FACEBOOK,
+        // appId: '637815961525510', // facebook appId
+        // backgroundBottomColor: '#fff',
+        // backgroundTopColor: '#fff',
+        // type: 'image/*',
+        // social: Share.Social.FACEBOOK,
       });
     } catch (err) {
       console.log('Err fb default:', err);

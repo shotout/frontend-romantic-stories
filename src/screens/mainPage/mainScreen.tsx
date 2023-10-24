@@ -24,8 +24,21 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Pressable,
+  Modal,
 } from 'react-native';
-import {ava1, bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
+import {
+  ava1,
+  bg,
+  cover1,
+  cover2,
+  imgBgAvaTips,
+  imgBgContent,
+  imgBgTips,
+  imgLoveLeft,
+  imgLoveRight,
+  libraryAdd,
+  logo,
+} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import {getDefaultLanguange, isIphoneXorAbove} from '../../utils/devices';
@@ -57,10 +70,12 @@ import ModalStoryUnlock from '../../components/modal-story-unlock';
 import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {moderateScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen =  ({
+const MainScreen = ({
   userProfile,
   userStory,
   handleSetStory,
@@ -68,10 +83,15 @@ const MainScreen =  ({
   backgroundColor,
   colorTheme,
   fontFamily,
-  pressScreen, 
-  route
+  pressScreen,
+  route,
 }) => {
-  const [showModal, setShowModal] = useState(true);
+  const [isTutorial, setTutorial] = useState({
+    visible: false,
+    step: 1,
+  });
+  const [visible, setVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
@@ -180,6 +200,26 @@ const MainScreen =  ({
 
   useEffect(() => {
     handleThemeAvatar();
+    const checkTutorial = async () => {
+      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+      if (isFinishTutorial === 'yes') {
+        setTutorial({
+          visible: true,
+          step: 1,
+        });
+        setVisible(true);
+        setTimeout(() => {
+          setVisible(false)
+          setTutorial({
+            ...isTutorial,
+            step: isTutorial.step + 1,
+          });
+         
+         
+        }, 2000);
+      }
+    };
+    checkTutorial();
   }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {
@@ -194,7 +234,9 @@ const MainScreen =  ({
         bg={backgroundColor}
         fontFamily={fontFamily}
         me={me}
-        partner={partner} source={undefined}      />
+        partner={partner}
+        source={undefined}
+      />
 
       // <View style={{ flex: 1 }}>
       //   <Text
@@ -261,139 +303,241 @@ const MainScreen =  ({
       </PanGestureHandler>
     );
   }
+  const renderTutorial = () => {
+      return (
+        <Modal
+          visible={visible}
+          animationType="fade"
+          transparent
+          onDismiss={() => setVisible(false)}>
+          <ImageBackground
+            source={imgBgTips}
+            resizeMode="cover"
+            style={{
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              flex: 1,
+              alignItems: 'center',
+            }}>
+            <Image
+              source={imgBgAvaTips}
+              resizeMode="contain"
+              style={{width: '80%', height: '100%'}}
+            />
+            <Image
+              source={imgLoveLeft}
+              resizeMode="contain"
+              style={{
+                width: '30%',
+                height: '100%',
+                position: 'absolute',
+                top: -70,
+                left: 0,
+              }}
+            />
+            <Image
+              source={imgLoveRight}
+              resizeMode="contain"
+              style={{
+                width: '30%',
+                height: '100%',
+                position: 'absolute',
+                top: -70,
+                right: 0,
+              }}
+            />
+            <View
+              style={{
+                backgroundColor: 'white',
+                position: 'absolute',
+                bottom: 0,
+                width: Dimensions.get('window').width,
+                height: '58%',
+                borderTopRightRadius: 60,
+                borderTopLeftRadius: 60,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <ImageBackground
+                source={imgBgContent}
+                resizeMode="contain"
+                style={{
+                  width: Dimensions.get('window').width,
+                  height: 250,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                <Text
+                  style={{color: '#5873FF', fontSize: 30, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Comfortaa-SemiBold'}}>
+                  {'Hey, John\nYou’re all set!'}
+                </Text>
+                <Text
+                  style={{fontSize: 24, textAlign: 'center', fontWeight: '100', marginTop: 10}}>
+                  {`Let's show you how \nEroTales works...`}
+                </Text>
+                
+              </ImageBackground>
+            </View>
+          </ImageBackground>
+        </Modal>
+      );
+    }
 
-  const renderView = () => {
-    if(route?.name != 'Main'){
-      return(
-<Pressable
-      onPress={() => route?.name != 'Main' ? pressScreen() : null}
-      style={{
-        backgroundColor: backgroundColor,
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingTop: 20,
-      }}>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+  const renderContent = () => {
+    // if()
+    return (
+      <ImageBackground
+        source={imgBgTips}
+        resizeMode="cover"
+        style={{
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+          // height: '50%',
+
+          alignSelf: 'center',
+          marginRight: -20,
+        }}
       />
+    );
+  };
+  const renderView = () => {
+    if (route?.name != 'Main') {
+      return (
+        <Pressable
+          onPress={() => (route?.name != 'Main' ? pressScreen() : null)}
+          style={{
+            backgroundColor: backgroundColor,
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+          }}>
+          <StatusBar
+            barStyle={'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
 
-      {/* <View
+          {/* <View
         style={{
           backgroundColor: code_color.white,
           // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
       /> */}
-      <ModalStoryUnlock
-        isVisible={showModal}
-        onClose={() => setShowModal(false)}
-        isPremium={false} data={undefined} restart={undefined} edit={undefined}      />
-      <ModalCongrats
-        isVisible={showModalCongrats}
-        onClose={() => setShowModalCongrats(false)}
-        onGotIt={() => {
-          setShowModalCongrats(false);
-          setShowModalNewStory(true);
-        } }     />
-      <ModalNewStory
-        isVisible={showModalNewStory}
-        onClose={() => setShowModalNewStory(false)}
-        onWatchAds={() => {
-          setShowModalNewStory(false);
-          setShowModal(true);
-        }}
-        onUnlock={() => {
-          setShowModalNewStory(false);
-          setShowModalSuccessPurchase(true);
-        }}
-        onGetUnlimit={() => {
-          setShowModalNewStory(false);
-         
-            setShowModalSuccessPurchase(true);
-        
-        }}
-      />
-      <ModalSuccessPurchase
-        isVisible={showModalSuccessPurchase}
-        onClose={() => setShowModalSuccessPurchase(false)}
-      />
-      {renderFlatList()}
-    </ Pressable>
-      )
-      
-    }else{
-      return(
+          <ModalStoryUnlock
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            isPremium={false}
+            data={undefined}
+            restart={undefined}
+            edit={undefined}
+          />
+          <ModalCongrats
+            isVisible={showModalCongrats}
+            onClose={() => setShowModalCongrats(false)}
+            onGotIt={() => {
+              setShowModalCongrats(false);
+              setShowModalNewStory(true);
+            }}
+          />
+          <ModalNewStory
+            isVisible={showModalNewStory}
+            onClose={() => setShowModalNewStory(false)}
+            onWatchAds={() => {
+              setShowModalNewStory(false);
+              setShowModal(true);
+            }}
+            onUnlock={() => {
+              setShowModalNewStory(false);
+              setShowModalSuccessPurchase(true);
+            }}
+            onGetUnlimit={() => {
+              setShowModalNewStory(false);
+
+              setShowModalSuccessPurchase(true);
+            }}
+          />
+          <ModalSuccessPurchase
+            isVisible={showModalSuccessPurchase}
+            onClose={() => setShowModalSuccessPurchase(false)}
+          />
+          {renderTutorial()}
+          {renderFlatList()}
+        </Pressable>
+      );
+    } else {
+      return (
         <View
-        style={{
-          backgroundColor: backgroundColor,
-          flex: 1,
-          paddingHorizontal: 20,
-          paddingTop: 20,
-        }}>
-        <StatusBar
-          barStyle={'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-  
-        {/* <View
+          style={{
+            backgroundColor: backgroundColor,
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+          }}>
+          <StatusBar
+            barStyle={'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+
+          {/* <View
           style={{
             backgroundColor: code_color.white,
             // paddingTop: isIphoneXorAbove() ? 40 : 0,
           }}
         /> */}
-        <ModalStoryUnlock
-          isVisible={showModal}
-          onClose={() => setShowModal(false)}
-          isPremium={false} data={undefined} restart={undefined} edit={undefined}      />
-        <ModalCongrats
-          isVisible={showModalCongrats}
-          onClose={() => setShowModalCongrats(false)}
-          onGotIt={() => {
-            setShowModalCongrats(false);
-            setShowModalNewStory(true);
-          } }     />
-        <ModalNewStory
-          isVisible={showModalNewStory}
-          onClose={() => setShowModalNewStory(false)}
-          onWatchAds={() => {
-            setShowModalNewStory(false);
-            setShowModal(true);
-          }}
-          onUnlock={() => {
-            setShowModalNewStory(false);
-            setShowModalSuccessPurchase(true);
-          }}
-          onGetUnlimit={() => {
-            setShowModalNewStory(false);
-           
+          <ModalStoryUnlock
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            isPremium={false}
+            data={undefined}
+            restart={undefined}
+            edit={undefined}
+          />
+          <ModalCongrats
+            isVisible={showModalCongrats}
+            onClose={() => setShowModalCongrats(false)}
+            onGotIt={() => {
+              setShowModalCongrats(false);
+              setShowModalNewStory(true);
+            }}
+          />
+          <ModalNewStory
+            isVisible={showModalNewStory}
+            onClose={() => setShowModalNewStory(false)}
+            onWatchAds={() => {
+              setShowModalNewStory(false);
+              setShowModal(true);
+            }}
+            onUnlock={() => {
+              setShowModalNewStory(false);
               setShowModalSuccessPurchase(true);
-          
-          }}
-        />
-        <ModalSuccessPurchase
-          isVisible={showModalSuccessPurchase}
-          onClose={() => setShowModalSuccessPurchase(false)}
-        />
-        {renderFlatList()}
-      </ View>
-      )
-     
-    }
-  }
-  return renderView()
+            }}
+            onGetUnlimit={() => {
+              setShowModalNewStory(false);
 
+              setShowModalSuccessPurchase(true);
+            }}
+          />
+          <ModalSuccessPurchase
+            isVisible={showModalSuccessPurchase}
+            onClose={() => setShowModalSuccessPurchase(false)}
+          />
+          {renderFlatList()}
+          {renderTutorial()}
+        </View>
+      );
+    }
+  };
+  return renderView();
 };
 
 const styles = StyleSheet.create({});
 
 MainScreen.propTypes = {
   activeVersion: PropTypes.any,
-  pressScreen: PropTypes.any
+  pressScreen: PropTypes.any,
 };
 
 MainScreen.defaultProps = {
   activeVersion: null,
-
 };
 
 export default connect(states, dispatcher)(MainScreen);
