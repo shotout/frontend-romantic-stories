@@ -75,7 +75,7 @@ import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
-
+import AnimatedLottieView from 'lottie-react-native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -90,6 +90,7 @@ const MainScreen = ({
   pressScreen,
   route,
 }) => {
+  const love = require('../../assets/lottie/learn_more_button.json');
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: 1,
@@ -278,9 +279,7 @@ const MainScreen = ({
     );
   }
 
-  const renderProgress = () => (
-    <StepHeader currentStep={isTutorial.step} />
-  )
+  const renderProgress = () => <StepHeader currentStep={isTutorial.step} />;
   const renderTutorial = () => {
     if (isTutorial.step === 1 && isTutorial.visible) {
       return (
@@ -377,10 +376,19 @@ const MainScreen = ({
             position: 'absolute',
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
-          
+
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-            {renderProgress()}
+            <View style={{position: 'absolute', bottom: 100}}>
+            <AnimatedLottieView
+              source={love}
+              style={{width: 100, height: 100}}
+              autoPlay
+              duration={3000}
+              loop={true}
+            />
+            </View>
+          {renderProgress()}
           <View
             style={{
               backgroundColor: '#3F58DD',
@@ -389,29 +397,45 @@ const MainScreen = ({
               marginHorizontal: 40,
               alignItems: 'center',
               marginTop: '20%',
-              paddingTop: 50
+              paddingTop: 50,
             }}>
-              <Image source={imgStep1} resizeMode='contain' style={{ width: 100, height: 200, position: 'absolute', top: -100 }} />
-            <Text style={{color: code_color.white, textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>
+            <Image
+              source={imgStep1}
+              resizeMode="contain"
+              style={{width: 100, height: 200, position: 'absolute', top: -100}}
+            />
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
               {`Discover a brand new\nEroTales Story every day.\nHungry for more?
               \nUnlock additional Stories\nanytime!`}
             </Text>
+            
+           
             <Button
-            style={{ backgroundColor: code_color.yellow, padding: 10, borderRadius: 10, marginTop: 10}}
-        title={i18n.t('Next')}
-        onPress={() => {
-          setTutorial({
-            ...isTutorial,
-            step: isTutorial.step + 1,
-          });
-        }}
-      />
+              style={{
+                backgroundColor: code_color.yellow,
+                padding: 10,
+                borderRadius: 10,
+                marginTop: 10,
+              }}
+              title={i18n.t('Next')}
+              onPress={() => {
+                setTutorial({
+                  ...isTutorial,
+                  step: isTutorial.step + 1,
+                });
+              }}
+            />
           </View>
         </SafeAreaView>
       );
     }
   };
-
 
   const renderView = () => {
     if (route?.name != 'Main') {
