@@ -8,9 +8,9 @@ const lampActiveAnimation = require('../../assets/images/step.png');
 
 export default function StepHeader({currentStep}) {
   const activeGift = () => (
-    <View style={styles.ctnGift}>
+
       <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} />
-    </View>
+  
   );
 
   const unactiveLamp = () => (

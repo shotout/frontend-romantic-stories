@@ -37,6 +37,7 @@ import {
   imgBgTips,
   imgLoveLeft,
   imgLoveRight,
+  imgStep1,
   libraryAdd,
   logo,
 } from '../../assets/images';
@@ -278,7 +279,7 @@ const MainScreen = ({
   }
 
   const renderProgress = () => (
-    <StepHeader currentStep={1} />
+    <StepHeader currentStep={isTutorial.step} />
   )
   const renderTutorial = () => {
     if (isTutorial.step === 1 && isTutorial.visible) {
@@ -377,7 +378,7 @@ const MainScreen = ({
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
           
-            backgroundColor: 'rgba(0,0,0,0.5)',
+            backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
             {renderProgress()}
           <View
@@ -385,9 +386,12 @@ const MainScreen = ({
               backgroundColor: '#3F58DD',
               borderRadius: 10,
               padding: 10,
-              marginHorizontal: 20,
+              marginHorizontal: 40,
               alignItems: 'center',
+              marginTop: '20%',
+              paddingTop: 50
             }}>
+              <Image source={imgStep1} resizeMode='contain' style={{ width: 100, height: 200, position: 'absolute', top: -100 }} />
             <Text style={{color: code_color.white, textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>
               {`Discover a brand new\nEroTales Story every day.\nHungry for more?
               \nUnlock additional Stories\nanytime!`}
@@ -395,7 +399,12 @@ const MainScreen = ({
             <Button
             style={{ backgroundColor: code_color.yellow, padding: 10, borderRadius: 10, marginTop: 10}}
         title={i18n.t('Next')}
-        onPress={() => {}}
+        onPress={() => {
+          setTutorial({
+            ...isTutorial,
+            step: isTutorial.step + 1,
+          });
+        }}
       />
           </View>
         </SafeAreaView>
