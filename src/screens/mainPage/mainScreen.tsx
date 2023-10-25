@@ -38,6 +38,7 @@ import {
   imgLoveLeft,
   imgLoveRight,
   imgStep1,
+  imgStep2,
   libraryAdd,
   logo,
 } from '../../assets/images';
@@ -206,6 +207,7 @@ const MainScreen = ({
 
   useEffect(() => {
     handleThemeAvatar();
+    handleSetSteps(0)
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes') {
@@ -371,6 +373,7 @@ const MainScreen = ({
         </Modal>
       );
     } else if (isTutorial.step > 1) {
+      console.log(isTutorial.step)
       return (
         <SafeAreaView
           style={{
@@ -380,9 +383,6 @@ const MainScreen = ({
 
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-            <View style={{position: 'absolute', bottom: 100}}>
-            
-            </View>
           {renderProgress()}
           <View
             style={{
@@ -395,7 +395,7 @@ const MainScreen = ({
               paddingTop: 50,
             }}>
             <Image
-              source={imgStep1}
+              source={isTutorial.step === 2 ? imgStep1 : imgStep2}
               resizeMode="contain"
               style={{width: 100, height: 200, position: 'absolute', top: -100}}
             />
@@ -406,8 +406,8 @@ const MainScreen = ({
                 fontSize: 18,
                 fontWeight: 'bold',
               }}>
-              {`Discover a brand new\nEroTales Story every day.\nHungry for more?
-              \nUnlock additional Stories\nanytime!`}
+              {isTutorial.step === 2 ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
+              \nUnlock additional Stories\nanytime!` : `Like & save your \nfavorite Stories.`}
             </Text>
             
             <Button
@@ -424,6 +424,7 @@ const MainScreen = ({
                   step: isTutorial.step + 1,
                 });
                 handleSetSteps(isTutorial.step + 1)
+                // isTutorial.step  > 4 ? navigate('Library') : null
               }}
             />
           </View>
