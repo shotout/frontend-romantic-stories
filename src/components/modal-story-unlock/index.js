@@ -84,7 +84,7 @@ function ModalUnlockStory({
         }}>
         <View
           style={{
-            backgroundColor: code_color.blueDark,
+            backgroundColor: code_color.white,
             width: '90%',
             borderRadius: moderateScale(24),
           }}>
@@ -99,7 +99,7 @@ function ModalUnlockStory({
           <Text
             style={{
               fontSize: moderateScale(18),
-              color: code_color.white,
+              color: code_color.black,
               fontWeight: 700,
               textAlign: 'center',
               marginTop: moderateScale(10),
@@ -107,87 +107,61 @@ function ModalUnlockStory({
             }}>
             {'New Story unlocked'}
           </Text>
-          <Image
-            source={imgLoveLeft}
-            resizeMode="contain"
-            style={{
-              width: 100,
-              height: 150,
-              position: 'absolute',
-              left: 0,
-              top: 150,
-            }}
-          />
-
-          <Image
-            source={imgLoveRight}
-            resizeMode="contain"
-            style={{
-              width: 100,
-              height: 150,
-              position: 'absolute',
-              right: 0,
-              top: 150,
-            }}
-          />
           <View
             style={{
               alignItems: 'center',
-              backgroundColor: code_color.white,
+              // backgroundColor: code_color.white,
               borderRadius: moderateScale(24),
               // padding: moderateScale(20),
             }}>
-            <View style={{flexDirection: 'row', padding: moderateScale(20)}}>
-              <Image
-                source={cover1}
-                resizeMode="contain"
-                style={{
-                  width: 65,
-                  height: 87,
-                  marginRight: moderateScale(10),
-                }}
-              />
-              <View style={{flex: 1}}>
-                <Text
-                  style={{
-                    color: code_color.blueDark,
-                    marginTop: 10,
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                  }}>
-                  [Suggested story this user never read before]
-                </Text>
-                <Text
-                  style={{
-                    color: '#3F58DD',
-                    marginTop: 10,
-                    fontWeight: 400,
-                    fontSize: 14,
-                  }}>
-                  [Story category]
-                </Text>
-              </View>
-            </View>
-            <Text
-              style={{
-                color: code_color.blackDark,
-                fontSize: 12,
-                marginTop: 5,
-                marginHorizontal: 10,
-              }}>
-              Lorem ipsum dolor sit amet consectetur. Pretium consequat odio
-              ornare aliquet curabitur tincidunt ipsum. Nisi lectus a si...
-            </Text>
             <View
               style={{
-                width: '100%',
-                height: 1,
-                backgroundColor: '#DDDEE3',
-                marginTop: moderateScale(20),
-                marginBottom: moderateScale(10),
-              }}
-            />
-
+                backgroundColor: '#F5F5F6',
+                width: '90%',
+                padding: moderateScale(12),
+                borderRadius: moderateScale(8)
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  source={cover1}
+                  resizeMode="contain"
+                  style={{
+                    width: 65,
+                    height: 87,
+                    marginRight: moderateScale(10),
+                  }}
+                />
+                <View style={{flex: 1}}>
+                  <Text
+                    style={{
+                      color: code_color.blueDark,
+                      marginTop: 10,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
+                    [Suggested story this user never read before]
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#3F58DD',
+                      marginTop: 10,
+                      fontWeight: 400,
+                      fontSize: 14,
+                    }}>
+                    [Story category]
+                  </Text>
+                </View>
+              </View>
+              <Text
+                style={{
+                  color: code_color.blackDark,
+                  fontSize: 12,
+                  marginTop: moderateScale(16),
+                }}>
+                Lorem ipsum dolor sit amet consectetur. Pretium consequat odio
+                ornare aliquet curabitur tincidunt ipsum. Nisi lectus a si...
+              </Text>
+            </View>
             <TouchableOpacity
               onPress={onClose}
               style={{
@@ -196,12 +170,9 @@ function ModalUnlockStory({
                 padding: moderateScale(12),
                 alignItems: 'center',
                 borderRadius: 8,
-                width: '80%',
-                marginBottom: 10,
+                width: '90%',
+                marginBottom: moderateScale(20),
               }}>
-              <Reading
-                style={{position: 'absolute', left: '15%', top: '40%'}}
-              />
               <Text
                 style={{
                   color: code_color.white,
@@ -211,123 +182,6 @@ function ModalUnlockStory({
                 Start reading
               </Text>
             </TouchableOpacity>
-            <View
-              style={{
-                backgroundColor: '#F0F2FF',
-                width: '100%',
-                borderRadius: 10,
-                paddingBottom: 10,
-              }}>
-              <Text
-                style={{
-                  color: code_color.black,
-                  fontWeight: 500,
-                  fontSize: moderateScale(16),
-                  textAlign: 'center',
-                  marginVertical: 10,
-                }}>
-                Other Stories you might like:
-              </Text>
-              <View style={{flexDirection: 'row'}}>
-                <Pressable
-                  onPress={() => setPremium(false)}
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginHorizontal: 10,
-                  }}>
-                  <Image
-                    source={cover1}
-                    resizeMode="contain"
-                    style={{
-                      width: 65,
-                      height: 87,
-                      marginBottom: moderateScale(10),
-                    }}
-                  />
-                  <Text
-                    style={{
-                      color: code_color.black,
-                      fontWeight: 500,
-                      fontSize: moderateScale(14),
-                      textAlign: 'center',
-                    }}>
-                    Title of the Story A
-                  </Text>
-                </Pressable>
-
-                <Pressable
-                  onPress={() => setPremium(false)}
-                  style={{flex: 1, alignItems: 'center', marginHorizontal: 10}}>
-                  <Image
-                    source={cover1}
-                    resizeMode="contain"
-                    style={{
-                      width: 65,
-                      height: 87,
-                      marginBottom: moderateScale(10),
-                    }}
-                  />
-                  <Text
-                    style={{
-                      color: code_color.black,
-                      fontWeight: 500,
-                      fontSize: moderateScale(14),
-                      textAlign: 'center',
-                    }}>
-                    Title of the Story A
-                  </Text>
-                </Pressable>
-                <Pressable
-                  onPress={() => setPremium(false)}
-                  style={{flex: 1, alignItems: 'center', marginHorizontal: 10}}>
-                  <Image
-                    source={cover1}
-                    resizeMode="contain"
-                    style={{
-                      width: 65,
-                      height: 87,
-                      marginBottom: moderateScale(10),
-                    }}
-                  />
-                  <Text
-                    style={{
-                      color: code_color.black,
-                      fontWeight: 500,
-                      fontSize: moderateScale(14),
-                      textAlign: 'center',
-                    }}>
-                    Title of the Story A
-                  </Text>
-                </Pressable>
-              </View>
-
-              <TouchableOpacity
-                onPress={onClose}
-                style={{
-                  backgroundColor: code_color.yellow,
-                  marginTop: moderateScale(20),
-                  padding: moderateScale(8),
-                  alignItems: 'center',
-                  borderRadius: 8,
-                  width: '85%',
-                  marginHorizontal: moderateScale(20),
-                  marginBottom: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                <LibrarySvg fill={code_color.black} />
-                <Text
-                  style={{
-                    color: code_color.black,
-                    fontWeight: 500,
-                    fontSize: moderateScale(14),
-                  }}>
-                  Explore more Stories
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
       </View>
