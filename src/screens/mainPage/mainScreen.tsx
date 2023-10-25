@@ -394,8 +394,8 @@ const MainScreen = ({
             </Text>
             <Button
             style={{ backgroundColor: code_color.yellow, padding: 10, borderRadius: 10, marginTop: 10}}
-        title={i18n.t('getStarted')}
-        onPress={() => navigate('Register')}
+        title={i18n.t('Next')}
+        onPress={() => {}}
       />
           </View>
         </SafeAreaView>
