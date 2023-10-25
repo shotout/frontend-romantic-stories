@@ -28,6 +28,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import SettingsPage from '../screens/settingsPage/settingsPage';
+import AnimatedLottieView from 'lottie-react-native';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -165,6 +166,7 @@ const Library = props => {
 function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
+console.log(JSON.stringify(props))
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -177,6 +179,7 @@ function MyTabs(props) {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
+  const love = require('../assets/lottie/urgent.json');
   //console.log(JSON.stringify(props?.userProfile?.data?.theme))
   return (
     <Tab.Navigator
@@ -209,6 +212,17 @@ function MyTabs(props) {
                 justifyContent: 'center',
                 // display: !onhideBottom ? 'flex' : 'none',
               }}>
+                {props?.stepsTutorial === 3 ?
+                <View style={{position: 'absolute', bottom: -20}}>
+                <AnimatedLottieView
+                source={love}
+                style={{width: 100, height: 100}}
+                autoPlay
+                duration={3000}
+                loop={true}
+              />
+                </View> : null}
+              
               <LoveSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
                 allowFontScaling={false}
@@ -351,10 +365,10 @@ const styles = StyleSheet.create({
 
 class MyTabsComponent extends Component {
   render() {
-    const {userProfile, colorTheme} = this.props;
+    const {colorTheme, stepsTutorial} = this.props;
     const tapProps = {
-      userProfile,
       colorTheme,
+      stepsTutorial
     };
     return <MyTabs {...tapProps} />;
   }

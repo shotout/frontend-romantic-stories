@@ -89,8 +89,9 @@ const MainScreen = ({
   fontFamily,
   pressScreen,
   route,
+  handleSetSteps
 }) => {
-  const love = require('../../assets/lottie/learn_more_button.json');
+  
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: 1,
@@ -380,13 +381,7 @@ const MainScreen = ({
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
             <View style={{position: 'absolute', bottom: 100}}>
-            <AnimatedLottieView
-              source={love}
-              style={{width: 100, height: 100}}
-              autoPlay
-              duration={3000}
-              loop={true}
-            />
+            
             </View>
           {renderProgress()}
           <View
@@ -415,7 +410,6 @@ const MainScreen = ({
               \nUnlock additional Stories\nanytime!`}
             </Text>
             
-           
             <Button
               style={{
                 backgroundColor: code_color.yellow,
@@ -429,6 +423,7 @@ const MainScreen = ({
                   ...isTutorial,
                   step: isTutorial.step + 1,
                 });
+                handleSetSteps(isTutorial.step + 1)
               }}
             />
           </View>

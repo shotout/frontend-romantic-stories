@@ -3,6 +3,7 @@ import * as types from './types';
 
 const INITIAL_STATE = {
   userProfile: {},
+  stepsTutorial: null,
   defaultData: {
     feeling: [],
     ways: [],
@@ -232,6 +233,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userProfile: action.payload,
+      };
+    case types.SET_STEP_TUTORIAL:
+      return {
+        ...state,
+        stepsTutorial: action.payload,
       };
     case types.SET_STORY_DATA:
       return {

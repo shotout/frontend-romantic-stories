@@ -17,6 +17,11 @@ export const handleSetStory = payload => ({
   payload,
 });
 
+export const handleSetSteps = payload => ({
+  type: types.SET_STEP_TUTORIAL,
+  payload,
+});
+
 export const handleSetBackground = payload => ({
   type: types.SET_BACKGROUND_COLOR,
   payload,
