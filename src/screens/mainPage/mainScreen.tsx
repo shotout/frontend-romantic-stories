@@ -25,6 +25,7 @@ import {
   TouchableWithoutFeedback,
   Pressable,
   Modal,
+  SafeAreaView,
 } from 'react-native';
 import {
   ava1,
@@ -72,6 +73,8 @@ import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
+import StepHeader from '../../layout/step/stepHeader';
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -209,14 +212,12 @@ const MainScreen = ({
         });
         setVisible(true);
         setTimeout(() => {
-          setVisible(false)
+          setVisible(false);
           setTutorial({
             ...isTutorial,
             step: isTutorial.step + 1,
           });
-         
-         
-        }, 2000);
+        }, 3000);
       }
     };
     checkTutorial();
@@ -237,34 +238,6 @@ const MainScreen = ({
         partner={partner}
         source={undefined}
       />
-
-      // <View style={{ flex: 1 }}>
-      //   <Text
-      //     style={{
-      //       margin: 10,
-      //       marginHorizontal: 50,
-      //       fontWeight: 'bold',
-      //       textAlign: 'center',
-      //     }}>
-      //     {item.title}
-      //   </Text>
-      //   <View
-      //     style={{
-      //       borderColor: code_color.grey,
-      //       borderWidth: 1,
-      //       marginVertical: 10,
-      //     }}
-      //   />
-      //   <Text
-      //     style={{
-      //       marginVertical: 10,
-      //       fontSize: 16,
-      //       textAlign: 'justify',
-      //       lineHeight: 30,
-      //     }}>
-      //     {item.detail}
-      //   </Text>
-      // </View>
     );
   };
 
@@ -303,7 +276,12 @@ const MainScreen = ({
       </PanGestureHandler>
     );
   }
+
+  const renderProgress = () => (
+    <StepHeader currentStep={1} />
+  )
   const renderTutorial = () => {
+    if (isTutorial.step === 1 && isTutorial.visible) {
       return (
         <Modal
           visible={visible}
@@ -365,41 +343,67 @@ const MainScreen = ({
                   width: Dimensions.get('window').width,
                   height: 250,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}>
                 <Text
-                  style={{color: '#5873FF', fontSize: 30, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Comfortaa-SemiBold'}}>
+                  style={{
+                    color: '#5873FF',
+                    fontSize: 30,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontFamily: 'Comfortaa-SemiBold',
+                  }}>
                   {'Hey, John\nYou’re all set!'}
                 </Text>
                 <Text
-                  style={{fontSize: 24, textAlign: 'center', fontWeight: '100', marginTop: 10}}>
-                  {`Let's show you how \nEroTales works...`}
+                  style={{
+                    fontSize: 24,
+                    textAlign: 'center',
+                    fontWeight: '100',
+                    marginTop: 10,
+                  }}>
+                  {"Let's show you how \nEroTales works..."}
                 </Text>
-                
               </ImageBackground>
             </View>
           </ImageBackground>
         </Modal>
       );
-    }
-
-  const renderContent = () => {
-    // if()
-    return (
-      <ImageBackground
-        source={imgBgTips}
-        resizeMode="cover"
-        style={{
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height,
-          // height: '50%',
-
-          alignSelf: 'center',
-          marginRight: -20,
-        }}
+    } else if (isTutorial.step > 1) {
+      return (
+        <SafeAreaView
+          style={{
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+          
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+            {renderProgress()}
+          <View
+            style={{
+              backgroundColor: '#3F58DD',
+              borderRadius: 10,
+              padding: 10,
+              marginHorizontal: 20,
+              alignItems: 'center',
+            }}>
+            <Text style={{color: code_color.white, textAlign: 'center', fontSize: 18, fontWeight: 'bold'}}>
+              {`Discover a brand new\nEroTales Story every day.\nHungry for more?
+              \nUnlock additional Stories\nanytime!`}
+            </Text>
+            <Button
+            style={{ backgroundColor: code_color.yellow, padding: 10, borderRadius: 10, marginTop: 10}}
+        title={i18n.t('getStarted')}
+        onPress={() => navigate('Register')}
       />
-    );
+          </View>
+        </SafeAreaView>
+      );
+    }
   };
+
+
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
