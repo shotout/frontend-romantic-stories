@@ -73,6 +73,7 @@ import ModalStoryUnlock from '../../components/modal-story-unlock';
 import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
+import ModalGetPremium from '../../components/modal-get-premium';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
@@ -90,9 +91,9 @@ const MainScreen = ({
   fontFamily,
   pressScreen,
   route,
-  handleSetSteps
+  handleSetSteps,
+  isPremium,
 }) => {
-  
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: 1,
@@ -103,6 +104,7 @@ const MainScreen = ({
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
+  const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -117,6 +119,7 @@ const MainScreen = ({
   // const [dataBook, setBook] = useState(userStory);
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
+  const [readLater, setReadLater] = useState(false);
 
   const [dataBook, setBook] = useState([
     {
@@ -207,7 +210,7 @@ const MainScreen = ({
 
   useEffect(() => {
     handleThemeAvatar();
-    handleSetSteps(0)
+    handleSetSteps(0);
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes') {
@@ -225,7 +228,7 @@ const MainScreen = ({
         }, 3000);
       }
     };
-    checkTutorial();
+    // checkTutorial();
   }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {
@@ -373,7 +376,7 @@ const MainScreen = ({
         </Modal>
       );
     } else if (isTutorial.step > 1) {
-      console.log(isTutorial.step)
+      console.log(isTutorial.step);
       return (
         <SafeAreaView
           style={{
@@ -406,10 +409,12 @@ const MainScreen = ({
                 fontSize: 18,
                 fontWeight: 'bold',
               }}>
-              {isTutorial.step === 2 ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
-              \nUnlock additional Stories\nanytime!` : `Like & save your \nfavorite Stories.`}
+              {isTutorial.step === 2
+                ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
+              \nUnlock additional Stories\nanytime!`
+                : 'Like & save your \nfavorite Stories.'}
             </Text>
-            
+
             <Button
               style={{
                 backgroundColor: code_color.yellow,
@@ -423,7 +428,7 @@ const MainScreen = ({
                   ...isTutorial,
                   step: isTutorial.step + 1,
                 });
-                handleSetSteps(isTutorial.step + 1)
+                handleSetSteps(isTutorial.step + 1);
                 // isTutorial.step  > 4 ? navigate('Library') : null
               }}
             />
@@ -458,17 +463,21 @@ const MainScreen = ({
           <ModalStoryUnlock
             isVisible={showModal}
             onClose={() => setShowModal(false)}
-            isPremium={false}
             data={undefined}
             restart={undefined}
             edit={undefined}
+            readLater={readLater}
           />
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
             onGotIt={() => {
               setShowModalCongrats(false);
-              setShowModalNewStory(true);
+              if (isPremium) {
+                setShowModal(true);
+              } else {
+                setShowModalNewStory(true);
+              }
             }}
           />
           <ModalNewStory
@@ -519,17 +528,21 @@ const MainScreen = ({
           <ModalStoryUnlock
             isVisible={showModal}
             onClose={() => setShowModal(false)}
-            isPremium={false}
             data={undefined}
             restart={undefined}
             edit={undefined}
+            readLater={readLater}
           />
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
             onGotIt={() => {
               setShowModalCongrats(false);
-              setShowModalNewStory(true);
+              if (isPremium) {
+                setShowModal(true);
+              } else {
+                setShowModalNewStory(true);
+              }
             }}
           />
           <ModalNewStory
@@ -546,12 +559,20 @@ const MainScreen = ({
             onGetUnlimit={() => {
               setShowModalNewStory(false);
 
-              setShowModalSuccessPurchase(true);
+              setShowModalGetPremium(true);
             }}
           />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
             onClose={() => setShowModalSuccessPurchase(false)}
+          />
+          <ModalGetPremium
+            isVisible={showModalGetPremium}
+            onGotIt={() => {
+              setShowModalGetPremium(false);
+              setShowModal(true);
+            }}
+            onClose={() => setShowModalGetPremium(false)}
           />
           {renderFlatList()}
           {renderTutorial()}
