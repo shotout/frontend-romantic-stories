@@ -19,7 +19,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from 'react-native';
-import {cover2} from '../../assets/images';
+import {cover2, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
 import LockFree from '../../assets/icons/lockFree';
@@ -34,6 +34,10 @@ import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
 import {getExploreStory} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
+import { handleSetSteps } from '../../store/defaultState/actions';
+import i18n from '../../i18n';
+import Button from '../../components/buttons/Button';
+import StepHeader from '../../layout/step/stepHeader';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
@@ -54,6 +58,65 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
     fetchData();
   }, [keyword]);
 
+  const renderProgress = () => <StepHeader currentStep={5} />;
+  const renderTutorial = () => {
+    return (
+      <SafeAreaView
+        style={{
+          position: 'absolute',
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+          top: 30,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+        }}>
+          
+        {renderProgress()}
+        <View
+          style={{
+            backgroundColor: '#3F58DD',
+            borderRadius: 10,
+            padding: 10,
+            marginHorizontal: 40,
+            alignItems: 'center',
+            marginTop: '50%',
+            paddingTop: 50,
+          }}>
+          <Image
+            source={imgStep4}
+            resizeMode="contain"
+            style={{width: 100, height: 200, position: 'absolute', top: -100}}
+          />
+          <Text
+            style={{
+              color: code_color.white,
+              textAlign: 'center',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}>
+            {`Explore hundreds of other\nStories and dive deeper\ninto the World of\nRomance.`}
+          </Text>
+          
+          <Button
+            style={{
+              backgroundColor: code_color.yellow,
+              padding: 10,
+              borderRadius: 10,
+              marginTop: 10,
+            }}
+            title={i18n.t('Next')}
+            onPress={() => {
+              // setTutorial({
+              //   ...isTutorial,
+              //   step: isTutorial.step + 1,
+              // });
+              handleSetSteps(5 + 1)
+              navigate('Main')
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    )
+  }
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <View
@@ -328,6 +391,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
           />
         </View>
       </ScrollView>
+      {renderTutorial()}
     </SafeAreaView>
   );
 };
