@@ -48,7 +48,7 @@ const Home = () => {
   );
 };
 const Library = ({userProfile, stepsTutorial}) => {
-  console.log('masuk library'+stepsTutorial)
+
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
@@ -88,62 +88,6 @@ const Library = ({userProfile, stepsTutorial}) => {
   };
 
  
-  const renderProgress = () => <StepHeader currentStep={4} />;
-  const renderTutorial = () => {
-    return (
-      <SafeAreaView
-        style={{
-          position: 'absolute',
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height + Dimensions.get('window').height,
-          flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.3)',
-        }}>
-          
-        {renderProgress()}
-        <View
-          style={{
-            backgroundColor: '#3F58DD',
-            borderRadius: 10,
-            padding: 10,
-            marginHorizontal: 40,
-            alignItems: 'center',
-            marginTop: '20%',
-            paddingTop: 50,
-          }}>
-          <Image
-            source={imgStep4}
-            resizeMode="contain"
-            style={{width: 100, height: 200, position: 'absolute', top: -100}}
-          />
-          <Text
-            style={{
-              color: code_color.white,
-              textAlign: 'center',
-              fontSize: 18,
-              fontWeight: 'bold',
-            }}>
-            {`Re-discover your favorite\nStories that are saved\nin your Library.`}
-          </Text>
-          
-          <Button
-            style={{
-              backgroundColor: code_color.yellow,
-              padding: 10,
-              borderRadius: 10,
-              marginTop: 10,
-            }}
-            title={i18n.t('Next')}
-            onPress={() => {   
-              store.dispatch(handleSetSteps(4 + 1))
-              handleSomeAction('ExploreLibrary')
-            
-            }}
-          />
-        </View>
-      </SafeAreaView>
-    )
-  }
   return (
    
     <View
@@ -226,7 +170,6 @@ const Library = ({userProfile, stepsTutorial}) => {
       ) : (
         <SettingsPage />
       )}
-       {/* {renderTutorial()} */}
     </View>
   );
 };
@@ -444,7 +387,6 @@ class MyTabsComponent extends Component {
       stepsTutorial,
       forceUpdate: this.forceComponentUpdate,
     };
-    console.log('masuk sini'+stepsTutorial)
     return <MyTabs {...tapProps} />;
   }
 }

@@ -78,6 +78,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import AnimatedLottieView from 'lottie-react-native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -121,7 +122,7 @@ const MainScreen = ({
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
   const [readLater, setReadLater] = useState(false);
-
+  const isFocused = useIsFocused();
   const [dataBook, setBook] = useState([
     {
       title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
@@ -211,7 +212,7 @@ const MainScreen = ({
 
   useEffect(() => {
     handleThemeAvatar();
-    handleSetSteps(0);
+    // handleSetSteps(0);
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes' && isTutorial.step === 1) {
@@ -227,7 +228,7 @@ const MainScreen = ({
             step: isTutorial.step + 1,
           });
         }, 3000);
-      }else if(stepsTutorial > 3){
+      }else if(stepsTutorial > 3 && stepsTutorial < 5){
         navigate('Library')
       }
     };
@@ -288,7 +289,11 @@ const MainScreen = ({
     );
   }
 
-  const renderProgress = () => <StepHeader currentStep={isTutorial.step} />;
+  useEffect(() => {
+  
+  }, [isFocused])
+
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
     if (isTutorial.step === 1 && stepsTutorial === 1) {
       return (
@@ -378,7 +383,7 @@ const MainScreen = ({
           </ImageBackground>
         </Modal>
       );
-    } else if (isTutorial.step <= 3  ) {
+    } else if (isTutorial.step <= 3 || stepsTutorial === 5 ) {
       return (
         <SafeAreaView
           style={{
@@ -415,7 +420,7 @@ const MainScreen = ({
               {isTutorial.step === 2
                 ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
               \nUnlock additional Stories\nanytime!`
-                : 'Like & save your \nfavorite Stories.'}
+                : stepsTutorial === 5 ? 'Save & transform parts of the Story into a Custom Quote by selecting it.' : 'Like & save your \nfavorite Stories.'}
             </Text>
 
             <Button
