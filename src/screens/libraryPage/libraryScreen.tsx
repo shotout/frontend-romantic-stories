@@ -19,8 +19,9 @@ import {
   Alert,
   Pressable,
   ScrollView,
+  Dimensions,
 } from 'react-native';
-import {bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
+import {bg, cover1, cover2, imgStep2, imgStep4, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import {getDefaultLanguange} from '../../utils/devices';
@@ -46,8 +47,10 @@ import ModalSorting from '../../components/modal-sorting';
 import {deleteMyCollection, getMyCollection} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import StepHeader from '../../layout/step/stepHeader';
 
-const LibraryScreen = ({colorTheme, handleSomeAction}) => {
+const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSteps}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
   const [showModalNew, setShowModalNew] = useState(false);
@@ -214,9 +217,73 @@ const LibraryScreen = ({colorTheme, handleSomeAction}) => {
       console.log(JSON.stringify(error));
     }
   };
+  const renderProgress = () => <StepHeader currentStep={4} />;
+  const renderTutorial = () => {
+    return (
+      <SafeAreaView
+        style={{
+          position: 'absolute',
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+          top: -350,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+        }}>
+          
+        {renderProgress()}
+        <View
+          style={{
+            backgroundColor: '#3F58DD',
+            borderRadius: 10,
+            padding: 10,
+            marginHorizontal: 40,
+            alignItems: 'center',
+            marginTop: '20%',
+            paddingTop: 50,
+          }}>
+          <Image
+            source={imgStep4}
+            resizeMode="contain"
+            style={{width: 100, height: 200, position: 'absolute', top: -100}}
+          />
+          <Text
+            style={{
+              color: code_color.white,
+              textAlign: 'center',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}>
+            {`Re-discover your favorite\nStories that are saved\nin your Library.`}
+          </Text>
+          
+          <Button
+            style={{
+              backgroundColor: code_color.yellow,
+              padding: 10,
+              borderRadius: 10,
+              marginTop: 10,
+            }}
+            title={i18n.t('Next')}
+            onPress={() => {
+              // setTutorial({
+              //   ...isTutorial,
+              //   step: isTutorial.step + 1,
+              // });
+              handleSetSteps(4 + 1)
+              navigate('ExploreLibrary')
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    )
+  }
+
+
 
   return (
-    <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
+    <View>
+     
+       <View style={{flex: 0, height: stepsTutorial > 3 ? 800 : 500, backgroundColor: bgTheme}}>
+      
       <ModalLibrary isVisible={showModal} onClose={() => setShowModal(false)} />
       <ModalNewLibrary
         isVisible={showModalNew}
@@ -268,6 +335,7 @@ const LibraryScreen = ({colorTheme, handleSomeAction}) => {
           <DescendingSvg fill={code_color.white} />
         </Pressable>
       </View>
+
       <ScrollView>
         <SwipeListView
           data={listCollection}
@@ -375,7 +443,11 @@ const LibraryScreen = ({colorTheme, handleSomeAction}) => {
           Explore more Stories
         </Text>
       </TouchableOpacity>
+         
     </View>
+    {renderTutorial()}
+    </View>
+    
   );
 };
 

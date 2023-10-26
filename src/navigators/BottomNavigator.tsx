@@ -1,4 +1,4 @@
-import React, {Component, useState, useRef} from 'react';
+import React, {Component, useState, useRef, useEffect} from 'react';
 import {
   Text,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -29,6 +30,12 @@ import dispatcher from './dispatcher';
 import states from './states';
 import SettingsPage from '../screens/settingsPage/settingsPage';
 import AnimatedLottieView from 'lottie-react-native';
+import { imgStep2, imgStep4 } from '../assets/images';
+import Button from '../components/buttons/Button';
+import i18n from '../i18n';
+import StepHeader from '../layout/step/stepHeader';
+import {handleSetSteps} from '../store/defaultState/actions';
+import store from "../store/configure-store";
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,7 +47,8 @@ const Home = () => {
     </View>
   );
 };
-const Library = props => {
+const Library = ({userProfile, stepsTutorial}) => {
+  console.log('masuk library'+stepsTutorial)
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
@@ -78,7 +86,66 @@ const Library = props => {
     }
     // Memunculkan bottom bar
   };
+
+ 
+  const renderProgress = () => <StepHeader currentStep={4} />;
+  const renderTutorial = () => {
+    return (
+      <SafeAreaView
+        style={{
+          position: 'absolute',
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height + Dimensions.get('window').height,
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+        }}>
+          
+        {renderProgress()}
+        <View
+          style={{
+            backgroundColor: '#3F58DD',
+            borderRadius: 10,
+            padding: 10,
+            marginHorizontal: 40,
+            alignItems: 'center',
+            marginTop: '20%',
+            paddingTop: 50,
+          }}>
+          <Image
+            source={imgStep4}
+            resizeMode="contain"
+            style={{width: 100, height: 200, position: 'absolute', top: -100}}
+          />
+          <Text
+            style={{
+              color: code_color.white,
+              textAlign: 'center',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}>
+            {`Re-discover your favorite\nStories that are saved\nin your Library.`}
+          </Text>
+          
+          <Button
+            style={{
+              backgroundColor: code_color.yellow,
+              padding: 10,
+              borderRadius: 10,
+              marginTop: 10,
+            }}
+            title={i18n.t('Next')}
+            onPress={() => {   
+              store.dispatch(handleSetSteps(4 + 1))
+              handleSomeAction('ExploreLibrary')
+            
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    )
+  }
   return (
+   
     <View
       style={{
         flex: 1,
@@ -87,6 +154,7 @@ const Library = props => {
         bottom: 0,
         flexDirection: 'column',
       }}>
+       
       <View
         style={{
           position: 'absolute',
@@ -95,7 +163,6 @@ const Library = props => {
         }}>
         <MainScreen pressScreen={() => handleSomeAction('Main')} />
       </View>
-
       <View
         style={{
           flexDirection: 'row',
@@ -125,7 +192,7 @@ const Library = props => {
                 marginHorizontal: 10,
                 backgroundColor:
                   item.value === isBottomBarVisible
-                    ? props?.userProfile?.colorTheme
+                    ? userProfile?.colorTheme
                     : null,
               }}>
               <item.image
@@ -134,7 +201,7 @@ const Library = props => {
                 fill={
                   item.value === isBottomBarVisible
                     ? code_color.white
-                    : props?.userProfile?.colorTheme
+                    : userProfile?.colorTheme
                 }
               />
               <Text
@@ -144,7 +211,7 @@ const Library = props => {
                   color:
                     item.value === isBottomBarVisible
                       ? code_color.white
-                      : props?.userProfile?.colorTheme,
+                      : userProfile?.colorTheme,
                 }}>
                 {item.name}
               </Text>
@@ -159,14 +226,16 @@ const Library = props => {
       ) : (
         <SettingsPage />
       )}
+       {/* {renderTutorial()} */}
     </View>
   );
 };
 
+
 function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
-console.log(JSON.stringify(props))
+
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -180,7 +249,6 @@ console.log(JSON.stringify(props))
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
   const love = require('../assets/lottie/urgent.json');
-  //console.log(JSON.stringify(props?.userProfile?.data?.theme))
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -246,7 +314,9 @@ console.log(JSON.stringify(props))
       />
       <Tab.Screen
         name="Library"
-        children={() => <Library userProfile={props} />}
+        children={() => 
+             <Library userProfile={props} stepsTutorial={props.stepsTutorial}  />
+      }
         // component={Library}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => (
@@ -364,12 +434,17 @@ const styles = StyleSheet.create({
 });
 
 class MyTabsComponent extends Component {
+  forceComponentUpdate = () => {
+    this.forceUpdate();
+}
   render() {
     const {colorTheme, stepsTutorial} = this.props;
     const tapProps = {
       colorTheme,
-      stepsTutorial
+      stepsTutorial,
+      forceUpdate: this.forceComponentUpdate,
     };
+    console.log('masuk sini'+stepsTutorial)
     return <MyTabs {...tapProps} />;
   }
 }

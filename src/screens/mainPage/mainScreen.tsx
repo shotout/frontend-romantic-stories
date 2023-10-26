@@ -90,9 +90,9 @@ const MainScreen = ({
   fontFamily,
   pressScreen,
   route,
-  handleSetSteps
+  handleSetSteps,
+  stepsTutorial
 }) => {
-  
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: 1,
@@ -210,7 +210,7 @@ const MainScreen = ({
     handleSetSteps(0)
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-      if (isFinishTutorial === 'yes') {
+      if (isFinishTutorial === 'yes' && isTutorial.step === 1) {
         setTutorial({
           visible: true,
           step: 1,
@@ -223,6 +223,8 @@ const MainScreen = ({
             step: isTutorial.step + 1,
           });
         }, 3000);
+      }else if(stepsTutorial > 3){
+        navigate('Library')
       }
     };
     checkTutorial();
@@ -284,7 +286,7 @@ const MainScreen = ({
 
   const renderProgress = () => <StepHeader currentStep={isTutorial.step} />;
   const renderTutorial = () => {
-    if (isTutorial.step === 1 && isTutorial.visible) {
+    if (isTutorial.step === 1) {
       return (
         <Modal
           visible={visible}
@@ -372,8 +374,7 @@ const MainScreen = ({
           </ImageBackground>
         </Modal>
       );
-    } else if (isTutorial.step > 1) {
-      console.log(isTutorial.step)
+    } else if (isTutorial.step <= 3  ) {
       return (
         <SafeAreaView
           style={{
@@ -383,6 +384,7 @@ const MainScreen = ({
 
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
+            
           {renderProgress()}
           <View
             style={{
@@ -423,8 +425,8 @@ const MainScreen = ({
                   ...isTutorial,
                   step: isTutorial.step + 1,
                 });
-                handleSetSteps(isTutorial.step + 1)
-                // isTutorial.step  > 4 ? navigate('Library') : null
+                handleSetSteps(isTutorial.step + 1);
+                {(isTutorial.step + 1) === 4 ? navigate('Library') : null}
               }}
             />
           </View>
