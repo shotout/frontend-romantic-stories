@@ -228,7 +228,7 @@ const MainScreen = ({
         }, 3000);
       }
     };
-    // checkTutorial();
+    checkTutorial();
   }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {
