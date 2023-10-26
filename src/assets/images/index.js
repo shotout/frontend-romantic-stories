@@ -49,3 +49,5 @@ export const imgStep = require('./step.png');
 export const imgStep1 = require('./step1.png');
 export const imgStep2 = require('./step2.png');
 export const imgStep4 = require('./step4.png')
+export const imgBgXp = require('./xp.png')
+export const imgAdjust = require('./adjust_quote.png')

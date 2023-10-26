@@ -14,6 +14,7 @@ import {
   Animated,
   PanResponder,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -47,6 +48,8 @@ import {
   imgSticker4,
   imgSticker5,
   imgFont,
+  imgStep1,
+  imgBgXp,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -60,8 +63,12 @@ import {goBack, navigate} from '../../shared/navigationRef';
 import ModalStickers from '../../components/modal-stickers';
 import Gestures from '../../components/Gestures/gestures';
 import Slider from '@react-native-community/slider';
+import StepHeader from '../../layout/step/stepHeader';
+import i18n from '../../i18n';
+import Button from '../../components/buttons/Button';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function ScreenShare({route}) {
+function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [selectedBg, setSetselectedBg] = useState(null);
@@ -441,6 +448,130 @@ function ScreenShare({route}) {
     );
   };
   const windowHeight = Dimensions.get('window').height;
+
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
+  const renderTutorial = () => {
+    console.log('ini data' + stepsTutorial);
+    if (stepsTutorial === 6 || stepsTutorial === 7) {
+      return (
+        <SafeAreaView
+          style={{
+            position: 'absolute',
+
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            paddingTop: 40,
+          }}>
+          {renderProgress()}
+          <View
+            style={{
+              backgroundColor: '#3F58DD',
+              borderRadius: 10,
+              padding: 10,
+              marginHorizontal: 40,
+              alignItems: 'center',
+              marginTop: '20%',
+              paddingTop: 50,
+            }}>
+            <Image
+              source={imgStep1}
+              resizeMode="contain"
+              style={{width: 100, height: 200, position: 'absolute', top: -100}}
+            />
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              {stepsTutorial === 6
+                ? 'Customize your selected\ntext, change the font and\nadd a background.'
+                : 'Everything ready? Save\nyour Custom Quote or\nShare it with your Friends!'}
+            </Text>
+
+            <Button
+              style={{
+                backgroundColor: code_color.yellow,
+                padding: 10,
+                borderRadius: 10,
+                marginTop: 10,
+              }}
+              title={i18n.t('Next')}
+              onPress={() => {
+                handleSetSteps(stepsTutorial + 1);
+                setVisible(false);
+              }}
+            />
+          </View>
+        </SafeAreaView>
+      );
+    } else if (stepsTutorial === 8 || stepsTutorial === 9) {
+      return (
+        <ImageBackground
+          source={imgBgXp}
+          resizeMode="contain"
+          style={{
+            position: 'absolute',
+            top: '-5%',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            paddingTop: 40,
+          }}>
+          {renderProgress()}
+          <View
+            style={{
+              backgroundColor: '#3F58DD',
+              borderRadius: 10,
+              padding: 10,
+              marginHorizontal: 40,
+              alignItems: 'center',
+              marginTop: '45%',
+              paddingTop: 50,
+            }}>
+            <Image
+              source={imgStep1}
+              resizeMode="contain"
+              style={{width: 100, height: 200, position: 'absolute', top: -100}}
+            />
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              {'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'}
+            </Text>
+
+            <Button
+              style={{
+                backgroundColor: code_color.yellow,
+                padding: 10,
+                borderRadius: 10,
+                marginTop: 10,
+              }}
+              title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
+              onPress={() => {
+                handleSetSteps(stepsTutorial + 1);
+                setVisible(false);
+                {stepsTutorial === 9  ? 
+                  AsyncStorage.removeItem("isTutorial"): null }
+                  {stepsTutorial === 9  ? 
+                    handleSetSteps(0) : null }
+                    {stepsTutorial === 9  ? 
+                      goBack() : null }
+              }}
+            />
+          </View>
+        </ImageBackground>
+      );
+    }
+  };
   return (
     <View style={styles.ctnContent}>
       <ModalStickers
@@ -479,7 +610,7 @@ function ScreenShare({route}) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginRight: -20,
-                  marginLeft: -40
+                  marginLeft: -40,
                 }}>
                 <Text
                   allowFontScaling={false}
@@ -541,46 +672,64 @@ function ScreenShare({route}) {
               // {...panResponder.panHandlers}
               // {...resizePanResponder.panHandlers}
               />
-              {isVisibleFont ? null : 
-              <Pressable onPress={() => setVisible(true)}>
-                <Image
-                  source={imgSticker}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    position: 'absolute',
-                    right: 50,
-                    top: 10,
-                    resizeMode: 'contain',
-                  }}
-                />
-              </Pressable> }
-              {isVisibleFont ? <Pressable onPress={() => 
-                setVisibleFont(false)
-                }>
-                <Text allowFontScaling={false} style={{color: code_color.black,  position: 'absolute',
-                    right: 10,
-                    fontSize: 18,
-                    top: 5,}}>Done</Text>
-                </Pressable> : 
-              <Pressable onPress={() => setVisibleFont(true)}>
-                <Image
-                  source={imgFont}
-                  style={{
-                    width: 30,
-                    height: 35,
-                    position: 'absolute',
-                    right: 10,
-                    top: 5,
-                    resizeMode: 'contain',
-                  }}
-                />
-              </Pressable> }
+              {isVisibleFont ? null : (
+                <Pressable onPress={() => setVisible(true)}>
+                  <Image
+                    source={imgSticker}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      position: 'absolute',
+                      right: 50,
+                      top: 10,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </Pressable>
+              )}
+              {isVisibleFont ? (
+                <Pressable onPress={() => setVisibleFont(false)}>
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: code_color.black,
+                      position: 'absolute',
+                      right: 10,
+                      fontSize: 18,
+                      top: 5,
+                    }}>
+                    Done
+                  </Text>
+                </Pressable>
+              ) : (
+                <Pressable onPress={() => setVisibleFont(true)}>
+                  <Image
+                    source={imgFont}
+                    style={{
+                      width: 30,
+                      height: 35,
+                      position: 'absolute',
+                      right: 10,
+                      top: 5,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </Pressable>
+              )}
 
-              <Text style={{...styles.textQuote, fontFamily: fontSelect.value, fontSize: fontSizeDefault}}>
-                <Text style={[styles.blur, { fontSize: fontSizeDefault}]}>{route?.params?.start}</Text>{' '}
+              <Text
+                style={{
+                  ...styles.textQuote,
+                  fontFamily: fontSelect.value,
+                  fontSize: fontSizeDefault,
+                }}>
+                <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+                  {route?.params?.start}
+                </Text>{' '}
                 {route?.params?.selectedContent}{' '}
-                <Text  style={[styles.blur, { fontSize: fontSizeDefault}]}>{route?.params?.end}</Text>
+                <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+                  {route?.params?.end}
+                </Text>
               </Text>
               <Text style={styles.textMarker}>@EroTales</Text>
             </ViewShot>
@@ -669,6 +818,7 @@ function ScreenShare({route}) {
         </View>
         {renderCard()}
       </View>
+      {renderTutorial()}
     </View>
   );
 }

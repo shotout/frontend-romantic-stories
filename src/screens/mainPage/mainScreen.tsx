@@ -32,6 +32,7 @@ import {
   bg,
   cover1,
   cover2,
+  imgAdjust,
   imgBgAvaTips,
   imgBgContent,
   imgBgTips,
@@ -383,7 +384,9 @@ const MainScreen = ({
           </ImageBackground>
         </Modal>
       );
-    } else if (isTutorial.step <= 3 || stepsTutorial === 5 ) {
+    } else if (stepsTutorial != 0 && isTutorial.step <= 3 || stepsTutorial === 5) {
+      const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
+      I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`
       return (
         <SafeAreaView
           style={{
@@ -436,7 +439,79 @@ const MainScreen = ({
                   ...isTutorial,
                   step: isTutorial.step + 1,
                 });
-                handleSetSteps(isTutorial.step + 1);
+                handleSetSteps(stepsTutorial === 5 ? stepsTutorial + 1 : isTutorial.step + 1);
+                setVisible(false)
+                {stepsTutorial === 5 ? navigate('Share', {
+                  selectedContent: ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+                  start: content?.substring(0 - 30, 0 ,),
+                  end: content.substring(30, 30 + 30)
+                }) : null};
+                {(isTutorial.step + 1) === 4 ? 
+                  
+                  navigate('Library') : null}
+                  
+              }}
+            />
+          </View>
+        </SafeAreaView>
+      );
+    }else if(stepsTutorial === 6 || stepsTutorial === 7){
+      return (
+        <ImageBackground
+        resizeMode='contain'
+         source={imgAdjust}
+          style={{
+            position: 'absolute',
+            top: -20,
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            paddingTop: 40
+          }}>
+            
+          {renderProgress()}
+          <View
+            style={{
+              backgroundColor: '#3F58DD',
+              borderRadius: 10,
+              padding: 10,
+              marginHorizontal: 40,
+              alignItems: 'center',
+              marginTop: '20%',
+              paddingTop: 50,
+            }}>
+            <Image
+              source={isTutorial.step === 2 ? imgStep1 : imgStep2}
+              resizeMode="contain"
+              style={{width: 100, height: 200, position: 'absolute', top: -100}}
+            />
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              {stepsTutorial === 6
+                ? `Customize your selected\ntext, change the font and\nadd a background.`
+                : 'Everything ready? Save\nyour Custom Quote or\nShare it with your Friends!'}
+            </Text>
+
+            <Button
+              style={{
+                backgroundColor: code_color.yellow,
+                padding: 10,
+                borderRadius: 10,
+                marginTop: 10,
+              }}
+              title={i18n.t('Next')}
+              onPress={() => {
+                setTutorial({
+                  ...isTutorial,
+                  step: isTutorial.step + 1,
+                });
+                handleSetSteps(stepsTutorial + 1);
                 setVisible(false)
                 {(isTutorial.step + 1) === 4 ? 
                   
@@ -444,9 +519,10 @@ const MainScreen = ({
               }}
             />
           </View>
-        </SafeAreaView>
+        </ImageBackground>
       );
     }
+    
   };
 
   const renderView = () => {
