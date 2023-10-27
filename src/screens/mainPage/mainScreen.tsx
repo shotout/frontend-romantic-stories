@@ -40,6 +40,7 @@ import {
   imgLoveRight,
   imgStep1,
   imgStep2,
+  imgStep5,
   libraryAdd,
   logo,
 } from '../../assets/images';
@@ -385,6 +386,7 @@ const MainScreen = ({
         </Modal>
       );
     } else if (stepsTutorial != 0 && isTutorial.step <= 3 || stepsTutorial === 5) {
+      console.log(stepsTutorial)
       const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`
       return (
@@ -401,15 +403,15 @@ const MainScreen = ({
           <View
             style={{
               backgroundColor: '#3F58DD',
-              borderRadius: 10,
+              borderRadius: 20,
               padding: 10,
               marginHorizontal: 40,
               alignItems: 'center',
-              marginTop: '20%',
+              marginTop: '40%',
               paddingTop: 50,
             }}>
             <Image
-              source={isTutorial.step === 2 ? imgStep1 : imgStep2}
+              source={isTutorial.step === 2  && stepsTutorial != 5 ? imgStep1 : stepsTutorial === 5 ? imgStep5 : imgStep2}
               resizeMode="contain"
               style={{width: 100, height: 200, position: 'absolute', top: -100}}
             />
@@ -419,19 +421,21 @@ const MainScreen = ({
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
+                marginBottom: 20
               }}>
-              {isTutorial.step === 2
+              {isTutorial.step === 2 && stepsTutorial != 5
                 ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
               \nUnlock additional Stories\nanytime!`
-                : stepsTutorial === 5 ? 'Save & transform parts of the Story into a Custom Quote by selecting it.' : 'Like & save your \nfavorite Stories.'}
+                : stepsTutorial === 5 ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.' : 'Like & save your \nfavorite Stories.'}
             </Text>
 
             <Button
               style={{
                 backgroundColor: code_color.yellow,
                 padding: 10,
-                borderRadius: 10,
-                marginTop: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
               }}
               title={i18n.t('Next')}
               onPress={() => {
@@ -474,7 +478,7 @@ const MainScreen = ({
           <View
             style={{
               backgroundColor: '#3F58DD',
-              borderRadius: 10,
+              borderRadius: 20,
               padding: 10,
               marginHorizontal: 40,
               alignItems: 'center',
@@ -502,8 +506,9 @@ const MainScreen = ({
               style={{
                 backgroundColor: code_color.yellow,
                 padding: 10,
-                borderRadius: 10,
-                marginTop: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
               }}
               title={i18n.t('Next')}
               onPress={() => {

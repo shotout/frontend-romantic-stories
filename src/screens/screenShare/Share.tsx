@@ -50,6 +50,9 @@ import {
   imgFont,
   imgStep1,
   imgBgXp,
+  imgStep6,
+  imgStep7,
+  imgStep8,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -468,15 +471,15 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           <View
             style={{
               backgroundColor: '#3F58DD',
-              borderRadius: 10,
+              borderRadius: 20,
               padding: 10,
               marginHorizontal: 40,
               alignItems: 'center',
-              marginTop: '20%',
+              marginTop: '40%',
               paddingTop: 50,
             }}>
             <Image
-              source={imgStep1}
+              source={stepsTutorial === 6 ? imgStep6 : imgStep7}
               resizeMode="contain"
               style={{width: 100, height: 200, position: 'absolute', top: -100}}
             />
@@ -486,6 +489,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
+                marginVertical: 20
               }}>
               {stepsTutorial === 6
                 ? 'Customize your selected\ntext, change the font and\nadd a background.'
@@ -496,8 +500,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
               style={{
                 backgroundColor: code_color.yellow,
                 padding: 10,
-                borderRadius: 10,
-                marginTop: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
               }}
               title={i18n.t('Next')}
               onPress={() => {
@@ -526,7 +531,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           <View
             style={{
               backgroundColor: '#3F58DD',
-              borderRadius: 10,
+              borderRadius: 20,
               padding: 10,
               marginHorizontal: 40,
               alignItems: 'center',
@@ -534,7 +539,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
               paddingTop: 50,
             }}>
             <Image
-              source={imgStep1}
+              source={imgStep8}
               resizeMode="contain"
               style={{width: 100, height: 200, position: 'absolute', top: -100}}
             />
@@ -544,6 +549,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
+                marginVertical: 20
               }}>
               {'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'}
             </Text>
@@ -552,8 +558,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
               style={{
                 backgroundColor: code_color.yellow,
                 padding: 10,
-                borderRadius: 10,
-                marginTop: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
               }}
               title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
               onPress={() => {

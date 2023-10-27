@@ -74,7 +74,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
         <View
           style={{
             backgroundColor: '#3F58DD',
-            borderRadius: 10,
+            borderRadius: 20,
             padding: 10,
             marginHorizontal: 40,
             alignItems: 'center',
@@ -92,16 +92,18 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium}) => {
               textAlign: 'center',
               fontSize: 18,
               fontWeight: 'bold',
+              marginVertical: 20
             }}>
-            {`Explore hundreds of other\nStories and dive deeper\ninto the World of\nRomance.`}
+          {`Re-discover your favorite\nStories that are saved\nin your Library.`}
           </Text>
           
           <Button
             style={{
               backgroundColor: code_color.yellow,
-              padding: 10,
-              borderRadius: 10,
-              marginTop: 10,
+                padding: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
             }}
             title={i18n.t('Next')}
             onPress={() => {

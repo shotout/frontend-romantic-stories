@@ -235,11 +235,11 @@ const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSt
           <View
             style={{
               backgroundColor: '#3F58DD',
-              borderRadius: 10,
+              borderRadius: 20,
               padding: 10,
               marginHorizontal: 40,
               alignItems: 'center',
-              marginTop: '20%',
+              marginTop: '40%',
               paddingTop: 50,
             }}>
             <Image
@@ -253,6 +253,7 @@ const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSt
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
+                marginBottom: 20
               }}>
               {`Re-discover your favorite\nStories that are saved\nin your Library.`}
             </Text>
@@ -261,8 +262,9 @@ const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSt
               style={{
                 backgroundColor: code_color.yellow,
                 padding: 10,
-                borderRadius: 10,
-                marginTop: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
               }}
               title={i18n.t('Next')}
               onPress={() => {
