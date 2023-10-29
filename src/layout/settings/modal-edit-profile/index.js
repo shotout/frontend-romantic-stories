@@ -46,10 +46,6 @@ function ModalEditProfile({
     }
   };
 
-  useEffect(() => {
-    console.log('isPremium', isPremium);
-  }, [isPremium]);
-
   const header = () => (
     <View
       style={{
