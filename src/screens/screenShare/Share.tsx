@@ -72,6 +72,7 @@ import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps}) {
+  console.log('INIIIII' + JSON.stringify(route));
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [selectedBg, setSetselectedBg] = useState(null);
@@ -454,7 +455,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
-    console.log('ini data' + stepsTutorial);
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       return (
         <SafeAreaView
@@ -489,7 +489,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
-                marginVertical: 20
+                marginVertical: 20,
               }}>
               {stepsTutorial === 6
                 ? 'Customize your selected\ntext, change the font and\nadd a background.'
@@ -549,9 +549,11 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
-                marginVertical: 20
+                marginVertical: 20,
               }}>
-              {'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'}
+              {
+                'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'
+              }
             </Text>
 
             <Button
@@ -566,12 +568,17 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
               onPress={() => {
                 handleSetSteps(stepsTutorial + 1);
                 setVisible(false);
-                {stepsTutorial === 9  ? 
-                  AsyncStorage.removeItem("isTutorial"): null }
-                  {stepsTutorial === 9  ? 
-                    handleSetSteps(0) : null }
-                    {stepsTutorial === 9  ? 
-                      goBack() : null }
+                {
+                  stepsTutorial === 9
+                    ? AsyncStorage.removeItem('isTutorial')
+                    : null;
+                }
+                {
+                  stepsTutorial === 9 ? handleSetSteps(0) : null;
+                }
+                {
+                  stepsTutorial === 9 ? goBack() : null;
+                }
               }}
             />
           </View>
@@ -579,6 +586,99 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
       );
     }
   };
+
+  const renderScreenShot = () => {
+    return (
+      <ViewShot
+        style={styles.conQuote}
+        ref={captureRef}
+        options={{
+          fileName: `Shortstory${Date.now()}`,
+          format: 'png',
+          quality: 1.0,
+        }}>
+        <Image
+          source={selectedBg}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: 24,
+            resizeMode: 'cover',
+          }}
+        />
+        <View style={styles.overlay} />
+        {renderHeaderScreenShot()}
+        <StickerComponent/>
+        <Text
+          style={{
+            ...styles.textQuote,
+            fontFamily: fontSelect.value,
+            fontSize: fontSizeDefault,
+          }}>
+          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+            {route?.params?.start}
+          </Text>{' '}
+          {route?.params?.selectedContent}{' '}
+          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+            {route?.params?.end}
+          </Text>
+        </Text>
+        <Text style={styles.textMarker}>@EroTales</Text>
+      </ViewShot>
+    );
+  };
+
+  const renderHeaderScreenShot = () => {
+    return(
+      <View>
+          {isVisibleFont ? null : (
+          <Pressable onPress={() => setVisible(true)}>
+            <Image
+              source={imgSticker}
+              style={{
+                width: 30,
+                height: 30,
+                position: 'absolute',
+                right: 50,
+                top: 10,
+                resizeMode: 'contain',
+              }}
+            />
+          </Pressable>
+        )}
+        {isVisibleFont ? (
+          <Pressable onPress={() => setVisibleFont(false)}>
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.black,
+                position: 'absolute',
+                right: 10,
+                fontSize: 18,
+                top: 5,
+              }}>
+              Done
+            </Text>
+          </Pressable>
+        ) : (
+          <Pressable onPress={() => setVisibleFont(true)}>
+            <Image
+              source={imgFont}
+              style={{
+                width: 30,
+                height: 35,
+                position: 'absolute',
+                right: 10,
+                top: 5,
+                resizeMode: 'contain',
+              }}
+            />
+          </Pressable>
+        )}
+      </View>
+    )
+  }
   return (
     <View style={styles.ctnContent}>
       <ModalStickers
@@ -624,25 +724,34 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                   style={{color: code_color.white, marginBottom: 40}}>
                   A-
                 </Text>
-
-                <Slider
-                  step={1}
+                <View
                   style={{
-                    width: 100,
-                    height: 100,
                     transform: [{rotate: '90deg'}],
-                    // marginLeft: -90,
-                  }}
-                  minimumValue={0}
-                  maximumValue={2}
-                  value={
-                    fontSizeDefault === 18 ? 1 : fontSizeDefault === 16 ? 0 : 2
-                  }
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#FFFFFF"
-                  onValueChange={value => handleFont(value)}
-                  thumbTintColor="#ffd500"
-                />
+                  }}>
+                  <Slider
+                    step={1}
+                    style={{
+                      width: 100,
+                      height: 100,
+                      // transform: [{rotate: '90'}],
+                      // marginLeft: -90,
+                    }}
+                    minimumValue={0}
+                    maximumValue={2}
+                    value={
+                      fontSizeDefault === 18
+                        ? 1
+                        : fontSizeDefault === 16
+                        ? 0
+                        : 2
+                    }
+                    minimumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor="#FFFFFF"
+                    onValueChange={value => handleFont(value)}
+                    thumbTintColor="#ffd500"
+                  />
+                </View>
+
                 <Text
                   allowFontScaling={false}
                   style={{
@@ -655,91 +764,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                 </Text>
               </View>
             ) : null}
-            <ViewShot
-              style={styles.conQuote}
-              ref={captureRef}
-              options={{
-                fileName: `Shortstory${Date.now()}`,
-                format: 'png',
-                quality: 1.0,
-              }}>
-              <Image
-                source={selectedBg}
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: 24,
-                  resizeMode: 'cover',
-                }}
-              />
-              <View style={styles.overlay} />
-
-              <StickerComponent
-              // {...panResponder.panHandlers}
-              // {...resizePanResponder.panHandlers}
-              />
-              {isVisibleFont ? null : (
-                <Pressable onPress={() => setVisible(true)}>
-                  <Image
-                    source={imgSticker}
-                    style={{
-                      width: 30,
-                      height: 30,
-                      position: 'absolute',
-                      right: 50,
-                      top: 10,
-                      resizeMode: 'contain',
-                    }}
-                  />
-                </Pressable>
-              )}
-              {isVisibleFont ? (
-                <Pressable onPress={() => setVisibleFont(false)}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: code_color.black,
-                      position: 'absolute',
-                      right: 10,
-                      fontSize: 18,
-                      top: 5,
-                    }}>
-                    Done
-                  </Text>
-                </Pressable>
-              ) : (
-                <Pressable onPress={() => setVisibleFont(true)}>
-                  <Image
-                    source={imgFont}
-                    style={{
-                      width: 30,
-                      height: 35,
-                      position: 'absolute',
-                      right: 10,
-                      top: 5,
-                      resizeMode: 'contain',
-                    }}
-                  />
-                </Pressable>
-              )}
-
-              <Text
-                style={{
-                  ...styles.textQuote,
-                  fontFamily: fontSelect.value,
-                  fontSize: fontSizeDefault,
-                }}>
-                <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-                  {route?.params?.start}
-                </Text>{' '}
-                {route?.params?.selectedContent}{' '}
-                <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-                  {route?.params?.end}
-                </Text>
-              </Text>
-              <Text style={styles.textMarker}>@EroTales</Text>
-            </ViewShot>
+            {renderScreenShot()}
           </View>
 
           <View style={styles.conFont}>

@@ -17,9 +17,9 @@ import {sizing} from '../../utils/styling';
 import {ava1} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import ModalShare from '../../screens/screenShare/Share';
-import { BACKEND_URL } from '../../shared/static';
-import { QUOTE_SHARED, eventTracking } from '../../helpers/eventTracking';
-import { navigate, navigationRef } from '../../shared/navigationRef';
+import {BACKEND_URL} from '../../shared/static';
+import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
+import {navigate, navigationRef} from '../../shared/navigationRef';
 export default function QuotesContent({
   item,
   themeUser,
@@ -31,7 +31,7 @@ export default function QuotesContent({
   bg,
   fontFamily,
   me,
-  partner
+  partner,
 }) {
   const [showModalShare, setShowModalShare] = useState(false);
   const [selectedText, setSelectedText] = useState('');
@@ -116,10 +116,10 @@ export default function QuotesContent({
             left: '15%',
             // left: 0,
             justifyContent: 'center',
-            flexDirection: 'row'
+            flexDirection: 'row',
           }}>
           <Image
-            source={{ uri: `${BACKEND_URL}/${me}`}}
+            source={{uri: `${BACKEND_URL}/${me}`}}
             resizeMode="contain"
             style={{
               width: 100,
@@ -128,7 +128,7 @@ export default function QuotesContent({
             }}
           />
           <Image
-            source={{ uri: `${BACKEND_URL}/${partner}`}}
+            source={{uri: `${BACKEND_URL}/${partner}`}}
             resizeMode="contain"
             style={{
               width: 100,
@@ -195,12 +195,18 @@ export default function QuotesContent({
                 }) => {
                   setStartEndText({start: selectionStart, end: selectionEnd});
                   setSelectedText(content);
-navigate('Share', {
-  selectedContent: selectedText,
-        start: contentData?.substring(startEndText.start - 30,startEndText.start,),
-        end: contentData.substring(startEndText.end, startEndText.end + 30)
-})
-eventTracking(QUOTE_SHARED)
+                  navigate('Share', {
+                    selectedContent: selectedText,
+                    start: contentData?.substring(
+                      startEndText.start - 30,
+                      startEndText.start,
+                    ),
+                    end: contentData.substring(
+                      startEndText.end,
+                      startEndText.end + 30,
+                    ),
+                  });
+                  eventTracking(QUOTE_SHARED);
                 }}
                 value={contentData}
               />
