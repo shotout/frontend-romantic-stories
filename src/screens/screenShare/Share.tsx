@@ -72,7 +72,6 @@ import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps}) {
-
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [selectedBg, setSetselectedBg] = useState(null);
@@ -83,7 +82,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
-  const [sticker, setSticker] = useState([])
+  const [sticker, setSticker] = useState([]);
   const [stickers, setStickers] = useState([
     {
       image: imgSticker1,
@@ -172,7 +171,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   // });
 
   const handleShare = () => {
-    handleScreenshot();
+    setTimeout(async () => {
+      handleScreenshot();
+    }, 1000);
   };
 
   // useEffect(() => {
@@ -182,9 +183,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   // }, [isVisible]);
 
   useEffect(() => {
-    setTimeout(async () => {
       handleShare();
-    }, 1000);
   }, [route.params.selectedContent]);
 
   const hasAndroidPermission = async () => {
@@ -247,6 +246,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const handleWAShare = async () => {
+    handleShare()
     try {
       // await Share.shareSingle(shareOptions);
       await Share.open({
@@ -260,6 +260,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const handleIGStoryShare = async () => {
+    handleShare()
     try {
       const contentURL = isIphone ? base64CaptureImage.current : captureUri;
       await Share.shareSingle({
@@ -273,6 +274,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const handleShareInstagramDefault = async () => {
+    handleShare()
     try {
       const contentURL = isIphone ? base64CaptureImage.current : captureUri;
       await Share.shareSingle({
@@ -287,6 +289,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const handleSharetoFBStory = async () => {
+    handleShare()
     try {
       const contentURL = isIphone ? base64CaptureImage.current : captureUri;
       await Share.shareSingle({
@@ -300,6 +303,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const handleShareFBDefault = async () => {
+    handleShare()
     try {
       const contentURL = isIphone ? base64CaptureImage.current : captureUri;
       await Share.open({
@@ -356,21 +360,22 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
       <View>
         {stickersRef.current.map((el: any, i: any) => (
           <Gestures
-          bounds={{
-            minX: viewShotLayout.x,
-            minY: viewShotLayout.y,
-            maxX: viewShotLayout.x + viewShotLayout.width - 150,
-            maxY: viewShotLayout.y + viewShotLayout.height - 200,
-          }}
+            bounds={{
+              minX: viewShotLayout.x,
+              minY: viewShotLayout.y,
+              maxX: viewShotLayout.x + viewShotLayout.width - 150,
+              maxY: viewShotLayout.y + viewShotLayout.height - 200,
+            }}
             key={i}
             style={el.styles}
             onChange={(_event: any, styles: any) => {
-              stickersRef.current[i] = {...stickersRef.current[i], styles: styles};
-             
+              stickersRef.current[i] = {
+                ...stickersRef.current[i],
+                styles: styles,
+              };
+
               el = {...el, ...{styles: styles}};
-              setTimeout(async () => {
-                handleShare();
-              }, 1000);
+
               // dispatch(saveItemSticker(el));
               if (styles.top > windowHeight - 200) {
                 // setReadyToDeleteSticker(true);
@@ -600,9 +605,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     return (
       <ViewShot
         style={styles.conQuote}
-        onLayout={(event) => {
+        onLayout={event => {
           setViewShotLayout(event.nativeEvent.layout);
-      }}
+        }}
         ref={captureRef}
         options={{
           fileName: `Shortstory${Date.now()}`,
@@ -621,7 +626,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
         />
         <View style={styles.overlay} />
         {renderHeaderScreenShot()}
-        <StickerComponent/>
+        <StickerComponent />
         <Text
           style={{
             ...styles.textQuote,
@@ -642,9 +647,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const renderHeaderScreenShot = () => {
-    return(
+    return (
       <View>
-          {isVisibleFont ? null : (
+        {isVisibleFont ? null : (
           <Pressable onPress={() => setVisible(true)}>
             <Image
               source={imgSticker}
@@ -689,8 +694,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           </Pressable>
         )}
       </View>
-    )
-  }
+    );
+  };
   return (
     <View style={styles.ctnContent}>
       <ModalStickers
