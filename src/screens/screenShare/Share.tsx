@@ -83,7 +83,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
-  const [sticker, setSticker] = useState([]);
+  const [sticker, setSticker] = useState([])
   const [stickers, setStickers] = useState([
     {
       image: imgSticker1,
@@ -351,9 +351,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     );
   }
   function StickerComponent(props: any) {
+    const stickersRef = useRef(sticker);
     return (
       <View>
-        {sticker.map((el: any, i: any) => (
+        {stickersRef.current.map((el: any, i: any) => (
           <Gestures
           bounds={{
             minX: viewShotLayout.x,
@@ -364,7 +365,12 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
             key={i}
             style={el.styles}
             onChange={(_event: any, styles: any) => {
+              stickersRef.current[i] = {...stickersRef.current[i], styles: styles};
+             
               el = {...el, ...{styles: styles}};
+              setTimeout(async () => {
+                handleShare();
+              }, 1000);
               // dispatch(saveItemSticker(el));
               if (styles.top > windowHeight - 200) {
                 // setReadyToDeleteSticker(true);
@@ -392,8 +398,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
         ))}
       </View>
     );
-
-    // Ambil x, y, dan properti lain dari props
     // Gunakan x dan y untuk mengatur posisi gambar/stiker
     // return (
     //   // Asumsi Sticker adalah gambar
