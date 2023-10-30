@@ -12,6 +12,12 @@ export default class Gestures extends Component {
   static propTypes = {
     children: PropTypes.element,
     // Behavior
+    bounds: PropTypes.shape({
+      minX: PropTypes.number,
+      maxX: PropTypes.number,
+      minY: PropTypes.number,
+      maxY: PropTypes.number,
+    }),
     draggable: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.shape({
@@ -48,6 +54,7 @@ export default class Gestures extends Component {
   static defaultProps = {
     children: {},
     // Behavior
+    bounds: null,
     draggable: true || {
       x: true,
       y: false,
@@ -120,18 +127,26 @@ export default class Gestures extends Component {
 
   onDrag(event, gestureState) {
     const { initialStyles } = this;
-    const { draggable } = this.props;
+    const { draggable, bounds } = this.props;
 
     const isObject = R.is(Object, draggable);
 
-    const left = (isObject ? draggable.x : draggable)
-      ? initialStyles.left + gestureState.dx
-      : initialStyles.left;
+    let newLeft = (isObject ? draggable.x : draggable)
+    ? initialStyles.left + gestureState.dx
+    : initialStyles.left;
 
-    const top = (isObject ? draggable.y : draggable)
-      ? initialStyles.top + gestureState.dy
-      : initialStyles.top;
-    this.dragStyles = { left, top };
+  let newTop = (isObject ? draggable.y : draggable)
+    ? initialStyles.top + gestureState.dy
+    : initialStyles.top;
+      
+    if (bounds) {
+      if (newLeft < bounds.minX) newLeft = bounds.minX;
+      if (newLeft > bounds.maxX) newLeft = bounds.maxX;
+      if (newTop < bounds.minY) newTop = bounds.minY;
+      if (newTop > bounds.maxY) newTop = bounds.maxY;
+    }
+  
+    this.dragStyles = { left: newLeft, top: newTop };
   }
 
   onRotate = (event) => {

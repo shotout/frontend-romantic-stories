@@ -108,7 +108,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
 
   const captureRef = useRef();
   const base64CaptureImage = useRef(null);
-
+  const [viewShotLayout, setViewShotLayout] = useState(null);
   const backgroundList = [bg, story2, bgShare1, bgShare2, bgShare3, bgShare4];
   const downloadText = 'I found this fact on the ShortStory App';
   const panResponder = PanResponder.create({
@@ -351,11 +351,16 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     );
   }
   function StickerComponent(props: any) {
-    console.log(JSON.stringify(sticker));
     return (
       <View>
         {sticker.map((el: any, i: any) => (
           <Gestures
+          bounds={{
+            minX: viewShotLayout.x,
+            minY: viewShotLayout.y,
+            maxX: viewShotLayout.x + viewShotLayout.width - 100,
+            maxY: viewShotLayout.y + viewShotLayout.height - 100,
+          }}
             key={i}
             style={el.styles}
             onChange={(_event: any, styles: any) => {
@@ -591,6 +596,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     return (
       <ViewShot
         style={styles.conQuote}
+        onLayout={(event) => {
+          console.log(JSON.stringify(event))
+          setViewShotLayout(event.nativeEvent.layout);
+      }}
         ref={captureRef}
         options={{
           fileName: `Shortstory${Date.now()}`,
