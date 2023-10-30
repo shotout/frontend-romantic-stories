@@ -72,7 +72,7 @@ import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps}) {
-  console.log('INIIIII' + JSON.stringify(route));
+
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [selectedBg, setSetselectedBg] = useState(null);
@@ -358,8 +358,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           bounds={{
             minX: viewShotLayout.x,
             minY: viewShotLayout.y,
-            maxX: viewShotLayout.x + viewShotLayout.width - 100,
-            maxY: viewShotLayout.y + viewShotLayout.height - 100,
+            maxX: viewShotLayout.x + viewShotLayout.width - 150,
+            maxY: viewShotLayout.y + viewShotLayout.height - 200,
           }}
             key={i}
             style={el.styles}
@@ -597,7 +597,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
       <ViewShot
         style={styles.conQuote}
         onLayout={(event) => {
-          console.log(JSON.stringify(event))
           setViewShotLayout(event.nativeEvent.layout);
       }}
         ref={captureRef}
