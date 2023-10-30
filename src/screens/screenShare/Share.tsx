@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -170,21 +169,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   //     },
   // });
 
-  const handleShare = () => {
-    setTimeout(async () => {
-      handleScreenshot();
-    }, 1000);
+  const handleShare = async () => {
+    base64CaptureImage.current = null;
+    handleScreenshot();
   };
-
-  // useEffect(() => {
-  //   if (!isVisible) {
-  //     base64CaptureImage.current = null;
-  //   }
-  // }, [isVisible]);
-
-  useEffect(() => {
-      handleShare();
-  }, [route.params.selectedContent]);
 
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -246,79 +234,89 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   };
 
   const handleWAShare = async () => {
-    handleShare()
-    try {
-      // await Share.shareSingle(shareOptions);
-      await Share.open({
-        url: base64CaptureImage.current,
-        title: 'Shared-Short-Story',
-        // message: 'OKE DI COBA'
-      });
-    } catch (err) {
-      console.log('Error share whatsapp:', err);
-    }
+    await handleShare();
+    setTimeout(async () => {
+      try {
+        // await Share.shareSingle(shareOptions);
+        await Share.open({
+          url: base64CaptureImage.current!,
+          title: 'Shared-Short-Story',
+          // message: 'OKE DI COBA'
+        });
+      } catch (err) {
+        console.log('Error share whatsapp:', err);
+      }
+    }, 200);
   };
 
   const handleIGStoryShare = async () => {
-    handleShare()
-    try {
-      const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-      await Share.shareSingle({
-        backgroundImage: contentURL, // url or an base64 string
-        social: Share.Social.INSTAGRAM_STORIES,
-        appId: '637815961525510', // facebook appId
-      });
-    } catch (err) {
-      console.log('Error share ig story:', err);
-    }
+    handleShare();
+    setTimeout(async () => {
+      try {
+        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
+        await Share.shareSingle({
+          backgroundImage: contentURL, // url or an base64 string
+          social: Share.Social.INSTAGRAM_STORIES,
+          appId: '637815961525510', // facebook appId
+        });
+      } catch (err) {
+        console.log('Error share ig story:', err);
+      }
+    }, 200);
   };
 
   const handleShareInstagramDefault = async () => {
-    handleShare()
-    try {
-      const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-      await Share.shareSingle({
-        title: 'Share image to instagram',
-        type: 'image/jpeg',
-        url: contentURL,
-        social: Share.Social.INSTAGRAM,
-      });
-    } catch (err) {
-      console.log('Err share default ig:', err);
-    }
+    handleShare();
+    setTimeout(async () => {
+      try {
+        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
+        await Share.shareSingle({
+          title: 'Share image to instagram',
+          type: 'image/jpeg',
+          url: contentURL,
+          social: Share.Social.INSTAGRAM,
+        });
+      } catch (err) {
+        console.log('Err share default ig:', err);
+      }
+    }, 200);
   };
 
   const handleSharetoFBStory = async () => {
-    handleShare()
-    try {
-      const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-      await Share.shareSingle({
-        backgroundImage: contentURL,
-        appId: '637815961525510', // facebook appId
-        social: Share.Social.FACEBOOK_STORIES,
-      });
-    } catch (err) {
-      console.log('Error post to story:', err);
-    }
+    handleShare();
+    setTimeout(async () => {
+      try {
+        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
+        await Share.shareSingle({
+          backgroundImage: contentURL,
+          appId: '637815961525510', // facebook appId
+          social: Share.Social.FACEBOOK_STORIES,
+        });
+      } catch (err) {
+        console.log('Error post to story:', err);
+      }
+    }, 200);
   };
 
   const handleShareFBDefault = async () => {
-    handleShare()
-    try {
-      const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-      await Share.open({
-        title: 'Share file',
-        message: 'Simple share with message',
-        url: contentURL,
-        // appId: '637815961525510', // facebook appId
-        // backgroundBottomColor: '#fff',
-        // backgroundTopColor: '#fff',
-        // type: 'image/*',
-        // social: Share.Social.FACEBOOK,
-      });
-    } catch (err) {
-      console.log('Err fb default:', err);
-    }
+    handleShare();
+    setTimeout(async () => {
+      try {
+        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
+        await Share.open({
+          title: 'Share file',
+          message: 'Simple share with message',
+          url: contentURL,
+          // appId: '637815961525510', // facebook appId
+          // backgroundBottomColor: '#fff',
+          // backgroundTopColor: '#fff',
+          // type: 'image/*',
+          // social: Share.Social.FACEBOOK,
+        });
+      } catch (err) {
+        console.log('Err fb default:', err);
+      }
+    }, 200);
   };
 
   function renderCard() {
@@ -720,7 +718,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, width: '100%'}}>
+      <ScrollView style={{flex: 1, width: '100%'}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
             style={{
@@ -866,7 +864,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           <View style={styles.hr} />
         </View>
         {renderCard()}
-      </View>
+      </ScrollView>
       {renderTutorial()}
     </View>
   );

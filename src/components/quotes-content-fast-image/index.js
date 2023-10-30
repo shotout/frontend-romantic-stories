@@ -33,9 +33,6 @@ export default function QuotesContent({
   me,
   partner,
 }) {
-  const [showModalShare, setShowModalShare] = useState(false);
-  const [selectedText, setSelectedText] = useState('');
-  const [startEndText, setStartEndText] = useState({start: 0, end: 0});
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -193,17 +190,15 @@ export default function QuotesContent({
                   selectionStart,
                   selectionEnd,
                 }) => {
-                  setStartEndText({start: selectionStart, end: selectionEnd});
-                  setSelectedText(content);
                   navigate('Share', {
-                    selectedContent: selectedText,
+                    selectedContent: content,
                     start: contentData?.substring(
-                      startEndText.start - 30,
-                      startEndText.start,
+                      selectionStart - 30,
+                      selectionStart,
                     ),
-                    end: contentData.substring(
-                      startEndText.end,
-                      startEndText.end + 30,
+                    end: contentData?.substring(
+                      selectionEnd - 30,
+                      selectionEnd,
                     ),
                   });
                   eventTracking(QUOTE_SHARED);

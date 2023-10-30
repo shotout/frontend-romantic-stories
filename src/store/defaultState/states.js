@@ -45,7 +45,7 @@ const INITIAL_STATE = {
   fontFamily: null,
   fontSize: null,
   backgroundColor: null,
-  isPremium: false,
+  isPremium: true,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -235,7 +235,7 @@ export default (state = INITIAL_STATE, action) => {
         userProfile: action.payload,
       };
     case types.SET_STEP_TUTORIAL:
-      console.log(JSON.stringify(action.payload))
+      console.log(JSON.stringify(action.payload));
       return {
         ...state,
         stepsTutorial: action.payload,
