@@ -193,11 +193,11 @@ export default function QuotesContent({
                   navigate('Share', {
                     selectedContent: content,
                     start: contentData?.substring(
-                      selectionStart - 30,
+                      selectionStart - 50,
                       selectionStart,
                     ),
                     end: contentData?.substring(
-                      selectionEnd - 30,
+                      selectionEnd - 50,
                       selectionEnd,
                     ),
                   });

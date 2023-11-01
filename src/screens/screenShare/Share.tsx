@@ -57,7 +57,7 @@ import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ViewShot from 'react-native-view-shot';
-import Share from 'react-native-share';
+import Share, { Social } from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
@@ -237,11 +237,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     await handleShare();
     setTimeout(async () => {
       try {
-        // await Share.shareSingle(shareOptions);
         await Share.open({
           url: base64CaptureImage.current!,
           title: 'Shared-Short-Story',
-          // message: 'OKE DI COBA'
         });
       } catch (err) {
         console.log('Error share whatsapp:', err);
@@ -303,15 +301,15 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     setTimeout(async () => {
       try {
         const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.open({
-          title: 'Share file',
-          message: 'Simple share with message',
-          url: contentURL,
+        await Share.shareSingle({
+          url: contentURL!,
+          // title: 'Share file',
+          // message: 'Simple share with message',
           // appId: '637815961525510', // facebook appId
           // backgroundBottomColor: '#fff',
           // backgroundTopColor: '#fff',
           // type: 'image/*',
-          // social: Share.Social.FACEBOOK,
+          social: Social.Facebook,
         });
       } catch (err) {
         console.log('Err fb default:', err);
@@ -355,7 +353,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   function StickerComponent(props: any) {
     const stickersRef = useRef(sticker);
     return (
-      <View>
+      <View style={{zIndex: 1}}>
         {stickersRef.current.map((el: any, i: any) => (
           <Gestures
             bounds={{
