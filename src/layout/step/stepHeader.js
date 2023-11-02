@@ -27,7 +27,6 @@ export default function StepHeader({currentStep}) {
 
   return (
     <View style={styles.ctnRoot}>
-      {renderImageStep(0)}
       {renderImageStep(1)}
       {renderImageStep(2)}
       {renderImageStep(3)}
@@ -37,6 +36,7 @@ export default function StepHeader({currentStep}) {
       {renderImageStep(7)}
       {renderImageStep(8)}
       {renderImageStep(9)}
+      {/* {renderImageStep(10)} */}
     </View>
   );
 }
