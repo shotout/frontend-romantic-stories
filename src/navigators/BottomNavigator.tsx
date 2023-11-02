@@ -223,7 +223,7 @@ function MyTabs(props) {
                 justifyContent: 'center',
                 // display: !onhideBottom ? 'flex' : 'none',
               }}>
-                {props?.stepsTutorial === 3 ?
+                {props?.stepsTutorial === 2 ?
                 <View style={{position: 'absolute', bottom: -20}}>
                 <AnimatedLottieView
                 source={love}

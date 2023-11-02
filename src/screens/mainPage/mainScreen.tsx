@@ -26,6 +26,7 @@ import {
   Pressable,
   Modal,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {
   ava1,
@@ -80,7 +81,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import AnimatedLottieView from 'lottie-react-native';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -98,9 +99,10 @@ const MainScreen = ({
   stepsTutorial,
   isPremium,
 }) => {
+  const [activeStep, setActiveStep] = useState(1); 
   const [isTutorial, setTutorial] = useState({
     visible: false,
-    step: 1,
+    step: stepsTutorial,
   });
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -125,6 +127,8 @@ const MainScreen = ({
   const [partner, setPartner] = useState(null);
   const [readLater, setReadLater] = useState(false);
   const isFocused = useIsFocused();
+  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
+  const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [dataBook, setBook] = useState([
     {
       title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
@@ -172,6 +176,56 @@ const MainScreen = ({
       // handleLike();
     }
   };
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const halfScreenWidth = Dimensions.get('window').width / 2;
+
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      
+      setIsSwipingLeft(true);
+      if (activeStep === 1) {
+      } else {
+        setTutorial({
+          ...isTutorial,
+          step: isTutorial.step - 1,
+        });
+        setActiveStep(prevStep => prevStep - 1);
+        handleSetSteps(activeStep - 1);
+      }
+    }
+    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    else {
+      handleNext();
+      setIsSwipingRight(true);
+    }
+  };
+
+  const handleNext = () => {
+    const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
+    setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+    handleSetSteps(activeStep + 1); 
+    if (activeStep === 2) {
+      navigate('Library');
+    } else if (activeStep === 5) {
+      navigate('Share', {
+        selectedContent:
+          ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+        start: content?.substring(0, 30),
+        end: content.substring(30, 30 + 30),
+      });
+    }
+
+    
+  };
+
+  const handleTouchEnd = () => {
+    // Reset status swipe saat sentuhan selesai
+    setIsSwipingLeft(false);
+    setIsSwipingRight(false);
+  };
   const startAnimation = () => {
     setFolded(!folded);
 
@@ -217,7 +271,7 @@ const MainScreen = ({
     // handleSetSteps(0);
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-      if (isFinishTutorial === 'yes' && isTutorial.step === 1) {
+      if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setTutorial({
           visible: true,
           step: 1,
@@ -229,9 +283,11 @@ const MainScreen = ({
             ...isTutorial,
             step: isTutorial.step + 1,
           });
-        }, 3000);
-      }else if(stepsTutorial > 3 && stepsTutorial < 5){
-        navigate('Library')
+          setActiveStep(1)
+          handleSetSteps(1);
+        }, 5000);
+      } else if (activeStep > 3 && activeStep < 5) {
+        navigate('Library');
       }
     };
     checkTutorial();
@@ -291,13 +347,17 @@ const MainScreen = ({
     );
   }
 
-  useEffect(() => {
-  
-  }, [isFocused])
+  // useEffect(() => {
+  //   // alert(stepsTutorial)
+  //   setTutorial({
+  //     ...isTutorial,
+  //     step: stepsTutorial,
+  //   });
+  // }, [isFocused, stepsTutorial]);
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
-    if (isTutorial.step === 1 && stepsTutorial === 1) {
+    if (activeStep === 0) {
       return (
         <Modal
           visible={visible}
@@ -385,12 +445,13 @@ const MainScreen = ({
           </ImageBackground>
         </Modal>
       );
-    } else if (stepsTutorial != 0 && isTutorial.step <= 3 || stepsTutorial === 5) {
-      console.log(stepsTutorial)
+    } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <=5) {
       const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
-      I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`
+      I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
       return (
         <SafeAreaView
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -398,7 +459,6 @@ const MainScreen = ({
 
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-            
           {renderProgress()}
           <View
             style={{
@@ -411,7 +471,13 @@ const MainScreen = ({
               paddingTop: 50,
             }}>
             <Image
-              source={isTutorial.step === 2  && stepsTutorial != 5 ? imgStep1 : stepsTutorial === 5 ? imgStep5 : imgStep2}
+              source={
+                activeStep === 1 && activeStep != 5
+                  ? imgStep1
+                  : activeStep === 5 || stepsTutorial == 5
+                  ? imgStep5
+                  : imgStep2
+              }
               resizeMode="contain"
               style={{width: 100, height: 200, position: 'absolute', top: -100}}
             />
@@ -421,12 +487,14 @@ const MainScreen = ({
                 textAlign: 'center',
                 fontSize: 18,
                 fontWeight: 'bold',
-                marginBottom: 20
+                marginBottom: 20,
               }}>
-              {isTutorial.step === 2 && stepsTutorial != 5
+              {activeStep === 1 && activeStep != 5
                 ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
               \nUnlock additional Stories\nanytime!`
-                : stepsTutorial === 5 ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.' : 'Like & save your \nfavorite Stories.'}
+                : activeStep === 5 || stepsTutorial == 5
+                ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
+                : 'Like & save your \nfavorite Stories.'}
             </Text>
 
             <Button
@@ -438,96 +506,17 @@ const MainScreen = ({
                 marginVertical: 10,
               }}
               title={i18n.t('Next')}
-              onPress={() => {
-                setTutorial({
-                  ...isTutorial,
-                  step: isTutorial.step + 1,
-                });
-                handleSetSteps(stepsTutorial === 5 ? stepsTutorial + 1 : isTutorial.step + 1);
-                setVisible(false)
-                {stepsTutorial === 5 ? navigate('Share', {
-                  selectedContent: ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-                  start: content?.substring(0 - 30, 0 ,),
-                  end: content.substring(30, 30 + 30)
-                }) : null};
-                {(isTutorial.step + 1) === 4 ? 
+              onPress={() => 
+                {
                   
-                  navigate('Library') : null}
-                  
-              }}
+                  handleNext()
+                }
+               }
             />
           </View>
         </SafeAreaView>
       );
-    }else if(stepsTutorial === 6 || stepsTutorial === 7){
-      return (
-        <ImageBackground
-        resizeMode='contain'
-         source={imgAdjust}
-          style={{
-            position: 'absolute',
-            top: -20,
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            paddingTop: 40
-          }}>
-            
-          {renderProgress()}
-          <View
-            style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '20%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={isTutorial.step === 2 ? imgStep1 : imgStep2}
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}>
-              {stepsTutorial === 6
-                ? `Customize your selected\ntext, change the font and\nadd a background.`
-                : 'Everything ready? Save\nyour Custom Quote or\nShare it with your Friends!'}
-            </Text>
-
-            <Button
-              style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
-                borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={i18n.t('Next')}
-              onPress={() => {
-                setTutorial({
-                  ...isTutorial,
-                  step: isTutorial.step + 1,
-                });
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false)
-                {(isTutorial.step + 1) === 4 ? 
-                  
-                  navigate('Library') : null}
-              }}
-            />
-          </View>
-        </ImageBackground>
-      );
     }
-    
   };
 
   const renderView = () => {

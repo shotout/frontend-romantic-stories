@@ -26,7 +26,7 @@ import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import {getDefaultLanguange} from '../../utils/devices';
 import Button from '../../components/buttons/Button';
-import {navigate} from '../../shared/navigationRef';
+import {goBack, navigate} from '../../shared/navigationRef';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import SearchSvg from '../../assets/icons/search.jsx';
 import DescendingSvg from '../../assets/icons/descending.jsx';
@@ -61,6 +61,8 @@ const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSt
   const [keyword, setKeyword] = useState('');
   const [items, setItems] = useState(null);
   const [listLibrary, setListLibrary] = useState([]);
+  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
+  const [isSwipingRight, setIsSwipingRight] = useState(false);
 
   const renderCollect = item => (
     <View
@@ -217,12 +219,38 @@ const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSt
       console.log(JSON.stringify(error));
     }
   };
-  const renderProgress = () => <StepHeader currentStep={4} />;
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const halfScreenWidth = Dimensions.get('window').width / 2;
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      console.log('masuk kiri');
+      handleSetSteps(3 - 1);
+      navigate('Main');
+      setIsSwipingLeft(true);
+    }
+    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    else {
+      console.log('masuk kanan');
+      handleSetSteps(3 + 1);
+      navigate('ExploreLibrary')
+      setIsSwipingRight(true);
+    }
+  };
+  const handleTouchEnd = () => {
+    // Reset status swipe saat sentuhan selesai
+    setIsSwipingLeft(false);
+    setIsSwipingRight(false);
+  };
+  const renderProgress = () => <StepHeader currentStep={3} />;
   const renderTutorial = () => {
-    console.log(stepsTutorial)
-    if(stepsTutorial === 4){
+    if(stepsTutorial === 3){
       return (
         <SafeAreaView
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -279,8 +307,7 @@ const LibraryScreen = ({colorTheme, handleSomeAction, stepsTutorial, handleSetSt
           </View>
         </SafeAreaView>
       )
-    }
-   
+    }  
   }
 
 

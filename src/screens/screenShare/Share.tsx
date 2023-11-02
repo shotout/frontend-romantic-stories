@@ -57,7 +57,7 @@ import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ViewShot from 'react-native-view-shot';
-import Share, { Social } from 'react-native-share';
+import Share, {Social} from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
@@ -81,6 +81,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
+  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
+  const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
   const [stickers, setStickers] = useState([
     {
@@ -143,31 +145,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
       pan.setValue({x: 0, y: 0});
     },
   });
-  //   const panResponder = PanResponder.create({
-  //     onStartShouldSetPanResponder: (evt, gestureState) => {
-  //       console.log('onStartShouldSetPanResponder');
-  //       return true;
-  //     },
-  //     onMoveShouldSetPanResponder: (evt, gestureState) => {
-  //       console.log('onMoveShouldSetPanResponder');
-  //       return true;
-  //     },
-  //     onPanResponderMove: Animated.event(
-  //       [null, {dx: stickerConfig.x, dy: stickerConfig.y}],
-  //       {useNativeDriver: false},
-  //   ),
-  //     // Add other callbacks as needed
-  //   });
-  //   const resizePanResponder = PanResponder.create({
-  //     onStartShouldSetPanResponder: () => true,
-  //     onMoveShouldSetPanResponder: () => true,
-  //     onPanResponderMove: (e, gestureState) => {
-  //       setSize(prevSize => ({
-  //         width: prevSize.width + gestureState.dx,
-  //         height: prevSize.height + gestureState.dy,
-  //     }));
-  //     },
-  // });
+  
 
   const handleShare = async () => {
     base64CaptureImage.current = null;
@@ -462,12 +440,49 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     );
   };
   const windowHeight = Dimensions.get('window').height;
-
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const halfScreenWidth = Dimensions.get('window').width / 2;
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      handleSetSteps(stepsTutorial - 1);
+      if(stepsTutorial === 6){
+          navigate('Main');
+      }
+     
+      setIsSwipingLeft(true);
+    }
+    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    else {
+      handleSetSteps(stepsTutorial + 1);
+      {
+        stepsTutorial === 9
+          ? AsyncStorage.removeItem('isTutorial')
+          : null;
+      }
+      {
+        stepsTutorial === 9 ? handleSetSteps(0) : null;
+      }
+      {
+        stepsTutorial === 9 ? goBack() : null;
+      }
+      setIsSwipingRight(true);
+    }
+  };
+  const handleTouchEnd = () => {
+    // Reset status swipe saat sentuhan selesai
+    setIsSwipingLeft(false);
+    setIsSwipingRight(false);
+  };
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       return (
         <SafeAreaView
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
 
@@ -525,74 +540,90 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
       );
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {
       return (
-        <ImageBackground
-          source={imgBgXp}
-          resizeMode="contain"
+        <SafeAreaView
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
-            top: '-5%',
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
-
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          {renderProgress()}
-          <View
+          <ImageBackground
+            source={imgBgXp}
+            resizeMode="contain"
             style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '45%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={imgStep8}
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginVertical: 20,
-              }}>
-              {
-                'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'
-              }
-            </Text>
+              position: 'absolute',
+              top: '-5%',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
 
-            <Button
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              paddingTop: 40,
+            }}>
+            {renderProgress()}
+            <View
               style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
+                backgroundColor: '#3F58DD',
                 borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
-              onPress={() => {
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false);
+                padding: 10,
+                marginHorizontal: 40,
+                alignItems: 'center',
+                marginTop: '45%',
+                paddingTop: 50,
+              }}>
+              <Image
+                source={imgStep8}
+                resizeMode="contain"
+                style={{
+                  width: 100,
+                  height: 200,
+                  position: 'absolute',
+                  top: -100,
+                }}
+              />
+              <Text
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginVertical: 20,
+                }}>
                 {
-                  stepsTutorial === 9
-                    ? AsyncStorage.removeItem('isTutorial')
-                    : null;
+                  'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'
                 }
-                {
-                  stepsTutorial === 9 ? handleSetSteps(0) : null;
-                }
-                {
-                  stepsTutorial === 9 ? goBack() : null;
-                }
-              }}
-            />
-          </View>
-        </ImageBackground>
+              </Text>
+
+              <Button
+                style={{
+                  backgroundColor: code_color.yellow,
+                  padding: 10,
+                  paddingHorizontal: 40,
+                  borderRadius: 20,
+                  marginVertical: 10,
+                }}
+                title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
+                onPress={() => {
+                  handleSetSteps(stepsTutorial + 1);
+                  setVisible(false);
+                  {
+                    stepsTutorial === 9
+                      ? AsyncStorage.removeItem('isTutorial')
+                      : null;
+                  }
+                  {
+                    stepsTutorial === 9 ? handleSetSteps(0) : null;
+                  }
+                  {
+                    stepsTutorial === 9 ? goBack() : null;
+                  }
+                }}
+              />
+            </View>
+          </ImageBackground>
+        </SafeAreaView>
       );
     }
   };
