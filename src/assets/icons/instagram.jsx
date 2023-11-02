@@ -12,7 +12,7 @@ function SvgComponent(props) {
       xmlns="http://www.w3.org/2000/svg">
       <Path
         d="M22.5 45C34.9264 45 45 34.9264 45 22.5C45 10.0736 34.9264 0 22.5 0C10.0736 0 0 10.0736 0 22.5C0 34.9264 10.0736 45 22.5 45Z"
-        fill="url(#paint0_linear_1_3407)"
+        fill="url(#paint0_linear_3474_3570)"
       />
       <Path
         d="M33.4616 14.4585C33.4616 13.3964 32.5975 12.5383 31.5415 12.5383C30.4794 12.5383 29.6213 13.3964 29.6213 14.4585C29.6213 15.5205 30.4854 16.3786 31.5415 16.3786C32.6035 16.3786 33.4616 15.5205 33.4616 14.4585Z"
@@ -28,18 +28,18 @@ function SvgComponent(props) {
       />
       <Defs>
         <LinearGradient
-          id="paint0_linear_1_3407"
-          x1="3.72566"
-          y1="41.2742"
-          x2="38.4632"
-          y2="6.53668"
+          id="paint0_linear_3474_3570"
+          x1="5.10522"
+          y1="34.945"
+          x2="33.1269"
+          y2="6.92332"
           gradientUnits="userSpaceOnUse">
-          <Stop stop-color="#FFD521" />
-          <Stop offset="0.05" stop-color="#FFD521" />
-          <Stop offset="0.5011" stop-color="#F50000" />
-          <Stop offset="0.95" stop-color="#B900B4" />
-          <Stop offset="0.9501" stop-color="#B900B4" />
-          <Stop offset="1" stop-color="#B900B4" />
+          <Stop offset="0" stopColor="#FFD521" />
+          <Stop offset="0.05" stopColor="#FFD521" />
+          <Stop offset="0.5011" stopColor="#F50000" />
+          <Stop offset="0.95" stopColor="#B900B4" />
+          <Stop offset="0.9501" stopColor="#B900B4" />
+          <Stop offset="1" stopColor="#B900B4" />
         </LinearGradient>
       </Defs>
     </Svg>

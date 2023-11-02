@@ -57,7 +57,7 @@ import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ViewShot from 'react-native-view-shot';
-import Share, { Social } from 'react-native-share';
+import Share, {Social} from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
