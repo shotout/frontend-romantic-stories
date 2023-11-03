@@ -70,6 +70,7 @@ const LibraryScreen = ({
   const [showModalNew, setShowModalNew] = useState(false);
   const [showModalSort, setShowModalSort] = useState(false);
   const [showModalShareStory, setShowModalShareStory] = useState(false);
+  const [sharedStory, setSharedStory] = useState<any>(null);
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(null);
   const [listCollection, setListCollection] = useState([]);
@@ -349,8 +350,12 @@ const LibraryScreen = ({
           items={(value: any) => setItems(value)}
         />
         <ModalShareStory
+          storyData={sharedStory}
           isVisible={showModalShareStory}
-          onClose={() => setShowModalShareStory(false)}
+          onClose={() => {
+            setShowModalShareStory(false);
+            setSharedStory(null);
+          }}
         />
         <View
           style={{
@@ -441,7 +446,10 @@ const LibraryScreen = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.backRightBtn, styles.backRightCenter]}
-                  onPress={() => setShowModalShareStory(true)}>
+                  onPress={() => {
+                    setSharedStory(_data);
+                    setShowModalShareStory(true);
+                  }}>
                   <ShareSvg />
                 </TouchableOpacity>
                 <TouchableOpacity
