@@ -7,33 +7,23 @@
  * @flow strict-local
  */
 
-import React, {useEffect, Fragment, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
   ImageBackground,
   Text,
   Image,
-  TouchableOpacity,
   useColorScheme,
   StatusBar,
-  ScrollView,
   FlatList,
   Animated,
   Dimensions,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
   Pressable,
   Modal,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import {
-  ava1,
-  bg,
-  cover1,
-  cover2,
-  imgAdjust,
   imgBgAvaTips,
   imgBgContent,
   imgBgTips,
@@ -42,19 +32,11 @@ import {
   imgStep1,
   imgStep2,
   imgStep5,
-  libraryAdd,
-  logo,
 } from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
-import {getDefaultLanguange, isIphoneXorAbove} from '../../utils/devices';
 import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
-import LibrarySvg from '../../assets/icons/bottom/library.jsx';
-import SearchSvg from '../../assets/icons/search.jsx';
-import DescendingSvg from '../../assets/icons/descending.jsx';
-import BackRightSvg from '../../assets/icons/backRight.jsx';
-import DotSvg from '../../assets/icons/dot.jsx';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
   PanGestureHandler,
@@ -80,8 +62,7 @@ import ModalGetPremium from '../../components/modal-get-premium';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
-import AnimatedLottieView from 'lottie-react-native';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -99,7 +80,7 @@ const MainScreen = ({
   stepsTutorial,
   isPremium,
 }) => {
-  const [activeStep, setActiveStep] = useState(1); 
+  const [activeStep, setActiveStep] = useState(0); 
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
@@ -129,6 +110,7 @@ const MainScreen = ({
   const isFocused = useIsFocused();
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [isFinishTutorial, setFinishTutorial] = useState(false);
   const [dataBook, setBook] = useState([
     {
       title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
@@ -271,7 +253,9 @@ const MainScreen = ({
     // handleSetSteps(0);
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+    
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+        setFinishTutorial(true)
         setTutorial({
           visible: true,
           step: 1,
@@ -347,16 +331,23 @@ const MainScreen = ({
     );
   }
 
-  // useEffect(() => {
-  //   // alert(stepsTutorial)
-  //   setTutorial({
-  //     ...isTutorial,
-  //     step: stepsTutorial,
-  //   });
-  // }, [isFocused, stepsTutorial]);
+  useEffect(() => {
+    async function fetchData() {
+      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+      if(isFinishTutorial === 'yes'){
+        setFinishTutorial(true)
+      }else{
+        setFinishTutorial(false)
+        
+      }
+    }
+    fetchData()
+    
+  }, [isFocused]);
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
+   if(isFinishTutorial){
     if (activeStep === 0) {
       return (
         <Modal
@@ -517,6 +508,7 @@ const MainScreen = ({
         </SafeAreaView>
       );
     }
+   }
   };
 
   const renderView = () => {

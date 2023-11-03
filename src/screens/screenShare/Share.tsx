@@ -31,7 +31,7 @@ import dispatcher from './dispatcher';
 import states from './states';
 import styles from './styles';
 import {code_color} from '../../utils/colors';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   bg,
   story2,
@@ -84,6 +84,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
+  const [userText, setUserText] = useState('');
+  const [draggableItems, setDraggableItems] = useState([]);
   const [stickers, setStickers] = useState([
     {
       image: imgSticker1,
@@ -327,6 +329,49 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
         </ScrollView>
       </View>
     );
+  }
+
+  function TextFontComponent(props: any){
+    const fontsRef = useRef(draggableItems);
+    return(
+        <View style={{zIndex: 1}}>
+        {fontsRef.current.map((el: any, i: any) => (
+          <Gestures
+            bounds={{
+              minX: viewShotLayout.x,
+              minY: viewShotLayout.y,
+              maxX: viewShotLayout.x + viewShotLayout.width - 100,
+              maxY: viewShotLayout.y + viewShotLayout.height - 100,
+            }}
+            key={i}
+            style={el.styles}
+            onChange={(_event: any, styles: any) => {
+              fontsRef.current[i] = {
+                ...fontsRef.current[i],
+                styles: styles,
+              };
+
+              el = {...el, ...{styles: styles}};
+
+              // dispatch(saveItemSticker(el));
+              if (styles.top > windowHeight - 200) {
+                // setReadyToDeleteSticker(true);
+              } else {
+                // setReadyToDeleteSticker(false);
+              }
+            }}
+            onEnd={(_event: any, styles: any) => {
+              // setShowBottomMenu(true);
+              if (styles.top > windowHeight - 200) {
+                // dispatch(removeSticker(el));
+                console.log('Deleted');
+              }
+            }}>
+             <Text style={{  fontSize: fontSizeDefault, }}>{el}</Text>
+          </Gestures>
+        ))}
+      </View>
+      )
   }
   function StickerComponent(props: any) {
     const stickersRef = useRef(sticker);
@@ -653,6 +698,14 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
         />
         <View style={styles.overlay} />
         {renderHeaderScreenShot()}
+        {isVisibleFont ? 
+        <TextInput
+        style={{ padding: 10, marginTop: 30 }}
+        placeholder="Masukkan teks"
+        value={userText}
+        onChangeText={(text) => setUserText(text)}
+      /> : null}
+        <TextFontComponent />
         <StickerComponent />
         <Text
           style={{
@@ -692,7 +745,12 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           </Pressable>
         )}
         {isVisibleFont ? (
-          <Pressable onPress={() => setVisibleFont(false)}>
+          <Pressable onPress={() => 
+          {
+            setDraggableItems([...draggableItems, userText]);
+            setUserText('');
+            setVisibleFont(false)
+          }}>
             <Text
               allowFontScaling={false}
               style={{
