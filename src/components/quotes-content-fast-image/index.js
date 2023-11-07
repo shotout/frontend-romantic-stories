@@ -20,6 +20,7 @@ import ModalShare from '../../screens/screenShare/Share';
 import {BACKEND_URL} from '../../shared/static';
 import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
 import {navigate, navigationRef} from '../../shared/navigationRef';
+import Speaker from '../../assets/icons/speaker';
 export default function QuotesContent({
   item,
   themeUser,
@@ -134,6 +135,7 @@ export default function QuotesContent({
             }}
           />
         </View>
+        <View style={{flexDirection: 'row', flex: 0 }}>
         <Text
           allowFontScaling={false}
           style={{
@@ -141,10 +143,32 @@ export default function QuotesContent({
             fontWeight: 'bold',
             fontSize: Number(fontSize),
             fontFamily: fontFamily,
+            flex: 1,
             color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
           }}>
           {themeUser?.language_id === '2' ? item?.title : item?.title}
         </Text>
+        <TouchableOpacity onPress={() => navigate('Media')} style={{padding: 10, borderRadius: 10, backgroundColor: code_color.blueDark, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+          <Speaker />
+        <Text
+          allowFontScaling={false}
+          style={{
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: Number(fontSize),
+            fontFamily: fontFamily,
+            color: code_color.white ,
+            marginLeft: 10
+          }}>
+         Listen
+        </Text>
+        </TouchableOpacity>
+        
+        </View>
+        
+        <View>
+       
+        </View>
         <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>

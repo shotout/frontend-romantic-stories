@@ -250,7 +250,6 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    handlePayment()
     handleThemeAvatar();
     // handleSetSteps(0);
     const checkTutorial = async () => {
