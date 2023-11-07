@@ -37,8 +37,17 @@ import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpe
 import { Adjust, AdjustConfig } from 'react-native-adjust';
 import * as Sentry from '@sentry/react-native';
 import { SENTRY_DSN } from './src/shared/static';
+import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
 
+Purchasely.startWithAPIKey(
+  "c88ec51a-b7ce-485e-8192-038a120da596",
+  ["Google"],
+  null,
+  LogLevels.DEBUG,
+  RunningMode.FULL
+);
 function App({ userProfile }) {
+  
   Sentry.init({
     environment: 'development',
     dsn: SENTRY_DSN,

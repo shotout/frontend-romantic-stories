@@ -63,6 +63,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
+import { handlePayment } from '../../helpers/paywall';
 
 const {width, height} = Dimensions.get('window');
 
@@ -249,6 +250,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
+    handlePayment()
     handleThemeAvatar();
     // handleSetSteps(0);
     const checkTutorial = async () => {

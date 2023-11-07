@@ -211,6 +211,7 @@ PODS:
   - nanopb/encode (2.30909.0)
   - OpenSSL-Universal (1.1.1100)
   - PromisesObjC (2.3.1)
+  - Purchasely (4.1.4)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -531,6 +532,9 @@ PODS:
     - FBSDKGamingServicesKit (~> 16.1.3)
     - FBSDKShareKit (~> 16.1.3)
     - React-Core
+  - react-native-purchasely (4.1.2):
+    - Purchasely (= 4.1.4)
+    - React-Core
   - react-native-safe-area-context (4.7.1):
     - React-Core
   - react-native-selectable-text (1.5.1):
@@ -780,6 +784,7 @@ DEPENDENCIES:
   - react-native-adjust (from `../node_modules/react-native-adjust`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
+  - react-native-purchasely (from `../node_modules/react-native-purchasely`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-selectable-text (from `../node_modules/@astrocoders/react-native-selectable-text`)"
   - "react-native-skadnetwork (from `../node_modules/@brigad/react-native-skadnetwork`)"
@@ -852,6 +857,7 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
+    - Purchasely
     - Sentry
     - SentryPrivate
     - SocketRocket
@@ -909,6 +915,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
+  react-native-purchasely:
+    :path: "../node_modules/react-native-purchasely"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-selectable-text:
@@ -1024,6 +1032,7 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
+  Purchasely: 9c4020df83b6b962161456d41971bdab24c116bf
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c0569ecc035894e4a68baecb30fe6a7ea6e399f9
   RCTTypeSafety: e90354072c21236e0bcf1699011e39acd25fea2f
@@ -1042,6 +1051,7 @@ SPEC CHECKSUMS:
   react-native-adjust: 4bbce119ab6613cfa7b95af94e5802ab492dcf07
   react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
+  react-native-purchasely: 55fbcd14ca548cc08ede5b544f8450da1e7f0610
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
   react-native-selectable-text: 1db201c4080adba28e1853e26cdaad7035f55477
   react-native-skadnetwork: b960e4aa81d51e6f4f447d08eab1eb5ad05cc3e1
@@ -1086,4 +1096,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: bd7d3aa5d9ac76adc6920d5ef4868e31795e18be
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

@@ -6821,6 +6821,11 @@ react-native-keyboard-aware-scroll-view@^0.9.5:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
+react-native-purchasely@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-purchasely/-/react-native-purchasely-4.1.2.tgz#cc0006f4ed077d248bb515ae4f046b81e20e12b2"
+  integrity sha512-eSNs3Os6JITGcj7OtvwJU10GmfdLubRunIzvqiwyYrX2Y41C7IlVUeJPHyVERfeZq2Q53RxzJDOqKr7mK/Jp4A==
+
 react-native-reanimated-carousel@^3.5.1:
   version "3.5.1"
   resolved "https://registry.npmjs.org/react-native-reanimated-carousel/-/react-native-reanimated-carousel-3.5.1.tgz"
