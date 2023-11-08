@@ -86,67 +86,70 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
   };
   const renderProgress = () => <StepHeader currentStep={4} />;
   const renderTutorial = () => {
-    return (
-      <SafeAreaView
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        style={{
-          position: 'absolute',
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height,
-          top: 30,
-          backgroundColor: 'rgba(0,0,0,0.3)',
-        }}>
-        {renderProgress()}
-        <View
+    if(stepsTutorial === 4){
+      return (
+        <SafeAreaView
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           style={{
-            backgroundColor: '#3F58DD',
-            borderRadius: 20,
-            padding: 10,
-            marginHorizontal: 40,
-            alignItems: 'center',
-            marginTop: '50%',
-            paddingTop: 50,
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+            top: 30,
+            backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-          <Image
-            source={imgStep4}
-            resizeMode="contain"
-            style={{width: 100, height: 200, position: 'absolute', top: -100}}
-          />
-          <Text
+          {renderProgress()}
+          <View
             style={{
-              color: code_color.white,
-              textAlign: 'center',
-              fontSize: 18,
-              fontWeight: 'bold',
-              marginVertical: 20,
-            }}>
-            {
-              'Re-discover your favorite\nStories that are saved\nin your Library.'
-            }
-          </Text>
-
-          <Button
-            style={{
-              backgroundColor: code_color.yellow,
-              padding: 10,
-              paddingHorizontal: 40,
+              backgroundColor: '#3F58DD',
               borderRadius: 20,
-              marginVertical: 10,
-            }}
-            title={i18n.t('Next')}
-            onPress={() => {
-              // setTutorial({
-              //   ...isTutorial,
-              //   step: isTutorial.step + 1,
-              // });
-              handleSetSteps(4 + 1);
-              navigate('Main');
-            }}
-          />
-        </View>
-      </SafeAreaView>
-    );
+              padding: 10,
+              marginHorizontal: 40,
+              alignItems: 'center',
+              marginTop: '50%',
+              paddingTop: 50,
+            }}>
+            <Image
+              source={imgStep4}
+              resizeMode="contain"
+              style={{width: 100, height: 200, position: 'absolute', top: -100}}
+            />
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+                marginVertical: 20,
+              }}>
+              {
+                'Re-discover your favorite\nStories that are saved\nin your Library.'
+              }
+            </Text>
+  
+            <Button
+              style={{
+                backgroundColor: code_color.yellow,
+                padding: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
+              }}
+              title={i18n.t('Next')}
+              onPress={() => {
+                // setTutorial({
+                //   ...isTutorial,
+                //   step: isTutorial.step + 1,
+                // });
+                handleSetSteps(4 + 1);
+                navigate('Main');
+              }}
+            />
+          </View>
+        </SafeAreaView>
+      );
+    }
+   
   };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
