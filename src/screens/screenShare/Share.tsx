@@ -14,6 +14,7 @@ import {
   PanResponder,
   Dimensions,
   ImageBackground,
+  Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -25,6 +26,11 @@ import Instagram from '../../assets/icons/instagram';
 import FBStory from '../../assets/icons/facebookStory';
 import FB from '../../assets/icons/facebook';
 import UpChevron from '../../assets/icons/upChevron';
+import Lock from './../../assets/icons/lock';
+import Watch from './../../assets/icons/watch';
+import LockFree from './../../assets/icons/lockFree';
+import UnlockFontIcon from './../../assets/icons/unlockFont';
+import UnlockBgShareIcon from './../../assets/icons/unlockBgShare';
 
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -69,11 +75,15 @@ import StepHeader from '../../layout/step/stepHeader';
 import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ModalUnlockPremium from '../../components/modal-unlock-premium';
 
-function ScreenShare({route, stepsTutorial, handleSetSteps}) {
+function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
-  const [selectedBg, setSetselectedBg] = useState(null);
+  const [modalUnlockFont, setModalUnlockFont] = useState(false);
+  const [modalUnlockBg, setModalUnlockBg] = useState(false);
+  const [selectBg, setSelectBg] = useState(null);
+  const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
@@ -81,6 +91,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     name: 'Georgia',
     value: 'GeorgiaEstate-w15Mn',
   });
+  const [selectedFont, setSelectedFont] = useState<any>(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
@@ -147,7 +158,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
       pan.setValue({x: 0, y: 0});
     },
   });
-  
 
   const handleShare = async () => {
     base64CaptureImage.current = null;
@@ -331,10 +341,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     );
   }
 
-  function TextFontComponent(props: any){
+  function TextFontComponent(props: any) {
     const fontsRef = useRef(draggableItems);
-    return(
-        <View style={{zIndex: 1}}>
+    return (
+      <View style={{zIndex: 1}}>
         {fontsRef.current.map((el: any, i: any) => (
           <Gestures
             bounds={{
@@ -367,11 +377,11 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                 console.log('Deleted');
               }
             }}>
-             <Text style={{  fontSize: fontSizeDefault, }}>{el}</Text>
+            <Text style={{fontSize: fontSizeDefault}}>{el}</Text>
           </Gestures>
         ))}
       </View>
-      )
+    );
   }
   function StickerComponent(props: any) {
     const stickersRef = useRef(sticker);
@@ -493,19 +503,17 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
       handleSetSteps(stepsTutorial - 1);
-      if(stepsTutorial === 6){
-          navigate('Main');
+      if (stepsTutorial === 6) {
+        navigate('Main');
       }
-     
+
       setIsSwipingLeft(true);
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
       handleSetSteps(stepsTutorial + 1);
       {
-        stepsTutorial === 9
-          ? AsyncStorage.removeItem('isTutorial')
-          : null;
+        stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
       }
       {
         stepsTutorial === 9 ? handleSetSteps(0) : null;
@@ -687,7 +695,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           quality: 1.0,
         }}>
         <Image
-          source={selectedBg}
+          source={selectBg}
           style={{
             position: 'absolute',
             width: '100%',
@@ -698,13 +706,14 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
         />
         <View style={styles.overlay} />
         {renderHeaderScreenShot()}
-        {isVisibleFont ? 
-        <TextInput
-        style={{ padding: 10, marginTop: 30 }}
-        placeholder="Masukkan teks"
-        value={userText}
-        onChangeText={(text) => setUserText(text)}
-      /> : null}
+        {isVisibleFont ? (
+          <TextInput
+            style={{padding: 10, marginTop: 30}}
+            placeholder="Masukkan teks"
+            value={userText}
+            onChangeText={text => setUserText(text)}
+          />
+        ) : null}
         <TextFontComponent />
         <StickerComponent />
         <Text
@@ -745,12 +754,12 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
           </Pressable>
         )}
         {isVisibleFont ? (
-          <Pressable onPress={() => 
-          {
-            setDraggableItems([...draggableItems, userText]);
-            setUserText('');
-            setVisibleFont(false)
-          }}>
+          <Pressable
+            onPress={() => {
+              setDraggableItems([...draggableItems, userText]);
+              setUserText('');
+              setVisibleFont(false);
+            }}>
             <Text
               allowFontScaling={false}
               style={{
@@ -797,6 +806,56 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
             },
           ]);
           setVisible(false);
+        }}
+      />
+      <ModalUnlockPremium
+        isVisible={modalUnlockFont}
+        onClose={() => {
+          setModalUnlockFont(false);
+          setSelectedFont(null);
+        }}
+        title={'Unlock this Font\r\nfor Free now'}
+        desc={
+          'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        onSuccess={() => {
+          setModalUnlockFont(false);
+          setSelectFont(selectedFont);
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
+        }}
+      />
+      <ModalUnlockPremium
+        isVisible={modalUnlockBg}
+        onClose={() => {
+          setModalUnlockBg(false);
+          setSelectedBg(null);
+        }}
+        title={'Unlock this Background\r\nfor Free now'}
+        desc={
+          'Watch a Video to unlock this Background for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => (
+          <UnlockBgShareIcon style={{marginBottom: 20}} width={'50%'} />
+        )}
+        onSuccess={() => {
+          setSelectBg(selectedBg);
+          setModalUnlockBg(false);
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {},
+              },
+            ],
+          );
         }}
       />
       <View style={styles.row}>
@@ -896,12 +955,20 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
             {fontList.map((item, index) => (
               <Pressable
                 onPress={() => {
-                  setSelectFont(item);
+                  setSelectedFont(item);
+                  if (isPremium) {
+                    setSelectFont(item);
+                  } else {
+                    setModalUnlockFont(true);
+                  }
                 }}
+                key={index}
                 style={{
                   ...styles.btnFont,
                   backgroundColor:
-                    fontSelect.value === item.value ? code_color.white : null,
+                    fontSelect.value === item.value
+                      ? code_color.white
+                      : undefined,
                 }}>
                 <Text
                   allowFontScaling={false}
@@ -915,6 +982,47 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                   }}>
                   {item.name}
                 </Text>
+                {!isPremium && fontSelect.name !== item.name ? (
+                  <>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: -2,
+                        left: -1,
+                        backgroundColor: code_color.black,
+                        height: 18,
+                        width: 18,
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Lock width={9} />
+                    </View>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        bottom: -6,
+                        right: -8,
+                        backgroundColor: code_color.pink,
+                        borderRadius: 8,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingHorizontal: 5,
+                        paddingVertical: 2,
+                      }}>
+                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Text
+                        style={{
+                          color: code_color.white,
+                          fontSize: 8,
+                          fontWeight: '700',
+                          marginLeft: 2,
+                        }}>
+                        Free
+                      </Text>
+                    </View>
+                  </>
+                ) : null}
               </Pressable>
             ))}
           </ScrollView>
@@ -932,7 +1040,15 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                     width: 75,
                     marginRight: 12,
                   }}
-                  onPress={() => setSetselectedBg(bgl)}>
+                  onPress={() => {
+                    setSelectedBg(bgl);
+                    if (isPremium) {
+                      setSelectBg(bgl);
+                      setSelectedBg(null);
+                    } else {
+                      setModalUnlockBg(true);
+                    }
+                  }}>
                   <Image
                     source={bgl}
                     style={{
@@ -941,9 +1057,18 @@ function ScreenShare({route, stepsTutorial, handleSetSteps}) {
                       objectFit: 'cover',
                       borderRadius: 8,
                       borderColor: code_color.yellow,
-                      borderWidth: bgl === selectedBg ? 2 : 0,
+                      borderWidth: bgl === selectBg ? 2 : 0,
                     }}
                   />
+                  {!isPremium && bgl !== selectBg ? (
+                    <LockFree
+                      style={{
+                        position: 'absolute',
+                        alignSelf: 'center',
+                        top: 4,
+                      }}
+                    />
+                  ) : null}
                 </TouchableOpacity>
               ))}
             </ScrollView>

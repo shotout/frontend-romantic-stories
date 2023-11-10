@@ -64,6 +64,7 @@ const LibraryScreen = ({
   handleSomeAction,
   stepsTutorial,
   handleSetSteps,
+  isPremium,
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
@@ -128,20 +129,22 @@ const LibraryScreen = ({
             <Text allowFontScaling={false} style={{color: code_color.white}}>
               {item?.item?.content_en?.substring(0, 48)}
             </Text>
-            <View
-              style={{
-                backgroundColor: '#ED5267',
-                padding: 5,
-                borderRadius: 10,
-                marginVertical: 5,
-                width: 150,
-              }}>
-              <Text
-                allowFontScaling={false}
-                style={{color: code_color.white, fontSize: 10}}>
-                USD 0,50 For 1 Week Access
-              </Text>
-            </View>
+            {!isPremium && (
+              <View
+                style={{
+                  backgroundColor: '#ED5267',
+                  padding: 5,
+                  borderRadius: 10,
+                  marginVertical: 5,
+                  width: 150,
+                }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{color: code_color.white, fontSize: 10}}>
+                  USD 0,50 For 1 Week Access
+                </Text>
+              </View>
+            )}
           </View>
 
           <DotSvg />

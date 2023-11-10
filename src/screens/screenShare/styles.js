@@ -108,7 +108,7 @@ export default StyleSheet.create({
   },
   conListFont: {
     width: '90%',
-    height: 50,
+    height: 60,
     marginTop: moderateScale(10),
   },
   btnFont: {

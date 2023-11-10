@@ -45,7 +45,7 @@ const INITIAL_STATE = {
   fontFamily: null,
   fontSize: null,
   backgroundColor: null,
-  isPremium: true,
+  isPremium: false,
 };
 
 export default (state = INITIAL_STATE, action) => {

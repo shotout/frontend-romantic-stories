@@ -16,6 +16,7 @@ import {
   Image,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import {code_color} from '../../utils/colors';
 import DownChevron from '../../assets/icons/downChevron';
@@ -30,6 +31,8 @@ import ChecklistSvg from './../../assets/icons/checklist';
 import Lock from './../../assets/icons/lock';
 import Watch from './../../assets/icons/watch';
 import UnlockBgIcon from './../../assets/icons/unlockBg';
+import UnlockFontIcon from './../../assets/icons/unlockFont';
+import UnlockThemeIcon from './../../assets/icons/unlockTheme';
 import {fontList} from '../../utils/constants';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 
@@ -46,7 +49,10 @@ const FontScreen = ({
 }) => {
   console.log(JSON.stringify(userProfile?.data?.theme));
   const [show, setShow] = useState(false);
-  const [fontSelect, setSelectFont] = useState('Georgia');
+  const [fontSelect, setSelectFont] = useState({
+    name: 'Georgia',
+    value: 'GeorgiaEstate-w15Mn',
+  });
   const [colorsBg, setColorsBg] = useState([
     {
       code: '#5873FF',
@@ -68,7 +74,10 @@ const FontScreen = ({
   const [bg_color, set_bgColor] = useState(backgroundColor);
   const [fontSizeDefault, setFontSize] = useState(fontSize);
   const [bgTheme, setBgTheme] = useState(colorTheme);
+  const [selectedBgTheme, setSelectedBgTheme] = useState({code: colorTheme});
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
+  const [modalUnlockFont, setModalUnlockFont] = useState(false);
+  const [modalUnlockTheme, setModalUnlockTheme] = useState(false);
   const [isFinishAds, setIsFinishAds] = useState(false);
 
   const setBg = value => {
@@ -95,9 +104,9 @@ const FontScreen = ({
     // setFontSize(fontSizeDefault)
   };
 
-  const handleBgThemeColor = value => {
-    setBgTheme(value);
-    handleSetColorTheme(value);
+  const handleBgThemeColor = (code: string | null) => {
+    setBgTheme(code ? code : selectedBgTheme.code);
+    handleSetColorTheme(code ? code : selectedBgTheme.code);
   };
   return (
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
@@ -120,6 +129,60 @@ const FontScreen = ({
               ? code_color.white
               : code_color.blackDark,
           );
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {},
+              },
+            ],
+          );
+        }}
+      />
+      <ModalUnlockPremium
+        isVisible={modalUnlockFont}
+        onClose={() => {
+          setModalUnlockFont(false);
+        }}
+        title={'Unlock this Font\r\nfor Free now'}
+        desc={
+          'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        onSuccess={() => {
+          handleSetFontFamily(fontSelect.value);
+          setModalUnlockFont(false);
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
+        }}
+      />
+      <ModalUnlockPremium
+        isVisible={modalUnlockTheme}
+        onClose={() => {
+          setModalUnlockTheme(false);
+        }}
+        title={'Unlock this Theme\r\nfor Free now'}
+        desc={
+          'Watch a Video to unlock this new Theme for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => (
+          <UnlockThemeIcon style={{marginBottom: 20}} width={'50%'} />
+        )}
+        onSuccess={() => {
+          handleBgThemeColor(null);
+          setModalUnlockTheme(false);
+          Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
         }}
       />
       <View
@@ -206,7 +269,9 @@ const FontScreen = ({
               }}
               style={{
                 borderColor:
-                  bg_color === code_color.blackDark ? code_color.yellow : null,
+                  bg_color === code_color.blackDark
+                    ? code_color.yellow
+                    : undefined,
                 borderWidth: bg_color === code_color.blackDark ? 3 : 0,
                 borderRadius: 40,
                 padding: 3,
@@ -324,7 +389,7 @@ const FontScreen = ({
             CHANGE FONT
           </Text>
           <Text allowFontScaling={false} style={{color: code_color.white}}>
-            {fontSelect}
+            {fontSelect.name}
           </Text>
           <Pressable
             onPress={() => setShow(!show)}
@@ -345,13 +410,20 @@ const FontScreen = ({
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {fontList.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={() => {
-                  setSelectFont(item.name);
-                  handleSetFontFamily(item.value);
+                  setSelectFont(item);
+                  if (isPremium) {
+                    handleSetFontFamily(item.value);
+                  } else {
+                    setModalUnlockFont(true);
+                  }
                 }}
                 style={{
                   backgroundColor:
-                    fontSelect === item.name ? code_color.white : null,
+                    fontSelect.name === item.name
+                      ? code_color.white
+                      : undefined,
                   borderColor: code_color.white,
                   borderWidth: 1,
                   alignItems: 'center',
@@ -366,13 +438,13 @@ const FontScreen = ({
                     paddingHorizontal: 20,
                     paddingVertical: 0,
                     color:
-                      fontSelect === item.name
+                      fontSelect.name === item.name
                         ? code_color.blackDark
                         : code_color.white,
                   }}>
                   {item.name}
                 </Text>
-                {!isPremium && fontSelect !== item.name ? (
+                {!isPremium && fontSelect.name !== item.name ? (
                   <>
                     <View
                       style={{
@@ -442,7 +514,14 @@ const FontScreen = ({
           {colorsBg.map((item, i) => {
             return (
               <TouchableOpacity
-                onPress={() => handleBgThemeColor(item.code)}
+                onPress={() => {
+                  setSelectedBgTheme(item);
+                  if (isPremium) {
+                    handleBgThemeColor(item.code);
+                  } else {
+                    setModalUnlockTheme(true);
+                  }
+                }}
                 key={i}
                 style={{
                   backgroundColor: item.code,
