@@ -46,12 +46,14 @@ const FontScreen = ({
   backgroundColor,
   handleSetFontFamily,
   isPremium,
+  fontFamily
 }) => {
-  console.log(JSON.stringify(userProfile?.data?.theme));
+  console.log(JSON.stringify(fontFamily));
   const [show, setShow] = useState(false);
+ 
   const [fontSelect, setSelectFont] = useState({
-    name: 'Georgia',
-    value: 'GeorgiaEstate-w15Mn',
+    name: fontFamily === 'BigshotOne-Regular' ? 'Bigshot' :  fontFamily === 'GentiumBookPlus-Regular'  ? 'Gentium' :   fontFamily === 'GeorgiaEstate-w15Mn' ? 'Georgia' : fontFamily,
+    value: fontFamily,
   });
   const [colorsBg, setColorsBg] = useState([
     {

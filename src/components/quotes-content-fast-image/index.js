@@ -14,7 +14,7 @@ import {
 import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
-import {ava1} from '../../assets/images';
+import {ava1, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import ModalShare from '../../screens/screenShare/Share';
 import {BACKEND_URL} from '../../shared/static';
@@ -111,7 +111,10 @@ export default function QuotesContent({
           height: sizing.getDimensionHeight(0.84),
           transform: [{translateY: translateX}],
         }}>
-        {pageActive != 1 ? (
+        {pageActive === 0 ||
+        pageActive === 3 ||
+        pageActive === 6 ||
+        pageActive === 9 ? (
           <View
             style={{
               alignItems: 'center',
@@ -261,17 +264,17 @@ export default function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : (
+          ) : pageActive === 1 ?  (
             <>
               <View
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: -100,
-                  // marginTop: -100,
+                  bottom: -50,
                   width: 100,
                   height: 150,
-                  left: '10%',
+                  left: '0%',
                   zIndex: 1,
                 }}>
                 <Image
@@ -283,6 +286,26 @@ export default function QuotesContent({
                   }}
                 />
               </View>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -100,
+                  width: 100,
+                  height: 150,
+                  left: '30%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${partner}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 400,
+                  }}
+                />
+              </View>
+
               <View>
                 <ImageBackground
                   source={{
@@ -295,27 +318,93 @@ export default function QuotesContent({
                   }}>
                   <View
                     style={{
+                      backgroundColor: code_color.white,
+                      flex: 0,
                       alignItems: 'center',
+                      width: 130,
+                      borderRadius: 10,
+                      padding: 5,
+                      marginBottom: 20,
                       position: 'absolute',
+                      marginRight: 5,
                       bottom: 0,
-                      left: '15%',
-                      justifyContent: 'center',
-                      flexDirection: 'row',
-                      padding: 10,
-                      height: 100,
+                      right: 0,
                     }}>
-                    <Image
-                      source={{uri: `${BACKEND_URL}/${partner}`}}
-                      resizeMode="cover"
-                      style={{
-                        width: 100,
-                        height: 100,
-                        position: 'absolute',
-                        bottom: '- 70%',
-                        left: 150,
-                        // left: '40%'
-                      }}
-                    />
+                    <Text
+                      style={{color: code_color.blueDark, fontWeight: 'bold'}}>
+                      Page {pageActive + 1} of {totalStory}
+                    </Text>
+                  </View>
+                </ImageBackground>
+              </View>
+            </>
+          ) : (
+            <>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -150,
+                  width: 100,
+                  height: 150,
+                  left: '0%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${me}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 420,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -200,
+                  width: 100,
+                  height: 150,
+                  left: '30%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${partner}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 420,
+                  }}
+                />
+              </View>
+
+              <View>
+                <ImageBackground
+                  source={imgLove}
+                  resizeMode="contain"
+                  style={{
+                    width: '75%',
+                    height: 200,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: code_color.blueDark,
+                      flex: 0,
+                      alignItems: 'center',
+                      width: 130,
+                      borderRadius: 10,
+                      padding: 5,
+                      marginBottom: 20,
+                      position: 'absolute',
+                      marginRight: 5,
+                      bottom: '40%',
+                      right: -75,
+                    }}>
+                    <Text
+                      style={{color: code_color.white, fontWeight: 'bold'}}>
+                      Page {pageActive + 1} of {totalStory}
+                    </Text>
                   </View>
                 </ImageBackground>
               </View>

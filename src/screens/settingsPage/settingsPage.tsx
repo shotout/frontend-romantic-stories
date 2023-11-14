@@ -240,7 +240,10 @@ const SettingsPage = ({colorTheme}) => {
       }}>
       <ModalEditName
         isVisible={showModalName}
-        onClose={() => setShowModalName(false)}
+        onClose={() => {
+          setShowModalName(false)
+          setShowModalProfile(true);
+        }}
       />
       <ModalEditProfile
         isVisible={showModalProfile}
@@ -249,19 +252,35 @@ const SettingsPage = ({colorTheme}) => {
       />
       <ModalEditGender
         isVisible={showModalGender}
-        onClose={() => setShowModalGender(false)}
+        onClose={() => 
+          {
+            setShowModalGender(false)
+            setShowModalProfile(true);
+          }
+          }
       />
       <ModalEditCharacter
         isVisible={showModalCharacter}
-        onClose={() => setShowModalCharacter(false)}
+        onClose={() => 
+          {
+            setShowModalCharacter(false)
+            setShowModalProfile(true);
+          }
+          }
       />
       <ModalEditPartner
         isVisible={showModalPartner}
-        onClose={() => setShowModalPartner(false)}
+        onClose={() => {
+          setShowModalPartner(false);
+          setShowModalProfile(true);
+        }}
       />
       <ModalEditLanguage
         isVisible={showModalLanguage}
-        onClose={() => setShowModalLanguage(false)}
+        onClose={() => {
+          setShowModalLanguage(false)
+          setShowModalProfile(true);
+        }}
       />
       {header()}
       <ScrollView>
