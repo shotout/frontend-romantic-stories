@@ -181,7 +181,7 @@ export default function QuotesContent({
           </TouchableOpacity>
         </View>
 
-        <View></View>
+        <View />
         <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
@@ -262,57 +262,64 @@ export default function QuotesContent({
               </View>
             </View>
           ) : (
-            <View>
-              <ImageBackground
-                source={{
-                  uri: `${BACKEND_URL}/${themeUser?.category?.image?.url}`,
-                }}
-                resizeMode="contain"
+            <>
+              <View
                 style={{
-                  width: '100%',
-                  height: 100,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -100,
+                  // marginTop: -100,
+                  width: 100,
+                  height: 150,
+                  left: '10%',
+                  zIndex: 1,
                 }}>
-            
-                <View
+                <Image
+                  source={{uri: `${BACKEND_URL}/${me}`}}
+                  resizeMode="cover"
                   style={{
-                    alignItems: 'center',
-                    position: 'absolute',
-                    bottom: 0,
-                    left: '15%',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    padding: 10,
-                    height: 100
+                    width: 100,
+                    height: 400,
+                  }}
+                />
+              </View>
+              <View>
+                <ImageBackground
+                  source={{
+                    uri: `${BACKEND_URL}/${themeUser?.category?.image?.url}`,
+                  }}
+                  resizeMode="contain"
+                  style={{
+                    width: '100%',
+                    height: 100,
                   }}>
-                   
-                    <Image
-                    source={{uri: `${BACKEND_URL}/${me}`}}
-                    resizeMode="cover"
+                  <View
                     style={{
-                      width: 100,
-                      height: 400 ,
-                      position: 'relative',
-                      top: 10, // Sesuaikan dengan kebutuhan Anda
-                      left: '10%',
-                    }}
-                  />
-                 
-                 
-                  <Image
-                    source={{uri: `${BACKEND_URL}/${partner}`}}
-                    resizeMode="cover"
-                    style={{
-                      width: 100,
+                      alignItems: 'center',
+                      position: 'absolute',
+                      bottom: 0,
+                      left: '15%',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      padding: 10,
                       height: 100,
-                      position: 'absolute', bottom: '- 70%',
-                      left: 150
-                      // left: '40%'
-                      
-                    }}
-                  />
-                </View>
-              </ImageBackground>
-            </View>
+                    }}>
+                    <Image
+                      source={{uri: `${BACKEND_URL}/${partner}`}}
+                      resizeMode="cover"
+                      style={{
+                        width: 100,
+                        height: 100,
+                        position: 'absolute',
+                        bottom: '- 70%',
+                        left: 150,
+                        // left: '40%'
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+              </View>
+            </>
           )}
         </View>
       </Animated.View>
