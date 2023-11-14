@@ -38,11 +38,11 @@ const OnboardScreen = (props: any) => {
       allowFontScaling={false}
         style={{
           color: 'white',
-          fontSize: 36,
+          fontSize: 28,
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
         }}>
-        {i18n.t('title')}
+        {'Romantic Story \n for your everyday fantasy'}
       </Text>
       <Image
         source={logo}

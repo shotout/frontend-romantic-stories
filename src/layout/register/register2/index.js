@@ -46,7 +46,7 @@ export default function Register2({currentStep, name, changeText}) {
           </Text>
         </View>
         <TextInput
-        allowFontScaling={false}
+          allowFontScaling={false}
           style={{
             borderColor: code_color.blueDark,
             color: code_color.blackDark,
@@ -56,7 +56,7 @@ export default function Register2({currentStep, name, changeText}) {
             marginVertical: 30,
             width: Dimensions.get('window').width - 60
           }}
-          placeholderTextColor={code_color.blackDark}
+          placeholderTextColor={code_color.greyDefault}
           value={name}
           onChangeText={(text) => changeText(text)}
           placeholder="Your name"

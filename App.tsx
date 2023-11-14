@@ -23,7 +23,7 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {code_color} from './src/utils/colors';
-import {bg_splash, logo} from './src/assets/images';
+import {bg, bg_splash, logo} from './src/assets/images';
 import {navigate} from './src/shared/navigationRef';
 import {getDefaultLanguange} from './src/utils/devices';
 import PropTypes from 'prop-types';
@@ -88,7 +88,7 @@ function App({ userProfile }) {
   };
   async function getInitialRoute() {
     if (userProfile?.token) {
-      // const res = await getStoryList();
+      const res = await getStoryList();
       // handleSetStory(res.data);
       setTimeout(() => {
         navigate('Bottom');
@@ -100,7 +100,7 @@ function App({ userProfile }) {
     }
   }
   return (
-    <ImageBackground source={bg_splash} style={{width: '100%', height: '100%'}}>
+    <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
       <View
         style={{
           // backgroundColor: code_color.splash,
@@ -116,12 +116,12 @@ function App({ userProfile }) {
           allowFontScaling={false}
           style={{
             color: 'white',
-            fontSize: 28,
+            fontSize: 25,
             marginTop: 20,
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
           }}>
-          {'Your everyday \n Fantasy'}
+          {'Romantic Story \n for your everyday fantasy'}
         </Text>
       </View>
     </ImageBackground>

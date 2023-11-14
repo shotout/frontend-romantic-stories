@@ -114,31 +114,35 @@ const MainScreen = ({
   const [isFinishTutorial, setFinishTutorial] = useState(false);
   const [dataBook, setBook] = useState([
     {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      title: 'Fistful of Reefer: Test 1',
       detail:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
     {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      title: 'Fistful of Reefer: Test 2',
       detail: 'hemmm',
     },
     {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      title: 'Fistful of Reefer: Test 3',
       detail:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
   ]);
   const onMomentoumScrollEnd = e => {
+    const offsetY = e.nativeEvent.contentOffset.y;
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
-      Math.max(Math.floor(e.nativeEvent.contentOffset.y / height + 0.5) + 1, 0),
-      dataBook?.length || 0,
+      Math.max(Math.floor(offsetY / height + 0.5) + 1, 0),
+      dataBook?.length || 0
     );
+    console.log('Current :', dataBook?.length);
+    console.log('Current Page Number:', pageNumber);
     if (pageNumber === dataBook?.length - 1) {
       setShowModalCongrats(true);
     }
 
     setActiveSlide(pageNumber - 1);
+   
     startAnimation();
     handleLoadMore(pageNumber);
 
@@ -237,8 +241,9 @@ const MainScreen = ({
   });
 
   const handleThemeAvatar = async () => {
+    // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
-      flag: 'book',
+      flag: 'friendly',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -248,7 +253,7 @@ const MainScreen = ({
       }
     } catch (error) {}
   };
-
+  
   useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);
@@ -283,6 +288,8 @@ const MainScreen = ({
       <QuotesContent
         item={item}
         isActive={activeSlide === index}
+        totalStory={dataBook.length}
+        pageActive={index}
         isAnimationStart={true}
         themeUser={userProfile?.data}
         fontSize={fontSize}

@@ -75,8 +75,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
     const currentTrack = await TrackPlayer.getCurrentTrack();
     const info = await TrackPlayer.getTrack(currentTrack);
     setInfo(info);
- 
-
   }
  
   return (
