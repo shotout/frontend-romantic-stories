@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
-import Share, {Social} from 'react-native-share';
+import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -47,6 +48,36 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
 
   const handleClose = () => {
     onClose();
+  };
+
+  const generateLink = async () => {
+    try {
+      const link = dynamicLinks().buildShortLink(
+        {
+          link: `https://romanticstory.page.link/mVYD?storyId=${storyData?.item?.title_en}`,
+          domainUriPrefix: 'https://romanticstory.page.link',
+          android: {
+            packageName: 'com.romanticstory',
+          },
+          ios: {
+            appStoreId: '6463850368',
+            bundleId: 'apps.romanticstory',
+          },
+        },
+        dynamicLinks.ShortLinkType.DEFAULT,
+      );
+      return link;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCopyLink = async () => {
+    Clipboard.setString(await generateLink());
+    setShowSuccessCopy(true);
+    setTimeout(() => {
+      setShowSuccessCopy(false);
+    }, 1500);
   };
 
   const handleShareOpen = async () => {
@@ -547,13 +578,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
             }}>
             <TouchableOpacity
               style={{alignItems: 'center', justifyContent: 'center'}}
-              onPress={() => {
-                Clipboard.setString(sharedMessage);
-                setShowSuccessCopy(true);
-                setTimeout(() => {
-                  setShowSuccessCopy(false);
-                }, 1500);
-              }}>
+              onPress={handleCopyLink}>
               <CopyIcon height={40} />
               <Text
                 style={{
