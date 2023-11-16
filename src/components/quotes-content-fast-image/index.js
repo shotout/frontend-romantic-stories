@@ -35,7 +35,6 @@ export default function QuotesContent({
   totalStory,
   pageActive,
 }) {
-  console.log(JSON.stringify(themeUser?.category?.image?.url));
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -385,7 +384,7 @@ export default function QuotesContent({
                   resizeMode="contain"
                   style={{
                     width: '75%',
-                    height: 200,
+                    height: 180,
                   }}>
                   <View
                     style={{

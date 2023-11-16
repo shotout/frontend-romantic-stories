@@ -112,6 +112,7 @@ const MainScreen = ({
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
+  // alert(JSON.stringify(userStory))
   const [dataBook, setBook] = useState([
     {
       title: 'Fistful of Reefer: Test 1',

@@ -406,7 +406,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
             </View>
           </ScrollView>
         )}
-        <View
+        {/* <View
           style={{
             height: moderateScale(100),
             width: moderateScale(100),
@@ -423,7 +423,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
             duration={3000}
             loop={true}
           />
-        </View>
+        </View> */}
       </ScrollView>
       {renderTutorial()}
     </SafeAreaView>

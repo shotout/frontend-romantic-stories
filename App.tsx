@@ -88,8 +88,9 @@ function App({ userProfile }) {
   };
   async function getInitialRoute() {
     if (userProfile?.token) {
+    
       const res = await getStoryList();
-      // handleSetStory(res.data);
+      // // handleSetStory(res.data);
       setTimeout(() => {
         navigate('Bottom');
       }, 500);

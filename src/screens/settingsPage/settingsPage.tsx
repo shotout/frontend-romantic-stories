@@ -193,6 +193,9 @@ const SettingsPage = ({colorTheme}) => {
       case 'Text Settings':
         navigate('Font');
         break;
+      case 'Notifications':
+        navigate('Notification');
+        break;
       default:
         break;
     }
@@ -241,7 +244,7 @@ const SettingsPage = ({colorTheme}) => {
       <ModalEditName
         isVisible={showModalName}
         onClose={() => {
-          setShowModalName(false)
+          setShowModalName(false);
           setShowModalProfile(true);
         }}
       />
@@ -252,21 +255,17 @@ const SettingsPage = ({colorTheme}) => {
       />
       <ModalEditGender
         isVisible={showModalGender}
-        onClose={() => 
-          {
-            setShowModalGender(false)
-            setShowModalProfile(true);
-          }
-          }
+        onClose={() => {
+          setShowModalGender(false);
+          setShowModalProfile(true);
+        }}
       />
       <ModalEditCharacter
         isVisible={showModalCharacter}
-        onClose={() => 
-          {
-            setShowModalCharacter(false)
-            setShowModalProfile(true);
-          }
-          }
+        onClose={() => {
+          setShowModalCharacter(false);
+          setShowModalProfile(true);
+        }}
       />
       <ModalEditPartner
         isVisible={showModalPartner}
@@ -278,7 +277,7 @@ const SettingsPage = ({colorTheme}) => {
       <ModalEditLanguage
         isVisible={showModalLanguage}
         onClose={() => {
-          setShowModalLanguage(false)
+          setShowModalLanguage(false);
           setShowModalProfile(true);
         }}
       />
