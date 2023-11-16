@@ -196,6 +196,9 @@ const SettingsPage = ({colorTheme}) => {
       case 'Notifications':
         navigate('Notification');
         break;
+        case 'Change Categories':
+        navigate('Categories');
+        break;
       default:
         break;
     }
