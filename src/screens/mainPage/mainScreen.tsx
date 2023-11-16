@@ -129,17 +129,21 @@ const MainScreen = ({
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
   ]);
-  const onMomentoumScrollEnd = e => {
+  const onMomentoumScrollEnd = async (e) => {
     const offsetY = e.nativeEvent.contentOffset.y;
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
       Math.max(Math.floor(offsetY / height + 0.5) + 1, 0),
       dataBook?.length || 0
     );
-    console.log('Current :', dataBook?.length);
-    console.log('Current Page Number:', pageNumber);
+ 
     if (pageNumber === dataBook?.length - 1) {
-      setShowModalCongrats(true);
+      const data  = await AsyncStorage.getItem("isFirstTime");
+      if(data === 'yes'){
+      }else{
+        setShowModalCongrats(true);
+        AsyncStorage.setItem("isFirstTime", "yes");
+      } 
     }
 
     setActiveSlide(pageNumber - 1);
