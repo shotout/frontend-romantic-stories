@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Modal,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   Text,
   Pressable,
   Image,
+  Switch,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -30,6 +31,8 @@ function ModalEditProfile({
   getAvatarFemale,
   getAvatarMale,
   colorTheme,
+  handleSetPremium,
+  isPremium,
 }) {
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -81,6 +84,14 @@ function ModalEditProfile({
           }}>
           Edit Profile
         </Text>
+        <Switch
+          style={{marginLeft: 'auto'}}
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={isPremium ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() => handleSetPremium(!isPremium)}
+          value={isPremium}
+        />
       </View>
     </View>
   );

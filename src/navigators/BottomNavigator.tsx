@@ -1,4 +1,4 @@
-import React, {Component, useState, useRef} from 'react';
+import React, {Component, useState, useRef, useEffect} from 'react';
 import {
   Text,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -28,6 +29,13 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import SettingsPage from '../screens/settingsPage/settingsPage';
+import AnimatedLottieView from 'lottie-react-native';
+import { imgStep2, imgStep4 } from '../assets/images';
+import Button from '../components/buttons/Button';
+import i18n from '../i18n';
+import StepHeader from '../layout/step/stepHeader';
+import {handleSetSteps} from '../store/defaultState/actions';
+import store from "../store/configure-store";
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,7 +47,8 @@ const Home = () => {
     </View>
   );
 };
-const Library = props => {
+const Library = ({userProfile, stepsTutorial}) => {
+
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
@@ -77,7 +86,10 @@ const Library = props => {
     }
     // Memunculkan bottom bar
   };
+
+ 
   return (
+   
     <View
       style={{
         flex: 1,
@@ -86,6 +98,7 @@ const Library = props => {
         bottom: 0,
         flexDirection: 'column',
       }}>
+       
       <View
         style={{
           position: 'absolute',
@@ -94,7 +107,6 @@ const Library = props => {
         }}>
         <MainScreen pressScreen={() => handleSomeAction('Main')} />
       </View>
-
       <View
         style={{
           flexDirection: 'row',
@@ -124,7 +136,7 @@ const Library = props => {
                 marginHorizontal: 10,
                 backgroundColor:
                   item.value === isBottomBarVisible
-                    ? props?.userProfile?.colorTheme
+                    ? userProfile?.colorTheme
                     : null,
               }}>
               <item.image
@@ -133,7 +145,7 @@ const Library = props => {
                 fill={
                   item.value === isBottomBarVisible
                     ? code_color.white
-                    : props?.userProfile?.colorTheme
+                    : userProfile?.colorTheme
                 }
               />
               <Text
@@ -143,7 +155,7 @@ const Library = props => {
                   color:
                     item.value === isBottomBarVisible
                       ? code_color.white
-                      : props?.userProfile?.colorTheme,
+                      : userProfile?.colorTheme,
                 }}>
                 {item.name}
               </Text>
@@ -162,9 +174,11 @@ const Library = props => {
   );
 };
 
+
 function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
+
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -177,7 +191,7 @@ function MyTabs(props) {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
-  //console.log(JSON.stringify(props?.userProfile?.data?.theme))
+  const love = require('../assets/lottie/urgent.json');
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -209,6 +223,17 @@ function MyTabs(props) {
                 justifyContent: 'center',
                 // display: !onhideBottom ? 'flex' : 'none',
               }}>
+                {props?.stepsTutorial === 2 ?
+                <View style={{position: 'absolute', bottom: -20}}>
+                <AnimatedLottieView
+                source={love}
+                style={{width: 100, height: 100}}
+                autoPlay
+                duration={3000}
+                loop={true}
+              />
+                </View> : null}
+              
               <LoveSvg width={20} height={20} fill={props?.colorTheme} />
               <Text
                 allowFontScaling={false}
@@ -232,7 +257,9 @@ function MyTabs(props) {
       />
       <Tab.Screen
         name="Library"
-        children={() => <Library userProfile={props} />}
+        children={() => 
+             <Library userProfile={props} stepsTutorial={props.stepsTutorial}  />
+      }
         // component={Library}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => (
@@ -350,11 +377,15 @@ const styles = StyleSheet.create({
 });
 
 class MyTabsComponent extends Component {
+  forceComponentUpdate = () => {
+    this.forceUpdate();
+}
   render() {
-    const {userProfile, colorTheme} = this.props;
+    const {colorTheme, stepsTutorial} = this.props;
     const tapProps = {
-      userProfile,
       colorTheme,
+      stepsTutorial,
+      forceUpdate: this.forceComponentUpdate,
     };
     return <MyTabs {...tapProps} />;
   }

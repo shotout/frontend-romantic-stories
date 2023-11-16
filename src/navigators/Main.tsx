@@ -1,17 +1,15 @@
-import React, {useRef, useEffect, useCallback, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {BackHandler, Text, View} from 'react-native';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import {Alert} from 'react-native';
 import App from '../../App';
-import {Provider, connect} from 'react-redux';
+import {connect} from 'react-redux';
 import OnboardScreen from '../screens/onboarding/index';
 import RegisterScreen from '../screens/register/index';
-import {navigationRef} from '../shared/navigationRef';
+import {navigate, navigationRef} from '../shared/navigationRef';
 import MyTabsComponent from './BottomNavigator';
 import {BottomBarProvider} from './BottomBarContex';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import store, {persistor} from '../store/configure-store';
-import {PersistGate} from 'redux-persist/lib/integration/react';
 import messaging from '@react-native-firebase/messaging';
 import {checkDeviceRegister} from '../shared/request';
 import DeviceInfo from 'react-native-device-info';
@@ -19,6 +17,9 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import ExploreLibraryScreen from '../screens/exploreLibrary/index';
+import modalShare from '../screens/screenShare/index';
+import screenMedia from '../screens/media/index';
+import screenNotification from '../screens/notification/index';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -40,6 +41,22 @@ function Main({registerData, userProfile, props}) {
     };
     checkFirebase();
   });
+
+  const HandleDeepLinking = () => {
+    // const {navigate} = useNavigation()
+    const handleDynamicLinks = async (link: any) => {
+      let storyId = link.url.split('=').pop();
+      navigate('Library');
+      Alert.alert(storyId);
+    };
+    useEffect(() => {
+      const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
+      return () => unsubscribe();
+    }, []);
+
+    return null;
+  };
+
   const checkDevice = async () => {
     const device = await DeviceInfo.getUniqueId();
     try {
@@ -54,6 +71,7 @@ function Main({registerData, userProfile, props}) {
   return (
     <BottomBarProvider value={{isBottomBarVisible, setBottomBarVisibility}}>
       <NavigationContainer ref={navigationRef}>
+        <HandleDeepLinking />
         <Stack.Navigator
           screenOptions={screenOptionsDefault}
           initialRouteName={'Splash'}>
@@ -64,6 +82,9 @@ function Main({registerData, userProfile, props}) {
             name={'ExploreLibrary'}
             component={ExploreLibraryScreen}
           />
+          <Stack.Screen name={'Share'} component={modalShare} />
+          <Stack.Screen name={'Media'} component={screenMedia} />
+          <Stack.Screen name={'Notification'} component={screenNotification} />
           <Stack.Screen name="Bottom" component={MyTabsComponent} />
         </Stack.Navigator>
       </NavigationContainer>

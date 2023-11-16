@@ -45,6 +45,9 @@ import dispatcher from './dispatcher';
 import states from './states';
 import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
+import { ONBOARDING_COMPLETE, eventTracking } from '../../helpers/eventTracking';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { handlePayment } from '../../helpers/paywall';
 
 function RegisterScreen({
   handleSetProfile,
@@ -156,6 +159,8 @@ function RegisterScreen({
       handleSetFontFamily(res?.data?.theme?.font_family);
       const resp = await getStoryList();
       handleSetStory(resp.data);
+      eventTracking(ONBOARDING_COMPLETE)
+      handlePayment()
       navigate('Bottom');
     } catch (error) {
       checkDevice();
@@ -174,7 +179,9 @@ function RegisterScreen({
       handleSetFontFamily(res?.data?.theme?.font_family);
       const resp = await getStoryList();
       handleSetStory(resp.data);
+      AsyncStorage.setItem("isTutorial", "yes");
       navigate('Bottom');
+      
     } catch (error) {}
   };
 

@@ -23,7 +23,7 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {code_color} from './src/utils/colors';
-import {bg_splash, logo} from './src/assets/images';
+import {bg, bg_splash, logo} from './src/assets/images';
 import {navigate} from './src/shared/navigationRef';
 import {getDefaultLanguange} from './src/utils/devices';
 import PropTypes from 'prop-types';
@@ -32,22 +32,65 @@ import states from './src/navigators/states';
 import {connect} from 'react-redux';
 import {getStoryList} from './src/shared/request';
 import i18n from './src/i18n/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
+import { Adjust, AdjustConfig } from 'react-native-adjust';
+import * as Sentry from '@sentry/react-native';
+import { SENTRY_DSN } from './src/shared/static';
+import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
 
-function App({userProfile, handleSetStory}) {
+Purchasely.startWithAPIKey(
+  "c88ec51a-b7ce-485e-8192-038a120da596",
+  ["Google"],
+  null,
+  LogLevels.DEBUG,
+  RunningMode.FULL
+);
+function App({ userProfile }) {
+  
+  Sentry.init({
+    environment: 'development',
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  });
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
   useEffect(() => {
+    const handleAppInstalled = async () => {
+      const res = await AsyncStorage.getItem('isAppInstalled');
+      if (!res) {
+        eventTracking(APP_INSTALLED);
+        AsyncStorage.setItem('isAppInstalled', 'yap');
+      }
+    };
+    handleAppInstalled();
+  }, []);
+  useEffect(() => {
+    askTrackingPermission();
     getDefaultLanguange();
   }, []);
   useEffect(() => {
     getInitialRoute();
+    configTracker()
   }, []);
+  const configTracker = () => {
+    const adjustConfig = new AdjustConfig(
+      'tuqglinbysxs',
+      AdjustConfig.EnvironmentSandbox,
+      // AdjustConfig.EnvironmentProduction,
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    Adjust.create(adjustConfig);
+    console.log("Finish set configtracker");
+  };
   async function getInitialRoute() {
     if (userProfile?.token) {
-      // const res = await getStoryList();
-      // handleSetStory(res.data);
+    
+      const res = await getStoryList();
+      // // handleSetStory(res.data);
       setTimeout(() => {
         navigate('Bottom');
       }, 500);
@@ -58,7 +101,7 @@ function App({userProfile, handleSetStory}) {
     }
   }
   return (
-    <ImageBackground source={bg_splash} style={{width: '100%', height: '100%'}}>
+    <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
       <View
         style={{
           // backgroundColor: code_color.splash,
@@ -74,12 +117,12 @@ function App({userProfile, handleSetStory}) {
           allowFontScaling={false}
           style={{
             color: 'white',
-            fontSize: 28,
+            fontSize: 25,
             marginTop: 20,
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
           }}>
-          {'Your everyday \n Fantasy'}
+          {'Romantic Story \n for your everyday fantasy'}
         </Text>
       </View>
     </ImageBackground>

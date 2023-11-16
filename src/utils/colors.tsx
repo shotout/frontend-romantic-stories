@@ -12,4 +12,5 @@ export let code_color = {
   darkTosca: '#0D648B',
   purple: '#604A9E',
   blackDark: '#2C3439',
+  pink: '#ED5267',
 };

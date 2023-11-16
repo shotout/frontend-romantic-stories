@@ -14,10 +14,14 @@ import {
 import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
-import {ava1} from '../../assets/images';
+import {ava1, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
-import ModalShare from '../modal-share';
-import { BACKEND_URL } from '../../shared/static';
+import ModalShare from '../../screens/screenShare/Share';
+import {BACKEND_URL} from '../../shared/static';
+import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
+import {navigate, navigationRef} from '../../shared/navigationRef';
+import Speaker from '../../assets/icons/speaker';
+import {getListAvatarTheme} from '../../shared/request';
 export default function QuotesContent({
   item,
   themeUser,
@@ -28,18 +32,15 @@ export default function QuotesContent({
   bgTheme,
   bg,
   fontFamily,
-  me,
-  partner
+  totalStory,
+  pageActive,
 }) {
-  console.log('INI LOH FONT'+me)
-  const [showModalShare, setShowModalShare] = useState(false);
-  const [selectedText, setSelectedText] = useState('');
-  const [startEndText, setStartEndText] = useState({start: 0, end: 0});
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
-  const [folded, setFolded] = useState(false);
-  const animationValue = useRef(new Animated.Value(0)).current;
+
+  const [me, setMe] = useState(null);
+  const [partner, setPartner] = useState(null);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const activeStatus = useRef(false);
@@ -50,28 +51,30 @@ export default function QuotesContent({
 `;
 
   useEffect(() => {
-    if (isActive && isAnimationStart) {
-      // startAnimation();
-      // activeStatus.current = true;
-      // } else {
-      //   // stopAnimation();
-    }
-  }, [isActive, isAnimationStart]);
-  const startAnimation = () => {
-    setFolded(!folded);
+    handleThemeAvatar(pageActive);
+  }, [pageActive]);
 
-    Animated.timing(animationValue, {
-      toValue: folded ? 0 : 1,
-      duration: 100,
-      useNativeDriver: false, // Set this to true for better performance, but note that not all properties are supported with native driver
-    }).start();
-    // animationValue.stopAnimation();
+  const handleThemeAvatar = async () => {
+    // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
+    let params = {
+      flag:
+        pageActive === 0
+          ? 'friendly'
+          : pageActive === 1
+          ? 'think'
+          : pageActive === 2
+          ? 'inlove'
+          : 'positive',
+    };
+    try {
+      const data = await getListAvatarTheme(params);
+      if (data?.data) {
+        setMe(data?.data?.me);
+        setPartner(data?.data?.partner);
+      }
+    } catch (error) {}
   };
 
-  const rotation = animationValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'],
-  });
   function renderBackgroundImage() {
     if (isActive) {
       return (
@@ -91,7 +94,7 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
-      <ModalShare
+      {/* <ModalShare
         isVisible={showModalShare}
         onClose={() => setShowModalShare(false)}
         selectedContent={selectedText}
@@ -100,53 +103,87 @@ export default function QuotesContent({
           startEndText.start,
         )}
         end={contentData.substring(startEndText.end, startEndText.end + 30)}
-      />
+      /> */}
       <Animated.View
         style={{
           width: '100%',
           height: sizing.getDimensionHeight(0.84),
           transform: [{translateY: translateX}],
         }}>
-        <View
-          style={{
-            alignItems: 'center',
-            position: 'absolute',
-            bottom: 0,
-            left: '15%',
-            // left: 0,
-            justifyContent: 'center',
-            flexDirection: 'row'
-          }}>
-          <Image
-            source={{ uri: `${BACKEND_URL}/${me}`}}
-            resizeMode="contain"
+        {pageActive === 0 ||
+        pageActive === 3 ||
+        pageActive === 6 ||
+        pageActive === 9 ? (
+          <View
             style={{
-              width: 100,
-              height: 300,
-              opacity: 0.6,
-            }}
-          />
-          <Image
-            source={{ uri: `${BACKEND_URL}/${partner}`}}
-            resizeMode="contain"
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: 0,
+              left: '15%',
+              // left: 0,
+              justifyContent: 'center',
+              flexDirection: 'row',
+            }}>
+            <Image
+              source={{uri: `${BACKEND_URL}/${me}`}}
+              resizeMode="contain"
+              style={{
+                width: 100,
+                height: 300,
+                opacity: 0.6,
+              }}
+            />
+            <Image
+              source={{uri: `${BACKEND_URL}/${partner}`}}
+              resizeMode="contain"
+              style={{
+                width: 100,
+                height: 300,
+                opacity: 0.6,
+              }}
+            />
+          </View>
+        ) : null}
+        <View style={{flexDirection: 'row', flex: 0}}>
+          <Text
+            allowFontScaling={false}
             style={{
-              width: 100,
-              height: 300,
-              opacity: 0.6,
-            }}
-          />
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: Number(fontSize),
+              fontFamily: fontFamily,
+              flex: 1,
+              color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
+            }}>
+            {themeUser?.language_id === '2' ? item?.title : item?.title}
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigate('Media')}
+            style={{
+              padding: 10,
+              borderRadius: 10,
+              backgroundColor: code_color.blueDark,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Speaker />
+            <Text
+              allowFontScaling={false}
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: Number(fontSize),
+                fontFamily: fontFamily,
+                color: code_color.white,
+                marginLeft: 10,
+              }}>
+              Listen
+            </Text>
+          </TouchableOpacity>
         </View>
-        <Text
-          allowFontScaling={false}
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: Number(fontSize),
-            fontFamily: fontFamily,
-            color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
-          }}>
-          {themeUser?.language_id === '2' ? item?.title : item?.title}
-        </Text>
+
+        <View />
         <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
@@ -192,17 +229,187 @@ export default function QuotesContent({
                   selectionStart,
                   selectionEnd,
                 }) => {
-                  setStartEndText({start: selectionStart, end: selectionEnd});
-                  setSelectedText(content);
-                  setShowModalShare(true);
+                  navigate('Share', {
+                    selectedContent: content,
+                    start: contentData?.substring(
+                      selectionStart - 50,
+                      selectionStart,
+                    ),
+                    end: contentData?.substring(
+                      selectionEnd - 50,
+                      selectionEnd,
+                    ),
+                  });
+                  eventTracking(QUOTE_SHARED);
                 }}
                 value={contentData}
               />
             </View>
           </View>
-        </View>
+          {pageActive === 0 ? (
+            <View style={{alignItems: 'center'}}>
+              <View
+                style={{
+                  backgroundColor: code_color.blueDark,
+                  flex: 0,
+                  alignItems: 'center',
+                  width: 130,
+                  borderRadius: 10,
+                  padding: 5,
+                  marginBottom: 20,
+                }}>
+                <Text style={{color: code_color.white, fontWeight: 'bold'}}>
+                  Page {pageActive + 1} of {totalStory}
+                </Text>
+              </View>
+            </View>
+          ) : pageActive === 1 ?  (
+            <>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -100,
+                  bottom: -50,
+                  width: 100,
+                  height: 150,
+                  left: '0%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${me}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 400,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -100,
+                  width: 100,
+                  height: 150,
+                  left: '30%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${partner}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 400,
+                  }}
+                />
+              </View>
 
-        {/* </ImageBackground> */}
+              <View>
+                <ImageBackground
+                  source={{
+                    uri: `${BACKEND_URL}/${themeUser?.category?.image?.url}`,
+                  }}
+                  resizeMode="contain"
+                  style={{
+                    width: '100%',
+                    height: 100,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: code_color.white,
+                      flex: 0,
+                      alignItems: 'center',
+                      width: 130,
+                      borderRadius: 10,
+                      padding: 5,
+                      marginBottom: 20,
+                      position: 'absolute',
+                      marginRight: 5,
+                      bottom: 0,
+                      right: 0,
+                    }}>
+                    <Text
+                      style={{color: code_color.blueDark, fontWeight: 'bold'}}>
+                      Page {pageActive + 1} of {totalStory}
+                    </Text>
+                  </View>
+                </ImageBackground>
+              </View>
+            </>
+          ) : (
+            <>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -150,
+                  width: 100,
+                  height: 150,
+                  left: '0%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${me}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 420,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: -200,
+                  width: 100,
+                  height: 150,
+                  left: '30%',
+                  zIndex: 1,
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}/${partner}`}}
+                  resizeMode="cover"
+                  style={{
+                    width: 100,
+                    height: 420,
+                  }}
+                />
+              </View>
+
+              <View>
+                <ImageBackground
+                  source={imgLove}
+                  resizeMode="contain"
+                  style={{
+                    width: '75%',
+                    height: 180,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: code_color.blueDark,
+                      flex: 0,
+                      alignItems: 'center',
+                      width: 130,
+                      borderRadius: 10,
+                      padding: 5,
+                      marginBottom: 20,
+                      position: 'absolute',
+                      marginRight: 5,
+                      bottom: '40%',
+                      right: -75,
+                    }}>
+                    <Text
+                      style={{color: code_color.white, fontWeight: 'bold'}}>
+                      Page {pageActive + 1} of {totalStory}
+                    </Text>
+                  </View>
+                </ImageBackground>
+              </View>
+            </>
+          )}
+        </View>
       </Animated.View>
     </View>
   );

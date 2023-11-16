@@ -7,35 +7,36 @@
  * @flow strict-local
  */
 
-import React, {useEffect, Fragment, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
   ImageBackground,
   Text,
   Image,
-  TouchableOpacity,
   useColorScheme,
   StatusBar,
-  ScrollView,
   FlatList,
   Animated,
   Dimensions,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
   Pressable,
+  Modal,
+  SafeAreaView,
 } from 'react-native';
-import {ava1, bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
+import {
+  imgBgAvaTips,
+  imgBgContent,
+  imgBgTips,
+  imgLoveLeft,
+  imgLoveRight,
+  imgStep1,
+  imgStep2,
+  imgStep5,
+} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
-import {getDefaultLanguange, isIphoneXorAbove} from '../../utils/devices';
 import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
-import LibrarySvg from '../../assets/icons/bottom/library.jsx';
-import SearchSvg from '../../assets/icons/search.jsx';
-import DescendingSvg from '../../assets/icons/descending.jsx';
-import BackRightSvg from '../../assets/icons/backRight.jsx';
-import DotSvg from '../../assets/icons/dot.jsx';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
   PanGestureHandler,
@@ -57,10 +58,16 @@ import ModalStoryUnlock from '../../components/modal-story-unlock';
 import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
+import ModalGetPremium from '../../components/modal-get-premium';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {moderateScale} from 'react-native-size-matters';
+import StepHeader from '../../layout/step/stepHeader';
+import {useIsFocused} from '@react-navigation/native';
+import { handlePayment } from '../../helpers/paywall';
 
 const {width, height} = Dimensions.get('window');
 
-const MainScreen =  ({
+const MainScreen = ({
   userProfile,
   userStory,
   handleSetStory,
@@ -68,14 +75,24 @@ const MainScreen =  ({
   backgroundColor,
   colorTheme,
   fontFamily,
-  pressScreen, 
-  route
+  pressScreen,
+  route,
+  handleSetSteps,
+  stepsTutorial,
+  isPremium,
 }) => {
-  const [showModal, setShowModal] = useState(true);
+  const [activeStep, setActiveStep] = useState(0); 
+  const [isTutorial, setTutorial] = useState({
+    visible: false,
+    step: stepsTutorial,
+  });
+  const [visible, setVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
+  const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const isDarkMode = useColorScheme() === 'dark';
   const flatListRef = useRef();
   const backgroundStyle = {
@@ -90,34 +107,43 @@ const MainScreen =  ({
   // const [dataBook, setBook] = useState(userStory);
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
-
+  const [readLater, setReadLater] = useState(false);
+  const isFocused = useIsFocused();
+  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
+  const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [isFinishTutorial, setFinishTutorial] = useState(false);
+  // alert(JSON.stringify(userStory))
   const [dataBook, setBook] = useState([
     {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      title: 'Fistful of Reefer: Test 1',
       detail:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
     {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      title: 'Fistful of Reefer: Test 2',
       detail: 'hemmm',
     },
     {
-      title: 'Fistful of Reefer: A Pulpy Action Series from Schism 8',
+      title: 'Fistful of Reefer: Test 3',
       detail:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
   ]);
   const onMomentoumScrollEnd = e => {
+    const offsetY = e.nativeEvent.contentOffset.y;
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
-      Math.max(Math.floor(e.nativeEvent.contentOffset.y / height + 0.5) + 1, 0),
-      dataBook?.length || 0,
+      Math.max(Math.floor(offsetY / height + 0.5) + 1, 0),
+      dataBook?.length || 0
     );
+    console.log('Current :', dataBook?.length);
+    console.log('Current Page Number:', pageNumber);
     if (pageNumber === dataBook?.length - 1) {
       setShowModalCongrats(true);
     }
 
     setActiveSlide(pageNumber - 1);
+   
     startAnimation();
     handleLoadMore(pageNumber);
 
@@ -137,6 +163,56 @@ const MainScreen =  ({
     if (event.nativeEvent.state === State.ACTIVE) {
       // handleLike();
     }
+  };
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const halfScreenWidth = Dimensions.get('window').width / 2;
+
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      
+      setIsSwipingLeft(true);
+      if (activeStep === 1) {
+      } else {
+        setTutorial({
+          ...isTutorial,
+          step: isTutorial.step - 1,
+        });
+        setActiveStep(prevStep => prevStep - 1);
+        handleSetSteps(activeStep - 1);
+      }
+    }
+    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    else {
+      handleNext();
+      setIsSwipingRight(true);
+    }
+  };
+
+  const handleNext = () => {
+    const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
+    setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+    handleSetSteps(activeStep + 1); 
+    if (activeStep === 2) {
+      navigate('Library');
+    } else if (activeStep === 5) {
+      navigate('Share', {
+        selectedContent:
+          ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+        start: content?.substring(0, 30),
+        end: content.substring(30, 30 + 30),
+      });
+    }
+
+    
+  };
+
+  const handleTouchEnd = () => {
+    // Reset status swipe saat sentuhan selesai
+    setIsSwipingLeft(false);
+    setIsSwipingRight(false);
   };
   const startAnimation = () => {
     setFolded(!folded);
@@ -166,8 +242,9 @@ const MainScreen =  ({
   });
 
   const handleThemeAvatar = async () => {
+    // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
-      flag: 'book',
+      flag: 'friendly',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -177,9 +254,34 @@ const MainScreen =  ({
       }
     } catch (error) {}
   };
-
+  
   useEffect(() => {
     handleThemeAvatar();
+    // handleSetSteps(0);
+    const checkTutorial = async () => {
+      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+    
+      if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+        setFinishTutorial(true)
+        setTutorial({
+          visible: true,
+          step: 1,
+        });
+        setVisible(true);
+        setTimeout(() => {
+          setVisible(false);
+          setTutorial({
+            ...isTutorial,
+            step: isTutorial.step + 1,
+          });
+          setActiveStep(1)
+          handleSetSteps(1);
+        }, 5000);
+      } else if (activeStep > 3 && activeStep < 5) {
+        navigate('Library');
+      }
+    };
+    checkTutorial();
   }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {
@@ -187,6 +289,8 @@ const MainScreen =  ({
       <QuotesContent
         item={item}
         isActive={activeSlide === index}
+        totalStory={dataBook.length}
+        pageActive={index}
         isAnimationStart={true}
         themeUser={userProfile?.data}
         fontSize={fontSize}
@@ -194,35 +298,9 @@ const MainScreen =  ({
         bg={backgroundColor}
         fontFamily={fontFamily}
         me={me}
-        partner={partner} source={undefined}      />
-
-      // <View style={{ flex: 1 }}>
-      //   <Text
-      //     style={{
-      //       margin: 10,
-      //       marginHorizontal: 50,
-      //       fontWeight: 'bold',
-      //       textAlign: 'center',
-      //     }}>
-      //     {item.title}
-      //   </Text>
-      //   <View
-      //     style={{
-      //       borderColor: code_color.grey,
-      //       borderWidth: 1,
-      //       marginVertical: 10,
-      //     }}
-      //   />
-      //   <Text
-      //     style={{
-      //       marginVertical: 10,
-      //       fontSize: 16,
-      //       textAlign: 'justify',
-      //       lineHeight: 30,
-      //     }}>
-      //     {item.detail}
-      //   </Text>
-      // </View>
+        partner={partner}
+        source={undefined}
+      />
     );
   };
 
@@ -261,74 +339,341 @@ const MainScreen =  ({
       </PanGestureHandler>
     );
   }
-  return (
-    <Pressable
-      onPress={() => route?.name != 'Main' ? pressScreen() : null}
-      style={{
-        backgroundColor: backgroundColor,
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingTop: 20,
-      }}>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
 
-      {/* <View
+  useEffect(() => {
+    async function fetchData() {
+      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+      if(isFinishTutorial === 'yes'){
+        setFinishTutorial(true)
+      }else{
+        setFinishTutorial(false)
+        
+      }
+    }
+    fetchData()
+    
+  }, [isFocused]);
+
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
+  const renderTutorial = () => {
+   if(isFinishTutorial){
+    if (activeStep === 0) {
+      return (
+        <Modal
+          visible={visible}
+          animationType="fade"
+          transparent
+          onDismiss={() => setVisible(false)}>
+          <ImageBackground
+            source={imgBgTips}
+            resizeMode="cover"
+            style={{
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              flex: 1,
+              alignItems: 'center',
+            }}>
+            <Image
+              source={imgBgAvaTips}
+              resizeMode="contain"
+              style={{width: '80%', height: '100%'}}
+            />
+            <Image
+              source={imgLoveLeft}
+              resizeMode="contain"
+              style={{
+                width: '30%',
+                height: '100%',
+                position: 'absolute',
+                top: -70,
+                left: 0,
+              }}
+            />
+            <Image
+              source={imgLoveRight}
+              resizeMode="contain"
+              style={{
+                width: '30%',
+                height: '100%',
+                position: 'absolute',
+                top: -70,
+                right: 0,
+              }}
+            />
+            <View
+              style={{
+                backgroundColor: 'white',
+                position: 'absolute',
+                bottom: 0,
+                width: Dimensions.get('window').width,
+                height: '58%',
+                borderTopRightRadius: 60,
+                borderTopLeftRadius: 60,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <ImageBackground
+                source={imgBgContent}
+                resizeMode="contain"
+                style={{
+                  width: Dimensions.get('window').width,
+                  height: 250,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: '#5873FF',
+                    fontSize: 30,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontFamily: 'Comfortaa-SemiBold',
+                  }}>
+                  {'Hey, John\nYou’re all set!'}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 24,
+                    textAlign: 'center',
+                    fontWeight: '100',
+                    marginTop: 10,
+                  }}>
+                  {"Let's show you how \nEroTales works..."}
+                </Text>
+              </ImageBackground>
+            </View>
+          </ImageBackground>
+        </Modal>
+      );
+    } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <=5) {
+      const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
+      I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
+      return (
+        <SafeAreaView
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}>
+          {renderProgress()}
+          <View
+            style={{
+              backgroundColor: '#3F58DD',
+              borderRadius: 20,
+              padding: 10,
+              marginHorizontal: 40,
+              alignItems: 'center',
+              marginTop: '40%',
+              paddingTop: 50,
+            }}>
+            <Image
+              source={
+                activeStep === 1 && activeStep != 5
+                  ? imgStep1
+                  : activeStep === 5 || stepsTutorial == 5
+                  ? imgStep5
+                  : imgStep2
+              }
+              resizeMode="contain"
+              style={{width: 100, height: 200, position: 'absolute', top: -100}}
+            />
+            <Text
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+                marginBottom: 20,
+              }}>
+              {activeStep === 1 && activeStep != 5
+                ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
+              \nUnlock additional Stories\nanytime!`
+                : activeStep === 5 || stepsTutorial == 5
+                ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
+                : 'Like & save your \nfavorite Stories.'}
+            </Text>
+
+            <Button
+              style={{
+                backgroundColor: code_color.yellow,
+                padding: 10,
+                paddingHorizontal: 40,
+                borderRadius: 20,
+                marginVertical: 10,
+              }}
+              title={i18n.t('Next')}
+              onPress={() => 
+                {
+                  
+                  handleNext()
+                }
+               }
+            />
+          </View>
+        </SafeAreaView>
+      );
+    }
+   }
+  };
+
+  const renderView = () => {
+    if (route?.name != 'Main') {
+      return (
+        <Pressable
+          onPress={() => (route?.name != 'Main' ? pressScreen() : null)}
+          style={{
+            backgroundColor: backgroundColor,
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+          }}>
+          <StatusBar
+            barStyle={'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+
+          {/* <View
         style={{
           backgroundColor: code_color.white,
           // paddingTop: isIphoneXorAbove() ? 40 : 0,
         }}
       /> */}
-      <ModalStoryUnlock
-        isVisible={showModal}
-        onClose={() => setShowModal(false)}
-        isPremium={false} data={undefined} restart={undefined} edit={undefined}      />
-      <ModalCongrats
-        isVisible={showModalCongrats}
-        onClose={() => setShowModalCongrats(false)}
-        onGotIt={() => {
-          setShowModalCongrats(false);
-          setShowModalNewStory(true);
-        } }     />
-      <ModalNewStory
-        isVisible={showModalNewStory}
-        onClose={() => setShowModalNewStory(false)}
-        onWatchAds={() => {
-          setShowModalNewStory(false);
-          setShowModal(true);
-        }}
-        onUnlock={() => {
-          setShowModalNewStory(false);
-          setShowModalSuccessPurchase(true);
-        }}
-        onGetUnlimit={() => {
-          setShowModalNewStory(false);
-         
-            setShowModalSuccessPurchase(true);
-        
-        }}
-      />
-      <ModalSuccessPurchase
-        isVisible={showModalSuccessPurchase}
-        onClose={() => setShowModalSuccessPurchase(false)}
-      />
-      {renderFlatList()}
-    </Pressable>
-  );
+          <ModalStoryUnlock
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            data={undefined}
+            restart={undefined}
+            edit={undefined}
+            readLater={readLater}
+          />
+          <ModalCongrats
+            isVisible={showModalCongrats}
+            onClose={() => setShowModalCongrats(false)}
+            onGotIt={() => {
+              setShowModalCongrats(false);
+              if (isPremium) {
+                setShowModal(true);
+              } else {
+                setShowModalNewStory(true);
+              }
+            }}
+          />
+          <ModalNewStory
+            isVisible={showModalNewStory}
+            onClose={() => setShowModalNewStory(false)}
+            onWatchAds={() => {
+              setShowModalNewStory(false);
+              setShowModal(true);
+            }}
+            onUnlock={() => {
+              setShowModalNewStory(false);
+              setShowModalSuccessPurchase(true);
+            }}
+            onGetUnlimit={() => {
+              setShowModalNewStory(false);
+
+              setShowModalSuccessPurchase(true);
+            }}
+          />
+          <ModalSuccessPurchase
+            isVisible={showModalSuccessPurchase}
+            onClose={() => setShowModalSuccessPurchase(false)}
+          />
+          {renderTutorial()}
+          {renderFlatList()}
+        </Pressable>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            backgroundColor: backgroundColor,
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+          }}>
+          <StatusBar
+            barStyle={'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+
+          {/* <View
+          style={{
+            backgroundColor: code_color.white,
+            // paddingTop: isIphoneXorAbove() ? 40 : 0,
+          }}
+        /> */}
+          <ModalStoryUnlock
+            isVisible={showModal}
+            onClose={() => setShowModal(false)}
+            data={undefined}
+            restart={undefined}
+            edit={undefined}
+            readLater={readLater}
+          />
+          <ModalCongrats
+            isVisible={showModalCongrats}
+            onClose={() => setShowModalCongrats(false)}
+            onGotIt={() => {
+              setShowModalCongrats(false);
+              if (isPremium) {
+                setShowModal(true);
+              } else {
+                setShowModalNewStory(true);
+              }
+            }}
+          />
+          <ModalNewStory
+            isVisible={showModalNewStory}
+            onClose={() => setShowModalNewStory(false)}
+            onWatchAds={() => {
+              setShowModalNewStory(false);
+              setShowModal(true);
+            }}
+            onUnlock={() => {
+              setShowModalNewStory(false);
+              setShowModalSuccessPurchase(true);
+            }}
+            onGetUnlimit={() => {
+              setShowModalNewStory(false);
+
+              setShowModalGetPremium(true);
+            }}
+          />
+          <ModalSuccessPurchase
+            isVisible={showModalSuccessPurchase}
+            onClose={() => setShowModalSuccessPurchase(false)}
+          />
+          <ModalGetPremium
+            isVisible={showModalGetPremium}
+            onGotIt={() => {
+              setShowModalGetPremium(false);
+              setShowModal(true);
+            }}
+            onClose={() => setShowModalGetPremium(false)}
+          />
+          {renderFlatList()}
+          {renderTutorial()}
+        </View>
+      );
+    }
+  };
+  return renderView();
 };
 
 const styles = StyleSheet.create({});
 
 MainScreen.propTypes = {
   activeVersion: PropTypes.any,
-  pressScreen: PropTypes.any
+  pressScreen: PropTypes.any,
 };
 
 MainScreen.defaultProps = {
   activeVersion: null,
-
 };
 
 export default connect(states, dispatcher)(MainScreen);

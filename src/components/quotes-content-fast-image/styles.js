@@ -18,8 +18,9 @@ export default StyleSheet.create({
   },
   quotesWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    paddingTop: 20
     
   },
   ctnQuotesIcon: {

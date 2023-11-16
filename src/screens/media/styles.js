@@ -8,8 +8,7 @@ const {width} = Dimensions.get('window');
 export default StyleSheet.create({
   ctnContent: {
     flex: 1,
-    backgroundColor: code_color.headerBlack,
-    marginTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
+    // marginTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
     borderTopRightRadius: moderateScale(20),
     borderTopLeftRadius: moderateScale(20),
     alignItems: 'center',
@@ -44,6 +43,7 @@ export default StyleSheet.create({
     paddingRight: moderateScale(30),
     paddingLeft: (width * 38) / 100,
     marginBottom: moderateScale(20),
+     marginTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
   },
   rowCard: {
     flexDirection: 'row',

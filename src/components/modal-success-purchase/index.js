@@ -13,7 +13,7 @@ import {successPurchase} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
 import LoveIcon from '../../assets/icons/loveOutline';
 
-function ModalSuccessPurchase({ isVisible, onClose }) {
+function ModalSuccessPurchase({isVisible, onClose}) {
   const handleClose = () => {
     onClose();
   };
@@ -161,27 +161,6 @@ function ModalSuccessPurchase({ isVisible, onClose }) {
                   fontSize: moderateScale(14),
                 }}>
                 Start reading
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#ED5267',
-                marginTop: moderateScale(10),
-                padding: moderateScale(12),
-                alignItems: 'center',
-                borderRadius: 8,
-                width: '100%',
-              }}>
-              <LoveIcon
-                style={{position: 'absolute', left: '8%', top: '40%'}}
-              />
-              <Text
-                style={{
-                  color: code_color.white,
-                  fontWeight: 500,
-                  fontSize: moderateScale(14),
-                }}>
-                Add to library & read later
               </Text>
             </TouchableOpacity>
           </View>

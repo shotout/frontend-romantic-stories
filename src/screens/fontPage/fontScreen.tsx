@@ -16,8 +16,8 @@ import {
   Image,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
-import {bg, cover1, cover2, libraryAdd, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import DownChevron from '../../assets/icons/downChevron';
 import UpChevron from '../../assets/icons/upChevron';
@@ -28,7 +28,13 @@ import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import ChecklistSvg from './../../assets/icons/checklist';
+import Lock from './../../assets/icons/lock';
+import Watch from './../../assets/icons/watch';
+import UnlockBgIcon from './../../assets/icons/unlockBg';
+import UnlockFontIcon from './../../assets/icons/unlockFont';
+import UnlockThemeIcon from './../../assets/icons/unlockTheme';
 import {fontList} from '../../utils/constants';
+import ModalUnlockPremium from '../../components/modal-unlock-premium';
 
 const FontScreen = ({
   userProfile,
@@ -39,10 +45,16 @@ const FontScreen = ({
   fontSize,
   backgroundColor,
   handleSetFontFamily,
+  isPremium,
+  fontFamily
 }) => {
-  console.log(JSON.stringify(userProfile?.data?.theme));
+  console.log(JSON.stringify(fontFamily));
   const [show, setShow] = useState(false);
-  const [fontSelect, setSelectFont] = useState('Georgia');
+ 
+  const [fontSelect, setSelectFont] = useState({
+    name: fontFamily === 'BigshotOne-Regular' ? 'Bigshot' :  fontFamily === 'GentiumBookPlus-Regular'  ? 'Gentium' :   fontFamily === 'GeorgiaEstate-w15Mn' ? 'Georgia' : fontFamily,
+    value: fontFamily,
+  });
   const [colorsBg, setColorsBg] = useState([
     {
       code: '#5873FF',
@@ -64,10 +76,20 @@ const FontScreen = ({
   const [bg_color, set_bgColor] = useState(backgroundColor);
   const [fontSizeDefault, setFontSize] = useState(fontSize);
   const [bgTheme, setBgTheme] = useState(colorTheme);
+  const [selectedBgTheme, setSelectedBgTheme] = useState({code: colorTheme});
+  const [modalUnlockBg, setModalUnlockBg] = useState(false);
+  const [modalUnlockFont, setModalUnlockFont] = useState(false);
+  const [modalUnlockTheme, setModalUnlockTheme] = useState(false);
+  const [isFinishAds, setIsFinishAds] = useState(false);
 
   const setBg = value => {
-    set_bgColor(value);
-    handleSetBackground(value);
+    if (isPremium || isFinishAds) {
+      set_bgColor(value);
+      handleSetBackground(value);
+    } else {
+      setModalUnlockBg(true);
+      setIsFinishAds(true);
+    }
   };
 
   const handleFont = value => {
@@ -84,12 +106,87 @@ const FontScreen = ({
     // setFontSize(fontSizeDefault)
   };
 
-  const handleBgThemeColor = value => {
-    setBgTheme(value);
-    handleSetColorTheme(value);
+  const handleBgThemeColor = (code: string | null) => {
+    setBgTheme(code ? code : selectedBgTheme.code);
+    handleSetColorTheme(code ? code : selectedBgTheme.code);
   };
   return (
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
+      <ModalUnlockPremium
+        isVisible={modalUnlockBg}
+        onClose={() => {
+          setModalUnlockBg(false);
+          setIsFinishAds(false);
+        }}
+        title={'Unlock this Background\r for Free now'}
+        desc={
+          'Watch a Video to unlock this Background for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => <UnlockBgIcon style={{marginBottom: 20}} width={'50%'} />}
+        onSuccess={() => {
+          setIsFinishAds(true);
+          setModalUnlockBg(false);
+          setBg(
+            bg_color === code_color.blackDark
+              ? code_color.white
+              : code_color.blackDark,
+          );
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {},
+              },
+            ],
+          );
+        }}
+      />
+      <ModalUnlockPremium
+        isVisible={modalUnlockFont}
+        onClose={() => {
+          setModalUnlockFont(false);
+        }}
+        title={'Unlock this Font\r\nfor Free now'}
+        desc={
+          'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        onSuccess={() => {
+          handleSetFontFamily(fontSelect.value);
+          setModalUnlockFont(false);
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
+        }}
+      />
+      <ModalUnlockPremium
+        isVisible={modalUnlockTheme}
+        onClose={() => {
+          setModalUnlockTheme(false);
+        }}
+        title={'Unlock this Theme\r\nfor Free now'}
+        desc={
+          'Watch a Video to unlock this new Theme for Free or go UNLIMITED to unlock everything!'
+        }
+        Icon={() => (
+          <UnlockThemeIcon style={{marginBottom: 20}} width={'50%'} />
+        )}
+        onSuccess={() => {
+          handleBgThemeColor(null);
+          setModalUnlockTheme(false);
+          Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
+        }}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -102,10 +199,14 @@ const FontScreen = ({
           </Text>
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
-              onPress={() => setBg(code_color.white)}
+              onPress={() => {
+                if (bg_color !== code_color.white) {
+                  setBg(code_color.white);
+                }
+              }}
               style={{
                 borderColor:
-                  bg_color === code_color.white ? code_color.yellow : null,
+                  bg_color === code_color.white ? code_color.yellow : undefined,
                 borderWidth: bg_color === code_color.white ? 3 : 0,
                 borderRadius: 40,
                 padding: 3,
@@ -119,13 +220,60 @@ const FontScreen = ({
                   borderRadius: 30,
                 }}
               />
+              {!isPremium && bg_color !== code_color.white ? (
+                <>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 2,
+                      right: 2,
+                      backgroundColor: code_color.black,
+                      height: 18,
+                      width: 18,
+                      borderRadius: 10,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Lock width={9} />
+                  </View>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: 4,
+                      backgroundColor: code_color.pink,
+                      borderRadius: 8,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingHorizontal: 5,
+                      paddingVertical: 2,
+                      alignSelf: 'center',
+                    }}>
+                    <Watch fill={code_color.white} height={12} width={12} />
+                    <Text
+                      style={{
+                        color: code_color.white,
+                        fontSize: 8,
+                        fontWeight: '700',
+                        marginLeft: 2,
+                      }}>
+                      Free
+                    </Text>
+                  </View>
+                </>
+              ) : null}
             </Pressable>
 
             <Pressable
-              onPress={() => setBg(code_color.blackDark)}
+              onPress={() => {
+                if (bg_color !== code_color.blackDark) {
+                  setBg(code_color.blackDark);
+                }
+              }}
               style={{
                 borderColor:
-                  bg_color === code_color.blackDark ? code_color.yellow : null,
+                  bg_color === code_color.blackDark
+                    ? code_color.yellow
+                    : undefined,
                 borderWidth: bg_color === code_color.blackDark ? 3 : 0,
                 borderRadius: 40,
                 padding: 3,
@@ -139,6 +287,47 @@ const FontScreen = ({
                   borderRadius: 30,
                 }}
               />
+              {!isPremium && bg_color !== code_color.blackDark ? (
+                <>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 4,
+                      right: 4,
+                      backgroundColor: code_color.black,
+                      height: 18,
+                      width: 18,
+                      borderRadius: 10,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Lock width={9} />
+                  </View>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: 4,
+                      backgroundColor: code_color.pink,
+                      borderRadius: 8,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingHorizontal: 5,
+                      paddingVertical: 2,
+                      alignSelf: 'center',
+                    }}>
+                    <Watch fill={code_color.white} height={12} width={12} />
+                    <Text
+                      style={{
+                        color: code_color.white,
+                        fontSize: 8,
+                        fontWeight: '700',
+                        marginLeft: 2,
+                      }}>
+                      Free
+                    </Text>
+                  </View>
+                </>
+              ) : null}
             </Pressable>
           </View>
         </View>
@@ -202,7 +391,7 @@ const FontScreen = ({
             CHANGE FONT
           </Text>
           <Text allowFontScaling={false} style={{color: code_color.white}}>
-            {fontSelect}
+            {fontSelect.name}
           </Text>
           <Pressable
             onPress={() => setShow(!show)}
@@ -223,13 +412,20 @@ const FontScreen = ({
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {fontList.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={() => {
-                  setSelectFont(item.name);
-                  handleSetFontFamily(item.value);
+                  setSelectFont(item);
+                  if (isPremium) {
+                    handleSetFontFamily(item.value);
+                  } else {
+                    setModalUnlockFont(true);
+                  }
                 }}
                 style={{
                   backgroundColor:
-                    fontSelect === item.name ? code_color.white : null,
+                    fontSelect.name === item.name
+                      ? code_color.white
+                      : undefined,
                   borderColor: code_color.white,
                   borderWidth: 1,
                   alignItems: 'center',
@@ -244,12 +440,53 @@ const FontScreen = ({
                     paddingHorizontal: 20,
                     paddingVertical: 0,
                     color:
-                      fontSelect === item.name
+                      fontSelect.name === item.name
                         ? code_color.blackDark
                         : code_color.white,
                   }}>
                   {item.name}
                 </Text>
+                {!isPremium && fontSelect.name !== item.name ? (
+                  <>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: -2,
+                        left: -1,
+                        backgroundColor: code_color.black,
+                        height: 18,
+                        width: 18,
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Lock width={9} />
+                    </View>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        bottom: -6,
+                        right: -8,
+                        backgroundColor: code_color.pink,
+                        borderRadius: 8,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingHorizontal: 5,
+                        paddingVertical: 2,
+                      }}>
+                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Text
+                        style={{
+                          color: code_color.white,
+                          fontSize: 8,
+                          fontWeight: '700',
+                          marginLeft: 2,
+                        }}>
+                        Free
+                      </Text>
+                    </View>
+                  </>
+                ) : null}
               </Pressable>
             ))}
           </ScrollView>
@@ -279,7 +516,15 @@ const FontScreen = ({
           {colorsBg.map((item, i) => {
             return (
               <TouchableOpacity
-                onPress={() => handleBgThemeColor(item.code)}
+                onPress={() => {
+                  setSelectedBgTheme(item);
+                  if (isPremium) {
+                    handleBgThemeColor(item.code);
+                  } else {
+                    setModalUnlockTheme(true);
+                  }
+                }}
+                key={i}
                 style={{
                   backgroundColor: item.code,
                   width: 40,
@@ -292,6 +537,46 @@ const FontScreen = ({
                   justifyContent: 'center',
                 }}>
                 {bgTheme === item.code ? <ChecklistSvg /> : null}
+                {!isPremium && bgTheme !== item.code ? (
+                  <>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        backgroundColor: code_color.black,
+                        height: 15,
+                        width: 15,
+                        borderRadius: 12,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Lock width={8} />
+                    </View>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        bottom: -4,
+                        backgroundColor: code_color.pink,
+                        borderRadius: 8,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingHorizontal: 5,
+                        paddingVertical: 2,
+                      }}>
+                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Text
+                        style={{
+                          color: code_color.white,
+                          fontSize: 8,
+                          fontWeight: '700',
+                          marginLeft: 2,
+                        }}>
+                        Free
+                      </Text>
+                    </View>
+                  </>
+                ) : null}
               </TouchableOpacity>
             );
           })}
