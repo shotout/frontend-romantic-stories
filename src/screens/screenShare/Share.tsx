@@ -534,8 +534,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
 
@@ -594,8 +594,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -659,6 +659,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 }}
                 title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
                 onPress={() => {
+                 
                   handleSetSteps(stepsTutorial + 1);
                   setVisible(false);
                   {

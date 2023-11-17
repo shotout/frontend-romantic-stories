@@ -40,7 +40,7 @@ import { SENTRY_DSN } from './src/shared/static';
 import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
 
 Purchasely.startWithAPIKey(
-  "c88ec51a-b7ce-485e-8192-038a120da596",
+  "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
   ["Google"],
   null,
   LogLevels.DEBUG,

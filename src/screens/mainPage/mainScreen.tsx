@@ -136,7 +136,6 @@ const MainScreen = ({
       Math.max(Math.floor(offsetY / height + 0.5) + 1, 0),
       dataBook?.length || 0
     );
- 
     if (pageNumber === dataBook?.length - 1) {
       const data  = await AsyncStorage.getItem("isFirstTime");
       if(data === 'yes'){
@@ -198,10 +197,10 @@ const MainScreen = ({
   const handleNext = () => {
     const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
     setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
-    handleSetSteps(activeStep + 1); 
+    handleSetSteps(stepsTutorial + 1); 
     if (activeStep === 2) {
       navigate('Library');
-    } else if (activeStep === 5) {
+    } else if (stepsTutorial === 5) {
       navigate('Share', {
         selectedContent:
           ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
@@ -209,8 +208,6 @@ const MainScreen = ({
         end: content.substring(30, 30 + 30),
       });
     }
-
-    
   };
 
   const handleTouchEnd = () => {
@@ -263,8 +260,11 @@ const MainScreen = ({
     handleThemeAvatar();
     // handleSetSteps(0);
     const checkTutorial = async () => {
+      // AsyncStorage.setItem('isTutorial', 'yes');
+      // handleSetSteps(0);
+      // handleSetSteps(0);
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-    
+
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true)
         setTutorial({
@@ -511,10 +511,10 @@ const MainScreen = ({
               }}
               title={i18n.t('Next')}
               onPress={() => 
-                {
+               
                   
                   handleNext()
-                }
+                
                }
             />
           </View>

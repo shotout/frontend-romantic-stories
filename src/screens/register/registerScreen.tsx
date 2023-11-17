@@ -148,7 +148,6 @@ function RegisterScreen({
   };
 
   const onSubmit = async () => {
-    console.log(values);
     await notifee.requestPermission();
     try {
       const res = await postRegister(values);
@@ -163,7 +162,9 @@ function RegisterScreen({
       handlePayment()
       navigate('Bottom');
     } catch (error) {
+      handlePayment()
       checkDevice();
+      
     }
   };
   const checkDevice = async () => {

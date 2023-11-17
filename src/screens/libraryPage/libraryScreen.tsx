@@ -80,7 +80,6 @@ const LibraryScreen = ({
   const [listLibrary, setListLibrary] = useState([]);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
-
   const renderCollect = item => (
     <View
       style={{
@@ -268,8 +267,8 @@ const LibraryScreen = ({
     if (stepsTutorial === 3) {
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -320,7 +319,7 @@ const LibraryScreen = ({
                 //   ...isTutorial,
                 //   step: isTutorial.step + 1,
                 // });
-                handleSetSteps(4 + 1);
+                handleSetSteps(3 + 1);
                 navigate('ExploreLibrary');
               }}
             />
