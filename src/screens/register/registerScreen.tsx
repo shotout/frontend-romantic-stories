@@ -257,7 +257,7 @@ function RegisterScreen({
   return (
     <View style={{backgroundColor: code_color.white, flex: 1}}>
       <StatusBar
-        barStyle={'light-content'}
+        barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <KeyboardAvoidingView
