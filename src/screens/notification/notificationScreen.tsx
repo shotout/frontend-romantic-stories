@@ -33,13 +33,14 @@ import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
-import {getExploreStory, getListAvatarTheme} from '../../shared/request';
+import {getExploreStory, getListAvatarTheme, updateProfile} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
 import { Switch } from 'react-native-gesture-handler';
+import { reloadUserProfile } from '../../utils/user';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const NotificationScreen = ({
@@ -50,9 +51,10 @@ const NotificationScreen = ({
   stepsTutorial,
   userProfile,
 }) => {
+  
   const [bgTheme, setBgTheme] = useState(colorTheme);
-  const [newStories, setNewStories] = useState(false);
-  const [promotions, setPromotions] = useState(false);
+  const [newStories, setNewStories] = useState(userProfile?.data?.notif_enable === 0 ? false : true);
+  const [promotions, setPromotions] = useState(userProfile?.data?.notif_ads_enable === 0 ? false : true);
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
 
@@ -72,6 +74,23 @@ const NotificationScreen = ({
       }
     } catch (error) {}
   };
+  const fetchUpdate = async () => {
+    const payload = {
+      _method: 'PATCH',
+      notif_ads_enable: promotions ? 1 : 0,
+      notif_enable: newStories ? 1 : 0,
+    };
+    await updateProfile(payload);
+    reloadUserProfile();
+  };
+
+  useEffect(() => {
+    if(newStories || promotions){
+      fetchUpdate()
+    }
+   
+
+  }, [newStories, promotions])
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>

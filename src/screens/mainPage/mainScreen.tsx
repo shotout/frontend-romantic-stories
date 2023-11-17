@@ -454,8 +454,8 @@ const MainScreen = ({
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
