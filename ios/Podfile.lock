@@ -524,6 +524,8 @@ PODS:
     - React-Core
   - react-native-cameraroll (5.7.2):
     - React-Core
+  - react-native-change-icon (4.0.0):
+    - React-Core
   - react-native-fbsdk-next (12.1.0):
     - React-Core
     - react-native-fbsdk-next/Core (= 12.1.0)
@@ -800,6 +802,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-adjust (from `../node_modules/react-native-adjust`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
+  - react-native-change-icon (from `../node_modules/react-native-change-icon`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-purchasely (from `../node_modules/react-native-purchasely`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -936,6 +939,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-adjust"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
+  react-native-change-icon:
+    :path: "../node_modules/react-native-change-icon"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
   react-native-purchasely:
@@ -1079,6 +1084,7 @@ SPEC CHECKSUMS:
   React-logger: da1ebe05ae06eb6db4b162202faeafac4b435e77
   react-native-adjust: 4bbce119ab6613cfa7b95af94e5802ab492dcf07
   react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
+  react-native-change-icon: ea9bb7255b09e89f41cbf282df16eade91ab1833
   react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-purchasely: 55fbcd14ca548cc08ede5b544f8450da1e7f0610
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
@@ -1128,4 +1134,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: bd7d3aa5d9ac76adc6920d5ef4868e31795e18be
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.12.1

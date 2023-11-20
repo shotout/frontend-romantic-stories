@@ -6651,6 +6651,11 @@ react-native-adjust@^4.35.1:
   resolved "https://registry.npmjs.org/react-native-adjust/-/react-native-adjust-4.35.1.tgz"
   integrity sha512-XVbkNaypy2y1f43kq8IDbRzZhlDcL2lFVa7wpI5pQvX/Ru1X/yF+eQ/2u0ZJrVEsFHGkhObvUB0H3DR5Bs6aKQ==
 
+react-native-change-icon@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-change-icon/-/react-native-change-icon-4.0.0.tgz#7d398dcf17f67f7301cc408d06cb075473605416"
+  integrity sha512-bH18dfNrZh+0f2SRXbU94foxDgNhnddTI4iMKolBF+bQdWv3HgNT1UQI+dSCVHR10pUVD3lvDL+XEydKbV1LTw==
+
 react-native-device-info@^10.4.0:
   version "10.8.0"
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-10.8.0.tgz"

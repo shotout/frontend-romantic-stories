@@ -39,6 +39,7 @@ import ModalEditGender from '../../layout/settings/modal-edit-gender';
 import ModalEditCharacter from '../../layout/settings/modal-edit-character';
 import ModalEditPartner from '../../layout/settings/modal-edit-partner';
 import ModalEditLanguage from '../../layout/settings/modal-edit-language';
+import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
 
@@ -49,6 +50,7 @@ const SettingsPage = ({colorTheme}) => {
   const [showModalPartner, setShowModalPartner] = useState<boolean>(false);
   const [showModalName, setShowModalName] = useState<boolean>(false);
   const [showModalLanguage, setShowModalLanguage] = useState<boolean>(false);
+  const [showModalIcon, setShowModalIcon] = useState<boolean>(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [menu, setlistMenu] = useState([
     {
@@ -71,7 +73,7 @@ const SettingsPage = ({colorTheme}) => {
     {
       name: 'App Icon',
       icon: <AppiconSvg fill={bgTheme} />,
-      action: 'editProfile',
+      action: 'appIcon',
     },
     {
       name: 'Notifications',
@@ -196,8 +198,11 @@ const SettingsPage = ({colorTheme}) => {
       case 'Notifications':
         navigate('Notification');
         break;
-        case 'Change Categories':
+      case 'Change Categories':
         navigate('Categories');
+        break;
+      case 'App Icon':
+        setShowModalIcon(true);
         break;
       default:
         break;
@@ -244,6 +249,12 @@ const SettingsPage = ({colorTheme}) => {
         height: Dimensions.get('window').height - 130,
         backgroundColor: bgTheme,
       }}>
+      <ModalChangeIcon
+        isVisible={showModalIcon}
+        onClose={() => {
+          setShowModalIcon(false);
+        }}
+      />
       <ModalEditName
         isVisible={showModalName}
         onClose={() => {
