@@ -28,10 +28,10 @@ new Promise(async (resolve, reject) => {
           stringVendor = "offer_no_purchase_after_onboarding_paywall_2nd";
         }
       }
-      console.log("OPEN Purchasely", vendorId);
+      console.log("OPEN Purchasely", stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({
-        placementVendorId:
-          stringVendor || "in_app_paywall",
+        placementVendorId: 'onboarding',
+          // stringVendor || "in_app_paywall",
         isFullscreen: true,
       });
       console.log("Purchasely result:", res.result);

@@ -42,6 +42,7 @@ import ModalEditLanguage from '../../layout/settings/modal-edit-language';
 import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
+import { handlePayment } from '../../helpers/paywall';
 
 const SettingsPage = ({colorTheme}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
@@ -201,6 +202,9 @@ const SettingsPage = ({colorTheme}) => {
       case 'Change Categories':
         navigate('Categories');
         break;
+      case 'Subscription':
+          navigate('Subscriptions');
+          break;
       case 'App Icon':
         setShowModalIcon(true);
         break;

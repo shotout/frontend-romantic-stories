@@ -21,6 +21,7 @@ import modalShare from '../screens/screenShare/index';
 import screenMedia from '../screens/media/index';
 import screenNotification from '../screens/notification/index';
 import screenCategories from '../screens/categories/index';
+import screenSubscriptions from '../screens/subscriptions/index';
 
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
@@ -87,6 +88,7 @@ function Main({registerData, userProfile, props}) {
           <Stack.Screen name={'Media'} component={screenMedia} />
           <Stack.Screen name={'Notification'} component={screenNotification} />
           <Stack.Screen name={'Categories'} component={screenCategories} />
+          <Stack.Screen name={'Subscriptions'} component={screenSubscriptions} />
           <Stack.Screen name="Bottom" component={MyTabsComponent} />
         </Stack.Navigator>
       </NavigationContainer>
