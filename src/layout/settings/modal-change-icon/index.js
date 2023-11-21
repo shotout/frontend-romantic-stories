@@ -1,14 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  Pressable,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Modal, View, Text, Pressable, Image, Alert} from 'react-native';
 import {changeIcon} from 'react-native-change-icon';
 import {connect} from 'react-redux';
 
@@ -23,82 +15,96 @@ import {code_color} from '../../../utils/colors';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 import {
-  appIcon1,
-  appIcon2,
-  appIcon3,
-  appIcon4,
-  appIcon5,
-  appIcon6,
-  appIcon7,
-  appIcon8,
+  appIconFirst,
+  appIconSecond,
+  appIconThird,
+  appIconFourth,
+  appIconFifth,
+  appIconSixth,
+  appIconSeventh,
+  appIconDefault,
 } from '../../../assets/icons/app-icon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
 
 function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
-  const [selectedIcon, setSelectedIcon] = useState(1);
+  const [selectIcon, setSelectIcon] = useState('default');
+  const [selectedIcon, setSelectedIcon] = useState('');
   const [showModalUnlock, setShowModalUnlock] = useState(false);
+
+  useEffect(() => {
+    const getCustomIcon = async () => {
+      const icon = await AsyncStorage.getItem('customIcon');
+      return icon;
+    };
+    getCustomIcon().then(icon => {
+      if (icon) {
+        setSelectIcon(icon);
+      }
+    });
+  }, [isVisible]);
 
   const listIcon = [
     {
       id: 1,
       name: 'first',
-      icon: appIcon1,
+      icon: appIconFirst,
     },
     {
       id: 2,
       name: 'second',
-      icon: appIcon2,
+      icon: appIconSecond,
     },
     {
       id: 3,
       name: 'third',
-      icon: appIcon3,
+      icon: appIconThird,
     },
     {
       id: 4,
       name: 'fourth',
-      icon: appIcon4,
+      icon: appIconFourth,
     },
     {
       id: 5,
-      name: 'first',
-      icon: appIcon5,
+      name: 'fifth',
+      icon: appIconFifth,
     },
     {
       id: 6,
-      name: 'second',
-      icon: appIcon6,
+      name: 'sixth',
+      icon: appIconSixth,
     },
     {
       id: 7,
-      name: 'third',
-      icon: appIcon7,
+      name: 'seventh',
+      icon: appIconSeventh,
     },
     {
       id: 8,
-      name: 'fourth',
-      icon: appIcon8,
+      name: 'default',
+      icon: appIconDefault,
     },
   ];
 
   const handleChangeIcon = async icon => {
-    if (isPremium) {
-      changeIcon(icon.name)
-        .then(async () => {
-          setSelectedIcon(icon.id);
-          await AsyncStorage.setItem('customIcon', icon.name);
-          // handleSubmit(icon.id);
-          // selectModal();
-          Alert.alert('Success change icon');
-        })
-        .catch(e => {
-          Alert.alert("Sorry, can't change icon at this time.");
-          console.log('Error change icon:', e.message);
-        });
-    } else {
-      setShowModalUnlock(true);
-    }
+    const iconName = icon?.name ? icon.name : selectedIcon;
+    changeIcon(iconName)
+      .then(async () => {
+        setSelectIcon(iconName);
+        await AsyncStorage.setItem('customIcon', iconName);
+        // handleSubmit(icon.id);
+        // selectModal();
+        // Alert.alert('Success change icon');
+      })
+      .catch(e => {
+        Alert.alert("Sorry, can't change icon at this time.");
+        console.log('Error change icon:', e.message);
+      });
+    setSelectedIcon('');
+    setTimeout(() => {
+      setShowModalUnlock(false);
+    }, 1000);
   };
 
   const handleClose = () => {
@@ -121,10 +127,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
           'Watch a Video to unlock this App Icon for Free or go UNLIMITED to\r\nunlock everything!'
         }
         Icon={() => <UnlockIcon style={{marginBottom: 20}} />}
-        onSuccess={() => {
-          setShowModalUnlock(false);
-          Alert.alert('success');
-        }}
+        onSuccess={() => handleChangeIcon(null)}
       />
       <View
         style={{
@@ -188,32 +191,54 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         }}>
         {listIcon.map((icon, idx) => (
           <Pressable
-            style={{width: '24%', aspectRatio: '1/1'}}
+            style={{
+              width: '25%',
+              aspectRatio: '1/1',
+              justifyContent: 'center',
+              alignItems: 'center',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 6,
+              },
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+              elevation: 1,
+            }}
             key={idx}
             onPress={() => {
-              if (selectedIcon !== icon.id) {
-                handleChangeIcon(icon);
+              if (selectIcon !== icon.name) {
+                if (isPremium) {
+                  handleChangeIcon(icon);
+                } else {
+                  setSelectedIcon(icon.name);
+                  setShowModalUnlock(true);
+                }
               }
             }}>
             <Image
               source={icon.icon}
               style={{
-                width: '100%',
-                height: '100%',
-                margin: 'auto',
+                width: '90%',
+                height: '90%',
+                margin: '10%',
               }}
               resizeMode="contain"
             />
-            {!isPremium && selectedIcon !== icon.id ? (
+            {!isPremium && selectIcon !== icon.name ? (
               <LockFree
-                style={{position: 'absolute', alignSelf: 'center', top: 6}}
+                width={60}
+                height={20}
+                style={{position: 'absolute', alignSelf: 'center', top: 8}}
               />
             ) : null}
-            {selectedIcon === icon.id && (
+            {selectIcon === icon.name && (
               <View
                 style={{
                   position: 'absolute',
-                  height: '97%',
+                  top: 0,
+                  left: 0,
+                  height: '100%',
                   width: '100%',
                   borderWidth: 2,
                   borderColor: code_color.splash,
@@ -221,7 +246,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
                 }}>
                 <Checklist
                   height={18}
-                  style={{position: 'absolute', top: 5, left: -2}}
+                  style={{position: 'absolute', top: 7, left: -2}}
                 />
               </View>
             )}

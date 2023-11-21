@@ -30,15 +30,69 @@
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
+			<key>third</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>third</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>fourth</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>fourth</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>fifth</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>fifth</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>sixth</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>sixth</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>seventh</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>seventh</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>default</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>default</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
 		</dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>first</string>
+				<string>default</string>
 			</array>
 			<key>CFBundleIconName</key>
-			<string>first</string>
+			<string>default</string>
 			<key>UIPrerenderedIcon</key>
 			<false/>
 		</dict>
