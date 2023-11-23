@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Alert} from 'react-native';
 import {code_color} from '../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
 const ProgressBar = ({progress}) => {
   const [showInfo, setShowInfo] = useState(null);
@@ -18,7 +19,7 @@ const ProgressBar = ({progress}) => {
     );
   };
   return (
-    <View style={{marginBottom: 40}}>
+    <View style={{marginBottom: moderateScale(60)}}>
       <View style={styles.container}>
         <View style={[styles.progressBar, {width: `${progress}%`}]} />
 
@@ -38,7 +39,7 @@ const ProgressBar = ({progress}) => {
         }
         style={[styles.dot, {left: '0%'}]}
       />
-      <Text style={{position: 'absolute', left: 0, top: 20}}>{`Romance \n Rookie`}</Text>
+      <Text style={{position: 'absolute', left: 0, top: moderateScale(15), fontSize: moderateScale(10)}}>{`Romance \n Rookie`}</Text>
       <Pressable
         onPress={() =>
           setShowInfo({
@@ -51,7 +52,7 @@ const ProgressBar = ({progress}) => {
           {left: '50%', transform: [{translateX: -5}, {translateY: -5}]},
         ]}
       />
-       <Text style={{position: 'absolute', left: '40%', top: 20}}>{`Heartfelt\n Adventurer`}</Text>
+       <Text style={{position: 'absolute', left: '40%',  top: moderateScale(15), fontSize: moderateScale(10)}}>{`Heartfelt\n Adventurer`}</Text>
       <Pressable
         onPress={() =>
           setShowInfo({
@@ -61,7 +62,7 @@ const ProgressBar = ({progress}) => {
         }
         style={[styles.dot, {right: '10%'}]}
       />
-       <Text style={{position: 'absolute', right: '5%', top: 20}}>{`Passion \nPioneer`}</Text>
+       <Text style={{position: 'absolute', right: '5%',  top: moderateScale(15), fontSize: moderateScale(10)}}>{`Passion \nPioneer`}</Text>
       
     </View>
   );

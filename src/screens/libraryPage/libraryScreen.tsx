@@ -305,7 +305,7 @@ const LibraryScreen = ({
               }
             </Text>
 
-            <Button
+            {/* <Button
               style={{
                 backgroundColor: code_color.yellow,
                 padding: 10,
@@ -322,7 +322,7 @@ const LibraryScreen = ({
                 handleSetSteps(3 + 1);
                 navigate('ExploreLibrary');
               }}
-            />
+            /> */}
           </View>
         </SafeAreaView>
       );
@@ -481,7 +481,7 @@ const LibraryScreen = ({
             previewOpenDelay={3000}
           />
         </ScrollView>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => handleSomeAction('ExploreLibrary')}
           style={{
             backgroundColor: code_color.yellow,
@@ -507,7 +507,7 @@ const LibraryScreen = ({
             }}>
             Explore more Stories
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {renderTutorial()}
     </View>

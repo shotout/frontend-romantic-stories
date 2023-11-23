@@ -39,13 +39,9 @@ import {
   getListAvatarTheme,
   updateProfile,
 } from '../../shared/request';
-import {BACKEND_URL} from '../../shared/static';
-import {handleSetSteps} from '../../store/defaultState/actions';
-import i18n from '../../i18n';
-import Button from '../../components/buttons/Button';
-import StepHeader from '../../layout/step/stepHeader';
-import {Switch} from 'react-native-gesture-handler';
 import {reloadUserProfile} from '../../utils/user';
+import BookLockIcon from '../../assets/icons/bookLock';
+import { handlePayment } from '../../helpers/paywall';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const SubscriptionsScreen = ({colorTheme, userProfile}) => {
@@ -92,7 +88,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
   }, [newStories, promotions]);
 
   return (
-    <SafeAreaView style={{backgroundColor: bgTheme}}>
+    <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
       <View
         style={{
           flex: 0,
@@ -135,15 +131,17 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
         style={{
           backgroundColor: '#F6F7FD',
           height: '100%',
-          padding: 20,
+          flex: 1,
+          padding: moderateScale(20),
+          paddingBottom: moderateScale(50)
         }}>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: moderateScale(17),
             textAlign: 'center',
             fontWeight: 'bold',
             color: code_color.blackDark,
-            marginBottom: 20,
+            marginBottom: moderateScale(15),
           }}>
           Your Current Subscription:
         </Text>
@@ -159,17 +157,17 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
               backgroundColor: code_color.blueDark,
               padding: 10,
               borderRadius: 10,
-              marginHorizontal: 40,
+              marginHorizontal: moderateScale(40),
               // width: '70%',
               alignContent: 'center',
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 20,
-              marginBottom: 10
+              marginTop: moderateScale(20),
+              marginBottom: moderateScale(10)
             }}>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: moderateScale(18),
                 textAlign: 'center',
                 fontWeight: 'bold',
                 color: code_color.white,
@@ -193,13 +191,48 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
                 </View>
                 
                 <View style={{marginLeft: 10}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>{item?.title}</Text>
-                <Text>{item?.description}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: moderateScale(14)}}>{item?.title}</Text>
+                <Text style={{fontSize: moderateScale(12)}}>{item?.description}</Text>
                 </View>
                 
               </View>
             ))}
+                <Pressable
+                  onPress={() => {
+                    handlePayment('inapp_paywall_a')
+                  }}
+                  style={{
+                    backgroundColor: '#009A37',
+                    width: '100%',
+                    marginTop: moderateScale(40),
+                    paddingVertical: moderateScale(14),
+                    borderRadius: moderateScale(6),
+                  }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      marginHorizontal: 'auto',
+                      backgroundColor: '#FFD12F',
+                      alignSelf: 'center',
+                      paddingVertical: moderateScale(0),
+                      paddingHorizontal: moderateScale(24),
+                      borderRadius: moderateScale(10),
+                      zIndex: 1,
+                      top: -moderateScale(8),
+                    }}>
+                    <Text style={{color: code_color.black, fontWeight: 600}}>
+                      UNLOCK EVERYTHING
+                    </Text>
+                  </View>
+                  <BookLockIcon
+                    style={{position: 'absolute', top: '70%', left: '12%'}}
+                  />
+                  <Text style={{color: code_color.white, textAlign: 'center'}}>
+                    Get EroTales UNLIMITED
+                  </Text>
+                </Pressable>
         </View>
+     
       </ScrollView>
     </SafeAreaView>
   );

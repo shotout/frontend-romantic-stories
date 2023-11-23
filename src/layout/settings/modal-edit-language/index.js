@@ -117,10 +117,10 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
       <Text
         style={{
           color: code_color.blueDark,
-          fontSize: 30,
+          fontSize: moderateScale(25),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
-          marginTop: 40,
+          marginTop: moderateScale(10),
           lineHeight: 50,
         }}>
         Select the language of your stories
@@ -130,7 +130,7 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: 50,
+          marginTop: moderateScale(20),
         }}>
         {dataLang &&
           dataLang.map((item, idx) => {
@@ -147,18 +147,18 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
                         ? {
                             backgroundColor: code_color.splash,
                             borderRadius: 35,
-                            width: 65,
+                            width: moderateScale(60),
                             padding: 10,
-                            height: 65,
+                            height: moderateScale(60),
                             alignItems: 'center',
                             justifyContent: 'center',
                           }
                         : {
                             backgroundColor: code_color.white,
                             borderRadius: 35,
-                            width: 65,
+                            width: moderateScale(60),
                             padding: 10,
-                            height: 65,
+                            height: moderateScale(60),
                             alignItems: 'center',
                             justifyContent: 'center',
                             borderColor: code_color.grey,
@@ -189,7 +189,7 @@ function ModalEditLanguage({isVisible, onClose, colorTheme, userProfile}) {
                   style={{
                     borderColor: code_color.grey,
                     borderWidth: idx === 0 ? 1 : 0,
-                    marginVertical: 40,
+                    marginVertical: moderateScale(20),
                   }}
                 />
               </View>

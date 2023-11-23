@@ -43,6 +43,7 @@ import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
 import { handlePayment } from '../../helpers/paywall';
+import { moderateScale } from 'react-native-size-matters';
 
 const SettingsPage = ({colorTheme}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
@@ -119,11 +120,11 @@ const SettingsPage = ({colorTheme}) => {
           // alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View style={{marginTop: 30}}>
-          <View style={{marginTop: 40}}>
+        <View style={{marginTop: moderateScale(30)}}>
+          <View style={{marginTop: moderateScale(40)}}>
             <Text
               allowFontScaling={false}
-              style={{fontWeight: 'bold', textAlign: 'center'}}>
+              style={{fontWeight: 'bold', textAlign: 'center', fontFamily: moderateScale(9)}}>
               John Smith • Noob • 10 XP
             </Text>
           </View>

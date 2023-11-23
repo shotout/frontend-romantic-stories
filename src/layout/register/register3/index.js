@@ -18,6 +18,7 @@ import {story1, story2, story3, story4} from '../../../assets/images';
 import ChecklistSvg from './../../../assets/icons/checklist';
 import {getListCategory} from '../../../shared/request';
 import {API_URL, BACKEND_URL} from '../../../shared/static';
+import { moderateScale } from 'react-native-size-matters';
 
 export default function Register3({setCategoryId}) {
   const [dataStory, setDataStory] = useState([]);
@@ -39,7 +40,7 @@ export default function Register3({setCategoryId}) {
   return (
     <>
       <FlatList
-        style={{flex: 1, marginTop: 20}}
+        style={{flex: 1, marginTop: moderateScale(20)}}
         data={dataStory}
         renderItem={({item, index}) => {
           return (
@@ -51,11 +52,11 @@ export default function Register3({setCategoryId}) {
               }}
               style={{
                 alignItems: 'center',
-                marginVertical: 2,
+                marginVertical: moderateScale(2),
                 backgroundColor:
                   selectStory === item.name ? code_color.splash : 'white',
-                padding: 2,
-                borderRadius: 10,
+                padding: moderateScale(2),
+                borderRadius: moderateScale(10),
                 justifyContent: 'center',
               }}>
               <Image
@@ -66,8 +67,8 @@ export default function Register3({setCategoryId}) {
                 //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
                 // }}
                 style={{
-                  width: Dimensions.get('window').width - 45,
-                  height: 98,
+                  width: moderateScale(320),
+                  height: moderateScale(80),
                   // backgroundColor:
                   //   selectStory === item.name ? code_color.splash : 'white',
                 }}
@@ -78,7 +79,7 @@ export default function Register3({setCategoryId}) {
                   position: 'absolute',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 16,
+                  fontSize: moderateScale(16),
                   fontWeight: 'bold',
                   color: code_color.white,
                 }}>
@@ -89,12 +90,12 @@ export default function Register3({setCategoryId}) {
                 style={{
                   backgroundColor:
                     selectStory === item.name ? code_color.splash : 'white',
-                  borderRadius: 30,
-                  width: 25,
-                  height: 25,
+                  borderRadius: moderateScale(30),
+                  width: moderateScale(25),
+                  height: moderateScale(25),
                   position: 'absolute',
-                  top: 35,
-                  left: 20,
+                  top: moderateScale(35),
+                  left: moderateScale(25),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>

@@ -64,7 +64,7 @@ import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import { handlePayment } from '../../helpers/paywall';
-import * as RNIap from 'react-native-iap';
+// import * as RNIap from 'react-native-iap';
 
 const {width, height} = Dimensions.get('window');
 
@@ -142,7 +142,7 @@ const MainScreen = ({
       const data  = await AsyncStorage.getItem("isFirstTime");
       if(data === 'yes'){
       }else{
-        setShowModalCongrats(true);
+        // setShowModalCongrats(true);
         AsyncStorage.setItem("isFirstTime", "yes");
       } 
     }
@@ -258,36 +258,34 @@ const MainScreen = ({
     } catch (error) {}
   };
   
-  const initIAP = async () => {
-    try {
-      await RNIap.initConnection();
-    } catch (err) {
-      console.log('initConnection error:', err.message);
-    }
-  };
+  // const initIAP = async () => {
+  //   try {
+  //     await RNIap.initConnection();
+  //   } catch (err) {
+  //     console.log('initConnection error:', err.message);
+  //   }
+  // };
 
-  const fetchProducts = async () => {
-    try {
-      const result = await RNIap.getProducts(['your_subscription_product_id']);
-      setProducts(result);
-    } catch (err) {
-      console.warn(err.code, err.message);
-    }
-  };
+  // const fetchProducts = async () => {
+  //   try {
+  //     const result = await RNIap.getProducts(['your_subscription_product_id']);
+  //     setProducts(result);
+  //   } catch (err) {
+  //     console.warn(err.code, err.message);
+  //   }
+  // };
 
-  const purchaseSubscription = async () => {
-    try {
-      const purchase = await RNIap.requestPurchase('unlock_story_1_week');
-      console.log('Subscription purchased:', purchase);
-      // Handle success, update UI, etc.
-    } catch (err) {
-      console.log('Subscription purchase error:', err.message);
-      // Handle error, show user a message, etc.
-    }
-  };
+  // const purchaseSubscription = async () => {
+  //   try {
+  //     const purchase = await RNIap.requestPurchase('unlock_story_1_week');
+  //     console.log('Subscription purchased:', purchase);
+  //     // Handle success, update UI, etc.
+  //   } catch (err) {
+  //     console.log('Subscription purchase error:', err.message);
+  //     // Handle error, show user a message, etc.
+  //   }
+  // };
   useEffect(() => {
-    initIAP();
-    fetchProducts();
     handleThemeAvatar();
     // handleSetSteps(0);
     const checkTutorial = async () => {

@@ -133,11 +133,11 @@ const CategoriesScreen = ({
           allowFontScaling={false}
           style={{
             color: code_color.blueDark,
-            fontSize: 25,
+            fontSize: moderateScale(20),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 50,
-            marginBottom: 30
+            marginTop: moderateScale(30),
+            marginBottom: moderateScale(20)
           }}>
           {'Select the Topics \n of your Stories'}
         </Text>
@@ -164,8 +164,8 @@ const CategoriesScreen = ({
               //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
               // }}
               style={{
-                width: Dimensions.get('window').width - 45,
-                height: 98,
+                width: moderateScale(Dimensions.get('window').width - 50),
+                height: moderateScale(85),
                 borderWidth: 2,
                 borderRadius: 10,
                 borderColor:
@@ -196,7 +196,7 @@ const CategoriesScreen = ({
                 height: 25,
                 position: 'absolute',
                 top: 35,
-                left: 30,
+                left: moderateScale(45),
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>

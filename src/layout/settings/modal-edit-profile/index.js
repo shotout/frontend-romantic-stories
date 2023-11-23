@@ -22,6 +22,7 @@ import ProfileSvg from '../../../assets/icons/profile';
 import PartnerSvg from '../../../assets/icons/partner';
 import FlagSvg from '../../../assets/icons/flag';
 import {BACKEND_URL} from '../../../shared/static';
+import { moderateScale } from 'react-native-size-matters';
 
 function ModalEditProfile({
   isVisible,
@@ -202,7 +203,7 @@ function ModalEditProfile({
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         <View
           style={{
-            height: '60%',
+            height: moderateScale('60%'),
             position: 'absolute',
             bottom: 0,
             width: '100%',
