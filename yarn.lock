@@ -6717,6 +6717,11 @@ react-native-linear-gradient@^2.8.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
+react-native-pager-view@5.4.17:
+  version "5.4.17"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.17.tgz#aaccf6da6b64b7cb6ad9ed51426a561187bbca7f"
+  integrity sha512-5ldX9YtIWaJoT2Tg+l4p4f+Juzdgn5PjVLfWb02wS+AsQ/cssQUsYqpTzuN+W91Ata0pSVhjaLvZnYjblUQmgw==
+
 react-native-purchasely@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/react-native-purchasely/-/react-native-purchasely-4.1.2.tgz#cc0006f4ed077d248bb515ae4f046b81e20e12b2"

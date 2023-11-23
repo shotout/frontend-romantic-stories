@@ -12,16 +12,18 @@ import {
   View,
 } from 'react-native';
 import {SelectableText} from '@astrocoders/react-native-selectable-text';
+import AnimatedLottieView from 'lottie-react-native';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
 import {ava1, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
-import ModalShare from '../../screens/screenShare/Share';
 import {BACKEND_URL} from '../../shared/static';
 import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
 import {navigate, navigationRef} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme} from '../../shared/request';
+const loveAnimate = require('../../assets/lottie/love.json');
+
 export default function QuotesContent({
   item,
   themeUser,
@@ -41,6 +43,7 @@ export default function QuotesContent({
 
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
+  const [playLoveAnimate, setPlayLoveAnimate] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const activeStatus = useRef(false);
@@ -106,8 +109,8 @@ export default function QuotesContent({
       /> */}
       <Animated.View
         style={{
-          width: '100%',
-          height: sizing.getDimensionHeight(0.84),
+          height: '100%',
+          width: sizing.getDimensionWidth(0.89),
           transform: [{translateY: translateX}],
         }}>
         {pageActive === 0 ||
@@ -188,28 +191,6 @@ export default function QuotesContent({
         <View style={styles.ctnIcon}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
-              {/* <Text
-                selectable
-                userSelect
-                selectionColor={code_color.splash}
-                allowFontScaling={false}
-                suppressHighlighting
-                style={[
-                  styles.ctnQuotes,
-                  {
-                    fontFamily: themeUser?.theme?.font_family,
-                    fontSize: Number(fontSize),
-                    color:
-                      bg === '#2C3439'
-                        ? code_color.white
-                        : code_color.blackDark,
-                  },
-                ]}>
-                {themeUser?.language_id === "2"
-                  ? item?.content_id
-                  : item?.content_en}
-                {contentData}
-              </Text> */}
               <SelectableText
                 style={[
                   styles.ctnQuotes,
@@ -263,7 +244,7 @@ export default function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : pageActive === 1 ?  (
+          ) : pageActive === 1 ? (
             <>
               <View
                 style={{
@@ -378,6 +359,21 @@ export default function QuotesContent({
                 />
               </View>
 
+              <AnimatedLottieView
+                source={loveAnimate}
+                style={{
+                  width: 500,
+                  height: 500,
+                  bottom: 20,
+                  left: -40,
+                  position: 'absolute',
+                  zIndex: 2,
+                  display: isAnimationStart === true ? 'flex' : 'none',
+                }}
+                autoPlay={isAnimationStart === true}
+                duration={3000}
+                loop={false}
+              />
               <View>
                 <ImageBackground
                   source={imgLove}
@@ -400,8 +396,7 @@ export default function QuotesContent({
                       bottom: '40%',
                       right: -75,
                     }}>
-                    <Text
-                      style={{color: code_color.white, fontWeight: 'bold'}}>
+                    <Text style={{color: code_color.white, fontWeight: 'bold'}}>
                       Page {pageActive + 1} of {totalStory}
                     </Text>
                   </View>

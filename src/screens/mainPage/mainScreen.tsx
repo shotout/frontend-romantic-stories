@@ -63,9 +63,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
-import { handlePayment } from '../../helpers/paywall';
-
-const {width, height} = Dimensions.get('window');
+import {handlePayment} from '../../helpers/paywall';
+import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
 
 const MainScreen = ({
   userProfile,
@@ -81,7 +80,7 @@ const MainScreen = ({
   stepsTutorial,
   isPremium,
 }) => {
-  const [activeStep, setActiveStep] = useState(0); 
+  const [activeStep, setActiveStep] = useState(0);
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
@@ -108,6 +107,7 @@ const MainScreen = ({
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
   const [readLater, setReadLater] = useState(false);
+  const [isLoveAnimate, setIsLoveAnimate] = useState<boolean | string>(false);
   const isFocused = useIsFocused();
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
@@ -129,24 +129,47 @@ const MainScreen = ({
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
   ]);
-  const onMomentoumScrollEnd = async (e) => {
-    const offsetY = e.nativeEvent.contentOffset.y;
-    const height = sizing.getDimensionHeight(2);
-    const pageNumber = Math.min(
-      Math.max(Math.floor(offsetY / height + 0.5) + 1, 0),
-      dataBook?.length || 0
-    );
+  const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
+    // const offsetY = e.nativeEvent.contentOffset.x;
+    // const height = sizing.getDimensionWidth(0.89);
+    // const pageNumber = Math.min(
+    //   Math.max(Math.floor(offsetY / height + 0.5), 0),
+    //   dataBook?.length || 0,
+    // );
+    const pageNumber = e.nativeEvent.position;
+    const timeoutLove = setTimeout(() => {
+      if (pageNumber === dataBook?.length - 1) {
+        setIsLoveAnimate(false);
+      }
+    }, 3000);
+
     if (pageNumber === dataBook?.length - 1) {
-      const data  = await AsyncStorage.getItem("isFirstTime");
-      if(data === 'yes'){
-      }else{
+      setIsLoveAnimate(true);
+      // if (isLoveAnimate !== 'stop') {
+      //   setTimeout(() => {
+      //     setIsLoveAnimate(true);
+      //   }, 200);
+      // }
+      // setTimeout(() => {
+      //   if (isLoveAnimate) {
+      //     setIsLoveAnimate('false');
+      //   }
+      // }, 3200);
+      // setTimeout(() => {
+      // }, 3400);
+      const data = await AsyncStorage.getItem('isFirstTime');
+      if (data === 'yes') {
+      } else {
         setShowModalCongrats(true);
-        AsyncStorage.setItem("isFirstTime", "yes");
-      } 
+        AsyncStorage.setItem('isFirstTime', 'yes');
+      }
+    } else {
+      clearTimeout(timeoutLove);
+      setIsLoveAnimate(false);
     }
 
     setActiveSlide(pageNumber - 1);
-   
+
     startAnimation();
     handleLoadMore(pageNumber);
 
@@ -154,6 +177,7 @@ const MainScreen = ({
       setUserScrollQuotes(true);
     }
   };
+
   const handleGesture = evt => {
     const {nativeEvent} = evt;
     if (nativeEvent.velocityX < -614) {
@@ -175,7 +199,6 @@ const MainScreen = ({
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
-      
       setIsSwipingLeft(true);
       if (activeStep === 1) {
       } else {
@@ -195,9 +218,10 @@ const MainScreen = ({
   };
 
   const handleNext = () => {
-    const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
+    const content =
+      'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
     setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
-    handleSetSteps(stepsTutorial + 1); 
+    handleSetSteps(stepsTutorial + 1);
     if (activeStep === 2) {
       navigate('Library');
     } else if (stepsTutorial === 5) {
@@ -255,7 +279,7 @@ const MainScreen = ({
       }
     } catch (error) {}
   };
-  
+
   useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);
@@ -266,7 +290,7 @@ const MainScreen = ({
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
 
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
-        setFinishTutorial(true)
+        setFinishTutorial(true);
         setTutorial({
           visible: true,
           step: 1,
@@ -278,7 +302,7 @@ const MainScreen = ({
             ...isTutorial,
             step: isTutorial.step + 1,
           });
-          setActiveStep(1)
+          setActiveStep(1);
           handleSetSteps(1);
         }, 5000);
       } else if (activeStep > 3 && activeStep < 5) {
@@ -288,14 +312,14 @@ const MainScreen = ({
     checkTutorial();
   }, []);
 
-  const renderFactItem = ({item, index, disableAnimation}) => {
+  const renderFactItem = ({item, index}) => {
     return (
       <QuotesContent
         item={item}
         isActive={activeSlide === index}
         totalStory={dataBook.length}
         pageActive={index}
-        isAnimationStart={true}
+        isAnimationStart={isLoveAnimate}
         themeUser={userProfile?.data}
         fontSize={fontSize}
         bgTheme={colorTheme}
@@ -308,220 +332,245 @@ const MainScreen = ({
     );
   };
 
+  // function renderFlatList() {
+  //   return (
+  //     <PanGestureHandler
+  //       onGestureEvent={handleGesture}
+  //       activeOffsetX={[-40, 40]}>
+  //       <TapGestureHandler onHandlerStateChange={onDoubleTap} numberOfTaps={3}>
+  //         <FlatList
+  //           // ref={flatListRef}
+  //           style={{
+  //             flex: 1,
+  //             backgroundColor: backgroundColor,
+  //           }}
+  //           data={dataBook}
+  //           pagingEnabled
+  //           onMomentumScrollEnd={onMomentoumScrollEnd}
+  //           scrollsToTop={false}
+  //           horizontal
+  //           showsVerticalScrollIndicator={false}
+  //           showsHorizontalScrollIndicator={false}
+  //           // onEndReached={handleEndReach}
+  //           onEndReachedThreshold={0.9}
+  //           renderItem={renderFactItem}
+  //           keyExtractor={(_item, index) => `${index}`}
+  //           initialScrollIndex={0}
+  //           getItemLayout={(_data, index) => ({
+  //             length: sizing.getDimensionWidth(0.5),
+  //             offset: sizing.getDimensionWidth(0.5) * index,
+  //             index,
+  //           })}
+  //           onScrollToIndexFailed={() => {
+  //             console.log('FAILED SCROLL TO INDEX', 5);
+  //           }}
+  //         />
+  //       </TapGestureHandler>
+  //     </PanGestureHandler>
+  //   );
+  // }
+
   function renderFlatList() {
     return (
-      <PanGestureHandler
-        onGestureEvent={handleGesture}
-        activeOffsetX={[-40, 40]}>
-        <TapGestureHandler onHandlerStateChange={onDoubleTap} numberOfTaps={3}>
-          <FlatList
-            ref={flatListRef}
-            style={{
-              flex: 1,
-              backgroundColor: backgroundColor,
-            }}
-            data={dataBook}
-            pagingEnabled
-            onMomentumScrollEnd={onMomentoumScrollEnd}
-            scrollsToTop={false}
-            showsVerticalScrollIndicator={false}
-            // onEndReached={handleEndReach}
-            onEndReachedThreshold={0.9}
-            renderItem={renderFactItem}
-            keyExtractor={(_item, index) => `${index}`}
-            initialScrollIndex={0}
-            getItemLayout={(_data, index) => ({
-              length: sizing.getDimensionHeight(1),
-              offset: sizing.getDimensionHeight(1) * index,
-              index,
-            })}
-            onScrollToIndexFailed={() => {
-              console.log('FAILED SCROLL TO INDEX', 5);
-            }}
-          />
-        </TapGestureHandler>
-      </PanGestureHandler>
+      <PagerView
+        style={{flex: 1}}
+        initialPage={0}
+        transitionStyle="curl"
+        onPageSelected={e => onScroll(e)}>
+        {dataBook.map((dtb, index) => {
+          return (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                backgroundColor: backgroundColor,
+                paddingTop: 20,
+                paddingHorizontal: 20,
+              }}>
+              {renderFactItem({item: dtb, index})}
+            </View>
+          );
+        })}
+      </PagerView>
     );
   }
 
   useEffect(() => {
     async function fetchData() {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-      if(isFinishTutorial === 'yes'){
-        setFinishTutorial(true)
-      }else{
-        setFinishTutorial(false)
-        
+      if (isFinishTutorial === 'yes') {
+        setFinishTutorial(true);
+      } else {
+        setFinishTutorial(false);
       }
     }
-    fetchData()
-    
+    fetchData();
   }, [isFocused]);
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
-   if(isFinishTutorial){
-    if (activeStep === 0) {
-      return (
-        <Modal
-          visible={visible}
-          animationType="fade"
-          transparent
-          onDismiss={() => setVisible(false)}>
-          <ImageBackground
-            source={imgBgTips}
-            resizeMode="cover"
-            style={{
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
-              flex: 1,
-              alignItems: 'center',
-            }}>
-            <Image
-              source={imgBgAvaTips}
-              resizeMode="contain"
-              style={{width: '80%', height: '100%'}}
-            />
-            <Image
-              source={imgLoveLeft}
-              resizeMode="contain"
+    if (isFinishTutorial) {
+      if (activeStep === 0) {
+        return (
+          <Modal
+            visible={visible}
+            animationType="fade"
+            transparent
+            onDismiss={() => setVisible(false)}>
+            <ImageBackground
+              source={imgBgTips}
+              resizeMode="cover"
               style={{
-                width: '30%',
-                height: '100%',
-                position: 'absolute',
-                top: -70,
-                left: 0,
-              }}
-            />
-            <Image
-              source={imgLoveRight}
-              resizeMode="contain"
-              style={{
-                width: '30%',
-                height: '100%',
-                position: 'absolute',
-                top: -70,
-                right: 0,
-              }}
-            />
-            <View
-              style={{
-                backgroundColor: 'white',
-                position: 'absolute',
-                bottom: 0,
                 width: Dimensions.get('window').width,
-                height: '58%',
-                borderTopRightRadius: 60,
-                borderTopLeftRadius: 60,
+                height: Dimensions.get('window').height,
+                flex: 1,
                 alignItems: 'center',
-                justifyContent: 'center',
               }}>
-              <ImageBackground
-                source={imgBgContent}
+              <Image
+                source={imgBgAvaTips}
+                resizeMode="contain"
+                style={{width: '80%', height: '100%'}}
+              />
+              <Image
+                source={imgLoveLeft}
                 resizeMode="contain"
                 style={{
+                  width: '30%',
+                  height: '100%',
+                  position: 'absolute',
+                  top: -70,
+                  left: 0,
+                }}
+              />
+              <Image
+                source={imgLoveRight}
+                resizeMode="contain"
+                style={{
+                  width: '30%',
+                  height: '100%',
+                  position: 'absolute',
+                  top: -70,
+                  right: 0,
+                }}
+              />
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  position: 'absolute',
+                  bottom: 0,
                   width: Dimensions.get('window').width,
-                  height: 250,
+                  height: '58%',
+                  borderTopRightRadius: 60,
+                  borderTopLeftRadius: 60,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Text
+                <ImageBackground
+                  source={imgBgContent}
+                  resizeMode="contain"
                   style={{
-                    color: '#5873FF',
-                    fontSize: 30,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontFamily: 'Comfortaa-SemiBold',
+                    width: Dimensions.get('window').width,
+                    height: 250,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
-                  {'Hey, John\nYou’re all set!'}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 24,
-                    textAlign: 'center',
-                    fontWeight: '100',
-                    marginTop: 10,
-                  }}>
-                  {"Let's show you how \nEroTales works..."}
-                </Text>
-              </ImageBackground>
-            </View>
-          </ImageBackground>
-        </Modal>
-      );
-    } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <=5) {
-      const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
+                  <Text
+                    style={{
+                      color: '#5873FF',
+                      fontSize: 30,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontFamily: 'Comfortaa-SemiBold',
+                    }}>
+                    {'Hey, John\nYou’re all set!'}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 24,
+                      textAlign: 'center',
+                      fontWeight: '100',
+                      marginTop: 10,
+                    }}>
+                    {"Let's show you how \nEroTales works..."}
+                  </Text>
+                </ImageBackground>
+              </View>
+            </ImageBackground>
+          </Modal>
+        );
+      } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
+        const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
-      return (
-        <SafeAreaView
-          // onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-
-            backgroundColor: 'rgba(0,0,0,0.3)',
-          }}>
-          {renderProgress()}
-          <View
+        return (
+          <SafeAreaView
+            // onTouchStart={handleTouchStart}
+            // onTouchEnd={handleTouchEnd}
             style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '40%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={
-                activeStep === 1 && activeStep != 5
-                  ? imgStep1
-                  : activeStep === 5 || stepsTutorial == 5
-                  ? imgStep5
-                  : imgStep2
-              }
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginBottom: 20,
-              }}>
-              {activeStep === 1 && activeStep != 5
-                ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
-              \nUnlock additional Stories\nanytime!`
-                : activeStep === 5 || stepsTutorial == 5
-                ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
-                : 'Like & save your \nfavorite Stories.'}
-            </Text>
+              position: 'absolute',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
 
-            <Button
+              backgroundColor: 'rgba(0,0,0,0.3)',
+            }}>
+            {renderProgress()}
+            <View
               style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
+                backgroundColor: '#3F58DD',
                 borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={i18n.t('Next')}
-              onPress={() => 
-               
-                  
-                  handleNext()
-                
-               }
-            />
-          </View>
-        </SafeAreaView>
-      );
+                padding: 10,
+                marginHorizontal: 40,
+                alignItems: 'center',
+                marginTop: '40%',
+                paddingTop: 50,
+              }}>
+              <Image
+                source={
+                  activeStep === 1 && activeStep != 5
+                    ? imgStep1
+                    : activeStep === 5 || stepsTutorial == 5
+                    ? imgStep5
+                    : imgStep2
+                }
+                resizeMode="contain"
+                style={{
+                  width: 100,
+                  height: 200,
+                  position: 'absolute',
+                  top: -100,
+                }}
+              />
+              <Text
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginBottom: 20,
+                }}>
+                {activeStep === 1 && activeStep != 5
+                  ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
+              \nUnlock additional Stories\nanytime!`
+                  : activeStep === 5 || stepsTutorial == 5
+                  ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
+                  : 'Like & save your \nfavorite Stories.'}
+              </Text>
+
+              <Button
+                style={{
+                  backgroundColor: code_color.yellow,
+                  padding: 10,
+                  paddingHorizontal: 40,
+                  borderRadius: 20,
+                  marginVertical: 10,
+                }}
+                title={i18n.t('Next')}
+                onPress={() => handleNext()}
+              />
+            </View>
+          </SafeAreaView>
+        );
+      }
     }
-   }
   };
 
   const renderView = () => {
@@ -597,8 +646,8 @@ const MainScreen = ({
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
-            paddingHorizontal: 20,
-            paddingTop: 20,
+            // paddingHorizontal: 20,
+            // paddingTop: 20,
           }}>
           <StatusBar
             barStyle={'dark-content'}
@@ -610,7 +659,7 @@ const MainScreen = ({
             backgroundColor: code_color.white,
             // paddingTop: isIphoneXorAbove() ? 40 : 0,
           }}
-        /> */}
+          /> */}
           <ModalStoryUnlock
             isVisible={showModal}
             onClose={() => setShowModal(false)}
