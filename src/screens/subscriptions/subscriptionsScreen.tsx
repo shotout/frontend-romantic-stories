@@ -197,7 +197,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
                 
               </View>
             ))}
-                <Pressable
+                {/* <Pressable
                   onPress={() => {
                     handlePayment('inapp_paywall_a')
                   }}
@@ -230,7 +230,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                     Get EroTales UNLIMITED
                   </Text>
-                </Pressable>
+                </Pressable> */}
         </View>
      
       </ScrollView>

@@ -32,6 +32,15 @@
 		4029C627945B4F109D5AF7AA /* Arialn.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5373F7039CE844A98071B22E /* Arialn.ttf */; };
 		575FD6B6611F4CCBB5477FA6 /* Comfortaa-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CBDFFC3A15942679B55B0FA /* Comfortaa-SemiBold.ttf */; };
 		7C0445F931256932F47F6D76 /* libPods-Shortstory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF894184A503BA0D4FD57C6C /* libPods-Shortstory.a */; };
+		8056BD1B2B0F010D00E97FB6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8056BD1A2B0F010D00E97FB6 /* StoreKit.framework */; };
+		8056BD312B0F20EB00E97FB6 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD302B0F20EB00E97FB6 /* second.png */; };
+		8056BD332B0F213200E97FB6 /* third.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD322B0F213200E97FB6 /* third.png */; };
+		8056BD352B0F217400E97FB6 /* fourth.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD342B0F217400E97FB6 /* fourth.png */; };
+		8056BD372B0F21A400E97FB6 /* fifth.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD362B0F21A400E97FB6 /* fifth.png */; };
+		8056BD392B0F222600E97FB6 /* sixth.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD382B0F222500E97FB6 /* sixth.png */; };
+		8056BD3B2B0F225600E97FB6 /* seventh.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD3A2B0F225600E97FB6 /* seventh.png */; };
+		8056BD3D2B0F230500E97FB6 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD3C2B0F230500E97FB6 /* default.png */; };
+		8056BD3F2B0F28B700E97FB6 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 8056BD3E2B0F28B700E97FB6 /* first.png */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		845DE37C2A8CBAE900951DEC /* libReact-RCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 845DE37B2A8CBAE900951DEC /* libReact-RCTNetwork.a */; };
 		84A9975B2AA8A86F008CB946 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */; };
@@ -82,6 +91,16 @@
 		2EF4997D8DA348309D6C054D /* BigshotOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "BigshotOne-Regular.ttf"; path = "../src/assets/fonts/BigshotOne-Regular.ttf"; sourceTree = "<group>"; };
 		5373F7039CE844A98071B22E /* Arialn.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Arialn.ttf; path = ../src/assets/fonts/Arialn.ttf; sourceTree = "<group>"; };
 		6FBA2F5EFE826AA2F89587D9 /* Pods-Shortstory-ShortstoryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shortstory-ShortstoryTests.debug.xcconfig"; path = "Target Support Files/Pods-Shortstory-ShortstoryTests/Pods-Shortstory-ShortstoryTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8056BD1A2B0F010D00E97FB6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8056BD222B0F160800E97FB6 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = "../../../../../Downloads/ios 2/first.png"; sourceTree = "<group>"; };
+		8056BD302B0F20EB00E97FB6 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = second.png; path = "../../../../../Downloads/AppIcons(4)/Assets.xcassets/AppIcon.appiconset/second.png"; sourceTree = "<group>"; };
+		8056BD322B0F213200E97FB6 /* third.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = third.png; path = "../../../../../Downloads/AppIcons(5)/Assets.xcassets/AppIcon.appiconset/third.png"; sourceTree = "<group>"; };
+		8056BD342B0F217400E97FB6 /* fourth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fourth.png; path = "../../../../../Downloads/AppIcons(6)/Assets.xcassets/AppIcon.appiconset/fourth.png"; sourceTree = "<group>"; };
+		8056BD362B0F21A400E97FB6 /* fifth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fifth.png; path = "../../../../../Downloads/AppIcons(7)/Assets.xcassets/AppIcon.appiconset/fifth.png"; sourceTree = "<group>"; };
+		8056BD382B0F222500E97FB6 /* sixth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sixth.png; path = "../../../../../Downloads/AppIcons(8)/Assets.xcassets/AppIcon.appiconset/sixth.png"; sourceTree = "<group>"; };
+		8056BD3A2B0F225600E97FB6 /* seventh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = seventh.png; path = "../../../../../Downloads/AppIcons(9)/Assets.xcassets/AppIcon.appiconset/seventh.png"; sourceTree = "<group>"; };
+		8056BD3C2B0F230500E97FB6 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default.png; path = "../../../../../Downloads/AppIcons(10)/Assets.xcassets/AppIcon.appiconset/default.png"; sourceTree = "<group>"; };
+		8056BD3E2B0F28B700E97FB6 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = "../../../../Downloads/AppIcons(11)/Assets.xcassets/AppIcon.appiconset/first.png"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Shortstory/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		845DE3712A8CBA0E00951DEC /* libFlipperKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFlipperKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		845DE3732A8CBA6700951DEC /* libFlipper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFlipper.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8056BD1B2B0F010D00E97FB6 /* StoreKit.framework in Frameworks */,
 				845DE37C2A8CBAE900951DEC /* libReact-RCTNetwork.a in Frameworks */,
 				7C0445F931256932F47F6D76 /* libPods-Shortstory.a in Frameworks */,
 			);
@@ -154,22 +174,30 @@
 		1D332AC42B0C5FE7000E4907 /* Appicons */ = {
 			isa = PBXGroup;
 			children = (
+				8056BD3C2B0F230500E97FB6 /* default.png */,
 				1D332AD32B0C79FB000E4907 /* default@2x.png */,
 				1D332AD42B0C79FB000E4907 /* default@3x.png */,
-				1D332AD22B0C79FB000E4907 /* fifth@2x.png */,
-				1D332ACF2B0C79FB000E4907 /* fifth@3x.png */,
-				1D332ACD2B0C79FB000E4907 /* fourth@2x.png */,
-				1D332AD02B0C79FB000E4907 /* fourth@3x.png */,
-				1D332AD72B0C79FB000E4907 /* seventh@2x.png */,
-				1D332ACE2B0C79FB000E4907 /* seventh@3x.png */,
-				1D332AD82B0C79FB000E4907 /* sixth@2x.png */,
-				1D332AD52B0C79FB000E4907 /* sixth@3x.png */,
-				1D332AD12B0C79FB000E4907 /* third@2x.png */,
-				1D332AD62B0C79FB000E4907 /* third@3x.png */,
+				8056BD222B0F160800E97FB6 /* first.png */,
 				1D332AC72B0C601B000E4907 /* first@2x.png */,
 				1D332AC52B0C601B000E4907 /* first@3x.png */,
+				8056BD302B0F20EB00E97FB6 /* second.png */,
 				1D332AC82B0C601B000E4907 /* second@2x.png */,
 				1D332AC62B0C601B000E4907 /* second@3x.png */,
+				8056BD322B0F213200E97FB6 /* third.png */,
+				1D332AD12B0C79FB000E4907 /* third@2x.png */,
+				1D332AD62B0C79FB000E4907 /* third@3x.png */,
+				8056BD342B0F217400E97FB6 /* fourth.png */,
+				1D332ACD2B0C79FB000E4907 /* fourth@2x.png */,
+				1D332AD02B0C79FB000E4907 /* fourth@3x.png */,
+				8056BD362B0F21A400E97FB6 /* fifth.png */,
+				1D332AD22B0C79FB000E4907 /* fifth@2x.png */,
+				1D332ACF2B0C79FB000E4907 /* fifth@3x.png */,
+				8056BD382B0F222500E97FB6 /* sixth.png */,
+				1D332AD82B0C79FB000E4907 /* sixth@2x.png */,
+				1D332AD52B0C79FB000E4907 /* sixth@3x.png */,
+				8056BD3A2B0F225600E97FB6 /* seventh.png */,
+				1D332AD72B0C79FB000E4907 /* seventh@2x.png */,
+				1D332ACE2B0C79FB000E4907 /* seventh@3x.png */,
 			);
 			path = Appicons;
 			sourceTree = "<group>";
@@ -177,6 +205,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8056BD1A2B0F010D00E97FB6 /* StoreKit.framework */,
 				845DE37B2A8CBAE900951DEC /* libReact-RCTNetwork.a */,
 				845DE3792A8CBA7A00951DEC /* libFlipper-PeerTalk.a */,
 				845DE3772A8CBA7500951DEC /* libFlipper-Folly.a */,
@@ -212,6 +241,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				8056BD3E2B0F28B700E97FB6 /* first.png */,
 				84A9975A2AA8A86F008CB946 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Shortstory */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -342,28 +372,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				84A9975B2AA8A86F008CB946 /* GoogleService-Info.plist in Resources */,
-				1D332AE42B0C79FB000E4907 /* sixth@2x.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				8056BD3D2B0F230500E97FB6 /* default.png in Resources */,
+				1D332ADF2B0C79FB000E4907 /* default@2x.png in Resources */,
+				1D332AE02B0C79FB000E4907 /* default@3x.png in Resources */,
+				8056BD3F2B0F28B700E97FB6 /* first.png in Resources */,
+				1D332ACB2B0C601B000E4907 /* first@2x.png in Resources */,
+				1D332AC92B0C601B000E4907 /* first@3x.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				1D332ADC2B0C79FB000E4907 /* fourth@3x.png in Resources */,
-				1D332AE12B0C79FB000E4907 /* sixth@3x.png in Resources */,
+				8056BD312B0F20EB00E97FB6 /* second.png in Resources */,
+				1D332ACC2B0C601B000E4907 /* second@2x.png in Resources */,
+				1D332ACA2B0C601B000E4907 /* second@3x.png in Resources */,
+				8056BD332B0F213200E97FB6 /* third.png in Resources */,
+				1D332ADD2B0C79FB000E4907 /* third@2x.png in Resources */,
 				1D332AE22B0C79FB000E4907 /* third@3x.png in Resources */,
+				8056BD352B0F217400E97FB6 /* fourth.png in Resources */,
+				1D332AD92B0C79FB000E4907 /* fourth@2x.png in Resources */,
+				1D332ADC2B0C79FB000E4907 /* fourth@3x.png in Resources */,
+				8056BD372B0F21A400E97FB6 /* fifth.png in Resources */,
+				1D332ADE2B0C79FB000E4907 /* fifth@2x.png in Resources */,
+				1D332ADB2B0C79FB000E4907 /* fifth@3x.png in Resources */,
+				8056BD392B0F222600E97FB6 /* sixth.png in Resources */,
+				1D332AE42B0C79FB000E4907 /* sixth@2x.png in Resources */,
+				1D332AE12B0C79FB000E4907 /* sixth@3x.png in Resources */,
+				8056BD3B2B0F225600E97FB6 /* seventh.png in Resources */,
+				1D332AE32B0C79FB000E4907 /* seventh@2x.png in Resources */,
+				1D332ADA2B0C79FB000E4907 /* seventh@3x.png in Resources */,
 				575FD6B6611F4CCBB5477FA6 /* Comfortaa-SemiBold.ttf in Resources */,
 				4029C627945B4F109D5AF7AA /* Arialn.ttf in Resources */,
-				1D332ADE2B0C79FB000E4907 /* fifth@2x.png in Resources */,
-				1D332ACA2B0C601B000E4907 /* second@3x.png in Resources */,
-				1D332ADD2B0C79FB000E4907 /* third@2x.png in Resources */,
-				1D332ADB2B0C79FB000E4907 /* fifth@3x.png in Resources */,
 				EEF786E8DC3B4BB084541A1B /* BigshotOne-Regular.ttf in Resources */,
-				1D332AC92B0C601B000E4907 /* first@3x.png in Resources */,
-				1D332ACB2B0C601B000E4907 /* first@2x.png in Resources */,
-				1D332ADA2B0C79FB000E4907 /* seventh@3x.png in Resources */,
 				376CFCCF65B240A0A714C102 /* GentiumBookPlus-Regular.ttf in Resources */,
-				1D332AE32B0C79FB000E4907 /* seventh@2x.png in Resources */,
-				1D332ADF2B0C79FB000E4907 /* default@2x.png in Resources */,
-				1D332ACC2B0C601B000E4907 /* second@2x.png in Resources */,
-				1D332AE02B0C79FB000E4907 /* default@3x.png in Resources */,
-				1D332AD92B0C79FB000E4907 /* fourth@2x.png in Resources */,
 				FAF75C3612574FEC9ADD47FC /* GeorgiaEstate-w15Mn.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,7 +659,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -653,7 +691,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Shortstory/Info.plist;

@@ -146,7 +146,7 @@ const MainScreen = ({
         AsyncStorage.setItem("isFirstTime", "yes");
       } 
     }
-    purchaseSubscription()
+    // purchaseSubscription()
     setActiveSlide(pageNumber - 1);
    
     startAnimation();
@@ -288,33 +288,33 @@ const MainScreen = ({
   useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);
-    const checkTutorial = async () => {
-      // AsyncStorage.setItem('isTutorial', 'yes');
-      // handleSetSteps(0);
-      // handleSetSteps(0);
-      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+    // const checkTutorial = async () => {
+    //   // AsyncStorage.setItem('isTutorial', 'yes');
+    //   // handleSetSteps(0);
+    //   // handleSetSteps(0);
+    //   const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
 
-      if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
-        setFinishTutorial(true)
-        setTutorial({
-          visible: true,
-          step: 1,
-        });
-        setVisible(true);
-        setTimeout(() => {
-          setVisible(false);
-          setTutorial({
-            ...isTutorial,
-            step: isTutorial.step + 1,
-          });
-          setActiveStep(1)
-          handleSetSteps(1);
-        }, 5000);
-      } else if (activeStep > 3 && activeStep < 5) {
-        navigate('Library');
-      }
-    };
-    checkTutorial();
+    //   if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+    //     setFinishTutorial(true)
+    //     setTutorial({
+    //       visible: true,
+    //       step: 1,
+    //     });
+    //     setVisible(true);
+    //     setTimeout(() => {
+    //       setVisible(false);
+    //       setTutorial({
+    //         ...isTutorial,
+    //         step: isTutorial.step + 1,
+    //       });
+    //       setActiveStep(1)
+    //       handleSetSteps(1);
+    //     }, 5000);
+    //   } else if (activeStep > 3 && activeStep < 5) {
+    //     navigate('Library');
+    //   }
+    // };
+    // checkTutorial();
   }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {

@@ -92,7 +92,7 @@ function App({ userProfile }) {
       const res = await getStoryList();
       // // handleSetStory(res.data);
       setTimeout(() => {
-        navigate('Bottom');
+        navigate('Onboard');
       }, 500);
     } else {
       setTimeout(() => {
