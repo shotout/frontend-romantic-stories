@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Pressable,
+  Linking,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -39,8 +40,11 @@ import ModalEditGender from '../../layout/settings/modal-edit-gender';
 import ModalEditCharacter from '../../layout/settings/modal-edit-character';
 import ModalEditPartner from '../../layout/settings/modal-edit-partner';
 import ModalEditLanguage from '../../layout/settings/modal-edit-language';
+import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
+import { handlePayment } from '../../helpers/paywall';
+import { moderateScale } from 'react-native-size-matters';
 
 const SettingsPage = ({colorTheme}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
@@ -49,6 +53,7 @@ const SettingsPage = ({colorTheme}) => {
   const [showModalPartner, setShowModalPartner] = useState<boolean>(false);
   const [showModalName, setShowModalName] = useState<boolean>(false);
   const [showModalLanguage, setShowModalLanguage] = useState<boolean>(false);
+  const [showModalIcon, setShowModalIcon] = useState<boolean>(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [menu, setlistMenu] = useState([
     {
@@ -71,7 +76,7 @@ const SettingsPage = ({colorTheme}) => {
     {
       name: 'App Icon',
       icon: <AppiconSvg fill={bgTheme} />,
-      action: 'editProfile',
+      action: 'appIcon',
     },
     {
       name: 'Notifications',
@@ -116,11 +121,11 @@ const SettingsPage = ({colorTheme}) => {
           // alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View style={{marginTop: 30}}>
-          <View style={{marginTop: 40}}>
+        <View style={{marginTop: moderateScale(30)}}>
+          <View style={{marginTop: moderateScale(40)}}>
             <Text
               allowFontScaling={false}
-              style={{fontWeight: 'bold', textAlign: 'center'}}>
+              style={{fontWeight: 'bold', textAlign: 'center', fontSize: moderateScale(9)}}>
               John Smith • Noob • 10 XP
             </Text>
           </View>
@@ -196,6 +201,15 @@ const SettingsPage = ({colorTheme}) => {
       case 'Notifications':
         navigate('Notification');
         break;
+      case 'Change Categories':
+        navigate('Categories');
+        break;
+      case 'Subscription':
+          navigate('Subscriptions');
+          break;
+      case 'App Icon':
+        setShowModalIcon(true);
+        break;
       default:
         break;
     }
@@ -241,6 +255,12 @@ const SettingsPage = ({colorTheme}) => {
         height: Dimensions.get('window').height - 130,
         backgroundColor: bgTheme,
       }}>
+      <ModalChangeIcon
+        isVisible={showModalIcon}
+        onClose={() => {
+          setShowModalIcon(false);
+        }}
+      />
       <ModalEditName
         isVisible={showModalName}
         onClose={() => {
@@ -288,7 +308,7 @@ const SettingsPage = ({colorTheme}) => {
         {listMenuTwo()}
         <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
         <View>
-          <View style={{margin: 10}}>
+          {/* <View style={{margin: 10}}>
             <Text
               allowFontScaling={false}
               style={{marginLeft: 10, color: code_color.white}}>
@@ -312,22 +332,25 @@ const SettingsPage = ({colorTheme}) => {
                 Facebook
               </Text>
             </View>
-          </View>
-          <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
-          <View style={{margin: 10}}>
-            <Text
+          </View> */}
+          {/* <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} /> */}
+          <View style={{margin: 10, marginBottom: 40}}>
+          <TouchableOpacity onPress={() => Linking.openURL('Https://erotalesapp.com/privacy')} >
+          <Text
               allowFontScaling={false}
-              style={{marginLeft: 10, color: code_color.white}}>
+              style={{marginLeft: 10, marginBottom: 20, color: code_color.white}}>
               Privacy Policy
             </Text>
-            <View
-              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Linking.openURL('https://erotalesapp.com/terms')}
+             >
               <Text
                 allowFontScaling={false}
                 style={{marginLeft: 10, color: code_color.white}}>
                 Terms & Conditions
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

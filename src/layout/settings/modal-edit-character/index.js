@@ -144,10 +144,10 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
       <Text
         style={{
           color: code_color.black,
-          fontSize: 30,
+          fontSize: moderateScale(28),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
-          marginTop: 40,
+          marginTop: moderateScale(20),
           lineHeight: 50,
         }}>
         What should your character look like?
@@ -197,10 +197,10 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
           backgroundColor: code_color.yellow,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 52,
+          height: moderateScale(50),
           borderRadius: 10,
           width: '100%',
-          marginTop: 50,
+          marginTop: moderateScale(40),
           marginBottom: 10,
           display: dataAva ? undefined : 'none',
         }}

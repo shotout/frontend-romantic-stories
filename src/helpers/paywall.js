@@ -28,10 +28,9 @@ new Promise(async (resolve, reject) => {
           stringVendor = "offer_no_purchase_after_onboarding_paywall_2nd";
         }
       }
-      console.log("OPEN Purchasely", vendorId);
+      console.log("OPEN Purchasely", stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({
-        placementVendorId:
-          stringVendor || "in_app_paywall",
+        placementVendorId: "inapp_paywall_a",
         isFullscreen: true,
       });
       console.log("Purchasely result:", res.result);
@@ -72,6 +71,7 @@ new Promise(async (resolve, reject) => {
               // handlePayment(vendorId);
             }
           }
+         
           // await setSubcription({
           //   subscription_type: 1,
           //   purchasely_id: purchaseId,

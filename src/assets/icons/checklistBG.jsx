@@ -2,13 +2,14 @@ import * as React from 'react';
 import Svg, {Ellipse, Path} from 'react-native-svg';
 
 function SvgComponent(props) {
-  const {width = 37, height = 37, fill = '#fff', bg = '#5873FF'} = props;
+  const {width = 37, height = 37, fill = '#fff', bg = '#5873FF', style} = props;
   return (
     <Svg
       width={width}
       height={height}
       viewBox="0 0 37 37"
       fill="none"
+      style={style}
       xmlns="http://www.w3.org/2000/svg">
       <Ellipse cx="18.5001" cy="18.7621" rx="17.887" ry="17.8871" fill={bg} />
       <Path

@@ -48,6 +48,7 @@ import messaging from '@react-native-firebase/messaging';
 import { ONBOARDING_COMPLETE, eventTracking } from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { handlePayment } from '../../helpers/paywall';
+import { moderateScale } from 'react-native-size-matters';
 
 function RegisterScreen({
   handleSetProfile,
@@ -148,7 +149,6 @@ function RegisterScreen({
   };
 
   const onSubmit = async () => {
-    console.log(values);
     await notifee.requestPermission();
     try {
       const res = await postRegister(values);
@@ -163,7 +163,9 @@ function RegisterScreen({
       handlePayment()
       navigate('Bottom');
     } catch (error) {
+      handlePayment()
       checkDevice();
+      
     }
   };
   const checkDevice = async () => {
@@ -188,7 +190,7 @@ function RegisterScreen({
   const renderLayout = () => {
     if (stepRegister === 1) {
       return (
-        <View style={{justifyContent: 'center', flex: 0, marginTop: 80}}>
+        <View style={{justifyContent: 'center', flex: 0, marginTop: moderateScale(70)}}>
           <Register1
             setGender={text => {
               handleChange('gender', text), setStepRegister(stepRegister + 1);
@@ -257,7 +259,7 @@ function RegisterScreen({
   return (
     <View style={{backgroundColor: code_color.white, flex: 1}}>
       <StatusBar
-        barStyle={'light-content'}
+        barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <KeyboardAvoidingView
@@ -267,14 +269,14 @@ function RegisterScreen({
           <View
             style={{
               backgroundColor: code_color.headerBlack,
-              paddingTop: isIphoneXorAbove() ? 40 : 0,
+              paddingTop: isIphoneXorAbove() ? moderateScale(40) : 0,
             }}>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginHorizontal: 20,
-                marginTop: 20,
+                marginHorizontal: moderateScale(20),
+                marginTop: moderateScale(20),
               }}>
               {stepRegister > 1 ? (
                 <TouchableOpacity
@@ -288,7 +290,7 @@ function RegisterScreen({
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
-                  fontSize: 18,
+                  fontSize: moderateScale(18),
                   flex: 1,
                 }}>
                 {stepRegister === 1
@@ -356,10 +358,10 @@ function RegisterScreen({
             allowFontScaling={false}
             style={{
               color: code_color.blueDark,
-              fontSize: 32,
+              fontSize: moderateScale(30),
               fontFamily: 'Comfortaa-SemiBold',
               textAlign: 'center',
-              marginTop: 20,
+              marginTop: moderateScale(20),
             }}>
             {i18n.t(
               stepRegister === 1
@@ -372,7 +374,7 @@ function RegisterScreen({
             )}
           </Text>
           {renderLayout()}
-          <View style={{position: 'absolute', bottom: 15, width: '80%'}}>
+          <View style={{position: 'absolute', bottom: moderateScale(10), width: '80%'}}>
             {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => {
@@ -388,10 +390,10 @@ function RegisterScreen({
                   allowFontScaling={false}
                   style={{
                     color: code_color.grey,
-                    fontSize: 18,
+                    fontSize: moderateScale(18),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginVertical: 15,
+                    marginVertical: moderateScale(15),
                   }}>
                   {i18n.t(
                     stepRegister === 1
@@ -407,11 +409,11 @@ function RegisterScreen({
                   backgroundColor: code_color.yellow,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  height: 52,
-                  borderRadius: 12,
+                  height: moderateScale(52),
+                  borderRadius: moderateScale(12),
                   width: '100%',
-                  marginTop: 10,
-                  marginBottom: 10,
+                  marginTop: moderateScale(10),
+                  marginBottom: moderateScale(10),
                 }}
                 onPress={() => {
                   stepRegister === 8
@@ -436,10 +438,10 @@ function RegisterScreen({
                 <Text
                   style={{
                     color: code_color.grey,
-                    fontSize: 14,
+                    fontSize: moderateScale(14),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginTop: 10,
+                    marginTop: moderateScale(10),
                   }}>
                   {'Maybe later'}
                 </Text>

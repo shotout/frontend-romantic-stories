@@ -144,10 +144,10 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
       <Text
         style={{
           color: code_color.white,
-          fontSize: 30,
+          fontSize: moderateScale(30),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
-          marginTop: 40,
+          marginTop: moderateScale(10),
           lineHeight: 50,
         }}>
         What should your partner look like?
@@ -200,8 +200,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
           height: 52,
           borderRadius: 10,
           width: '100%',
-          marginTop: 50,
-          marginBottom: 10,
+          marginTop: moderateScale(50),
+          marginBottom: moderateScale(10),
           display: dataAva ? undefined : 'none',
         }}
         onPress={handleSubmit}

@@ -157,7 +157,7 @@ export default function QuotesContent({
             }}>
             {themeUser?.language_id === '2' ? item?.title : item?.title}
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigate('Media')}
             style={{
               padding: 10,
@@ -180,7 +180,7 @@ export default function QuotesContent({
               }}>
               Listen
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View />
@@ -362,7 +362,7 @@ export default function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: -200,
+                  marginBottom: -140,
                   width: 100,
                   height: 150,
                   left: '30%',
@@ -384,7 +384,7 @@ export default function QuotesContent({
                   resizeMode="contain"
                   style={{
                     width: '75%',
-                    height: 180,
+                    height: 140,
                   }}>
                   <View
                     style={{

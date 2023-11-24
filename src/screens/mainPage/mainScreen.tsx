@@ -64,6 +64,7 @@ import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import { handlePayment } from '../../helpers/paywall';
+// import * as RNIap from 'react-native-iap';
 
 const {width, height} = Dimensions.get('window');
 
@@ -81,6 +82,7 @@ const MainScreen = ({
   stepsTutorial,
   isPremium,
 }) => {
+  const [products, setProducts] = useState([]);
   const [activeStep, setActiveStep] = useState(0); 
   const [isTutorial, setTutorial] = useState({
     visible: false,
@@ -129,19 +131,22 @@ const MainScreen = ({
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
     },
   ]);
-  const onMomentoumScrollEnd = e => {
+  const onMomentoumScrollEnd = async (e) => {
     const offsetY = e.nativeEvent.contentOffset.y;
     const height = sizing.getDimensionHeight(2);
     const pageNumber = Math.min(
       Math.max(Math.floor(offsetY / height + 0.5) + 1, 0),
       dataBook?.length || 0
     );
-    console.log('Current :', dataBook?.length);
-    console.log('Current Page Number:', pageNumber);
     if (pageNumber === dataBook?.length - 1) {
-      setShowModalCongrats(true);
+      const data  = await AsyncStorage.getItem("isFirstTime");
+      if(data === 'yes'){
+      }else{
+        // setShowModalCongrats(true);
+        AsyncStorage.setItem("isFirstTime", "yes");
+      } 
     }
-
+    // purchaseSubscription()
     setActiveSlide(pageNumber - 1);
    
     startAnimation();
@@ -194,10 +199,10 @@ const MainScreen = ({
   const handleNext = () => {
     const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
     setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
-    handleSetSteps(activeStep + 1); 
+    handleSetSteps(stepsTutorial + 1); 
     if (activeStep === 2) {
       navigate('Library');
-    } else if (activeStep === 5) {
+    } else if (stepsTutorial === 5) {
       navigate('Share', {
         selectedContent:
           ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
@@ -205,8 +210,6 @@ const MainScreen = ({
         end: content.substring(30, 30 + 30),
       });
     }
-
-    
   };
 
   const handleTouchEnd = () => {
@@ -255,33 +258,63 @@ const MainScreen = ({
     } catch (error) {}
   };
   
+  // const initIAP = async () => {
+  //   try {
+  //     await RNIap.initConnection();
+  //   } catch (err) {
+  //     console.log('initConnection error:', err.message);
+  //   }
+  // };
+
+  // const fetchProducts = async () => {
+  //   try {
+  //     const result = await RNIap.getProducts(['your_subscription_product_id']);
+  //     setProducts(result);
+  //   } catch (err) {
+  //     console.warn(err.code, err.message);
+  //   }
+  // };
+
+  // const purchaseSubscription = async () => {
+  //   try {
+  //     const purchase = await RNIap.requestPurchase('unlock_story_1_week');
+  //     console.log('Subscription purchased:', purchase);
+  //     // Handle success, update UI, etc.
+  //   } catch (err) {
+  //     console.log('Subscription purchase error:', err.message);
+  //     // Handle error, show user a message, etc.
+  //   }
+  // };
   useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);
-    const checkTutorial = async () => {
-      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-    
-      if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
-        setFinishTutorial(true)
-        setTutorial({
-          visible: true,
-          step: 1,
-        });
-        setVisible(true);
-        setTimeout(() => {
-          setVisible(false);
-          setTutorial({
-            ...isTutorial,
-            step: isTutorial.step + 1,
-          });
-          setActiveStep(1)
-          handleSetSteps(1);
-        }, 5000);
-      } else if (activeStep > 3 && activeStep < 5) {
-        navigate('Library');
-      }
-    };
-    checkTutorial();
+    // const checkTutorial = async () => {
+    //   // AsyncStorage.setItem('isTutorial', 'yes');
+    //   // handleSetSteps(0);
+    //   // handleSetSteps(0);
+    //   const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+
+    //   if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+    //     setFinishTutorial(true)
+    //     setTutorial({
+    //       visible: true,
+    //       step: 1,
+    //     });
+    //     setVisible(true);
+    //     setTimeout(() => {
+    //       setVisible(false);
+    //       setTutorial({
+    //         ...isTutorial,
+    //         step: isTutorial.step + 1,
+    //       });
+    //       setActiveStep(1)
+    //       handleSetSteps(1);
+    //     }, 5000);
+    //   } else if (activeStep > 3 && activeStep < 5) {
+    //     navigate('Library');
+    //   }
+    // };
+    // checkTutorial();
   }, []);
 
   const renderFactItem = ({item, index, disableAnimation}) => {
@@ -450,8 +483,8 @@ const MainScreen = ({
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -507,10 +540,10 @@ const MainScreen = ({
               }}
               title={i18n.t('Next')}
               onPress={() => 
-                {
+               
                   
                   handleNext()
-                }
+                
                }
             />
           </View>

@@ -84,13 +84,14 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
     setIsSwipingLeft(false);
     setIsSwipingRight(false);
   };
+
   const renderProgress = () => <StepHeader currentStep={4} />;
   const renderTutorial = () => {
     if(stepsTutorial === 4){
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,

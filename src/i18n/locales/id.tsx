@@ -10,7 +10,7 @@ export default {
     bepartstory: 'Be part of the story',
     whatsname: 'What‘s your \n name?',
     usingyrname: 'Using your real name creates',
-    bttrexp: 'better experience',
+    bttrexp: 'better \n experience',
     wthstry: 'a with the story.',
     skipfrnw: 'Skip for now',
     continue: 'Continue',

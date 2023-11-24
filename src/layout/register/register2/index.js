@@ -5,18 +5,19 @@ import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
+import { moderateScale } from 'react-native-size-matters';
 
 export default function Register2({currentStep, name, changeText}) {
   return (
     <>
       <View
-        style={{ marginTop: 40, marginHorizontal: 20, }}>
+        style={{ marginTop: moderateScale(40), marginHorizontal: moderateScale(20), }}>
         <View style={{flexDirection: 'row', flex: 0, justifyContent: 'center' }}>
           <Text
           allowFontScaling={false}
             style={{
               color: code_color.blackDark,
-              fontSize: 16,
+              fontSize: moderateScale(16),
               fontFamily: 'Roboto',
               textAlign: 'center',
             }}>
@@ -25,7 +26,7 @@ export default function Register2({currentStep, name, changeText}) {
             allowFontScaling={false}
               style={{
                 color: code_color.blueDark,
-                fontSize: 16,
+                fontSize: moderateScale(16),
                 fontFamily: 'Roboto',
                 textAlign: 'center',
                 fontWeight: 'bold',
@@ -37,7 +38,7 @@ export default function Register2({currentStep, name, changeText}) {
             allowFontScaling={false}
               style={{
                 color: code_color.blackDark,
-                fontSize: 16,
+                fontSize: moderateScale(16),
                 fontFamily: 'Roboto',
                 textAlign: 'center',
               }}>
@@ -50,11 +51,11 @@ export default function Register2({currentStep, name, changeText}) {
           style={{
             borderColor: code_color.blueDark,
             color: code_color.blackDark,
-            borderWidth: 1,
-            borderRadius: 5,
-            padding: 10,
-            marginVertical: 30,
-            width: Dimensions.get('window').width - 60
+            borderWidth: moderateScale(1),
+            borderRadius: moderateScale(5),
+            padding: moderateScale(10),
+            marginVertical: moderateScale(30),
+            width: moderateScale(Dimensions.get('window').width - 60)
           }}
           placeholderTextColor={code_color.greyDefault}
           value={name}
