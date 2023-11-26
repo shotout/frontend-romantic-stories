@@ -104,6 +104,8 @@ const Library = ({userProfile, stepsTutorial}) => {
           position: 'absolute',
           top: isBottomBarVisible === 'Settings' ? -70 : -300,
           width: '100%',
+          height: '100%',
+          flex: 1
         }}>
         <MainScreen pressScreen={() => handleSomeAction('Main')} />
       </View>

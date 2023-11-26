@@ -5,45 +5,18 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Shortstory</string>
+	<string>Erotales</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>first</key>
+			<key>default</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>first</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>second</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>third</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>fourth</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>fourth</string>
+					<string>default</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -57,11 +30,29 @@
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
-			<key>sixth</key>
+			<key>first</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>sixth</string>
+					<string>first</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>fourth</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>fourth</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>second</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -75,11 +66,20 @@
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
-			<key>default</key>
+			<key>sixth</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>default</string>
+					<string>sixth</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>third</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -129,7 +129,7 @@
 	<key>FacebookClientToken</key>
 	<string>7f9a55259a5d5e7521c2c9f63b997ae8</string>
 	<key>FacebookDisplayName</key>
-	<string>Shortstory</string>
+	<string>Erotales</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>itms-apps</string>

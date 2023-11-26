@@ -33,6 +33,7 @@ import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
 import {getListLanguange} from '../../../shared/request';
 import {BACKEND_URL} from '../../../shared/static';
+import { moderateScale } from 'react-native-size-matters';
 
 export default function Register7({languange}) {
   const [lang, setLang] = useState(null);
@@ -47,7 +48,7 @@ export default function Register7({languange}) {
       const avatar = await getListLanguange();
       setDataLang(avatar?.data);
     } catch (error) {
-      // alert(JSON.stringify(error));
+     
     }
   };
   return (
@@ -60,17 +61,17 @@ export default function Register7({languange}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: moderateScale(40),
+          borderBottomLeftRadius: moderateScale(40),
         }}>
         <Text
         allowFontScaling={false}
           style={{
             color: code_color.blueDark,
-            fontSize: 32,
+            fontSize: moderateScale(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 20,
+            marginTop: moderateScale(20),
           }}>
           {'Select the language \n of your stories'}
         </Text>
@@ -78,10 +79,10 @@ export default function Register7({languange}) {
         allowFontScaling={false}
           style={{
             color: code_color.grey,
-            fontSize: 14,
-            marginHorizontal: 10,
+            fontSize: moderateScale(13),
+            marginHorizontal: moderateScale(10),
             textAlign: 'center',
-            marginVertical: 20,
+            marginVertical: moderateScale(20),
           }}>
           {
             'Choose your content language. Many stories are only available in specific languages.'
@@ -92,7 +93,7 @@ export default function Register7({languange}) {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            marginTop: 80,
+            marginTop: moderateScale(50),
           }}>
           {dataLang.map((item, idx) => {
             return (
@@ -108,26 +109,28 @@ export default function Register7({languange}) {
                       lang === item.id
                         ? {
                             backgroundColor: code_color.splash,
-                            borderRadius: 35,
-                            width: 65,
-                            padding: 10,
-                            height: 65,
+                            borderRadius: moderateScale(35),
+                            width: moderateScale(60),
+                            padding: moderateScale(10),
+                            height: moderateScale(60),
                             alignItems: 'center',
                             justifyContent: 'center',
+                            marginTop: idx === 0 ? 0 : 20,
                           }
                         : {
                             backgroundColor: code_color.grey,
-                            borderRadius: 35,
-                            width: 60,
-                            padding: 10,
-                            height: 60,
+                            borderRadius: moderateScale(35),
+                            width: moderateScale(60),
+                            padding: moderateScale(10),
+                            height: moderateScale(60),
                             alignItems: 'center',
                             justifyContent: 'center',
+                            marginTop: idx === 1 ?  50 : 0
                           }
                     }>
                     <Image
                       resizeMode="contain"
-                      style={{width: 60, height: 60}}
+                      style={{width: moderateScale(60), height: moderateScale(60)}}
                       source={{uri: `${BACKEND_URL}${item.image.url}`}}
                     />
                   </View>
@@ -136,10 +139,10 @@ export default function Register7({languange}) {
                     style={{
                       color:
                         lang === item.id ? code_color.splash : code_color.grey,
-                      fontSize: 14,
+                      fontSize: moderateScale(13),
                       fontFamily: 'Roboto',
                       textAlign: 'center',
-                      marginTop: 10,
+                      marginTop: moderateScale(20),
                     }}>
                     {item.name}
                   </Text>
@@ -148,7 +151,7 @@ export default function Register7({languange}) {
                   style={{
                     borderColor: code_color.grey,
                     borderWidth: idx === 0 ? 1 : 0,
-                    marginVertical: 10,
+                    marginVertical: moderateScale(20),
                   }}
                 />
               </View>

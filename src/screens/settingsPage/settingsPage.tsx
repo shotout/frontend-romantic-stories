@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Pressable,
+  Linking,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -42,6 +43,8 @@ import ModalEditLanguage from '../../layout/settings/modal-edit-language';
 import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
+import { handlePayment } from '../../helpers/paywall';
+import { moderateScale } from 'react-native-size-matters';
 
 const SettingsPage = ({colorTheme}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
@@ -118,11 +121,11 @@ const SettingsPage = ({colorTheme}) => {
           // alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View style={{marginTop: 30}}>
-          <View style={{marginTop: 40}}>
+        <View style={{marginTop: moderateScale(30)}}>
+          <View style={{marginTop: moderateScale(40)}}>
             <Text
               allowFontScaling={false}
-              style={{fontWeight: 'bold', textAlign: 'center'}}>
+              style={{fontWeight: 'bold', textAlign: 'center', fontSize: moderateScale(9)}}>
               John Smith • Noob • 10 XP
             </Text>
           </View>
@@ -201,6 +204,9 @@ const SettingsPage = ({colorTheme}) => {
       case 'Change Categories':
         navigate('Categories');
         break;
+      case 'Subscription':
+          navigate('Subscriptions');
+          break;
       case 'App Icon':
         setShowModalIcon(true);
         break;
@@ -302,7 +308,7 @@ const SettingsPage = ({colorTheme}) => {
         {listMenuTwo()}
         <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
         <View>
-          <View style={{margin: 10}}>
+          {/* <View style={{margin: 10}}>
             <Text
               allowFontScaling={false}
               style={{marginLeft: 10, color: code_color.white}}>
@@ -326,22 +332,25 @@ const SettingsPage = ({colorTheme}) => {
                 Facebook
               </Text>
             </View>
-          </View>
-          <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
-          <View style={{margin: 10}}>
-            <Text
+          </View> */}
+          {/* <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} /> */}
+          <View style={{margin: 10, marginBottom: 40}}>
+          <TouchableOpacity onPress={() => Linking.openURL('Https://erotalesapp.com/privacy')} >
+          <Text
               allowFontScaling={false}
-              style={{marginLeft: 10, color: code_color.white}}>
+              style={{marginLeft: 10, marginBottom: 20, color: code_color.white}}>
               Privacy Policy
             </Text>
-            <View
-              style={{flexDirection: 'row', margin: 5, alignItems: 'center'}}>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => Linking.openURL('https://erotalesapp.com/terms')}
+             >
               <Text
                 allowFontScaling={false}
                 style={{marginLeft: 10, color: code_color.white}}>
                 Terms & Conditions
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

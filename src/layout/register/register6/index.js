@@ -31,6 +31,7 @@ import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
 import { getListTheme } from '../../../shared/request';
 import ChecklistSvg from './../../../assets/icons/checklist';
+import { moderateScale } from 'react-native-size-matters';
 
 export default function Register5({gender, setTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
@@ -81,55 +82,45 @@ export default function Register5({gender, setTheme}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: moderateScale(50),
+          borderBottomLeftRadius: moderateScale(50),
         }}>
         <Text
         allowFontScaling={false}
           style={{
             color: code_color.blueDark,
-            fontSize: 32,
+            fontSize: moderateScale(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 20,
+            marginTop: moderateScale(15),
           }}>
           {'Choose color \n theme'}
         </Text>
 
         <View
           style={{
-            margin: 20,
-            marginHorizontal: 100,
+            margin: moderateScale(20),
+            marginHorizontal: moderateScale(100),
             borderWidth: 0.5,
             borderColor: '#D9D9D9',
             // padding: 10,
             backgroundColor: code_color.white,
           }}>
-          <Text allowFontScaling={false} style={{fontSize: 9, paddingHorizontal: 10, paddingTop: 10}}>
+          <Text allowFontScaling={false} style={{fontSize: moderateScale(9), paddingHorizontal: (10), paddingTop: (10)}}>
             Fistful of Reefer: A Pulpy Action Series from Schism 8
           </Text>
           <View
             style={{
               borderWidth: 0.5,
               borderColor: colorsDefault,
-              marginVertical: 10,
+              marginVertical: moderateScale(10),
             }}
           />
           <Text allowFontScaling={false}
-            style={{fontSize: 9, textAlign: 'justify', paddingHorizontal: 10}}>
+            style={{fontSize: moderateScale(7.5), textAlign: 'justify', paddingHorizontal: moderateScale(10)}}>
             {' '}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed
-            fringilla orci metus ac ex. Nunc pharetra, lacus in egestas
-            vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et
-            ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo
-            congue, aliquet tellus eget, consectetur metus.
-            {'\n'} In hac habitasse platea dictumst. Aenean in congue orci.
-            Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum
-            primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut
-            ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus
-            libero. Curabitur porttitor lorem non felis porta, ut ultricies sem
-            maximus. et, dapibus libero. Curabitur.
+            Srishti and Sameer were childhood friends. Both were neighbors till class 7. After that, Srishti's parents shifted to another side of the same city. They both cried a lot that day while she was leaving. They were still in touch with one another.
+            Even their friendship was popular among students and teachers. They had played together. They learned things together. They went to the same preschool, the same school. Srishti was crying on her first day, but Sameer made her smile. They both had the same interests in painting. They had shared many moments. Those moments were very special to them.
           </Text>
 
           <Image
@@ -150,7 +141,7 @@ export default function Register5({gender, setTheme}) {
             style={{
               borderWidth: 0.5,
               borderColor: code_color.grey,
-              marginBottom: 2,
+              marginBottom: moderateScale(1),
             }}
           />
 
@@ -159,7 +150,7 @@ export default function Register5({gender, setTheme}) {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 10,
+              marginTop: moderateScale(5),
             }}>
             {menu.map((item, i) => {
               return (
@@ -169,8 +160,8 @@ export default function Register5({gender, setTheme}) {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <item.image width={15} height={15} fill={colorsDefault} />
-                  <Text allowFontScaling={false} style={{fontSize: 7}}>{item.name}</Text>
+                  <item.image width={moderateScale(13)} height={moderateScale(13)} fill={colorsDefault} />
+                  <Text allowFontScaling={false} style={{fontSize: moderateScale(6)}}>{item.name}</Text>
                 </View>
               );
             })}
@@ -180,7 +171,7 @@ export default function Register5({gender, setTheme}) {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            marginHorizontal: 20,
+            marginHorizontal: moderateScale(20),
           }}>
           {colorsBg.map((item, i) => {
             return (
@@ -191,12 +182,12 @@ export default function Register5({gender, setTheme}) {
                 }}
                 style={{
                   backgroundColor: item.theme_color,
-                  width: 30,
-                  height: 30,
-                  borderRadius: 20,
+                  width: moderateScale(30),
+                  height: moderateScale(30),
+                  borderRadius: moderateScale(20),
                   borderWidth: 1,
                   borderColor: code_color.grey,
-                  marginHorizontal: 10,
+                  marginHorizontal: moderateScale(10),
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}

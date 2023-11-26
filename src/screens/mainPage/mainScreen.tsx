@@ -63,8 +63,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
-import {handlePayment} from '../../helpers/paywall';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
+import { handlePayment } from '../../helpers/paywall';
+// import * as RNIap from 'react-native-iap';
+
+const {width, height} = Dimensions.get('window');
 
 const MainScreen = ({
   userProfile,
@@ -81,6 +84,7 @@ const MainScreen = ({
   isPremium,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [products, setProducts] = useState([]);
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
@@ -167,7 +171,7 @@ const MainScreen = ({
       clearTimeout(timeoutLove);
       setIsLoveAnimate(false);
     }
-
+    // purchaseSubscription()
     setActiveSlide(pageNumber - 1);
 
     startAnimation();
@@ -279,15 +283,14 @@ const MainScreen = ({
       }
     } catch (error) {}
   };
-
-  useEffect(() => {
+  useEffect(async () => {
     handleThemeAvatar();
     // handleSetSteps(0);
     const checkTutorial = async () => {
       // AsyncStorage.setItem('isTutorial', 'yes');
       // handleSetSteps(0);
       // handleSetSteps(0);
-      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+    const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
 
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true);
@@ -308,7 +311,7 @@ const MainScreen = ({
       } else if (activeStep > 3 && activeStep < 5) {
         navigate('Library');
       }
-    };
+    }
     checkTutorial();
   }, []);
 
@@ -381,7 +384,7 @@ const MainScreen = ({
           return (
             <View
               style={{
-                flex: 1,
+                flex: 0,
                 alignItems: 'center',
                 backgroundColor: backgroundColor,
                 paddingTop: 20,

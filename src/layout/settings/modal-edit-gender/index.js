@@ -87,22 +87,22 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
     <View
       style={{
         padding: 25,
-        paddingTop: 10,
+        paddingTop: moderateScale(5),
         height: '100%',
         backgroundColor: code_color.white,
       }}>
       <Text
         style={{
           color: code_color.blueDark,
-          fontSize: 36,
+          fontSize: moderateScale(30),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
-          marginTop: 40,
+          marginTop: moderateScale(20),
           lineHeight: 50,
         }}>
         What’s your gender?
       </Text>
-      <View style={{alignItems: 'center', marginTop: 30}}>
+      <View style={{alignItems: 'center', marginTop: moderateScale(25)}}>
         <Register1
           setGender={data => setGender(data)}
           selectedGender={gender}
@@ -113,7 +113,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
           style={{
             color: code_color.grey,
             fontWeight: '400',
-            fontSize: 18,
+            fontSize: moderateScale(17),
             textAlign: 'center',
             marginVertical: 20,
           }}>
@@ -125,10 +125,10 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
           backgroundColor: code_color.yellow,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 52,
+          height: moderateScale(45),
           borderRadius: 10,
           width: '100%',
-          marginTop: 10,
+          marginTop: moderateScale(7),
           marginBottom: 10,
         }}
         onPress={handleSubmit}

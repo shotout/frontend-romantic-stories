@@ -4,6 +4,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
 export default function Button({style, onPress, title, colorsText, image}) {
   return (
@@ -17,11 +18,11 @@ export default function Button({style, onPress, title, colorsText, image}) {
                 backgroundColor: code_color.yellow,
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: 52,
-                margin: 20,
-                borderRadius: 12,
+                height: moderateScale(52),
+                margin: moderateScale(20),
+                borderRadius: moderateScale(12),
                 position: 'absolute',
-                bottom: 20,
+                bottom: moderateScale(20),
                 width: '90%',
               }
         }>
@@ -29,7 +30,7 @@ export default function Button({style, onPress, title, colorsText, image}) {
           {image}
         <Text
           allowFontScaling={false}
-          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: 15, color: !!colorsText ? colorsText : code_color.black}}>
+          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: moderateScale(14), color: !!colorsText ? colorsText : code_color.black}}>
           {title}
         </Text>
           </View>
