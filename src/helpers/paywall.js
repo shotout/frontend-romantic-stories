@@ -4,7 +4,7 @@ import store from "../store/configure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { STATIC_ONBOARD } from "../shared/static";
-
+import { handleSetPremium } from "../store/defaultState/actions";
 
 export const handlePayment = async (vendorId, cb) =>
 new Promise(async (resolve, reject) => {
@@ -36,8 +36,10 @@ new Promise(async (resolve, reject) => {
       console.log("Purchasely result:", res.result);
       const user = store.getState().defaultState.userProfile;
       console.log("Check user data purchase:", user);
+      store.dispatch(handleSetPremium(true))
       switch (res.result) {
         case ProductResult.PRODUCT_RESULT_PURCHASED:
+          store.dispatch(handleSetPremium(true))
           console.log("FINISH PURCHASED:", user.token);
           if (user.token) {
             // await setSubcription({

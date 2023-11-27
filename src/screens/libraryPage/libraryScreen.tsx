@@ -60,6 +60,7 @@ import StepHeader from '../../layout/step/stepHeader';
 import ModalShareStory from '../../components/modal-share-story';
 import ModalNewStory from '../../components/modal-new-story';
 import * as IAP from 'react-native-iap'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LibraryScreen = ({
   colorTheme,
@@ -139,10 +140,11 @@ const LibraryScreen = ({
       console.log('Products:', products);
       IAP.requestPurchase({sku: 'unlock_story_1_week_only'})
       .then((result) => {
-          alert('transaction requested')       //this never runs
+        AsyncStorage.setItem('subscribtions', 'unlock_story_1_week_only')
+               //this never runs
       })
       .catch((response) => {
-          alert(response)     //this also never runs
+          alert('apa ini'+response)     //this also never runs
       });
     }).catch((error) => {
       alert(error)
