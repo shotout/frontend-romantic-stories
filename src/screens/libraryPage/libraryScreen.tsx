@@ -58,6 +58,8 @@ import {moderateScale} from 'react-native-size-matters';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import StepHeader from '../../layout/step/stepHeader';
 import ModalShareStory from '../../components/modal-share-story';
+import ModalNewStory from '../../components/modal-new-story';
+import * as IAP from 'react-native-iap'
 
 const LibraryScreen = ({
   colorTheme,
@@ -80,6 +82,79 @@ const LibraryScreen = ({
   const [listLibrary, setListLibrary] = useState([]);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [showModalNewStory, setShowModalNewStory] = useState(false);
+  const [products, setProducts] = useState([]);
+  const productIds = ['unlock_story_1_week_only',];
+  // useEffect(() => {
+  //   const initializeConnection = async () => {
+  //     try {
+  //       await initConnection();
+  //       if (Platform.OS === "android") {
+  //         await flushFailedPurchasesCachedAsPendingAndroid();
+  //       }
+  //     } catch (error) {
+  //       console.error("An error occurred", error.message);
+  //     }
+  //   }
+  //   const purchaseUpdate = purchaseUpdatedListener(
+  //     async (purchase) => {
+  //       const receipt = purchase.transactionReceipt;
+
+  //       if (receipt) {
+  //         try {
+  //           await finishTransaction({ purchase, isConsumable: true });
+  //         } catch (error) {
+  //           console.error("An error occurred", error.message);
+  //         }
+  //       }
+  //     });
+
+  //   const purchaseError = purchaseErrorListener((error) =>
+  //     console.error('Purchase error', error.message));
+  //   initializeConnection();
+  //   new purchaseUpdate();
+  //   new purchaseError();
+  //   fetchProducts();
+  //   return () => {
+  //     endConnection();
+  //     purchaseUpdate.remove();
+  //     purchaseError.remove();
+  //   }
+  // }, []);
+  // const fetchProducts = async () => {
+  //   try {
+  //     const products = await getProducts({
+  //       skus: Platform.select({
+  //         ios: ['unlock_story_1_week_only'],
+  //         android: ['com.rniap.product100', 'com.rniap.product200'],
+  //       })
+  //     });
+  //     setProducts(products);
+  //   } catch (error) {
+  //     console.error("Error occurred while fetching products", error.message);
+  //   }
+  // };
+  const makePurchase = async (sku) => {
+    IAP.getProducts({skus: ['unlock_story_1_week_only']}).then((products) => {
+      console.log('Products:', products);
+      IAP.requestPurchase({sku: 'unlock_story_1_week_only'})
+      .then((result) => {
+          alert('transaction requested')       //this never runs
+      })
+      .catch((response) => {
+          alert(response)     //this also never runs
+      });
+    }).catch((error) => {
+      alert(error)
+      // console.log('Error fetching products:', JSON.st error);
+    });
+    // try {
+    //   requestPurchase({ sku })
+    // } catch (error) {
+    //   console.error("Error making purchase", error.message);
+    // }
+  }
+
   const renderCollect = item => (
     <View
       style={{
@@ -359,13 +434,30 @@ const LibraryScreen = ({
             setSharedStory(null);
           }}
         />
+         <ModalNewStory
+            isVisible={showModalNewStory}
+            onClose={() => setShowModalNewStory(false)}
+            onWatchAds={() => {
+              setShowModalNewStory(false);
+              setShowModal(true);
+            }}
+            onUnlock={() => {
+              setShowModalNewStory(false);
+              makePurchase('unlock_story_1_week_only');
+            }}
+            onGetUnlimit={() => {
+              setShowModalNewStory(false);
+
+              // setShowModalSuccessPurchase(true);
+            }}
+          />
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             marginHorizontal: 10,
           }}>
-          <Pressable onPress={() => setShowModalNew(true)}>
+          <Pressable onPress={() => setShowModalNewStory(true)}>
             <Image source={libraryAdd} />
           </Pressable>
 
