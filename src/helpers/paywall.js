@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { STATIC_ONBOARD } from "../shared/static";
 import { handleSetPremium } from "../store/defaultState/actions";
+import * as IAP from 'react-native-iap'
 
 export const handlePayment = async (vendorId, cb) =>
 new Promise(async (resolve, reject) => {
@@ -88,3 +89,22 @@ new Promise(async (resolve, reject) => {
       console.log("error payment:", err);
     }
   });
+
+export const handleNativePayment = async(sku) => {
+    IAP.getProducts({skus: ['unlock_story_1_week_only']}).then((products) => {
+      console.log('Products:', products);
+      IAP.requestPurchase({sku: 'unlock_story_1_week_only'})
+      .then((result) => {
+        AsyncStorage.setItem('subscribtions', 'unlock_story_1_week_only')
+               //this never runs
+      })
+      .catch((response) => {
+          alert('apa ini'+response)     //this also never runs
+      });
+    }).catch((error) => {
+      alert(error)
+      // console.log('Error fetching products:', JSON.st error);
+    });
+ 
+  
+}

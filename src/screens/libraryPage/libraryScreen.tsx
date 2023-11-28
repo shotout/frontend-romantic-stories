@@ -59,8 +59,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import StepHeader from '../../layout/step/stepHeader';
 import ModalShareStory from '../../components/modal-share-story';
 import ModalNewStory from '../../components/modal-new-story';
-import * as IAP from 'react-native-iap'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { handleNativePayment } from '../../helpers/paywall';
 
 const LibraryScreen = ({
   colorTheme,
@@ -135,27 +134,7 @@ const LibraryScreen = ({
   //     console.error("Error occurred while fetching products", error.message);
   //   }
   // };
-  const makePurchase = async (sku) => {
-    IAP.getProducts({skus: ['unlock_story_1_week_only']}).then((products) => {
-      console.log('Products:', products);
-      IAP.requestPurchase({sku: 'unlock_story_1_week_only'})
-      .then((result) => {
-        AsyncStorage.setItem('subscribtions', 'unlock_story_1_week_only')
-               //this never runs
-      })
-      .catch((response) => {
-          alert('apa ini'+response)     //this also never runs
-      });
-    }).catch((error) => {
-      alert(error)
-      // console.log('Error fetching products:', JSON.st error);
-    });
-    // try {
-    //   requestPurchase({ sku })
-    // } catch (error) {
-    //   console.error("Error making purchase", error.message);
-    // }
-  }
+ 
 
   const renderCollect = item => (
     <View
@@ -445,7 +424,7 @@ const LibraryScreen = ({
             }}
             onUnlock={() => {
               setShowModalNewStory(false);
-              makePurchase('unlock_story_1_week_only');
+              handleNativePayment('unlock_story_1_week_only')
             }}
             onGetUnlimit={() => {
               setShowModalNewStory(false);
