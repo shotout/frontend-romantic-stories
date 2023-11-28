@@ -13,4 +13,6 @@ export let code_color = {
   purple: '#604A9E',
   blackDark: '#2C3439',
   pink: '#ED5267',
+  green: '#009A37',
+  red: '#ED5267'
 };

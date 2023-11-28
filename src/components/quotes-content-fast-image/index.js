@@ -22,6 +22,7 @@ import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
 import {navigate, navigationRef} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme} from '../../shared/request';
+import ModalAudioUnlock from '../modal-audio-unlock';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -40,6 +41,7 @@ export default function QuotesContent({
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
+  const [show, setShow] = useState(false)
 
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
@@ -97,16 +99,10 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
-      {/* <ModalShare
-        isVisible={showModalShare}
-        onClose={() => setShowModalShare(false)}
-        selectedContent={selectedText}
-        start={contentData.substring(
-          startEndText.start - 30,
-          startEndText.start,
-        )}
-        end={contentData.substring(startEndText.end, startEndText.end + 30)}
-      /> */}
+      <ModalAudioUnlock
+        isVisible={show}
+        onClose={() => setShow(false)}
+      />
       <Animated.View
         style={{
           height: '100%',
@@ -161,7 +157,9 @@ export default function QuotesContent({
             {themeUser?.language_id === '2' ? item?.title : item?.title}
           </Text>
           <TouchableOpacity
-            onPress={() => navigate('Media')}
+            onPress={() => 
+              
+             setShow(true)}
             style={{
               padding: 10,
               borderRadius: 10,

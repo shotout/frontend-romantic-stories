@@ -28,7 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
 
 function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
-  const [selectIcon, setSelectIcon] = useState('default');
+  const [selectIcon, setSelectIcon] = useState('first');
   const [selectedIcon, setSelectedIcon] = useState('');
   const [showModalUnlock, setShowModalUnlock] = useState(false);
 
