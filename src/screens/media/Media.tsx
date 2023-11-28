@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
-import TrackPlayer, {useProgress, useTrackPlayerEvents, Event, State} from 'react-native-track-player';
+import TrackPlayer, {
+  useProgress,
+  useTrackPlayerEvents,
+  Event,
+  State,
+} from 'react-native-track-player';
 
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -19,6 +24,7 @@ import Pause from '../../assets/icons/pause';
 import Next5 from '../../assets/icons/next5';
 import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
+import {sizing} from '../../shared/styling';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
   const [play, setPlay] = useState(false);
@@ -57,8 +63,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
   const playing = async () => {
     try {
       if (play) {
-          await TrackPlayer.play();
-          setTrackInfo()
+        await TrackPlayer.play();
+        setTrackInfo();
       } else {
         await TrackPlayer.pause();
       }
@@ -66,9 +72,9 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       console.error('Error handling playback:', error);
     }
   };
-  
+
   useEffect(() => {
-      playing();
+    playing();
   }, [play]);
 
   async function setTrackInfo() {
@@ -76,7 +82,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
     const info = await TrackPlayer.getTrack(currentTrack);
     setInfo(info);
   }
- 
+
   return (
     <LinearGradient
       colors={['#4c669f', '#3b5998', '#192f6a']}
@@ -94,8 +100,13 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       <View>
         <Image
           source={bgGetUnlimit}
-          resizeMode="contain"
-          style={{width: 300, height: 300}}
+          resizeMode="cover"
+          style={{
+            width: sizing.getDimensionWidth(0.9),
+            height: sizing.getDimensionWidth(0.9),
+            borderRadius: 8,
+            marginBottom: 40,
+          }}
         />
         <Text
           allowFontScaling={false}
@@ -120,8 +131,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#B2B6BB"
           thumbTintColor="#fff"
-          onValueChange={async (value) => {
-          
+          onValueChange={async value => {
             await TrackPlayer.seekTo(value);
           }}
         />
@@ -159,7 +169,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
           <Prev5 style={{marginHorizontal: 5}} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() =>     setPlay((prev) => !prev)}>
+        <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
           <Pause style={{marginHorizontal: 40}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>

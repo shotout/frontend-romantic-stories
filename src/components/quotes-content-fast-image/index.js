@@ -41,7 +41,7 @@ export default function QuotesContent({
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
@@ -99,10 +99,7 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
-      <ModalAudioUnlock
-        isVisible={show}
-        onClose={() => setShow(false)}
-      />
+      <ModalAudioUnlock isVisible={show} onClose={() => setShow(false)} />
       <Animated.View
         style={{
           height: '100%',
@@ -157,9 +154,8 @@ export default function QuotesContent({
             {themeUser?.language_id === '2' ? item?.title : item?.title}
           </Text>
           <TouchableOpacity
-            onPress={() => 
-              
-             setShow(true)}
+            // onPress={() => setShow(true)}
+            onPress={() => navigate('Media')}
             style={{
               padding: 10,
               borderRadius: 10,

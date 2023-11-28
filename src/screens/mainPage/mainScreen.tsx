@@ -55,6 +55,7 @@ import {
   getStoryList,
 } from '../../shared/request';
 import ModalStoryUnlock from '../../components/modal-story-unlock';
+import * as Animatable from 'react-native-animatable';
 import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
@@ -64,10 +65,9 @@ import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
-import { handlePayment } from '../../helpers/paywall';
+import {handlePayment} from '../../helpers/paywall';
+import {Step1, Step2} from '../../layout/tutorial';
 // import * as RNIap from 'react-native-iap';
-
-const {width, height} = Dimensions.get('window');
 
 const MainScreen = ({
   userProfile,
@@ -228,6 +228,9 @@ const MainScreen = ({
     handleSetSteps(stepsTutorial + 1);
     if (activeStep === 2) {
       navigate('Library');
+      // setTimeout(() => {
+      //   navigate('Media');
+      // }, 2000);
     } else if (stepsTutorial === 5) {
       navigate('Share', {
         selectedContent:
@@ -283,16 +286,16 @@ const MainScreen = ({
       }
     } catch (error) {}
   };
-  useEffect(async () => {
+  useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);
+    // AsyncStorage.setItem('isTutorial', 'yes');
     const checkTutorial = async () => {
-      // AsyncStorage.setItem('isTutorial', 'yes');
+      AsyncStorage.setItem('isTutorial', 'yes');
       // handleSetSteps(0);
-      // handleSetSteps(0);
-    const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+      const isFinishTutor = await AsyncStorage.getItem('isTutorial');
 
-      if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+      if (isFinishTutor === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true);
         setTutorial({
           visible: true,
@@ -311,7 +314,7 @@ const MainScreen = ({
       } else if (activeStep > 3 && activeStep < 5) {
         navigate('Library');
       }
-    }
+    };
     checkTutorial();
   }, []);
 
@@ -400,8 +403,8 @@ const MainScreen = ({
 
   useEffect(() => {
     async function fetchData() {
-      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-      if (isFinishTutorial === 'yes') {
+      const isFinishTutor = await AsyncStorage.getItem('isTutorial');
+      if (isFinishTutor === 'yes') {
         setFinishTutorial(true);
       } else {
         setFinishTutorial(false);
@@ -429,7 +432,10 @@ const MainScreen = ({
                 flex: 1,
                 alignItems: 'center',
               }}>
-              <Image
+              <Animatable.Image
+                animation={'bounceInUp'}
+                delay={0}
+                duration={4000}
                 source={imgBgAvaTips}
                 resizeMode="contain"
                 style={{width: '80%', height: '100%'}}
@@ -477,17 +483,24 @@ const MainScreen = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text
+                  <Animatable.Text
+                    delay={600}
+                    animation={'fadeInUp'}
+                    duration={1300}
                     style={{
                       color: '#5873FF',
                       fontSize: 30,
                       fontWeight: 'bold',
                       textAlign: 'center',
                       fontFamily: 'Comfortaa-SemiBold',
+                      marginBottom: 50,
                     }}>
                     {'Hey, John\nYou’re all set!'}
-                  </Text>
-                  <Text
+                  </Animatable.Text>
+                  <Animatable.Text
+                    delay={2600}
+                    animation={'fadeIn'}
+                    duration={2000}
                     style={{
                       fontSize: 24,
                       textAlign: 'center',
@@ -495,7 +508,7 @@ const MainScreen = ({
                       marginTop: 10,
                     }}>
                     {"Let's show you how \nEroTales works..."}
-                  </Text>
+                  </Animatable.Text>
                 </ImageBackground>
               </View>
             </ImageBackground>
@@ -516,7 +529,12 @@ const MainScreen = ({
               backgroundColor: 'rgba(0,0,0,0.3)',
             }}>
             {renderProgress()}
-            <View
+            {activeStep === 1 ? (
+              <Step1 handleNext={handleNext} />
+            ) : (
+              <Step2 handleNext={handleNext} />
+            )}
+            {/* <View
               style={{
                 backgroundColor: '#3F58DD',
                 borderRadius: 20,
@@ -542,7 +560,10 @@ const MainScreen = ({
                   top: -100,
                 }}
               />
-              <Text
+              <Animatable.Text
+                delay={200}
+                duration={1000}
+                animation={'fadeIn'}
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
@@ -551,25 +572,46 @@ const MainScreen = ({
                   marginBottom: 20,
                 }}>
                 {activeStep === 1 && activeStep != 5
-                  ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
-              \nUnlock additional Stories\nanytime!`
+                  ? 'Discover a brand new\nEroTales Story every day.\nHungry for more?'
                   : activeStep === 5 || stepsTutorial == 5
-                  ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
-                  : 'Like & save your \nfavorite Stories.'}
-              </Text>
-
-              <Button
+                  ? 'Save & transform parts of the\nStory into a Custom'
+                  : 'Like & save your'}
+              </Animatable.Text>
+              <Animatable.Text
+                delay={1200}
+                duration={1000}
+                animation={'fadeIn'}
                 style={{
-                  backgroundColor: code_color.yellow,
-                  padding: 10,
-                  paddingHorizontal: 40,
-                  borderRadius: 20,
-                  marginVertical: 10,
-                }}
-                title={i18n.t('Next')}
-                onPress={() => handleNext()}
-              />
-            </View>
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginBottom: 20,
+                }}>
+                {activeStep === 1 && activeStep != 5
+                  ? 'Unlock additional Stories\nanytime!'
+                  : activeStep === 5 || stepsTutorial == 5
+                  ? 'Quote by selecting it.'
+                  : 'favorite Stories.'}
+              </Animatable.Text>
+
+              <Animatable.View
+                delay={2000}
+                animation={'fadeIn'}
+                duration={1000}>
+                <Button
+                  style={{
+                    backgroundColor: code_color.yellow,
+                    padding: 10,
+                    paddingHorizontal: 40,
+                    borderRadius: 20,
+                    marginVertical: 10,
+                  }}
+                  title={i18n.t('Next')}
+                  onPress={() => handleNext()}
+                />
+              </Animatable.View>
+            </View> */}
           </SafeAreaView>
         );
       }
