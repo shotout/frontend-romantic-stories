@@ -23,6 +23,7 @@ import {navigate, navigationRef} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
+import { moderateScale } from 'react-native-size-matters';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -38,6 +39,8 @@ export default function QuotesContent({
   totalStory,
   pageActive,
 }) {
+  console.log(fontSize)
+  console.log(JSON.stringify(item))
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -143,27 +146,28 @@ export default function QuotesContent({
             />
           </View>
         ) : null}
-        <View style={{flexDirection: 'row', flex: 0}}>
+        <View style={{flexDirection: 'row', flex: 0, alignItems: 'center'}}>
           <Text
             allowFontScaling={false}
             style={{
-              textAlign: 'center',
+              textAlign: 'left',
               fontWeight: 'bold',
               fontSize: Number(fontSize),
               fontFamily: fontFamily,
               flex: 1,
               color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
             }}>
-            {themeUser?.language_id === '2' ? item?.title : item?.title}
+            {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
           </Text>
           <TouchableOpacity
             onPress={() => 
               
              setShow(true)}
             style={{
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: code_color.blueDark,
+              padding: 5,
+              paddingHorizontal: 10,
+              borderRadius: 20,
+              backgroundColor: bgTheme,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
@@ -177,7 +181,7 @@ export default function QuotesContent({
                 fontSize: Number(fontSize),
                 fontFamily: fontFamily,
                 color: code_color.white,
-                marginLeft: 10,
+                marginLeft: 5,
               }}>
               Listen
             </Text>
@@ -190,9 +194,11 @@ export default function QuotesContent({
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
               <SelectableText
+                
                 style={[
                   styles.ctnQuotes,
                   {
+                    marginBottom: pageActive != 0 ? -100 : 0,
                     fontFamily: fontFamily,
                     fontSize: Number(fontSize),
                     color:
@@ -210,50 +216,54 @@ export default function QuotesContent({
                 }) => {
                   navigate('Share', {
                     selectedContent: content,
-                    start: contentData?.substring(
+                    start: themeUser?.language_id === '2' ? item?.content_id?.substring(
+                      selectionStart - 50,
+                      selectionStart) : item?.content_en?.substring(
                       selectionStart - 50,
                       selectionStart,
                     ),
-                    end: contentData?.substring(
+                    end: themeUser?.language_id === '2' ? item?.content_id?.substring(
                       selectionEnd - 50,
-                      selectionEnd,
-                    ),
+                      selectionEnd) : item?.content_en?.substring(
+                        selectionEnd - 50,
+                        selectionEnd,
+                    )
                   });
                   eventTracking(QUOTE_SHARED);
                 }}
-                value={contentData}
+                value={themeUser?.language_id === '2' ? item?.content_id : item?.content_en}
               />
             </View>
           </View>
-          {pageActive === 0 ? (
+          {pageActive === 0 || pageActive === 3 || pageActive === 6 || pageActive === 9 || pageActive === 12 ? (
             <View style={{alignItems: 'center'}}>
               <View
                 style={{
-                  backgroundColor: code_color.blueDark,
+                  backgroundColor: bgTheme,
                   flex: 0,
                   alignItems: 'center',
-                  width: 130,
-                  borderRadius: 10,
+                  paddingHorizontal: 10,
+                  borderRadius: 20,
                   padding: 5,
-                  marginBottom: 20,
+                  marginBottom: 25,
                 }}>
                 <Text style={{color: code_color.white, fontWeight: 'bold'}}>
                   Page {pageActive + 1} of {totalStory}
                 </Text>
               </View>
             </View>
-          ) : pageActive === 1 ? (
+          ) : pageActive === 1 || pageActive === 4 || pageActive === 7 || pageActive === 10 || pageActive === 13? (
             <>
               <View
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: -100,
-                  bottom: -50,
+                  height: 110,
                   width: 100,
-                  height: 150,
                   left: '0%',
                   zIndex: 1,
+                  bottom: -10,
                 }}>
                 <Image
                   source={{uri: `${BACKEND_URL}/${me}`}}
@@ -270,8 +280,8 @@ export default function QuotesContent({
                   overflow: 'hidden',
                   marginBottom: -100,
                   width: 100,
-                  height: 150,
-                  left: '30%',
+                  height: 110,
+                  left: '40%',
                   zIndex: 1,
                 }}>
                 <Image
@@ -284,32 +294,33 @@ export default function QuotesContent({
                 />
               </View>
 
-              <View>
+              <View >
                 <ImageBackground
                   source={{
                     uri: `${BACKEND_URL}/${themeUser?.category?.image?.url}`,
                   }}
                   resizeMode="contain"
                   style={{
-                    width: '100%',
+                    borderRadius: 100,
                     height: 100,
+                    marginBottom: 15
                   }}>
                   <View
                     style={{
                       backgroundColor: code_color.white,
                       flex: 0,
                       alignItems: 'center',
-                      width: 130,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       padding: 5,
-                      marginBottom: 20,
+                      paddingHorizontal: 12,
+                      marginBottom: 30,
                       position: 'absolute',
                       marginRight: 5,
                       bottom: 0,
-                      right: 0,
+                      right: 5,
                     }}>
                     <Text
-                      style={{color: code_color.blueDark, fontWeight: 'bold'}}>
+                      style={{color: bgTheme, fontWeight: 'bold'}}>
                       Page {pageActive + 1} of {totalStory}
                     </Text>
                   </View>
@@ -325,7 +336,7 @@ export default function QuotesContent({
                   marginBottom: -150,
                   width: 100,
                   height: 150,
-                  left: '0%',
+                  left: '10%',
                   zIndex: 1,
                 }}>
                 <Image
@@ -341,10 +352,10 @@ export default function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: -140,
+                  marginBottom: -130,
                   width: 100,
                   height: 150,
-                  left: '30%',
+                  left: '35%',
                   zIndex: 1,
                 }}>
                 <Image
@@ -378,21 +389,22 @@ export default function QuotesContent({
                   resizeMode="contain"
                   style={{
                     width: '75%',
-                    height: 140,
+                    height: 130,
+                    marginLeft: 20
                   }}>
                   <View
                     style={{
-                      backgroundColor: code_color.blueDark,
+                      backgroundColor: bgTheme,
                       flex: 0,
                       alignItems: 'center',
                       width: 130,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       padding: 5,
-                      marginBottom: 20,
+                      paddingHorizontal: 5,
                       position: 'absolute',
                       marginRight: 5,
-                      bottom: '40%',
-                      right: -75,
+                      bottom: '30%',
+                      right: -80,
                     }}>
                     <Text style={{color: code_color.white, fontWeight: 'bold'}}>
                       Page {pageActive + 1} of {totalStory}

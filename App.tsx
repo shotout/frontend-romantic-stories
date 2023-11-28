@@ -89,11 +89,19 @@ function App({ userProfile }) {
   async function getInitialRoute() {
     if (userProfile?.token) {
     
-      const res = await getStoryList();
+      try {
+        const res = await getStoryList();
+        setTimeout(() => {
+          navigate('Bottom');
+        }, 500);
+      } catch (error) {
+        setTimeout(() => {
+          navigate('Onboard');
+        }, 500);
+      }
+    
       // // handleSetStory(res.data);
-      setTimeout(() => {
-        navigate('Bottom');
-      }, 500);
+     
     } else {
       setTimeout(() => {
         navigate('Onboard');

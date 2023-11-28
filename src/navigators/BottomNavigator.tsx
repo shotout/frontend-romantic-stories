@@ -102,10 +102,10 @@ const Library = ({userProfile, stepsTutorial}) => {
       <View
         style={{
           position: 'absolute',
-          top: isBottomBarVisible === 'Settings' ? -70 : -300,
+          top: isBottomBarVisible === 'Settings' ? -70 : ( - Dimensions.get('window').height / 2.5),
           width: '100%',
           height: '100%',
-          flex: 1
+          flex: 0
         }}>
         <MainScreen pressScreen={() => handleSomeAction('Main')} />
       </View>

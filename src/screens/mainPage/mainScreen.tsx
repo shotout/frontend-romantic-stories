@@ -116,23 +116,23 @@ const MainScreen = ({
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
-  // alert(JSON.stringify(userStory))
-  const [dataBook, setBook] = useState([
-    {
-      title: 'Fistful of Reefer: Test 1',
-      detail:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
-    },
-    {
-      title: 'Fistful of Reefer: Test 2',
-      detail: 'hemmm',
-    },
-    {
-      title: 'Fistful of Reefer: Test 3',
-      detail:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
-    },
-  ]);
+  const [dataBook, setBook] =  useState(userStory?.data)
+  // const [dataBook, setBook] = useState([
+  //   {
+  //     title: 'Fistful of Reefer: Test 1',
+  //     detail:
+  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
+  //   },
+  //   {
+  //     title: 'Fistful of Reefer: Test 2',
+  //     detail: 'hemmm',
+  //   },
+  //   {
+  //     title: 'Fistful of Reefer: Test 3',
+  //     detail:
+  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
+  //   },
+  // ]);
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     // const offsetY = e.nativeEvent.contentOffset.x;
     // const height = sizing.getDimensionWidth(0.89);
@@ -147,20 +147,24 @@ const MainScreen = ({
       }
     }, 3000);
 
-    if (pageNumber === dataBook?.length - 1) {
+    if(pageNumber === 2){
       setIsLoveAnimate(true);
-      // if (isLoveAnimate !== 'stop') {
-      //   setTimeout(() => {
-      //     setIsLoveAnimate(true);
-      //   }, 200);
-      // }
-      // setTimeout(() => {
-      //   if (isLoveAnimate) {
-      //     setIsLoveAnimate('false');
-      //   }
-      // }, 3200);
-      // setTimeout(() => {
-      // }, 3400);
+      if (isLoveAnimate !== 'stop') {
+        setTimeout(() => {
+          setIsLoveAnimate(true);
+        }, 200);
+      }
+      setTimeout(() => {
+        if (isLoveAnimate) {
+          setIsLoveAnimate('false');
+        }
+      }, 3200);
+      setTimeout(() => {
+      }, 3400);
+    }
+    
+    if (pageNumber === dataBook?.length - 1) {
+     
       const data = await AsyncStorage.getItem('isFirstTime');
       if (data === 'yes') {
       } else {
