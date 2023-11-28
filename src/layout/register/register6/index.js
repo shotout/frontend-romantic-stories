@@ -94,7 +94,7 @@ export default function Register5({gender, setTheme}) {
             textAlign: 'center',
             marginTop: moderateScale(15),
           }}>
-          {'Choose color \n theme'}
+          {'Choose your \n color theme'}
         </Text>
 
         <View

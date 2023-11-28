@@ -45,10 +45,10 @@ import dispatcher from './dispatcher';
 import states from './states';
 import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
-import { ONBOARDING_COMPLETE, eventTracking } from '../../helpers/eventTracking';
+import {ONBOARDING_COMPLETE, eventTracking} from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { handlePayment } from '../../helpers/paywall';
-import { moderateScale } from 'react-native-size-matters';
+import {handlePayment} from '../../helpers/paywall';
+import {moderateScale} from 'react-native-size-matters';
 
 function RegisterScreen({
   handleSetProfile,
@@ -159,13 +159,13 @@ function RegisterScreen({
       handleSetFontFamily(res?.data?.theme?.font_family);
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      eventTracking(ONBOARDING_COMPLETE)
-      handlePayment()
+      eventTracking(ONBOARDING_COMPLETE);
+      handlePayment();
+      await AsyncStorage.setItem('isTutorial', 'yes');
       navigate('Bottom');
     } catch (error) {
-      handlePayment()
+      handlePayment();
       checkDevice();
-      
     }
   };
   const checkDevice = async () => {
@@ -181,16 +181,19 @@ function RegisterScreen({
       handleSetFontFamily(res?.data?.theme?.font_family);
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      AsyncStorage.setItem("isTutorial", "yes");
       navigate('Bottom');
-      
     } catch (error) {}
   };
 
   const renderLayout = () => {
     if (stepRegister === 1) {
       return (
-        <View style={{justifyContent: 'center', flex: 0, marginTop: moderateScale(70)}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            flex: 0,
+            marginTop: moderateScale(70),
+          }}>
           <Register1
             setGender={text => {
               handleChange('gender', text), setStepRegister(stepRegister + 1);
@@ -374,7 +377,12 @@ function RegisterScreen({
             )}
           </Text>
           {renderLayout()}
-          <View style={{position: 'absolute', bottom: moderateScale(10), width: '80%'}}>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: moderateScale(10),
+              width: '80%',
+            }}>
             {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => {

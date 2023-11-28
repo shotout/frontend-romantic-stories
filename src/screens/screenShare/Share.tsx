@@ -645,7 +645,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   marginVertical: 20,
                 }}>
                 {
-                  'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'
+                  'Gather Experience by\nfinishing Stories, Level\nUp and become a Master\nof Romance!'
                 }
               </Text>
 
@@ -659,7 +659,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 }}
                 title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
                 onPress={() => {
-                 
                   handleSetSteps(stepsTutorial + 1);
                   setVisible(false);
                   {

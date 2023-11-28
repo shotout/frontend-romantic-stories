@@ -46,7 +46,7 @@ import {navigate} from '../../shared/navigationRef';
 import { handlePayment } from '../../helpers/paywall';
 import { moderateScale } from 'react-native-size-matters';
 
-const SettingsPage = ({colorTheme}) => {
+const SettingsPage = ({colorTheme, userProfile}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
   const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
@@ -126,7 +126,7 @@ const SettingsPage = ({colorTheme}) => {
             <Text
               allowFontScaling={false}
               style={{fontWeight: 'bold', textAlign: 'center', fontSize: moderateScale(9)}}>
-              John Smith • Noob • 10 XP
+              {userProfile?.data?.name} • Noob • 10 XP
             </Text>
           </View>
           <View style={{marginLeft: '30%', marginTop: 20}}>

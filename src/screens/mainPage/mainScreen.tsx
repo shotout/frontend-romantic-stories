@@ -64,7 +64,7 @@ import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
-import { handlePayment } from '../../helpers/paywall';
+import {handlePayment} from '../../helpers/paywall';
 // import * as RNIap from 'react-native-iap';
 
 const {width, height} = Dimensions.get('window');
@@ -116,7 +116,7 @@ const MainScreen = ({
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
-  const [dataBook, setBook] =  useState(userStory?.data)
+  const [dataBook, setBook] = useState(userStory?.data);
   // const [dataBook, setBook] = useState([
   //   {
   //     title: 'Fistful of Reefer: Test 1',
@@ -147,7 +147,7 @@ const MainScreen = ({
       }
     }, 3000);
 
-    if(pageNumber === 2){
+    if (pageNumber === 2) {
       setIsLoveAnimate(true);
       if (isLoveAnimate !== 'stop') {
         setTimeout(() => {
@@ -159,12 +159,10 @@ const MainScreen = ({
           setIsLoveAnimate('false');
         }
       }, 3200);
-      setTimeout(() => {
-      }, 3400);
+      setTimeout(() => {}, 3400);
     }
-    
+
     if (pageNumber === dataBook?.length - 1) {
-     
       const data = await AsyncStorage.getItem('isFirstTime');
       if (data === 'yes') {
       } else {
@@ -287,14 +285,13 @@ const MainScreen = ({
       }
     } catch (error) {}
   };
-  useEffect(async () => {
+  useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);
     const checkTutorial = async () => {
       // AsyncStorage.setItem('isTutorial', 'yes');
       // handleSetSteps(0);
-      // handleSetSteps(0);
-    const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
 
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true);
@@ -315,7 +312,7 @@ const MainScreen = ({
       } else if (activeStep > 3 && activeStep < 5) {
         navigate('Library');
       }
-    }
+    };
     checkTutorial();
   }, []);
 
@@ -489,7 +486,7 @@ const MainScreen = ({
                       textAlign: 'center',
                       fontFamily: 'Comfortaa-SemiBold',
                     }}>
-                    {'Hey, John\nYou’re all set!'}
+                    {`Hey, ${userProfile?.data?.name}\nYou’re all set!`}
                   </Text>
                   <Text
                     style={{
@@ -555,8 +552,7 @@ const MainScreen = ({
                   marginBottom: 20,
                 }}>
                 {activeStep === 1 && activeStep != 5
-                  ? `Discover a brand new\nEroTales Story every day.\nHungry for more?
-              \nUnlock additional Stories\nanytime!`
+                  ? 'Discover a brand new\nEroTales Story every day.\n\nHungry for more?\nUnlock additional Stories\nanytime!'
                   : activeStep === 5 || stepsTutorial == 5
                   ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
                   : 'Like & save your \nfavorite Stories.'}

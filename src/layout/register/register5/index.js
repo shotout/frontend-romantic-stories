@@ -59,7 +59,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
         <Text
         allowFontScaling={false}
           style={{
-            color: 'black',
+            color: 'white',
             fontSize: 32,
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',

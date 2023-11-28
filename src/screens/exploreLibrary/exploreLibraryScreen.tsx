@@ -19,7 +19,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from 'react-native';
-import {cover2, imgStep4} from '../../assets/images';
+import {imgStep4_2} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
 import LockFree from '../../assets/icons/lockFree';
@@ -111,7 +111,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
               paddingTop: 50,
             }}>
             <Image
-              source={imgStep4}
+              source={imgStep4_2}
               resizeMode="contain"
               style={{width: 100, height: 200, position: 'absolute', top: -100}}
             />
@@ -124,7 +124,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                 marginVertical: 20,
               }}>
               {
-                'Re-discover your favorite\nStories that are saved\nin your Library.'
+                'Explore hundreds of other\nStories and dive deeper\ninto the World of\nRomance.'
               }
             </Text>
   

@@ -56,7 +56,7 @@ export default function Register8({activeNotif}) {
             textAlign: 'center',
             marginVertical: 10,
           }}>
-          {'Be the first to get new content'}
+          {'Be the first to get new Stories'}
         </Text>
         <Text
           allowFontScaling={false}

@@ -42,7 +42,7 @@ const OnboardScreen = (props: any) => {
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
         }}>
-        {'Romantic Story \n for your everyday fantasy'}
+        {'Exciting Stories \n for your everyday fantasy'}
       </Text>
       <Image
         source={logo}
