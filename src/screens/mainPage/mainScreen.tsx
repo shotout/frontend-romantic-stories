@@ -82,6 +82,8 @@ const MainScreen = ({
   handleSetSteps,
   stepsTutorial,
   isPremium,
+  readStory,
+  handleReadStory
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [products, setProducts] = useState([]);
@@ -117,6 +119,10 @@ const MainScreen = ({
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
   const [dataBook, setBook] = useState(userStory?.data);
+  const [readBook, setReadBook] = useState([]);
+  const [dataRead, setData] = useState(readStory);
+  const [data, setRead] = useState([]);
+
   // const [content, setContent] = useState({
   //   content_id: "",
   //   content_en: "",
@@ -176,6 +182,37 @@ const MainScreen = ({
   //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
   //   },
   // ]);
+
+  const checkingRead = (pageNumber) => {
+    const existingEntry = readStory ? readStory.find(item => item?.id === dataBook[0].id && item?.page === pageNumber) : undefined;
+  
+   if (!existingEntry) {
+    const newData = {
+      id: dataBook[0].id,
+      page: pageNumber,
+    };
+    
+
+    // Dispatch action to update readStory in the Redux store
+    handleReadStory([...readStory, newData]);
+
+      alert(JSON.stringify(readStory))
+   
+    
+  
+  }
+  }
+
+  useEffect(() => {
+
+    if(readStory === null){
+      let data = [{
+        id : dataBook[0].id,
+        page: activeSlide,
+      }]
+      handleReadStory(data)
+    }
+  }, [])
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     // const offsetY = e.nativeEvent.contentOffset.x;
     // const height = sizing.getDimensionWidth(0.89);
@@ -189,7 +226,18 @@ const MainScreen = ({
         setIsLoveAnimate(false);
       }
     }, 3000);
-
+   
+    checkingRead(pageNumber)
+    // handleReadStory(pageNumber)
+    // setReadBook(prevReadBook => {
+    //   // Use Set to store unique page numbers
+    //   const updatedReadBook = new Set([...prevReadBook, pageNumber]);
+    //   return Array.from(updatedReadBook);
+    // });
+    // if (pageNumber === dataBook?.length - 1 && readBook.includes(pageNumber)) {
+    //   // Show alert or perform other actions
+    //   alert('You reached the last page and it is marked as read!');
+    // }
     if (pageNumber === 2) {
       setIsLoveAnimate(true);
       if (isLoveAnimate !== 'stop') {
@@ -204,24 +252,32 @@ const MainScreen = ({
       }, 3200);
       setTimeout(() => {}, 3400);
     }
-
+    const existingEntry = readStory ? readStory.find(item => item?.id === dataBook[0].id && item?.page === pageNumber) : undefined;
+    if(!existingEntry && pageNumber === dataBook?.length - 1){
+      // jika nanti pertama kali melakukan update data terakhir
+      setShowModalCongrats(true);
+    }else if(existingEntry && pageNumber === dataBook?.length - 1 && !isPremium){
+      //jika tidak premium maka akan terus menampilan modal setiap terakhir
+      setShowModalCongrats(true);
+    }
     if (pageNumber === dataBook?.length - 1) {
-      if(isPremium){
-        const data = await AsyncStorage.getItem('isFirstTime');
-        // AsyncStorage.removeItem('isFirstTime');
-        // alert(data)
-        if (data === 'yes') {
-        } else {
-          setShowModalCongrats(true);
-          AsyncStorage.setItem('isFirstTime', 'yes');
-        }
-      }else{
-        setShowModalCongrats(true);
-      }
+    
+    //   if(isPremium){
+    //     const data = await AsyncStorage.getItem('isFirstTime');
+    //     // AsyncStorage.removeItem('isFirstTime');
+    //     // alert(data)
+    //     if (data === 'yes') {
+    //     } else {
+    //       setShowModalCongrats(true);
+    //       AsyncStorage.setItem('isFirstTime', 'yes');
+    //     }
+    //   }else{
+    //     setShowModalCongrats(true);
+    //   }
       
-    } else {
-      clearTimeout(timeoutLove);
-      setIsLoveAnimate(false);
+    // } else {
+    //   clearTimeout(timeoutLove);
+    //   setIsLoveAnimate(false);
     }
     // purchaseSubscription()
     setActiveSlide(pageNumber - 1);
@@ -335,6 +391,7 @@ const MainScreen = ({
       }
     } catch (error) {}
   };
+
   useEffect(() => {
     handleThemeAvatar();
     // handleSetSteps(0);

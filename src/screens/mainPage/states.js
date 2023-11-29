@@ -8,4 +8,5 @@ export default states => ({
   colorTheme: states.defaultState.colorTheme,
   stepsTutorial: states.defaultState.stepsTutorial,
   isPremium: states.defaultState.isPremium,
+  readStory: states.defaultState.readStory,
 });

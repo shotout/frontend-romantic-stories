@@ -46,6 +46,7 @@ const INITIAL_STATE = {
   fontSize: null,
   backgroundColor: null,
   isPremium: false,
+  readStory: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -235,7 +236,6 @@ export default (state = INITIAL_STATE, action) => {
         userProfile: action.payload,
       };
     case types.SET_STEP_TUTORIAL:
-      console.log(JSON.stringify('SET STEP'+action.payload));
       return {
         ...state,
         stepsTutorial: action.payload,
@@ -244,6 +244,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userStory: action.payload,
+      };
+    case types.SET_READ_STORY:
+        return {
+          ...state,
+        readStory: action.payload,
       };
     case types.SET_BACKGROUND_COLOR:
       return {

@@ -39,8 +39,6 @@ export default function QuotesContent({
   totalStory,
   pageActive,
 }) {
-  console.log(fontSize)
-  console.log(JSON.stringify(item))
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );

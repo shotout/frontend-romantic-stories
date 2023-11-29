@@ -17,6 +17,11 @@ export const handleSetStory = payload => ({
   payload,
 });
 
+export const handleReadStory = payload => ({
+  type: types.SET_READ_STORY,
+  payload,
+});
+
 export const handleSetSteps = payload => ({
   type: types.SET_STEP_TUTORIAL,
   payload,
