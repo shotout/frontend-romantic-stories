@@ -147,18 +147,32 @@ export default function QuotesContent({
           </View>
         ) : null}
         <View style={{flexDirection: 'row', flex: 0, alignItems: 'center'}}>
+          <View style={{flex: 1}}>
+          <Text
+            allowFontScaling={false}
+            style={{
+              textAlign: 'left',
+              fontSize: Number(fontSize),
+              fontFamily: fontFamily,
+             marginBottom: 5,
+              color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
+            }}>
+            {themeUser?.category?.name}
+          </Text>
           <Text
             allowFontScaling={false}
             style={{
               textAlign: 'left',
               fontWeight: 'bold',
-              fontSize: Number(fontSize),
+              fontSize: moderateScale(16),
               fontFamily: fontFamily,
-              flex: 1,
+            
               color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
             }}>
             {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
           </Text>
+          </View>
+      
           <TouchableOpacity
             onPress={() => 
               

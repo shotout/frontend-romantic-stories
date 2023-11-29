@@ -95,14 +95,15 @@ export const handleNativePayment = async(sku) => {
       console.log('Products:', products);
       IAP.requestPurchase({sku: 'unlock_story_1_week_only'})
       .then((result) => {
+        store.dispatch(handleSetPremium(true))
         AsyncStorage.setItem('subscribtions', 'unlock_story_1_week_only')
                //this never runs
       })
       .catch((response) => {
-          alert('apa ini'+response)     //this also never runs
+         
       });
     }).catch((error) => {
-      alert(error)
+      // alert(error)
       // console.log('Error fetching products:', JSON.st error);
     });
  

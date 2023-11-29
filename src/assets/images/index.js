@@ -59,3 +59,4 @@ export const imgAdjust = require('./adjust_quote.png');
 export const imgLove = require('./loveBg.png');
 export const imgNotif = require('./notif.png');
 export const imgAudio = require('./audio.png');
+export const imgCongrat = require('./congrats.png');

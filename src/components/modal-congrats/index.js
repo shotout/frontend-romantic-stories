@@ -9,6 +9,7 @@ import {
   Image,
   TextInput,
   SafeAreaView,
+  ImageBackground,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -20,6 +21,7 @@ import {code_color} from '../../utils/colors';
 import {
   cover1,
   imgAvaXp,
+  imgCongrat,
   imgCongrats,
   imgGift1,
   imgGift2,
@@ -40,8 +42,10 @@ import ChecklistSvg from '../../assets/icons/checklist';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
 import ProgressBar from '../ProgressBar';
+import { BACKEND_URL } from '../../shared/static';
 
-function ModalCongrats({isVisible, onClose, onGotIt,}) {
+function ModalCongrats({isVisible, onClose, onGotIt,userProfile}) {
+
 
   const handleClose = () => {
     onClose();
@@ -91,7 +95,7 @@ function ModalCongrats({isVisible, onClose, onGotIt,}) {
               color: code_color.white,
               fontWeight: 'bold',
             }}>
-            Username
+            {userProfile?.data?.name ?  userProfile?.data?.name : '' }
           </Text>
         </View>
         <Image
@@ -166,11 +170,24 @@ function ModalCongrats({isVisible, onClose, onGotIt,}) {
               </Pressable>
               <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
                 <View style={{flexDirection: 'column'}}>
-                  <Image
-                    source={imgCongrats}
+                  <ImageBackground
+                    source={imgCongrat}
                     resizeMode="contain"
-                    style={{width: '100%', height: '45%'}}
-                  />
+                    style={{width: '100%', height: '60%', }}
+                  >
+                      <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: 18,
+                        color: code_color.white,
+                        textAlign: 'center',
+                       
+                        marginTop: 115
+
+                        
+                      }}>{userProfile?.data?.user_level?.level?.value_desc}</Text>
+                    </ImageBackground>
+                 
                   <Image
                     source={imgLoveLeft}
                     resizeMode="contain"
@@ -195,6 +212,7 @@ function ModalCongrats({isVisible, onClose, onGotIt,}) {
                     }}
                   />
                 </View>
+              
               </View>
             </View>
             <View
@@ -246,7 +264,7 @@ function ModalCongrats({isVisible, onClose, onGotIt,}) {
                       }}
                     />
                     <Text style={{fontWeight: 'bold', fontSize: 25}}>
-                      10{' '}
+                    {userProfile?.data?.user_level?.level?.value}{' '}
                       <Text style={{fontWeight: 'bold', fontSize: 18}}>XP</Text>
                     </Text>
                   </View>
@@ -257,7 +275,7 @@ function ModalCongrats({isVisible, onClose, onGotIt,}) {
                       alignItems: 'center',
                     }}>
                     <Image
-                      source={imgXp}
+                      source={{ uri: `${BACKEND_URL}/${userProfile?.data?.user_level?.level?.image?.url}`}}
                       resizeMode="contain"
                       style={{
                         width: 30,
@@ -265,16 +283,22 @@ function ModalCongrats({isVisible, onClose, onGotIt,}) {
                         marginRight: 10,
                       }}
                     />
+                    <View style={{width: 100, alignItems: 'center'}}>
                     <Text
                       style={{
                         fontWeight: 'bold',
                         fontSize: 16,
-                      }}>{`Heartfelt \nAdventure`}</Text>
+                        textAlign: 'center'
+
+                        
+                      }}>{userProfile?.data?.user_level?.level?.desc}</Text>
+                    </View>
+                    
                   </View>
                 </View>
 
                 <View style={{marginLeft: '30%', marginTop: 20}}>
-                  <ProgressBar progress={20} />
+                  <ProgressBar progress={userProfile?.data?.user_level?.level?.value} />
                 </View>
 
                 <Text
