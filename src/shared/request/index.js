@@ -224,9 +224,9 @@ export const repeatQuotes = idQuote => {
   });
 };
 
-export const addPastQuotes = idQuote => {
+export const addPastStory = id => {
   Wrap({
-    url: `/past-quote/${idQuote}`,
+    url: `/past-story/${id}`,
     method: 'POST',
   });
 };

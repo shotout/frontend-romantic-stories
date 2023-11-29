@@ -50,6 +50,7 @@ import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import {
+  addPastStory,
   checkDeviceRegister,
   getListAvatarTheme,
   getStoryList,
@@ -83,7 +84,7 @@ const MainScreen = ({
   stepsTutorial,
   isPremium,
   readStory,
-  handleReadStory
+  handleReadStory,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [products, setProducts] = useState([]);
@@ -148,7 +149,7 @@ const MainScreen = ({
   //   };
   //   const blocks_id = splitContent(content_id);
   //   const blocks_en = splitContent(content_en);
-    
+
   //   const pagesArray_id = blocks_id.map((block, index) => ({
   //     id: index,
   //     content: block,
@@ -164,7 +165,7 @@ const MainScreen = ({
   //     content_id: pagesArray_id,
   //     content_en: pagesArray_en,
   //   });
-   
+
   // }, []);
   // const [dataBook, setBook] = useState([
   //   {
@@ -183,36 +184,37 @@ const MainScreen = ({
   //   },
   // ]);
 
-  const checkingRead = (pageNumber) => {
-    const existingEntry = readStory ? readStory.find(item => item?.id === dataBook[0].id && item?.page === pageNumber) : undefined;
-  
-   if (!existingEntry) {
-    const newData = {
-      id: dataBook[0].id,
-      page: pageNumber,
-    };
-    
+  const checkingRead = pageNumber => {
+    const existingEntry = readStory
+      ? readStory.find(
+          item => item?.id === dataBook[0].id && item?.page === pageNumber,
+        )
+      : undefined;
 
-    // Dispatch action to update readStory in the Redux store
-    handleReadStory([...readStory, newData]);
+    if (!existingEntry) {
+      const newData = {
+        id: dataBook[0].id,
+        page: pageNumber,
+      };
 
-      alert(JSON.stringify(readStory))
-   
-    
-  
-  }
-  }
+      // Dispatch action to update readStory in the Redux store
+      handleReadStory([...readStory, newData]);
+
+      console.log(JSON.stringify(readStory));
+    }
+  };
 
   useEffect(() => {
-
-    if(readStory === null){
-      let data = [{
-        id : dataBook[0].id,
-        page: activeSlide,
-      }]
-      handleReadStory(data)
+    if (readStory === null) {
+      let data = [
+        {
+          id: dataBook[0].id,
+          page: activeSlide,
+        },
+      ];
+      handleReadStory(data);
     }
-  }, [])
+  }, []);
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     // const offsetY = e.nativeEvent.contentOffset.x;
     // const height = sizing.getDimensionWidth(0.89);
@@ -226,8 +228,8 @@ const MainScreen = ({
         setIsLoveAnimate(false);
       }
     }, 3000);
-   
-    checkingRead(pageNumber)
+
+    checkingRead(pageNumber);
     // handleReadStory(pageNumber)
     // setReadBook(prevReadBook => {
     //   // Use Set to store unique page numbers
@@ -252,32 +254,40 @@ const MainScreen = ({
       }, 3200);
       setTimeout(() => {}, 3400);
     }
-    const existingEntry = readStory ? readStory.find(item => item?.id === dataBook[0].id && item?.page === pageNumber) : undefined;
-    if(!existingEntry && pageNumber === dataBook?.length - 1){
+    const existingEntry = readStory
+      ? readStory.find(
+          (item: any) =>
+            item?.id === dataBook[0].id && item?.page === pageNumber,
+        )
+      : undefined;
+    if (!existingEntry && pageNumber === dataBook?.length - 1) {
       // jika nanti pertama kali melakukan update data terakhir
+      await addPastStory(dataBook[0].id);
       setShowModalCongrats(true);
-    }else if(existingEntry && pageNumber === dataBook?.length - 1 && !isPremium){
+    } else if (
+      existingEntry &&
+      pageNumber === dataBook?.length - 1 &&
+      !isPremium
+    ) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setShowModalCongrats(true);
     }
     if (pageNumber === dataBook?.length - 1) {
-    
-    //   if(isPremium){
-    //     const data = await AsyncStorage.getItem('isFirstTime');
-    //     // AsyncStorage.removeItem('isFirstTime');
-    //     // alert(data)
-    //     if (data === 'yes') {
-    //     } else {
-    //       setShowModalCongrats(true);
-    //       AsyncStorage.setItem('isFirstTime', 'yes');
-    //     }
-    //   }else{
-    //     setShowModalCongrats(true);
-    //   }
-      
-    // } else {
-    //   clearTimeout(timeoutLove);
-    //   setIsLoveAnimate(false);
+      //   if(isPremium){
+      //     const data = await AsyncStorage.getItem('isFirstTime');
+      //     // AsyncStorage.removeItem('isFirstTime');
+      //     // alert(data)
+      //     if (data === 'yes') {
+      //     } else {
+      //       setShowModalCongrats(true);
+      //       AsyncStorage.setItem('isFirstTime', 'yes');
+      //     }
+      //   }else{
+      //     setShowModalCongrats(true);
+      //   }
+      // } else {
+      //   clearTimeout(timeoutLove);
+      //   setIsLoveAnimate(false);
     }
     // purchaseSubscription()
     setActiveSlide(pageNumber - 1);
@@ -439,6 +449,7 @@ const MainScreen = ({
         me={me}
         partner={partner}
         source={undefined}
+        isPremium={isPremium}
       />
     );
   };
@@ -738,7 +749,7 @@ const MainScreen = ({
             }}
             onGetUnlimit={() => {
               setShowModalNewStory(false);
-              handlePayment()
+              handlePayment();
               // setShowModalSuccessPurchase(true);
             }}
           />
@@ -803,7 +814,7 @@ const MainScreen = ({
             }}
             onGetUnlimit={() => {
               setShowModalNewStory(false);
-              handlePayment()
+              handlePayment();
               setShowModalGetPremium(true);
             }}
           />
