@@ -64,7 +64,7 @@ import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
-import {handlePayment} from '../../helpers/paywall';
+import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 // import * as RNIap from 'react-native-iap';
 
 const {width, height} = Dimensions.get('window');
@@ -195,11 +195,6 @@ const MainScreen = ({
 
     // Dispatch action to update readStory in the Redux store
     handleReadStory([...readStory, newData]);
-
-      alert(JSON.stringify(readStory))
-   
-    
-  
   }
   }
 
@@ -518,6 +513,38 @@ const MainScreen = ({
     fetchData();
   }, [isFocused]);
 
+  const handleUnlock = async () => {
+      const data = await handleNativePayment()
+      if(data){
+        setShowModalNewStory(false);
+        setShowModalSuccessPurchase(true);
+      }else{
+        setShowModalNewStory(false);
+      }
+  }
+  const handleUnlimited = async () => {
+   
+    //
+    try {
+      const paymentResult = await handlePayment();
+      if (paymentResult.success) {
+        setShowModalGetPremium(true);
+        setShowModalNewStory(false);
+        console.log('Pembayaran berhasil:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran berhasil
+      } else {
+        setShowModalNewStory(false);
+        console.log('Pembayaran gagal:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran gagal
+      }
+    } catch (error) {
+      setShowModalNewStory(false);
+      console.error('Terjadi kesalahan:', error);
+      // Tangani kesalahan yang mungkin terjadi
+    }
+    // setShowModalGetPremium(true);
+  }
+
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
     if (isFinishTutorial) {
@@ -725,23 +752,6 @@ const MainScreen = ({
               }
             }}
           />
-          <ModalNewStory
-            isVisible={showModalNewStory}
-            onClose={() => setShowModalNewStory(false)}
-            onWatchAds={() => {
-              setShowModalNewStory(false);
-              setShowModal(true);
-            }}
-            onUnlock={() => {
-              setShowModalNewStory(false);
-              setShowModalSuccessPurchase(true);
-            }}
-            onGetUnlimit={() => {
-              setShowModalNewStory(false);
-              handlePayment()
-              // setShowModalSuccessPurchase(true);
-            }}
-          />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
             onClose={() => setShowModalSuccessPurchase(false)}
@@ -798,13 +808,10 @@ const MainScreen = ({
               setShowModal(true);
             }}
             onUnlock={() => {
-              setShowModalNewStory(false);
-              setShowModalSuccessPurchase(true);
+              handleUnlock()
             }}
             onGetUnlimit={() => {
-              setShowModalNewStory(false);
-              handlePayment()
-              setShowModalGetPremium(true);
+              handleUnlimited()
             }}
           />
           <ModalSuccessPurchase

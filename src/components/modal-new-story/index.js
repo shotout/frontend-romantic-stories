@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Modal, View, Text, Pressable, Image, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
 
@@ -21,6 +21,35 @@ function ModalNewStory({
   onUnlock,
   onGetUnlimit,
 }) {
+  const [timeLeft, setTimeLeft] = useState({
+    hour: 0,
+    minutes: 0,
+    second: 0,
+  });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const tomorrow = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+      );
+      const timeUntilTomorrow = tomorrow - now;
+      const hours = Math.floor(timeUntilTomorrow / (1000 * 60 * 60));
+      const minutes = Math.floor((timeUntilTomorrow / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeUntilTomorrow / 1000) % 60);
+      setTimeLeft({
+        hour: hours,
+        minutes,
+        second: seconds,
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   const handleClose = () => {
     onClose();
   };
@@ -161,9 +190,9 @@ function ModalNewStory({
                         fontSize: moderateScale(40),
                         fontWeight: 700,
                         marginBottom: 0,
-                        marginLeft: 10,
+                        marginLeft: moderateScale(10),
                       }}>
-                      23h 59m
+                       {`${timeLeft.hour}h ${timeLeft.minutes}m`}
                     </Text>
                     <Text
                       style={{
@@ -172,8 +201,7 @@ function ModalNewStory({
                         marginTop: 'auto',
                         marginBottom: moderateScale(5),
                         marginLeft: moderateScale(10),
-                      }}>
-                      25s
+                      }}>{`${timeLeft.second}s`}
                     </Text>
                   </View>
                 </View>
@@ -231,7 +259,7 @@ function ModalNewStory({
                   </Text>
                 </Pressable>
                 <Pressable
-                  onPress={onUnlock}
+                  onPress={() => onUnlock()}
                   style={{
                     backgroundColor: '#009A37',
                     width: '90%',

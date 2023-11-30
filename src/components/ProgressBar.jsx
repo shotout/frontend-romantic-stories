@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Alert} from 'react-native';
 import {code_color} from '../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 const ProgressBar = ({progress}) => {
   const [showInfo, setShowInfo] = useState(null);
@@ -14,7 +14,9 @@ const ProgressBar = ({progress}) => {
   const InfoCard = ({position, message}) => {
     return (
       <View style={[styles.infoCard, position]}>
-        <Text allowFontScaling={false} style={{ color: code_color.white }}>{message}</Text>
+        <Text allowFontScaling={false} style={{color: code_color.white}}>
+          {message}
+        </Text>
       </View>
     );
   };
@@ -39,7 +41,14 @@ const ProgressBar = ({progress}) => {
         }
         style={[styles.dot, {left: '0%'}]}
       />
-      <Text style={{position: 'absolute', left: 0, top: moderateScale(15), fontSize: moderateScale(10)}}>{`Romance \n Rookie`}</Text>
+      <Text
+        style={{
+          position: 'absolute',
+          textAlign: 'center',
+          left: -10,
+          top: moderateScale(15),
+          fontSize: moderateScale(10),
+        }}>{`Romance \n Rookie`}</Text>
       <Pressable
         onPress={() =>
           setShowInfo({
@@ -52,7 +61,14 @@ const ProgressBar = ({progress}) => {
           {left: '50%', transform: [{translateX: -5}, {translateY: -5}]},
         ]}
       />
-       <Text style={{position: 'absolute', left: '40%',  top: moderateScale(15), fontSize: moderateScale(10)}}>{`Heartfelt\n Adventurer`}</Text>
+      <Text
+        style={{
+          position: 'absolute',
+          textAlign: 'center',
+          left: '40%',
+          top: moderateScale(15),
+          fontSize: moderateScale(10),
+        }}>{`Heartfelt\n Adventurer`}</Text>
       <Pressable
         onPress={() =>
           setShowInfo({
@@ -62,8 +78,14 @@ const ProgressBar = ({progress}) => {
         }
         style={[styles.dot, {right: '10%'}]}
       />
-       <Text style={{position: 'absolute', right: '5%',  top: moderateScale(15), fontSize: moderateScale(10)}}>{`Passion \nPioneer`}</Text>
-      
+      <Text
+        style={{
+          position: 'absolute',
+          right: '5%',
+          textAlign: 'center',
+          top: moderateScale(15),
+          fontSize: moderateScale(10),
+        }}>{`Passion \nPioneer`}</Text>
     </View>
   );
 };

@@ -144,6 +144,15 @@ function ModalUnlockStory({
                   }}
                 />
                 <View style={{flex: 1}}>
+                <Text
+                    style={{
+                      color: '#3F58DD',
+                      marginTop: 10,
+                      fontWeight: 400,
+                      fontSize: 14,
+                    }}>
+                    [Story category]
+                  </Text>
                   <Text
                     style={{
                       color: code_color.blueDark,
@@ -153,15 +162,7 @@ function ModalUnlockStory({
                     }}>
                     [Suggested story this user never read before]
                   </Text>
-                  <Text
-                    style={{
-                      color: '#3F58DD',
-                      marginTop: 10,
-                      fontWeight: 400,
-                      fontSize: 14,
-                    }}>
-                    [Story category]
-                  </Text>
+                 
                 </View>
               </View>
 

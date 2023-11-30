@@ -37,31 +37,19 @@ new Promise(async (resolve, reject) => {
       console.log("Purchasely result:", res.result);
       const user = store.getState().defaultState.userProfile;
       console.log("Check user data purchase:", user);
-      store.dispatch(handleSetPremium(true))
       switch (res.result) {
         case ProductResult.PRODUCT_RESULT_PURCHASED:
-          store.dispatch(handleSetPremium(true))
+          store.dispatch(handleSetPremium(true));
           console.log("FINISH PURCHASED:", user.token);
+          resolve({ success: true, result: res });
           if (user.token) {
-            // await setSubcription({
-            //   subscription_type: vendorId === "one_month_free" ? 3 : 2,
-            //   subscription_data: res,
-            //   purchasely_id: purchaseId,
-            // });
-            // await reloadUserProfile();
             Purchasely.closePaywall();
+            resolve({ success: true, result: res });
           }
-        //   eventTracking(FREE_TRIAL);
           break;
         case ProductResult.PRODUCT_RESULT_RESTORED:
           console.log("Payment restored");
-          // let message = null;
-          // if (res.plan != null) {
-          //   console.log(`User purchased ${res.plan.name}`);
-          //   message = res.plan.name;
-          // }
-
-          // eventTracking(RESTORE_PURCHASED, message);
+          resolve({ success: true, result: res });
           break;
         case ProductResult.PRODUCT_RESULT_CANCELLED:
           console.log("Payment cancel");
@@ -74,38 +62,34 @@ new Promise(async (resolve, reject) => {
               // handlePayment(vendorId);
             }
           }
-         
-          // await setSubcription({
-          //   subscription_type: 1,
-          //   purchasely_id: purchaseId,
-          // });
+          resolve({ success: false, result: res });
           break;
         default:
           break;
       }
+
       if (typeof cb === "function") cb();
-      resolve(res);
     } catch (err) {
       console.log("error payment:", err);
     }
   });
 
-export const handleNativePayment = async(sku) => {
-    IAP.getProducts({skus: ['unlock_story_1_week_only']}).then((products) => {
-      console.log('Products:', products);
-      IAP.requestPurchase({sku: 'unlock_story_1_week_only'})
-      .then((result) => {
-        store.dispatch(handleSetPremium(true))
-        AsyncStorage.setItem('subscribtions', 'unlock_story_1_week_only')
-               //this never runs
-      })
-      .catch((response) => {
-         
-      });
-    }).catch((error) => {
-      // alert(error)
-      // console.log('Error fetching products:', JSON.st error);
-    });
- 
+  export const handleNativePayment = async (sku) => {
+    try {
+      // const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
+      // console.log('Products:', products);
+      const result = await IAP.requestPurchase({ sku: sku ? sku : 'unlock_story_1_week_only' });
+
+      store.dispatch(handleSetPremium(true));
+      await AsyncStorage.setItem('subscribtions', sku ? sku : 'unlock_story_1_week_only');
   
-}
+      // Operasi selesai dengan sukses, return true
+      return true;
+    } catch (error) {
+      // Tangani kesalahan
+      console.error('Error:', error);
+  
+      // Operasi gagal, return false
+      return false;
+    }
+  };
