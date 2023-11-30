@@ -123,7 +123,6 @@ const MainScreen = ({
   const [readBook, setReadBook] = useState([]);
   const [dataRead, setData] = useState(readStory);
   const [data, setRead] = useState([]);
-
   // const [content, setContent] = useState({
   //   content_id: "",
   //   content_en: "",
