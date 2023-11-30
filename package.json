@@ -42,6 +42,7 @@
     "react-native-adjust": "^4.35.1",
     "react-native-change-icon": "4.0.0",
     "react-native-device-info": "^10.4.0",
+    "react-native-fast-image": "^8.6.3",
     "react-native-fbsdk-next": "^12.1.0",
     "react-native-fs": "2.20.0",
     "react-native-gesture-handler": "^2.9.0",

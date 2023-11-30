@@ -25,6 +25,8 @@ import {getListAvatarTheme} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
 import {moderateScale} from 'react-native-size-matters';
 import {handleNativePayment} from '../../helpers/paywall';
+import FastImage from 'react-native-fast-image';
+
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -134,18 +136,18 @@ export default function QuotesContent({
               justifyContent: 'center',
               flexDirection: 'row',
             }}>
-            <Image
-              source={{uri: `${BACKEND_URL}/${me}`}}
-              resizeMode="contain"
+           <FastImage
+                  source={{uri: `${BACKEND_URL}/${me}`, priority: FastImage.priority.high,}}
+                  resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: 100,
                 height: 300,
                 opacity: 0.6,
               }}
             />
-            <Image
-              source={{uri: `${BACKEND_URL}/${partner}`}}
-              resizeMode="contain"
+           <FastImage
+                  source={{uri: `${BACKEND_URL}/${partner}`, priority: FastImage.priority.high,}}
+                  resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: 100,
                 height: 300,
@@ -311,9 +313,9 @@ export default function QuotesContent({
                   zIndex: 1,
                   bottom: -10,
                 }}>
-                <Image
-                  source={{uri: `${BACKEND_URL}/${me}`}}
-                  resizeMode="cover"
+                 <FastImage
+                  source={{uri: `${BACKEND_URL}/${me}`, priority: FastImage.priority.high,}}
+                  resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
                     height: 400,
@@ -330,9 +332,9 @@ export default function QuotesContent({
                   left: '40%',
                   zIndex: 1,
                 }}>
-                <Image
-                  source={{uri: `${BACKEND_URL}/${partner}`}}
-                  resizeMode="cover"
+                <FastImage
+                  source={{uri: `${BACKEND_URL}/${partner}`, priority: FastImage.priority.high,}}
+                  resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
                     height: 400,
@@ -384,9 +386,9 @@ export default function QuotesContent({
                   left: '10%',
                   zIndex: 1,
                 }}>
-                <Image
-                  source={{uri: `${BACKEND_URL}/${me}`}}
-                  resizeMode="cover"
+                <FastImage
+                  source={{uri: `${BACKEND_URL}/${me}`, priority: FastImage.priority.high,}}
+                  resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
                     height: 420,
@@ -403,13 +405,14 @@ export default function QuotesContent({
                   left: '35%',
                   zIndex: 1,
                 }}>
-                <Image
-                  source={{uri: `${BACKEND_URL}/${partner}`}}
-                  resizeMode="cover"
+                <FastImage
+                  source={{uri: `${BACKEND_URL}/${partner}`,  priority: FastImage.priority.high,}}
+                  resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
                     height: 420,
                   }}
+                  
                 />
               </View>
 
