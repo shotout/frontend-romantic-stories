@@ -42,7 +42,7 @@ export default StyleSheet.create({
     width: width,
     paddingRight: moderateScale(30),
     paddingLeft: (width * 38) / 100,
-    marginBottom: moderateScale(30),
+    marginBottom: moderateScale(45),
     marginTop: isIphoneXorAbove() ? moderateScale(40) : moderateScale(25),
   },
   rowCard: {

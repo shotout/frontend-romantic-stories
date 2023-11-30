@@ -21,6 +21,7 @@ import CloseIcon from '../../assets/icons/close';
 import LoveOutline from '../../assets/icons/loveOutline';
 import Prev5 from '../../assets/icons/prev5';
 import Pause from '../../assets/icons/pause';
+import Play from '../../assets/icons/play';
 import Next5 from '../../assets/icons/next5';
 import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
@@ -100,8 +101,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
           source={bgGetUnlimit}
           resizeMode="cover"
           style={{
-            width: sizing.getDimensionWidth(0.9),
-            height: sizing.getDimensionWidth(0.9),
+            width: 352,
+            height: 350,
             borderRadius: 8,
           }}
         />
@@ -173,12 +174,16 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
           <Prev5 />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
-          <Pause />
+          {play ? <Pause /> : 
+          <View style={{ width: 55, height: 55, borderRadius: 50, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+              <Play fill={'#6B7C8C'} width={35} height={35}/>
+          </View>
+          }
         </TouchableOpacity>
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>
           <Next5 />
         </TouchableOpacity>
-        <ShareSvg />
+        <ShareSvg  width={30} height={30}/>
       </View>
     </LinearGradient>
   );
