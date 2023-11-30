@@ -166,6 +166,7 @@ const LibraryScreen = ({
             borderTopWidth: 1,
             borderBottomWidth: 1,
             paddingVertical: 10,
+            paddingRight: 15
           }}>
           <Image
             source={{uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`}}
@@ -174,33 +175,45 @@ const LibraryScreen = ({
           />
           <View
             style={{
-              marginLeft: 20,
+              marginLeft: 0,
               flex: 1,
               justifyContent: 'center',
               alignContent: 'center',
             }}>
-            <Text allowFontScaling={false} style={{color: code_color.white}}>
-              {item?.item?.title_en}
-            </Text>
-            <Text allowFontScaling={false} style={{color: code_color.white}}>
-              {item?.item?.content_en?.substring(0, 48)}
-            </Text>
-            {!isPremium && (
-              <View
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{flex: 1, marginRight: 10}}>
+                <Text
+                  allowFontScaling={false}
+                  style={{color: code_color.white, fontSize: 12, marginBottom: 5}}>
+                  {item?.item?.title_en}
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={{color: code_color.white, fontSize: 14, fontWeight: 400, textAlign: 'left'}}>
+                  {item?.item?.content_en?.substring(0, 48)}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() =>  navigate('Main')}
                 style={{
-                  backgroundColor: '#ED5267',
-                  padding: 5,
-                  borderRadius: 10,
-                  marginVertical: 5,
-                  width: 150,
+                  backgroundColor: '#00B781',
+                  paddingHorizontal   : 15, 
+                  paddingVertical: 10,          
+                  alignItems: 'center',
+                  marginRight: 10,
+                  borderRadius: 30
                 }}>
                 <Text
                   allowFontScaling={false}
-                  style={{color: code_color.white, fontSize: 10}}>
-                  USD 0,50 For 1 Week Access
+                  style={{color: code_color.white, fontWeight: 'bold', fontSize: 12}}>
+                  Read Story
                 </Text>
-              </View>
-            )}
+              </TouchableOpacity>
+            </View>
+
+            {/* {!isPremium && ( */}
+
+            {/* )} */}
           </View>
 
           <DotSvg />
@@ -439,7 +452,7 @@ const LibraryScreen = ({
             alignItems: 'center',
             marginHorizontal: 10,
           }}>
-          <Pressable onPress={() => setShowModalNewStory(true)}>
+          <Pressable onPress={() => setShowModalNew(true)}>
             <Image source={libraryAdd} />
           </Pressable>
 

@@ -231,6 +231,13 @@ export const addPastStory = id => {
   });
 };
 
+export const addStory = id => {
+  Wrap({
+    url: `/collection/story/${id}`,
+    method: 'POST',
+  });
+};
+
 export const getListLiked = (params = {}) =>
   Wrap({
     url: '/like',

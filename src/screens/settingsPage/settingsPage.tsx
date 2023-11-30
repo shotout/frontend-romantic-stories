@@ -126,11 +126,11 @@ const SettingsPage = ({colorTheme, userProfile}) => {
             <Text
               allowFontScaling={false}
               style={{fontWeight: 'bold', textAlign: 'center', fontSize: moderateScale(9)}}>
-              {userProfile?.data?.name} • Noob • 10 XP
+              {userProfile?.data?.name} • {userProfile?.data?.user_level?.level?.desc} • {userProfile?.data?.user_level?.level?.value} XP
             </Text>
           </View>
           <View style={{marginLeft: '30%', marginTop: 20}}>
-            <ProgressBar progress={20} />
+            <ProgressBar progress={userProfile?.data?.user_level?.level?.value} />
           </View>
         </View>
 

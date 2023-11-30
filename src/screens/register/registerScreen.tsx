@@ -35,6 +35,7 @@ import Register8 from '../../layout/register/register8';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
 import {
+  addStory,
   checkDeviceRegister,
   getListAvatar,
   getStoryList,
@@ -160,6 +161,7 @@ function RegisterScreen({
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
+      addStory(1)
       eventTracking(ONBOARDING_COMPLETE);
       handlePayment();
       navigate('Bottom');
@@ -182,6 +184,7 @@ function RegisterScreen({
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
+      addStory(1)
       navigate('Bottom');
     } catch (error) {}
   };
