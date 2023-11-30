@@ -44,6 +44,7 @@ import ShareSvg from '../../assets/icons/share';
 import DeleteSvg from '../../assets/icons/delete';
 import EditSvg from '../../assets/icons/edit';
 import DotSvg from '../../assets/icons/dot.jsx';
+import EmptyLibrary from '../../assets/icons/emptyLibrary';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
@@ -59,7 +60,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import StepHeader from '../../layout/step/stepHeader';
 import ModalShareStory from '../../components/modal-share-story';
 import ModalNewStory from '../../components/modal-new-story';
-import { handleNativePayment } from '../../helpers/paywall';
+import {handleNativePayment} from '../../helpers/paywall';
+import {sizing} from '../../shared/styling';
 
 const LibraryScreen = ({
   colorTheme,
@@ -84,7 +86,7 @@ const LibraryScreen = ({
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [products, setProducts] = useState([]);
-  const productIds = ['unlock_story_1_week_only',];
+  const productIds = ['unlock_story_1_week_only'];
   // useEffect(() => {
   //   const initializeConnection = async () => {
   //     try {
@@ -134,7 +136,6 @@ const LibraryScreen = ({
   //     console.error("Error occurred while fetching products", error.message);
   //   }
   // };
- 
 
   const renderCollect = item => (
     <View
@@ -415,23 +416,23 @@ const LibraryScreen = ({
             setSharedStory(null);
           }}
         />
-         <ModalNewStory
-            isVisible={showModalNewStory}
-            onClose={() => setShowModalNewStory(false)}
-            onWatchAds={() => {
-              setShowModalNewStory(false);
-              setShowModal(true);
-            }}
-            onUnlock={() => {
-              setShowModalNewStory(false);
-              handleNativePayment('unlock_story_1_week_only')
-            }}
-            onGetUnlimit={() => {
-              setShowModalNewStory(false);
+        <ModalNewStory
+          isVisible={showModalNewStory}
+          onClose={() => setShowModalNewStory(false)}
+          onWatchAds={() => {
+            setShowModalNewStory(false);
+            setShowModal(true);
+          }}
+          onUnlock={() => {
+            setShowModalNewStory(false);
+            handleNativePayment('unlock_story_1_week_only');
+          }}
+          onGetUnlimit={() => {
+            setShowModalNewStory(false);
 
-              // setShowModalSuccessPurchase(true);
-            }}
-          />
+            // setShowModalSuccessPurchase(true);
+          }}
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -444,7 +445,7 @@ const LibraryScreen = ({
 
           <View
             style={{
-              backgroundColor: code_color.white,
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',
               flex: 1,
               // padding: 10,
               borderRadius: 10,
@@ -457,6 +458,7 @@ const LibraryScreen = ({
             <SearchSvg />
             <TextInput
               placeholder="Search"
+              placeholderTextColor={code_color.black}
               allowFontScaling={false}
               value={keyword}
               onChangeText={value => setKeyword(value)}
@@ -468,119 +470,155 @@ const LibraryScreen = ({
           </Pressable>
         </View>
 
-        <ScrollView>
-          <SwipeListView
-            data={listCollection}
-            renderItem={item => renderContentCollection(item)}
-            renderHiddenItem={(_data, _rowMap) => (
-              <View style={styles.rowBack}>
-                <TouchableOpacity
-                  style={[styles.backLeftCollectBtn, styles.backLeftBtnCollect]}
-                  onPress={() => handleEditCollect(_data)}>
-                  <EditSvg />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.backRightCollectBtn,
-                    styles.backRightBtnCollect,
-                  ]}
-                  onPress={() => {
-                    Alert.alert(
-                      'Are you sure you want to remove this collection?',
-                      '',
-                      [
-                        {
-                          text: 'Yes',
-                          onPress: () => {
-                            deleteRowCollection(_data);
-                            // handleDelete(item.id);
+        {listCollection && listCollection?.length > 0 ? (
+          <ScrollView>
+            <SwipeListView
+              data={listCollection}
+              renderItem={item => renderContentCollection(item)}
+              renderHiddenItem={(_data, _rowMap) => (
+                <View style={styles.rowBack}>
+                  <TouchableOpacity
+                    style={[
+                      styles.backLeftCollectBtn,
+                      styles.backLeftBtnCollect,
+                    ]}
+                    onPress={() => handleEditCollect(_data)}>
+                    <EditSvg />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.backRightCollectBtn,
+                      styles.backRightBtnCollect,
+                    ]}
+                    onPress={() => {
+                      Alert.alert(
+                        'Are you sure you want to remove this collection?',
+                        '',
+                        [
+                          {
+                            text: 'Yes',
+                            onPress: () => {
+                              deleteRowCollection(_data);
+                              // handleDelete(item.id);
+                            },
                           },
-                        },
-                        {text: 'Cancel', onPress: () => {}},
-                      ],
-                    );
-                  }}>
-                  <DeleteSvg />
-                </TouchableOpacity>
-              </View>
-            )}
-            rightOpenValue={-120}
-            previewRowKey={'0'}
-            previewOpenValue={-40}
-            previewOpenDelay={3000}
-          />
-          <SwipeListView
-            data={listLibrary}
-            renderItem={item => renderContent(item)}
-            renderHiddenItem={(_data, _rowMap) => (
-              <View style={styles.rowBack}>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                  onPress={() => setShowModal()}>
-                  <LibraryAddSvg />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightCenter]}
-                  onPress={() => {
-                    setSharedStory(_data);
-                    setShowModalShareStory(true);
-                  }}>
-                  <ShareSvg />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnRight]}
-                  onPress={() => {
-                    Alert.alert(
-                      'Are you sure you want to remove this story from your library?',
-                      '',
-                      [
-                        {
-                          text: 'Yes',
-                          onPress: () => {
-                            // handleDelete(item.id);
+                          {text: 'Cancel', onPress: () => {}},
+                        ],
+                      );
+                    }}>
+                    <DeleteSvg />
+                  </TouchableOpacity>
+                </View>
+              )}
+              rightOpenValue={-120}
+              previewRowKey={'0'}
+              previewOpenValue={-40}
+              previewOpenDelay={3000}
+            />
+            <SwipeListView
+              data={listLibrary}
+              renderItem={item => renderContent(item)}
+              renderHiddenItem={(_data, _rowMap) => (
+                <View style={styles.rowBack}>
+                  <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                    onPress={() => setShowModal()}>
+                    <LibraryAddSvg />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightCenter]}
+                    onPress={() => {
+                      setSharedStory(_data);
+                      setShowModalShareStory(true);
+                    }}>
+                    <ShareSvg />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnRight]}
+                    onPress={() => {
+                      Alert.alert(
+                        'Are you sure you want to remove this story from your library?',
+                        '',
+                        [
+                          {
+                            text: 'Yes',
+                            onPress: () => {
+                              // handleDelete(item.id);
+                            },
                           },
-                        },
-                        {text: 'Cancel', onPress: () => {}},
-                      ],
-                    );
-                  }}>
-                  <DeleteSvg />
-                </TouchableOpacity>
-              </View>
-            )}
-            rightOpenValue={-180}
-            previewRowKey={'0'}
-            previewOpenValue={-40}
-            previewOpenDelay={3000}
-          />
-        </ScrollView>
-        <TouchableOpacity
-          onPress={() => handleSomeAction('ExploreLibrary')}
+                          {text: 'Cancel', onPress: () => {}},
+                        ],
+                      );
+                    }}>
+                    <DeleteSvg />
+                  </TouchableOpacity>
+                </View>
+              )}
+              rightOpenValue={-180}
+              previewRowKey={'0'}
+              previewOpenValue={-40}
+              previewOpenDelay={3000}
+            />
+          </ScrollView>
+        ) : (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <EmptyLibrary />
+            <Text
+              style={{
+                color: code_color.white,
+                fontSize: 14,
+                fontWeight: '400',
+                textAlign: 'center',
+                lineHeight: 21,
+                marginTop: 22,
+                width: sizing.getDimensionWidth(0.9),
+              }}>
+              {
+                'You don’t have any Stories saved in your library yet.\nTap the “♥︎“-icon on the main screen to save your\nfavorite Stories in your Library.'
+              }
+            </Text>
+          </View>
+        )}
+        <View
           style={{
-            backgroundColor: code_color.yellow,
-            marginTop: moderateScale(20),
-            padding: moderateScale(10),
+            width: sizing.getDimensionWidth(1),
             alignItems: 'center',
-            borderRadius: 8,
-            width: '85%',
-            marginHorizontal: moderateScale(20),
-            marginBottom: moderateScale(20),
-            flexDirection: 'row',
-            justifyContent: 'center',
-            // position: 'absolute',
-            // bottom: 0
+            backgroundColor: bgTheme,
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: -5,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 8,
           }}>
-          <LibrarySvg fill={code_color.black} width={20} height={20} />
-          <Text
+          <TouchableOpacity
+            onPress={() => handleSomeAction('ExploreLibrary')}
             style={{
-              color: code_color.black,
-              fontWeight: 500,
-              fontSize: moderateScale(14),
-              marginLeft: 20,
+              backgroundColor: code_color.yellow,
+              marginTop: moderateScale(20),
+              padding: moderateScale(10),
+              borderRadius: 8,
+              width: sizing.getDimensionWidth(0.9),
+              marginBottom: moderateScale(20),
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            Explore more Stories
-          </Text>
-        </TouchableOpacity>
+            <LibrarySvg fill={code_color.black} width={20} height={20} />
+            <Text
+              style={{
+                color: code_color.black,
+                fontWeight: 500,
+                fontSize: moderateScale(14),
+                marginLeft: 20,
+              }}>
+              Explore more Stories
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       {renderTutorial()}
     </View>

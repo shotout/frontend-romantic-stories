@@ -43,7 +43,7 @@ const INITIAL_STATE = {
   userStory: null,
   colorTheme: null,
   fontFamily: null,
-  fontSize: null,
+  fontSize: 16,
   backgroundColor: null,
   isPremium: false,
   readStory: null

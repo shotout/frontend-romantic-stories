@@ -97,8 +97,10 @@ const FontScreen = ({
       setFontSize(Number(fontSizeDefault) - 2);
       handleSetFontSize(Number(fontSizeDefault) - 2);
     } else if (value === 1) {
-      setFontSize(12);
-      handleSetFontSize(12);
+      // setFontSize(12);
+      // handleSetFontSize(12);
+      setFontSize(16);
+      handleSetFontSize(16);
     } else {
       setFontSize(Number(fontSizeDefault) + 2);
       handleSetFontSize(Number(fontSizeDefault) + 2);
@@ -367,7 +369,7 @@ const FontScreen = ({
             // style={{width: 200, height: 40}}
             minimumValue={0}
             maximumValue={2}
-            value={fontSizeDefault === 12 ? 1 : fontSizeDefault === 10 ? 0 : 2}
+            value={fontSizeDefault === 16 ? 1 : fontSizeDefault === 14 ? 0 : 2}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#FFFFFF"
             onValueChange={value => handleFont(value)}
