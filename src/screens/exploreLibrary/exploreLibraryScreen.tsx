@@ -40,7 +40,13 @@ import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
-const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps, stepsTutorial}) => {
+const ExploreLibraryScreen = ({
+  colorTheme,
+  categories,
+  isPremium,
+  handleSetSteps,
+  stepsTutorial,
+}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -87,7 +93,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
 
   const renderProgress = () => <StepHeader currentStep={4} />;
   const renderTutorial = () => {
-    if(stepsTutorial === 4){
+    if (stepsTutorial === 4) {
       return (
         <SafeAreaView
           // onTouchStart={handleTouchStart}
@@ -127,7 +133,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                 'Explore hundreds of other\nStories and dive deeper\ninto the World of\nRomance.'
               }
             </Text>
-  
+
             <Button
               style={{
                 backgroundColor: code_color.yellow,
@@ -150,7 +156,6 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
         </SafeAreaView>
       );
     }
-   
   };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -210,7 +215,7 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
           height: '100%',
         }}>
         {data?.most_read?.length > 0 && (
-          <ScrollView horizontal style={{flex: 0, height: 270}}>
+          <View style={{flex: 0, height: 270}}>
             <View
               style={{
                 backgroundColor: '#F0F2FF',
@@ -221,21 +226,17 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                 borderRadius: 8,
                 padding: 16,
               }}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                  🔥 Most Read
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: 'auto',
-                  justifyContent: 'center',
-                  gap: 16,
-                }}>
-                {data?.most_read.map((itm: any, idx) => (
-                  <View style={{width: 95}} key={idx}>
+              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+                🔥 Most Read
+              </Text>
+              <ScrollView horizontal>
+                {data?.most_read.map((itm: any, idx: number) => (
+                  <View
+                    style={{
+                      width: 95,
+                      marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
+                    }}
+                    key={idx}>
                     {itm.is_free === 0 && (
                       <LockFree
                         height={16}
@@ -271,13 +272,13 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                     </Text>
                   </View>
                 ))}
-              </View>
+              </ScrollView>
             </View>
-          </ScrollView>
+          </View>
         )}
 
         {data?.category?.length > 0 && (
-          <ScrollView horizontal style={{flex: 0, height: 250}}>
+          <View style={{flex: 0, height: 250}}>
             <View
               style={{
                 backgroundColor: '#F0F2FF',
@@ -288,21 +289,17 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                 borderRadius: 8,
                 padding: 16,
               }}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                  📚 Try different story category
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  width: 'auto',
-                  gap: 16,
-                }}>
+              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+                📚 Try different story category
+              </Text>
+              <ScrollView horizontal>
                 {data?.category.map((itm: any, idx: number) => (
-                  <View style={{width: 95}} key={idx}>
+                  <View
+                    style={{
+                      width: 95,
+                      marginRight: idx + 1 === data?.category?.length ? 0 : 16,
+                    }}
+                    key={idx}>
                     <View
                       style={{
                         height: 18,
@@ -338,12 +335,13 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                     </Text>
                   </View>
                 ))}
-              </View>
+              </ScrollView>
             </View>
-          </ScrollView>
+          </View>
         )}
+
         {data?.most_share?.length > 0 && (
-          <ScrollView horizontal style={{flex: 0, height: 270}}>
+          <View style={{flex: 0, height: 270, marginBottom: 50}}>
             <View
               style={{
                 backgroundColor: '#F0F2FF',
@@ -354,21 +352,17 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                 borderRadius: 8,
                 padding: 16,
               }}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                  ❤️ You might also like
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  width: 'auto',
-                  gap: 16,
-                }}>
+              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+                ❤️ You might also like
+              </Text>
+              <ScrollView horizontal>
                 {data.most_share.map((itm: any, idx: number) => (
-                  <View style={{width: 95}} key={idx}>
+                  <View
+                    style={{
+                      width: 95,
+                      marginRight: idx + 1 === data?.most_share?.length ? 0 : 16,
+                    }}
+                    key={idx}>
                     {itm.is_free === 0 && (
                       <LockFree
                         height={16}
@@ -403,9 +397,9 @@ const ExploreLibraryScreen = ({colorTheme, categories, isPremium, handleSetSteps
                     </Text>
                   </View>
                 ))}
-              </View>
+              </ScrollView>
             </View>
-          </ScrollView>
+          </View>
         )}
         {/* <View
           style={{

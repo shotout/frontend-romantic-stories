@@ -23,7 +23,7 @@ import {navigate, navigationRef} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -38,11 +38,12 @@ export default function QuotesContent({
   fontFamily,
   totalStory,
   pageActive,
+  isPremium,
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
@@ -100,10 +101,7 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
-      <ModalAudioUnlock
-        isVisible={show}
-        onClose={() => setShow(false)}
-      />
+      <ModalAudioUnlock isVisible={show} onClose={() => setShow(false)} />
       <Animated.View
         style={{
           height: '100%',
@@ -146,35 +144,40 @@ export default function QuotesContent({
         ) : null}
         <View style={{flexDirection: 'row', flex: 0, alignItems: 'center'}}>
           <View style={{flex: 1}}>
-          <Text
-            allowFontScaling={false}
-            style={{
-              textAlign: 'left',
-              fontSize: Number(fontSize),
-              fontFamily: fontFamily,
-             marginBottom: 5,
-              color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
-            }}>
-            {themeUser?.category?.name}
-          </Text>
-          <Text
-            allowFontScaling={false}
-            style={{
-              textAlign: 'left',
-              fontWeight: 'bold',
-              fontSize: moderateScale(16),
-              fontFamily: fontFamily,
-            
-              color: bg === '#2C3439' ? code_color.white : code_color.blackDark,
-            }}>
-            {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
-          </Text>
+            <Text
+              allowFontScaling={false}
+              style={{
+                textAlign: 'left',
+                fontSize: Number(fontSize),
+                fontFamily: fontFamily,
+                marginBottom: 5,
+                color:
+                  bg === '#2C3439' ? code_color.white : code_color.blackDark,
+              }}>
+              {themeUser?.category?.name}
+            </Text>
+            <Text
+              allowFontScaling={false}
+              style={{
+                textAlign: 'left',
+                fontWeight: 'bold',
+                fontSize: moderateScale(16),
+                fontFamily: fontFamily,
+                color:
+                  bg === '#2C3439' ? code_color.white : code_color.blackDark,
+              }}>
+              {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
+            </Text>
           </View>
-      
+
           <TouchableOpacity
-            onPress={() => 
-              
-             setShow(true)}
+            onPress={() => {
+              if (isPremium) {
+                navigate('Media');
+              } else {
+                setShow(true);
+              }
+            }}
             style={{
               padding: 5,
               paddingHorizontal: 10,
@@ -206,7 +209,6 @@ export default function QuotesContent({
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
               <SelectableText
-                
                 style={[
                   styles.ctnQuotes,
                   {
@@ -228,26 +230,42 @@ export default function QuotesContent({
                 }) => {
                   navigate('Share', {
                     selectedContent: content,
-                    start: themeUser?.language_id === '2' ? item?.content_id?.substring(
-                      selectionStart - 50,
-                      selectionStart) : item?.content_en?.substring(
-                      selectionStart - 50,
-                      selectionStart,
-                    ),
-                    end: themeUser?.language_id === '2' ? item?.content_id?.substring(
-                      selectionEnd - 50,
-                      selectionEnd) : item?.content_en?.substring(
-                        selectionEnd - 50,
-                        selectionEnd,
-                    )
+                    start:
+                      themeUser?.language_id === '2'
+                        ? item?.content_id?.substring(
+                            selectionStart - 50,
+                            selectionStart,
+                          )
+                        : item?.content_en?.substring(
+                            selectionStart - 50,
+                            selectionStart,
+                          ),
+                    end:
+                      themeUser?.language_id === '2'
+                        ? item?.content_id?.substring(
+                            selectionEnd - 50,
+                            selectionEnd,
+                          )
+                        : item?.content_en?.substring(
+                            selectionEnd - 50,
+                            selectionEnd,
+                          ),
                   });
                   eventTracking(QUOTE_SHARED);
                 }}
-                value={themeUser?.language_id === '2' ? item?.content_id : item?.content_en}
+                value={
+                  themeUser?.language_id === '2'
+                    ? item?.content_id
+                    : item?.content_en
+                }
               />
             </View>
           </View>
-          {pageActive === 0 || pageActive === 3 || pageActive === 6 || pageActive === 9 || pageActive === 12 ? (
+          {pageActive === 0 ||
+          pageActive === 3 ||
+          pageActive === 6 ||
+          pageActive === 9 ||
+          pageActive === 12 ? (
             <View style={{alignItems: 'center'}}>
               <View
                 style={{
@@ -264,7 +282,11 @@ export default function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : pageActive === 1 || pageActive === 4 || pageActive === 7 || pageActive === 10 || pageActive === 13? (
+          ) : pageActive === 1 ||
+            pageActive === 4 ||
+            pageActive === 7 ||
+            pageActive === 10 ||
+            pageActive === 13 ? (
             <>
               <View
                 style={{
@@ -306,7 +328,7 @@ export default function QuotesContent({
                 />
               </View>
 
-              <View >
+              <View>
                 <ImageBackground
                   source={{
                     uri: `${BACKEND_URL}/${themeUser?.category?.image?.url}`,
@@ -315,7 +337,7 @@ export default function QuotesContent({
                   style={{
                     borderRadius: 100,
                     height: 100,
-                    marginBottom: 15
+                    marginBottom: 15,
                   }}>
                   <View
                     style={{
@@ -331,8 +353,7 @@ export default function QuotesContent({
                       bottom: 0,
                       right: 5,
                     }}>
-                    <Text
-                      style={{color: bgTheme, fontWeight: 'bold'}}>
+                    <Text style={{color: bgTheme, fontWeight: 'bold'}}>
                       Page {pageActive + 1} of {totalStory}
                     </Text>
                   </View>
@@ -402,7 +423,7 @@ export default function QuotesContent({
                   style={{
                     width: '75%',
                     height: 130,
-                    marginLeft: 20
+                    marginLeft: 20,
                   }}>
                   <View
                     style={{

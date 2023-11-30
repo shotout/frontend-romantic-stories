@@ -157,11 +157,11 @@ function RegisterScreen({
       handleSetFontSize(res?.data?.theme?.font_size);
       handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
+      await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
       eventTracking(ONBOARDING_COMPLETE);
       handlePayment();
-      await AsyncStorage.setItem('isTutorial', 'yes');
       navigate('Bottom');
     } catch (error) {
       handlePayment();
@@ -179,6 +179,7 @@ function RegisterScreen({
       handleSetFontSize(res?.data?.theme?.font_size);
       handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
+      await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
       navigate('Bottom');
@@ -248,7 +249,11 @@ function RegisterScreen({
       return (
         <Register6
           gender={values.gender}
-          setTheme={text => handleChange('theme_id', text)}
+          setTheme={text => {
+            handleChange('theme_id', text);
+            // bypass question language
+            handleChange('language_id', 1);
+          }}
         />
       );
     } else if (stepRegister === 7) {
@@ -265,6 +270,7 @@ function RegisterScreen({
         barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+      <SafeAreaView style={{backgroundColor: code_color.headerBlack}} />
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -331,7 +337,9 @@ function RegisterScreen({
                 marginTop: 20,
               }}>
               <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister - 1)}>
+                onPress={() =>
+                  setStepRegister(stepRegister - (stepRegister === 8 ? 2 : 1))
+                }>
                 <BackLeft />
               </TouchableOpacity>
 
@@ -426,7 +434,9 @@ function RegisterScreen({
                 onPress={() => {
                   stepRegister === 8
                     ? onSubmit()
-                    : setStepRegister(stepRegister + 1);
+                    : setStepRegister(
+                        stepRegister + (stepRegister === 6 ? 2 : 1),
+                      );
                 }}
                 title={
                   stepRegister === 8

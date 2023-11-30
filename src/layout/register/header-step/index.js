@@ -33,7 +33,7 @@ export default function HeaderStep({currentStep}) {
       {renderImageStep(4)}
       {renderImageStep(5)}
       {renderImageStep(6)}
-      {renderImageStep(7)}
+      {/* {renderImageStep(7)} */}
     </View>
   );
 }

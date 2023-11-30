@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
-import TrackPlayer, {useProgress, useTrackPlayerEvents, Event, State} from 'react-native-track-player';
+import TrackPlayer, {
+  useProgress,
+  useTrackPlayerEvents,
+  Event,
+  State,
+} from 'react-native-track-player';
 
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -19,6 +24,7 @@ import Pause from '../../assets/icons/pause';
 import Next5 from '../../assets/icons/next5';
 import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
+import {sizing} from '../../shared/styling';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
   const [play, setPlay] = useState(false);
@@ -57,8 +63,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
   const playing = async () => {
     try {
       if (play) {
-          await TrackPlayer.play();
-          setTrackInfo()
+        await TrackPlayer.play();
+        setTrackInfo();
       } else {
         await TrackPlayer.pause();
       }
@@ -66,9 +72,9 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       console.error('Error handling playback:', error);
     }
   };
-  
+
   useEffect(() => {
-      playing();
+    playing();
   }, [play]);
 
   async function setTrackInfo() {
@@ -76,11 +82,9 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
     const info = await TrackPlayer.getTrack(currentTrack);
     setInfo(info);
   }
- 
+
   return (
-    <LinearGradient
-      colors={['#4c669f', '#3b5998', '#192f6a']}
-      style={styles.ctnContent}>
+    <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
       <View style={styles.row}>
         <Text style={styles.textTitle} />
         <TouchableOpacity
@@ -94,23 +98,32 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       <View>
         <Image
           source={bgGetUnlimit}
-          resizeMode="contain"
-          style={{width: 300, height: 300}}
+          resizeMode="cover"
+          style={{
+            width: sizing.getDimensionWidth(0.9),
+            height: sizing.getDimensionWidth(0.9),
+            borderRadius: 8,
+          }}
         />
         <Text
           allowFontScaling={false}
           style={{
             color: code_color.white,
             marginBottom: 10,
-            fontSize: 16,
-            fontWeight: 'bold',
+            marginTop: 40,
+            fontSize: 14,
           }}>
-          {info?.title}
+          [Story category]
         </Text>
         <Text
           allowFontScaling={false}
-          style={{color: code_color.white, marginBottom: 40, fontSize: 14}}>
-          {info?.album}
+          style={{
+            color: code_color.white,
+            marginBottom: 40,
+            fontSize: 16,
+            fontWeight: 'bold',
+          }}>
+          [Story this user currently reading]
         </Text>
         <Slider
           step={1}
@@ -120,8 +133,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#B2B6BB"
           thumbTintColor="#fff"
-          onValueChange={async (value) => {
-          
+          onValueChange={async value => {
             await TrackPlayer.seekTo(value);
           }}
         />
@@ -145,7 +157,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
               flex: 1,
               textAlign: 'right',
             }}>
-            {formatTime(duration - position)}
+            -{formatTime(duration - position)}
           </Text>
         </View>
       </View>
@@ -153,19 +165,20 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          width: sizing.getDimensionWidth(0.9),
         }}>
-        <LoveOutline style={{marginRight: 40}} />
+        <LoveOutline />
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
-          <Prev5 style={{marginHorizontal: 5}} />
+          <Prev5 />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() =>     setPlay((prev) => !prev)}>
-          <Pause style={{marginHorizontal: 40}} />
+        <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
+          <Pause />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>
-          <Next5 style={{marginHorizontal: 5}} />
+          <Next5 />
         </TouchableOpacity>
-        <ShareSvg style={{marginLeft: 40}} />
+        <ShareSvg />
       </View>
     </LinearGradient>
   );
