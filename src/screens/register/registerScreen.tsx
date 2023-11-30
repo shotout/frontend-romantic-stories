@@ -7,7 +7,6 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  SafeAreaView,
   useColorScheme,
   StatusBar,
   KeyboardAvoidingView,
@@ -273,7 +272,6 @@ function RegisterScreen({
         barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <SafeAreaView style={{backgroundColor: code_color.headerBlack}} />
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
