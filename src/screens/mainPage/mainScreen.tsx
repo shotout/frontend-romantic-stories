@@ -827,13 +827,7 @@ const MainScreen = ({
               handleUnlock()
             }}
             onGetUnlimit={() => {
-<<<<<<< HEAD
               handleUnlimited()
-=======
-              setShowModalNewStory(false);
-              handlePayment();
-              setShowModalGetPremium(true);
->>>>>>> 316354e756f99623389ceeaffcd3f901c57bac5f
             }}
           />
           <ModalSuccessPurchase

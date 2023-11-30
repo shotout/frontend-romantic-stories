@@ -24,6 +24,7 @@ import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
 import {moderateScale} from 'react-native-size-matters';
+import { handleNativePayment } from '../../helpers/paywall';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -60,6 +61,11 @@ export default function QuotesContent({
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive]);
+
+  const handleAudio = () => {
+    setShow(false)
+    handleNativePayment()
+  }
 
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
@@ -101,7 +107,7 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
-      <ModalAudioUnlock isVisible={show} onClose={() => setShow(false)} />
+      <ModalAudioUnlock isVisible={show} onClose={() => setShow(false)} onGetAudio={() => handleAudio()} />
       <Animated.View
         style={{
           height: '100%',
