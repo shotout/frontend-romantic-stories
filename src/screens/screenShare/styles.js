@@ -15,6 +15,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingTop: moderateScale(30),
   },
+  conQuoteScreenshot: {
+    position: 'absolute',
+    top: '-200%',
+    flex: 1,
+    backgroundColor: code_color.white,
+  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(255,255,255,0.3)',
@@ -26,9 +32,6 @@ export default StyleSheet.create({
     textShadowColor: 'rgba(3, 5, 2, 10)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 4,
-    // textShadowRadius: 6,
-    // color: 'rgba(0, 0, 0, 0.2)',
-    // textShadowColor: 'rgba(3, 5, 2, 10)',
   },
   hr: {
     width: '90%',

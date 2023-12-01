@@ -53,7 +53,11 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import ModalLibrary from '../../components/modal-library';
 import ModalNewLibrary from '../../components/modal-new-library';
 import ModalSorting from '../../components/modal-sorting';
-import {deleteMyCollection, deleteMyStory, getMyCollection} from '../../shared/request';
+import {
+  deleteMyCollection,
+  deleteMyStory,
+  getMyCollection,
+} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -166,7 +170,7 @@ const LibraryScreen = ({
             borderTopWidth: 1,
             borderBottomWidth: 1,
             paddingVertical: 10,
-            paddingRight: 15
+            paddingRight: 15,
           }}>
           <Image
             source={{uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`}}
@@ -184,28 +188,41 @@ const LibraryScreen = ({
               <View style={{flex: 1, marginRight: 10}}>
                 <Text
                   allowFontScaling={false}
-                  style={{color: code_color.white, fontSize: 12, marginBottom: 5}}>
+                  style={{
+                    color: code_color.white,
+                    fontSize: 12,
+                    marginBottom: 5,
+                  }}>
                   {item?.item?.title_en}
                 </Text>
                 <Text
                   allowFontScaling={false}
-                  style={{color: code_color.white, fontSize: 14, fontWeight: 400, textAlign: 'left'}}>
+                  style={{
+                    color: code_color.white,
+                    fontSize: 14,
+                    fontWeight: 400,
+                    textAlign: 'left',
+                  }}>
                   {item?.item?.content_en?.substring(0, 48)}
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() =>  navigate('Main')}
+                onPress={() => navigate('Main')}
                 style={{
                   backgroundColor: '#00B781',
-                  paddingHorizontal   : 15, 
-                  paddingVertical: 10,          
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
                   alignItems: 'center',
                   marginRight: 10,
-                  borderRadius: 30
+                  borderRadius: 30,
                 }}>
                 <Text
                   allowFontScaling={false}
-                  style={{color: code_color.white, fontWeight: 'bold', fontSize: 12}}>
+                  style={{
+                    color: code_color.white,
+                    fontWeight: 'bold',
+                    fontSize: 12,
+                  }}>
                   Read Story
                 </Text>
               </TouchableOpacity>
@@ -405,14 +422,34 @@ const LibraryScreen = ({
     }
   };
 
+  const renderEmpty = () => (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <EmptyLibrary />
+      <Text
+        style={{
+          color: code_color.white,
+          fontSize: 14,
+          fontWeight: '400',
+          textAlign: 'center',
+          lineHeight: 21,
+          marginTop: 22,
+          width: sizing.getDimensionWidth(0.9),
+        }}>
+        {
+          'You don’t have any Stories saved in your library yet.\nTap the “♥︎“-icon on the main screen to save your\nfavorite Stories in your Library.'
+        }
+      </Text>
+    </View>
+  );
+
   return (
     <View>
       <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
         <ModalLibrary
           isVisible={showModal}
           onClose={() => {
-            setShowModal(false)
-            handleRestart()
+            setShowModal(false);
+            handleRestart();
           }}
           data={listCollection}
           storyId={id}
@@ -493,8 +530,7 @@ const LibraryScreen = ({
             <DescendingSvg fill={code_color.white} />
           </Pressable>
         </View>
-
-        {listCollection && listCollection?.length > 0 ? (
+        {listLibrary?.length > 0 || listCollection?.length > 0 ? (
           <ScrollView>
             <SwipeListView
               data={listCollection}
@@ -547,8 +583,8 @@ const LibraryScreen = ({
                   <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
                     onPress={() => {
-                    setId(_data?.item?.id)
-                    setShowModal(true)
+                      setId(_data?.item?.id);
+                      setShowModal(true);
                     }}>
                     <LibraryAddSvg />
                   </TouchableOpacity>
@@ -588,24 +624,7 @@ const LibraryScreen = ({
             />
           </ScrollView>
         ) : (
-          <View
-            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <EmptyLibrary />
-            <Text
-              style={{
-                color: code_color.white,
-                fontSize: 14,
-                fontWeight: '400',
-                textAlign: 'center',
-                lineHeight: 21,
-                marginTop: 22,
-                width: sizing.getDimensionWidth(0.9),
-              }}>
-              {
-                'You don’t have any Stories saved in your library yet.\nTap the “♥︎“-icon on the main screen to save your\nfavorite Stories in your Library.'
-              }
-            </Text>
-          </View>
+          renderEmpty()
         )}
         <View
           style={{
@@ -638,7 +657,7 @@ const LibraryScreen = ({
             <Text
               style={{
                 color: code_color.black,
-                fontWeight: 500,
+                fontWeight: '500',
                 fontSize: moderateScale(14),
                 marginLeft: 20,
               }}>

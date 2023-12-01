@@ -15,6 +15,7 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
+  Clipboard,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -76,7 +77,7 @@ import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
-import { handlePayment } from '../../helpers/paywall';
+import {handlePayment} from '../../helpers/paywall';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [isVisibleModal, setVisible] = useState(false);
@@ -124,7 +125,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const base64CaptureImage = useRef(null);
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const backgroundList = [bg, story2, bgShare1, bgShare2, bgShare3, bgShare4];
-  const downloadText = 'I found this fact on the ShortStory App';
+  const downloadText = `The EroTales App has the best Romantic Stories ever! I just found this once:${route?.params?.title} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
@@ -226,17 +227,40 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
 
   const handleWAShare = async () => {
     await handleShare();
-    setTimeout(async () => {
-      try {
-        await Share.open({
-          url: base64CaptureImage.current!,
-          title: 'Shared-Short-Story',
-        });
-      } catch (err) {
-        console.log('Error share whatsapp:', err);
-      }
-    }, 200);
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              await Share.open({
+                url: base64CaptureImage.current!,
+                title: 'Shared-Short-Story',
+              });
+            } catch (err) {
+              console.log('Error share whatsapp:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+    // setTimeout(async () => {
+    //   try {
+    //     await Share.open({
+    //       url: base64CaptureImage.current!,
+    //       title: 'Shared-Short-Story',
+    //     });
+    //   } catch (err) {
+    //     console.log('Error share whatsapp:', err);
+    //   }
+    // }, 200);
   };
+
+  // The EroTales App has the best Romantic Stories ever! I just found this once:(Story Name) Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play."
 
   const handleIGStoryShare = async () => {
     handleShare();
@@ -244,7 +268,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       try {
         const contentURL = isIphone ? base64CaptureImage.current : captureUri;
         await Share.shareSingle({
-          backgroundImage: contentURL, // url or an base64 string
+          backgroundImage: contentURL!, // url or an base64 string
           social: Share.Social.INSTAGRAM_STORIES,
           appId: '637815961525510', // facebook appId
         });
@@ -256,19 +280,45 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
 
   const handleShareInstagramDefault = async () => {
     handleShare();
-    setTimeout(async () => {
-      try {
-        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.shareSingle({
-          title: 'Share image to instagram',
-          type: 'image/jpeg',
-          url: contentURL,
-          social: Share.Social.INSTAGRAM,
-        });
-      } catch (err) {
-        console.log('Err share default ig:', err);
-      }
-    }, 200);
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const contentURL = isIphone
+                ? base64CaptureImage.current
+                : captureUri;
+              await Share.shareSingle({
+                title: 'Share image to instagram',
+                type: 'image/jpeg',
+                url: contentURL,
+                social: Share.Social.INSTAGRAM,
+              });
+            } catch (err) {
+              console.log('Err share default ig:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+    // setTimeout(async () => {
+    //   try {
+    //     const contentURL = isIphone ? base64CaptureImage.current : captureUri;
+    //     await Share.shareSingle({
+    //       title: 'Share image to instagram',
+    //       type: 'image/jpeg',
+    //       url: contentURL,
+    //       social: Share.Social.INSTAGRAM,
+    //     });
+    //   } catch (err) {
+    //     console.log('Err share default ig:', err);
+    //   }
+    // }, 200);
   };
 
   const handleSharetoFBStory = async () => {
@@ -289,23 +339,47 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
 
   const handleShareFBDefault = async () => {
     handleShare();
-    setTimeout(async () => {
-      try {
-        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.shareSingle({
-          url: contentURL!,
-          // title: 'Share file',
-          // message: 'Simple share with message',
-          // appId: '637815961525510', // facebook appId
-          // backgroundBottomColor: '#fff',
-          // backgroundTopColor: '#fff',
-          // type: 'image/*',
-          social: Social.Facebook,
-        });
-      } catch (err) {
-        console.log('Err fb default:', err);
-      }
-    }, 200);
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const contentURL = isIphone
+                ? base64CaptureImage.current
+                : captureUri;
+              await Share.shareSingle({
+                url: contentURL!,
+                social: Social.Facebook,
+              });
+            } catch (err) {
+              console.log('Err fb default:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+    // setTimeout(async () => {
+    //   try {
+    //     const contentURL = isIphone ? base64CaptureImage.current : captureUri;
+    //     await Share.shareSingle({
+    //       url: contentURL!,
+    //       // title: 'Share file',
+    //       // message: 'Simple share with message',
+    //       // appId: '637815961525510', // facebook appId
+    //       // backgroundBottomColor: '#fff',
+    //       // backgroundTopColor: '#fff',
+    //       // type: 'image/*',
+    //       social: Social.Facebook,
+    //     });
+    //   } catch (err) {
+    //     console.log('Err fb default:', err);
+    //   }
+    // }, 200);
   };
 
   function renderCard() {
@@ -688,7 +762,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const renderScreenShot = () => {
     return (
       <ViewShot
-        style={styles.conQuote}
+        style={styles.conQuoteScreenshot}
         onLayout={event => {
           setViewShotLayout(event.nativeEvent.layout);
         }}
@@ -698,6 +772,49 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           format: 'png',
           quality: 1.0,
         }}>
+        <Image
+          source={selectBg}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: 24,
+            resizeMode: 'cover',
+          }}
+        />
+        <View style={styles.overlay} />
+        {isVisibleFont ? (
+          <TextInput
+            style={{padding: 10, marginTop: 30}}
+            placeholder="Masukkan teks"
+            value={userText}
+            onChangeText={text => setUserText(text)}
+          />
+        ) : null}
+        <TextFontComponent />
+        <StickerComponent />
+        <Text
+          style={{
+            ...styles.textQuote,
+            fontFamily: fontSelect.value,
+            fontSize: fontSizeDefault,
+          }}>
+          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+            {route?.params?.start}
+          </Text>{' '}
+          {route?.params?.selectedContent}{' '}
+          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+            {route?.params?.end}
+          </Text>
+        </Text>
+        <Text style={styles.textMarker}>@EroTales</Text>
+      </ViewShot>
+    );
+  };
+
+  const renderLayout = () => {
+    return (
+      <View style={styles.conQuote}>
         <Image
           source={selectBg}
           style={{
@@ -735,7 +852,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           </Text>
         </Text>
         <Text style={styles.textMarker}>@EroTales</Text>
-      </ViewShot>
+      </View>
     );
   };
 
@@ -930,6 +1047,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               </View>
             ) : null}
             {renderScreenShot()}
+            {renderLayout()}
           </View>
 
           <View style={styles.conFont}>

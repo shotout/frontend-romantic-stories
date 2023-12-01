@@ -69,37 +69,33 @@ export default function QuotesContent({
   }, [pageActive]);
 
   const handleAudio = async () => {
-    setTitle('50/50 Audio Stories')
+    setTitle('50/50 Audio Stories');
     const data = await handleNativePayment('unlock_5_audio_stories');
-    if(data){
+    if (data) {
       setShow(false);
       setTimeout(() => {
-        setShowAudio(true)
+        setShowAudio(true);
       }, 100);
-    
-    }else{
+    } else {
       setShow(false);
       setTimeout(() => {
-        setShowAudio(true)
+        setShowAudio(true);
       }, 100);
-    
     }
   };
   const handleAudioOne = async () => {
-    setTitle('10/10 Audio Stories')
+    setTitle('10/10 Audio Stories');
     const data = await handleNativePayment('unlock_10_audio_stories');
-    if(data){
+    if (data) {
       setShow(false);
       setTimeout(() => {
-        setShowAudio(true)
+        setShowAudio(true);
       }, 100);
-    
-    }else{
+    } else {
       setShow(false);
       setTimeout(() => {
-        setShowAudio(true)
+        setShowAudio(true);
       }, 100);
-    
     }
   };
 
@@ -144,13 +140,13 @@ export default function QuotesContent({
         flex: 1,
       }}>
       <ModalSuccessPurchaseAudio
-      isVisible={showAudio}
-      onClose={() => setShowAudio(false)}
-      title={title}
-      handleListen={() => {
-        setShowAudio(false)
-        navigate('Media')
-      }}
+        isVisible={showAudio}
+        onClose={() => setShowAudio(false)}
+        title={title}
+        handleListen={() => {
+          setShowAudio(false);
+          navigate('Media');
+        }}
       />
       <ModalAudioUnlock
         isVisible={show}
@@ -178,18 +174,24 @@ export default function QuotesContent({
               justifyContent: 'center',
               flexDirection: 'row',
             }}>
-           <FastImage
-                  source={{uri: `${BACKEND_URL}/${me}`, priority: FastImage.priority.high,}}
-                  resizeMode={FastImage.resizeMode.contain}
+            <FastImage
+              source={{
+                uri: `${BACKEND_URL}/${me}`,
+                priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: 100,
                 height: 300,
                 opacity: 0.6,
               }}
             />
-           <FastImage
-                  source={{uri: `${BACKEND_URL}/${partner}`, priority: FastImage.priority.high,}}
-                  resizeMode={FastImage.resizeMode.contain}
+            <FastImage
+              source={{
+                uri: `${BACKEND_URL}/${partner}`,
+                priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: 100,
                 height: 300,
@@ -306,6 +308,10 @@ export default function QuotesContent({
                             selectionEnd - 50,
                             selectionEnd,
                           ),
+                    title:
+                      themeUser?.language_id === '2'
+                        ? item?.title_id
+                        : item?.title_en,
                   });
                   eventTracking(QUOTE_SHARED);
                 }}
@@ -355,8 +361,11 @@ export default function QuotesContent({
                   zIndex: 1,
                   bottom: -10,
                 }}>
-                 <FastImage
-                  source={{uri: `${BACKEND_URL}/${me}`, priority: FastImage.priority.high,}}
+                <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}/${me}`,
+                    priority: FastImage.priority.high,
+                  }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
@@ -375,7 +384,10 @@ export default function QuotesContent({
                   zIndex: 1,
                 }}>
                 <FastImage
-                  source={{uri: `${BACKEND_URL}/${partner}`, priority: FastImage.priority.high,}}
+                  source={{
+                    uri: `${BACKEND_URL}/${partner}`,
+                    priority: FastImage.priority.high,
+                  }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
@@ -429,7 +441,10 @@ export default function QuotesContent({
                   zIndex: 1,
                 }}>
                 <FastImage
-                  source={{uri: `${BACKEND_URL}/${me}`, priority: FastImage.priority.high,}}
+                  source={{
+                    uri: `${BACKEND_URL}/${me}`,
+                    priority: FastImage.priority.high,
+                  }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
@@ -448,13 +463,15 @@ export default function QuotesContent({
                   zIndex: 1,
                 }}>
                 <FastImage
-                  source={{uri: `${BACKEND_URL}/${partner}`,  priority: FastImage.priority.high,}}
+                  source={{
+                    uri: `${BACKEND_URL}/${partner}`,
+                    priority: FastImage.priority.high,
+                  }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
                     height: 420,
                   }}
-                  
                 />
               </View>
 
