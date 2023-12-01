@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Alert,
   Dimensions,
+  Modal,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -31,12 +32,13 @@ import dispatcher from './dispatcher';
 import states from './states';
 import SettingsPage from '../screens/settingsPage/settingsPage';
 import AnimatedLottieView from 'lottie-react-native';
-import { imgStep2, imgStep4 } from '../assets/images';
+import {imgHearts, imgStep2, imgStep4} from '../assets/images';
 import Button from '../components/buttons/Button';
 import i18n from '../i18n';
 import StepHeader from '../layout/step/stepHeader';
-import {handleSetSteps} from '../store/defaultState/actions';
-import store from "../store/configure-store";
+import {handleSetSteps, handleSetStory} from '../store/defaultState/actions';
+import store from '../store/configure-store';
+import {addStory, deleteMyStory, getStoryList} from '../shared/request';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,10 +51,9 @@ const Home = () => {
   );
 };
 const Library = ({userProfile, stepsTutorial}) => {
-
   const [menu, setMenu] = useState([
     {
-      image: LoveSvg,
+      image: LoveOutline,
       name: 'SAVE',
       value: 'Main',
     },
@@ -88,9 +89,7 @@ const Library = ({userProfile, stepsTutorial}) => {
     // Memunculkan bottom bar
   };
 
- 
   return (
-   
     <View
       style={{
         flex: 1,
@@ -99,14 +98,16 @@ const Library = ({userProfile, stepsTutorial}) => {
         bottom: 0,
         flexDirection: 'column',
       }}>
-       
       <View
         style={{
           position: 'absolute',
-          top: isBottomBarVisible === 'Settings' ? -70 : ( - Dimensions.get('window').height / 2.5),
+          top:
+            isBottomBarVisible === 'Settings'
+              ? -70
+              : -Dimensions.get('window').height / 2.5,
           width: '100%',
           height: '100%',
-          flex: 0
+          flex: 0,
         }}>
         <MainScreen pressScreen={() => handleSomeAction('Main')} />
       </View>
@@ -177,11 +178,10 @@ const Library = ({userProfile, stepsTutorial}) => {
   );
 };
 
-
 function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
-
+  const [visibleModal, setVisibleModal] = React.useState(false)
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -189,10 +189,25 @@ function MyTabs(props) {
     height = 55;
   }
   const [visible, setVisible] = useState(true);
-
+  // alert(JSON.stringify(props.userStory?.data[0].id))
   const handleSomeAction = value => {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
+  };
+  const handleFetchSave = async () => {
+    if (props.userStory?.data[0].is_collection === null) {
+      addStory(props.userStory?.data[0].id);
+      setVisibleModal(true)
+      setTimeout(() => {
+        setVisibleModal(false)
+      }, 1000);
+      const resp = await getStoryList();
+      store.dispatch(handleSetStory(resp.data));
+    }else{
+      deleteMyStory(props.userStory?.data[0].id);
+      const resp = await getStoryList();
+      store.dispatch(handleSetStory(resp.data));
+    }
   };
   const love = require('../assets/lottie/urgent.json');
   return (
@@ -218,43 +233,66 @@ function MyTabs(props) {
         name="Main"
         component={MainScreen}
         options={({route}) => ({
-       
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
-            <View
-            
+            <TouchableOpacity
+              onPress={() => {
+                handleFetchSave();
+              }}
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
                 // display: !onhideBottom ? 'flex' : 'none',
               }}>
-                {props?.stepsTutorial === 2 ?
+                <Modal
+      visible={visibleModal}
+      animationType="fade"
+      transparent
+      onDismiss={() => setVisibleModal(false)}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <View style={{backgroundColor: 'black', padding: 20, borderRadius: 20, alignItems: 'center'}}>
+            <Image source={imgHearts} resizeMode='contain' style={{width: 50, height: 50}} />
+          <Text allowFontScaling={false} style={{color: code_color.white, textAlign: 'center', fontSize: 15}}>{`Story saved &\nadded to library`}</Text>
+          </View>
+        
+          </View>
+          </Modal>
+              {props?.stepsTutorial === 2 ? (
                 <View style={{position: 'absolute', bottom: -20}}>
-                <AnimatedLottieView
-                source={love}
-                style={{width: 100, height: 100}}
-                autoPlay
-                duration={3000}
-                loop={true}
-              />
-                </View> : null}
-                  <LoveOutline width={20} height={20} fill={props?.colorTheme} />
-              {/* <LoveSvg width={20} height={20} fill={props?.colorTheme} /> */}
+                  <AnimatedLottieView
+                    source={love}
+                    style={{width: 100, height: 100}}
+                    autoPlay
+                    duration={3000}
+                    loop={true}
+                  />
+                </View>
+              ) : null}
+              {props.userStory?.data[0].is_collection === null ? (
+                <LoveOutline width={20} height={20} fill={props?.colorTheme} />
+              ) : (
+                <LoveSvg width={20} height={20} fill={props?.colorTheme} />
+              )}
               <Text
                 allowFontScaling={false}
                 style={{
-                  color: focused ? props?.colorTheme : '#C4C4C4',
+                  color: focused ? props?.colorTheme : props?.colorTheme,
                   fontSize: 11,
                   marginTop: 2,
                 }}>
                 SAVE
               </Text>
-            </View>
+            </TouchableOpacity>
           ),
         })}
         listeners={({route, navigation}) => ({
           state: state => {
-            // alert(JSON.stringify(state))
             handleSomeAction(
               state.data.state.routes[state.data.state.index].name,
             );
@@ -263,9 +301,9 @@ function MyTabs(props) {
       />
       <Tab.Screen
         name="Library"
-        children={() => 
-             <Library userProfile={props} stepsTutorial={props.stepsTutorial}  />
-      }
+        children={() => (
+          <Library userProfile={props} stepsTutorial={props.stepsTutorial} />
+        )}
         // component={Library}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => (
@@ -279,7 +317,7 @@ function MyTabs(props) {
               <Text
                 allowFontScaling={false}
                 style={{
-                  color: focused ? props?.colorTheme : '#C4C4C4',
+                  color: focused ? props?.colorTheme : props?.colorTheme,
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -313,7 +351,7 @@ function MyTabs(props) {
               <Text
                 allowFontScaling={false}
                 style={{
-                  color: focused ? props?.colorTheme : '#C4C4C4',
+                  color: focused ? props?.colorTheme : props?.colorTheme,
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -346,7 +384,7 @@ function MyTabs(props) {
               <Text
                 allowFontScaling={false}
                 style={{
-                  color: focused ? props?.colorTheme : '#C4C4C4',
+                  color: focused ? props?.colorTheme : props?.colorTheme,
                   fontSize: 11,
                   marginTop: 2,
                 }}>
@@ -385,13 +423,14 @@ const styles = StyleSheet.create({
 class MyTabsComponent extends Component {
   forceComponentUpdate = () => {
     this.forceUpdate();
-}
+  };
   render() {
-    const {colorTheme, stepsTutorial} = this.props;
+    const {colorTheme, stepsTutorial, userStory} = this.props;
     const tapProps = {
       colorTheme,
       stepsTutorial,
       forceUpdate: this.forceComponentUpdate,
+      userStory,
     };
     return <MyTabs {...tapProps} />;
   }
