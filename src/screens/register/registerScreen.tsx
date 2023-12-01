@@ -85,6 +85,7 @@ function RegisterScreen({
     theme_id: 1,
     language_id: 2,
     often: 3,
+    timezone: 'Asia/Jakarta'
   });
 
   useEffect(() => {
