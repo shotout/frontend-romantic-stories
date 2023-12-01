@@ -18,7 +18,7 @@ import {story1, story2, story3, story4} from '../../../assets/images';
 import ChecklistSvg from './../../../assets/icons/checklist';
 import {getListCategory} from '../../../shared/request';
 import {API_URL, BACKEND_URL} from '../../../shared/static';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 export default function Register3({setCategoryId}) {
   const [dataStory, setDataStory] = useState([]);
@@ -55,26 +55,22 @@ export default function Register3({setCategoryId}) {
                 marginVertical: moderateScale(2),
                 backgroundColor:
                   selectStory === item.name ? code_color.splash : 'white',
-                padding: moderateScale(2),
+                padding: moderateScale(5),
                 borderRadius: moderateScale(10),
                 justifyContent: 'center',
               }}>
               <Image
                 key={index}
                 source={{uri: `${BACKEND_URL}${item.image?.url}`}}
-                resizeMode="contain"
-                // source={{
-                //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
-                // }}
+                resizeMode="cover"
                 style={{
                   width: moderateScale(320),
                   height: moderateScale(80),
-                  // backgroundColor:
-                  //   selectStory === item.name ? code_color.splash : 'white',
+                  borderRadius: moderateScale(10),
                 }}
               />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   position: 'absolute',
                   alignItems: 'center',

@@ -26,6 +26,7 @@ import ModalAudioUnlock from '../modal-audio-unlock';
 import {moderateScale} from 'react-native-size-matters';
 import {handleNativePayment} from '../../helpers/paywall';
 import FastImage from 'react-native-fast-image';
+import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 
 const loveAnimate = require('../../assets/lottie/love.json');
 
@@ -47,7 +48,8 @@ export default function QuotesContent({
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
   const [show, setShow] = useState(false);
-
+  const [title, setTitle] = useState('10/10 Audio Stories');
+  const [showAudio, setShowAudio] = useState(false);
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
   const [playLoveAnimate, setPlayLoveAnimate] = useState(false);
@@ -66,9 +68,39 @@ export default function QuotesContent({
     handleThemeAvatar(pageActive);
   }, [pageActive]);
 
-  const handleAudio = () => {
-    setShow(false);
-    handleNativePayment();
+  const handleAudio = async () => {
+    setTitle('50/50 Audio Stories')
+    const data = await handleNativePayment('unlock_5_audio_stories');
+    if(data){
+      setShow(false);
+      setTimeout(() => {
+        setShowAudio(true)
+      }, 100);
+    
+    }else{
+      setShow(false);
+      setTimeout(() => {
+        setShowAudio(true)
+      }, 100);
+    
+    }
+  };
+  const handleAudioOne = async () => {
+    setTitle('10/10 Audio Stories')
+    const data = await handleNativePayment('unlock_10_audio_stories');
+    if(data){
+      setShow(false);
+      setTimeout(() => {
+        setShowAudio(true)
+      }, 100);
+    
+    }else{
+      setShow(false);
+      setTimeout(() => {
+        setShowAudio(true)
+      }, 100);
+    
+    }
   };
 
   const handleThemeAvatar = async () => {
@@ -111,10 +143,20 @@ export default function QuotesContent({
         paddingTop: 30,
         flex: 1,
       }}>
+      <ModalSuccessPurchaseAudio
+      isVisible={showAudio}
+      onClose={() => setShowAudio(false)}
+      title={title}
+      handleListen={() => {
+        setShowAudio(false)
+        navigate('Media')
+      }}
+      />
       <ModalAudioUnlock
         isVisible={show}
         onClose={() => setShow(false)}
         onGetAudio={() => handleAudio()}
+        onGetAudio1={() => handleAudioOne()}
       />
       <Animated.View
         style={{

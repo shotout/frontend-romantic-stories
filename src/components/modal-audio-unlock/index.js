@@ -37,7 +37,8 @@ function ModalAudioStory({
   data,
   isPremium,
   readLater,
-  onGetAudio
+  onGetAudio,
+  onGetAudio1
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
@@ -348,7 +349,7 @@ function ModalAudioStory({
                 {'Lean back and listen to this Story as Audio Book.'}
               </Text>
               <Pressable
-                  onPress={() => onGetUnlimit()}
+                  onPress={() => onGetAudio1()}
                   style={{
                     backgroundColor: code_color.red,
                     marginHorizontal: moderateScale(10),

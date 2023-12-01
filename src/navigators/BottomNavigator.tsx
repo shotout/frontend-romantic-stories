@@ -217,9 +217,11 @@ function MyTabs(props) {
         name="Main"
         component={MainScreen}
         options={({route}) => ({
+       
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
-            <View
+            <TouchableOpacity
+            onPress={() =>{}}
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -246,7 +248,7 @@ function MyTabs(props) {
                 }}>
                 SAVE
               </Text>
-            </View>
+            </TouchableOpacity>
           ),
         })}
         listeners={({route, navigation}) => ({
