@@ -25,6 +25,7 @@ import Reading from '../../assets/icons/reading.jsx';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
 import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
+import { BACKEND_URL } from '../../shared/static';
 
 function ModalUnlockStory({
   isVisible,
@@ -34,7 +35,9 @@ function ModalUnlockStory({
   data,
   isPremium,
   readLater,
+  userStory
 }) {
+
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
@@ -135,7 +138,7 @@ function ModalUnlockStory({
               }}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={cover1}
+                  source={{uri: `${BACKEND_URL}/${userStory?.data[0].category.cover?.url}`}}
                   resizeMode="contain"
                   style={{
                     width: 65,
@@ -151,7 +154,7 @@ function ModalUnlockStory({
                       fontWeight: 400,
                       fontSize: 14,
                     }}>
-                    [Story category]
+                    {userStory?.data[0].category.name}
                   </Text>
                   <Text
                     style={{
@@ -160,7 +163,7 @@ function ModalUnlockStory({
                       fontWeight: 'bold',
                       fontSize: 16,
                     }}>
-                    [Suggested story this user never read before]
+                     {userStory?.data[0].title_en}
                   </Text>
                  
                 </View>
@@ -172,8 +175,7 @@ function ModalUnlockStory({
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                Lorem ipsum dolor sit amet consectetur. Pretium consequat odio
-                ornare aliquet curabitur tincidunt ipsum. Nisi lectus a si...
+                {userStory?.data[0].content_en.substring(0, 100)}...
               </Text>
               <TouchableOpacity
                 onPress={onClose}
@@ -220,7 +222,7 @@ function ModalUnlockStory({
                 Other Stories you might like:
               </Text>
               <View style={{flexDirection: 'row'}}>
-                {[1, 2, 3].map(itm => (
+              {userStory?.data?.slice(2, 5).map((item, index) => (
                   <Pressable
                     style={{
                       flex: 1,
@@ -229,7 +231,7 @@ function ModalUnlockStory({
                       marginHorizontal: 10,
                     }}>
                     <Image
-                      source={cover1}
+                     source={{uri: `${BACKEND_URL}/${item?.category.cover?.url}`}}
                       resizeMode="contain"
                       style={{
                         width: 65,
@@ -244,7 +246,7 @@ function ModalUnlockStory({
                         fontSize: moderateScale(12),
                         textAlign: 'center',
                       }}>
-                      Title of the Story A
+                     {item.title_en}
                     </Text>
                   </Pressable>
                 ))}
