@@ -51,6 +51,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handlePayment} from '../../helpers/paywall';
 import {moderateScale} from 'react-native-size-matters';
 
+
 function RegisterScreen({
   handleSetProfile,
   handleSetBackground,
@@ -58,6 +59,7 @@ function RegisterScreen({
   handleSetColorTheme,
   handleSetFontFamily,
   handleSetStory,
+  handleSetSteps
 }) {
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
@@ -161,12 +163,10 @@ function RegisterScreen({
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      addStory(1)
       eventTracking(ONBOARDING_COMPLETE);
-      handlePayment();
       navigate('Bottom');
+      handleSetSteps(0);
     } catch (error) {
-      handlePayment();
       checkDevice();
     }
   };
@@ -184,8 +184,8 @@ function RegisterScreen({
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      addStory(1)
       navigate('Bottom');
+      handleSetSteps(0);
     } catch (error) {}
   };
 

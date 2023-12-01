@@ -417,7 +417,7 @@ function ModalAudioStory({
                   />
                 </View>
               <Pressable
-                  onPress={() => handlePayment()}
+                  onPress={() => handlePayment('upgrade_to_unlimited_audio_story')}
                   style={{
                     backgroundColor: '#ADC3D2',
                     // width: '90%',

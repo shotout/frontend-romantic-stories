@@ -26,6 +26,14 @@ export default StyleSheet.create({
     height: 24,
     width: 52,
     resizeMode: 'contain',
+    marginLeft: 2
+  },
+  ctnAnimate: {
+    height: 48,
+    resizeMode: 'contain',
+    marginTop: -4.5,
+    marginLeft: -10
+
   },
   ctnGiftLamp: {
     height: 70,

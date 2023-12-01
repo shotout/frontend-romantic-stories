@@ -413,15 +413,14 @@ const MainScreen = ({
     // handleSetSteps(0);
     const checkTutorial = async () => {
       // AsyncStorage.setItem('isTutorial', 'yes');
-      // handleSetSteps(0);
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+      
         setFinishTutorial(true);
-        setTutorial({
-          visible: true,
-          step: 1,
-        });
+        // setTutorial({
+        //   visible: true,
+        //   step: 1,
+        // });
         setVisible(true);
         setTimeout(() => {
           setVisible(false);

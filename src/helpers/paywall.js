@@ -14,24 +14,24 @@ new Promise(async (resolve, reject) => {
     let stringVendor = vendorId;
     // const subscriptions = await Purchasely.userSubscriptions();
     // console.log('Subscription status:', subscriptions);
-    const purchaseId = await Purchasely.getAnonymousUserId();
-      if (vendorId === STATIC_ONBOARD) {
-        // await setSubcription({
-        //   subscription_type: 1,
-        //   purchasely_id: purchaseId,
-        // });
-      } else if (!stringVendor) {
-        const currentDate = moment().format("YYYY-MM-DD");
-        const getInstallDate = await AsyncStorage.getItem("firstInstall");
-        if (getInstallDate === currentDate) {
-          stringVendor = "offer_no_purchase_after_onboarding_paywall";
-        } else {
-          stringVendor = "offer_no_purchase_after_onboarding_paywall_2nd";
-        }
-      }
+    // const purchaseId = await Purchasely.getAnonymousUserId();
+      // if (vendorId === STATIC_ONBOARD) {
+      //   // await setSubcription({
+      //   //   subscription_type: 1,
+      //   //   purchasely_id: purchaseId,
+      //   // });
+      // } else if (!stringVendor) {
+      //   const currentDate = moment().format("YYYY-MM-DD");
+      //   const getInstallDate = await AsyncStorage.getItem("firstInstall");
+      //   if (getInstallDate === currentDate) {
+      //     stringVendor = "offer_no_purchase_after_onboarding_paywall";
+      //   } else {
+      //     stringVendor = "offer_no_purchase_after_onboarding_paywall_2nd";
+      //   }
+      // }
       console.log("OPEN Purchasely", stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({
-        placementVendorId: "inapp_paywall_a",
+        placementVendorId: stringVendor,
         isFullscreen: true,
       });
       console.log("Purchasely result:", res.result);
