@@ -220,8 +220,8 @@ function MyTabs(props) {
        
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
-            <TouchableOpacity
-            onPress={() =>{}}
+            <View
+            
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -248,11 +248,12 @@ function MyTabs(props) {
                 }}>
                 SAVE
               </Text>
-            </TouchableOpacity>
+            </View>
           ),
         })}
         listeners={({route, navigation}) => ({
           state: state => {
+            // alert(JSON.stringify(state))
             handleSomeAction(
               state.data.state.routes[state.data.state.index].name,
             );
