@@ -119,7 +119,7 @@ const MainScreen = ({
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
-   const [dataBook, setBook] = useState(userStory?.data);
+  const [dataBook, setBook] = useState(userStory?.data);
   const [readBook, setReadBook] = useState([]);
   const [dataRead, setData] = useState(readStory);
   const [data, setRead] = useState([]);
@@ -209,9 +209,14 @@ const MainScreen = ({
       console.log(JSON.stringify(readStory));
     }
   };
+  const fetchStory = async() => {
+    const resp = await getStoryList();
+    handleSetStory(resp.data);
+  }
 
   useEffect(() => {
-    if (readStory === null) {
+    // fetchStory()
+    if (readStory === null && dataBook) {
       let data = [
         {
           id: dataBook[0].id,
@@ -504,7 +509,7 @@ const MainScreen = ({
         initialPage={0}
         transitionStyle="curl"
         onPageSelected={e => onScroll(e)}>
-        {dataBook.map((dtb, index) => {
+        {dataBook && dataBook.map((dtb, index) => {
           return (
             <View
               style={{

@@ -35,7 +35,23 @@ import UnlockFontIcon from './../../assets/icons/unlockFont';
 import UnlockThemeIcon from './../../assets/icons/unlockTheme';
 import {fontList} from '../../utils/constants';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
+import { AdEventType, InterstitialAd, RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
+import { getRewardedInsterstialLearnMoreID, getRewardedOutOfQuotesID } from '../../shared/adsId';
+import { loadInterstialAds, loadRewarded } from '../../helpers/loadReward';
+import LoadingFullScreen from "../../components/loading-fullscreen";
+const adUnitId = getRewardedOutOfQuotesID();
+const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ["fashion", "clothing"],
+});
 
+const interstialAds = InterstitialAd.createForAdRequest(
+  getRewardedInsterstialLearnMoreID(),
+  {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ["fashion", "clothing"],
+  }
+);
 const FontScreen = ({
   userProfile,
   handleSetBackground,
@@ -50,7 +66,7 @@ const FontScreen = ({
 }) => {
   console.log(JSON.stringify(fontFamily));
   const [show, setShow] = useState(false);
- 
+  const [isLoadingInterstial, setLoadingInterstial] = useState(false);
   const [fontSelect, setSelectFont] = useState({
     name: fontFamily === 'BigshotOne-Regular' ? 'Bigshot' :  fontFamily === 'GentiumBookPlus-Regular'  ? 'Gentium' :   fontFamily === 'GeorgiaEstate-w15Mn' ? 'Georgia' : fontFamily,
     value: fontFamily,
@@ -112,6 +128,76 @@ const FontScreen = ({
     setBgTheme(code ? code : selectedBgTheme.code);
     handleSetColorTheme(code ? code : selectedBgTheme.code);
   };
+  const showInterStialAds = async () => {
+    // setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+           Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
+        }
+        // setLoadingAds(false);
+      },
+    );
+  };
+  useEffect(() => {
+    
+    
+    // Handle interstial reward quote ads
+
+    const unsubscribeLoaded = rewarded.addAdEventListener(
+      RewardedAdEventType.LOADED,
+      () => {
+        console.log("LOAD ADS FROM MAIN PAGE REWARD");
+      }
+    );
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      (reward) => {
+        
+        console.log("User earned reward of ", reward);
+      }
+    );
+
+    const rewardedOpen = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+     
+     
+      console.log("LOAD ADS MODAL COUNTDOWN");
+    });
+    const rewardedClose = rewarded.addAdEventListener(
+      AdEventType.CLOSED,
+      () => {
+        // setTimeout(() => {
+        //   AsyncStorage.removeItem('interstial')
+        //  }, 1000);
+      
+        console.log("LOAD ADS MODAL COUNTDOWN");
+      }
+    );
+    const interstialListenerAds = interstialAds.addAdEventListener(AdEventType.CLOSED,  () => {
+      // Do not allow AppOpenAd to show right after InterstitialAd is closed.
+      // We can depend on this as it's called soon enough before AppState event fires.
+      interstialAds.load();
+     
+    
+    });
+    
+    interstialAds.load();
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+      rewardedOpen();
+      rewardedClose();
+      interstialListenerAds();
+    };
+  }, []);
   return (
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
       <ModalUnlockPremium
@@ -158,12 +244,8 @@ const FontScreen = ({
         onSuccess={() => {
           handleSetFontFamily(fontSelect.value);
           setModalUnlockFont(false);
-          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
-            {
-              text: 'OK',
-              onPress: () => {},
-            },
-          ]);
+          showInterStialAds()
+         
         }}
       />
       <ModalUnlockPremium
@@ -584,6 +666,7 @@ const FontScreen = ({
           })}
         </View>
       </View>
+      {/* <LoadingFullScreen isLoading={isLoadingInterstial} /> */}
     </View>
   );
 };

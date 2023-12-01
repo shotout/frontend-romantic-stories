@@ -109,7 +109,7 @@ const Library = ({userProfile, stepsTutorial}) => {
           height: '100%',
           flex: 0,
         }}>
-        <MainScreen pressScreen={() => handleSomeAction('Main')} />
+        <MainScreen pressScreen={() => handleSomeAction('Main')} route={undefined} />
       </View>
       <View
         style={{
@@ -337,7 +337,7 @@ function MyTabs(props) {
 
       <Tab.Screen
         name="Font"
-        children={() => <Library userProfile={props} />}
+        children={() => <Library userProfile={props} stepsTutorial={undefined} />}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -370,7 +370,7 @@ function MyTabs(props) {
       />
       <Tab.Screen
         name="Settings"
-        children={() => <Library userProfile={props} />}
+        children={() => <Library userProfile={props} stepsTutorial={undefined} />}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
