@@ -14,6 +14,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {code_color} from '../utils/colors';
 import LoveSvg from './../assets/icons/bottom/love.jsx';
+import LoveOutline from './../assets/icons/bottom/loveOutline.jsx';
 import FontSvg from './../assets/icons/bottom/font.jsx';
 import LibrarySvg from './../assets/icons/bottom/library.jsx';
 import SettingSvg from './../assets/icons/bottom/settings.jsx';
@@ -237,8 +238,8 @@ function MyTabs(props) {
                 loop={true}
               />
                 </View> : null}
-              
-              <LoveSvg width={20} height={20} fill={props?.colorTheme} />
+                  <LoveOutline width={20} height={20} fill={props?.colorTheme} />
+              {/* <LoveSvg width={20} height={20} fill={props?.colorTheme} /> */}
               <Text
                 allowFontScaling={false}
                 style={{

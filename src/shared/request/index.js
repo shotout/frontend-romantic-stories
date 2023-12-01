@@ -32,7 +32,7 @@ export const getListAvatarTheme = (params = {}) =>
     method: 'get',
     params,
   });
-  
+
 export const getListTheme = () =>
   Wrap({
     url: '/list/themes',
@@ -66,6 +66,11 @@ export const createCollection = data =>
 export const deleteMyCollection = id =>
   Wrap({
     url: `/collection/${id}`,
+    method: 'DELETE',
+  });
+export const deleteMyStory = id =>
+  Wrap({
+    url: `/collection/story/${id}`,
     method: 'DELETE',
   });
 export const updateMyCollection = (data, id) =>
@@ -176,9 +181,9 @@ export const addNewCollection = data =>
     data,
   });
 
-export const addToCollection = ({idCollection, idQuote}) =>
+export const addToCollection = (idCollection, idQuote) =>
   Wrap({
-    url: `/collection/quote/${idCollection}/${idQuote}`,
+    url: `/collection/story/${idCollection}/${idQuote}`,
     method: 'POST',
   });
 

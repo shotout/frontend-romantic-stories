@@ -76,6 +76,7 @@ import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
+import { handlePayment } from '../../helpers/paywall';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [isVisibleModal, setVisible] = useState(false);
@@ -671,6 +672,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   }
                   {
                     stepsTutorial === 9 ? goBack() : null;
+                  }
+                  {
+                    stepsTutorial === 9 ? handlePayment('onboarding') : null;
                   }
                 }}
               />

@@ -53,7 +53,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import ModalLibrary from '../../components/modal-library';
 import ModalNewLibrary from '../../components/modal-new-library';
 import ModalSorting from '../../components/modal-sorting';
-import {deleteMyCollection, getMyCollection} from '../../shared/request';
+import {deleteMyCollection, deleteMyStory, getMyCollection} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -284,6 +284,12 @@ const LibraryScreen = ({
       handleRestart();
     } catch (error) {}
   };
+  const deleteRowStory = async rowMap => {
+    try {
+      const res = await deleteMyStory(rowMap.item.id);
+      handleRestart();
+    } catch (error) {}
+  };
   const handleEditCollect = rowMap => {
     setId(rowMap.item);
     setShowModalNew(true);
@@ -404,7 +410,12 @@ const LibraryScreen = ({
       <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
         <ModalLibrary
           isVisible={showModal}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false)
+            handleRestart()
+          }}
+          data={listCollection}
+          storyId={id}
         />
         <ModalNewLibrary
           isVisible={showModalNew}
@@ -535,7 +546,10 @@ const LibraryScreen = ({
                 <View style={styles.rowBack}>
                   <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                    onPress={() => setShowModal()}>
+                    onPress={() => {
+                    setId(_data?.item?.id)
+                    setShowModal(true)
+                    }}>
                     <LibraryAddSvg />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -556,7 +570,7 @@ const LibraryScreen = ({
                           {
                             text: 'Yes',
                             onPress: () => {
-                              // handleDelete(item.id);
+                              deleteRowStory(_data);
                             },
                           },
                           {text: 'Cancel', onPress: () => {}},

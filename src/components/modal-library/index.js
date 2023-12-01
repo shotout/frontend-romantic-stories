@@ -8,6 +8,7 @@ import {
   Pressable,
   Image,
   TextInput,
+  Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -23,26 +24,18 @@ import DescendingSvg from '../../assets/icons/descending.jsx';
 import Button from '../buttons/Button';
 import BackRightSvg from '../../assets/icons/backRight';
 import ChecklistSvg from '../../assets/icons/checklist';
+import { addToCollection } from '../../shared/request';
 
-function ModalLibrary({isVisible, onClose}) {
-  const [listLibrary, setList] = useState([
-    {
-      name: 'Recently added collection',
-      icon: <LibrarySvg />,
-      iconRight: <BackRightSvg />,
-      type: 1,
-      title: '',
-      desc: '',
-      price: '',
-    },
-  ]);
+function ModalLibrary({isVisible, onClose, data, storyId}) {
+
+  const [listLibrary, setList] = useState(data);
+  const [id, setId] = useState(storyId);
   const [select, setSelect] = useState(null);
   const handleClose = () => {
     // if (typeof onClose === 'function') {
     //   onClose();
     // }
   };
-
   const header = () => (
     <View style={{backgroundColor: code_color.splash}}>
       <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
@@ -105,7 +98,7 @@ function ModalLibrary({isVisible, onClose}) {
 
   const renderList = () => (
     <View>
-      {listLibrary.map(item => (
+      {data?.map(item => (
         <View
           style={{
             flexDirection: 'row',
@@ -120,18 +113,18 @@ function ModalLibrary({isVisible, onClose}) {
             {item.name}
           </Text>
           <Pressable
-            onPress={() => setSelect(item.name)}
+            onPress={() => setSelect(item)}
             style={{
               borderWidth: 1,
               borderColor: code_color.blackDark,
-              backgroundColor: select ? code_color.splash : null,
+              backgroundColor: select?.name === item.name ? code_color.splash : null,
               width: 30,
               height: 30,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            {select ? <ChecklistSvg fill={code_color.white} /> : null}
+            {select?.name === item.name  ? <ChecklistSvg fill={code_color.white} /> : null}
           </Pressable>
         </View>
       ))}
@@ -170,7 +163,10 @@ function ModalLibrary({isVisible, onClose}) {
               bottom: 20,
               width: '90%',
             }}
-            onPress={() => {}}
+            onPress={() => {
+              addToCollection( select?.id, storyId)
+              onClose()
+            }}
           />
         </View>
       </View>
