@@ -190,7 +190,7 @@ function ModalNewStory({
                         fontSize: moderateScale(40),
                         fontWeight: 700,
                         marginBottom: 0,
-                        marginLeft: moderateScale(10),
+                        marginLeft: moderateScale(30),
                       }}>
                        {`${timeLeft.hour}h ${timeLeft.minutes}m`}
                     </Text>
