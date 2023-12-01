@@ -209,9 +209,14 @@ const MainScreen = ({
       console.log(JSON.stringify(readStory));
     }
   };
+  const fetchStory = async() => {
+    const resp = await getStoryList();
+    handleSetStory(resp.data);
+  }
 
   useEffect(() => {
-    if (readStory === null && dataBook?.length > 0) {
+    // fetchStory()
+    if (readStory === null && dataBook) {
       let data = [
         {
           id: dataBook[0].id,

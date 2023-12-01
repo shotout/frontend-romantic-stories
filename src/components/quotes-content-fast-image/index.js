@@ -44,6 +44,7 @@ export default function QuotesContent({
   pageActive,
   isPremium,
 }) {
+
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );

@@ -26,13 +26,14 @@ import Next5 from '../../assets/icons/next5';
 import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
 import {sizing} from '../../shared/styling';
+import { BACKEND_URL } from '../../shared/static';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
   const [play, setPlay] = useState(false);
   const {position, duration} = useProgress();
   const [info, setInfo] = useState({});
   const track1 = {
-    url: require('../../assets/music/seeyouagain.mp3'),
+    url: `${BACKEND_URL}/assets/audio/test.mp3`,
     title: 'See You Again',
     artist: 'Wiz Khalifa',
     album: 'While(1<2)',

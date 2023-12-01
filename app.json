@@ -1,4 +1,8 @@
 {
   "name": "Shortstory",
-  "displayName": "Shortstory"
+  "displayName": "Shortstory",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-1891825795064804~8633266273",
+    "ios_app_id": "ca-app-pub-1891825795064804~5558217230"
+  }
 }

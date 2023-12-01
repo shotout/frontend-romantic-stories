@@ -22,26 +22,26 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {code_color} from './src/utils/colors';
-import {bg, bg_splash, logo} from './src/assets/images';
-import {navigate} from './src/shared/navigationRef';
-import {getDefaultLanguange} from './src/utils/devices';
+import {code_color} from './../../../src/utils/colors';
+import {bg, bg_splash, logo} from './../../../src/assets/images';
+import {navigate} from './../../../src/shared/navigationRef';
+import {getDefaultLanguange} from './../../../src/utils/devices';
 import PropTypes from 'prop-types';
-import dispatcher from './src/navigators/dispatcher';
-import states from './src/navigators/states';
+import dispatcher from './../../../src/navigators/dispatcher';
+import states from './../../../src/navigators/states';
 import {connect} from 'react-redux';
-import {getStoryList} from './src/shared/request';
-import i18n from './src/i18n/index';
+import {getStoryList} from './../../../src/shared/request';
+import i18n from './../../../src/i18n/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
+import { APP_INSTALLED, askTrackingPermission, eventTracking } from './../../../src/helpers/eventTracking';
 import { Adjust, AdjustConfig } from 'react-native-adjust';
 import * as Sentry from '@sentry/react-native';
-import { SENTRY_DSN } from './src/shared/static';
+import { SENTRY_DSN } from './../../../src/shared/static';
 import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
-import { handleSetStory } from './src/store/defaultState/actions';
-import store from './src/store/configure-store';
+import { handleSetStory } from './../../../src/store/defaultState/actions';
+import store from './../../../src/store/configure-store';
 import { AppOpenAd } from 'react-native-google-mobile-ads';
-import { getAppOpenID } from './src/shared/adsId';
+import { getAppOpenID } from './../../../src/shared/adsId';
 
 Purchasely.startWithAPIKey(
   "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",

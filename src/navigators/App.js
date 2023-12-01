@@ -6,6 +6,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import Main from './Main';
 import store, {persistor} from '../store/configure-store';
+import { PaperProvider } from 'react-native-paper';
 
 LogBox.ignoreAllLogs();
 
@@ -14,7 +15,9 @@ const App = () => {
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
+        <PaperProvider>
           <Main />
+          </PaperProvider>
         </PersistGate>
       </Provider>
     </GestureHandlerRootView>
