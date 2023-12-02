@@ -36,7 +36,6 @@ function ModalAudioStory({
   edit,
   data,
   isPremium,
-  readLater,
   onGetAudio,
   onGetAudio1
 }) {
@@ -461,7 +460,6 @@ function ModalAudioStory({
 
 ModalAudioStory.propTypes = {
   isVisible: PropTypes.bool.isRequired,
-  readLater: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

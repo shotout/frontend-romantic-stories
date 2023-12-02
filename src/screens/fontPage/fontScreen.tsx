@@ -147,6 +147,52 @@ const FontScreen = ({
       },
     );
   };
+
+  const showIntersialBg  = async () => {
+    
+    // setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {},
+              },
+            ],
+          );
+        }
+        // setLoadingAds(false);
+      },
+    );
+  };
+
+  const showIntersialTheme  = async () => {
+    
+    // setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ]);
+        }
+        // setLoadingAds(false);
+      },
+    );
+  };
   useEffect(() => {
     
     
@@ -212,6 +258,7 @@ const FontScreen = ({
         }
         Icon={() => <UnlockBgIcon style={{marginBottom: 20}} width={'50%'} />}
         onSuccess={() => {
+          showIntersialBg()
           setIsFinishAds(true);
           setModalUnlockBg(false);
           setBg(
@@ -219,16 +266,8 @@ const FontScreen = ({
               ? code_color.white
               : code_color.blackDark,
           );
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: () => {},
-              },
-            ],
-          );
+         
+          
         }}
       />
       <ModalUnlockPremium
@@ -242,9 +281,10 @@ const FontScreen = ({
         }
         Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
         onSuccess={() => {
+          showInterStialAds()
           handleSetFontFamily(fontSelect.value);
           setModalUnlockFont(false);
-          showInterStialAds()
+         
          
         }}
       />
@@ -261,14 +301,10 @@ const FontScreen = ({
           <UnlockThemeIcon style={{marginBottom: 20}} width={'50%'} />
         )}
         onSuccess={() => {
+          showIntersialTheme()
           handleBgThemeColor(null);
           setModalUnlockTheme(false);
-          Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
-            {
-              text: 'OK',
-              onPress: () => {},
-            },
-          ]);
+          
         }}
       />
       <View

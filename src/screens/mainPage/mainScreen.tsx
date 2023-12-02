@@ -22,6 +22,7 @@ import {
   Pressable,
   Modal,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {
   imgBgAvaTips,
@@ -66,6 +67,8 @@ import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
+import { loadRewarded } from '../../helpers/loadReward';
+import { RewardedAdEventType } from 'react-native-google-mobile-ads';
 // import * as RNIap from 'react-native-iap';
 
 const {width, height} = Dimensions.get('window');
@@ -738,7 +741,24 @@ const MainScreen = ({
       }
     }
   };
-
+  const showWatchAds = async () => {
+    setShowModalNewStory(false);
+    // setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          setTimeout(() => {
+            setShowModal(true);
+          }, 300);
+         
+        }
+        // setLoadingAds(false);
+      },
+    );
+  };
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -833,8 +853,8 @@ const MainScreen = ({
             isVisible={showModalNewStory}
             onClose={() => setShowModalNewStory(false)}
             onWatchAds={() => {
-              setShowModalNewStory(false);
-              setShowModal(true);
+              showWatchAds()
+             
             }}
             onUnlock={() => {
               handleUnlock();

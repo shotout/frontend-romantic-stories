@@ -407,7 +407,7 @@ function ModalUnlockStory({
                     Start reading
                   </Text>
                 </TouchableOpacity>
-                {readLater && (
+                {/* {readLater && (
                   <TouchableOpacity
                     onPress={onClose}
                     style={{
@@ -435,7 +435,7 @@ function ModalUnlockStory({
                       You can proceed reading your current story
                     </Text>
                   </TouchableOpacity>
-                )}
+                )} */}
               </View>
             </View>
           </View>
