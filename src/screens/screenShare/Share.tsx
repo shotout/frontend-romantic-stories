@@ -90,10 +90,13 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
   const [fontSelect, setSelectFont] = useState({
-    name: 'Georgia',
-    value: 'GeorgiaEstate-w15Mn',
+    name: 'Roboto',
+    value: 'Roboto-Regular',
   });
-  const [selectedFont, setSelectedFont] = useState<any>(null);
+  const [selectedFont, setSelectedFont] = useState({
+    name: '',
+    value: '',
+  });
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
@@ -939,7 +942,14 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         desc={
           'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
         }
-        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        Icon={() => (
+          <UnlockFontIcon
+            style={{marginBottom: 20}}
+            width={'50%'}
+            fontBefore={fontSelect.value}
+            fontAfter={selectedFont.value}
+          />
+        )}
         onSuccess={() => {
           setModalUnlockFont(false);
           setSelectFont(selectedFont);
@@ -1097,6 +1107,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   style={{
                     paddingHorizontal: 20,
                     paddingVertical: 0,
+                    fontFamily: item.value,
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark

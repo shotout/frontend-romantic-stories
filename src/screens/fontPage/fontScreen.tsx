@@ -7,13 +7,11 @@
  * @flow strict-local
  */
 
-import React, {useEffect, Fragment, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
-  ImageBackground,
   Text,
-  Image,
   TouchableOpacity,
   Pressable,
   Alert,
@@ -35,22 +33,30 @@ import UnlockFontIcon from './../../assets/icons/unlockFont';
 import UnlockThemeIcon from './../../assets/icons/unlockTheme';
 import {fontList} from '../../utils/constants';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
-import { AdEventType, InterstitialAd, RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
-import { getRewardedInsterstialLearnMoreID, getRewardedOutOfQuotesID } from '../../shared/adsId';
-import { loadInterstialAds, loadRewarded } from '../../helpers/loadReward';
-import LoadingFullScreen from "../../components/loading-fullscreen";
+import {
+  AdEventType,
+  InterstitialAd,
+  RewardedAd,
+  RewardedAdEventType,
+} from 'react-native-google-mobile-ads';
+import {
+  getRewardedInsterstialLearnMoreID,
+  getRewardedOutOfQuotesID,
+} from '../../shared/adsId';
+import {loadInterstialAds, loadRewarded} from '../../helpers/loadReward';
+import LoadingFullScreen from '../../components/loading-fullscreen';
 const adUnitId = getRewardedOutOfQuotesID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
-  keywords: ["fashion", "clothing"],
+  keywords: ['fashion', 'clothing'],
 });
 
 const interstialAds = InterstitialAd.createForAdRequest(
   getRewardedInsterstialLearnMoreID(),
   {
     requestNonPersonalizedAdsOnly: true,
-    keywords: ["fashion", "clothing"],
-  }
+    keywords: ['fashion', 'clothing'],
+  },
 );
 const FontScreen = ({
   userProfile,
@@ -62,14 +68,18 @@ const FontScreen = ({
   backgroundColor,
   handleSetFontFamily,
   isPremium,
-  fontFamily
+  fontFamily,
 }) => {
   console.log(JSON.stringify(fontFamily));
   const [show, setShow] = useState(false);
   const [isLoadingInterstial, setLoadingInterstial] = useState(false);
   const [fontSelect, setSelectFont] = useState({
-    name: fontFamily === 'BigshotOne-Regular' ? 'Bigshot' :  fontFamily === 'GentiumBookPlus-Regular'  ? 'Gentium' :   fontFamily === 'GeorgiaEstate-w15Mn' ? 'Georgia' : fontFamily,
-    value: fontFamily,
+    name: fontFamily,
+    value: `${fontFamily}`,
+  });
+  const [nextFont, setNextFont] = useState({
+    name: '',
+    value: '',
   });
   const [colorsBg, setColorsBg] = useState([
     {
@@ -136,7 +146,7 @@ const FontScreen = ({
       reward => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
-           Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
             {
               text: 'OK',
               onPress: () => {},
@@ -148,8 +158,7 @@ const FontScreen = ({
     );
   };
 
-  const showIntersialBg  = async () => {
-    
+  const showIntersialBg = async () => {
     // setLoadingAds(true);
     const advert = await loadRewarded();
     const pageCountDownReward = advert.addAdEventListener(
@@ -173,8 +182,7 @@ const FontScreen = ({
     );
   };
 
-  const showIntersialTheme  = async () => {
-    
+  const showIntersialTheme = async () => {
     // setLoadingAds(true);
     const advert = await loadRewarded();
     const pageCountDownReward = advert.addAdEventListener(
@@ -194,47 +202,46 @@ const FontScreen = ({
     );
   };
   useEffect(() => {
-    
-    
     // Handle interstial reward quote ads
 
     const unsubscribeLoaded = rewarded.addAdEventListener(
       RewardedAdEventType.LOADED,
       () => {
-        console.log("LOAD ADS FROM MAIN PAGE REWARD");
-      }
+        console.log('LOAD ADS FROM MAIN PAGE REWARD');
+      },
     );
     const unsubscribeEarned = rewarded.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      (reward) => {
-        
-        console.log("User earned reward of ", reward);
-      }
+      reward => {
+        console.log('User earned reward of ', reward);
+      },
     );
 
-    const rewardedOpen = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-     
-     
-      console.log("LOAD ADS MODAL COUNTDOWN");
-    });
+    const rewardedOpen = rewarded.addAdEventListener(
+      RewardedAdEventType.LOADED,
+      () => {
+        console.log('LOAD ADS MODAL COUNTDOWN');
+      },
+    );
     const rewardedClose = rewarded.addAdEventListener(
       AdEventType.CLOSED,
       () => {
         // setTimeout(() => {
         //   AsyncStorage.removeItem('interstial')
         //  }, 1000);
-      
-        console.log("LOAD ADS MODAL COUNTDOWN");
-      }
+
+        console.log('LOAD ADS MODAL COUNTDOWN');
+      },
     );
-    const interstialListenerAds = interstialAds.addAdEventListener(AdEventType.CLOSED,  () => {
-      // Do not allow AppOpenAd to show right after InterstitialAd is closed.
-      // We can depend on this as it's called soon enough before AppState event fires.
-      interstialAds.load();
-     
-    
-    });
-    
+    const interstialListenerAds = interstialAds.addAdEventListener(
+      AdEventType.CLOSED,
+      () => {
+        // Do not allow AppOpenAd to show right after InterstitialAd is closed.
+        // We can depend on this as it's called soon enough before AppState event fires.
+        interstialAds.load();
+      },
+    );
+
     interstialAds.load();
     return () => {
       unsubscribeLoaded();
@@ -258,7 +265,7 @@ const FontScreen = ({
         }
         Icon={() => <UnlockBgIcon style={{marginBottom: 20}} width={'50%'} />}
         onSuccess={() => {
-          showIntersialBg()
+          showIntersialBg();
           setIsFinishAds(true);
           setModalUnlockBg(false);
           setBg(
@@ -266,8 +273,6 @@ const FontScreen = ({
               ? code_color.white
               : code_color.blackDark,
           );
-         
-          
         }}
       />
       <ModalUnlockPremium
@@ -279,13 +284,19 @@ const FontScreen = ({
         desc={
           'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
         }
-        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        Icon={() => (
+          <UnlockFontIcon
+            style={{marginBottom: 20}}
+            width={'50%'}
+            fontBefore={fontSelect.value}
+            fontAfter={nextFont.value}
+          />
+        )}
         onSuccess={() => {
-          showInterStialAds()
-          handleSetFontFamily(fontSelect.value);
+          showInterStialAds();
+          setSelectFont(nextFont);
+          handleSetFontFamily(nextFont.value);
           setModalUnlockFont(false);
-         
-         
         }}
       />
       <ModalUnlockPremium
@@ -301,10 +312,9 @@ const FontScreen = ({
           <UnlockThemeIcon style={{marginBottom: 20}} width={'50%'} />
         )}
         onSuccess={() => {
-          showIntersialTheme()
+          showIntersialTheme();
           handleBgThemeColor(null);
           setModalUnlockTheme(false);
-          
         }}
       />
       <View
@@ -534,7 +544,7 @@ const FontScreen = ({
               <Pressable
                 key={index}
                 onPress={() => {
-                  setSelectFont(item);
+                  setNextFont(item);
                   if (isPremium) {
                     handleSetFontFamily(item.value);
                   } else {
@@ -559,6 +569,7 @@ const FontScreen = ({
                   style={{
                     paddingHorizontal: 20,
                     paddingVertical: 0,
+                    fontFamily: item.value,
                     color:
                       fontSelect.name === item.name
                         ? code_color.blackDark

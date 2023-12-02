@@ -14,12 +14,52 @@
       "sha1": "8aa11f225d34b7d4e25aec3ca6b5cae30a444ce8"
     },
     {
+      "path": "src/assets/fonts/EBGaramond-Regular.ttf",
+      "sha1": "be26da68f44ee5c3275cafcc5a352a4964f292a0"
+    },
+    {
       "path": "src/assets/fonts/GentiumBookPlus-Regular.ttf",
       "sha1": "656eab8c4fa36934d8ace73b2c08b393e4ee4b19"
     },
     {
       "path": "src/assets/fonts/GeorgiaEstate-w15Mn.ttf",
       "sha1": "cb2acf17e5532f18b6fdd464b494233807815d0f"
+    },
+    {
+      "path": "src/assets/fonts/Lato-Regular.ttf",
+      "sha1": "e923c72eda5e50a87e18ff5c71e9ef4b3b6455a3"
+    },
+    {
+      "path": "src/assets/fonts/Merriweather-Regular.ttf",
+      "sha1": "f4e7810e4e20d1932d3d7994bb6f6456280ee6bd"
+    },
+    {
+      "path": "src/assets/fonts/Montserrat-Regular.ttf",
+      "sha1": "bb895d19b8a1fbe1c57fc89cac5da82fdc8fdef4"
+    },
+    {
+      "path": "src/assets/fonts/OpenSans-Regular.ttf",
+      "sha1": "b4596a8e11ee5b6331f2fecf656a53f61677b56e"
+    },
+    {
+      "path": "src/assets/fonts/PlayfairDisplay-Regular.ttf",
+      "sha1": "27948bdf40b983e7e7405ae9dc101abc0c455c99"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    },
+    {
+      "path": "src/assets/fonts/Quicksand-Regular.ttf",
+      "sha1": "ba6e4d47926d643a8a4b509b193b3a87c3ea385d"
+    },
+    {
+      "path": "src/assets/fonts/Raleway-Regular.ttf",
+      "sha1": "5a37f51d6a22ae86cc64c9085b5f64b180ad2609"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Regular.ttf",
+      "sha1": "56c5c0d38bde4c1f1549dda43db37b09c608aad3"
     }
   ]
 }
