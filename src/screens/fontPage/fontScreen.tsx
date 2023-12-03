@@ -72,7 +72,7 @@ const FontScreen = ({
 }) => {
   console.log(JSON.stringify(fontFamily));
   const [show, setShow] = useState(false);
-  const [isLoadingInterstial, setLoadingInterstial] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
   const [fontSelect, setSelectFont] = useState({
     name: fontFamily,
     value: `${fontFamily}`,
@@ -109,13 +109,8 @@ const FontScreen = ({
   const [isFinishAds, setIsFinishAds] = useState(false);
 
   const setBg = value => {
-    if (isPremium || isFinishAds) {
-      set_bgColor(value);
-      handleSetBackground(value);
-    } else {
-      setModalUnlockBg(true);
-      setIsFinishAds(true);
-    }
+    set_bgColor(value);
+    handleSetBackground(value);
   };
 
   const handleFont = value => {
@@ -138,8 +133,8 @@ const FontScreen = ({
     setBgTheme(code ? code : selectedBgTheme.code);
     handleSetColorTheme(code ? code : selectedBgTheme.code);
   };
-  const showInterStialAds = async () => {
-    // setLoadingAds(true);
+  const showInterStialFont = async () => {
+    setLoadingAds(true);
     const advert = await loadRewarded();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
@@ -149,17 +144,21 @@ const FontScreen = ({
           Alert.alert('Congrats! You have unlocked the selected Font.', '', [
             {
               text: 'OK',
-              onPress: () => {},
+              onPress: () => {
+                setSelectFont(nextFont);
+                handleSetFontFamily(nextFont.value);
+                setModalUnlockFont(false);
+              },
             },
           ]);
         }
-        // setLoadingAds(false);
+        setLoadingAds(false);
       },
     );
   };
 
   const showIntersialBg = async () => {
-    // setLoadingAds(true);
+    setLoadingAds(true);
     const advert = await loadRewarded();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
@@ -172,18 +171,25 @@ const FontScreen = ({
             [
               {
                 text: 'OK',
-                onPress: () => {},
+                onPress: async () => {
+                  setBg(
+                    bg_color === code_color.blackDark
+                      ? code_color.white
+                      : code_color.blackDark,
+                  );
+                  setModalUnlockBg(false);
+                },
               },
             ],
           );
         }
-        // setLoadingAds(false);
+        setLoadingAds(false);
       },
     );
   };
 
   const showIntersialTheme = async () => {
-    // setLoadingAds(true);
+    setLoadingAds(true);
     const advert = await loadRewarded();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
@@ -193,11 +199,14 @@ const FontScreen = ({
           Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
             {
               text: 'OK',
-              onPress: () => {},
+              onPress: () => {
+                handleBgThemeColor(selectedBgTheme.code);
+                setModalUnlockTheme(false);
+              },
             },
           ]);
         }
-        // setLoadingAds(false);
+        setLoadingAds(false);
       },
     );
   };
@@ -255,25 +264,14 @@ const FontScreen = ({
     <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
       <ModalUnlockPremium
         isVisible={modalUnlockBg}
-        onClose={() => {
-          setModalUnlockBg(false);
-          setIsFinishAds(false);
-        }}
+        onClose={() => setModalUnlockBg(false)}
         title={'Unlock this Background\r for Free now'}
         desc={
           'Watch a Video to unlock this Background for Free or go UNLIMITED to unlock everything!'
         }
         Icon={() => <UnlockBgIcon style={{marginBottom: 20}} width={'50%'} />}
-        onSuccess={() => {
-          showIntersialBg();
-          setIsFinishAds(true);
-          setModalUnlockBg(false);
-          setBg(
-            bg_color === code_color.blackDark
-              ? code_color.white
-              : code_color.blackDark,
-          );
-        }}
+        isLoadingAds={loadingAds}
+        onSuccess={showIntersialBg}
       />
       <ModalUnlockPremium
         isVisible={modalUnlockFont}
@@ -292,12 +290,8 @@ const FontScreen = ({
             fontAfter={nextFont.value}
           />
         )}
-        onSuccess={() => {
-          showInterStialAds();
-          setSelectFont(nextFont);
-          handleSetFontFamily(nextFont.value);
-          setModalUnlockFont(false);
-        }}
+        isLoadingAds={loadingAds}
+        onSuccess={async () => showInterStialFont()}
       />
       <ModalUnlockPremium
         isVisible={modalUnlockTheme}
@@ -311,11 +305,8 @@ const FontScreen = ({
         Icon={() => (
           <UnlockThemeIcon style={{marginBottom: 20}} width={'50%'} />
         )}
-        onSuccess={() => {
-          showIntersialTheme();
-          handleBgThemeColor(null);
-          setModalUnlockTheme(false);
-        }}
+        isLoadingAds={loadingAds}
+        onSuccess={() => showIntersialTheme()}
       />
       <View
         style={{
@@ -330,8 +321,8 @@ const FontScreen = ({
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => {
-                if (bg_color !== code_color.white) {
-                  setBg(code_color.white);
+                if (!isPremium) {
+                  setModalUnlockBg(true);
                 }
               }}
               style={{
@@ -395,8 +386,8 @@ const FontScreen = ({
 
             <Pressable
               onPress={() => {
-                if (bg_color !== code_color.blackDark) {
-                  setBg(code_color.blackDark);
+                if (!isPremium) {
+                  setModalUnlockBg(true);
                 }
               }}
               style={{
@@ -491,13 +482,18 @@ const FontScreen = ({
               A+
             </Text>
           </View>
-
           <Slider
             step={1}
             // style={{width: 200, height: 40}}
             minimumValue={0}
             maximumValue={2}
-            value={fontSizeDefault === 16 ? 1 : fontSizeDefault === 14 ? 0 : 2}
+            value={
+              Number(fontSizeDefault) === 16
+                ? 1
+                : Number(fontSizeDefault) === 14
+                ? 0
+                : 2
+            }
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#FFFFFF"
             onValueChange={value => handleFont(value)}
@@ -535,7 +531,11 @@ const FontScreen = ({
               justifyContent: 'center',
               marginLeft: 10,
             }}>
-            {show ? <DownChevron /> : <UpChevron />}
+            {show ? (
+              <DownChevron color={bgTheme} />
+            ) : (
+              <UpChevron color={bgTheme} />
+            )}
           </Pressable>
         </View>
         {!show ? (
@@ -553,7 +553,7 @@ const FontScreen = ({
                 }}
                 style={{
                   backgroundColor:
-                    fontSelect.name === item.name
+                    fontSelect.value === item.value
                       ? code_color.white
                       : undefined,
                   borderColor: code_color.white,
@@ -571,13 +571,13 @@ const FontScreen = ({
                     paddingVertical: 0,
                     fontFamily: item.value,
                     color:
-                      fontSelect.name === item.name
+                      fontSelect.value === item.value
                         ? code_color.blackDark
                         : code_color.white,
                   }}>
                   {item.name}
                 </Text>
-                {!isPremium && fontSelect.name !== item.name ? (
+                {!isPremium && fontSelect.value !== item.value ? (
                   <>
                     <View
                       style={{
