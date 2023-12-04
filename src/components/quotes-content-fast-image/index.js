@@ -21,12 +21,13 @@ import {BACKEND_URL} from '../../shared/static';
 import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
 import {navigate, navigationRef} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
-import {getListAvatarTheme} from '../../shared/request';
+import {getListAvatarTheme, updateProfile} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
 import {moderateScale} from 'react-native-size-matters';
 import {handleNativePayment} from '../../helpers/paywall';
 import FastImage from 'react-native-fast-image';
 import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
+import { reloadUserProfile } from '../../utils/user';
 
 const loveAnimate = require('../../assets/lottie/love.json');
 
@@ -64,7 +65,9 @@ export default function QuotesContent({
     'n Rio, and I bet you’d love it.\r\nBet you’d also learn a lot of words in just one day. " I said, this time trying to keep it\r\nprofessional. After all, I was getting paid hourly, and wasting time talking nonsense\r\n\r\nwould look bad on my reviews, even though she did not seem like the type who would\r\nleave a bad review.\r\n"Okay, okay, fine," she said throwing her hands in the air, "next time be the\r\ngentleman who takes me out instead."\r\n"It sounds like a challenge, beleza." I raised an eyebrow.\r\n"No," she shook her head and chuckled, "unless you want it to be."\r\n"No, really, I am going to prove myself, because I\'m the best," I said.\r\nShe rolled her eyes.\r\n"Don\'t roll your eyes on me," I said, slightly warning her.\r\n"You didn\'t really say that." She scoffed and did it again and again. She was\r\ntesting my limits.\r\n"I just did." She did it again and smirked.\r\n"Why did you have to be the type that tends to be so bratty?" I asked.\r\n"I didn\'t." She shrugged and took another sip of her wine, "',
     'I am just your favorite\r\nclient," she giggled. It was too cute.\r\n"That you are." I chuckled and leaned back on my chair.\r\n"So, when are you going to teach me all those beach words?" she asked.\r\n"I am available anytime, beleza."\r\n"Okay, how about Saturday?" she asked, "I have already bought a really beautiful\r\nswimsuit and I can\'t wait to put it on."\r\nI smiled at her and nodded. I was definitely excited to take her out and show her\r\naround the city and the beach, especially the nightlife.\r\n"You are going to love it."\r\n"I will, especially if I\'m with you," she smiled and blushed. I wondered whether\r\nshe was just being flirty or she meant it\r\n"And who says you can\'t have your fun while learning? " I raised an eyebrow.',
   ];
+  const manipulatedResponse = item.replace(/(\r\n|\n|\r|\s{2,})/gm, '');
 
+  console.log('ini'+manipulatedResponse)
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive]);
@@ -74,8 +77,15 @@ export default function QuotesContent({
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
-      setTimeout(() => {
+      setTimeout(async() => {
         setShowAudio(true);
+        const payload = {
+          _method: 'PATCH',
+          is_audio: 1,
+          audio_limit: 50,
+        };
+        await updateProfile(payload);
+        reloadUserProfile();
       }, 100);
     } else {
       setShow(false);
@@ -89,8 +99,15 @@ export default function QuotesContent({
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
       setShow(false);
-      setTimeout(() => {
+      setTimeout(async() => {
         setShowAudio(true);
+        const payload = {
+          _method: 'PATCH',
+          is_audio: 1,
+          audio_limit: 10,
+        };
+        await updateProfile(payload);
+        reloadUserProfile();
       }, 100);
     } else {
       setShow(false);

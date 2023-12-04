@@ -35,7 +35,7 @@ export default StyleSheet.create({
  
   },
   ctnQuotes: {
-    // textAlign: 'justify',
+     textAlign: 'auto',
     // fontFamily: fonts.QuotesText,
     lineHeight: 24,
     
