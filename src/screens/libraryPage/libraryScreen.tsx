@@ -66,6 +66,7 @@ import ModalShareStory from '../../components/modal-share-story';
 import ModalNewStory from '../../components/modal-new-story';
 import {handleNativePayment} from '../../helpers/paywall';
 import {sizing} from '../../shared/styling';
+import {Step4} from '../../layout/tutorial';
 
 const LibraryScreen = ({
   colorTheme,
@@ -370,53 +371,12 @@ const LibraryScreen = ({
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
           {renderProgress()}
-          <View
-            style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '40%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={imgStep4}
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginBottom: 20,
-              }}>
-              {
-                'Re-discover your favorite\nStories that are saved\nin your Library.'
-              }
-            </Text>
-
-            <Button
-              style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
-                borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={i18n.t('Next')}
-              onPress={() => {
-                // setTutorial({
-                //   ...isTutorial,
-                //   step: isTutorial.step + 1,
-                // });
-                handleSetSteps(3 + 1);
-                navigate('ExploreLibrary');
-              }}
-            />
-          </View>
+          <Step4
+            handleNext={() => {
+              handleSetSteps(3 + 1);
+              navigate('ExploreLibrary');
+            }}
+          />
         </SafeAreaView>
       );
     }
