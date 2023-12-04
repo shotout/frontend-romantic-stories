@@ -256,7 +256,7 @@ const MainScreen = ({
     //   // Show alert or perform other actions
     //   alert('You reached the last page and it is marked as read!');
     // }
-    if (pageNumber === 2) {
+    if (pageNumber === 2 || pageNumber === 5 || pageNumber === 8) {
       setIsLoveAnimate(true);
       if (isLoveAnimate !== 'stop') {
         setTimeout(() => {
