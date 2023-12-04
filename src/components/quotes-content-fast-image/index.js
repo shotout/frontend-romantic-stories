@@ -43,8 +43,8 @@ export default function QuotesContent({
   totalStory,
   pageActive,
   isPremium,
+  titleStory
 }) {
-
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -225,7 +225,7 @@ export default function QuotesContent({
                 color:
                   bg === '#2C3439' ? code_color.white : code_color.blackDark,
               }}>
-              {themeUser?.language_id === '2' ? item?.title_id : item?.title_en}
+              {titleStory}
             </Text>
           </View>
 
@@ -291,26 +291,26 @@ export default function QuotesContent({
                     selectedContent: content,
                     start:
                       themeUser?.language_id === '2'
-                        ? item?.content_id?.substring(
+                        ? item?.substring(
                             selectionStart - 50,
                             selectionStart,
                           )
-                        : item?.content_en?.substring(
+                        : item?.substring(
                             selectionStart - 50,
                             selectionStart,
                           ),
                     end:
-                      themeUser?.language_id === '2'
-                        ? item?.content_id?.substring(
+                      themeUser?.content_en === '2'
+                        ? item?.substring(
                             selectionEnd - 50,
                             selectionEnd,
                           )
-                        : item?.content_en?.substring(
+                        : item?.substring(
                             selectionEnd - 50,
                             selectionEnd,
                           ),
                     title:
-                      themeUser?.language_id === '2'
+                      themeUser?.content_en === '2'
                         ? item?.title_id
                         : item?.title_en,
                   });
@@ -318,8 +318,8 @@ export default function QuotesContent({
                 }}
                 value={
                   themeUser?.language_id === '2'
-                    ? item?.content_id
-                    : item?.content_en
+                    ? item
+                    : item
                 }
               />
             </View>

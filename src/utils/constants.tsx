@@ -1,18 +1,42 @@
 export const fontList = [
   {
-    name: 'Georgia',
-    value: 'GeorgiaEstate-w15Mn',
+    name: 'Roboto',
+    value: 'Roboto-Regular',
   },
   {
-    name: 'Arial',
-    value: 'Arial',
+    name: 'Poppins',
+    value: 'Poppins-Regular',
   },
   {
-    name: 'Bigshot',
-    value: 'BigshotOne-Regular',
+    name: 'Lato',
+    value: 'Lato-Regular',
   },
   {
-    name: 'Gentium',
-    value: 'GentiumBookPlus-Regular',
+    name: 'Playfair',
+    value: 'PlayfairDisplay-Regular',
+  },
+  {
+    name: 'Raleway',
+    value: 'Raleway-Regular',
+  },
+  {
+    name: 'Montserrat',
+    value: 'Montserrat-Regular',
+  },
+  {
+    name: 'Merriweather',
+    value: 'Merriweather-Regular',
+  },
+  {
+    name: 'Quicksand',
+    value: 'Quicksand-Regular',
+  },
+  {
+    name: 'Eb Garamond',
+    value: 'EBGaramond-Regular',
+  },
+  {
+    name: 'OpenSans',
+    value: 'OpenSans-Regular',
   },
 ];

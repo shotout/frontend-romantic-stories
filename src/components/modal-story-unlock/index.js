@@ -222,7 +222,7 @@ function ModalUnlockStory({
                 Other Stories you might like:
               </Text>
               <View style={{flexDirection: 'row'}}>
-              {userStory?.data?.slice(2, 5).map((item, index) => (
+              {[1, 2, 3].map(itm => (
                   <Pressable
                     style={{
                       flex: 1,
@@ -231,7 +231,7 @@ function ModalUnlockStory({
                       marginHorizontal: 10,
                     }}>
                     <Image
-                     source={{uri: `${BACKEND_URL}/${item?.category.cover?.url}`}}
+                    source={cover1}
                       resizeMode="contain"
                       style={{
                         width: 65,
@@ -246,7 +246,7 @@ function ModalUnlockStory({
                         fontSize: moderateScale(12),
                         textAlign: 'center',
                       }}>
-                     {item.title_en}
+                    Title of the Story A
                     </Text>
                   </Pressable>
                 ))}

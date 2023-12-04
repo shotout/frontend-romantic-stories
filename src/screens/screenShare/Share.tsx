@@ -78,22 +78,28 @@ import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import {handlePayment} from '../../helpers/paywall';
+import {loadRewarded} from '../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
   const [selectBg, setSelectBg] = useState(null);
   const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
   const [fontSelect, setSelectFont] = useState({
-    name: 'Georgia',
-    value: 'GeorgiaEstate-w15Mn',
+    name: 'Roboto',
+    value: 'Roboto-Regular',
   });
-  const [selectedFont, setSelectedFont] = useState<any>(null);
+  const [selectedFont, setSelectedFont] = useState({
+    name: '',
+    value: '',
+  });
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
@@ -160,6 +166,56 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       pan.setValue({x: 0, y: 0});
     },
   });
+
+  const showInterStialFont = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                setSelectFont(selectedFont);
+                setModalUnlockFont(false);
+              },
+            },
+          ]);
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
+
+  const showInterStialBg = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  setSelectBg(selectedBg);
+                  setModalUnlockBg(false);
+                },
+              },
+            ],
+          );
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
 
   const handleShare = async () => {
     base64CaptureImage.current = null;
@@ -939,16 +995,25 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         desc={
           'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
         }
-        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        Icon={() => (
+          <UnlockFontIcon
+            style={{marginBottom: 20}}
+            width={'50%'}
+            fontBefore={fontSelect.value}
+            fontAfter={selectedFont.value}
+          />
+        )}
+        isLoadingAds={loadingAds}
         onSuccess={() => {
-          setModalUnlockFont(false);
-          setSelectFont(selectedFont);
-          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
-            {
-              text: 'OK',
-              onPress: () => {},
-            },
-          ]);
+          showInterStialFont();
+          // setModalUnlockFont(false);
+          // setSelectFont(selectedFont);
+          // Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+          //   {
+          //     text: 'OK',
+          //     onPress: () => {},
+          //   },
+          // ]);
         }}
       />
       <ModalUnlockPremium
@@ -964,20 +1029,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         Icon={() => (
           <UnlockBgShareIcon style={{marginBottom: 20}} width={'50%'} />
         )}
-        onSuccess={() => {
-          setSelectBg(selectedBg);
-          setModalUnlockBg(false);
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: () => {},
-              },
-            ],
-          );
-        }}
+        isLoadingAds={loadingAds}
+        onSuccess={showInterStialBg}
       />
       <View style={styles.row}>
         <Text style={styles.textTitle}>Share Quote</Text>
@@ -1097,6 +1150,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   style={{
                     paddingHorizontal: 20,
                     paddingVertical: 0,
+                    fontFamily: item.value,
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark

@@ -118,11 +118,11 @@ function ModalEditProfile({
       icon: <PartnerSvg width={20} height={20} />,
       value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
     },
-    {
-      title: 'Select language',
-      icon: <FlagSvg width={24} height={24} />,
-      value: userProfile?.language?.name,
-    },
+    // {
+    //   title: 'Select language',
+    //   icon: <FlagSvg width={24} height={24} />,
+    //   value: userProfile?.language?.name,
+    // },
   ];
 
   const form = () => (
@@ -158,6 +158,7 @@ function ModalEditProfile({
                   backgroundColor: code_color.yellow,
                   position: 'relative',
                   overflow: 'hidden',
+                  alignItems: 'center'
                 }}>
                 <Image
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
@@ -165,7 +166,8 @@ function ModalEditProfile({
                     width: 40,
                     height: 150,
                     position: 'absolute',
-                    top: 0,
+                    top: 3,
+                    right: 4
                   }}
                 />
               </View>

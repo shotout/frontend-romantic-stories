@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Modal, View, Text, TouchableOpacity} from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -12,12 +18,13 @@ import BookUnlockIcon from '../../assets/icons/bookUnlock';
 import PlayIcon from '../../assets/icons/play';
 
 function ModalUnlockPremium({
+  isLoadingAds,
   isVisible,
-  onClose,
-  Icon,
-  title,
-  desc,
   onSuccess,
+  onClose,
+  title,
+  Icon,
+  desc,
 }) {
   const handleClose = () => {
     onClose();
@@ -89,6 +96,8 @@ function ModalUnlockPremium({
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              disabled={isLoadingAds}
+              onPress={onSuccess}
               style={{
                 backgroundColor: '#ED5267',
                 flex: 1,
@@ -96,31 +105,38 @@ function ModalUnlockPremium({
                 paddingVertical: 6,
                 position: 'relative',
                 overflow: 'hidden',
+                justifyContent: 'center',
+                opacity: isLoadingAds ? 0.6 : 1,
               }}>
-              <PlayIcon style={{position: 'absolute', top: 8, left: 8}} />
-              <Text
-                style={{
-                  backgroundColor: '#FFD12F',
-                  position: 'absolute',
-                  width: 100,
-                  fontSize: 12,
-                  fontWeight: '600',
-                  textAlign: 'center',
-                  right: -35,
-                  top: 8,
-                  transform: 'rotate(45deg)',
-                }}>
-                FREE
-              </Text>
-              <Text
-                onPress={onSuccess}
-                style={{
-                  textAlign: 'center',
-                  color: code_color.white,
-                  fontSize: 12,
-                }}>
-                {'WATCH\rVIDEO'}
-              </Text>
+              {isLoadingAds ? (
+                <ActivityIndicator color={code_color.white} />
+              ) : (
+                <>
+                  <PlayIcon style={{position: 'absolute', top: 8, left: 8}} />
+                  <Text
+                    style={{
+                      backgroundColor: '#FFD12F',
+                      position: 'absolute',
+                      width: 100,
+                      fontSize: 12,
+                      fontWeight: '600',
+                      textAlign: 'center',
+                      right: -35,
+                      top: 8,
+                      transform: 'rotate(45deg)',
+                    }}>
+                    FREE
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: code_color.white,
+                      fontSize: 12,
+                    }}>
+                    {'WATCH\rVIDEO'}
+                  </Text>
+                </>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -133,6 +149,7 @@ ModalUnlockPremium.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   Icon: PropTypes.func.isRequired,
+  isLoadingAds: PropTypes.bool,
 };
 
 ModalUnlockPremium.defaultProps = {};
