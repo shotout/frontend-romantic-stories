@@ -39,6 +39,7 @@ import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
 import {Step4_2} from '../../layout/tutorial';
+import ModalSorting from '../../components/modal-sorting';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -55,8 +56,9 @@ const ExploreLibraryScreen = ({
   const [data, setData] = useState<any>();
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [items, setItems] = useState(null);
 
-  useEffect(() => {
+  const handleRestart = () => {
     async function fetchData() {
       try {
         const res = await getExploreStory({search: ''});
@@ -66,6 +68,9 @@ const ExploreLibraryScreen = ({
       }
     }
     fetchData();
+  }
+  useEffect(() => {
+    handleRestart()
   }, [keyword]);
 
   const handleTouchStart = e => {
@@ -92,7 +97,9 @@ const ExploreLibraryScreen = ({
     setIsSwipingLeft(false);
     setIsSwipingRight(false);
   };
-
+  useEffect(() => {
+    handleRestart();
+  }, [items]);
   const renderProgress = () => <StepHeader currentStep={4} />;
   const renderTutorial = () => {
     if (stepsTutorial === 4) {
@@ -120,6 +127,11 @@ const ExploreLibraryScreen = ({
   };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
+       <ModalSorting
+          isVisible={showModalSort}
+          onClose={() => setShowModalSort(false)}
+          items={(value: any) => setItems(value)}
+        />
       <View
         style={{
           flex: 0,
