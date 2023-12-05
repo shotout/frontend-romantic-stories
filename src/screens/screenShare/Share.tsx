@@ -80,6 +80,7 @@ import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import {handlePayment} from '../../helpers/paywall';
 import {loadRewarded} from '../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import {Step6, Step7, Step8} from '../../layout/tutorial';
 
 function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [isVisibleModal, setVisible] = useState(false);
@@ -660,7 +661,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     setIsSwipingLeft(false);
     setIsSwipingRight(false);
   };
-  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial + 2} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       return (
@@ -677,7 +678,22 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
             paddingTop: 40,
           }}>
           {renderProgress()}
-          <View
+          {stepsTutorial === 6 ? (
+            <Step6
+              handleNext={() => {
+                handleSetSteps(stepsTutorial + 1);
+                setVisible(false);
+              }}
+            />
+          ) : (
+            <Step7
+              handleNext={() => {
+                handleSetSteps(stepsTutorial + 1);
+                setVisible(false);
+              }}
+            />
+          )}
+          {/* <View
             style={{
               backgroundColor: '#3F58DD',
               borderRadius: 20,
@@ -719,7 +735,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 setVisible(false);
               }}
             />
-          </View>
+          </View> */}
         </SafeAreaView>
       );
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {
@@ -747,7 +763,20 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               paddingTop: 40,
             }}>
             {renderProgress()}
-            <View
+            <Step8
+              stepsTutorial={stepsTutorial}
+              handleNext={() => {
+                handleSetSteps(stepsTutorial + 1);
+                setVisible(false);
+                if (stepsTutorial === 9) {
+                  AsyncStorage.removeItem('isTutorial');
+                  handleSetSteps(0);
+                  goBack();
+                  handlePayment('onboarding');
+                }
+              }}
+            />
+            {/* <View
               style={{
                 backgroundColor: '#3F58DD',
                 borderRadius: 20,
@@ -808,7 +837,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   }
                 }}
               />
-            </View>
+            </View> */}
           </ImageBackground>
         </SafeAreaView>
       );

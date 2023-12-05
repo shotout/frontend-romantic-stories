@@ -358,7 +358,7 @@ const LibraryScreen = ({
     setIsSwipingLeft(false);
     setIsSwipingRight(false);
   };
-  const renderProgress = () => <StepHeader currentStep={3} />;
+  const renderProgress = () => <StepHeader currentStep={5} />;
   const renderTutorial = () => {
     if (stepsTutorial === 3) {
       return (

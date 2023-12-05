@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 import TrackPlayer, {
@@ -26,7 +26,9 @@ import Next5 from '../../assets/icons/next5';
 import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
 import {sizing} from '../../shared/styling';
-import { BACKEND_URL } from '../../shared/static';
+import {BACKEND_URL} from '../../shared/static';
+import StepHeader from '../../layout/step/stepHeader';
+import {Step3} from '../../layout/tutorial';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
   const [play, setPlay] = useState(false);
@@ -84,6 +86,31 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
     const info = await TrackPlayer.getTrack(currentTrack);
     setInfo(info);
   }
+
+  const renderProgress = () => <StepHeader currentStep={4} />;
+  const renderTutorial = () => {
+    if (stepsTutorial === 3) {
+      return (
+        <SafeAreaView
+          // onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
+          style={{
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+            top: 0,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}>
+          {renderProgress()}
+          <Step3
+            handleNext={() => {
+              navigate('Library');
+            }}
+          />
+        </SafeAreaView>
+      );
+    }
+  };
 
   return (
     <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
@@ -175,17 +202,28 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
           <Prev5 />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
-          {play ? <Pause /> : 
-          <View style={{ width: 55, height: 55, borderRadius: 50, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
-              <Play fill={'#6B7C8C'} width={35} height={35}/>
-          </View>
-          }
+          {play ? (
+            <Pause />
+          ) : (
+            <View
+              style={{
+                width: 55,
+                height: 55,
+                borderRadius: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'white',
+              }}>
+              <Play fill={'#6B7C8C'} width={35} height={35} />
+            </View>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>
           <Next5 />
         </TouchableOpacity>
-        <ShareSvg  width={30} height={30}/>
+        <ShareSvg width={30} height={30} />
       </View>
+      {renderTutorial()}
     </LinearGradient>
   );
 }

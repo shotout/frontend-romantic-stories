@@ -1,12 +1,12 @@
 import React from 'react';
-import {View} from 'react-native';
-import {imgStep4} from '../../assets/images';
+import {Image, View} from 'react-native';
+import {imgStep2} from '../../assets/images';
 import * as Animatable from 'react-native-animatable';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
 
-const Step4 = ({handleNext}) => {
+const Step3 = ({handleNext}) => {
   return (
     <View
       style={{
@@ -22,7 +22,7 @@ const Step4 = ({handleNext}) => {
         delay={500}
         duration={1000}
         animation={'fadeIn'}
-        source={imgStep4}
+        source={imgStep2}
         resizeMode="contain"
         style={{
           width: 100,
@@ -45,7 +45,7 @@ const Step4 = ({handleNext}) => {
           lineHeight: 25,
         }}>
         {
-          'Re-discover your favorite\r\nStories that are saved in\r\nyour Library.'
+          'You can also enjoy any of\r\nthe Stories as Audio-\r\nBook. Relax while we\r\nread it out for you'
         }
       </Animatable.Text>
       <Animatable.View delay={2500} animation={'fadeIn'} duration={1000}>
@@ -65,4 +65,4 @@ const Step4 = ({handleNext}) => {
   );
 };
 
-export default Step4;
+export default Step3;

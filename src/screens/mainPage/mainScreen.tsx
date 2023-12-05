@@ -276,8 +276,7 @@ const MainScreen = ({
     }
     const existingEntry = readStory
       ? readStory.find(
-          (item: any) =>
-            item?.id === dataBook.id && item?.page === pageNumber,
+          (item: any) => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
     if (!existingEntry && pageNumber === dataBook?.content_en?.length - 1) {
@@ -364,8 +363,14 @@ const MainScreen = ({
       'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
     setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
     handleSetSteps(stepsTutorial + 1);
-    if (activeStep === 2) {
-      navigate('Library');
+    if (stepsTutorial === 2) {
+      setFinishTutorial(false);
+      setTimeout(() => {
+        setFinishTutorial(true);
+      }, 3000);
+      setTimeout(() => {
+        navigate('Media');
+      }, 2000);
     } else if (stepsTutorial === 5) {
       navigate('Share', {
         selectedContent:
@@ -598,7 +603,11 @@ const MainScreen = ({
     // setShowModalGetPremium(true);
   };
 
-  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
+  const renderProgress = () => (
+    <StepHeader
+      currentStep={stepsTutorial === 5 ? stepsTutorial + 2 : stepsTutorial + 1}
+    />
+  );
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {

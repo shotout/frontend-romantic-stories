@@ -100,7 +100,7 @@ const ExploreLibraryScreen = ({
   useEffect(() => {
     handleRestart();
   }, [items]);
-  const renderProgress = () => <StepHeader currentStep={4} />;
+  const renderProgress = () => <StepHeader currentStep={6} />;
   const renderTutorial = () => {
     if (stepsTutorial === 4) {
       return (
