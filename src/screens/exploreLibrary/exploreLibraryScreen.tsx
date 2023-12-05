@@ -38,6 +38,7 @@ import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
+import {Step4_2} from '../../layout/tutorial';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -106,53 +107,12 @@ const ExploreLibraryScreen = ({
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
           {renderProgress()}
-          <View
-            style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '50%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={imgStep4_2}
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginVertical: 20,
-              }}>
-              {
-                'Explore hundreds of other\nStories and dive deeper\ninto the World of\nRomance.'
-              }
-            </Text>
-
-            <Button
-              style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
-                borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={i18n.t('Next')}
-              onPress={() => {
-                // setTutorial({
-                //   ...isTutorial,
-                //   step: isTutorial.step + 1,
-                // });
-                handleSetSteps(4 + 1);
-                navigate('Main');
-              }}
-            />
-          </View>
+          <Step4_2
+            handleNext={() => {
+              handleSetSteps(4 + 1);
+              navigate('Main');
+            }}
+          />
         </SafeAreaView>
       );
     }
@@ -360,7 +320,8 @@ const ExploreLibraryScreen = ({
                   <View
                     style={{
                       width: 95,
-                      marginRight: idx + 1 === data?.most_share?.length ? 0 : 16,
+                      marginRight:
+                        idx + 1 === data?.most_share?.length ? 0 : 16,
                     }}
                     key={idx}>
                     {itm.is_free === 0 && (

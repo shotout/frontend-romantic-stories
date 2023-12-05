@@ -44,6 +44,8 @@ import {
   State,
   TapGestureHandler,
 } from 'react-native-gesture-handler';
+import * as Animatable from 'react-native-animatable';
+import AnimatedLottieView from 'lottie-react-native';
 import {sizing} from '../../utils/styling';
 import QuotesContent from '../../components/quotes-content-fast-image';
 import PropTypes from 'prop-types';
@@ -67,9 +69,11 @@ import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
-import { loadRewarded } from '../../helpers/loadReward';
-import { RewardedAdEventType } from 'react-native-google-mobile-ads';
-// import * as RNIap from 'react-native-iap';
+import {loadRewarded} from '../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import {Step1, Step2, Step5} from '../../layout/tutorial';
+
+const confettiAnimate = require('../../assets/lottie/confetti.json');
 
 const {width, height} = Dimensions.get('window');
 
@@ -118,6 +122,7 @@ const MainScreen = ({
   const [partner, setPartner] = useState(null);
   const [readLater, setReadLater] = useState(false);
   const [isLoveAnimate, setIsLoveAnimate] = useState<boolean | string>(false);
+  const [isStartConfetti, setIsStartConfetti] = useState(false);
   const isFocused = useIsFocused();
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
@@ -213,10 +218,10 @@ const MainScreen = ({
       console.log(JSON.stringify(readStory));
     }
   };
-  const fetchStory = async() => {
+  const fetchStory = async () => {
     const resp = await getStoryList();
     handleSetStory(resp.data);
-  }
+  };
 
   useEffect(() => {
     // fetchStory()
@@ -288,7 +293,7 @@ const MainScreen = ({
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setShowModalCongrats(true);
     }
-    if (pageNumber ===  dataBook?.content_en?.length - 1) {
+    if (pageNumber === dataBook?.content_en?.length - 1) {
       //   if(isPremium){
       //     const data = await AsyncStorage.getItem('isFirstTime');
       //     // AsyncStorage.removeItem('isFirstTime');
@@ -419,10 +424,10 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    handleThemeAvatar();
     // handleSetSteps(0);
+    // AsyncStorage.setItem('isTutorial', 'yes');
+    handleThemeAvatar();
     const checkTutorial = async () => {
-      // AsyncStorage.setItem('isTutorial', 'yes');
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true);
@@ -439,13 +444,24 @@ const MainScreen = ({
           });
           setActiveStep(1);
           handleSetSteps(1);
-        }, 5000);
+        }, 3500);
       } else if (activeStep > 3 && activeStep < 5) {
         navigate('Library');
       }
     };
     checkTutorial();
   }, []);
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        setIsStartConfetti(true);
+        setTimeout(() => {
+          setIsStartConfetti(false);
+        }, 1000);
+      }, 1000);
+    }
+  }, [visible]);
 
   const renderFactItem = ({item, index, title}) => {
     return (
@@ -525,7 +541,11 @@ const MainScreen = ({
                   paddingTop: 20,
                   paddingHorizontal: 20,
                 }}>
-                {renderFactItem({item: dtb, index, title: dataBook[0].title_en})}
+                {renderFactItem({
+                  item: dtb,
+                  index,
+                  title: dataBook[0].title_en,
+                })}
               </View>
             );
           })}
@@ -598,7 +618,18 @@ const MainScreen = ({
                 flex: 1,
                 alignItems: 'center',
               }}>
-              <Image
+              <Animatable.Image
+                animation={{
+                  from: {
+                    bottom: '-50%',
+                  },
+                  to: {
+                    bottom: '0%',
+                  },
+                  easing: 'ease-out-back',
+                }}
+                delay={200}
+                duration={800}
                 source={imgBgAvaTips}
                 resizeMode="contain"
                 style={{width: '80%', height: '100%'}}
@@ -637,26 +668,49 @@ const MainScreen = ({
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <ImageBackground
-                  source={imgBgContent}
-                  resizeMode="contain"
+                <View
                   style={{
                     width: Dimensions.get('window').width,
                     height: 250,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text
+                  {isStartConfetti && (
+                    <AnimatedLottieView
+                      source={confettiAnimate}
+                      style={{
+                        width: '80%',
+                        // height: 500,
+                        // bottom: 20,
+                        // left: -40,
+                        top: '-8%',
+                        left: '7%',
+                        position: 'absolute',
+                        zIndex: 2,
+                      }}
+                      autoPlay
+                      duration={1000}
+                      loop={false}
+                    />
+                  )}
+                  <Animatable.Text
+                    delay={0}
+                    animation={'fadeInUp'}
+                    duration={1000}
                     style={{
                       color: '#5873FF',
                       fontSize: 30,
                       fontWeight: 'bold',
                       textAlign: 'center',
                       fontFamily: 'Comfortaa-SemiBold',
+                      marginBottom: 50,
                     }}>
                     {`Hey, ${userProfile?.data?.name}\nYou’re all set!`}
-                  </Text>
-                  <Text
+                  </Animatable.Text>
+                  <Animatable.Text
+                    delay={2000}
+                    animation={'fadeIn'}
+                    duration={800}
                     style={{
                       fontSize: 24,
                       textAlign: 'center',
@@ -664,8 +718,8 @@ const MainScreen = ({
                       marginTop: 10,
                     }}>
                     {"Let's show you how \nEroTales works..."}
-                  </Text>
-                </ImageBackground>
+                  </Animatable.Text>
+                </View>
               </View>
             </ImageBackground>
           </Modal>
@@ -685,59 +739,13 @@ const MainScreen = ({
               backgroundColor: 'rgba(0,0,0,0.3)',
             }}>
             {renderProgress()}
-            <View
-              style={{
-                backgroundColor: '#3F58DD',
-                borderRadius: 20,
-                padding: 10,
-                marginHorizontal: 40,
-                alignItems: 'center',
-                marginTop: '40%',
-                paddingTop: 50,
-              }}>
-              <Image
-                source={
-                  activeStep === 1 && activeStep != 5
-                    ? imgStep1
-                    : activeStep === 5 || stepsTutorial == 5
-                    ? imgStep5
-                    : imgStep2
-                }
-                resizeMode="contain"
-                style={{
-                  width: 100,
-                  height: 200,
-                  position: 'absolute',
-                  top: -100,
-                }}
-              />
-              <Text
-                style={{
-                  color: code_color.white,
-                  textAlign: 'center',
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginBottom: 20,
-                }}>
-                {activeStep === 1 && activeStep != 5
-                  ? 'Discover a brand new\nEroTales Story every day.\n\nHungry for more?\nUnlock additional Stories\nanytime!'
-                  : activeStep === 5 || stepsTutorial == 5
-                  ? 'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
-                  : 'Like & save your \nfavorite Stories.'}
-              </Text>
-
-              <Button
-                style={{
-                  backgroundColor: code_color.yellow,
-                  padding: 10,
-                  paddingHorizontal: 40,
-                  borderRadius: 20,
-                  marginVertical: 10,
-                }}
-                title={i18n.t('Next')}
-                onPress={() => handleNext()}
-              />
-            </View>
+            {activeStep === 1 ? (
+              <Step1 handleNext={handleNext} />
+            ) : activeStep === 5 || stepsTutorial == 5 ? (
+              <Step5 handleNext={handleNext} />
+            ) : (
+              <Step2 handleNext={handleNext} />
+            )}
           </SafeAreaView>
         );
       }
@@ -755,7 +763,6 @@ const MainScreen = ({
           setTimeout(() => {
             setShowModal(true);
           }, 300);
-         
         }
         // setLoadingAds(false);
       },
@@ -855,8 +862,7 @@ const MainScreen = ({
             isVisible={showModalNewStory}
             onClose={() => setShowModalNewStory(false)}
             onWatchAds={() => {
-              showWatchAds()
-             
+              showWatchAds();
             }}
             onUnlock={() => {
               handleUnlock();
