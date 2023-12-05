@@ -16,7 +16,7 @@ import {code_color} from '../../utils/colors';
 import {moderateScale} from 'react-native-size-matters';
 import BookUnlockIcon from '../../assets/icons/bookUnlock';
 import PlayIcon from '../../assets/icons/play';
-
+import CloseIcon from '../../assets/icons/close';
 function ModalUnlockPremium({
   isLoadingAds,
   isVisible,
@@ -49,9 +49,17 @@ function ModalUnlockPremium({
             backgroundColor: code_color.white,
             borderRadius: moderateScale(24),
             padding: 30,
-            alignItems: 'center',
+            // alignItems: 'center',
           }}>
-          <Icon />
+          <TouchableOpacity
+          onPress={handleClose}
+            style={{alignItems: 'flex-end', marginRight: -10, marginTop: -10}}>
+            <CloseIcon width={15} height={15} />
+          </TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+            <Icon />
+          </View>
+
           <Text
             style={{
               color: code_color.black,
