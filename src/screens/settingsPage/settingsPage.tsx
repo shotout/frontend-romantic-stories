@@ -46,7 +46,7 @@ import {navigate} from '../../shared/navigationRef';
 import { handlePayment } from '../../helpers/paywall';
 import { moderateScale } from 'react-native-size-matters';
 
-const SettingsPage = ({colorTheme, userProfile}) => {
+const SettingsPage = ({colorTheme, userProfile,backgroundColor}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
   const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
@@ -225,7 +225,7 @@ const SettingsPage = ({colorTheme, userProfile}) => {
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: code_color.white}}>
+            style={{marginLeft: 10, color: backgroundColor}}>
             {item.name}
           </Text>
         </TouchableOpacity>
@@ -241,7 +241,7 @@ const SettingsPage = ({colorTheme, userProfile}) => {
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: code_color.white}}>
+            style={{marginLeft: 10, color: backgroundColor}}>
             {item.name}
           </Text>
         </Pressable>
@@ -338,7 +338,7 @@ const SettingsPage = ({colorTheme, userProfile}) => {
           <TouchableOpacity onPress={() => Linking.openURL('Https://erotalesapp.com/privacy')} >
           <Text
               allowFontScaling={false}
-              style={{marginLeft: 10, marginBottom: 20, color: code_color.white}}>
+              style={{marginLeft: 10, marginBottom: 20, color: backgroundColor}}>
               Privacy Policy
             </Text>
             </TouchableOpacity>
@@ -347,7 +347,7 @@ const SettingsPage = ({colorTheme, userProfile}) => {
              >
               <Text
                 allowFontScaling={false}
-                style={{marginLeft: 10, color: code_color.white}}>
+                style={{marginLeft: 10, color: backgroundColor}}>
                 Terms & Conditions
               </Text>
             </TouchableOpacity>

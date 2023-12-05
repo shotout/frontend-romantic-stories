@@ -40,19 +40,22 @@ import {
   RewardedAdEventType,
 } from 'react-native-google-mobile-ads';
 import {
-  getRewardedInsterstialLearnMoreID,
-  getRewardedOutOfQuotesID,
+  getRewardedBgColorID,
+  getRewardedImageID,
+  getRewardedColorThemeID,
+  getRewardedFontThemeID,
+  getRewardedInsterstialStoryID,
 } from '../../shared/adsId';
-import {loadInterstialAds, loadRewarded} from '../../helpers/loadReward';
+import {loadInterstialAds, loadRewarded, loadRewardedColorBg, loadRewardedColorTheme, loadRewardedFont} from '../../helpers/loadReward';
 import LoadingFullScreen from '../../components/loading-fullscreen';
-const adUnitId = getRewardedOutOfQuotesID();
+const adUnitId = getRewardedFontThemeID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
   keywords: ['fashion', 'clothing'],
 });
 
 const interstialAds = InterstitialAd.createForAdRequest(
-  getRewardedInsterstialLearnMoreID(),
+  getRewardedInsterstialStoryID(),
   {
     requestNonPersonalizedAdsOnly: true,
     keywords: ['fashion', 'clothing'],
@@ -135,7 +138,7 @@ const FontScreen = ({
   };
   const showInterStialFont = async () => {
     setLoadingAds(true);
-    const advert = await loadRewarded();
+    const advert = await loadRewardedFont();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
@@ -159,7 +162,7 @@ const FontScreen = ({
 
   const showIntersialBg = async () => {
     setLoadingAds(true);
-    const advert = await loadRewarded();
+    const advert = await loadRewardedColorBg();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
@@ -190,7 +193,7 @@ const FontScreen = ({
 
   const showIntersialTheme = async () => {
     setLoadingAds(true);
-    const advert = await loadRewarded();
+    const advert = await loadRewardedColorTheme();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
@@ -315,7 +318,7 @@ const FontScreen = ({
           margin: 20,
         }}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>
+          <Text allowFontScaling={false} style={{color: backgroundColor }}>
             BACKGROUND
           </Text>
           <View style={{flexDirection: 'row', marginVertical: 5}}>
@@ -372,7 +375,7 @@ const FontScreen = ({
                     <Watch fill={code_color.white} height={12} width={12} />
                     <Text
                       style={{
-                        color: code_color.white,
+                        color: backgroundColor,
                         fontSize: 8,
                         fontWeight: '700',
                         marginLeft: 2,
@@ -439,7 +442,7 @@ const FontScreen = ({
                     <Watch fill={code_color.white} height={12} width={12} />
                     <Text
                       style={{
-                        color: code_color.white,
+                        color: backgroundColor,
                         fontSize: 8,
                         fontWeight: '700',
                         marginLeft: 2,
@@ -461,14 +464,14 @@ const FontScreen = ({
           }}
         />
         <View style={{flex: 1}}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>
+          <Text allowFontScaling={false} style={{color: backgroundColor}}>
             TEXT SIZE
           </Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
             <Text
               allowFontScaling={false}
-              style={{flex: 1, color: code_color.white}}>
+              style={{flex: 1, color: backgroundColor}}>
               A-
             </Text>
             <Text
@@ -476,7 +479,7 @@ const FontScreen = ({
               style={{
                 flex: 1,
                 textAlign: 'right',
-                color: code_color.white,
+                color: backgroundColor,
                 fontSize: 18,
               }}>
               A+
@@ -513,10 +516,10 @@ const FontScreen = ({
           }}>
           <Text
             allowFontScaling={false}
-            style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
+            style={{flex: 1, color: backgroundColor, textAlign: 'left'}}>
             CHANGE FONT
           </Text>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>
+          <Text allowFontScaling={false} style={{color: backgroundColor}}>
             {fontSelect.name}
           </Text>
           <Pressable
@@ -573,7 +576,7 @@ const FontScreen = ({
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark
-                        : code_color.white,
+                        : backgroundColor,
                   }}>
                   {item.name}
                 </Text>
@@ -608,7 +611,7 @@ const FontScreen = ({
                       <Watch fill={code_color.white} height={12} width={12} />
                       <Text
                         style={{
-                          color: code_color.white,
+                          color: backgroundColor,
                           fontSize: 8,
                           fontWeight: '700',
                           marginLeft: 2,
@@ -630,7 +633,7 @@ const FontScreen = ({
       <View style={{flex: 1, marginHorizontal: 20}}>
         <Text
           allowFontScaling={false}
-          style={{color: code_color.white, textAlign: 'left'}}>
+          style={{color: backgroundColor, textAlign: 'left'}}>
           CHANGE THEME COLOR
         </Text>
         <View
@@ -698,7 +701,7 @@ const FontScreen = ({
                       <Watch fill={code_color.white} height={12} width={12} />
                       <Text
                         style={{
-                          color: code_color.white,
+                          color: backgroundColor,
                           fontSize: 8,
                           fontWeight: '700',
                           marginLeft: 2,

@@ -50,6 +50,7 @@ const NotificationScreen = ({
   handleSetSteps,
   stepsTutorial,
   userProfile,
+  backgroundColor
 }) => {
   
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -111,7 +112,7 @@ const NotificationScreen = ({
             style={{
               width: 35,
               height: 35,
-              backgroundColor: code_color.white,
+              backgroundColor: backgroundColor,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
@@ -120,7 +121,7 @@ const NotificationScreen = ({
             <BackRight fill={bgTheme} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>
+            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
               Notifications
             </Text>
           </View>
@@ -134,15 +135,15 @@ const NotificationScreen = ({
       </View>
       <ScrollView
         style={{
-          backgroundColor: code_color.white,
+          backgroundColor: backgroundColor,
           height: '100%',
           padding: 20,
         }}>
-        <Text style={{fontSize: 18, fontWeight: '600', color: code_color.grey, marginBottom: 20}}>
+        <Text style={{fontSize: 18, fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, marginBottom: 20}}>
           Set your notifications
         </Text>
-        <View style={{flexDirection: 'row', marginVertical: 20, borderBottomColor: code_color.grey, borderBottomWidth: 1, paddingBottom: 10}}>
-        <Text style={{fontSize: 16, fontWeight: '600', color: code_color.grey}}>
+        <View style={{flexDirection: 'row', marginVertical: 20, borderBottomColor: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, borderBottomWidth: 1, paddingBottom: 10}}>
+        <Text style={{fontSize: 16, fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,}}>
           New Stories 
         </Text>
         <Switch
@@ -154,8 +155,8 @@ const NotificationScreen = ({
           value={newStories}
         />
         </View>
-        <View style={{flexDirection: 'row', marginVertical: 20, borderBottomColor: code_color.grey, borderBottomWidth: 1, paddingBottom: 10}}>
-        <Text style={{fontSize: 16, fontWeight: '600', color: code_color.grey}}>
+        <View style={{flexDirection: 'row', marginVertical: 20, borderBottomColor:  backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, borderBottomWidth: 1, paddingBottom: 10}}>
+        <Text style={{fontSize: 16, fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,}}>
           Promotions
         </Text>
         <Switch

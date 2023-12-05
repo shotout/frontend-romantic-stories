@@ -7,4 +7,5 @@ export default states => ({
     states.defaultState.userProfile?.data?.get_avatar_male?.image?.url,
   colorTheme: states.defaultState.colorTheme,
   isPremium: states.defaultState.isPremium,
+  backgroundColor: states.defaultState.backgroundColor,
 });

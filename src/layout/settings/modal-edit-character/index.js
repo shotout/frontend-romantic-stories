@@ -17,7 +17,7 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 
-function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
+function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(null);
   const [avatar, setAvatar] = useState(null);
@@ -97,7 +97,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: backgroundColor,
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -111,7 +111,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: backgroundColor,
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -128,7 +128,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
         width: Dimensions.get('window').width,
       }}>
       <View

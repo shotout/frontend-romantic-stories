@@ -44,7 +44,7 @@ import BookLockIcon from '../../assets/icons/bookLock';
 import { handlePayment } from '../../helpers/paywall';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
-const SubscriptionsScreen = ({colorTheme, userProfile}) => {
+const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [newStories, setNewStories] = useState(
     userProfile?.data?.notif_enable === 0 ? false : true,
@@ -106,7 +106,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
             style={{
               width: 35,
               height: 35,
-              backgroundColor: code_color.white,
+              backgroundColor: backgroundColor,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
@@ -115,7 +115,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
             <BackRight fill={bgTheme} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>
+            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
               Subscription
             </Text>
           </View>
@@ -129,7 +129,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile}) => {
       </View>
       <ScrollView
         style={{
-          backgroundColor: '#F6F7FD',
+          backgroundColor: backgroundColor,
           height: '100%',
           flex: 1,
           padding: moderateScale(20),

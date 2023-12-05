@@ -127,11 +127,10 @@ const MainScreen = ({
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
-  const [dataBook, setBook] = useState(userStory?.data);
+  const [dataBook, setBook] = useState(userStory);
   const [readBook, setReadBook] = useState([]);
   const [dataRead, setData] = useState(readStory);
   const [data, setRead] = useState([]);
-
   //   const [trial, setTrial] = useState([
   //     "Supporting myself during summer was actually pretty easy. As people started to\r\nromanticize Brazil once again, they started to like the language and aim to learn it, and\r\nbeing a good English speaker and native Portuguese speaker, I decided to offer private\r\nlessons. To my delight, I have always had genuine clients who paid me really well, and\r\nmost of them were old people too. My latest client, however, a long term, was my age\r\nand she was just... my type.\r\nShe had a beautiful smile and her body was to die for, which she often used to\r\nher advantage to distract me, which worked more often than not. She was tall, had long\r\nbrown hair, and had the most wonderful pair of breasts I have ever seen. It wasn't fair\r\nthat someone had such a nice rack, but hey, I wasn't complaining.\r\nThe lesson went well, and as per usual, we started to talk.\r\n\"You know, you're the best teacher I've ever had,\" she told me with a smile.\r\n\"You're also cute. Do you want to grab something to eat? My treat!\"\r\nI was, going to say yes, because, well, free food, but I then thought of it again and\r\nI remembered seeing her the other day in town with someone, and the thought itself\r\nwas like fuel. I'm not gonna go out with someone who already has someone else, but\r\ndeep inside I want to, and I also wanted her to tell me about him.\r\n\"I would do anything for a swim on the beach now. You do realize I need to learn\r\nsome beach-related vocabulary, right?\" she teased and sipped on her wine.\r\n\"Oh yeah? You mean... you’d do anything for that?\" I got comfortable in my seat.\r\nShe looked ethereal that day, \"I'll think about it.\" I finally said.\r\n\"Oh, please, come on, come one. You're the only one I wanna tour Rio with,\" she\r\nsaid, pleading. She probably knew it was impossible to resist the looks she was giving\r\nme.\r\n\"And do you take out everyone?\" I asked.\r\nShe shook her head, the smile never leaving her beautiful face, \"why do you\r\nask?\" she said.\r\n\"Well, I saw you in town the other day and it seemed you were ",
   //     "having a lot of fun.\r\nI didn’t wanna bump into you and ruin the moment though... whatever type of fun you\r\nwere having.\" I must have sounded like a possessive freak.\r\n\r\n\"Oh, you saw me?\" she asked and scoffed, \"why didn’t you say anything, then?\r\nOr you didn’t wanna ruin the spark? \"\r\n\"You looked happy. And I gotta admit...\" I chuckled, \"It was nice seeing you\r\nhappy. It made me feel good, you know?\"\r\n\"You're so dorky. A dorky teacher.\" she rolled her eyes. She possibly did not\r\nknow that I don't like girls roll their eyes on me.\r\n\"So, who was he?\" I spread my legs and asked.\r\n\"Just a friend?\" she shrugged and looked away. I knew she was hiding something\r\nand she didn't do it in the best way too.\r\n\"You’re making friends, already? I mean- did you get lucky?\" I asked.\r\nShe shook her head, eyeing me up and down, confused.\r\nI cringed at myself... and my poor knowledge of English proverbs so I tried to\r\ncorrect it, \"That’s not what I meant, Beleza. Or maybe I did but- I-\" I stutte",
@@ -202,13 +201,13 @@ const MainScreen = ({
   const checkingRead = pageNumber => {
     const existingEntry = readStory
       ? readStory.find(
-          item => item?.id === dataBook[0].id && item?.page === pageNumber,
+          item => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
 
     if (!existingEntry) {
       const newData = {
-        id: dataBook[0].id,
+        id: dataBook.id,
         page: pageNumber,
       };
 
@@ -228,7 +227,7 @@ const MainScreen = ({
     if (readStory === null && dataBook) {
       let data = [
         {
-          id: dataBook[0].id,
+          id: dataBook.id,
           page: activeSlide,
         },
       ];
@@ -278,12 +277,12 @@ const MainScreen = ({
     const existingEntry = readStory
       ? readStory.find(
           (item: any) =>
-            item?.id === dataBook[0].id && item?.page === pageNumber,
+            item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
     if (!existingEntry && pageNumber === dataBook?.content_en?.length - 1) {
       // jika nanti pertama kali melakukan update data terakhir
-      await addPastStory(dataBook[0].id);
+      await addPastStory(dataBook.id);
       setShowModalCongrats(true);
     } else if (
       existingEntry &&
@@ -544,7 +543,7 @@ const MainScreen = ({
                 {renderFactItem({
                   item: dtb,
                   index,
-                  title: dataBook[0].title_en,
+                  title: dataBook.title_en,
                 })}
               </View>
             );

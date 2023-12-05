@@ -50,7 +50,7 @@ const Home = () => {
     </View>
   );
 };
-const Library = ({userProfile, stepsTutorial}) => {
+const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
   const [menu, setMenu] = useState([
     {
       image: LoveOutline,
@@ -119,7 +119,7 @@ const Library = ({userProfile, stepsTutorial}) => {
           marginTop: 10,
           backgroundColor: 'white',
           paddingTop: 5,
-
+          backgroundColor: backgroundColor,
           shadowColor: code_color.grey,
           shadowOffset: {width: 5, height: 5},
           shadowRadius: 5,
@@ -189,14 +189,14 @@ function MyTabs(props) {
     height = 55;
   }
   const [visible, setVisible] = useState(true);
-  // alert(JSON.stringify(props.userStory?.data[0].id))
+
   const handleSomeAction = value => {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
   const handleFetchSave = async () => {
-    if (props.userStory?.data[0].is_collection === null) {
-      addStory(props.userStory?.data[0].id);
+    if (props.userStory?.is_collection === null) {
+      addStory(props.userStory?.id);
       setVisibleModal(true)
       setTimeout(() => {
         setVisibleModal(false)
@@ -204,12 +204,13 @@ function MyTabs(props) {
       const resp = await getStoryList();
       store.dispatch(handleSetStory(resp.data));
     }else{
-      deleteMyStory(props.userStory?.data[0].id);
+      deleteMyStory(props.userStory?.id);
       const resp = await getStoryList();
       store.dispatch(handleSetStory(resp.data));
     }
   };
   const love = require('../assets/lottie/urgent.json');
+  // alert(props?.backgroundColor)
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -219,13 +220,14 @@ function MyTabs(props) {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: props?.colorTheme,
-        tabBarInactiveTintColor: '#C4C4C4',
+        tabBarInactiveTintColor: props?.backgroundColor === '#2C3439' ? 'white' : '#C4C4C4',
         headerShown: false,
         headerStyle: {
           backgroundColor: '#f2f2f2',
         },
         tabBarStyle: {
           height,
+          backgroundColor: props?.backgroundColor,
           display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
         },
       }}>
@@ -274,7 +276,7 @@ function MyTabs(props) {
                   />
                 </View>
               ) : null}
-              {props.userStory?.data[0].is_collection === null ? (
+              {props.userStory?.is_collection === null ? (
                 <LoveOutline width={20} height={20} fill={props?.colorTheme} />
               ) : (
                 <LoveSvg width={20} height={20} fill={props?.colorTheme} />
@@ -302,7 +304,7 @@ function MyTabs(props) {
       <Tab.Screen
         name="Library"
         children={() => (
-          <Library userProfile={props} stepsTutorial={props.stepsTutorial} />
+          <Library userProfile={props} stepsTutorial={props.stepsTutorial}  backgroundColor={props?.backgroundColor}/>
         )}
         // component={Library}
         options={({route}) => ({
@@ -337,7 +339,7 @@ function MyTabs(props) {
 
       <Tab.Screen
         name="Font"
-        children={() => <Library userProfile={props} stepsTutorial={undefined} />}
+        children={() => <Library userProfile={props} stepsTutorial={undefined}  backgroundColor={props?.backgroundColor}/>}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -370,7 +372,7 @@ function MyTabs(props) {
       />
       <Tab.Screen
         name="Settings"
-        children={() => <Library userProfile={props} stepsTutorial={undefined} />}
+        children={() => <Library userProfile={props} stepsTutorial={undefined} backgroundColor={props?.backgroundColor} />}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -425,12 +427,13 @@ class MyTabsComponent extends Component {
     this.forceUpdate();
   };
   render() {
-    const {colorTheme, stepsTutorial, userStory} = this.props;
+    const {colorTheme, stepsTutorial, userStory, backgroundColor} = this.props;
     const tapProps = {
       colorTheme,
       stepsTutorial,
       forceUpdate: this.forceComponentUpdate,
       userStory,
+      backgroundColor
     };
     return <MyTabs {...tapProps} />;
   }

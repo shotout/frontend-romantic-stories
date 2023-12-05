@@ -47,6 +47,7 @@ const ExploreLibraryScreen = ({
   isPremium,
   handleSetSteps,
   stepsTutorial,
+  backgroundColor
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
@@ -171,7 +172,7 @@ const ExploreLibraryScreen = ({
       </View>
       <ScrollView
         style={{
-          backgroundColor: code_color.white,
+          backgroundColor: backgroundColor,
           height: '100%',
         }}>
         {data?.most_read?.length > 0 && (

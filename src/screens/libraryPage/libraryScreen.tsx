@@ -74,6 +74,7 @@ const LibraryScreen = ({
   stepsTutorial,
   handleSetSteps,
   isPremium,
+  backgroundColor
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
@@ -190,7 +191,7 @@ const LibraryScreen = ({
                 <Text
                   allowFontScaling={false}
                   style={{
-                    color: code_color.white,
+                    color: backgroundColor,
                     fontSize: 12,
                     marginBottom: 5,
                   }}>
@@ -199,7 +200,7 @@ const LibraryScreen = ({
                 <Text
                   allowFontScaling={false}
                   style={{
-                    color: code_color.white,
+                    color: backgroundColor,
                     fontSize: 14,
                     fontWeight: 400,
                     textAlign: 'left',
@@ -220,7 +221,7 @@ const LibraryScreen = ({
                 <Text
                   allowFontScaling={false}
                   style={{
-                    color: code_color.white,
+                    color: backgroundColor,
                     fontWeight: 'bold',
                     fontSize: 12,
                   }}>
@@ -267,7 +268,8 @@ const LibraryScreen = ({
             }}>
             <Text
               allowFontScaling={false}
-              style={{color: code_color.white, paddingVertical: 15}}>
+              style={{
+                color: backgroundColor, paddingVertical: 15}}>
               {item?.item?.name}
             </Text>
           </View>
@@ -386,8 +388,8 @@ const LibraryScreen = ({
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <EmptyLibrary />
       <Text
-        style={{
-          color: code_color.white,
+         style={{
+          color: backgroundColor === '#2C3439' ? code_color.black : code_color.white,
           fontSize: 14,
           fontWeight: '400',
           textAlign: 'center',

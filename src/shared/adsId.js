@@ -5,9 +5,9 @@ export const getAppOpenID = () => {
   if (__DEV__) {
     return TestIds.APP_OPEN;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/5459829097';
+    return 'ca-app-pub-1891825795064804/1249922350';
   } else {
-    return 'ca-app-pub-1891825795064804/1271764500';
+    return 'ca-app-pub-1891825795064804/9371954959';
   }
 };
 
@@ -15,58 +15,69 @@ export const getAdaptiveBannerID = () => {
   if (__DEV__) {
     return TestIds.GAM_BANNER;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/5998562713';
+    return 'ca-app-pub-1891825795064804/2659244938';
   } else {
-    return 'ca-app-pub-1891825795064804/8992445613';
+    return 'ca-app-pub-1891825795064804/2918227241';
   }
 };
 
-export const getRewardedCategoryID = () => {
+
+export const getRewardedColorThemeID = () => {
   if (__DEV__) {
     return TestIds.REWARDED;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/9207502414';
+    return 'ca-app-pub-1891825795064804/3572833361';
   } else {
-    return 'ca-app-pub-1891825795064804/4576568782';
+    return 'ca-app-pub-1891825795064804/5348949461';
   }
 };
 
-export const getRewardedOutOfQuotesID = () => {
+export const getRewardedFontThemeID = () => {
   if (__DEV__) {
     return TestIds.REWARDED;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/6581339078';
+    return 'ca-app-pub-1891825795064804/7436040842';
   } else {
-    return 'ca-app-pub-1891825795064804/6616370774';
+    return 'ca-app-pub-1891825795064804/5021646405';
   }
 };
 
-export const getRewardedThemeID = () => {
+export const getRewardedImageID = () => {
   if (__DEV__) {
     return TestIds.REWARDED;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/4971893878';
+    return 'ca-app-pub-1891825795064804/7128934991';
   } else {
-    return 'ca-app-pub-1891825795064804/7801497923';
+    return 'ca-app-pub-1891825795064804/6398291344';
   }
 };
 
-export const getRewardedInsterstialID = () => {
+export const getRewardedBgColorID = () => {
+  if (__DEV__) {
+    return TestIds.REWARDED;
+  } else if (Platform.OS === 'ios') {
+    return 'ca-app-pub-1891825795064804/2842189712';
+  } else {
+    return 'ca-app-pub-1891825795064804/8207085081';
+  }
+};
+
+export const getRewardedInsterstialStoryID = () => {
   if (__DEV__) {
     return TestIds.INTERSTITIAL;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/2369781260';
+    return 'ca-app-pub-1891825795064804/6857472252';
   } else {
-    return 'ca-app-pub-1891825795064804/8504167513';
+    return 'ca-app-pub-1891825795064804/8174407440';
   }
 };
 
-export const getRewardedInsterstialLearnMoreID = () => {
+export const getRewardedInsterstial12HID = () => {
   if (__DEV__) {
     return TestIds.INTERSTITIAL;
   } else if (Platform.OS === 'ios') {
-    return 'ca-app-pub-1891825795064804/8207883533';
+    return 'ca-app-pub-1891825795064804/9483635599';
   } else {
-    return 'ca-app-pub-1891825795064804/8614506820';
+    return 'ca-app-pub-1891825795064804/9096622780';
   }
 };

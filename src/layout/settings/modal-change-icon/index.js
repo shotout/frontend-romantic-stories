@@ -27,7 +27,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
 
-function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
+function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme, backgroundColor}) {
   const [selectIcon, setSelectIcon] = useState('first');
   const [selectedIcon, setSelectedIcon] = useState('');
   const [showModalUnlock, setShowModalUnlock] = useState(false);
@@ -139,7 +139,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: backgroundColor,
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -153,7 +153,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: backgroundColor,
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -170,15 +170,16 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
       }}>
       <Text
         style={{
-          color: code_color.black,
+          color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,
           fontSize: 17,
           marginTop: 10,
           lineHeight: 24,
           fontWeight: '500',
+          marginBottom: 10,
         }}>
         Select your favorite App Icon for your Home Screen.
       </Text>

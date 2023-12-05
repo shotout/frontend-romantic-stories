@@ -58,6 +58,7 @@ const CategoriesScreen = ({
   handleSetSteps,
   stepsTutorial,
   userProfile,
+  backgroundColor
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
 
@@ -106,7 +107,7 @@ const CategoriesScreen = ({
             style={{
               width: 35,
               height: 35,
-              backgroundColor: code_color.white,
+              backgroundColor: backgroundColor,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
@@ -115,7 +116,7 @@ const CategoriesScreen = ({
             <BackRight fill={bgTheme} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>
+            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
               Edit Categories
             </Text>
           </View>
@@ -128,7 +129,7 @@ const CategoriesScreen = ({
         </View>
       </View>
       <View
-        style={{height: '100%', flex: 0, backgroundColor: code_color.white}}>
+        style={{height: '100%', flex: 0, backgroundColor: backgroundColor}}>
         <Text
           allowFontScaling={false}
           style={{

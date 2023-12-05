@@ -138,7 +138,7 @@ function ModalUnlockStory({
               }}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={{uri: `${BACKEND_URL}/${userStory?.data[0].category.cover?.url}`}}
+                  source={{uri: `${BACKEND_URL}/${userStory?.category.cover?.url}`}}
                   resizeMode="contain"
                   style={{
                     width: 65,
@@ -154,7 +154,7 @@ function ModalUnlockStory({
                       fontWeight: 400,
                       fontSize: 14,
                     }}>
-                    {userStory?.data[0].category.name}
+                    {userStory?.category.name}
                   </Text>
                   <Text
                     style={{
@@ -163,7 +163,7 @@ function ModalUnlockStory({
                       fontWeight: 'bold',
                       fontSize: 16,
                     }}>
-                     {userStory?.data[0].title_en}
+                     {userStory?.title_en}
                   </Text>
                  
                 </View>
@@ -175,7 +175,7 @@ function ModalUnlockStory({
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                {userStory?.data[0].content_en.substring(0, 100)}...
+                {userStory?.content_en[0].substring(0, 100)}...
               </Text>
               <TouchableOpacity
                 onPress={onClose}

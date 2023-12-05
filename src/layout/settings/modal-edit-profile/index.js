@@ -34,6 +34,7 @@ function ModalEditProfile({
   colorTheme,
   handleSetPremium,
   isPremium,
+  backgroundColor
 }) {
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -78,7 +79,7 @@ function ModalEditProfile({
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: backgroundColor,
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -100,12 +101,12 @@ function ModalEditProfile({
   const menuEditList = [
     {
       title: 'Edit Name',
-      icon: <IdCardSvg width={24} height={24} />,
+      icon: <IdCardSvg width={24} height={24} fill={ backgroundColor === '#2C3439' ? 'white' : code_color.blackDark} />,
       value: userProfile.name,
     },
     {
       title: 'Gender',
-      icon: <GenderSvg width={24} height={24} fill={code_color.black} />,
+      icon: <GenderSvg width={24} height={24} fill={ backgroundColor === '#2C3439' ? 'white' : code_color.blackDark} />,
       value: userProfile.gender,
     },
     {
@@ -115,7 +116,7 @@ function ModalEditProfile({
     },
     {
       title: 'Select partner character',
-      icon: <PartnerSvg width={20} height={20} />,
+      icon: <PartnerSvg width={20} height={20}    />,
       value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
     },
     // {
@@ -131,7 +132,7 @@ function ModalEditProfile({
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor:backgroundColor,
       }}>
       {menuEditList.map((edit, i) => (
         <View key={i}>
@@ -141,7 +142,7 @@ function ModalEditProfile({
             {edit.icon}
             <Text
               style={{
-                color: code_color.black,
+                color:  backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
                 marginLeft: 10,
                 fontSize: 16,
                 fontWeight: '600',
