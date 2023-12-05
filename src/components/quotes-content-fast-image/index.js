@@ -248,7 +248,7 @@ export default function QuotesContent({
 
           <TouchableOpacity
             onPress={() => {
-              if (!isPremium) {
+              if (isPremium) {
                 navigate('Media');
               } else {
                 setShow(true);

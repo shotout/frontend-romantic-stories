@@ -881,7 +881,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
             resizeMode: 'cover',
           }}
         />
-        <View style={styles.overlay} />
+        {/* <View style={styles.overlay} /> */}
         {renderHeaderScreenShot()}
         {isVisibleFont ? (
           <TextInput
@@ -897,7 +897,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           style={{
             ...styles.textQuote,
             fontFamily: fontSelect.value,
-            fontSize: fontSizeDefault,
+            fontSize: moderateScale(16),
           }}>
           <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
             {route?.params?.start}
@@ -1103,7 +1103,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
             {renderLayout()}
           </View>
 
-          <View style={styles.conFont}>
+          <View style={[styles.conFont]}>
             <Text style={styles.title}>CHANGE FONT</Text>
             <View style={{flexDirection: 'row'}}>
               <Text style={{...styles.title, fontFamily: fontSelect.value}}>
