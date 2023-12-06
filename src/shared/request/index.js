@@ -49,7 +49,11 @@ export const getStoryList = (params = {}) =>
     method: 'get',
     params,
   });
-
+export const getStoryDetail = (id) =>
+  Wrap({
+    url: `/stories/${id}`,
+    method: 'get',
+  });
 export const getMyCollection = (params = {}) =>
   Wrap({
     url: `/collection`,

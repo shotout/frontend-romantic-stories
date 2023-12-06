@@ -38,7 +38,7 @@ import i18n from '../i18n';
 import StepHeader from '../layout/step/stepHeader';
 import {handleSetSteps, handleSetStory} from '../store/defaultState/actions';
 import store from '../store/configure-store';
-import {addStory, deleteMyStory, getStoryList} from '../shared/request';
+import {addStory, deleteMyStory, getStoryDetail, getStoryList} from '../shared/request';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -196,17 +196,25 @@ function MyTabs(props) {
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
-      addStory(props.userStory?.id);
+      const data = await addStory(props.userStory?.id);
+      try {
+        const resp = await getStoryDetail(props.userStory?.id);
+        store.dispatch(handleSetStory(resp.data));
+      } catch (error) {
+      
+      }
+    
       setVisibleModal(true)
       setTimeout(() => {
         setVisibleModal(false)
       }, 1000);
-      // const resp = await getStoryList();
-      // store.dispatch(handleSetStory(resp.data));
+      
     }else{
-      deleteMyStory(props.userStory?.id);
-      // const resp = await getStoryList();
-      // store.dispatch(handleSetStory(resp.data));
+      const data = await deleteMyStory(props.userStory?.id);
+     
+        const resp = await getStoryDetail(props.userStory?.id);
+        store.dispatch(handleSetStory(resp.data));
+     
     }
   };
   const love = require('../assets/lottie/urgent.json');
