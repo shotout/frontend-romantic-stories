@@ -17,6 +17,7 @@ import {moderateScale} from 'react-native-size-matters';
 import BookUnlockIcon from '../../assets/icons/bookUnlock';
 import PlayIcon from '../../assets/icons/play';
 import CloseIcon from '../../assets/icons/close';
+import { handlePayment } from '../../helpers/paywall';
 function ModalUnlockPremium({
   isLoadingAds,
   isVisible,
@@ -81,6 +82,7 @@ function ModalUnlockPremium({
           </Text>
           <View style={{flexDirection: 'row', gap: 10, marginTop: 20}}>
             <TouchableOpacity
+            onPress={() => handlePayment('in_app')}
               style={{
                 backgroundColor: '#009A37',
                 flex: 1,

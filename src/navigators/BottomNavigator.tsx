@@ -196,14 +196,15 @@ function MyTabs(props) {
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
-      const data = await addStory(props.userStory?.id);
-      try {
-        const resp = await getStoryDetail(props.userStory?.id);
-        store.dispatch(handleSetStory(resp.data));
-      } catch (error) {
-      
+      const response = await addStory(props.userStory?.id);
+      if(response.status === 'success'){
+        try {
+          const resp = await getStoryDetail(props.userStory?.id);
+          store.dispatch(handleSetStory(resp.data));
+        } catch (error) {
+        
+        }
       }
-    
       setVisibleModal(true)
       setTimeout(() => {
         setVisibleModal(false)
@@ -212,8 +213,14 @@ function MyTabs(props) {
     }else{
       const data = await deleteMyStory(props.userStory?.id);
      
-        const resp = await getStoryDetail(props.userStory?.id);
-        store.dispatch(handleSetStory(resp.data));
+      if(data.status === 'success'){
+        try {
+          const resp = await getStoryDetail(props.userStory?.id);
+          store.dispatch(handleSetStory(resp.data));
+        } catch (error) {
+        
+        }
+      }
      
     }
   };

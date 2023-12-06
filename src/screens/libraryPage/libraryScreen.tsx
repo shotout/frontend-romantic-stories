@@ -64,7 +64,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import StepHeader from '../../layout/step/stepHeader';
 import ModalShareStory from '../../components/modal-share-story';
 import ModalNewStory from '../../components/modal-new-story';
-import {handleNativePayment} from '../../helpers/paywall';
+import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {sizing} from '../../shared/styling';
 import {Step4} from '../../layout/tutorial';
 
@@ -383,6 +383,26 @@ const LibraryScreen = ({
       );
     }
   };
+  const handleUnlimited = async () => {
+    //
+    try {
+      const paymentResult = await handlePayment('in_app');
+      if (paymentResult.success) {
+        setShowModalNewStory(false);
+        console.log('Pembayaran berhasil:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran berhasil
+      } else {
+        setShowModalNewStory(false);
+        console.log('Pembayaran gagal:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran gagal
+      }
+    } catch (error) {
+      setShowModalNewStory(false);
+      console.error('Terjadi kesalahan:', error);
+      // Tangani kesalahan yang mungkin terjadi
+    }
+    // setShowModalGetPremium(true);
+  };
 
   const renderEmpty = () => (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -451,9 +471,7 @@ const LibraryScreen = ({
             handleNativePayment('unlock_story_1_week_only');
           }}
           onGetUnlimit={() => {
-            setShowModalNewStory(false);
-
-            // setShowModalSuccessPurchase(true);
+            handleUnlimited()
           }}
         />
         <View
