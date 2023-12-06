@@ -201,12 +201,12 @@ function MyTabs(props) {
       setTimeout(() => {
         setVisibleModal(false)
       }, 1000);
-      const resp = await getStoryList();
-      store.dispatch(handleSetStory(resp.data));
+      // const resp = await getStoryList();
+      // store.dispatch(handleSetStory(resp.data));
     }else{
       deleteMyStory(props.userStory?.id);
-      const resp = await getStoryList();
-      store.dispatch(handleSetStory(resp.data));
+      // const resp = await getStoryList();
+      // store.dispatch(handleSetStory(resp.data));
     }
   };
   const love = require('../assets/lottie/urgent.json');

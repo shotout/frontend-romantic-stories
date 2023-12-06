@@ -61,7 +61,12 @@ const ExploreLibraryScreen = ({
   const handleRestart = () => {
     async function fetchData() {
       try {
-        const res = await getExploreStory({search: ''});
+        let params = {
+          search: keyword,
+          column: items?.column === 'name' ? 'title_en' :  items?.column,
+          dir: items?.value,
+        };
+        const res = await getExploreStory(params);
         setData(res);
       } catch (error) {
         setData(null);
@@ -71,7 +76,7 @@ const ExploreLibraryScreen = ({
   }
   useEffect(() => {
     handleRestart()
-  }, [keyword]);
+  }, [keyword, items]);
 
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan

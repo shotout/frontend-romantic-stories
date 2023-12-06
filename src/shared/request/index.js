@@ -202,10 +202,11 @@ export const removeQuoteCollection = ({idCollection, idQuote}) => {
   });
 };
 
-export const getExploreStory = ({search}) =>
+export const getExploreStory = (params = {}) =>
   Wrap({
-    url: `/stories/all?search=${search}`,
+    url: `/stories/all`,
     method: 'get',
+    params,
   });
 
 export const getListPastQuotes = (params = {}) =>
