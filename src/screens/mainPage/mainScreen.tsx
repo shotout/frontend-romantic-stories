@@ -69,8 +69,8 @@ import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
-import {loadRewarded} from '../../helpers/loadReward';
-import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
+import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {Step1, Step2, Step5} from '../../layout/tutorial';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
@@ -94,6 +94,7 @@ const MainScreen = ({
   handleReadStory,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [click, setClick] = useState(1);
   const [products, setProducts] = useState([]);
   const [isTutorial, setTutorial] = useState({
     visible: false,
@@ -759,19 +760,35 @@ const MainScreen = ({
       }
     }
   };
+
+  const reloadWatch = async () => {
+    const advert = await loadRewarded2();
+    advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      (reward) =>  {
+          if (reward) {
+            setTimeout(() => {
+              setShowModal(true);
+            }, 300);
+            setClick(1)
+          }
+        
+       
+        // setLoadingAds(false);
+      },
+    );
+  }
+  
   const showWatchAds = async () => {
     setShowModalNewStory(false);
     // setLoadingAds(true);
     const advert = await loadRewarded();
-    const pageCountDownReward = advert.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      reward => {
-        console.log('Earn page countdown reward:', reward);
-        if (reward) {
-          setTimeout(() => {
-            setShowModal(true);
-          }, 300);
-        }
+    advert.addAdEventListener(
+      AdEventType.CLOSED,
+      () =>  {
+          
+        reloadWatch()
+       
         // setLoadingAds(false);
       },
     );
