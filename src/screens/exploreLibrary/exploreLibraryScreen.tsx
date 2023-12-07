@@ -40,6 +40,7 @@ import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
 import {Step4_2} from '../../layout/tutorial';
 import ModalSorting from '../../components/modal-sorting';
+import ModalUnlockStory from '../../components/modal-unlock-story';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -48,12 +49,14 @@ const ExploreLibraryScreen = ({
   isPremium,
   handleSetSteps,
   stepsTutorial,
-  backgroundColor
+  backgroundColor,
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState<any>();
+  const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [selectedStory, setSelectedStory] = useState(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [items, setItems] = useState(null);
@@ -63,7 +66,7 @@ const ExploreLibraryScreen = ({
       try {
         let params = {
           search: keyword,
-          column: items?.column === 'name' ? 'title_en' :  items?.column,
+          column: items?.column === 'name' ? 'title_en' : items?.column,
           dir: items?.value,
         };
         const res = await getExploreStory(params);
@@ -73,9 +76,9 @@ const ExploreLibraryScreen = ({
       }
     }
     fetchData();
-  }
+  };
   useEffect(() => {
-    handleRestart()
+    handleRestart();
   }, [keyword, items]);
 
   const handleTouchStart = e => {
@@ -132,11 +135,19 @@ const ExploreLibraryScreen = ({
   };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
-       <ModalSorting
-          isVisible={showModalSort}
-          onClose={() => setShowModalSort(false)}
-          items={(value: any) => setItems(value)}
-        />
+      <ModalSorting
+        isVisible={showModalSort}
+        onClose={() => setShowModalSort(false)}
+        items={(value: any) => setItems(value)}
+      />
+      <ModalUnlockStory
+        isVisible={showModalUnlock}
+        onClose={() => {
+          setShowModalUnlock(false);
+          setSelectedStory(null);
+        }}
+        data={selectedStory}
+      />
       <View
         style={{
           flex: 0,
@@ -209,7 +220,13 @@ const ExploreLibraryScreen = ({
               </Text>
               <ScrollView horizontal>
                 {data?.most_read.map((itm: any, idx: number) => (
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      if (!isPremium) {
+                        setShowModalUnlock(true);
+                        setSelectedStory(itm);
+                      }
+                    }}
                     style={{
                       width: 95,
                       marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
@@ -248,8 +265,7 @@ const ExploreLibraryScreen = ({
                       style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
                       {itm.title_en}
                     </Text>
-                    
-                  </View>
+                  </Pressable>
                 ))}
               </ScrollView>
             </View>
@@ -312,7 +328,6 @@ const ExploreLibraryScreen = ({
                       style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
                       {itm.name}
                     </Text>
-                   
                   </View>
                 ))}
               </ScrollView>
@@ -337,7 +352,13 @@ const ExploreLibraryScreen = ({
               </Text>
               <ScrollView horizontal>
                 {data.most_share.map((itm: any, idx: number) => (
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      if (!isPremium) {
+                        setShowModalUnlock(true);
+                        setSelectedStory(itm);
+                      }
+                    }}
                     style={{
                       width: 95,
                       marginRight:
@@ -363,7 +384,7 @@ const ExploreLibraryScreen = ({
                       resizeMode="cover"
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
-                     <Text
+                    <Text
                       style={{
                         fontSize: 9,
                         fontWeight: '400',
@@ -376,8 +397,7 @@ const ExploreLibraryScreen = ({
                       style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
                       {itm.title_en}
                     </Text>
-                   
-                  </View>
+                  </Pressable>
                 ))}
               </ScrollView>
             </View>
