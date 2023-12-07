@@ -64,7 +64,7 @@ export const getRewardedBgColorID = () => {
 
 export const getRewardedInsterstialStoryID = () => {
   if (__DEV__) {
-    return TestIds.INTERSTITIAL;
+    return TestIds.REWARDED;
   } else if (Platform.OS === 'ios') {
     return 'ca-app-pub-1891825795064804/6857472252';
   } else {
@@ -74,7 +74,7 @@ export const getRewardedInsterstialStoryID = () => {
 
 export const getRewardedInsterstial12HID = () => {
   if (__DEV__) {
-    return TestIds.INTERSTITIAL;
+    return TestIds.REWARDED;
   } else if (Platform.OS === 'ios') {
     return 'ca-app-pub-1891825795064804/9483635599';
   } else {
