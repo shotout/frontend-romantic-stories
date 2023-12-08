@@ -44,7 +44,6 @@ export default function QuotesContent({
   fontFamily,
   totalStory,
   pageActive,
-  isPremium,
   titleStory,
 }) {
   const [isRepeat, setRepeat] = useState(

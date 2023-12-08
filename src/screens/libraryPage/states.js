@@ -7,5 +7,4 @@ export default states => ({
   fontSize: states.defaultState.fontSize,
   colorTheme: states.defaultState.colorTheme,
   stepsTutorial: states.defaultState.stepsTutorial,
-  isPremium: states.defaultState.isPremium,
 });

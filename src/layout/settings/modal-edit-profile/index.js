@@ -32,9 +32,7 @@ function ModalEditProfile({
   getAvatarFemale,
   getAvatarMale,
   colorTheme,
-  handleSetPremium,
-  isPremium,
-  backgroundColor
+  backgroundColor,
 }) {
   const handleClose = () => {
     if (typeof onClose === 'function') {

@@ -36,7 +36,7 @@ import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
 import {logo} from '../../assets/images';
 
-function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
+function ModalShareStory({isVisible, onClose, storyData}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
   const [showSuccessCopy, setShowSuccessCopy] = useState(false);

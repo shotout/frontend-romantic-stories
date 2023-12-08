@@ -23,7 +23,6 @@ import {BACKEND_URL} from '../../shared/static';
 function ModalUnlockStory({
   isVisible,
   onClose,
-  isPremium,
   data,
   onWatchAds,
   onUnlock,

@@ -35,7 +35,6 @@ function ModalAudioStory({
   restart,
   edit,
   data,
-  isPremium,
   onGetAudio,
   onGetAudio1,
   userProfile

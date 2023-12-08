@@ -46,7 +46,6 @@ const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 const NotificationScreen = ({
   colorTheme,
   categories,
-  isPremium,
   handleSetSteps,
   stepsTutorial,
   userProfile,

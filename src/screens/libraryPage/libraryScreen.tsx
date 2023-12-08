@@ -74,7 +74,6 @@ const LibraryScreen = ({
   handleSomeAction,
   stepsTutorial,
   handleSetSteps,
-  isPremium,
   backgroundColor,
   handleSetStory
 }) => {
@@ -236,12 +235,7 @@ const handleRead = async(item) => {
                 </Text>
               </TouchableOpacity>
             </View>
-
-            {/* {!isPremium && ( */}
-
-            {/* )} */}
           </View>
-
           <DotSvg />
         </View>
         {/* <View
