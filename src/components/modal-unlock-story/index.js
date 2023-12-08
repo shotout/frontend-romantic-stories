@@ -14,16 +14,21 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {code_color} from '../../utils/colors';
-import {imgAudio} from '../../assets/images';
 import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
-import {navigate} from '../../shared/navigationRef';
 import BookLockIcon from '../../assets/icons/bookLock';
 import LockFree from '../../assets/icons/lockFree';
-import {handlePayment} from '../../helpers/paywall';
 import CloseSvg from '../../assets/icons/close';
 import {BACKEND_URL} from '../../shared/static';
 
-function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
+function ModalUnlockStory({
+  isVisible,
+  onClose,
+  isPremium,
+  data,
+  onWatchAds,
+  onUnlock,
+  onGetUnlimit,
+}) {
   const handleClose = () => {
     onClose();
   };
@@ -45,7 +50,7 @@ function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
               backgroundColor: code_color.white,
               width: '90%',
               borderRadius: moderateScale(24),
-              paddingHorizontal: moderateScale(16),
+              paddingHorizontal: moderateScale(12),
               paddingBottom: moderateScale(14),
             }}>
             <Pressable
@@ -82,7 +87,7 @@ function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
               </View>
               <View
                 style={{
-                  marginLeft: moderateScale(20),
+                  marginLeft: moderateScale(10),
                 }}>
                 <Text
                   style={{
@@ -106,7 +111,7 @@ function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
                 color: '#505962',
                 marginTop: moderateScale(20),
               }}>
-              {data?.content_en?.slice(0, 110) + '...'}
+              {data?.content_en?.slice(0, 180) + '...'}
             </Text>
             <View
               style={{
@@ -127,7 +132,7 @@ function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
               {'To unlock this story, choose one of the\r\nfollowing options:'}
             </Text>
             <Pressable
-              onPress={() => {}}
+              onPress={onUnlock}
               style={{
                 backgroundColor: code_color.green,
                 marginHorizontal: moderateScale(10),
@@ -157,7 +162,7 @@ function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
               </Text>
             </Pressable>
             <Pressable
-              onPress={() => {}}
+              onPress={onWatchAds}
               style={{
                 backgroundColor: code_color.red,
                 marginHorizontal: moderateScale(10),
@@ -211,7 +216,7 @@ function ModalUnlockStory({isVisible, onClose, isPremium, data}) {
               />
             </View>
             <Pressable
-              onPress={() => handlePayment('upgrade_to_unlimited_audio_story')}
+              onPress={onGetUnlimit}
               style={{
                 backgroundColor: '#ADC3D2',
                 // width: '90%',

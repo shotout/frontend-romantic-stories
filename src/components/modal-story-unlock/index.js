@@ -307,7 +307,7 @@ function ModalUnlockStory({
       transparent
       onDismiss={handleClose}>
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
-        {!isPremium ? (
+        {isPremium ? (
           renderPremium()
         ) : (
           <View
@@ -373,7 +373,7 @@ function ModalUnlockStory({
                           fontWeight: 400,
                           fontSize: 14,
                         }}>
-                        [Story category]
+                        {data?.category?.name}
                       </Text>
                       <Text
                         style={{
@@ -382,9 +382,8 @@ function ModalUnlockStory({
                           fontWeight: 'bold',
                           fontSize: 16,
                         }}>
-                        [Suggested story this user never read before]
+                        {data?.title_en}
                       </Text>
-                     
                     </View>
                   </View>
                   <Text
@@ -393,13 +392,11 @@ function ModalUnlockStory({
                       fontSize: 12,
                       marginTop: moderateScale(16),
                     }}>
-                    Lorem ipsum dolor sit amet consectetur. Pretium consequat
-                    odio ornare aliquet curabitur tincidunt ipsum. Nisi lectus a
-                    si...
+                    {data?.content_en?.slice(0, 130)}...
                   </Text>
                 </View>
                 <TouchableOpacity
-                  onPress={onClose}
+                  onPress={handleRead}
                   style={{
                     backgroundColor: '#009A37',
                     marginTop: moderateScale(20),

@@ -246,6 +246,12 @@ const MainScreen = ({
     }
   }, [dataBook]);
 
+  useEffect(() => {
+    if (userStory) {
+      setBook(userStory);
+    }
+  }, [userStory]);
+
   const fetchCheckingDay = async() => {
     const value = await AsyncStorage.getItem('setToday');
     const stringifyDateNow = new Date();

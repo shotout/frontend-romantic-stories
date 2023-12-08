@@ -32,7 +32,7 @@ import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
-import {getExploreStory} from '../../shared/request';
+import {getExploreStory, getStoryDetail} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
@@ -41,6 +41,10 @@ import StepHeader from '../../layout/step/stepHeader';
 import {Step4_2} from '../../layout/tutorial';
 import ModalSorting from '../../components/modal-sorting';
 import ModalUnlockStory from '../../components/modal-unlock-story';
+import ModalUnlockedStory from '../../components/modal-story-unlock';
+import {loadRewarded} from '../../helpers/loadReward';
+import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
+import { handleNativePayment, handlePayment } from '../../helpers/paywall';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -48,6 +52,7 @@ const ExploreLibraryScreen = ({
   categories,
   isPremium,
   handleSetSteps,
+  handleSetStory,
   stepsTutorial,
   backgroundColor,
 }) => {
@@ -56,10 +61,42 @@ const ExploreLibraryScreen = ({
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState<any>();
   const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [items, setItems] = useState(null);
+
+  const showWatchAds = async () => {
+    const advert = await loadRewarded();
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+      setShowModalUnlock(false);
+      setTimeout(() => {
+        setShowUnlockedStory(true);
+      }, 500);
+    });
+  };
+
+  const handleUnlimited = async () => {
+    //
+    try {
+      const paymentResult = await handlePayment('in_app');
+      if (paymentResult.success) {
+        setShowUnlockedStory(false);
+        console.log('Pembayaran berhasil:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran berhasil
+      } else {
+        setShowUnlockedStory(false);
+        console.log('Pembayaran gagal:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran gagal
+      }
+    } catch (error) {
+      setShowUnlockedStory(false);
+      console.error('Terjadi kesalahan:', error);
+      // Tangani kesalahan yang mungkin terjadi
+    }
+    // setShowModalGetPremium(true);
+  };
 
   const handleRestart = () => {
     async function fetchData() {
@@ -142,11 +179,14 @@ const ExploreLibraryScreen = ({
       />
       <ModalUnlockStory
         isVisible={showModalUnlock}
-        onClose={() => {
-          setShowModalUnlock(false);
-          setSelectedStory(null);
-        }}
+        onClose={() => setShowModalUnlock(false)}
         data={selectedStory}
+        onWatchAds={showWatchAds}
+        onUnlock={() => {
+          setShowModalUnlock(false);
+          handleNativePayment('unlock_story_1_week_only');
+        }}
+        onGetUnlimit={() => handleUnlimited()}
       />
       <View
         style={{
@@ -423,6 +463,19 @@ const ExploreLibraryScreen = ({
         </View> */}
       </ScrollView>
       {renderTutorial()}
+      <ModalUnlockedStory
+        restart
+        edit
+        isVisible={showUnlockedStory}
+        onClose={() => setShowUnlockedStory(false)}
+        readLater={true}
+        data={selectedStory}
+        handleRead={async () => {
+          const resp = await getStoryDetail(selectedStory?.id);
+          handleSetStory(resp.data);
+          navigate('Main');
+        }}
+      />
     </SafeAreaView>
   );
 };
