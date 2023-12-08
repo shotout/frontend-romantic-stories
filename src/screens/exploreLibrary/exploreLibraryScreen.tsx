@@ -235,11 +235,6 @@ const ExploreLibraryScreen = ({
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text
-                      allowFontScaling={false}
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                      {itm.content_en.substring(0, 28) + '...'}
-                    </Text>
-                    <Text
                       style={{
                         fontSize: 9,
                         fontWeight: '400',
@@ -248,6 +243,12 @@ const ExploreLibraryScreen = ({
                       }}>
                       {itm.category.name}
                     </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      {itm.title_en}
+                    </Text>
+                    
                   </View>
                 ))}
               </ScrollView>
@@ -311,6 +312,7 @@ const ExploreLibraryScreen = ({
                       style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
                       {itm.name}
                     </Text>
+                   
                   </View>
                 ))}
               </ScrollView>
@@ -361,11 +363,7 @@ const ExploreLibraryScreen = ({
                       resizeMode="cover"
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
-                    <Text
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                      {itm.content_en.substring(0, 28) + '...'}
-                    </Text>
-                    <Text
+                     <Text
                       style={{
                         fontSize: 9,
                         fontWeight: '400',
@@ -374,6 +372,11 @@ const ExploreLibraryScreen = ({
                       }}>
                       {itm?.category?.name}
                     </Text>
+                    <Text
+                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      {itm.title_en}
+                    </Text>
+                   
                   </View>
                 ))}
               </ScrollView>

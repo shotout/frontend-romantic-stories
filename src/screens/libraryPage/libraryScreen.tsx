@@ -205,7 +205,8 @@ const LibraryScreen = ({
                     fontWeight: 400,
                     textAlign: 'left',
                   }}>
-                  {item?.item?.content_en?.substring(0, 48)}
+                    
+                  {item?.item?.content_en.replace(/<\/?p>/g, '').substring(0, 48)}
                 </Text>
               </View>
               <TouchableOpacity
