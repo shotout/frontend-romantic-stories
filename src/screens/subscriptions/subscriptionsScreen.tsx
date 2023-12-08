@@ -87,6 +87,10 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     }
   }, [newStories, promotions]);
 
+  useEffect(() => {
+    reloadUserProfile();
+  }, [])
+
   return (
     <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
       <View

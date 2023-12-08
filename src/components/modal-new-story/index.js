@@ -20,7 +20,10 @@ function ModalNewStory({
   onWatchAds,
   onUnlock,
   onGetUnlimit,
+  userProfile
 }) {
+  
+
   const [timeLeft, setTimeLeft] = useState({
     hour: 0,
     minutes: 0,

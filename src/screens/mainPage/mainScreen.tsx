@@ -59,6 +59,7 @@ import {
   getExploreStory,
   getListAvatarTheme,
   getStoryList,
+  updateProfile,
 } from '../../shared/request';
 import ModalStoryUnlock from '../../components/modal-story-unlock';
 import ModalStoryUnlockDay from '../../components/modal-story-unlock-day';
@@ -76,6 +77,7 @@ import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {Step1, Step2, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
+import { reloadUserProfile } from '../../utils/user';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -635,9 +637,15 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
-    const data = await handleNativePayment();
+    const data = await handlePayment('in_app');
     if (data) {
       setShowModalNewStory(false);
+      const payload = {
+        _method: 'PATCH',
+        is_member: 3,
+      };
+      await updateProfile(payload);
+      reloadUserProfile();
       setShowModalSuccessPurchase(true);
     } else {
       setShowModalNewStory(false);

@@ -55,7 +55,9 @@ const ExploreLibraryScreen = ({
   handleSetStory,
   stepsTutorial,
   backgroundColor,
+  userProfile
 }) => {
+  console.log(JSON.stringify(userProfile))
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -272,7 +274,7 @@ const ExploreLibraryScreen = ({
                       marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {itm.is_free === 0 && (
+                    {itm.is_free === 0 || userProfile?.data?.subscription?.id != 2 || userProfile?.data?.subscription?.id != 3 && (
                       <LockFree
                         height={16}
                         width={55}
@@ -347,7 +349,7 @@ const ExploreLibraryScreen = ({
                         zIndex: 1,
                       }}
                     />
-                    {!isPremium && (
+                    { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
                       <LockFree
                         height={16}
                         width={55}
@@ -405,7 +407,7 @@ const ExploreLibraryScreen = ({
                         idx + 1 === data?.most_share?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {itm.is_free === 0 && (
+                    {userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3 && (
                       <LockFree
                         height={16}
                         width={55}
