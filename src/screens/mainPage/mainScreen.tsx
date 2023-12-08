@@ -77,6 +77,7 @@ import {Step1, Step2, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
+const rippleAnimate = require('../../assets/lottie/ripple.json');
 
 const {width, height} = Dimensions.get('window');
 
@@ -129,6 +130,7 @@ const MainScreen = ({
   const [partner, setPartner] = useState(null);
   const [readLater, setReadLater] = useState(false);
   const [isLoveAnimate, setIsLoveAnimate] = useState<boolean | string>(false);
+  const [isRippleAnimate, setIsRippleAnimate] = useState<boolean>(false);
   const [isStartConfetti, setIsStartConfetti] = useState(false);
   const isFocused = useIsFocused();
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
@@ -397,8 +399,10 @@ const MainScreen = ({
     handleSetSteps(stepsTutorial + 1);
     if (stepsTutorial === 2) {
       setFinishTutorial(false);
+      setIsRippleAnimate(true);
       setTimeout(() => {
         setFinishTutorial(true);
+        setIsRippleAnimate(false);
       }, 3000);
       setTimeout(() => {
         navigate('Media');
@@ -501,23 +505,41 @@ const MainScreen = ({
 
   const renderFactItem = ({item, index, title}) => {
     return (
-      <QuotesContent
-        item={item}
-        isActive={activeSlide === index}
-        totalStory={dataBook?.content_en?.length}
-        pageActive={index}
-        isAnimationStart={isLoveAnimate}
-        themeUser={userProfile?.data}
-        fontSize={fontSize}
-        bgTheme={colorTheme}
-        bg={backgroundColor}
-        fontFamily={fontFamily}
-        me={me}
-        partner={partner}
-        source={undefined}
-        isPremium={isPremium}
-        titleStory={title}
-      />
+      <>
+        <QuotesContent
+          item={item}
+          isActive={activeSlide === index}
+          totalStory={dataBook?.content_en?.length}
+          pageActive={index}
+          isAnimationStart={isLoveAnimate}
+          themeUser={userProfile?.data}
+          fontSize={fontSize}
+          bgTheme={colorTheme}
+          bg={backgroundColor}
+          fontFamily={fontFamily}
+          me={me}
+          partner={partner}
+          source={undefined}
+          isPremium={isPremium}
+          titleStory={title}
+        />
+        {isRippleAnimate && (
+          <Animatable.View
+            duration={200}
+            animation={'fadeIn'}
+            style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
+            <AnimatedLottieView
+              source={rippleAnimate}
+              style={{
+                width: sizing.getDimensionWidth(0.8),
+              }}
+              autoPlay
+              duration={4000}
+              loop={false}
+            />
+          </Animatable.View>
+        )}
+      </>
     );
   };
 
