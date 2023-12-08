@@ -37,7 +37,8 @@ function ModalAudioStory({
   data,
   isPremium,
   onGetAudio,
-  onGetAudio1
+  onGetAudio1,
+  userProfile
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
@@ -417,7 +418,7 @@ function ModalAudioStory({
                   />
                 </View>
               <Pressable
-                  onPress={() => handlePayment('upgrade_to_unlimited_audio_story')}
+                  onPress={() => handlePayment(userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'in_app' : 'upgrade_to_unlimited_audio_story'  )}
                   style={{
                     backgroundColor: '#ADC3D2',
                     // width: '90%',
@@ -439,14 +440,15 @@ function ModalAudioStory({
                       top: -moderateScale(8),
                     }}>
                     <Text style={{color: code_color.black, fontWeight: 600}}>
-                      UNLOCK EVERYTHING
+                      {userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'UNLOCK EVERYTHING' : 'UPGRADE YOUR PACKAGE'}
                     </Text>
                   </View>
                   <BookLockIcon
-                    style={{position: 'absolute', top: '70%', left: '12%'}}
+                    style={{position: 'absolute', top: '70%', left: '5%'}}
                   />
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  Get EroTales UNLIMITED + Audio
+                  {userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'Get EroTales UNLIMITED' : 'Get EroTales UNLIMITED + Audio'}
+                  
                   </Text>
                 </Pressable>
             </View>

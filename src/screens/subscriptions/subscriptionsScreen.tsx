@@ -54,7 +54,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   );
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
-alert(JSON.stringify(userProfile?.data?.subscription))
+
   useEffect(() => {
     handleThemeAvatar();
   }, []);

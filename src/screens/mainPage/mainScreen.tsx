@@ -631,7 +631,7 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
-    const data = await handleNativePayment();
+    const data = await handlePayment('in_app');
     if (data) {
       setShowModalNewStory(false);
       const payload = {

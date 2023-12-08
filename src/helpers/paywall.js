@@ -47,8 +47,6 @@ new Promise(async (resolve, reject) => {
           };
           await updateProfile(payload);
           reloadUserProfile();
-          store.dispatch(handleSetPremium(true));
-
           console.log("FINISH PURCHASED:", res.result);
           resolve({ success: true, result: res });
           if (user.token) {
@@ -88,8 +86,13 @@ new Promise(async (resolve, reject) => {
       // const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
       // console.log('Products:', products);
       const result = await IAP.requestPurchase({ sku: sku ? sku : 'unlock_story_1_week_only' });
-
-      store.dispatch(handleSetPremium(true));
+      const payload = {
+        _method: 'PATCH',
+        is_audio: 1,
+        audio_limit: sku === 'unlock_10_audio_stories' ? 10 : 50
+      };
+      await updateProfile(payload);
+      reloadUserProfile()
       await AsyncStorage.setItem('subscribtions', sku ? sku : 'unlock_story_1_week_only');
   
       // Operasi selesai dengan sukses, return true

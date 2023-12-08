@@ -45,7 +45,7 @@ export default function QuotesContent({
   totalStory,
   pageActive,
   isPremium,
-  titleStory
+  titleStory,
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -254,7 +254,7 @@ export default function QuotesContent({
 
           <TouchableOpacity
             onPress={() => {
-              if (isPremium) {
+              if (themeUser?.subscription?.is_audio != 0) {
                 navigate('Media');
               } else {
                 setShow(true);
