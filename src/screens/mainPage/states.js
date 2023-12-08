@@ -9,4 +9,5 @@ export default states => ({
   stepsTutorial: states.defaultState.stepsTutorial,
   isPremium: states.defaultState.isPremium,
   readStory: states.defaultState.readStory,
+  nextStory: states.defaultState.nextStory,
 });

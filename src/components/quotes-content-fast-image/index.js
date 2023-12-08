@@ -67,7 +67,7 @@ export default function QuotesContent({
   ];
   const manipulatedResponse = item.replace(/(\r\n|\n|\r|\s{2,})/gm, '');
 
-  console.log('ini'+manipulatedResponse)
+ 
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive]);

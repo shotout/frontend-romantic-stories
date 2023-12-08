@@ -97,23 +97,7 @@ function App({ userProfile }) {
     console.log("Finish set configtracker");
   };
   async function getInitialRoute() {
-    const value = await AsyncStorage.getItem('setToday');
-    const stringifyDateNow = new Date();
-    let strTanggalSekarang = stringifyDateNow.getDate().toString();
-    if(value != null){
-      if(value != strTanggalSekarang){
-        AsyncStorage.setItem('setToday', strTanggalSekarang);
-        try {
-          const res = await getStoryList();
-          store.dispatch(handleSetStory(res.data))
-        } catch (error) {
-          
-        }
-       
-      }
-    }else if(value === null){
-      AsyncStorage.setItem('setToday', strTanggalSekarang);
-    }
+   
     if (userProfile?.token) {
       try {
         

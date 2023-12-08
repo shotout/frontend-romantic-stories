@@ -54,11 +54,13 @@ import states from './states';
 import {connect} from 'react-redux';
 import {
   addPastStory,
+  addStory,
   checkDeviceRegister,
   getListAvatarTheme,
   getStoryList,
 } from '../../shared/request';
 import ModalStoryUnlock from '../../components/modal-story-unlock';
+import ModalStoryUnlockDay from '../../components/modal-story-unlock-day';
 import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
@@ -72,6 +74,7 @@ import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {Step1, Step2, Step5} from '../../layout/tutorial';
+import store from '../../store/configure-store';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 
@@ -92,6 +95,8 @@ const MainScreen = ({
   isPremium,
   readStory,
   handleReadStory,
+  handleNextStory,
+  nextStory
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [click, setClick] = useState(1);
@@ -102,6 +107,7 @@ const MainScreen = ({
   });
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showModalDay, setShowModalDay] = useState(false);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
@@ -235,6 +241,31 @@ const MainScreen = ({
       handleReadStory(data);
     }
   }, [dataBook]);
+
+  const fetchCheckingDay = async() => {
+    const value = await AsyncStorage.getItem('setToday');
+    const stringifyDateNow = new Date();
+    let strTanggalSekarang = stringifyDateNow.getDate().toString();
+    if(value != null){
+      if(value != strTanggalSekarang){
+       
+        AsyncStorage.setItem('setToday', strTanggalSekarang);
+        try {
+          const res = await getStoryList();
+         handleNextStory(res.data)
+         setShowModalDay(true)
+        } catch (error) {
+          
+        }
+       
+      }
+    }else if(value === null){
+      AsyncStorage.setItem('setToday', strTanggalSekarang);
+    }
+  }
+  useEffect(() => {
+    fetchCheckingDay()
+  }, [])
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     // const offsetY = e.nativeEvent.contentOffset.x;
@@ -793,6 +824,15 @@ const MainScreen = ({
       },
     );
   };
+  const handleRead = () => {
+    handleSetStory(nextStory)
+    setShowModalDay(false)
+    setBook(nextStory)
+  }
+  const handleLater = async() => {
+    const response = await addStory(nextStory.id);
+    setShowModalDay(false)
+  }
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -863,6 +903,12 @@ const MainScreen = ({
             // paddingTop: isIphoneXorAbove() ? 40 : 0,
           }}
           /> */}
+          <ModalStoryUnlockDay
+           isVisible={showModalDay}
+           onClose={() => setShowModalDay(false)}
+           handleRead={() => handleRead()}
+           handleLater={() => handleLater()}
+           />
           <ModalStoryUnlock
             isVisible={showModal}
             onClose={() => setShowModal(false)}
