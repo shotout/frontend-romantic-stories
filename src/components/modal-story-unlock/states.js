@@ -3,4 +3,6 @@ export default states => ({
   userProfile: states.defaultState.userProfile,
   isPremium: states.defaultState.isPremium,
   userStory: states.defaultState.userStory,
+  nextStory: states.defaultState.nextStory,
+  relateStory: states.defaultState.relateStory,
 });

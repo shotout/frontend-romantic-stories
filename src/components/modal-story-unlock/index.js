@@ -35,7 +35,9 @@ function ModalUnlockStory({
   data,
   isPremium,
   readLater,
-  userStory
+  nextStory,
+  handleRead,
+  relateStory
 }) {
 
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
@@ -138,7 +140,7 @@ function ModalUnlockStory({
               }}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={{uri: `${BACKEND_URL}/${userStory?.category.cover?.url}`}}
+                  source={{uri: `${BACKEND_URL}/${nextStory?.category.cover?.url}`}}
                   resizeMode="contain"
                   style={{
                     width: 65,
@@ -154,7 +156,7 @@ function ModalUnlockStory({
                       fontWeight: 400,
                       fontSize: 14,
                     }}>
-                    {userStory?.category.name}
+                    {nextStory?.category.name}
                   </Text>
                   <Text
                     style={{
@@ -163,7 +165,7 @@ function ModalUnlockStory({
                       fontWeight: 'bold',
                       fontSize: 16,
                     }}>
-                     {userStory?.title_en}
+                     {nextStory?.title_en}
                   </Text>
                  
                 </View>
@@ -175,10 +177,10 @@ function ModalUnlockStory({
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                {userStory?.content_en[0].substring(0, 100)}...
+                {nextStory?.content_en[0].substring(0, 100)}...
               </Text>
               <TouchableOpacity
-                onPress={onClose}
+                onPress={handleRead}
                 style={{
                   backgroundColor: '#009A37',
                   marginTop: moderateScale(20),
@@ -222,7 +224,7 @@ function ModalUnlockStory({
                 Other Stories you might like:
               </Text>
               <View style={{flexDirection: 'row'}}>
-              {[1, 2, 3].map(itm => (
+              {relateStory?.most_read?.slice(0, 3).map(itm => (
                   <Pressable
                     style={{
                       flex: 1,
@@ -246,7 +248,16 @@ function ModalUnlockStory({
                         fontSize: moderateScale(12),
                         textAlign: 'center',
                       }}>
-                    Title of the Story A
+                       {itm.category.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: code_color.black,
+                        fontWeight: 500,
+                        fontSize: moderateScale(12),
+                        textAlign: 'center',
+                      }}>
+                        {itm.title_en}
                     </Text>
                   </Pressable>
                 ))}

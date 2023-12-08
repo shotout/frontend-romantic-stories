@@ -48,6 +48,7 @@ const INITIAL_STATE = {
   isPremium: false,
   readStory: null,
   nextStory: null,
+  relateStory: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -255,6 +256,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         readStory: action.payload,
+      };
+    case types.SET_STORY_RELATE_DATA:
+      return {
+        ...state,
+        relateStory: action.payload,
       };
     case types.SET_BACKGROUND_COLOR:
       return {

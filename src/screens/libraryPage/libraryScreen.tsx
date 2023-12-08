@@ -57,6 +57,7 @@ import {
   deleteMyCollection,
   deleteMyStory,
   getMyCollection,
+  getStoryDetail,
 } from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
@@ -74,7 +75,8 @@ const LibraryScreen = ({
   stepsTutorial,
   handleSetSteps,
   isPremium,
-  backgroundColor
+  backgroundColor,
+  handleSetStory
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
@@ -142,7 +144,11 @@ const LibraryScreen = ({
   //     console.error("Error occurred while fetching products", error.message);
   //   }
   // };
-
+const handleRead = async(item) => {
+  const resp = await getStoryDetail(item?.item?.id);
+  handleSetStory(resp.data)
+  navigate('Main')
+}
   const renderCollect = item => (
     <View
       style={{
@@ -210,7 +216,7 @@ const LibraryScreen = ({
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => navigate('Main')}
+                onPress={() => handleRead(item)}
                 style={{
                   backgroundColor: '#00B781',
                   paddingHorizontal: 15,

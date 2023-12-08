@@ -21,6 +21,10 @@ export const handleNextStory = payload => ({
   type: types.SET_STORY_NEXT_DATA,
   payload,
 });
+export const handleStoriesRelate = payload => ({
+  type: types.SET_STORY_RELATE_DATA,
+  payload,
+});
 
 export const handleReadStory = payload => ({
   type: types.SET_READ_STORY,

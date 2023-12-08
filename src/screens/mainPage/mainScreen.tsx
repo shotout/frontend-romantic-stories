@@ -56,6 +56,7 @@ import {
   addPastStory,
   addStory,
   checkDeviceRegister,
+  getExploreStory,
   getListAvatarTheme,
   getStoryList,
 } from '../../shared/request';
@@ -97,7 +98,8 @@ const MainScreen = ({
   readStory,
   handleReadStory,
   handleNextStory,
-  nextStory
+  nextStory,
+  handleStoriesRelate
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [click, setClick] = useState(1);
@@ -818,8 +820,19 @@ const MainScreen = ({
     const advert = await loadRewarded2();
     advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      (reward) =>  {
+      async (reward) =>  {
           if (reward) {
+            const res = await getStoryList();
+            handleNextStory(res.data)
+
+              let params = {
+                search: '',
+                column: 'title_en',
+                dir: 'asc',
+              };
+              const resp = await getExploreStory(params);
+              handleStoriesRelate(resp);
+           
             setTimeout(() => {
               setShowModal(true);
             }, 300);
@@ -849,6 +862,7 @@ const MainScreen = ({
   const handleRead = () => {
     handleSetStory(nextStory)
     setShowModalDay(false)
+    setShowModal(false)
     setBook(nextStory)
   }
   const handleLater = async() => {
@@ -938,6 +952,7 @@ const MainScreen = ({
             restart={undefined}
             edit={undefined}
             readLater={readLater}
+            handleRead={() => handleRead()}
           />
           <ModalCongrats
             isVisible={showModalCongrats}
