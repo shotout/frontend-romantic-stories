@@ -6,14 +6,16 @@ import moment from "moment";
 import { STATIC_ONBOARD } from "../shared/static";
 import { handleSetPremium } from "../store/defaultState/actions";
 import * as IAP from 'react-native-iap'
+import { updateProfile } from "../shared/request";
+import { reloadUserProfile } from "../utils/user";
 
 export const handlePayment = async (vendorId, cb) =>
 new Promise(async (resolve, reject) => {
   try {
     // eventTracking(SHOW_PAYWALL);
     let stringVendor = vendorId;
-    // const subscriptions = await Purchasely.userSubscriptions();
-    // console.log('Subscription status:', subscriptions);
+    const subscriptions = await Purchasely.userSubscriptions();
+    console.log('Subscription status:', subscriptions);
     // const purchaseId = await Purchasely.getAnonymousUserId();
       // if (vendorId === STATIC_ONBOARD) {
       //   // await setSubcription({
@@ -39,8 +41,15 @@ new Promise(async (resolve, reject) => {
       console.log("Check user data purchase:", user);
       switch (res.result) {
         case ProductResult.PRODUCT_RESULT_PURCHASED:
+          const payload = {
+            _method: 'PATCH',
+            is_member: vendorId === 'in_app' || 'onboarding' ? 2 :  'upgrade_to_unlimited_audio_story'  ? 3 : 1,
+          };
+          await updateProfile(payload);
+          reloadUserProfile();
           store.dispatch(handleSetPremium(true));
-          console.log("FINISH PURCHASED:", user.token);
+
+          console.log("FINISH PURCHASED:", res.result);
           resolve({ success: true, result: res });
           if (user.token) {
             Purchasely.closePaywall();

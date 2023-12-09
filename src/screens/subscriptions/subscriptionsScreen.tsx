@@ -54,7 +54,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   );
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
-
+alert(JSON.stringify(userProfile?.data?.subscription))
   useEffect(() => {
     handleThemeAvatar();
   }, []);
@@ -86,6 +86,10 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
       fetchUpdate();
     }
   }, [newStories, promotions]);
+
+  useEffect(() => {
+    reloadUserProfile();
+  }, [])
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
