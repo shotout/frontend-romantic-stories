@@ -130,8 +130,10 @@ const SettingsPage = ({
           overflow: 'hidden',
         }}>
         <BgSettings
-          style={{position: 'absolute', top: 0}}
+          style={{position: 'absolute', top: 0, left: 0}}
           bgTheme={bgTheme}
+          width={Dimensions.get('window').width}
+          height={moderateScale(252)}
           profileUrl={
             userProfile?.data?.gender === 'Male'
               ? BACKEND_URL + getAvatarMale
