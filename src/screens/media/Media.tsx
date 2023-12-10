@@ -30,12 +30,13 @@ import {BACKEND_URL} from '../../shared/static';
 import StepHeader from '../../layout/step/stepHeader';
 import {Step3} from '../../layout/tutorial';
 
-function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
+function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
+  alert(JSON.stringify(userStory?.category?.cover?.url))
   const [play, setPlay] = useState(false);
   const {position, duration} = useProgress();
   const [info, setInfo] = useState({});
   const track1 = {
-    url: `${BACKEND_URL}/assets/audio/test.mp3`,
+    url: `${BACKEND_URL}${userStory?.audio?.url}`,
     title: 'See You Again',
     artist: 'Wiz Khalifa',
     album: 'While(1<2)',
@@ -126,7 +127,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       </View>
       <View>
         <Image
-          source={bgGetUnlimit}
+          source={{uri :`${BACKEND_URL}${userStory?.category?.cover?.url}`}}
           resizeMode="cover"
           style={{
             width: 352,
@@ -142,7 +143,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
             marginTop: 40,
             fontSize: 14,
           }}>
-          [Story category]
+          {userStory?.category?.name}
         </Text>
         <Text
           allowFontScaling={false}
@@ -152,7 +153,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
             fontSize: 16,
             fontWeight: 'bold',
           }}>
-          [Story this user currently reading]
+          {userStory?.title_id}
         </Text>
         <Slider
           step={1}

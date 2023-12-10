@@ -274,7 +274,7 @@ const ExploreLibraryScreen = ({
                       marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {itm.is_free === 0 || userProfile?.data?.subscription?.id != 2 || userProfile?.data?.subscription?.id != 3 && (
+                    {userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3 && (
                       <LockFree
                         height={16}
                         width={55}

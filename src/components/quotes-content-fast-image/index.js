@@ -67,10 +67,11 @@ export default function QuotesContent({
   ];
   // Menghapus spasi dan baris baru (enter)
   
-
+  console.log(JSON.stringify(item))
   // Remove <p> and </p> tags from the modified text
   const manipulatedResponse = item.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
+  const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
  
   useEffect(() => {
@@ -154,6 +155,18 @@ export default function QuotesContent({
     }
     return null;
   }
+
+  const handleSuccessAudio = async () => {
+    const payload = {
+      _method: 'PATCH',
+      is_audio: 1,
+      audio_take: 1,
+    };
+    await updateProfile(payload);
+    reloadUserProfile();
+    setShowAudio(false);
+    navigate('Media');
+  }
   return (
     <SafeAreaView
       style={{
@@ -167,8 +180,7 @@ export default function QuotesContent({
         onClose={() => setShowAudio(false)}
         title={title}
         handleListen={() => {
-          setShowAudio(false);
-          navigate('Media');
+          handleSuccessAudio()
         }}
       />
       <ModalAudioUnlock
@@ -252,10 +264,19 @@ export default function QuotesContent({
           </View>
 
           <TouchableOpacity
-            onPress={() => {
-              if (themeUser?.subscription?.is_audio != 0) {
+            onPress={async() => {
+              if (themeUser?.subscription?.plan?.id === 3) {
                 navigate('Media');
-              } else {
+              }else if (themeUser?.subscription?.plan?.id === 2 && themeUser?.subscription?.audio_limit != 0) {
+                const payload = {
+                  _method: 'PATCH',
+                  is_audio: 1,
+                  audio_take: 1,
+                };
+                await updateProfile(payload);
+                reloadUserProfile();
+                navigate('Media');
+              }else{
                 setShow(true);
               }
             }}
@@ -340,8 +361,8 @@ export default function QuotesContent({
                 }}
                 value={
                   themeUser?.language_id === '2'
-                    ? manipulatedResponse
-                    : manipulatedResponse
+                    ? formattedText
+                    : formattedText
                 }
               />
             </View>

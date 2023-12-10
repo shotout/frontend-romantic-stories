@@ -264,9 +264,15 @@ const MainScreen = ({
        
         AsyncStorage.setItem('setToday', strTanggalSekarang);
         try {
-          const res = await getStoryList();
+          if(userProfile?.data?.subscription?.plan?.id != 1){
+    const res = await getStoryList();
          handleNextStory(res.data)
          setShowModalDay(true)
+          }else{
+            setShowModalNewStory(true)
+          }
+         
+      
         } catch (error) {
           
         }
@@ -916,9 +922,12 @@ const MainScreen = ({
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
-            onGotIt={() => {
+            onGotIt={async() => {
               setShowModalCongrats(false);
               if (isPremiumStory || isPremiumAudio) {
+                const res = await getStoryList();
+                alert(JSON.stringify(res))
+                handleNextStory(res.data)
                 setShowModal(true);
               } else {
                 setShowModalNewStory(true);
@@ -971,10 +980,13 @@ const MainScreen = ({
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
-            onGotIt={() => {
+            onGotIt={async() => {
               setShowModalCongrats(false);
               if (isPremiumStory || isPremiumAudio) {
+                const res = await getStoryList();
+                handleNextStory(res.data)
                 setShowModal(true);
+
               } else {
                 setShowModalNewStory(true);
               }

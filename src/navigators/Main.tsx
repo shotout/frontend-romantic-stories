@@ -49,7 +49,7 @@ function Main({registerData, userProfile, props}) {
     const handleDynamicLinks = async (link: any) => {
       let storyId = link.url.split('=').pop();
       navigate('Library');
-      Alert.alert(storyId);
+      // Alert.alert(storyId);
     };
     useEffect(() => {
       const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
