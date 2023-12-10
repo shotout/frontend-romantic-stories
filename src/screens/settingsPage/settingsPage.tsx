@@ -19,6 +19,7 @@ import {
   Linking,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
+import BgSettings from '../../assets/icons/bgSetting';
 import {code_color} from '../../utils/colors';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import LockSvg from '../../assets/icons/lock.jsx';
@@ -43,10 +44,17 @@ import ModalEditLanguage from '../../layout/settings/modal-edit-language';
 import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
-import { handlePayment } from '../../helpers/paywall';
-import { moderateScale } from 'react-native-size-matters';
+import {handlePayment} from '../../helpers/paywall';
+import {moderateScale} from 'react-native-size-matters';
+import { BACKEND_URL } from '../../shared/static';
 
-const SettingsPage = ({colorTheme, userProfile,backgroundColor}) => {
+const SettingsPage = ({
+  colorTheme,
+  userProfile,
+  backgroundColor,
+  getAvatarMale,
+  getAvatarFemale,
+}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
   const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
@@ -111,26 +119,47 @@ const SettingsPage = ({colorTheme, userProfile,backgroundColor}) => {
   ]);
 
   const header = () => (
-    <View style={{height: '25%'}}>
-      <ImageBackground
-        source={bgSettings}
-        resizeMode="cover"
+    <View style={{height: moderateScale(250)}}>
+      <View
         style={{
           width: Dimensions.get('window').width,
           height: '100%',
           // alignItems: 'center',
           justifyContent: 'center',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
-        <View style={{marginTop: moderateScale(30)}}>
-          <View style={{marginTop: moderateScale(40)}}>
+        <BgSettings
+          style={{position: 'absolute', top: 0}}
+          bgTheme={bgTheme}
+          profileUrl={
+            userProfile?.data?.gender === 'Male'
+              ? BACKEND_URL + getAvatarMale
+              : BACKEND_URL + getAvatarFemale
+          }
+        />
+        <View
+          style={{
+            marginTop: moderateScale(80),
+          }}>
+          <View style={{marginTop: moderateScale(20)}}>
             <Text
               allowFontScaling={false}
-              style={{fontWeight: 'bold', textAlign: 'center', fontSize: moderateScale(9)}}>
-              {userProfile?.data?.name} • {userProfile?.data?.user_level?.level?.desc} • {userProfile?.data?.user_level?.level?.value} XP
+              style={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: moderateScale(14),
+              }}>
+              {userProfile?.data?.name} •{' '}
+              {userProfile?.data?.user_level?.level?.desc} •{' '}
+              {userProfile?.data?.user_level?.level?.value} XP
             </Text>
           </View>
-          <View style={{marginLeft: '30%', marginTop: 20}}>
-            <ProgressBar progress={userProfile?.data?.user_level?.level?.value} />
+          <View style={{marginLeft: '30%', marginTop: 50}}>
+            <ProgressBar
+              bgTheme={bgTheme}
+              progress={userProfile?.data?.user_level?.level?.value}
+            />
           </View>
         </View>
 
@@ -163,7 +192,7 @@ const SettingsPage = ({colorTheme, userProfile,backgroundColor}) => {
             </View>
           ))}
         </View> */}
-      </ImageBackground>
+      </View>
     </View>
   );
 
@@ -205,8 +234,8 @@ const SettingsPage = ({colorTheme, userProfile,backgroundColor}) => {
         navigate('Categories');
         break;
       case 'Subscription':
-          navigate('Subscriptions');
-          break;
+        navigate('Subscriptions');
+        break;
       case 'App Icon':
         setShowModalIcon(true);
         break;
@@ -335,16 +364,23 @@ const SettingsPage = ({colorTheme, userProfile,backgroundColor}) => {
           </View> */}
           {/* <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} /> */}
           <View style={{margin: 10, marginBottom: 40}}>
-          <TouchableOpacity onPress={() => Linking.openURL('Https://erotalesapp.com/privacy')} >
-          <Text
-              allowFontScaling={false}
-              style={{marginLeft: 10, marginBottom: 20, color: backgroundColor}}>
-              Privacy Policy
-            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL('Https://erotalesapp.com/privacy')
+              }>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  marginLeft: 10,
+                  marginBottom: 20,
+                  color: backgroundColor,
+                }}>
+                Privacy Policy
+              </Text>
             </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => Linking.openURL('https://erotalesapp.com/terms')}
-             >
+
+            <TouchableOpacity
+              onPress={() => Linking.openURL('https://erotalesapp.com/terms')}>
               <Text
                 allowFontScaling={false}
                 style={{marginLeft: 10, color: backgroundColor}}>

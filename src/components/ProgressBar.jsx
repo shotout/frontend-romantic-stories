@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Pressable, Alert} from 'react-native';
 import {code_color} from '../utils/colors';
 import {moderateScale} from 'react-native-size-matters';
 
-const ProgressBar = ({progress}) => {
+const ProgressBar = ({progress, bgTheme}) => {
   const [showInfo, setShowInfo] = useState(null);
   let status = 'Noob';
   if (progress >= 33 && progress < 66) {
@@ -23,7 +23,12 @@ const ProgressBar = ({progress}) => {
   return (
     <View style={{marginBottom: moderateScale(60)}}>
       <View style={styles.container}>
-        <View style={[styles.progressBar, {width: `${progress}%`}]} />
+        <View
+          style={[
+            styles.progressBar,
+            {width: `${progress}%`, backgroundColor: bgTheme},
+          ]}
+        />
 
         {/* Dots for each step */}
 
@@ -39,7 +44,7 @@ const ProgressBar = ({progress}) => {
             message: 'Keep it up! 90 XP to Lorem',
           })
         }
-        style={[styles.dot, {left: '0%'}]}
+        style={[styles.dot, {left: '0%', borderColor: bgTheme}]}
       />
       <Text
         style={{
@@ -58,7 +63,11 @@ const ProgressBar = ({progress}) => {
         }
         style={[
           styles.dot,
-          {left: '50%', transform: [{translateX: -5}, {translateY: -5}]},
+          {
+            left: '50%',
+            transform: [{translateX: -5}, {translateY: -5}],
+            borderColor: bgTheme,
+          },
         ]}
       />
       <Text
@@ -76,7 +85,7 @@ const ProgressBar = ({progress}) => {
             message: 'Keep it up! 90 XP to Lorem',
           })
         }
-        style={[styles.dot, {right: '10%'}]}
+        style={[styles.dot, {right: '10%', borderColor: bgTheme}]}
       />
       <Text
         style={{
@@ -102,7 +111,6 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: code_color.splash,
   },
   dot: {
     position: 'absolute',
@@ -110,7 +118,6 @@ const styles = StyleSheet.create({
     height: 20,
     backgroundColor: code_color.yellow,
     borderRadius: 20,
-    borderColor: code_color.splash,
     borderWidth: 3,
     top: '10%',
     transform: [{translateY: -5}],
