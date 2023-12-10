@@ -660,7 +660,7 @@ const MainScreen = ({
   const handleUnlimited = async () => {
     //
     try {
-      const paymentResult = await handlePayment();
+      const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowModalGetPremium(true);
         setShowModalNewStory(false);
@@ -926,7 +926,6 @@ const MainScreen = ({
               setShowModalCongrats(false);
               if (isPremiumStory || isPremiumAudio) {
                 const res = await getStoryList();
-                alert(JSON.stringify(res))
                 handleNextStory(res.data)
                 setShowModal(true);
               } else {
@@ -986,8 +985,7 @@ const MainScreen = ({
                 const res = await getStoryList();
                 handleNextStory(res.data)
                 setShowModal(true);
-
-              } else {
+              } else if(userProfile?.data?.subscription?.plan?.id === 1) {
                 setShowModalNewStory(true);
               }
             }}

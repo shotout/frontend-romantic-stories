@@ -31,7 +31,6 @@ import StepHeader from '../../layout/step/stepHeader';
 import {Step3} from '../../layout/tutorial';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
-  alert(JSON.stringify(userStory?.category?.cover?.url))
   const [play, setPlay] = useState(false);
   const {position, duration} = useProgress();
   const [info, setInfo] = useState({});
