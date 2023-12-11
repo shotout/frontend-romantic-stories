@@ -212,6 +212,12 @@ export const getExploreStory = (params = {}) =>
     method: 'get',
     params,
   });
+export const submitRating = (id, data)=> 
+  Wrap({
+    url: `/stories/rating/${id}`,
+    method: 'POST',
+    data,
+  });
 
 export const getListPastQuotes = (params = {}) =>
   Wrap({

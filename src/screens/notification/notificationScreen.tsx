@@ -212,7 +212,7 @@ const NotificationScreen = ({
           <View>
             <ImageBackground
               source={{
-                uri: `${BACKEND_URL}/${userProfile?.data?.category?.image?.url}`,
+                uri: `${BACKEND_URL}${userProfile?.data?.category?.image?.url}`,
               }}
               resizeMode="contain"
               style={{

@@ -140,7 +140,7 @@ function ModalUnlockStory({
               }}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={{uri: `${BACKEND_URL}/${nextStory?.category.cover?.url}`}}
+                  source={{uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`}}
                   resizeMode="contain"
                   style={{
                     width: 65,

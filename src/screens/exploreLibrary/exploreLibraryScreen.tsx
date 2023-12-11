@@ -47,6 +47,7 @@ import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import { handleNativePayment, handlePayment } from '../../helpers/paywall';
 import { reloadUserProfile } from '../../utils/user';
 import ChecklistSvg from './../../assets/icons/checklist';
+import * as IAP from 'react-native-iap'
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -71,6 +72,7 @@ const ExploreLibraryScreen = ({
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [items, setItems] = useState(null);
   const [selectStory, setSelectStory] = useState('');
+  const [price, setPrice] = useState('')
   const showWatchAds = async () => {
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
@@ -158,6 +160,13 @@ const ExploreLibraryScreen = ({
     reloadUserProfile();
    
   };
+
+  useEffect(async() => {
+ const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice)
+      
+  }, [])
   const renderProgress = () => <StepHeader currentStep={6} />;
   const renderTutorial = () => {
     if (stepsTutorial === 4) {
@@ -199,6 +208,7 @@ const ExploreLibraryScreen = ({
           setShowModalUnlock(false);
           handleNativePayment('unlock_story_1_week_only');
         }}
+        price={price}
         onGetUnlimit={() => handleUnlimited()}
       />
       <View
@@ -279,6 +289,7 @@ const ExploreLibraryScreen = ({
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       }else{
+                        setShowModalUnlock(true);
                         setSelectedStory(itm);
                       }
                     }}
@@ -346,8 +357,15 @@ const ExploreLibraryScreen = ({
                 {data?.category.map((itm: any, idx: number) => (
                   <Pressable
                   onPress={() => {
-                    setSelectStory(itm.id)
-                    fetchUpdate()
+                    // if(userProfile?.data?.subscription?.plan?.id === 1){
+                    //   setShowModalUnlock(true)
+                    // }else{
+                    //   setShowModalUnlock(true)
+                      setSelectStory(itm.id)
+                      fetchUpdate()
+                    // }
+                   
+                   
                   }
                 }
                     style={{
@@ -371,7 +389,7 @@ const ExploreLibraryScreen = ({
                     >
                        {itm.id === selectStory ? <ChecklistSvg  width={10}/> : null}
                     </View>
-                    { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
+                    {/* { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
                       <LockFree
                         height={16}
                         width={55}
@@ -382,7 +400,7 @@ const ExploreLibraryScreen = ({
                           zIndex: 1,
                         }}
                       />
-                    )}
+                    )} */}
                     <Image
                       source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
                       resizeMode="cover"

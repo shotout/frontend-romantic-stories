@@ -61,3 +61,4 @@ export const imgNotif = require('./notif.png');
 export const imgAudio = require('./audio.png');
 export const imgCongrat = require('./congrats.png');
 export const imgHearts = require('./hearts.png');
+export const imgRating = require('./Rating.png');
