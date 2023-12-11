@@ -130,7 +130,7 @@ const SettingsPage = ({
           overflow: 'hidden',
         }}>
         <BgSettings
-          style={{position: 'absolute', top: 0}}
+          style={{position: 'absolute', top: 0, }}
           bgTheme={bgTheme}
           profileUrl={
             userProfile?.data?.gender === 'Male'

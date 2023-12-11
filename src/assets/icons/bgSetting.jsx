@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Dimensions } from 'react-native';
 import Svg, {
   Rect,
   Path,
@@ -11,8 +12,8 @@ import Svg, {
 
 function SvgComponent(props) {
   const {
-    width = 390,
-    height = 264,
+    width = Dimensions.get('window').width,
+    height = 280,
     bgTheme = '#3F58DD',
     profileUrl = '',
     style,

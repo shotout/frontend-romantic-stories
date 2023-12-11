@@ -39,7 +39,7 @@ function ModalUnlockStory({
   handleRead,
   relateStory
 }) {
-
+// alert(JSON.stringify(nextStory))
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
@@ -373,7 +373,7 @@ function ModalUnlockStory({
                           fontWeight: 400,
                           fontSize: 14,
                         }}>
-                        {data?.category?.name}
+                        {nextStory?.category?.name}
                       </Text>
                       <Text
                         style={{
@@ -382,7 +382,7 @@ function ModalUnlockStory({
                           fontWeight: 'bold',
                           fontSize: 16,
                         }}>
-                        {data?.title_en}
+                        {nextStory?.title_en}
                       </Text>
                     </View>
                   </View>
@@ -392,7 +392,7 @@ function ModalUnlockStory({
                       fontSize: 12,
                       marginTop: moderateScale(16),
                     }}>
-                    {data?.content_en?.slice(0, 130)}...
+                    {nextStory?.content_en[0]?.slice(0, 130)}...
                   </Text>
                 </View>
                 <TouchableOpacity
