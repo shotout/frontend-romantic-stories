@@ -32,7 +32,11 @@ import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
-import {getExploreStory, getStoryDetail, updateProfile} from '../../shared/request';
+import {
+  getExploreStory,
+  getStoryDetail,
+  updateProfile,
+} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
@@ -44,10 +48,10 @@ import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
-import { handleNativePayment, handlePayment } from '../../helpers/paywall';
-import { reloadUserProfile } from '../../utils/user';
+import {handleNativePayment, handlePayment} from '../../helpers/paywall';
+import {reloadUserProfile} from '../../utils/user';
 import ChecklistSvg from './../../assets/icons/checklist';
-import * as IAP from 'react-native-iap'
+import * as IAP from 'react-native-iap';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -56,11 +60,12 @@ const ExploreLibraryScreen = ({
   isPremium,
   handleSetSteps,
   handleSetStory,
+  handleNextStory,
   stepsTutorial,
   backgroundColor,
-  userProfile
+  userProfile,
 }) => {
-  console.log(JSON.stringify(userProfile))
+  console.log(JSON.stringify(userProfile));
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -72,12 +77,14 @@ const ExploreLibraryScreen = ({
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [items, setItems] = useState(null);
   const [selectStory, setSelectStory] = useState('');
-  const [price, setPrice] = useState('')
+  const [price, setPrice] = useState('');
   const showWatchAds = async () => {
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       setShowModalUnlock(false);
-      setTimeout(() => {
+      setTimeout(async () => {
+        const resp = await getStoryDetail(selectedStory?.id);
+        handleNextStory(resp.data);
         setShowUnlockedStory(true);
       }, 500);
     });
@@ -158,15 +165,15 @@ const ExploreLibraryScreen = ({
     };
     await updateProfile(payload);
     reloadUserProfile();
-   
   };
 
-  useEffect(async() => {
- const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
-      console.log('Products:', products);
-      setPrice(products[0].localizedPrice)
-      
-  }, [])
+  useEffect(async () => {
+    const products = await IAP.getProducts({
+      skus: ['unlock_story_1_week_only'],
+    });
+    console.log('Products:', products);
+    setPrice(products[0].localizedPrice);
+  }, []);
   const renderProgress = () => <StepHeader currentStep={6} />;
   const renderTutorial = () => {
     if (stepsTutorial === 4) {
@@ -288,7 +295,7 @@ const ExploreLibraryScreen = ({
                       if (userProfile?.data?.subscription?.plan?.id === 1) {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
-                      }else{
+                      } else {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       }
@@ -298,18 +305,19 @@ const ExploreLibraryScreen = ({
                       marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3 && (
-                      <LockFree
-                        height={16}
-                        width={55}
-                        style={{
-                          marginBottom: -20,
-                          marginTop: 4,
-                          marginLeft: 4,
-                          zIndex: 1,
-                        }}
-                      />
-                    )}
+                    {userProfile?.data?.subscription?.id != 2 &&
+                      userProfile?.data?.subscription?.id != 3 && (
+                        <LockFree
+                          height={16}
+                          width={55}
+                          style={{
+                            marginBottom: -20,
+                            marginTop: 4,
+                            marginLeft: 4,
+                            zIndex: 1,
+                          }}
+                        />
+                      )}
                     <Image
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
@@ -356,18 +364,15 @@ const ExploreLibraryScreen = ({
               <ScrollView horizontal>
                 {data?.category.map((itm: any, idx: number) => (
                   <Pressable
-                  onPress={() => {
-                    // if(userProfile?.data?.subscription?.plan?.id === 1){
-                    //   setShowModalUnlock(true)
-                    // }else{
-                    //   setShowModalUnlock(true)
-                      setSelectStory(itm.id)
-                      fetchUpdate()
-                    // }
-                   
-                   
-                  }
-                }
+                    onPress={() => {
+                      // if(userProfile?.data?.subscription?.plan?.id === 1){
+                      //   setShowModalUnlock(true)
+                      // }else{
+                      //   setShowModalUnlock(true)
+                      setSelectStory(itm.id);
+                      fetchUpdate();
+                      // }
+                    }}
                     style={{
                       width: 95,
                       marginRight: idx + 1 === data?.category?.length ? 0 : 16,
@@ -377,17 +382,21 @@ const ExploreLibraryScreen = ({
                       style={{
                         height: 18,
                         width: 18,
-                        backgroundColor:  itm.id === selectStory ? code_color.blueDark:  code_color.white,
+                        backgroundColor:
+                          itm.id === selectStory
+                            ? code_color.blueDark
+                            : code_color.white,
                         borderRadius: 15,
                         position: 'absolute',
                         top: 4,
                         right: 4,
                         zIndex: 1,
                         alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                       {itm.id === selectStory ? <ChecklistSvg  width={10}/> : null}
+                        justifyContent: 'center',
+                      }}>
+                      {itm.id === selectStory ? (
+                        <ChecklistSvg width={10} />
+                      ) : null}
                     </View>
                     {/* { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
                       <LockFree
@@ -447,18 +456,19 @@ const ExploreLibraryScreen = ({
                         idx + 1 === data?.most_share?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3 && (
-                      <LockFree
-                        height={16}
-                        width={55}
-                        style={{
-                          marginBottom: -20,
-                          marginTop: 4,
-                          marginLeft: 4,
-                          zIndex: 1,
-                        }}
-                      />
-                    )}
+                    {userProfile?.data?.subscription?.id != 2 &&
+                      userProfile?.data?.subscription?.id != 3 && (
+                        <LockFree
+                          height={16}
+                          width={55}
+                          style={{
+                            marginBottom: -20,
+                            marginTop: 4,
+                            marginLeft: 4,
+                            zIndex: 1,
+                          }}
+                        />
+                      )}
                     <Image
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,

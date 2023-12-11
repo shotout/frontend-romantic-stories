@@ -120,7 +120,7 @@ const MainScreen = ({
     useState(false);
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const isDarkMode = useColorScheme() === 'dark';
-  const flatListRef = useRef();
+  const pagerRef = useRef<PagerView>(null);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -254,6 +254,7 @@ const MainScreen = ({
   useEffect(() => {
     if (userStory) {
       setBook(userStory);
+      pagerRef.current?.setPage(0);
     }
   }, [userStory]);
 
@@ -606,6 +607,7 @@ const MainScreen = ({
         <PagerView
           style={{flex: 1}}
           initialPage={0}
+          ref={pagerRef}
           transitionStyle="curl"
           onPageSelected={e => onScroll(e)}>
           {dataBook?.content_en.map((dtb: any, index: number) => {

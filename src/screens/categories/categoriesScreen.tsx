@@ -21,35 +21,29 @@ import {
   ImageBackground,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 import {cover2, imgNotif, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
-import LockFree from '../../assets/icons/lockFree';
+import LockIcon from '../../assets/icons/lock';
+import Watch from './../../assets/icons/watch';
 import DescendingSvg from '../../assets/icons/descending.jsx';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import BackRight from '../../assets/icons/backRight';
+import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
 import {goBack, navigate} from '../../shared/navigationRef';
-import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
-import {
-  getExploreStory,
-  getListAvatarTheme,
-  getListCategory,
-  updateProfile,
-} from '../../shared/request';
+import {getListCategory, updateProfile} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
-import {handleSetSteps} from '../../store/defaultState/actions';
-import i18n from '../../i18n';
-import Button from '../../components/buttons/Button';
-import StepHeader from '../../layout/step/stepHeader';
-import {Switch} from 'react-native-gesture-handler';
 import {reloadUserProfile} from '../../utils/user';
 import ChecklistSvg from './../../assets/icons/checklist';
-const swipeupIcon = require('../../assets/lottie/swipe_up.json');
+import ModalUnlockPremium from '../../components/modal-unlock-premium';
+import {loadRewardedCategory} from '../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 
 const CategoriesScreen = ({
   colorTheme,
@@ -57,12 +51,19 @@ const CategoriesScreen = ({
   handleSetSteps,
   stepsTutorial,
   userProfile,
-  backgroundColor
+  backgroundColor,
 }) => {
   const [bgTheme, setBgTheme] = useState(colorTheme);
-
+  const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
   const [dataStory, setDataStory] = useState([]);
-  const [selectStory, setSelectStory] = useState('');
+  const [selectCategory, setSelectCategory] = useState(
+    userProfile?.category?.id,
+  );
+  const [nextCategory, setNextCategory] = useState();
+  const isPremium =
+    userProfile?.subscription?.plan?.id === 2 ||
+    userProfile?.subscription?.plan?.id === 3;
 
   useEffect(() => {
     fetchCategory();
@@ -77,14 +78,34 @@ const CategoriesScreen = ({
     }
   };
 
-  const fetchUpdate = async () => {
+  const fetchUpdate = async (id: any) => {
     const payload = {
       _method: 'PATCH',
-      category_id: selectStory,
+      category_id: id,
     };
     await updateProfile(payload);
     reloadUserProfile();
-    goBack()
+    goBack();
+  };
+
+  const showInterStialCategory = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewardedCategory();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert('Congrats! You have unlocked the selected Topic.', '', [
+            {
+              text: 'OK',
+              onPress: async () => fetchUpdate(nextCategory),
+            },
+          ]);
+        }
+        setLoadingAds(false);
+      },
+    );
   };
 
   return (
@@ -115,7 +136,9 @@ const CategoriesScreen = ({
             <BackRight fill={bgTheme} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
+            <Text
+              allowFontScaling={false}
+              style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
               Edit Categories
             </Text>
           </View>
@@ -127,8 +150,7 @@ const CategoriesScreen = ({
           />
         </View>
       </View>
-      <View
-        style={{height: '100%', flex: 0, backgroundColor: backgroundColor}}>
+      <View style={{height: '100%', flex: 0, backgroundColor: backgroundColor}}>
         <Text
           allowFontScaling={false}
           style={{
@@ -137,7 +159,7 @@ const CategoriesScreen = ({
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
             marginTop: moderateScale(30),
-            marginBottom: moderateScale(20)
+            marginBottom: moderateScale(20),
           }}>
           {'Select the Topics \n of your Stories'}
         </Text>
@@ -145,33 +167,28 @@ const CategoriesScreen = ({
         {dataStory.map(item => (
           <TouchableOpacity
             onPress={() => {
-              setSelectStory(item.id);
+              if (isPremium) {
+                setSelectCategory(item.id);
+              } else {
+                setNextCategory(item?.id);
+                setShowModalUnlock(true);
+              }
             }}
             style={{
               alignItems: 'center',
               marginVertical: 2,
-              // borderColor:
-              //   selectStory === item.id ? code_color.splash : 'white',
               padding: 2,
-              // borderWidth: 1,
-              // borderRadius: 10,
               justifyContent: 'center',
             }}>
             <Image
               source={{uri: `${BACKEND_URL}${item.image?.url}`}}
-              resizeMode="contain"
-              // source={{
-              //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
-              // }}
+              resizeMode="cover"
               style={{
                 width: moderateScale(Dimensions.get('window').width - 50),
-                height: moderateScale(85),
-                borderWidth: 2,
+                height: moderateScale(90),
+                borderWidth: 5,
                 borderRadius: 10,
-                borderColor:
-                selectStory === item.id ? code_color.splash : 'white',
-                // backgroundColor:
-                //   selectStory === item.name ? code_color.splash : 'white',
+                borderColor: selectCategory === item.id ? bgTheme : 'white',
               }}
             />
             <Text
@@ -186,25 +203,71 @@ const CategoriesScreen = ({
               }}>
               {item?.name}
             </Text>
-            <TouchableOpacity
-              onPress={() => setSelectStory(item.id)}
-              style={{
-                backgroundColor:
-                  selectStory === item.id ? code_color.splash : 'white',
-                borderRadius: 30,
-                width: 25,
-                height: 25,
-                position: 'absolute',
-                top: 35,
-                left: moderateScale(45),
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <ChecklistSvg />
-            </TouchableOpacity>
+            {isPremium ? (
+              <TouchableOpacity
+                style={{
+                  backgroundColor:
+                    selectCategory === item.id ? bgTheme : 'white',
+                  borderRadius: 30,
+                  width: 25,
+                  height: 25,
+                  position: 'absolute',
+                  top: 35,
+                  left: moderateScale(45),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <ChecklistSvg />
+              </TouchableOpacity>
+            ) : (
+              <>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 16,
+                    right: 30,
+                    backgroundColor: code_color.pink,
+                    borderRadius: 8,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 5,
+                    paddingVertical: 2,
+                  }}>
+                  <Watch fill={code_color.white} height={16} width={16} />
+                  <Text
+                    style={{
+                      color: backgroundColor,
+                      fontSize: 10,
+                      fontWeight: '700',
+                      marginLeft: 2,
+                    }}>
+                    Free
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor:
+                      selectCategory === item.id ? bgTheme : code_color.black,
+                    borderRadius: 30,
+                    width: 25,
+                    height: 25,
+                    position: 'absolute',
+                    top: 35,
+                    left: moderateScale(45),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  {selectCategory === item.id ? (
+                    <ChecklistSvg />
+                  ) : (
+                    <LockIcon height={14} width={14} />
+                  )}
+                </TouchableOpacity>
+              </>
+            )}
           </TouchableOpacity>
         ))}
-    
+
         <TouchableOpacity
           style={{
             backgroundColor: code_color.yellow,
@@ -213,22 +276,36 @@ const CategoriesScreen = ({
             height: 52,
             borderRadius: 12,
             marginTop: 30,
-            marginHorizontal: 20
+            marginHorizontal: 20,
             // width: '100%',
           }}
           onPress={() => {
-            fetchUpdate()
+            fetchUpdate(selectCategory);
           }}>
-          <Text style={{
-                position: 'absolute',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 16,
-                fontWeight: 'bold',
-                color: code_color.black,
-              }}>Save</Text>
+          <Text
+            style={{
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: code_color.black,
+            }}>
+            Save
+          </Text>
         </TouchableOpacity>
       </View>
+      <ModalUnlockPremium
+        isVisible={showModalUnlock}
+        onClose={() => setShowModalUnlock(false)}
+        title={'Unlock this topic\r\nfor free now'}
+        desc={
+          'Watch a Video to unlock this Topic\r\nfor Free or go UNLIMITED\r\nfor full access!'
+        }
+        onSuccess={showInterStialCategory}
+        Icon={() => <UnlockCategoryIcon style={{marginBottom: 20}} />}
+        isLoadingAds={loadingAds}
+      />
     </SafeAreaView>
   );
 };
