@@ -6859,6 +6859,11 @@ react-native-snap-carousel@latest:
     prop-types "^15.6.1"
     react-addons-shallow-compare "15.6.2"
 
+react-native-star-rating-widget@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/react-native-star-rating-widget/-/react-native-star-rating-widget-1.7.3.tgz#ef60283e26ad951b37d2205618b60f835776aba6"
+  integrity sha512-5XY05vezOs21S+jSItgLHH5LoIRpCrSKbELPnkW+ct8yt0Nqs7w3HzeHMhX9TDW2BT7fkcT3rW6x9AVFKLb3zA==
+
 react-native-svg-transformer@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/react-native-svg-transformer/-/react-native-svg-transformer-1.1.0.tgz"

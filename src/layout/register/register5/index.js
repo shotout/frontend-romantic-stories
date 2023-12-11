@@ -19,6 +19,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import {opacity, useSharedValue} from 'react-native-reanimated';
 import {getListAvatar} from '../../../shared/request';
 import { BACKEND_URL } from '../../../shared/static';
+import { moderateScale } from 'react-native-size-matters';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
@@ -84,8 +85,8 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(160),
             }}
             mode="parallax"
             // style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center'}}
@@ -97,7 +98,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
                   opacity: 1,
                 }}>
                 <Image
-                  blurRadius={progressValue != index ? 2 : null}
+                  // blurRadius={progressValue != index ? 2 : null}
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -105,6 +106,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
                     {
                       height: '100%',
                       width: '10000%',
+                      opacity: progressValue != index ? 0.7 : null
                       // backgroundColor: 'rgba( 0, 0, 0, 0.1 )',
                     },
                   ]}

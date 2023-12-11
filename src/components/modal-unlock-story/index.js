@@ -27,6 +27,7 @@ function ModalUnlockStory({
   onWatchAds,
   onUnlock,
   onGetUnlimit,
+  price
 }) {
   const handleClose = () => {
     onClose();
@@ -157,7 +158,7 @@ function ModalUnlockStory({
               </View>
 
               <Text style={{color: code_color.white, textAlign: 'center'}}>
-                [PRICE] for 1 week access
+                [{price}] for 1 week access
               </Text>
             </Pressable>
             <Pressable

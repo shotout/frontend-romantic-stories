@@ -13,7 +13,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {book} from '../../assets/icons';
 import WatchIcon from '../../assets/icons/watch';
 import BookLockIcon from '../../assets/icons/bookLock';
-
+import * as IAP from 'react-native-iap'
 function ModalNewStory({
   isVisible,
   onClose,
@@ -22,8 +22,7 @@ function ModalNewStory({
   onGetUnlimit,
   userProfile
 }) {
-  
-
+  const [price, setPrice] = useState('')
   const [timeLeft, setTimeLeft] = useState({
     hour: 0,
     minutes: 0,
@@ -56,6 +55,12 @@ function ModalNewStory({
   const handleClose = () => {
     onClose();
   };
+  useEffect(async() => {
+  const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice)
+      
+  }, [])
 
   return (
     <Modal
@@ -287,7 +292,7 @@ function ModalNewStory({
                     </Text>
                   </View>
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                    Unlock 1 more Story directly for [PRICE]
+                    Unlock 1 more Story directly for [{price}]
                   </Text>
                 </Pressable>
                 <View

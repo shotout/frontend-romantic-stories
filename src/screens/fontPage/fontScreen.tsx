@@ -324,8 +324,12 @@ const FontScreen = ({
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => {
-                if (!isPremium) {
+                if (userProfile?.data?.subscription?.plan?.id === 1) {
                   setModalUnlockBg(true);
+                }else{
+                  setBg(
+                   code_color.white
+                  );
                 }
               }}
               style={{
@@ -344,7 +348,7 @@ const FontScreen = ({
                   borderRadius: 30,
                 }}
               />
-              {!isPremium && bg_color !== code_color.white ? (
+              {userProfile?.data?.subscription?.plan?.id === 1 && bg_color !== code_color.white ? (
                 <>
                   <View
                     style={{
@@ -389,8 +393,12 @@ const FontScreen = ({
 
             <Pressable
               onPress={() => {
-                if (!isPremium) {
+                if (userProfile?.data?.subscription?.plan?.id === 1) {
                   setModalUnlockBg(true);
+                }else{
+                  setBg(
+                    code_color.blackDark
+                   );
                 }
               }}
               style={{
@@ -411,7 +419,7 @@ const FontScreen = ({
                   borderRadius: 30,
                 }}
               />
-              {!isPremium && bg_color !== code_color.blackDark ? (
+              {userProfile?.data?.subscription?.plan?.id === 1 && bg_color !== code_color.blackDark ? (
                 <>
                   <View
                     style={{
@@ -548,7 +556,7 @@ const FontScreen = ({
                 key={index}
                 onPress={() => {
                   setNextFont(item);
-                  if (isPremium) {
+                  if (userProfile?.data?.subscription?.plan?.id != 1) {
                     handleSetFontFamily(item.value);
                   } else {
                     setModalUnlockFont(true);
@@ -580,7 +588,7 @@ const FontScreen = ({
                   }}>
                   {item.name}
                 </Text>
-                {!isPremium && fontSelect.value !== item.value ? (
+                {userProfile?.data?.subscription?.plan?.id === 1 && fontSelect.value !== item.value ? (
                   <>
                     <View
                       style={{
@@ -652,7 +660,7 @@ const FontScreen = ({
               <TouchableOpacity
                 onPress={() => {
                   setSelectedBgTheme(item);
-                  if (isPremium) {
+                  if (userProfile?.data?.subscription?.plan?.id != 1) {
                     handleBgThemeColor(item.code);
                   } else {
                     setModalUnlockTheme(true);
@@ -671,7 +679,7 @@ const FontScreen = ({
                   justifyContent: 'center',
                 }}>
                 {bgTheme === item.code ? <ChecklistSvg /> : null}
-                {!isPremium && bgTheme !== item.code ? (
+                {userProfile?.data?.subscription?.plan?.id === 1 && bgTheme !== item.code ? (
                   <>
                     <View
                       style={{

@@ -12,8 +12,9 @@ import {moderateScale} from 'react-native-size-matters';
 import {successPurchase} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
 import LoveIcon from '../../assets/icons/loveOutline';
+import { BACKEND_URL } from '../../shared/static';
 
-function ModalSuccessPurchase({isVisible, onClose}) {
+function ModalSuccessPurchase({isVisible, onClose, nextStory}) {
   const handleClose = () => {
     onClose();
   };
@@ -87,7 +88,9 @@ function ModalSuccessPurchase({isVisible, onClose}) {
             }}>
             <View style={{flexDirection: 'row'}}>
               <Image
-                source={cover1}
+                source={{
+                  uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                }}
                 resizeMode="contain"
                 style={{
                   width: 65,
@@ -103,7 +106,7 @@ function ModalSuccessPurchase({isVisible, onClose}) {
                     fontWeight: 400,
                     fontSize: 14,
                   }}>
-                  [Story category]
+  {nextStory?.category.name}
                 </Text>
                 <Text
                   style={{
@@ -112,7 +115,7 @@ function ModalSuccessPurchase({isVisible, onClose}) {
                     fontWeight: 'bold',
                     fontSize: 16,
                   }}>
-                  [Suggested story this user never read before]
+                    {nextStory?.title_en}
                 </Text>
                
               </View>

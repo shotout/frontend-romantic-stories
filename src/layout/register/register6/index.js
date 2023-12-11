@@ -29,9 +29,10 @@ import LoveSvg from '../../../assets/icons/bottom/love.jsx';
 import FontSvg from '../../../assets/icons/bottom/font.jsx';
 import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
-import { getListTheme } from '../../../shared/request';
+import {getListTheme} from '../../../shared/request';
 import ChecklistSvg from './../../../assets/icons/checklist';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
+import Speaker from '../../../assets/icons/speaker';
 
 export default function Register5({gender, setTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
@@ -86,7 +87,7 @@ export default function Register5({gender, setTheme}) {
           borderBottomLeftRadius: moderateScale(50),
         }}>
         <Text
-        allowFontScaling={false}
+          allowFontScaling={false}
           style={{
             color: code_color.blueDark,
             fontSize: moderateScale(28),
@@ -106,9 +107,55 @@ export default function Register5({gender, setTheme}) {
             // padding: 10,
             backgroundColor: code_color.white,
           }}>
-          <Text allowFontScaling={false} style={{fontSize: moderateScale(9), paddingHorizontal: (10), paddingTop: (10)}}>
-            Fistful of Reefer: A Pulpy Action Series from Schism 8
-          </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flex: 1}}>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  fontSize: moderateScale(6),
+                  color: code_color.grey,
+                  paddingHorizontal: 10,
+                  paddingTop: 10,
+                }}>
+                [Story category]
+              </Text>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  fontSize: moderateScale(7),
+                  paddingHorizontal: 10,
+                  paddingTop: 5,
+                }}>
+                {`[New Suggested story this\n user never read before]`}
+              </Text>
+            </View>
+            <View style={{justifyContent: 'flex-end', marginRight: 5}}>
+              <TouchableOpacity
+                style={{
+                  padding: 1,
+                  paddingHorizontal: 7,
+                  borderRadius: 20,
+                  backgroundColor: code_color.blueDark,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Speaker width={8} />
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 6,
+                    color: code_color.white,
+                    marginLeft: 2,
+                  }}>
+                  Listen
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           <View
             style={{
               borderWidth: 0.5,
@@ -116,11 +163,24 @@ export default function Register5({gender, setTheme}) {
               marginVertical: moderateScale(10),
             }}
           />
-          <Text allowFontScaling={false}
-            style={{fontSize: moderateScale(7.5), textAlign: 'justify', paddingHorizontal: moderateScale(10)}}>
+          <Text
+            allowFontScaling={false}
+            style={{
+              fontSize: moderateScale(7.5),
+              textAlign: 'justify',
+              paddingHorizontal: moderateScale(10),
+              lineHeight: 13
+            }}>
             {' '}
-            Srishti and Sameer were childhood friends. Both were neighbors till class 7. After that, Srishti's parents shifted to another side of the same city. They both cried a lot that day while she was leaving. They were still in touch with one another.
-            Even their friendship was popular among students and teachers. They had played together. They learned things together. They went to the same preschool, the same school. Srishti was crying on her first day, but Sameer made her smile. They both had the same interests in painting. They had shared many moments. Those moments were very special to them.
+            Srishti and Sameer were childhood friends. Both were neighbors till
+            class 7. After that, Srishti's parents shifted to another side of
+            the same city. They both cried a lot that day while she was leaving.
+            They were still in touch with one another. Even their friendship was
+            popular among students and teachers. They had played together. They
+            learned things together. They went to the same preschool, the same
+            school. Srishti was crying on her first day, but Sameer made her
+            smile. They both had the same interests in painting. They had shared
+            many moments. Those moments were very special to them.
           </Text>
 
           <Image
@@ -160,8 +220,16 @@ export default function Register5({gender, setTheme}) {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <item.image width={moderateScale(13)} height={moderateScale(13)} fill={colorsDefault} />
-                  <Text allowFontScaling={false} style={{fontSize: moderateScale(6)}}>{item.name}</Text>
+                  <item.image
+                    width={moderateScale(13)}
+                    height={moderateScale(13)}
+                    fill={colorsDefault}
+                  />
+                  <Text
+                    allowFontScaling={false}
+                    style={{fontSize: moderateScale(6)}}>
+                    {item.name}
+                  </Text>
                 </View>
               );
             })}
@@ -189,11 +257,10 @@ export default function Register5({gender, setTheme}) {
                   borderColor: code_color.grey,
                   marginHorizontal: moderateScale(10),
                   alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                  {colorsDefault === item.theme_color ? <ChecklistSvg /> : null}
-                </TouchableOpacity>
+                  justifyContent: 'center',
+                }}>
+                {colorsDefault === item.theme_color ? <ChecklistSvg /> : null}
+              </TouchableOpacity>
             );
           })}
         </View>

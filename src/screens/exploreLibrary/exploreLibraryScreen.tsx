@@ -32,7 +32,7 @@ import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
-import {getExploreStory, getStoryDetail} from '../../shared/request';
+import {getExploreStory, getStoryDetail, updateProfile} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
@@ -45,6 +45,9 @@ import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import { handleNativePayment, handlePayment } from '../../helpers/paywall';
+import { reloadUserProfile } from '../../utils/user';
+import ChecklistSvg from './../../assets/icons/checklist';
+import * as IAP from 'react-native-iap'
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -68,7 +71,8 @@ const ExploreLibraryScreen = ({
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [items, setItems] = useState(null);
-
+  const [selectStory, setSelectStory] = useState('');
+  const [price, setPrice] = useState('')
   const showWatchAds = async () => {
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
@@ -147,6 +151,22 @@ const ExploreLibraryScreen = ({
   useEffect(() => {
     handleRestart();
   }, [items]);
+  const fetchUpdate = async () => {
+    const payload = {
+      _method: 'PATCH',
+      category_id: selectStory,
+    };
+    await updateProfile(payload);
+    reloadUserProfile();
+   
+  };
+
+  useEffect(async() => {
+ const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice)
+      
+  }, [])
   const renderProgress = () => <StepHeader currentStep={6} />;
   const renderTutorial = () => {
     if (stepsTutorial === 4) {
@@ -188,6 +208,7 @@ const ExploreLibraryScreen = ({
           setShowModalUnlock(false);
           handleNativePayment('unlock_story_1_week_only');
         }}
+        price={price}
         onGetUnlimit={() => handleUnlimited()}
       />
       <View
@@ -264,7 +285,10 @@ const ExploreLibraryScreen = ({
                 {data?.most_read.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (!isPremium) {
+                      if (userProfile?.data?.subscription?.plan?.id === 1) {
+                        setShowModalUnlock(true);
+                        setSelectedStory(itm);
+                      }else{
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       }
@@ -331,7 +355,19 @@ const ExploreLibraryScreen = ({
               </Text>
               <ScrollView horizontal>
                 {data?.category.map((itm: any, idx: number) => (
-                  <View
+                  <Pressable
+                  onPress={() => {
+                    // if(userProfile?.data?.subscription?.plan?.id === 1){
+                    //   setShowModalUnlock(true)
+                    // }else{
+                    //   setShowModalUnlock(true)
+                      setSelectStory(itm.id)
+                      fetchUpdate()
+                    // }
+                   
+                   
+                  }
+                }
                     style={{
                       width: 95,
                       marginRight: idx + 1 === data?.category?.length ? 0 : 16,
@@ -341,15 +377,19 @@ const ExploreLibraryScreen = ({
                       style={{
                         height: 18,
                         width: 18,
-                        backgroundColor: code_color.white,
+                        backgroundColor:  itm.id === selectStory ? code_color.blueDark:  code_color.white,
                         borderRadius: 15,
                         position: 'absolute',
                         top: 4,
                         right: 4,
                         zIndex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
-                    />
-                    { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
+                    >
+                       {itm.id === selectStory ? <ChecklistSvg  width={10}/> : null}
+                    </View>
+                    {/* { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
                       <LockFree
                         height={16}
                         width={55}
@@ -360,7 +400,7 @@ const ExploreLibraryScreen = ({
                           zIndex: 1,
                         }}
                       />
-                    )}
+                    )} */}
                     <Image
                       source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
                       resizeMode="cover"
@@ -370,7 +410,7 @@ const ExploreLibraryScreen = ({
                       style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
                       {itm.name}
                     </Text>
-                  </View>
+                  </Pressable>
                 ))}
               </ScrollView>
             </View>

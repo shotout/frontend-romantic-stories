@@ -78,6 +78,7 @@ import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {Step1, Step2, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
 import { reloadUserProfile } from '../../utils/user';
+import ModalStoryRating from '../../components/modal-story-rating';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -109,6 +110,7 @@ const MainScreen = ({
     visible: false,
     step: stepsTutorial,
   });
+  const [showRating, setRating] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalDay, setShowModalDay] = useState(false);
@@ -293,6 +295,7 @@ const MainScreen = ({
     //   Math.max(Math.floor(offsetY / height + 0.5), 0),
     //   dataBook?.length || 0,
     // );
+    // setShowModalCongrats(true)
     const pageNumber = e.nativeEvent.position;
     const timeoutLove = setTimeout(() => {
       if (pageNumber === dataBook?.content_en?.length - 1) {
@@ -643,7 +646,8 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
-    const data = await handlePayment('in_app');
+   
+    const data = await handleNativePayment('unlock_story_1_week_only');
     if (data) {
       setShowModalNewStory(false);
       const payload = {
@@ -652,6 +656,8 @@ const MainScreen = ({
       };
       await updateProfile(payload);
       reloadUserProfile();
+      const res = await getStoryList();
+      handleNextStory(res.data)
       setShowModalSuccessPurchase(true);
     } else {
       setShowModalNewStory(false);
@@ -885,6 +891,17 @@ const MainScreen = ({
     setShowModal(false)
     setBook(nextStory)
   }
+
+  const handleSuccessRating = async() => {
+    setRating(false)
+    if (isPremiumStory || isPremiumAudio) {
+                const res = await getStoryList();
+                handleNextStory(res.data)
+                setShowModal(true);
+              } else {
+                setShowModalNewStory(true);
+              }
+  }
   const handleLater = async() => {
     const response = await addStory(nextStory.id);
     setShowModalDay(false)
@@ -924,18 +941,16 @@ const MainScreen = ({
             onClose={() => setShowModalCongrats(false)}
             onGotIt={async() => {
               setShowModalCongrats(false);
-              if (isPremiumStory || isPremiumAudio) {
-                const res = await getStoryList();
-                handleNextStory(res.data)
-                setShowModal(true);
-              } else {
-                setShowModalNewStory(true);
+              if(userStory?.is_rating === null){
+                setRating(true)
               }
             }}
           />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
-            onClose={() => setShowModalSuccessPurchase(false)}
+            onClose={() => {
+              setShowModalSuccessPurchase(false)}
+            }
           />
           {renderTutorial()}
           {renderFlatList()}
@@ -976,17 +991,18 @@ const MainScreen = ({
             readLater={readLater}
             handleRead={() => handleRead()}
           />
+           <ModalStoryRating
+            isVisible={showRating}
+            onClose={() => setRating(false)}
+            handleSuccess={() => handleSuccessRating()}
+          />
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
             onGotIt={async() => {
               setShowModalCongrats(false);
-              if (isPremiumStory || isPremiumAudio) {
-                const res = await getStoryList();
-                handleNextStory(res.data)
-                setShowModal(true);
-              } else if(userProfile?.data?.subscription?.plan?.id === 1) {
-                setShowModalNewStory(true);
+              if(userStory?.is_rating === null){
+                setRating(true)
               }
             }}
           />
@@ -1005,7 +1021,11 @@ const MainScreen = ({
           />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
-            onClose={() => setShowModalSuccessPurchase(false)}
+            onClose={() => {
+              setBook(nextStory)
+              setShowModalSuccessPurchase(false)}
+            }
+             
           />
           <ModalGetPremium
             isVisible={showModalGetPremium}
