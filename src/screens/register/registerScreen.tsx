@@ -49,6 +49,7 @@ import {ONBOARDING_COMPLETE, eventTracking} from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handlePayment} from '../../helpers/paywall';
 import {moderateScale} from 'react-native-size-matters';
+import Purchasely from 'react-native-purchasely';
 
 
 function RegisterScreen({
@@ -85,7 +86,9 @@ function RegisterScreen({
     theme_id: 1,
     language_id: 2,
     often: 3,
-    timezone: 'Asia/Jakarta'
+    timezone: 'Asia/Jakarta',
+    notif_enable: 1,
+    purchasely_id: '',
   });
 
   useEffect(() => {
@@ -95,10 +98,12 @@ function RegisterScreen({
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
     const fcmToken = await messaging().getToken();
+    const id = await Purchasely.getAnonymousUserId();
     setFormValues({
       ...values,
       device_id: data,
       fcm_token: fcmToken,
+      purchasely_id: id
     });
   };
 

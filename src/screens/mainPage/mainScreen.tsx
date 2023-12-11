@@ -293,6 +293,7 @@ const MainScreen = ({
     //   Math.max(Math.floor(offsetY / height + 0.5), 0),
     //   dataBook?.length || 0,
     // );
+    setShowModalNewStory(true)
     const pageNumber = e.nativeEvent.position;
     const timeoutLove = setTimeout(() => {
       if (pageNumber === dataBook?.content_en?.length - 1) {
@@ -643,7 +644,8 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
-    const data = await handlePayment('in_app');
+   
+    const data = await handleNativePayment('unlock_story_1_week_only');
     if (data) {
       setShowModalNewStory(false);
       const payload = {
@@ -652,6 +654,8 @@ const MainScreen = ({
       };
       await updateProfile(payload);
       reloadUserProfile();
+      const res = await getStoryList();
+      handleNextStory(res.data)
       setShowModalSuccessPurchase(true);
     } else {
       setShowModalNewStory(false);
@@ -935,7 +939,9 @@ const MainScreen = ({
           />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
-            onClose={() => setShowModalSuccessPurchase(false)}
+            onClose={() => {
+              setShowModalSuccessPurchase(false)}
+            }
           />
           {renderTutorial()}
           {renderFlatList()}
@@ -1005,7 +1011,11 @@ const MainScreen = ({
           />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
-            onClose={() => setShowModalSuccessPurchase(false)}
+            onClose={() => {
+              setBook(nextStory)
+              setShowModalSuccessPurchase(false)}
+            }
+             
           />
           <ModalGetPremium
             isVisible={showModalGetPremium}
