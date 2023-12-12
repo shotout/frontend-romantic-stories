@@ -282,8 +282,7 @@ function MyTabs(props) {
   };
   const love = require('../assets/lottie/ripple.json');
   // alert(props?.backgroundColor)
- 
- 
+
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -313,11 +312,9 @@ function MyTabs(props) {
           tabBarIcon: ({color, focused}) => (
             <TouchableOpacity
               onPress={() => {
-              
-                if (props.stepsTutorial === 0 ) {
+                if (props.stepsTutorial === 0) {
                   handleFetchSave();
                 }
-                
               }}
               style={{
                 alignItems: 'center',
@@ -413,27 +410,51 @@ function MyTabs(props) {
             backgroundColor={props?.backgroundColor}
           />
         )}
-        // component={Library}
         options={({route}) => ({
-          tabBarIcon: ({color, focused}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
-              }}>
-              <LibrarySvg width={20} height={20} fill={props?.colorTheme} />
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: 11,
-                  marginTop: 2,
-                }}>
-                MY LIBRARY
-              </Text>
-            </View>
-          ),
+          tabBarIcon: ({color, focused}) => {
+            if (props.stepsTutorial === 0) {
+              return (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}>
+                  <LibrarySvg width={20} height={20} fill={props?.colorTheme} />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: focused ? props?.colorTheme : props?.colorTheme,
+                      fontSize: 11,
+                      marginTop: 2,
+                    }}>
+                    MY LIBRARY
+                  </Text>
+                </View>
+              );
+            } else {
+              return (
+                <TouchableOpacity
+                  onPress={() => {}}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}>
+                  <LibrarySvg width={20} height={20} fill={props?.colorTheme} />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: focused ? props?.colorTheme : props?.colorTheme,
+                      fontSize: 11,
+                      marginTop: 2,
+                    }}>
+                    MY LIBRARY
+                  </Text>
+                </TouchableOpacity>
+              );
+            }
+          },
         })}
         listeners={({route, navigation}) => ({
           state: state => {
@@ -455,25 +476,54 @@ function MyTabs(props) {
         )}
         options={({route}) => ({
           headerShown: false,
-          tabBarIcon: ({color, focused}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
-              }}>
-              <FontSvg width={20} height={20} fill={props?.colorTheme} />
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: 11,
-                  marginTop: 2,
-                }}>
-                TEXT
-              </Text>
-            </View>
-          ),
+          tabBarIcon: ({color, focused}) => {
+            if (props.stepsTutorial === 0) {
+              return (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}>
+                  <FontSvg width={20} height={20} fill={props?.colorTheme} />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: focused ? props?.colorTheme : props?.colorTheme,
+                      fontSize: 11,
+                      marginTop: 2,
+                    }}>
+                    TEXT
+                  </Text>
+                </View>
+              );
+            } else {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (props.stepsTutorial === 0) {
+                      handleSomeAction('Font');
+                    }
+                  }}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}>
+                  <FontSvg width={20} height={20} fill={props?.colorTheme} />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: focused ? props?.colorTheme : props?.colorTheme,
+                      fontSize: 11,
+                      marginTop: 2,
+                    }}>
+                    TEXT
+                  </Text>
+                </TouchableOpacity>
+              );
+            }
+          },
         })}
         listeners={({route, navigation}) => ({
           state: state => {
@@ -494,8 +544,11 @@ function MyTabs(props) {
         )}
         options={({route}) => ({
           headerShown: false,
-          tabBarIcon: ({color, focused}) => (
-            <View
+          tabBarIcon: ({color, focused}) => {
+            if(props.stepsTutorial === 0){
+              return(
+                <View
+             
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -512,7 +565,37 @@ function MyTabs(props) {
                 SETTINGS
               </Text>
             </View>
-          ),
+              )
+            }else{
+              return(
+                <TouchableOpacity
+              onPress={() => {
+                if (props.stepsTutorial === 0) {
+                  handleSomeAction('Settings');
+                }
+              }}
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                display: 'flex',
+              }}>
+              <SettingSvg width={20} height={20} fill={props?.colorTheme} />
+              <Text
+                allowFontScaling={false}
+                style={{
+                  color: focused ? props?.colorTheme : props?.colorTheme,
+                  fontSize: 11,
+                  marginTop: 2,
+                }}>
+                SETTINGS
+              </Text>
+            </TouchableOpacity>
+              )
+            }
+
+          }
+            
+          
         })}
         listeners={({route, navigation}) => ({
           state: state => {
