@@ -16,7 +16,7 @@ import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import AnimatedLottieView from 'lottie-react-native';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
-import {ava1, imgLove} from '../../assets/images';
+import {ava1, bgStory1, bgStory2, bgStory3, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
 import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
@@ -28,7 +28,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {handleNativePayment} from '../../helpers/paywall';
 import FastImage from 'react-native-fast-image';
 import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
-import { reloadUserProfile } from '../../utils/user';
+import {reloadUserProfile} from '../../utils/user';
 
 const loveAnimate = require('../../assets/lottie/love.json');
 
@@ -66,14 +66,13 @@ export default function QuotesContent({
     'I am just your favorite\r\nclient," she giggled. It was too cute.\r\n"That you are." I chuckled and leaned back on my chair.\r\n"So, when are you going to teach me all those beach words?" she asked.\r\n"I am available anytime, beleza."\r\n"Okay, how about Saturday?" she asked, "I have already bought a really beautiful\r\nswimsuit and I can\'t wait to put it on."\r\nI smiled at her and nodded. I was definitely excited to take her out and show her\r\naround the city and the beach, especially the nightlife.\r\n"You are going to love it."\r\n"I will, especially if I\'m with you," she smiled and blushed. I wondered whether\r\nshe was just being flirty or she meant it\r\n"And who says you can\'t have your fun while learning? " I raised an eyebrow.',
   ];
   // Menghapus spasi dan baris baru (enter)
-  
-  console.log(JSON.stringify(item))
+
+  console.log(JSON.stringify(item));
   // Remove <p> and </p> tags from the modified text
   const manipulatedResponse = item.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
- 
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive]);
@@ -83,7 +82,7 @@ export default function QuotesContent({
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
-      setTimeout(async() => {
+      setTimeout(async () => {
         setShowAudio(true);
         const payload = {
           _method: 'PATCH',
@@ -105,7 +104,7 @@ export default function QuotesContent({
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
       setShow(false);
-      setTimeout(async() => {
+      setTimeout(async () => {
         setShowAudio(true);
         const payload = {
           _method: 'PATCH',
@@ -166,7 +165,21 @@ export default function QuotesContent({
     reloadUserProfile();
     setShowAudio(false);
     navigate('Media');
-  }
+  };
+
+  const getBackgroundStory = pac => {
+    switch (pac) {
+      case 1:
+        return bgStory1;
+      case 4:
+        return bgStory2;
+      case 7:
+        return bgStory3;
+      default:
+        return bgStory1;
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -180,7 +193,7 @@ export default function QuotesContent({
         onClose={() => setShowAudio(false)}
         title={title}
         handleListen={() => {
-          handleSuccessAudio()
+          handleSuccessAudio();
         }}
       />
       <ModalAudioUnlock
@@ -235,7 +248,7 @@ export default function QuotesContent({
             />
           </View>
         ) : null}
-        <View style={{flexDirection: 'row', flex: 0, alignItems: 'center',}}>
+        <View style={{flexDirection: 'row', flex: 0, alignItems: 'center'}}>
           <View style={{flex: 1}}>
             <Text
               allowFontScaling={false}
@@ -264,10 +277,13 @@ export default function QuotesContent({
           </View>
 
           <TouchableOpacity
-            onPress={async() => {
+            onPress={async () => {
               if (themeUser?.subscription?.plan?.id === 3) {
                 navigate('Media');
-              }else if (themeUser?.subscription?.plan?.id === 2 && themeUser?.subscription?.audio_limit != 0) {
+              } else if (
+                themeUser?.subscription?.plan?.id === 2 &&
+                themeUser?.subscription?.audio_limit != 0
+              ) {
                 const payload = {
                   _method: 'PATCH',
                   is_audio: 1,
@@ -276,7 +292,7 @@ export default function QuotesContent({
                 await updateProfile(payload);
                 reloadUserProfile();
                 navigate('Media');
-              }else{
+              } else {
                 setShow(true);
               }
             }}
@@ -334,24 +350,12 @@ export default function QuotesContent({
                     selectedContent: content,
                     start:
                       themeUser?.language_id === '2'
-                        ? item?.substring(
-                            selectionStart - 50,
-                            selectionStart,
-                          )
-                        : item?.substring(
-                            selectionStart - 50,
-                            selectionStart,
-                          ),
+                        ? item?.substring(selectionStart - 50, selectionStart)
+                        : item?.substring(selectionStart - 50, selectionStart),
                     end:
                       themeUser?.content_en === '2'
-                        ? item?.substring(
-                            selectionEnd - 50,
-                            selectionEnd,
-                          )
-                        : item?.substring(
-                            selectionEnd - 50,
-                            selectionEnd,
-                          ),
+                        ? item?.substring(selectionEnd - 50, selectionEnd)
+                        : item?.substring(selectionEnd - 50, selectionEnd),
                     title:
                       themeUser?.content_en === '2'
                         ? item?.title_id
@@ -360,9 +364,7 @@ export default function QuotesContent({
                   eventTracking(QUOTE_SHARED);
                 }}
                 value={
-                  themeUser?.language_id === '2'
-                    ? formattedText
-                    : formattedText
+                  themeUser?.language_id === '2' ? formattedText : formattedText
                 }
               />
             </View>
@@ -401,7 +403,7 @@ export default function QuotesContent({
                   marginBottom: -100,
                   height: 110,
                   width: 100,
-                  left: '0%',
+                  left: 20,
                   zIndex: 1,
                   bottom: -10,
                 }}>
@@ -442,14 +444,13 @@ export default function QuotesContent({
 
               <View>
                 <ImageBackground
-                  source={{
-                    uri: `${BACKEND_URL}/${themeUser?.category?.image?.url}`,
-                  }}
+                  source={getBackgroundStory(pageActive)}
                   resizeMode="contain"
                   style={{
                     borderRadius: 100,
                     height: 100,
                     marginBottom: 15,
+                    marginTop: 4,
                   }}>
                   <View
                     style={{
@@ -482,7 +483,7 @@ export default function QuotesContent({
                   width: 100,
                   height: 150,
                   left: '10%',
-                  zIndex: 1,
+                  zIndex: -1,
                 }}>
                 <FastImage
                   source={{
@@ -504,7 +505,7 @@ export default function QuotesContent({
                   width: 100,
                   height: 150,
                   left: '35%',
-                  zIndex: 1,
+                  zIndex: -1,
                 }}>
                 <FastImage
                   source={{
@@ -527,14 +528,14 @@ export default function QuotesContent({
                   bottom: 20,
                   left: -40,
                   position: 'absolute',
-                  zIndex: 2,
+                  zIndex: -1,
                   display: isAnimationStart === true ? 'flex' : 'none',
                 }}
                 autoPlay={isAnimationStart === true}
                 duration={3000}
                 loop={false}
               />
-              <View>
+              <View style={{zIndex: -2}}>
                 <ImageBackground
                   source={imgLove}
                   resizeMode="contain"
@@ -542,6 +543,7 @@ export default function QuotesContent({
                     width: '75%',
                     height: 130,
                     marginLeft: 20,
+                    zIndex: -1,
                   }}>
                   <View
                     style={{

@@ -50,6 +50,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handlePayment} from '../../helpers/paywall';
 import {moderateScale} from 'react-native-size-matters';
 import Purchasely from 'react-native-purchasely';
+import { SafeAreaView } from 'react-native';
 
 
 function RegisterScreen({
@@ -59,7 +60,8 @@ function RegisterScreen({
   handleSetColorTheme,
   handleSetFontFamily,
   handleSetStory,
-  handleSetSteps
+  handleSetSteps,
+  userStory
 }) {
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
@@ -93,7 +95,9 @@ function RegisterScreen({
 
   useEffect(() => {
     fetchDeviceId();
+    
   }, []);
+
 
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
@@ -166,9 +170,9 @@ function RegisterScreen({
       handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
       await AsyncStorage.setItem('isTutorial', 'yes');
+      eventTracking(ONBOARDING_COMPLETE);
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      eventTracking(ONBOARDING_COMPLETE);
       navigate('Bottom');
       handleSetSteps(0);
     } catch (error) {
@@ -256,6 +260,7 @@ function RegisterScreen({
     } else if (stepRegister === 6) {
       return (
         <Register6
+          userStory={userStory}
           gender={values.gender}
           setTheme={text => {
             handleChange('theme_id', text);
@@ -278,9 +283,7 @@ function RegisterScreen({
         barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    
         {stepRegister != 8 ? (
           <View
             style={{
@@ -370,7 +373,9 @@ function RegisterScreen({
             ) : null}
           </View>
         )}
-
+       <View
+        style={{flex: 1}}
+        >
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
             allowFontScaling={false}
@@ -398,34 +403,7 @@ function RegisterScreen({
               bottom: moderateScale(10),
               width: '80%',
             }}>
-            {stepRegister <= 2 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  handleChange('gender', null);
-                  setStepRegister(stepRegister + 1);
-                }}
-                style={{
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  allowFontScaling={false}
-                  style={{
-                    color: code_color.grey,
-                    fontSize: moderateScale(18),
-                    fontFamily: 'Roboto',
-                    textAlign: 'center',
-                    marginVertical: moderateScale(15),
-                  }}>
-                  {i18n.t(
-                    stepRegister === 1
-                      ? 'register.preferNottosay'
-                      : 'register.skipfrnw',
-                  )}
-                </Text>
-              </TouchableOpacity>
-            ) : null}
+         
             {stepRegister != 1 ? (
               <Button
                 style={{
@@ -452,6 +430,35 @@ function RegisterScreen({
                 }
               />
             ) : null}
+               {stepRegister <= 2 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  handleChange('gender', null);
+                  setStepRegister(stepRegister + 1);
+                }}
+                style={{
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  marginBottom: stepRegister === 1 ? moderateScale(100) : moderateScale(40)
+                }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: code_color.grey,
+                    fontSize: moderateScale(18),
+                    fontFamily: 'Roboto',
+                    textAlign: 'center',
+                    marginVertical: moderateScale(15),
+                  }}>
+                  {i18n.t(
+                    stepRegister === 1
+                      ? 'register.preferNottosay'
+                      : 'register.skipfrnw',
+                  )}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
             {stepRegister === 8 ? (
               <TouchableOpacity
                 onPress={() => onSubmit()}
@@ -459,6 +466,7 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
+                  marginBottom: moderateScale(60)
                 }}>
                 <Text
                   style={{
@@ -474,7 +482,7 @@ function RegisterScreen({
             ) : null}
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </View>
   );
 }

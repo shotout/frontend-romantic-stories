@@ -99,7 +99,7 @@ function ModalEditProfile({
   const menuEditList = [
     {
       title: 'Edit Name',
-      icon: <IdCardSvg width={24} height={24} fill={ backgroundColor === '#2C3439' ? 'white' : code_color.blackDark} />,
+      icon: <IdCardSvg width={24} height={24} fill={ backgroundColor === '#2C3439' ? 'white' : 'white'} />,
       value: userProfile.name,
     },
     {
@@ -115,7 +115,7 @@ function ModalEditProfile({
     {
       title: 'Select partner character',
       icon: <PartnerSvg width={20} height={20}    />,
-      value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
+      value: getAvatarMale,
     },
     // {
     //   title: 'Select language',
@@ -147,7 +147,7 @@ function ModalEditProfile({
               }}>
               {edit.title}
             </Text>
-            {edit.title.includes('character') ? (
+            {edit.title.includes('your') ? (
               <View
                 style={{
                   width: 40,
@@ -164,13 +164,41 @@ function ModalEditProfile({
                   style={{
                     width: 40,
                     height: 150,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 4
+                    right: 0
                   }}
                 />
               </View>
-            ) : (
+            ) : edit.title.includes('partner') ? (
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  alignItems: 'center'
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}${edit.value}`}}
+                  style={{
+                    width: 40,
+                    height: 150,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: 3,
+                    right: 0
+                  }}
+                />
+              </View>
+            ) :
+             (
               <Text
                 style={{
                   color: code_color.black,

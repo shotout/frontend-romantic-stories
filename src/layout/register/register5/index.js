@@ -71,7 +71,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
             defaultIndex={1}
             data={dataAva}
@@ -86,7 +86,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
             }}
             modeConfig={{
               parallaxScrollingScale: 0.78,
-              parallaxScrollingOffset: moderateScale(160),
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             // style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center'}}

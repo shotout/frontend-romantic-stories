@@ -57,7 +57,7 @@ const Step7 = ({handleNext, stepsTutorial}) => {
             borderRadius: 20,
             marginVertical: 10,
           }}
-          title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
+          title={'Start reading'}
           onPress={handleNext}
         />
       </Animatable.View>

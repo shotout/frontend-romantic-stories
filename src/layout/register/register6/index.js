@@ -34,7 +34,7 @@ import ChecklistSvg from './../../../assets/icons/checklist';
 import {moderateScale} from 'react-native-size-matters';
 import Speaker from '../../../assets/icons/speaker';
 
-export default function Register5({gender, setTheme}) {
+export default function Register5({gender, setTheme, userStory}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
 
   const [colorsBg, setColorsBg] = useState([]);
@@ -93,9 +93,9 @@ export default function Register5({gender, setTheme}) {
             fontSize: moderateScale(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: moderateScale(15),
+            marginTop: moderateScale(25),
           }}>
-          {'Choose your \n color theme'}
+          {'Choose color\n theme'}
         </Text>
 
         <View
@@ -169,7 +169,8 @@ export default function Register5({gender, setTheme}) {
               fontSize: moderateScale(7.5),
               textAlign: 'justify',
               paddingHorizontal: moderateScale(10),
-              lineHeight: 13
+              lineHeight: 13,
+              fontFamily: 'Robotto'
             }}>
             {' '}
             Srishti and Sameer were childhood friends. Both were neighbors till

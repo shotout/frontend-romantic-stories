@@ -22,6 +22,7 @@ import {
   paper,
   settings,
   speaker,
+  illustration_notif
 } from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
@@ -78,7 +79,7 @@ export default function Register8({activeNotif}) {
             marginTop: 80,
           }}>
           <TouchableOpacity onPress={() => activeNotif()}>
-            <Image source={speaker} />
+            <Image source={illustration_notif}  style={{ width: 200, height: 200}}/>
           </TouchableOpacity>
         </View>
       </View>

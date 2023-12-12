@@ -156,7 +156,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
             defaultIndex={1}
             data={dataAva}
@@ -165,8 +165,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             renderItem={({item, index}) => (

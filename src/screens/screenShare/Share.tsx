@@ -645,13 +645,13 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     else {
       handleSetSteps(stepsTutorial + 1);
       {
-        stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
+        stepsTutorial === 8 ? AsyncStorage.removeItem('isTutorial') : null;
       }
       {
-        stepsTutorial === 9 ? handleSetSteps(0) : null;
+        stepsTutorial === 8 ? handleSetSteps(0) : null;
       }
       {
-        stepsTutorial === 9 ? goBack() : null;
+        stepsTutorial === 8 ? goBack() : null;
       }
       setIsSwipingRight(true);
     }
@@ -768,7 +768,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               handleNext={() => {
                 handleSetSteps(stepsTutorial + 1);
                 setVisible(false);
-                if (stepsTutorial === 9) {
+                if (stepsTutorial === 8) {
                   AsyncStorage.removeItem('isTutorial');
                   handleSetSteps(0);
                   goBack();

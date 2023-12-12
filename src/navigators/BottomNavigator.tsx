@@ -224,7 +224,7 @@ function MyTabs(props) {
      
     }
   };
-  const love = require('../assets/lottie/urgent.json');
+  const love = require('../assets/lottie/ripple.json');
   // alert(props?.backgroundColor)
   return (
     <Tab.Navigator
