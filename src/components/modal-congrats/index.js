@@ -43,6 +43,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
 import ProgressBar from '../ProgressBar';
 import { BACKEND_URL } from '../../shared/static';
+import { moderateScale } from 'react-native-size-matters';
 
 function ModalCongrats({isVisible, onClose, onGotIt,userProfile}) {
 
@@ -173,7 +174,7 @@ function ModalCongrats({isVisible, onClose, onGotIt,userProfile}) {
                   <ImageBackground
                     source={imgCongrat}
                     resizeMode="contain"
-                    style={{width: '100%', height: '60%', }}
+                    style={{width: '100%', height: '60%',  }}
                   >
                       <Text
                       style={{
@@ -181,8 +182,10 @@ function ModalCongrats({isVisible, onClose, onGotIt,userProfile}) {
                         fontSize: 18,
                         color: code_color.white,
                         textAlign: 'center',
-                       
-                        marginTop: 115
+                        position: 'absolute',
+                        top: moderateScale(-14),
+                        left: '45%',
+                        marginTop: moderateScale(115)
 
                         
                       }}>{userProfile?.data?.user_level?.level?.value_desc}</Text>
