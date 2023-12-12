@@ -29,7 +29,7 @@ import Oldest from '../../assets/icons/oldest';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 function ModalSorting({isVisible, onClose, items, colorTheme}) {
-  const [select, setSelect] = useState('');
+  const [select, setSelect] = useState('A to Z');
   const [selectItem, setSelectItem] = useState(null);
   const [listSort, setSort] = useState([
     {
@@ -65,11 +65,15 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
     setSelect(item.name);
     setSelectItem(item);
     items(item);
+    handleClose()
   };
   const renderList = () => (
     <View style={{alignItems: 'center', flex: 1}}>
       {listSort.map(item => (
-        <View
+        <Pressable
+        onPress={() => {
+          handleSelect(item);
+        }}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -104,7 +108,7 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
               <ChecklistSvg fill={code_color.white} height={14} width={14} />
             ) : null}
           </Pressable>
-        </View>
+        </Pressable>
       ))}
     </View>
   );

@@ -68,15 +68,24 @@ import ModalNewStory from '../../components/modal-new-story';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {sizing} from '../../shared/styling';
 import {Step4} from '../../layout/tutorial';
-
+import LockFree from '../../assets/icons/lockFree';
+import ModalUnlockStory from '../../components/modal-unlock-story';
+import { loadRewarded } from '../../helpers/loadReward';
+import { RewardedAdEventType } from 'react-native-google-mobile-ads';
+import ModalSuccessPurchase from '../../components/modal-success-purchase';
+import * as IAP from 'react-native-iap';
 const LibraryScreen = ({
   colorTheme,
   handleSomeAction,
   stepsTutorial,
   handleSetSteps,
   backgroundColor,
-  handleSetStory
+  handleSetStory,
+  userProfile,
+  handleNextStory,
+  nextStory
 }) => {
+  const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
   const [showModalNew, setShowModalNew] = useState(false);
@@ -91,9 +100,24 @@ const LibraryScreen = ({
   const [listLibrary, setListLibrary] = useState([]);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
+  
   const [showModalNewStory, setShowModalNewStory] = useState(false);
+  const [showModalSuccessPurchase, setShowModalSuccessPurchase] = useState(false);
+  
   const [products, setProducts] = useState([]);
-  const productIds = ['unlock_story_1_week_only'];
+  const [selectedStory, setSelectedStory] = useState(null);
+  const [price, setPrice] = useState('');
+  const showWatchAds = async () => {
+    const advert = await loadRewarded();
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+      setShowModalUnlock(false);
+      setTimeout(async () => {
+        const resp = await getStoryDetail(selectedStory?.id);
+        handleNextStory(resp.data);
+        setShowModalSuccessPurchase(true);
+      }, 500);
+    });
+  };
   // useEffect(() => {
   //   const initializeConnection = async () => {
   //     try {
@@ -130,24 +154,27 @@ const LibraryScreen = ({
   //     purchaseError.remove();
   //   }
   // }, []);
-  // const fetchProducts = async () => {
-  //   try {
-  //     const products = await getProducts({
-  //       skus: Platform.select({
-  //         ios: ['unlock_story_1_week_only'],
-  //         android: ['com.rniap.product100', 'com.rniap.product200'],
-  //       })
-  //     });
-  //     setProducts(products);
-  //   } catch (error) {
-  //     console.error("Error occurred while fetching products", error.message);
-  //   }
-  // };
-const handleRead = async(item) => {
-  const resp = await getStoryDetail(item?.item?.id);
-  handleSetStory(resp.data)
-  navigate('Main')
-}
+  useEffect(async () => {
+    const products = await IAP.getProducts({
+      skus: ['unlock_story_1_week_only'],
+    });
+    console.log('Products:', products);
+    setPrice(products[0].localizedPrice);
+  }, [])
+
+  const handleRead = async item => {
+    setSelectedStory(item?.item)
+    if(userProfile?.data?.subscription?.plan?.id != 1){
+      const resp = await getStoryDetail(item?.item?.id);
+      handleSetStory(resp.data);
+      navigate('Main');
+    }else{
+      const resp = await getStoryDetail(item?.item?.id);
+      handleNextStory(resp.data)
+      setShowModalUnlock(true)
+    }
+   
+  };
   const renderCollect = item => (
     <View
       style={{
@@ -179,11 +206,20 @@ const handleRead = async(item) => {
             paddingVertical: 10,
             paddingRight: 15,
           }}>
-          <Image
+          <ImageBackground
             source={{uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`}}
-            style={{width: 100, height: 100}}
-            resizeMode="contain"
-          />
+            style={{
+              width: 100,
+              height: 100,
+              alignItems: 'center',
+              paddingTop: 5,
+            }}
+            resizeMode="contain">
+            {userProfile?.data?.subscription?.plan?.id != 2 &&
+             userProfile?.data?.subscription?.plan?.id != 3 && (
+                <LockFree height={16} width={55}  />
+              )}
+          </ImageBackground>
           <View
             style={{
               marginLeft: 0,
@@ -200,7 +236,7 @@ const handleRead = async(item) => {
                     fontSize: 12,
                     marginBottom: 5,
                   }}>
-                  {item?.item?.title_en}
+                  {item?.item?.category?.name}
                 </Text>
                 <Text
                   allowFontScaling={false}
@@ -210,8 +246,7 @@ const handleRead = async(item) => {
                     fontWeight: 400,
                     textAlign: 'left',
                   }}>
-                    
-                  {item?.item?.content_en.replace(/<\/?p>/g, '').substring(0, 48)}
+                  {item?.item?.title_en}
                 </Text>
               </View>
               <TouchableOpacity
@@ -270,7 +305,9 @@ const handleRead = async(item) => {
             <Text
               allowFontScaling={false}
               style={{
-                color: backgroundColor, paddingVertical: 15}}>
+                color: backgroundColor,
+                paddingVertical: 15,
+              }}>
               {item?.item?.name}
             </Text>
           </View>
@@ -409,8 +446,9 @@ const handleRead = async(item) => {
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <EmptyLibrary />
       <Text
-         style={{
-          color: backgroundColor === '#2C3439' ? code_color.black : code_color.white,
+        style={{
+          color:
+            backgroundColor === '#2C3439' ? code_color.black : code_color.white,
           fontSize: 14,
           fontWeight: '400',
           textAlign: 'center',
@@ -427,6 +465,26 @@ const handleRead = async(item) => {
 
   return (
     <View>
+       <ModalUnlockStory
+        isVisible={showModalUnlock}
+        onClose={() => setShowModalUnlock(false)}
+        data={selectedStory}
+        onWatchAds={showWatchAds}
+        onUnlock={() => {
+          setShowModalUnlock(false);
+          handleNativePayment('unlock_story_1_week_only');
+        }}
+        price={price}
+        onGetUnlimit={() => handleUnlimited()}
+      />
+      <ModalSuccessPurchase
+            isVisible={showModalSuccessPurchase}
+            onClose={() => {
+              setShowModalSuccessPurchase(false);
+              handleSetStory(nextStory)
+              navigate('Main');
+            }}
+          />
       <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
         <ModalLibrary
           isVisible={showModal}
@@ -472,7 +530,7 @@ const handleRead = async(item) => {
             handleNativePayment('unlock_story_1_week_only');
           }}
           onGetUnlimit={() => {
-            handleUnlimited()
+            handleUnlimited();
           }}
         />
         <View

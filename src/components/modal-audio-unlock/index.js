@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   View,
@@ -29,6 +29,7 @@ import {navigate} from '../../shared/navigationRef';
 import BookLockIcon from '../../assets/icons/bookLock';
 import { handlePayment } from '../../helpers/paywall';
 import CloseSvg from '../../assets/icons/close';
+import * as IAP from 'react-native-iap';
 function ModalAudioStory({
   isVisible,
   onClose,
@@ -40,9 +41,19 @@ function ModalAudioStory({
   userProfile
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
+  const [price, setPrice] = useState('');
+  const [price2, setPrice2] = useState('');
   const handleClose = () => {
     onClose();
   };
+  useEffect(async () => {
+    const products = await IAP.getProducts({
+      skus: ['unlock_10_audio_stories', 'unlock_5_audio_stories'],
+    });
+    console.log('Products:', products);
+    setPrice(products[0].localizedPrice);
+    setPrice2(products[1].localizedPrice);
+  }, []);
 
   const AddCollection = async () => {
     if (collect != '') {
@@ -359,7 +370,7 @@ function ModalAudioStory({
                  
                   
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  Get 10 Audio Stories for [price]
+                  {`Get 10 Audio Stories for  [${price}]`}
                   </Text>
                 </Pressable>
               <Pressable
@@ -389,7 +400,7 @@ function ModalAudioStory({
                   </View>
                   
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  Get 50 Audio Stories for [price]
+                  {`Get 50 Audio Stories for [${price2}]`}
                   </Text>
                 </Pressable>
               <View

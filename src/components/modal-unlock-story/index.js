@@ -88,6 +88,7 @@ function ModalUnlockStory({
               <View
                 style={{
                   marginLeft: moderateScale(10),
+                  width: 200
                 }}>
                 <Text
                   style={{

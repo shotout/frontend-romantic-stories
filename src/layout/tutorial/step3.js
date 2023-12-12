@@ -45,7 +45,7 @@ const Step3 = ({handleNext}) => {
           lineHeight: 25,
         }}>
         {
-          'You can also enjoy any of\r\nthe Stories as Audio-\r\nBook. Relax while we\r\nread it out for you'
+          'You can also enjoy any of\r\nthe Stories as Audio-\r\nbook. Relax while we\r\nread it out for you'
         }
       </Animatable.Text>
       <Animatable.View delay={2500} animation={'fadeIn'} duration={1000}>

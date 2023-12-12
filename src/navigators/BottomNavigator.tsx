@@ -10,6 +10,8 @@ import {
   Alert,
   Dimensions,
   Modal,
+  Animated,
+  Easing,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -53,7 +55,11 @@ const Home = () => {
 const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
   const [menu, setMenu] = useState([
     {
-      image: LoveOutline,
+      image:  userProfile?.userStory?.is_collection === null ? (
+        <LoveOutline width={20} height={20} fill={userProfile?.colorTheme} />
+      ) : (
+        <LoveSvg width={20} height={20} fill={userProfile?.colorTheme} />
+      ),
       name: 'SAVE',
       value: 'Main',
     },
@@ -143,7 +149,11 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     ? userProfile?.colorTheme
                     : null,
               }}>
-              <item.image
+                {item.name === 'SAVE' && userProfile?.userStory?.is_collection === null ? (
+                  <LoveOutline width={20} height={20} fill={userProfile?.colorTheme} />
+                ) : item.name === 'SAVE' && userProfile?.userStory?.is_collection !== null ? (
+                  <LoveSvg width={20} height={20} fill={userProfile?.colorTheme} />
+                ) : <item.image
                 width={20}
                 height={20}
                 fill={
@@ -152,6 +162,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     : userProfile?.colorTheme
                 }
               />
+                }
+              
               <Text
                 allowFontScaling={false}
                 style={{
@@ -182,6 +194,8 @@ function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
   const [visibleModal, setVisibleModal] = React.useState(false)
+  const [imgHeartsTranslateY] = useState(new Animated.Value(0));
+  const [imgHeartsTranslateX] = useState(new Animated.Value(0));
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -193,6 +207,32 @@ function MyTabs(props) {
   const handleSomeAction = value => {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
+  };
+  const handleFetchSaveAnim = async () => {
+    // ... (your existing code)
+
+    // Start the downward animation when the image is saved
+    Animated.timing(imgHeartsTranslateY, {
+      toValue: 1000, // Change this value to control how much it moves downwards
+      duration: 1500, // Change this value to control the duration of the animation
+      useNativeDriver: false, // Use a custom easing function
+     
+    }).start(() => {
+      // Animation finished, reset the translateY value for the next use
+      imgHeartsTranslateY.setValue(0)
+      // imgHeartsTranslateY.setValue(50);
+    });
+    Animated.timing(imgHeartsTranslateX, {
+      toValue: 1000, // Change this value to control how much it moves downwards
+      duration: 1000, // Change this value to control the duration of the animation
+      useNativeDriver: false,
+      easing: Easing.bezier(0, 0.1, -0.50, 0.1), // Use a custom easing function
+
+    }).start(() => {
+      // Animation finished, reset the translateY value for the next use
+      imgHeartsTranslateX.setValue(0)
+      // imgHeartsTranslateY.setValue(50);
+    });
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
@@ -206,9 +246,12 @@ function MyTabs(props) {
         }
       }
       setVisibleModal(true)
+     setTimeout(() => {
+      handleFetchSaveAnim()
+     }, 300);
       setTimeout(() => {
         setVisibleModal(false)
-      }, 1000);
+      }, 1500);
       
     }else{
       const data = await deleteMyStory(props.userStory?.id);
@@ -274,7 +317,19 @@ function MyTabs(props) {
           justifyContent: 'center',
         }}>
           <View style={{backgroundColor: 'black', padding: 20, borderRadius: 20, alignItems: 'center'}}>
-            <Image source={imgHearts} resizeMode='contain' style={{width: 50, height: 50}} />
+          <Animated.View
+                  style={{
+                    transform: [{ translateY: imgHeartsTranslateY },   { translateX: imgHeartsTranslateX}, ],
+                    
+                  }}
+                >
+                  
+                  <Image
+                    source={imgHearts}
+                    resizeMode="contain"
+                    style={{ width: 50, height: 50 }}
+                  />
+                </Animated.View>
           <Text allowFontScaling={false} style={{color: code_color.white, textAlign: 'center', fontSize: 15}}>{`Story saved &\nadded to library`}</Text>
           </View>
         

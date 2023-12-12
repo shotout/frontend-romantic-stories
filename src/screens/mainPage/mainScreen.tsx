@@ -849,6 +849,7 @@ const MainScreen = ({
     advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       async (reward) =>  {
+        setShowModalNewStory(false);
           if (reward) {
             const res = await getStoryList();
             handleNextStory(res.data)
@@ -874,7 +875,6 @@ const MainScreen = ({
   }
   
   const showWatchAds = async () => {
-    setShowModalNewStory(false);
     // setLoadingAds(true);
     const advert = await loadRewarded();
     advert.addAdEventListener(
