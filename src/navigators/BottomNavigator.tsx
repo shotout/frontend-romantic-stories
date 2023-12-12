@@ -40,7 +40,13 @@ import i18n from '../i18n';
 import StepHeader from '../layout/step/stepHeader';
 import {handleSetSteps, handleSetStory} from '../store/defaultState/actions';
 import store from '../store/configure-store';
-import {addStory, deleteMyStory, getStoryDetail, getStoryList} from '../shared/request';
+import {
+  addStory,
+  deleteMyStory,
+  getStoryDetail,
+  getStoryList,
+} from '../shared/request';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -55,11 +61,12 @@ const Home = () => {
 const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
   const [menu, setMenu] = useState([
     {
-      image:  userProfile?.userStory?.is_collection === null ? (
-        <LoveOutline width={20} height={20} fill={userProfile?.colorTheme} />
-      ) : (
-        <LoveSvg width={20} height={20} fill={userProfile?.colorTheme} />
-      ),
+      image:
+        userProfile?.userStory?.is_collection === null ? (
+          <LoveOutline width={20} height={20} fill={userProfile?.colorTheme} />
+        ) : (
+          <LoveSvg width={20} height={20} fill={userProfile?.colorTheme} />
+        ),
       name: 'SAVE',
       value: 'Main',
     },
@@ -104,7 +111,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
         bottom: 0,
         flexDirection: 'column',
       }}>
-      <View
+      <SafeAreaView
         style={{
           position: 'absolute',
           top:
@@ -115,8 +122,11 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           height: '100%',
           flex: 0,
         }}>
-        <MainScreen pressScreen={() => handleSomeAction('Main')} route={undefined} />
-      </View>
+        <MainScreen
+          pressScreen={() => handleSomeAction('Main')}
+          route={undefined}
+        />
+      </SafeAreaView>
       <View
         style={{
           flexDirection: 'row',
@@ -149,21 +159,32 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     ? userProfile?.colorTheme
                     : null,
               }}>
-                {item.name === 'SAVE' && userProfile?.userStory?.is_collection === null ? (
-                  <LoveOutline width={20} height={20} fill={userProfile?.colorTheme} />
-                ) : item.name === 'SAVE' && userProfile?.userStory?.is_collection !== null ? (
-                  <LoveSvg width={20} height={20} fill={userProfile?.colorTheme} />
-                ) : <item.image
-                width={20}
-                height={20}
-                fill={
-                  item.value === isBottomBarVisible
-                    ? code_color.white
-                    : userProfile?.colorTheme
-                }
-              />
-                }
-              
+              {item.name === 'SAVE' &&
+              userProfile?.userStory?.is_collection === null ? (
+                <LoveOutline
+                  width={20}
+                  height={20}
+                  fill={userProfile?.colorTheme}
+                />
+              ) : item.name === 'SAVE' &&
+                userProfile?.userStory?.is_collection !== null ? (
+                <LoveSvg
+                  width={20}
+                  height={20}
+                  fill={userProfile?.colorTheme}
+                />
+              ) : (
+                <item.image
+                  width={20}
+                  height={20}
+                  fill={
+                    item.value === isBottomBarVisible
+                      ? code_color.white
+                      : userProfile?.colorTheme
+                  }
+                />
+              )}
+
               <Text
                 allowFontScaling={false}
                 style={{
@@ -193,9 +214,9 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
 function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
-  const [visibleModal, setVisibleModal] = React.useState(false)
+  const [visibleModal, setVisibleModal] = React.useState(false);
   const [imgHeartsTranslateY] = useState(new Animated.Value(0));
-  const [imgHeartsTranslateX] = useState(new Animated.Value(0));
+  const [imgHeartsTranslateX] = useState(new Animated.Value(-50));
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -213,62 +234,56 @@ function MyTabs(props) {
 
     // Start the downward animation when the image is saved
     Animated.timing(imgHeartsTranslateY, {
-      toValue: 1000, // Change this value to control how much it moves downwards
+      toValue: 400, // Change this value to control how much it moves downwards
       duration: 1500, // Change this value to control the duration of the animation
       useNativeDriver: false, // Use a custom easing function
-     
     }).start(() => {
       // Animation finished, reset the translateY value for the next use
-      imgHeartsTranslateY.setValue(0)
+      imgHeartsTranslateY.setValue(0);
       // imgHeartsTranslateY.setValue(50);
     });
     Animated.timing(imgHeartsTranslateX, {
-      toValue: 1000, // Change this value to control how much it moves downwards
-      duration: 1000, // Change this value to control the duration of the animation
+      toValue: 10, // Change this value to control how much it moves downwards
+      duration: 10, // Change this value to control the duration of the animation
       useNativeDriver: false,
-      easing: Easing.bezier(0, 0.1, -0.50, 0.1), // Use a custom easing function
-
+      easing: Easing.bezier(-0.1, -0.2, 0.5, 2),
     }).start(() => {
       // Animation finished, reset the translateY value for the next use
-      imgHeartsTranslateX.setValue(0)
+      imgHeartsTranslateX.setValue(-25);
       // imgHeartsTranslateY.setValue(50);
     });
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
       const response = await addStory(props.userStory?.id);
-      if(response.status === 'success'){
+      if (response.status === 'success') {
         try {
           const resp = await getStoryDetail(props.userStory?.id);
           store.dispatch(handleSetStory(resp.data));
-        } catch (error) {
-        
-        }
+        } catch (error) {}
       }
-      setVisibleModal(true)
-     setTimeout(() => {
-      handleFetchSaveAnim()
-     }, 300);
+      setVisibleModal(true);
       setTimeout(() => {
-        setVisibleModal(false)
+        handleFetchSaveAnim();
+      }, 300);
+      setTimeout(() => {
+        setVisibleModal(false);
       }, 1500);
-      
-    }else{
+    } else {
       const data = await deleteMyStory(props.userStory?.id);
-     
-      if(data.status === 'success'){
+
+      if (data.status === 'success') {
         try {
           const resp = await getStoryDetail(props.userStory?.id);
           store.dispatch(handleSetStory(resp.data));
-        } catch (error) {
-        
-        }
+        } catch (error) {}
       }
-     
     }
   };
   const love = require('../assets/lottie/ripple.json');
   // alert(props?.backgroundColor)
+ 
+ 
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -278,7 +293,8 @@ function MyTabs(props) {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: props?.colorTheme,
-        tabBarInactiveTintColor: props?.backgroundColor === '#2C3439' ? 'white' : '#C4C4C4',
+        tabBarInactiveTintColor:
+          props?.backgroundColor === '#2C3439' ? 'white' : '#C4C4C4',
         headerShown: false,
         headerStyle: {
           backgroundColor: '#f2f2f2',
@@ -297,44 +313,61 @@ function MyTabs(props) {
           tabBarIcon: ({color, focused}) => (
             <TouchableOpacity
               onPress={() => {
-                handleFetchSave();
+              
+                if (props.stepsTutorial === 0 ) {
+                  handleFetchSave();
+                }
+                
               }}
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
                 // display: !onhideBottom ? 'flex' : 'none',
               }}>
-                <Modal
-      visible={visibleModal}
-      animationType="fade"
-      transparent
-      onDismiss={() => setVisibleModal(false)}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <View style={{backgroundColor: 'black', padding: 20, borderRadius: 20, alignItems: 'center'}}>
-          <Animated.View
+              <Modal
+                visible={visibleModal}
+                animationType="fade"
+                transparent
+                onDismiss={() => setVisibleModal(false)}>
+                <View
                   style={{
-                    transform: [{ translateY: imgHeartsTranslateY },   { translateX: imgHeartsTranslateX}, ],
-                    
-                  }}
-                >
-                  
-                  <Image
-                    source={imgHearts}
-                    resizeMode="contain"
-                    style={{ width: 50, height: 50 }}
-                  />
-                </Animated.View>
-          <Text allowFontScaling={false} style={{color: code_color.white, textAlign: 'center', fontSize: 15}}>{`Story saved &\nadded to library`}</Text>
-          </View>
-        
-          </View>
-          </Modal>
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: 'black',
+                      padding: 20,
+                      borderRadius: 20,
+                      alignItems: 'center',
+                    }}>
+                    <Animated.View
+                      style={{
+                        transform: [
+                          {translateY: imgHeartsTranslateY},
+                          {translateX: imgHeartsTranslateX},
+                        ],
+                      }}>
+                      <Image
+                        source={imgHearts}
+                        resizeMode="contain"
+                        style={{width: 50, height: 50}}
+                      />
+                    </Animated.View>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        textAlign: 'center',
+                        fontSize: 15,
+                      }}>
+                      {'Story saved &\nadded to library'}
+                    </Text>
+                  </View>
+                </View>
+              </Modal>
               {props?.stepsTutorial === 2 ? (
                 <View style={{position: 'absolute', bottom: -20}}>
                   <AnimatedLottieView
@@ -374,7 +407,11 @@ function MyTabs(props) {
       <Tab.Screen
         name="Library"
         children={() => (
-          <Library userProfile={props} stepsTutorial={props.stepsTutorial}  backgroundColor={props?.backgroundColor}/>
+          <Library
+            userProfile={props}
+            stepsTutorial={props.stepsTutorial}
+            backgroundColor={props?.backgroundColor}
+          />
         )}
         // component={Library}
         options={({route}) => ({
@@ -409,7 +446,13 @@ function MyTabs(props) {
 
       <Tab.Screen
         name="Font"
-        children={() => <Library userProfile={props} stepsTutorial={undefined}  backgroundColor={props?.backgroundColor}/>}
+        children={() => (
+          <Library
+            userProfile={props}
+            stepsTutorial={undefined}
+            backgroundColor={props?.backgroundColor}
+          />
+        )}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -442,7 +485,13 @@ function MyTabs(props) {
       />
       <Tab.Screen
         name="Settings"
-        children={() => <Library userProfile={props} stepsTutorial={undefined} backgroundColor={props?.backgroundColor} />}
+        children={() => (
+          <Library
+            userProfile={props}
+            stepsTutorial={undefined}
+            backgroundColor={props?.backgroundColor}
+          />
+        )}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => (
@@ -503,7 +552,7 @@ class MyTabsComponent extends Component {
       stepsTutorial,
       forceUpdate: this.forceComponentUpdate,
       userStory,
-      backgroundColor
+      backgroundColor,
     };
     return <MyTabs {...tapProps} />;
   }

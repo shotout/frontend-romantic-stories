@@ -56,6 +56,7 @@ export default function Register5({gender, setTheme, userStory}) {
       name: 'SETTINGS',
     },
   ]);
+  const text = `Supporting myself during summer was actually pretty easy. As people started to\r\nromanticize Brazil once again, they started to like the language and aim to learn it, and\r\nbeing a good English speaker and native Portuguese speaker, I decided to offer private\r\nlessons. To my delight, I have always had genuine clients who paid me really well, and\r\nmost of them were old people too. My latest client, however, a long term, was my age\r\nand she was just... my type.\r\nShe had a beautiful smile and her body was to die for, which she often used to\r\nher advantage to distract me,`
 
   useEffect(() => {
     fetchCategory();
@@ -117,7 +118,7 @@ export default function Register5({gender, setTheme, userStory}) {
                   paddingHorizontal: 10,
                   paddingTop: 10,
                 }}>
-                [Story category]
+                Relationship
               </Text>
               <Text
                 allowFontScaling={false}
@@ -126,7 +127,7 @@ export default function Register5({gender, setTheme, userStory}) {
                   paddingHorizontal: 10,
                   paddingTop: 5,
                 }}>
-                {`[New Suggested story this\n user never read before]`}
+                Jealous Portuguese Teacher
               </Text>
             </View>
             <View style={{justifyContent: 'flex-end', marginRight: 5}}>
@@ -173,15 +174,7 @@ export default function Register5({gender, setTheme, userStory}) {
               fontFamily: 'Robotto'
             }}>
             {' '}
-            Srishti and Sameer were childhood friends. Both were neighbors till
-            class 7. After that, Srishti's parents shifted to another side of
-            the same city. They both cried a lot that day while she was leaving.
-            They were still in touch with one another. Even their friendship was
-            popular among students and teachers. They had played together. They
-            learned things together. They went to the same preschool, the same
-            school. Srishti was crying on her first day, but Sameer made her
-            smile. They both had the same interests in painting. They had shared
-            many moments. Those moments were very special to them.
+            {text}
           </Text>
 
           <Image

@@ -485,11 +485,13 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
+    handleSetSteps(0);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
+    AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+      alert(isFinishTutorial)
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true);
         // setTutorial({
