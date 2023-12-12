@@ -485,7 +485,6 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-  
     // handleSetSteps(0);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
@@ -959,6 +958,8 @@ const MainScreen = ({
               setShowModalCongrats(false);
               if(userStory?.is_rating === null){
                 setRating(true)
+              }else{
+                handleSuccessRating()
               }
             }}
           />
@@ -1019,6 +1020,8 @@ const MainScreen = ({
               setShowModalCongrats(false);
               if(userStory?.is_rating === null){
                 setRating(true)
+              }else{
+                handleSuccessRating()
               }
             }}
           />
