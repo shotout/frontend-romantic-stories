@@ -26,11 +26,20 @@ import {
 } from '../../../assets/icons/app-icon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
+import {loadRewardedAppIcon} from '../../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 
-function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme, backgroundColor}) {
+function ModalChangeIcon({
+  isVisible,
+  onClose,
+  isPremium,
+  colorTheme,
+  backgroundColor,
+}) {
   const [selectIcon, setSelectIcon] = useState('first');
   const [selectedIcon, setSelectedIcon] = useState('');
   const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
 
   useEffect(() => {
     const getCustomIcon = async () => {
@@ -107,6 +116,24 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme, backgroundC
     }, 1000);
   };
 
+  const showIntersialAppIcon = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewardedAppIcon();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          setShowModalUnlock(false);
+          setTimeout(() => {
+            handleChangeIcon(null);
+          }, 500);
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
+
   const handleClose = () => {
     if (typeof onClose === 'function') {
       onClose();
@@ -127,7 +154,9 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme, backgroundC
           'Watch a Video to unlock this App Icon for Free or go UNLIMITED to\r\nunlock everything!'
         }
         Icon={() => <UnlockIcon style={{marginBottom: 20}} />}
-        onSuccess={() => handleChangeIcon(null)}
+        // onSuccess={() => handleChangeIcon(null)}
+        onSuccess={() => showIntersialAppIcon()}
+        isLoadingAds={loadingAds}
       />
       <View
         style={{
@@ -174,7 +203,10 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme, backgroundC
       }}>
       <Text
         style={{
-          color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,
+          color:
+            backgroundColor === code_color.blackDark
+              ? 'white'
+              : code_color.blackDark,
           fontSize: 17,
           marginTop: 10,
           lineHeight: 24,

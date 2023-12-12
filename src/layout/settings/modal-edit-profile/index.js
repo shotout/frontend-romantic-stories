@@ -22,7 +22,7 @@ import ProfileSvg from '../../../assets/icons/profile';
 import PartnerSvg from '../../../assets/icons/partner';
 import FlagSvg from '../../../assets/icons/flag';
 import {BACKEND_URL} from '../../../shared/static';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModalEditProfile({
   isVisible,
@@ -99,12 +99,24 @@ function ModalEditProfile({
   const menuEditList = [
     {
       title: 'Edit Name',
-      icon: <IdCardSvg width={24} height={24} fill={ backgroundColor === '#2C3439' ? 'white' : 'white'} />,
+      icon: (
+        <IdCardSvg
+          width={24}
+          height={24}
+          fill={backgroundColor === '#2C3439' ? 'white' : 'white'}
+        />
+      ),
       value: userProfile.name,
     },
     {
       title: 'Gender',
-      icon: <GenderSvg width={24} height={24} fill={ backgroundColor === '#2C3439' ? 'white' : code_color.blackDark} />,
+      icon: (
+        <GenderSvg
+          width={24}
+          height={24}
+          fill={backgroundColor === '#2C3439' ? 'white' : code_color.blackDark}
+        />
+      ),
       value: userProfile.gender,
     },
     {
@@ -114,8 +126,8 @@ function ModalEditProfile({
     },
     {
       title: 'Select partner character',
-      icon: <PartnerSvg width={20} height={20}    />,
-      value: getAvatarMale,
+      icon: <PartnerSvg width={20} height={20} />,
+      value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
     },
     // {
     //   title: 'Select language',
@@ -130,7 +142,7 @@ function ModalEditProfile({
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor:backgroundColor,
+        backgroundColor: backgroundColor,
       }}>
       {menuEditList.map((edit, i) => (
         <View key={i}>
@@ -140,7 +152,10 @@ function ModalEditProfile({
             {edit.icon}
             <Text
               style={{
-                color:  backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
+                color:
+                  backgroundColor === '#2C3439'
+                    ? 'white'
+                    : code_color.blackDark,
                 marginLeft: 10,
                 fontSize: 16,
                 fontWeight: '600',
@@ -157,7 +172,7 @@ function ModalEditProfile({
                   backgroundColor: code_color.yellow,
                   position: 'relative',
                   overflow: 'hidden',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}>
                 <Image
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
@@ -168,7 +183,7 @@ function ModalEditProfile({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 0
+                    right: 0,
                   }}
                 />
               </View>
@@ -182,7 +197,7 @@ function ModalEditProfile({
                   backgroundColor: code_color.yellow,
                   position: 'relative',
                   overflow: 'hidden',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}>
                 <Image
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
@@ -193,12 +208,11 @@ function ModalEditProfile({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 0
+                    right: 0,
                   }}
                 />
               </View>
-            ) :
-             (
+            ) : (
               <Text
                 style={{
                   color: code_color.black,

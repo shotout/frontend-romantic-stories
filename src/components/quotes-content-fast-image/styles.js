@@ -20,7 +20,7 @@ export default StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingTop: 20
+    paddingTop: 20,
     
   },
   ctnQuotesIcon: {
@@ -30,16 +30,13 @@ export default StyleSheet.create({
     marginBottom: 30
   },
   txtQuotesWrapper: {
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     position:'relative',
- 
   },
   ctnQuotes: {
      textAlign: 'auto',
     // fontFamily: fonts.QuotesText,
     lineHeight: 24,
-    
-    
   },
   ctnRowButton:{
     flexDirection: 'row',

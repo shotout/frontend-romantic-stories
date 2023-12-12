@@ -330,7 +330,7 @@ export default function QuotesContent({
                 style={[
                   styles.ctnQuotes,
                   {
-                    marginBottom: pageActive != 0 ? -100 : 0,
+                    // marginBottom: pageActive != 0 ? -100 : 0,
                     fontFamily: fontFamily,
                     fontSize: Number(fontSize),
                     color:

@@ -27,7 +27,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
     setProgress(
       userProfile.gender === 'Male'
         ? userProfile.avatar_male - 1
-        : userProfile.avatar_female - 1,
+        : userProfile.avatar_female - 4,
     );
   }, [userProfile.gender]);
 
@@ -158,7 +158,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
             loop={false}
             width={Dimensions.get('window').width / 1.5}
             height={Dimensions.get('window').height / 2}
-            defaultIndex={1}
+            defaultIndex={progressValue}
             data={dataAva}
             onSnapToItem={index => {
               setProgress(index);
