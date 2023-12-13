@@ -1,12 +1,14 @@
 import React from 'react';
 import {View} from 'react-native';
-import {imgStep7} from '../../assets/images';
 import * as Animatable from 'react-native-animatable';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
+import AnimatedLottieView from 'lottie-react-native';
+import shareAnimate from '../../assets/lottie/share.json';
 
 const Step7 = ({handleNext}) => {
+  // return <></>;
   return (
     <View
       style={{
@@ -18,19 +20,30 @@ const Step7 = ({handleNext}) => {
         marginTop: '40%',
         paddingTop: 50,
       }}>
-      <Animatable.Image
-        delay={500}
-        duration={1000}
-        animation={'fadeIn'}
-        source={imgStep7}
-        resizeMode="contain"
+      <View
         style={{
-          width: 100,
-          height: 200,
+          width: 80,
+          height: 80,
           position: 'absolute',
-          top: -100,
-        }}
-      />
+          top: -40,
+          backgroundColor: code_color.white,
+          borderRadius: 50,
+          borderColor: '#3F58DD',
+          borderWidth: 4,
+        }}>
+        <AnimatedLottieView
+          source={shareAnimate}
+          autoPlay={true}
+          duration={2000}
+          loop={false}
+          style={{
+            height: 60,
+            width: 60,
+            left: 2,
+            top: 2,
+          }}
+        />
+      </View>
       <Animatable.Text
         delay={1500}
         duration={1000}
