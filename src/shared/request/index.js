@@ -49,7 +49,7 @@ export const getStoryList = (params = {}) =>
     method: 'get',
     params,
   });
-export const getStoryDetail = (id) =>
+export const getStoryDetail = id =>
   Wrap({
     url: `/stories/${id}`,
     method: 'get',
@@ -212,7 +212,7 @@ export const getExploreStory = (params = {}) =>
     method: 'get',
     params,
   });
-export const submitRating = (id, data)=> 
+export const submitRating = (id, data) =>
   Wrap({
     url: `/stories/rating/${id}`,
     method: 'POST',
@@ -247,12 +247,11 @@ export const addPastStory = id => {
   });
 };
 
-export const addStory = id => 
+export const addStory = id =>
   Wrap({
     url: `/collection/story/${id}`,
     method: 'POST',
   });
-
 
 export const getListLiked = (params = {}) =>
   Wrap({
@@ -325,4 +324,15 @@ export const resetBadge = (data = {}) =>
     url: '/notif/reset-badge',
     method: 'POST',
     data,
+  });
+
+export const getDetailCollection = id =>
+  Wrap({
+    url: `/collection/${id}`,
+    method: 'GET',
+  });
+  export const deleteStoryCollection = (id, idStory) =>
+  Wrap({
+    url: `/collection/story/${id}/${idStory}`,
+    method: 'DELETE',
   });
