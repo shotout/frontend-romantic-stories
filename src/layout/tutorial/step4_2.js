@@ -71,7 +71,8 @@ const Step4_2 = ({handleNext}) => {
             marginVertical: 10,
           }}
           title={i18n.t('Next')}
-          onPress={handleNext}
+          onPress={() => {}}
+          // onPress={handleNext}
         />
       </Animatable.View>
     </View>

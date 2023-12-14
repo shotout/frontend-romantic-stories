@@ -67,7 +67,7 @@ export default function QuotesContent({
   ];
   // Menghapus spasi dan baris baru (enter)
 
-  console.log(JSON.stringify(item));
+
   // Remove <p> and </p> tags from the modified text
   const manipulatedResponse = item.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');

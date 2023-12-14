@@ -48,6 +48,7 @@ function ModalStoryRating({
     const resp = await submitRating(nextStory?.id, data)
     if(resp){
       handleSuccess()
+      setRating(0)
     }
   }
   const handleRating = rated => {

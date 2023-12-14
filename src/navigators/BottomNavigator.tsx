@@ -122,10 +122,17 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           height: '100%',
           flex: 0,
         }}>
+       
         <MainScreen
           pressScreen={() => handleSomeAction('Main')}
           route={undefined}
         />
+        {isBottomBarVisible === 'Settings' ? 
+         <View style={{ position: 'absolute', top: -50, backgroundColor: 'rgba(0,0,0,0.5)', flex: 0, width: '100%', height: 200, alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => handleSomeAction('Main')} style={{ backgroundColor: code_color.white, position: 'absolute', top: 70, left: '30%', paddingHorizontal: 20, paddingVertical: 5, borderRadius: 20, alignItems: 'center'}}>
+          <Text allowFontScaling={false} style={{textAlign: 'center'}}>{`Tap here to get back\n to the Story`}</Text>
+          </TouchableOpacity>
+        </View> : null }
       </SafeAreaView>
       <View
         style={{
@@ -215,8 +222,12 @@ function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
   const [visibleModal, setVisibleModal] = React.useState(false);
+  const [title, setTitle] = React.useState('Save');
   const [imgHeartsTranslateY] = useState(new Animated.Value(0));
   const [imgHeartsTranslateX] = useState(new Animated.Value(-50));
+  const positionX = useRef(new Animated.Value(0)).current;
+  const positionY = useRef(new Animated.Value(0)).current;
+  const position = useRef(new Animated.Value(0)).current;
   let height = 0;
   if (Platform.OS === 'ios') {
     height = 80;
@@ -230,28 +241,32 @@ function MyTabs(props) {
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
   const handleFetchSaveAnim = async () => {
+   
     // ... (your existing code)
 
     // Start the downward animation when the image is saved
-    Animated.timing(imgHeartsTranslateY, {
-      toValue: 400, // Change this value to control how much it moves downwards
-      duration: 1500, // Change this value to control the duration of the animation
-      useNativeDriver: false, // Use a custom easing function
-    }).start(() => {
-      // Animation finished, reset the translateY value for the next use
-      imgHeartsTranslateY.setValue(0);
-      // imgHeartsTranslateY.setValue(50);
-    });
-    Animated.timing(imgHeartsTranslateX, {
-      toValue: 10, // Change this value to control how much it moves downwards
-      duration: 10, // Change this value to control the duration of the animation
-      useNativeDriver: false,
-      easing: Easing.bezier(-0.1, -0.2, 0.5, 2),
-    }).start(() => {
-      // Animation finished, reset the translateY value for the next use
-      imgHeartsTranslateX.setValue(-25);
-      // imgHeartsTranslateY.setValue(50);
-    });
+    const jumpAndFallAnimation = Animated.parallel([
+      // Animasi lompatan ke kiri
+      Animated.timing(positionX, {
+        toValue: -50,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+      // Animasi jatuh ke bawah
+      Animated.timing(positionY, {
+        toValue: 500, // Ganti nilai ini sesuai kebutuhan tinggi jatuh
+        duration: 1800,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+    ]);
+ 
+    setTimeout(() => {
+      setTitle('saved')
+    }, 400);
+    // Mulai animasi
+    Animated.loop(jumpAndFallAnimation).start();
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
@@ -268,10 +283,10 @@ function MyTabs(props) {
       }, 300);
       setTimeout(() => {
         setVisibleModal(false);
-      }, 1500);
+      }, 2000);
     } else {
       const data = await deleteMyStory(props.userStory?.id);
-
+      setTitle('save')
       if (data.status === 'success') {
         try {
           const resp = await getStoryDetail(props.userStory?.id);
@@ -282,7 +297,7 @@ function MyTabs(props) {
   };
   const love = require('../assets/lottie/ripple.json');
   // alert(props?.backgroundColor)
-
+ 
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -343,8 +358,8 @@ function MyTabs(props) {
                     <Animated.View
                       style={{
                         transform: [
-                          {translateY: imgHeartsTranslateY},
-                          {translateX: imgHeartsTranslateX},
+                          {translateY: positionY},
+                          {translateX: positionX},
                         ],
                       }}>
                       <Image
@@ -360,7 +375,7 @@ function MyTabs(props) {
                         textAlign: 'center',
                         fontSize: 15,
                       }}>
-                      {'Story saved &\nadded to library'}
+                      {`Story ${title} &\nadded to library`}
                     </Text>
                   </View>
                 </View>
@@ -545,57 +560,53 @@ function MyTabs(props) {
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => {
-            if(props.stepsTutorial === 0){
-              return(
+            if (props.stepsTutorial === 0) {
+              return (
                 <View
-             
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
-              }}>
-              <SettingSvg width={20} height={20} fill={props?.colorTheme} />
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: 11,
-                  marginTop: 2,
-                }}>
-                SETTINGS
-              </Text>
-            </View>
-              )
-            }else{
-              return(
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}>
+                  <SettingSvg width={20} height={20} fill={props?.colorTheme} />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: focused ? props?.colorTheme : props?.colorTheme,
+                      fontSize: 11,
+                      marginTop: 2,
+                    }}>
+                    SETTINGS
+                  </Text>
+                </View>
+              );
+            } else {
+              return (
                 <TouchableOpacity
-              onPress={() => {
-                if (props.stepsTutorial === 0) {
-                  handleSomeAction('Settings');
-                }
-              }}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                display: 'flex',
-              }}>
-              <SettingSvg width={20} height={20} fill={props?.colorTheme} />
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: 11,
-                  marginTop: 2,
-                }}>
-                SETTINGS
-              </Text>
-            </TouchableOpacity>
-              )
+                  onPress={() => {
+                    if (props.stepsTutorial === 0) {
+                      handleSomeAction('Settings');
+                    }
+                  }}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}>
+                  <SettingSvg width={20} height={20} fill={props?.colorTheme} />
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: focused ? props?.colorTheme : props?.colorTheme,
+                      fontSize: 11,
+                      marginTop: 2,
+                    }}>
+                    SETTINGS
+                  </Text>
+                </TouchableOpacity>
+              );
             }
-
-          }
-            
-          
+          },
         })}
         listeners={({route, navigation}) => ({
           state: state => {

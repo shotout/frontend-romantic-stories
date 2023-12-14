@@ -29,7 +29,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         ? userProfile.avatar_male - 1
         : userProfile.avatar_female - 4,
     );
-    console.log('okeoke', userProfile.avatar_female);
+   
   }, [userProfile.gender]);
 
   useEffect(() => {

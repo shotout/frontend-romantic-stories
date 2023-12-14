@@ -65,7 +65,7 @@ const ExploreLibraryScreen = ({
   backgroundColor,
   userProfile,
 }) => {
-  console.log(JSON.stringify(userProfile));
+
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -131,25 +131,25 @@ const ExploreLibraryScreen = ({
     handleRestart();
   }, [keyword, items]);
 
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2;
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < halfScreenWidth) {
-      console.log('masuk kiri');
-      handleSetSteps(3);
-      goBack();
-      setIsSwipingLeft(true);
-    }
-    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    else {
-      handleSetSteps(4 + 1);
-      navigate('Main');
-      setIsSwipingRight(true);
-    }
-  };
+  // const handleTouchStart = e => {
+  //   // Mendapatkan posisi sentuhan
+  //   const touchX = e.nativeEvent.locationX;
+  //   // Menghitung setengah lebar layar
+  //   const halfScreenWidth = Dimensions.get('window').width / 2;
+  //   // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+  //   if (touchX < halfScreenWidth) {
+  //     console.log('masuk kiri');
+  //     handleSetSteps(3);
+  //     goBack();
+  //     setIsSwipingLeft(true);
+  //   }
+  //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+  //   else {
+  //     handleSetSteps(4 + 1);
+  //     navigate('Main');
+  //     setIsSwipingRight(true);
+  //   }
+  // };
   const handleTouchEnd = () => {
     // Reset status swipe saat sentuhan selesai
     setIsSwipingLeft(false);
@@ -175,6 +175,43 @@ const ExploreLibraryScreen = ({
     setPrice(products[0].localizedPrice);
   }, []);
   const renderProgress = () => <StepHeader currentStep={6} />;
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const screenWidth = Dimensions.get('window').width;
+    const disabledWidth = 250;
+    if (touchX < screenWidth / 3 - disabledWidth / 2) {
+      alert('kiiiiiri')
+    }
+    // Pengecekan untuk meng-handle sisi kanan
+    else if (touchX > (2 * screenWidth) / 3 + disabledWidth / 2)  {
+      alert('kanan')
+    }
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    else if (touchX >= screenWidth / 3 && touchX <= (2 * screenWidth) / 3) {
+    alert('tengahhh')
+    }
+      // setIsSwipingLeft(true);
+      // if (activeStep === 1) {
+      // } else {
+      //   setTutorial({
+      //     ...isTutorial,
+      //     step: isTutorial.step - 1,
+      //   });
+      //   setActiveStep(prevStep => prevStep - 1);
+      //   handleSetSteps(activeStep - 1);
+      // }
+    // } else if (touchX < halfScreenWidth){
+    //   alert('okeee kiri')
+    // }
+    // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    // else {
+    //   alert('okeee KANAN')
+    //   // handleNext();
+    //   // setIsSwipingRight(true);
+    // }
+  };
   const renderTutorial = () => {
     if (stepsTutorial === 4) {
       return (

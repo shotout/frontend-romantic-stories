@@ -58,6 +58,7 @@ import {
   checkDeviceRegister,
   getExploreStory,
   getListAvatarTheme,
+  getStoryDetail,
   getStoryList,
   updateProfile,
 } from '../../shared/request';
@@ -77,7 +78,7 @@ import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {Step1, Step2, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
-import { reloadUserProfile } from '../../utils/user';
+import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
@@ -101,7 +102,7 @@ const MainScreen = ({
   handleReadStory,
   handleNextStory,
   nextStory,
-  handleStoriesRelate
+  handleStoriesRelate,
 }) => {
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
@@ -229,8 +230,6 @@ const MainScreen = ({
 
       // Dispatch action to update readStory in the Redux store
       handleReadStory([...readStory, newData]);
-
-      console.log(JSON.stringify(readStory));
     }
   };
   const fetchStory = async () => {
@@ -258,36 +257,30 @@ const MainScreen = ({
     }
   }, [userStory]);
 
-  const fetchCheckingDay = async() => {
+  const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
     const stringifyDateNow = new Date();
     let strTanggalSekarang = stringifyDateNow.getDate().toString();
-    if(value != null){
-      if(value != strTanggalSekarang){
-       
+    if (value != null) {
+      if (value != strTanggalSekarang) {
         AsyncStorage.setItem('setToday', strTanggalSekarang);
         try {
-          if(userProfile?.data?.subscription?.plan?.id != 1){
-    const res = await getStoryList();
-         handleNextStory(res.data)
-         setShowModalDay(true)
-          }else{
-            setShowModalNewStory(true)
+          if (userProfile?.data?.subscription?.plan?.id != 1) {
+            const res = await getStoryList();
+            handleNextStory(res.data);
+            setShowModalDay(true);
+          } else {
+            setShowModalNewStory(true);
           }
-         
-      
-        } catch (error) {
-          
-        }
-       
+        } catch (error) {}
       }
-    }else if(value === null){
+    } else if (value === null) {
       AsyncStorage.setItem('setToday', strTanggalSekarang);
     }
-  }
+  };
   useEffect(() => {
-    fetchCheckingDay()
-  }, [])
+    fetchCheckingDay();
+  }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     // const offsetY = e.nativeEvent.contentOffset.x;
@@ -391,26 +384,32 @@ const MainScreen = ({
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2;
+    const screenWidth = Dimensions.get('window').width;
+    const disabledWidth = 100;
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < halfScreenWidth) {
-      setIsSwipingLeft(true);
-      if (activeStep === 1) {
-      } else {
-        setTutorial({
-          ...isTutorial,
-          step: isTutorial.step - 1,
-        });
-        setActiveStep(prevStep => prevStep - 1);
-        handleSetSteps(activeStep - 1);
-      }
+    if (touchX < screenWidth / 2 - disabledWidth / 2 || touchX > screenWidth / 2 + disabledWidth / 2) {
+     alert('ooooooo')
     }
-    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    else {
-      handleNext();
-      setIsSwipingRight(true);
-    }
+      // setIsSwipingLeft(true);
+      // if (activeStep === 1) {
+      // } else {
+      //   setTutorial({
+      //     ...isTutorial,
+      //     step: isTutorial.step - 1,
+      //   });
+      //   setActiveStep(prevStep => prevStep - 1);
+      //   handleSetSteps(activeStep - 1);
+      // }
+    // } else if (touchX < halfScreenWidth){
+    //   alert('okeee kiri')
+    // }
+    // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    // else {
+    //   alert('okeee KANAN')
+    //   // handleNext();
+    //   // setIsSwipingRight(true);
+    // }
   };
 
   const handleNext = () => {
@@ -507,13 +506,30 @@ const MainScreen = ({
           setActiveStep(1);
           handleSetSteps(1);
         }, 3500);
-      } else if(activeStep === 3){
-        navigate('Media');
+      } else if (activeStep === 2) {
+       
+        setFinishTutorial(false);
+        setIsRippleAnimate(true);
+        setTimeout(() => {
+          setFinishTutorial(true);
+          setIsRippleAnimate(false);
+        }, 3000);
+        setTimeout(() => {
+          navigate('Media');
+        }, 2000);
+        // navigate('Media');
+      } else if (activeStep === 3) {
+        navigate('Library');
       } else if (activeStep === 4) {
         navigate('ExploreLibrary');
-      } else if (activeStep === 6 || activeStep === 7 ||  activeStep === 8 ||  activeStep === 9) {
+      } else if (
+        activeStep === 6 ||
+        activeStep === 7 ||
+        activeStep === 8 ||
+        activeStep === 9
+      ) {
         const content =
-      'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
+          'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
         navigate('Share', {
           selectedContent:
             ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
@@ -521,7 +537,6 @@ const MainScreen = ({
           end: content.substring(30, 30 + 30),
         });
       }
-     
     };
     checkTutorial();
   }, []);
@@ -661,7 +676,6 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
-   
     const data = await handleNativePayment('unlock_story_1_week_only');
     if (data) {
       setShowModalNewStory(false);
@@ -672,10 +686,10 @@ const MainScreen = ({
       await updateProfile(payload);
       reloadUserProfile();
       const res = await getStoryList();
-      handleNextStory(res.data)
+      handleNextStory(res.data);
       setShowModalSuccessPurchase(true);
     } else {
-      setShowModalNewStory(false);
+      // setShowModalNewStory(false);
     }
   };
   const handleUnlimited = async () => {
@@ -688,12 +702,12 @@ const MainScreen = ({
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
-        setShowModalNewStory(false);
+        // setShowModalNewStory(false);
         console.log('Pembayaran gagal:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran gagal
       }
     } catch (error) {
-      setShowModalNewStory(false);
+      // setShowModalNewStory(false);
       console.error('Terjadi kesalahan:', error);
       // Tangani kesalahan yang mungkin terjadi
     }
@@ -861,66 +875,61 @@ const MainScreen = ({
     const advert = await loadRewarded2();
     advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      async (reward) =>  {
+      async reward => {
         setShowModalNewStory(false);
-          if (reward) {
-            const res = await getStoryList();
-            handleNextStory(res.data)
+        if (reward) {
+          const res = await getStoryList();
+          handleNextStory(res.data);
 
-              let params = {
-                search: '',
-                column: 'title_en',
-                dir: 'asc',
-              };
-              const resp = await getExploreStory(params);
-              handleStoriesRelate(resp);
-           
-            setTimeout(() => {
-              setShowModal(true);
-            }, 300);
-            setClick(1)
-          }
-        
-       
-        // setLoadingAds(false);
-      },
-    );
-  }
-  
-  const showWatchAds = async () => {
-    // setLoadingAds(true);
-    const advert = await loadRewarded();
-    advert.addAdEventListener(
-      AdEventType.CLOSED,
-      () =>  {
-          
-        reloadWatch()
-       
+          let params = {
+            search: '',
+            column: 'title_en',
+            dir: 'asc',
+          };
+          const resp = await getExploreStory(params);
+          handleStoriesRelate(resp);
+
+          setTimeout(() => {
+            setShowModal(true);
+          }, 300);
+          setClick(1);
+        }
+
         // setLoadingAds(false);
       },
     );
   };
-  const handleRead = () => {
-    handleSetStory(nextStory)
-    setShowModalDay(false)
-    setShowModal(false)
-    setBook(nextStory)
-  }
 
-  const handleSuccessRating = async() => {
-    setRating(false)
+  const showWatchAds = async () => {
+    // setLoadingAds(true);
+    const advert = await loadRewarded();
+    advert.addAdEventListener(AdEventType.CLOSED, () => {
+      reloadWatch();
+
+      // setLoadingAds(false);
+    });
+  };
+  const handleRead = () => {
+    handleSetStory(nextStory);
+    setShowModalDay(false);
+    setShowModal(false);
+    setBook(nextStory);
+  };
+
+  const handleSuccessRating = async () => {
+    setRating(false);
     if (isPremiumStory || isPremiumAudio) {
-                const res = await getStoryList();
-                handleNextStory(res.data)
-                setShowModal(true);
-              } else {
-                setShowModalNewStory(true);
-              }
-  }
-  const handleLater = async() => {
+      const res = await getStoryDetail(userStory?.id);
+      setBook(res.data);
+      setShowModal(true);
+    } else {
+      setShowModalNewStory(true);
+    }
+  };
+  const handleLater = async () => {
     const response = await addStory(nextStory.id);
-    setShowModalDay(false)
-  }
+    setShowModalDay(false);
+  };
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -954,20 +963,20 @@ const MainScreen = ({
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
-            onGotIt={async() => {
+            onGotIt={async () => {
               setShowModalCongrats(false);
-              if(userStory?.is_rating === null){
-                setRating(true)
-              }else{
-                handleSuccessRating()
+              if (userStory?.is_rating === null) {
+                setRating(true);
+              } else {
+                handleSuccessRating();
               }
             }}
           />
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
             onClose={() => {
-              setShowModalSuccessPurchase(false)}
-            }
+              setShowModalSuccessPurchase(false);
+            }}
           />
           {renderTutorial()}
           {renderFlatList()}
@@ -994,11 +1003,11 @@ const MainScreen = ({
           }}
           /> */}
           <ModalStoryUnlockDay
-           isVisible={showModalDay}
-           onClose={() => setShowModalDay(false)}
-           handleRead={() => handleRead()}
-           handleLater={() => handleLater()}
-           />
+            isVisible={showModalDay}
+            onClose={() => setShowModalDay(false)}
+            handleRead={() => handleRead()}
+            handleLater={() => handleLater()}
+          />
           <ModalStoryUnlock
             isVisible={showModal}
             onClose={() => setShowModal(false)}
@@ -1008,7 +1017,7 @@ const MainScreen = ({
             readLater={readLater}
             handleRead={() => handleRead()}
           />
-           <ModalStoryRating
+          <ModalStoryRating
             isVisible={showRating}
             onClose={() => setRating(false)}
             handleSuccess={() => handleSuccessRating()}
@@ -1016,12 +1025,12 @@ const MainScreen = ({
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => setShowModalCongrats(false)}
-            onGotIt={async() => {
+            onGotIt={async () => {
               setShowModalCongrats(false);
-              if(userStory?.is_rating === null){
-                setRating(true)
-              }else{
-                handleSuccessRating()
+              if (userStory?.is_rating === null) {
+                setRating(true);
+              } else {
+                handleSuccessRating();
               }
             }}
           />
@@ -1041,10 +1050,9 @@ const MainScreen = ({
           <ModalSuccessPurchase
             isVisible={showModalSuccessPurchase}
             onClose={() => {
-              setBook(nextStory)
-              setShowModalSuccessPurchase(false)}
-            }
-             
+              setBook(nextStory);
+              setShowModalSuccessPurchase(false);
+            }}
           />
           <ModalGetPremium
             isVisible={showModalGetPremium}

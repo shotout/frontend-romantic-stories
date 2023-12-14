@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions, PanResponder} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 import TrackPlayer, {
@@ -87,11 +87,29 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     setInfo(info);
   }
 
+  // const handleTouchStart = e => {
+  //   // Mendapatkan posisi sentuhan
+  //   const touchX = e.nativeEvent.locationX;
+  //   // Menghitung setengah lebar layar
+  //   const halfScreenWidth = Dimensions.get('window').width / 2;
+
+  //   // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+  //   if (touchX < halfScreenWidth) {
+  //     console.log('kiri')
+  //   }
+  //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+  //   else {
+     
+  //    console.log('kanan')
+  //   }
+  // };
   const renderProgress = () => <StepHeader currentStep={4} />;
+
   const renderTutorial = () => {
     if (stepsTutorial === 3) {
       return (
         <SafeAreaView
+         
           // onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
           style={{
@@ -104,6 +122,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           {renderProgress()}
           <Step3
             handleNext={() => {
+              handleSetSteps(3)
               navigate('Library');
             }}
           />

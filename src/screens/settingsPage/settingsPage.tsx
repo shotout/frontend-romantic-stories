@@ -46,7 +46,9 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
 import {handlePayment} from '../../helpers/paywall';
 import {moderateScale} from 'react-native-size-matters';
-import { BACKEND_URL } from '../../shared/static';
+import {BACKEND_URL} from '../../shared/static';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {Image} from 'react-native';
 
 const SettingsPage = ({
   colorTheme,
@@ -119,7 +121,7 @@ const SettingsPage = ({
   ]);
 
   const header = () => (
-    <View style={{height: moderateScale(250)}}>
+    <View style={{height: moderateScale(230)}}>
       <View
         style={{
           width: Dimensions.get('window').width,
@@ -130,7 +132,7 @@ const SettingsPage = ({
           overflow: 'hidden',
         }}>
         <BgSettings
-          style={{position: 'absolute', top: 0, }}
+          style={{position: 'absolute', top: 0}}
           bgTheme={bgTheme}
           profileUrl={
             userProfile?.data?.gender === 'Male'
@@ -254,9 +256,73 @@ const SettingsPage = ({
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: backgroundColor}}>
+            style={{marginLeft: 10, color: backgroundColor, flex: 1}}>
             {item.name}
           </Text>
+          {item.name === 'Edit Profile' ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignContent: 'flex-end',
+                alignItems: 'flex-end',
+              }}>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  right: -5
+                }}>
+                <Image
+                  source={{
+                    uri:
+                      BACKEND_URL + getAvatarMale
+                  }}
+                  style={{
+                    width: 40,
+                    height: 150,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: 3,
+                    right: 0,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  marginRight: 10,
+                }}>
+                <Image
+                  source={{
+                    uri: BACKEND_URL + getAvatarFemale,
+                  }}
+                  style={{
+                    width: 40,
+                    height: 150,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: 3,
+                    right: 0,
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
         </TouchableOpacity>
       ))}
     </View>
@@ -281,7 +347,7 @@ const SettingsPage = ({
     <View
       style={{
         flex: 0,
-        height: Dimensions.get('window').height - 130,
+        height: Dimensions.get('window').height - 170,
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

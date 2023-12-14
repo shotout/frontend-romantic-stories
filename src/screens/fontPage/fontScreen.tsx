@@ -73,7 +73,7 @@ const FontScreen = ({
   isPremium,
   fontFamily,
 }) => {
-  console.log(JSON.stringify(fontFamily));
+
   const [show, setShow] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
   const [fontSelect, setSelectFont] = useState({
@@ -86,7 +86,7 @@ const FontScreen = ({
   });
   const [colorsBg, setColorsBg] = useState([
     {
-      code: '#5873FF',
+      code: '#3F58DD',
     },
     {
       code: '#2C8272',
