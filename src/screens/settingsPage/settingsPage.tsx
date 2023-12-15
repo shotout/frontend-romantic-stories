@@ -34,7 +34,6 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
-import ProgressBar from '../../components/ProgressBar';
 import ModalEditProfile from '../../layout/settings/modal-edit-profile';
 import ModalEditName from '../../layout/settings/modal-edit-name';
 import ModalEditGender from '../../layout/settings/modal-edit-gender';
@@ -49,6 +48,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {BACKEND_URL} from '../../shared/static';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
+import ProgressBar from '../../components/ProgressBar';
 
 const SettingsPage = ({
   colorTheme,
@@ -56,6 +56,7 @@ const SettingsPage = ({
   backgroundColor,
   getAvatarMale,
   getAvatarFemale,
+  levelingUser
 }) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
@@ -154,13 +155,14 @@ const SettingsPage = ({
               }}>
               {userProfile?.data?.name} •{' '}
               {userProfile?.data?.user_level?.level?.desc} •{' '}
-              {userProfile?.data?.user_level?.level?.value} XP
+              {userProfile?.data?.user_level?.point} XP
             </Text>
           </View>
-          <View style={{marginLeft: '30%', marginTop: 50}}>
+          <View  style={{marginLeft: '30%', marginTop: 50}}>
+
             <ProgressBar
               bgTheme={bgTheme}
-              progress={userProfile?.data?.user_level?.level?.value}
+              userProfile={userProfile}
             />
           </View>
         </View>

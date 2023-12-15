@@ -20,6 +20,7 @@ import {
   Pressable,
   ScrollView,
   Dimensions,
+  Easing,
 } from 'react-native';
 import {
   bg,
@@ -77,6 +78,8 @@ import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import * as IAP from 'react-native-iap';
 import {backLeft} from '../../assets/icons';
+import {Animated} from 'react-native';
+import {TouchableOpacityBase} from 'react-native';
 const LibraryScreen = ({
   colorTheme,
   handleSomeAction,
@@ -88,6 +91,8 @@ const LibraryScreen = ({
   handleNextStory,
   nextStory,
 }) => {
+  const translateX = useRef(new Animated.Value(0)).current;
+  const counter = useRef(0);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
@@ -114,6 +119,44 @@ const LibraryScreen = ({
   const [products, setProducts] = useState([]);
   const [selectedStory, setSelectedStory] = useState(null);
   const [price, setPrice] = useState('');
+
+  const runAnimation = () => {
+    Animated.timing(translateX, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start(() => {
+      counter.current += 1;
+      Animated.timing(translateX, {
+        toValue: 50,
+        duration: 1500,
+        useNativeDriver: true,
+      }).start(() => {
+        const isStopAnimation =
+          counter.current !== 0 && counter.current % 2 === 0;
+
+        setTimeout(() => {
+          Animated.timing(translateX, {
+            toValue: -50,
+            duration: 300,
+            useNativeDriver: true,
+          }).start(() => {
+            setTimeout(() => {
+              setTimeout(() => {
+                //
+              }, 100);
+            
+            }, 100);
+          });
+        });
+      });
+    });
+  };
+  const stopAnimation = () => {
+    translateX.stopAnimation(value => {
+      translateX.setValue(0); // Set the animation value to the current value
+    });
+  };
   const showWatchAds = async () => {
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
@@ -171,7 +214,7 @@ const LibraryScreen = ({
     }
   };
   useEffect(() => {
-    setDetail(null)
+    setDetail(null);
     fecthProduct();
   }, []);
 
@@ -228,9 +271,9 @@ const LibraryScreen = ({
 
   const renderContent = item => {
     if (detail != null) {
-        return (
-          <View>
-            {detailCollection?.stories_count != 0 ?
+      return (
+        <View>
+          {detailCollection?.stories_count != 0 ? (
             <View
               style={{
                 paddingHorizontal: 10,
@@ -313,16 +356,25 @@ const LibraryScreen = ({
                   </TouchableOpacity>
                 </View>
               </View>
-              <DotSvg />
-            </View> : null }
-            {/* <View
+              <TouchableOpacity onPress={() => runAnimation()}>
+                <Animated.View
+                  style={{
+                    width: '100%',
+                    height: sizing.getDimensionHeight(1),
+                    transform: [{translateY: translateX}],
+                  }}>
+                  <DotSvg />
+                </Animated.View>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+          {/* <View
         style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
       /> */}
-          </View>
-        );
-      
+        </View>
+      );
     } else {
-      console.log('masukkkk')
+      console.log('masukkkk');
       return (
         <View>
           <View
@@ -370,8 +422,7 @@ const LibraryScreen = ({
                       fontSize: 12,
                       marginBottom: 5,
                     }}>
-                    
-                      {item?.item?.category?.name}
+                    {item?.item?.category?.name}
                   </Text>
                   <Text
                     allowFontScaling={false}
@@ -406,11 +457,15 @@ const LibraryScreen = ({
                 </TouchableOpacity>
               </View>
             </View>
-            <DotSvg />
+            <TouchableOpacity onPress={() => runAnimation()}>
+              <Animated.View
+                style={{
+                  transform: [{translateY: translateX}],
+                }}>
+                <DotSvg />
+              </Animated.View>
+            </TouchableOpacity>
           </View>
-          {/* <View
-          style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
-        /> */}
         </View>
       );
     }
@@ -850,104 +905,113 @@ const LibraryScreen = ({
                 previewOpenDelay={3000}
               />
             )}
-          {detail != null ? <SwipeListView
-              data={listLibraryDetail}
-              renderItem={item => renderContent(item)}
-              renderHiddenItem={(_data, _rowMap) => (
-                <View style={styles.rowBack}>
-                  {detail != null ? null : (
+            {detail != null ? (
+              <SwipeListView
+                data={listLibraryDetail}
+                renderItem={item => renderContent(item)}
+                renderHiddenItem={(_data, _rowMap) => (
+                  <View style={styles.rowBack}>
+                    {detail != null ? null : (
+                      <TouchableOpacity
+                        style={[
+                          styles.backLeftCollectBtn,
+                          styles.backLeftBtnCollect,
+                        ]}
+                        onPress={() => {
+                          setId(_data?.item?.id);
+                          setShowModal(true);
+                        }}>
+                        <LibraryAddSvg />
+                      </TouchableOpacity>
+                    )}
                     <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                      style={[styles.backRightBtn, styles.backRightCenter]}
                       onPress={() => {
-                        setId(_data?.item?.id);
-                        setShowModal(true);
+                        setSharedStory(_data);
+                        setShowModalShareStory(true);
                       }}>
-                      <LibraryAddSvg />
+                      <ShareSvg />
                     </TouchableOpacity>
-                  )}
-                  <TouchableOpacity
-                    style={[styles.backRightBtn, styles.backRightCenter]}
-                    onPress={() => {
-                      setSharedStory(_data);
-                      setShowModalShareStory(true);
-                    }}>
-                    <ShareSvg />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.backRightBtn, styles.backRightBtnRight]}
-                    onPress={() => {
-                      Alert.alert(
-                        'Are you sure you want to remove this story from your library?',
-                        '',
-                        [
-                          {
-                            text: 'Yes',
-                            onPress: () => {
-                              deleteRowStory(_data);
-                            },
-                          },
-                          {text: 'Cancel', onPress: () => {}},
-                        ],
-                      );
-                    }}>
-                    <DeleteSvg />
-                  </TouchableOpacity>
-                </View>
-              )}
-              rightOpenValue={-180}
-              previewRowKey={'0'}
-              previewOpenValue={-40}
-              previewOpenDelay={3000}
-            /> :
-            <SwipeListView
-              data={listLibrary}
-              renderItem={item => renderContent(item)}
-              renderHiddenItem={(_data, _rowMap) => (
-                <View style={styles.rowBack}>
-                  {detail != null ? null : (
                     <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                      style={[styles.backRightBtn, styles.backRightBtnRight]}
                       onPress={() => {
-                        setId(_data?.item?.id);
-                        setShowModal(true);
-                      }}>
-                      <LibraryAddSvg />
-                    </TouchableOpacity>
-                  )}
-                  <TouchableOpacity
-                    style={[styles.backRightBtn, styles.backRightCenter]}
-                    onPress={() => {
-                      setSharedStory(_data);
-                      setShowModalShareStory(true);
-                    }}>
-                    <ShareSvg />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.backRightBtn, styles.backRightBtnRight]}
-                    onPress={() => {
-                      Alert.alert(
-                        'Are you sure you want to remove this story from your library?',
-                        '',
-                        [
-                          {
-                            text: 'Yes',
-                            onPress: () => {
-                              deleteRowStory(_data);
+                        Alert.alert(
+                          'Are you sure you want to remove this story from your library?',
+                          '',
+                          [
+                            {
+                              text: 'Yes',
+                              onPress: () => {
+                                deleteRowStory(_data);
+                              },
                             },
-                          },
-                          {text: 'Cancel', onPress: () => {}},
-                        ],
-                      );
-                    }}>
-                    <DeleteSvg />
-                  </TouchableOpacity>
-                </View>
-              )}
-              rightOpenValue={-180}
-              previewRowKey={'0'}
-              previewOpenValue={-40}
-              previewOpenDelay={3000}
-            /> }
+                            {text: 'Cancel', onPress: () => {}},
+                          ],
+                        );
+                      }}>
+                      <DeleteSvg />
+                    </TouchableOpacity>
+                  </View>
+                )}
+                rightOpenValue={-180}
+                previewRowKey={'0'}
+                previewOpenValue={-40}
+                previewOpenDelay={3000}
+              />
+            ) : (
+              <SwipeListView
+                data={listLibrary}
+                renderItem={item => renderContent(item)}
+                swipeGestureEnded={(_data, _rowMap) => {
+                  stopAnimation()
+                }}
+                renderHiddenItem={(_data, _rowMap) => (
+                  <View style={styles.rowBack}>
+                    {detail != null ? null : (
+                      <TouchableOpacity
+                        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                        onPress={() => {
+                          setId(_data?.item?.id);
+                          setShowModal(true);
+                        }}>
+                        <LibraryAddSvg />
+                      </TouchableOpacity>
+                    )}
+                    <TouchableOpacity
+                      style={[styles.backRightBtn, styles.backRightCenter]}
+                      onPress={() => {
+                        setSharedStory(_data);
+                        setShowModalShareStory(true);
+                      }}>
+                      <ShareSvg />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.backRightBtn, styles.backRightBtnRight]}
+                      onPress={() => {
+                        Alert.alert(
+                          'Are you sure you want to remove this story from your library?',
+                          '',
+                          [
+                            {
+                              text: 'Yes',
+                              onPress: () => {
+                                deleteRowStory(_data);
+                              },
+                            },
+                            {text: 'Cancel', onPress: () => {}},
+                          ],
+                        );
+                      }}>
+                      <DeleteSvg />
+                    </TouchableOpacity>
+                  </View>
+                )}
+                rightOpenValue={-180}
+                previewRowKey={'0'}
+                previewOpenValue={-40}
+                previewOpenDelay={3000}
+              />
+            )}
           </ScrollView>
         ) : (
           renderEmpty()

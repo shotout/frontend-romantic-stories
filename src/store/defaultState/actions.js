@@ -25,6 +25,10 @@ export const handleStoriesRelate = payload => ({
   type: types.SET_STORY_RELATE_DATA,
   payload,
 });
+export const handleLeveling = payload => ({
+  type: types.SET_LEVELING_DATA,
+  payload,
+});
 
 export const handleReadStory = payload => ({
   type: types.SET_READ_STORY,

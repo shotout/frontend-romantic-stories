@@ -247,6 +247,22 @@ export const addPastStory = id => {
   });
 };
 
+export const getLeveling = () => 
+  Wrap({
+    url: `/list/levels`,
+    method: 'GET',
+  });
+
+
+export const addPastLevel = (data = {}) =>
+  Wrap({
+    url: `/level`,
+    method: 'POST',
+    data
+  });
+  
+
+
 export const addStory = id =>
   Wrap({
     url: `/collection/story/${id}`,

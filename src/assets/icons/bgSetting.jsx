@@ -107,8 +107,8 @@ function SvgComponent(props) {
           href={{
             uri: profileUrl,
           }}
-          x="138"
-          y="-35"
+          x="142"
+          y="-15"
           width="100%"
           height="300"
           rx="28"

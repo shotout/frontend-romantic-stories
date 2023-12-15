@@ -53,6 +53,7 @@ import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
 import {
+  addPastLevel,
   addPastStory,
   addStory,
   checkDeviceRegister,
@@ -103,6 +104,7 @@ const MainScreen = ({
   handleNextStory,
   nextStory,
   handleStoriesRelate,
+  handleLeveling
 }) => {
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
@@ -330,12 +332,21 @@ const MainScreen = ({
     if (!existingEntry && pageNumber === dataBook?.content_en?.length - 1) {
       // jika nanti pertama kali melakukan update data terakhir
       await addPastStory(dataBook.id);
-      setShowModalCongrats(true);
+      const data = {
+        value: dataBook?.content_en?.length
+      }
+      const resp = await addPastLevel(data)
+      if(resp?.data){
+        handleLeveling(resp?.data)
+        setShowModalCongrats(true);
+      }
+     
     } else if (
       existingEntry &&
       pageNumber === dataBook?.content_en?.length - 1 &&
       !(isPremiumStory || isPremiumAudio)
     ) {
+     
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setShowModalCongrats(true);
     }

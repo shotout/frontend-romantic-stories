@@ -24,12 +24,9 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setProgress(
-      userProfile.gender === 'Female'
-        ? userProfile.avatar_male - 1
-        : userProfile.avatar_female - 4,
-    );
-   
+    setProgress(userProfile.gender === 'Female'
+    ?  userProfile.avatar_male - 1
+    :  userProfile.avatar_female - 4 )
   }, [userProfile.gender]);
 
   useEffect(() => {
@@ -66,6 +63,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+        
+      
       }
     } catch (error) {
       // alert(JSON.stringify(error));

@@ -49,6 +49,7 @@ const INITIAL_STATE = {
   readStory: null,
   nextStory: null,
   relateStory: null,
+  levelingUser: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -88,6 +89,11 @@ export default (state = INITIAL_STATE, action) => {
           counter: 0,
         },
       };
+      case types.SET_LEVELING_DATA:
+        return {
+          ...state,
+          levelingUser: action.payload,
+        };
     case types.CHANGE_COUNTER_LOADING_MODAL:
       return {
         ...state,

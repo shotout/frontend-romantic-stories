@@ -1,38 +1,48 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Alert} from 'react-native';
-import {code_color} from '../utils/colors';
-import {moderateScale} from 'react-native-size-matters';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
+import { code_color } from '../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
-const ProgressBar = ({progress, bgTheme}) => {
+const ProgressBar = ({  bgTheme, userProfile }) => {
+
   const [showInfo, setShowInfo] = useState(null);
-  let status = 'Noob';
-  if (progress >= 33 && progress < 66) {
-    status = 'Expert';
-  } else if (progress >= 66) {
-    status = 'Pro';
-  }
-  const InfoCard = ({position, message}) => {
-    return (
-      <View style={[styles.infoCard, position]}>
-        <Text allowFontScaling={false} style={{color: code_color.white}}>
-          {message}
-        </Text>
-      </View>
-    );
+  const animatedProgress = new Animated.Value(0);
+  const progress = 1600
+
+  useEffect(() => {
+    // Animasikan perubahan nilai progress
+    Animated.timing(animatedProgress, {
+      toValue: progress,
+      duration: 1000, // Durasi animasi dalam milidetik
+      useNativeDriver: false, // Jika menggunakan Native Driver, beberapa properti tidak dapat diubah secara dinamis
+    }).start();
+  }, [progress]);
+
+  const renderProgress = () => {
+    if (progress <= 30) {
+      return renderCase1();
+    } else if (progress >= 31 && progress <= 600) {
+      return renderCase2();
+    } else {
+      return renderCase3();
+    }
   };
-  return (
-    <View style={{marginBottom: moderateScale(60)}}>
+
+  const renderCase1 = () => (
+    <View>
       <View style={styles.container}>
-        <View
+      <Animated.View
           style={[
             styles.progressBar,
-            {width: `${progress}%`, backgroundColor: bgTheme},
+            {
+              width: animatedProgress.interpolate({
+                inputRange: [0, 5, 25, 30],
+                outputRange: ['0%', '25%', '90%', '100%'],
+              }),
+              backgroundColor: bgTheme,
+            },
           ]}
         />
-
-        {/* Dots for each step */}
-
-        {/* <Text style={styles.label}>{status}</Text> */}
       </View>
       {showInfo && (
         <InfoCard position={showInfo.position} message={showInfo.message} />
@@ -40,8 +50,8 @@ const ProgressBar = ({progress, bgTheme}) => {
       <Pressable
         onPress={() =>
           setShowInfo({
-            position: {top: '-500%', left: '-30%'},
-            message: 'Keep it up! 90 XP to Lorem',
+            position: {top: '-500%', left: '-10%'},
+            message: 'Your Level',
           })
         }
         style={[styles.dot, {left: '0%', borderColor: bgTheme}]}
@@ -57,14 +67,14 @@ const ProgressBar = ({progress, bgTheme}) => {
       <Pressable
         onPress={() =>
           setShowInfo({
-            position: {top: '-500%', left: '0%'},
-            message: 'Keep it up! 90 XP to Lorem',
+            position: {top: '-500%', left: '20%'},
+            message: 'Your Level',
           })
         }
         style={[
           styles.dot,
           {
-            left: '50%',
+            left: '30%',
             transform: [{translateX: -5}, {translateY: -5}],
             borderColor: bgTheme,
           },
@@ -74,7 +84,7 @@ const ProgressBar = ({progress, bgTheme}) => {
         style={{
           position: 'absolute',
           textAlign: 'center',
-          left: '40%',
+          left: '23%',
           top: moderateScale(15),
           fontSize: moderateScale(10),
         }}>{`Heartfelt\n Adventurer`}</Text>
@@ -82,7 +92,7 @@ const ProgressBar = ({progress, bgTheme}) => {
         onPress={() =>
           setShowInfo({
             position: {top: '-500%', right: '10%'},
-            message: 'Keep it up! 90 XP to Lorem',
+            message: 'Your Level',
           })
         }
         style={[styles.dot, {right: '10%', borderColor: bgTheme}]}
@@ -95,6 +105,201 @@ const ProgressBar = ({progress, bgTheme}) => {
           top: moderateScale(15),
           fontSize: moderateScale(10),
         }}>{`Passion \nPioneer`}</Text>
+    </View>
+  );
+
+  const renderCase2 = () => (
+    <View>
+      <View style={styles.container}>
+      <Animated.View
+          style={[
+            styles.progressBar,
+            {
+              width: animatedProgress.interpolate({
+                inputRange: [0, 80, 200, 400, 600],
+                outputRange: ['0%', '0%', '30%', '60%', '100%'],
+              }),
+              backgroundColor: bgTheme,
+            },
+          ]}
+        />
+      </View>
+      {showInfo && (
+        <InfoCard position={showInfo.position} message={showInfo.message} />
+      )}
+      <Pressable
+         onPress={() =>
+           setShowInfo({
+             position: {top: '-500%', left: '-10%'},
+             message: 'Your Level',
+           })
+         }
+         style={[styles.dot, {left: '0%', borderColor: bgTheme}]}
+       />
+       <Text
+         style={{
+           position: 'absolute',
+           textAlign: 'center',
+           left: -10,
+           top: moderateScale(15),
+           fontSize: moderateScale(10),
+         }}>{`Flirty \n Fictionista`}</Text>
+       <Pressable
+         onPress={() =>
+           setShowInfo({
+             position: {top: '-500%', left: '20%'},
+             message: 'Your Level',
+           })
+         }
+         style={[
+           styles.dot,
+           {
+             left: '30%',
+             transform: [{translateX: -5}, {translateY: -5}],
+             borderColor: bgTheme,
+           },
+         ]}
+       />
+       <Text
+         style={{
+           position: 'absolute',
+           textAlign: 'center',
+           left: '23%',
+           top: moderateScale(15),
+           fontSize: moderateScale(10),
+         }}>{`Passion \n Prowler`}</Text>
+       <Pressable
+         onPress={() =>
+           setShowInfo({
+             position: {top: '-500%', right: '10%'},
+             message: 'Your Level',
+           })
+         }
+         style={[styles.dot, {right: '35%', borderColor: bgTheme}]}
+       />
+       <Text
+         style={{
+           position: 'absolute',
+           right: '30%',
+           textAlign: 'center',
+           top: moderateScale(15),
+           fontSize: moderateScale(10),
+         }}>{`Heartfelt \nVoyager`}</Text>
+          <Pressable
+         onPress={() =>
+           setShowInfo({
+             position: {top: '-500%', right: '10%'},
+             message: 'Your Level',
+           })
+         }
+         style={[styles.dot, {right: '0%', borderColor: bgTheme}]}
+       />
+       <Text
+         style={{
+           position: 'absolute',
+           right: '0%',
+           textAlign: 'center',
+           top: moderateScale(15),
+           fontSize: moderateScale(10),
+         }}>{`Sizzling \nStoryteller`}</Text>
+         
+     
+       
+    </View>
+  );
+
+  const renderCase3 = () => (
+    <View>
+      <View style={styles.container}>
+      <Animated.View
+          style={[
+            styles.progressBar,
+            {
+              width: animatedProgress.interpolate({
+                inputRange: [0, 800, 1200, 1650, 1800],
+                outputRange: ['0%', '50%', '55%', '80%', '100%'],
+              }),
+              backgroundColor: bgTheme,
+            },
+          ]}
+        />
+      </View>
+      {showInfo && (
+        <InfoCard position={showInfo.position} message={showInfo.message} />
+      )}
+      
+      <Pressable
+        onPress={() =>
+          setShowInfo({
+            position: {top: '-500%', left: '20%'},
+            message: 'Your Level',
+          })
+        }
+        style={[
+          styles.dot,
+          {
+            left: '0%',
+            transform: [{translateX: -5}, {translateY: -5}],
+            borderColor: bgTheme,
+          },
+        ]}
+      />
+      <Text
+        style={{
+          position: 'absolute',
+          textAlign: 'center',
+          left: '-5%',
+          top: moderateScale(15),
+          fontSize: moderateScale(10),
+        }}>{`Naughty \nNovelist`}</Text>
+      <Pressable
+        onPress={() =>
+          setShowInfo({
+            position: {top: '-500%', right: '10%'},
+            message: 'Your Level',
+          })
+        }
+        style={[styles.dot, {right: '45%', borderColor: bgTheme}]}
+      />
+      <Text
+        style={{
+          position: 'absolute',
+          right: '40%',
+          textAlign: 'center',
+          top: moderateScale(15),
+          fontSize: moderateScale(10),
+        }}>{`EroTales \nSuperstar`}</Text>
+         <Pressable
+        onPress={() =>
+          setShowInfo({
+            position: {top: '-500%', right: '10%'},
+            message: 'Your Level',
+          })
+        }
+        style={[styles.dot, {right: '0%', borderColor: bgTheme}]}
+      />
+      <Text
+        style={{
+          position: 'absolute',
+          right: '0%',
+          textAlign: 'center',
+          top: moderateScale(15),
+          fontSize: moderateScale(10),
+        }}>{`EroTales \nLegend`}</Text>
+    </View>
+  );
+
+  const InfoCard = ({ position, message }) => (
+    <View style={[styles.infoCard, position]}>
+      <Text allowFontScaling={false} style={{ color: code_color.white }}>
+        {message}
+      </Text>
+    </View>
+  );
+
+  return (
+    <View style={{ marginBottom: moderateScale(60) }}>
+      {renderProgress()}
     </View>
   );
 };
@@ -120,10 +325,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 3,
     top: '10%',
-    transform: [{translateY: -5}],
-  },
-  label: {
-    marginLeft: 10,
+    transform: [{ translateY: -5 }],
   },
   infoCard: {
     position: 'absolute',
@@ -142,3 +344,4 @@ const styles = StyleSheet.create({
 });
 
 export default ProgressBar;
+

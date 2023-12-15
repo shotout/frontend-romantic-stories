@@ -18,6 +18,7 @@ import {
   ScrollView,
   SafeAreaView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {imgStep4_2} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -46,12 +47,14 @@ import {Step4_2} from '../../layout/tutorial';
 import ModalSorting from '../../components/modal-sorting';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
-import {loadRewarded} from '../../helpers/loadReward';
+import {loadRewarded, loadRewardedCategory} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {reloadUserProfile} from '../../utils/user';
 import ChecklistSvg from './../../assets/icons/checklist';
 import * as IAP from 'react-native-iap';
+import ModalUnlockPremium from '../../components/modal-unlock-premium';
+import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -71,6 +74,7 @@ const ExploreLibraryScreen = ({
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState<any>();
   const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
@@ -78,6 +82,7 @@ const ExploreLibraryScreen = ({
   const [items, setItems] = useState(null);
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
+  const [loadingAds, setLoadingAds] = useState(false);
   const showWatchAds = async () => {
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
@@ -175,6 +180,25 @@ const ExploreLibraryScreen = ({
     setPrice(products[0].localizedPrice);
   }, []);
   const renderProgress = () => <StepHeader currentStep={6} />;
+  const showInterStialCategory = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewardedCategory();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert('Congrats! You have unlocked the selected Topic.', '', [
+            {
+              text: 'OK',
+              onPress: async () => fetchUpdate(nextCategory),
+            },
+          ]);
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
@@ -254,6 +278,17 @@ const ExploreLibraryScreen = ({
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
+      />
+       <ModalUnlockPremium
+        isVisible={showModalUnlockCategory}
+        onClose={() => setShowModalUnlockCategory(false)}
+        title={'Unlock this topic\r\nfor free now'}
+        desc={
+          'Watch a Video to unlock this Topic\r\nfor Free or go UNLIMITED\r\nfor full access!'
+        }
+        onSuccess={showInterStialCategory}
+        Icon={() => <UnlockCategoryIcon style={{marginBottom: 20}} />}
+        isLoadingAds={loadingAds}
       />
       <View
         style={{
@@ -402,13 +437,13 @@ const ExploreLibraryScreen = ({
                 {data?.category.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      // if(userProfile?.data?.subscription?.plan?.id === 1){
-                      //   setShowModalUnlock(true)
-                      // }else{
-                      //   setShowModalUnlock(true)
-                      setSelectStory(itm.id);
-                      fetchUpdate();
-                      // }
+                      if(userProfile?.data?.subscription?.plan?.id === 1){
+                        setSelectStory(itm.id);
+                        setShowModalUnlockCategory(true)
+                      }else{
+                         setSelectStory(itm.id);
+                         fetchUpdate();
+                      }
                     }}
                     style={{
                       width: 95,
@@ -435,7 +470,7 @@ const ExploreLibraryScreen = ({
                         <ChecklistSvg width={10} />
                       ) : null}
                     </View>
-                    {/* { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
+                    { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
                       <LockFree
                         height={16}
                         width={55}
@@ -446,10 +481,10 @@ const ExploreLibraryScreen = ({
                           zIndex: 1,
                         }}
                       />
-                    )} */}
+                    )}
                     <Image
                       source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
-                      resizeMode="cover"
+                      resizeMode='cover'
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Modal,
   View,
@@ -31,18 +31,35 @@ import ProgressBar from '../ProgressBar';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import AnimatedLottieView from 'lottie-react-native';
-
+import {getLeveling} from '../../shared/request';
+import * as Progress from 'react-native-progress';
 const badgeAnimate = require('../../assets/lottie/badge.json');
 const starAnimate = require('../../assets/lottie/stars.json');
 
-function ModalCongrats({isVisible, onClose, onGotIt, userProfile}) {
+function ModalCongrats({
+  isVisible,
+  onClose,
+  onGotIt,
+  userProfile,
+  levelingUser,
+  colorTheme,
+}) {
   const scrollViewRef = useRef(null);
   const scrollViewRefRight = useRef(null);
+  const [leveling, setLeveling] = useState(null);
 
   const handleClose = () => {
     onClose();
   };
 
+  const fetchLeveling = async () => {
+    const resp = await getLeveling();
+    setLeveling(resp?.data);
+  };
+
+  useEffect(() => {
+    fetchLeveling();
+  }, []);
   const scrollToBottom = () => {
     scrollViewRef.current?.scrollToEnd({animated: true});
   };
@@ -241,7 +258,7 @@ function ModalCongrats({isVisible, onClose, onGotIt, userProfile}) {
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
-                        {userProfile?.data?.user_level?.level?.value_desc}
+                        {userProfile?.data?.user_level?.point} XP
                       </Animatable.Text>
                     </View>
                   </Animatable.View>
@@ -326,17 +343,28 @@ function ModalCongrats({isVisible, onClose, onGotIt, userProfile}) {
                         position: 'relative',
                         overflow: 'hidden',
                         height: moderateScale(36),
-                        maxWidth: moderateScale(50),
+                        maxWidth: moderateScale(70),
                       }}>
-                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(itm => (
+                      {[
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        userProfile?.data?.user_level?.point,
+                      ].map(itm => (
                         <Text
                           key={itm}
                           style={{
                             fontWeight: 'bold',
                             fontSize: moderateScale(30),
                           }}>
-                          {/* {userProfile?.data?.user_level?.level?.value}{' '} */}
-                          {itm}{' '}
+                          {itm}
                         </Text>
                       ))}
                     </ScrollView>
@@ -358,48 +386,47 @@ function ModalCongrats({isVisible, onClose, onGotIt, userProfile}) {
                       overflow: 'hidden',
                       height: moderateScale(38),
                     }}>
-                    {['Romance Rookie', 'Heartfelt Adventure'].map(
-                      (itm, idx) => (
-                        <View
-                          key={idx}
+                    {[
+                      'Romance Rookie',
+                      'Heartfelt Adventure',
+                      userProfile?.data?.user_level?.level?.desc,
+                    ].map((itm, idx) => (
+                      <View
+                        key={idx}
+                        style={{
+                          flexDirection: 'row',
+                          flex: 1,
+                          alignItems: 'center',
+                          height: moderateScale(38),
+                        }}>
+                        <Image
+                          source={{
+                            uri: `${BACKEND_URL}/${userProfile?.data?.user_level?.level?.image?.url}`,
+                          }}
+                          resizeMode="contain"
                           style={{
-                            flexDirection: 'row',
-                            flex: 1,
-                            alignItems: 'center',
-                            height: moderateScale(38),
-                          }}>
-                          <Image
-                            source={{
-                              uri: `${BACKEND_URL}/${userProfile?.data?.user_level?.level?.image?.url}`,
-                            }}
-                            resizeMode="contain"
+                            width: 30,
+                            height: 30,
+                            marginRight: 10,
+                          }}
+                        />
+                        <View style={{width: 100, alignItems: 'center'}}>
+                          <Text
                             style={{
-                              width: 30,
-                              height: 30,
-                              marginRight: 10,
-                            }}
-                          />
-                          <View style={{width: 100, alignItems: 'center'}}>
-                            <Text
-                              style={{
-                                fontWeight: 'bold',
-                                fontSize: 16,
-                                textAlign: 'center',
-                              }}>
-                              {/* {userProfile?.data?.user_level?.level?.desc} */}
-                              {itm}
-                            </Text>
-                          </View>
+                              fontWeight: 'bold',
+                              fontSize: 16,
+                              textAlign: 'center',
+                            }}>
+                            {itm}
+                          </Text>
                         </View>
-                      ),
-                    )}
+                      </View>
+                    ))}
                   </ScrollView>
                 </View>
 
-                <View style={{marginLeft: '30%', marginTop: 20}}>
-                  <ProgressBar
-                    progress={userProfile?.data?.user_level?.level?.value}
-                  />
+                <View style={{ marginLeft: '20%', marginTop: 20}}>
+                <ProgressBar bgTheme={colorTheme} userProfile={userProfile} />
                 </View>
 
                 <Text

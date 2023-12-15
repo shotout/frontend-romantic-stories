@@ -35,7 +35,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const {position, duration} = useProgress();
   const [info, setInfo] = useState({});
   const track1 = {
-    url: `${BACKEND_URL}${userStory?.audio?.url}`,
+    url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
     title: 'See You Again',
     artist: 'Wiz Khalifa',
     album: 'While(1<2)',

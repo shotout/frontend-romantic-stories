@@ -164,8 +164,11 @@ function ModalLibrary({isVisible, onClose, data, storyId}) {
               width: '90%',
             }}
             onPress={() => {
-              addToCollection( select?.id, storyId)
-              onClose()
+              addToCollection(select?.id, storyId)
+              setTimeout(() => {
+                onClose()
+              }, 200);
+             
             }}
           />
         </View>
