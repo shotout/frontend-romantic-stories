@@ -7,7 +7,7 @@ const ProgressBar = ({  bgTheme, userProfile }) => {
 
   const [showInfo, setShowInfo] = useState(null);
   const animatedProgress = new Animated.Value(0);
-  const progress = 1600
+  const progress = userProfile?.data?.user_level?.point
 
   useEffect(() => {
     // Animasikan perubahan nilai progress
