@@ -8,6 +8,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {connect} from 'react-redux';
@@ -33,8 +34,10 @@ import {moderateScale} from 'react-native-size-matters';
 import AnimatedLottieView from 'lottie-react-native';
 import {getLeveling} from '../../shared/request';
 import * as Progress from 'react-native-progress';
+import {sizing} from '../../shared/styling';
 const badgeAnimate = require('../../assets/lottie/badge.json');
 const starAnimate = require('../../assets/lottie/stars.json');
+const confettiAnimate = require('../../assets/lottie/confetti.json');
 
 function ModalCongrats({
   isVisible,
@@ -44,9 +47,19 @@ function ModalCongrats({
   levelingUser,
   colorTheme,
 }) {
+  const [leveling, setLeveling] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
   const scrollViewRef = useRef(null);
   const scrollViewRefRight = useRef(null);
-  const [leveling, setLeveling] = useState(null);
+  const scrollViewRefPopup = useRef(null);
+  const currentLevel = userProfile?.data?.user_level?.level?.id;
+  const newLevel = levelingUser?.user_level?.level?.id;
+  const currentXp = userProfile?.data?.user_level?.level?.value;
+  const newXp = levelingUser?.user_level?.level?.value;
+  const currentImgLvl = userProfile?.data?.user_level?.level?.image?.url;
+  const newImgLvl = levelingUser?.user_level?.level?.image?.url;
+  const [imgPopup, setImgPopup] = useState(currentImgLvl);
+  const [lottieStart, setLottieStart] = useState(false);
 
   const handleClose = () => {
     onClose();
@@ -66,6 +79,9 @@ function ModalCongrats({
   const scrollToBottomRight = () => {
     scrollViewRefRight.current?.scrollToEnd({animated: true});
   };
+  const scrollToBottomPopup = () => {
+    scrollViewRefPopup.current?.scrollToEnd({animated: true});
+  };
 
   useEffect(() => {
     if (isVisible) {
@@ -75,6 +91,19 @@ function ModalCongrats({
       setTimeout(() => {
         scrollToBottomRight();
       }, 2500);
+      setTimeout(() => {
+        setShowPopup(true);
+      }, 3000);
+      setTimeout(() => {
+        scrollToBottomPopup();
+        setLottieStart(true);
+        setImgPopup(newImgLvl);
+      }, 5000);
+      setTimeout(() => {
+        setLottieStart(false);
+      }, 5500);
+    } else {
+      setImgPopup(currentImgLvl);
     }
   }, [isVisible]);
 
@@ -152,6 +181,143 @@ function ModalCongrats({
       </>
     );
   };
+
+  const renderPopup = () => (
+    <Animatable.View
+      animation="fadeIn"
+      duration={500}
+      style={{
+        position: 'absolute',
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        height: sizing.getDimensionHeight(1),
+        width: sizing.getDimensionWidth(1),
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <View style={{position: 'relative', overflow: 'hidden'}}>
+        <Animatable.Text
+          animation="fadeInUp"
+          style={{
+            fontSize: moderateScale(24),
+            fontWeight: '700',
+            color: code_color.white,
+            textAlign: 'center',
+          }}>
+          {'Congratulations,\r\nyou leveled up!'}
+        </Animatable.Text>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+        <Animatable.Image
+          duration={0}
+          delay={0}
+          animation="fadeInUpBig"
+          source={{
+            uri: `${BACKEND_URL}${imgPopup}`,
+          }}
+          resizeMode="contain"
+          style={{
+            width: sizing.getDimensionWidth(0.3),
+            height: sizing.getDimensionWidth(0.3),
+            marginVertical: moderateScale(50),
+          }}
+        />
+        <Animatable.View
+          duration={200}
+          animation="fadeOut"
+          delay={3000}
+          style={{
+            width: sizing.getDimensionWidth(1),
+            height: 200,
+            position: 'absolute',
+          }}>
+          <AnimatedLottieView
+            source={confettiAnimate}
+            style={{
+              alignSelf: 'center',
+            }}
+            autoPlay={lottieStart}
+            duration={1000}
+            loop={false}
+          />
+        </Animatable.View>
+      </View>
+      <View
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          marginTop: moderateScale(50),
+        }}>
+        <Animatable.View
+          animation="fadeInUp"
+          style={{
+            width: sizing.getDimensionWidth(0.5),
+            height: moderateScale(60),
+            borderRadius: moderateScale(20),
+            backgroundColor: code_color.yellow,
+          }}>
+          <ScrollView
+            ref={scrollViewRefPopup}
+            scrollEnabled={false}
+            style={{
+              flex: 1,
+              position: 'relative',
+              overflow: 'hidden',
+              height: moderateScale(60),
+              maxWidth: '100%',
+            }}>
+            {leveling &&
+              leveling
+                .filter(
+                  itm => itm?.id < newLevel + 1 && itm?.id + 1 > currentLevel,
+                )
+                .map((itm, idx) => (
+                  <View
+                    style={{
+                      height: moderateScale(60),
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: moderateScale(18),
+                        fontWeight: '700',
+                      }}>
+                      {itm?.desc?.replace(' ', '\r\n')}
+                    </Text>
+                  </View>
+                ))}
+          </ScrollView>
+        </Animatable.View>
+      </View>
+      <TouchableOpacity
+        onPress={() => setShowPopup(false)}
+        style={{
+          backgroundColor: '#DDDEE3',
+          marginTop: moderateScale(150),
+          width: sizing.getWindowWidth(0.8),
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: moderateScale(40),
+          borderRadius: moderateScale(6),
+        }}>
+        <Text
+          style={{
+            fontSize: moderateScale(16),
+            color: code_color.black,
+            fontWeight: '600',
+          }}>
+          Close
+        </Text>
+      </TouchableOpacity>
+    </Animatable.View>
+  );
 
   return (
     <Modal
@@ -258,7 +424,7 @@ function ModalCongrats({
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
-                        {userProfile?.data?.user_level?.point} XP
+                        {newXp} XP
                       </Animatable.Text>
                     </View>
                   </Animatable.View>
@@ -332,7 +498,6 @@ function ModalCongrats({
                       style={{
                         width: 30,
                         height: 30,
-                        marginRight: 10,
                       }}
                     />
                     <ScrollView
@@ -345,24 +510,16 @@ function ModalCongrats({
                         height: moderateScale(36),
                         maxWidth: moderateScale(70),
                       }}>
-                      {[
-                        0,
-                        1,
-                        2,
-                        3,
-                        4,
-                        5,
-                        6,
-                        7,
-                        8,
-                        9,
-                        userProfile?.data?.user_level?.point,
-                      ].map(itm => (
+                      {Array.from(
+                        {length: newXp - currentXp + 1},
+                        (_, index) => currentXp + index,
+                      ).map(itm => (
                         <Text
                           key={itm}
                           style={{
                             fontWeight: 'bold',
                             fontSize: moderateScale(30),
+                            textAlign: 'center',
                           }}>
                           {itm}
                         </Text>
@@ -373,12 +530,13 @@ function ModalCongrats({
                         flex: 1,
                         fontWeight: 'bold',
                         fontSize: moderateScale(22),
-                        left: -8,
+                        left: -10,
                       }}>
                       XP
                     </Text>
                   </View>
                   <ScrollView
+                    scrollEnabled={false}
                     ref={scrollViewRefRight}
                     style={{
                       flex: 1,
@@ -386,47 +544,53 @@ function ModalCongrats({
                       overflow: 'hidden',
                       height: moderateScale(38),
                     }}>
-                    {[
-                      'Romance Rookie',
-                      'Heartfelt Adventure',
-                      userProfile?.data?.user_level?.level?.desc,
-                    ].map((itm, idx) => (
-                      <View
-                        key={idx}
-                        style={{
-                          flexDirection: 'row',
-                          flex: 1,
-                          alignItems: 'center',
-                          height: moderateScale(38),
-                        }}>
-                        <Image
-                          source={{
-                            uri: `${BACKEND_URL}/${userProfile?.data?.user_level?.level?.image?.url}`,
-                          }}
-                          resizeMode="contain"
-                          style={{
-                            width: 30,
-                            height: 30,
-                            marginRight: 10,
-                          }}
-                        />
-                        <View style={{width: 100, alignItems: 'center'}}>
-                          <Text
+                    {leveling &&
+                      leveling
+                        .filter(
+                          itm =>
+                            itm?.id < newLevel + 1 &&
+                            itm?.id + 1 > currentLevel,
+                        )
+                        .map((itm, idx) => (
+                          <View
+                            key={idx}
                             style={{
-                              fontWeight: 'bold',
-                              fontSize: 16,
-                              textAlign: 'center',
+                              flexDirection: 'row',
+                              flex: 1,
+                              alignItems: 'center',
+                              height: moderateScale(38),
                             }}>
-                            {itm}
-                          </Text>
-                        </View>
-                      </View>
-                    ))}
+                            <Image
+                              source={{
+                                uri: `${BACKEND_URL}${itm.image?.url}`,
+                              }}
+                              resizeMode="contain"
+                              style={{
+                                width: 30,
+                                height: 30,
+                                marginRight: 10,
+                              }}
+                            />
+                            <View style={{width: 100, alignItems: 'center'}}>
+                              <Text
+                                style={{
+                                  fontWeight: 'bold',
+                                  fontSize: 16,
+                                  textAlign: 'center',
+                                }}>
+                                {itm.desc}
+                              </Text>
+                            </View>
+                          </View>
+                        ))}
                   </ScrollView>
                 </View>
 
-                <View style={{ marginLeft: '20%', marginTop: 20}}>
-                <ProgressBar bgTheme={colorTheme} userProfile={userProfile} />
+                <View style={{marginLeft: '20%', marginTop: 20}}>
+                  <ProgressBar
+                    bgTheme={colorTheme}
+                    levelingUser={levelingUser}
+                  />
                 </View>
 
                 <Text
@@ -463,6 +627,7 @@ function ModalCongrats({
           </SafeAreaView>
         </View>
       </View>
+      {showPopup && renderPopup()}
     </Modal>
   );
 }

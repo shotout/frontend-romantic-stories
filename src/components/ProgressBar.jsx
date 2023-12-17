@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { code_color } from '../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
 
-const ProgressBar = ({  bgTheme, userProfile }) => {
+const ProgressBar = ({  bgTheme, levelingUser }) => {
 
   const [showInfo, setShowInfo] = useState(null);
   const animatedProgress = new Animated.Value(0);
-  const progress = userProfile?.data?.user_level?.point
+  const progress = levelingUser?.user_level?.point;
 
   useEffect(() => {
     // Animasikan perubahan nilai progress
