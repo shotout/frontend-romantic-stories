@@ -23,11 +23,11 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setProgress(userProfile.gender === 'Female'
-    ?  userProfile.avatar_male - 1
-    :  userProfile.avatar_female - 4 )
-  }, [userProfile.gender]);
+  // useEffect(() => {
+  //   setProgress(userProfile.gender === 'Female'
+  //   ?  userProfile.avatar_male - 1
+  //   :  userProfile.avatar_female - 4 )
+  // }, [userProfile.gender]);
 
   useEffect(() => {
     fetchAva();
@@ -38,7 +38,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
       setLoading(true);
       const payload = {
         _method: 'PATCH',
-        [userProfile.gender === 'Female' ? 'avatar_male' : 'avatar_female']:
+        [userProfile.gender === 'Female'  ? 'avatar_male' : userProfile.gender === null ? 'avatar_female' : 'avatar_female']:
           avatar,
       };
       await updateProfile(payload);
@@ -57,13 +57,28 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
+        // alert(userProfile.gender === 'Male'
+        // ? userProfile.avatar_male - 1
+        // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 )
+        // setProgress(
+        //   userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4, 
+        // );
       } else {
         const params = {
           gender: userProfile.gender === 'Female' ? 'male' : 'female',
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
-        
+        // alert(userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 )
+        // setProgress(
+        //   userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 
+        // );
       
       }
     } catch (error) {

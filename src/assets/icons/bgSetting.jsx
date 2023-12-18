@@ -18,6 +18,7 @@ function SvgComponent(props) {
     profileUrl = '',
     style,
   } = props;
+  console.log(JSON.stringify(profileUrl.includes('3')))
   return (
     <Svg
       width={width}
@@ -107,8 +108,8 @@ function SvgComponent(props) {
           href={{
             uri: profileUrl,
           }}
-          x="142"
-          y="-15"
+          x={profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
+          y={profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
           width="100%"
           height="300"
           rx="28"

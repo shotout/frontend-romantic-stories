@@ -83,6 +83,7 @@ const ExploreLibraryScreen = ({
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
   const [loadingAds, setLoadingAds] = useState(false);
+
   const showWatchAds = async () => {
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
@@ -94,6 +95,14 @@ const ExploreLibraryScreen = ({
       }, 500);
     });
   };
+
+  const handlePremium = async() => {
+    setTimeout(async () => {
+      const resp = await getStoryDetail(selectedStory?.id);
+      handleNextStory(resp.data);
+      setShowUnlockedStory(true);
+    }, 500);
+  }
 
   const handleUnlimited = async () => {
     //
@@ -364,12 +373,12 @@ const ExploreLibraryScreen = ({
                 {data?.most_read.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (userProfile?.data?.subscription?.plan?.id === 1) {
+                      if (userProfile?.data?.subscription?.plan_id === 1) {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       } else {
-                        setShowModalUnlock(true);
                         setSelectedStory(itm);
+                        handlePremium()
                       }
                     }}
                     style={{
@@ -377,8 +386,8 @@ const ExploreLibraryScreen = ({
                       marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {userProfile?.data?.subscription?.id != 2 &&
-                      userProfile?.data?.subscription?.id != 3 && (
+                    {userProfile?.data?.subscription?.plan_id != 2 &&
+                      userProfile?.data?.subscription?.plan_id != 3 && (
                         <LockFree
                           height={16}
                           width={55}
@@ -437,7 +446,7 @@ const ExploreLibraryScreen = ({
                 {data?.category.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if(userProfile?.data?.subscription?.plan?.id === 1){
+                      if(userProfile?.data?.subscription?.plan_id === 1){
                         setSelectStory(itm.id);
                         setShowModalUnlockCategory(true)
                       }else{
@@ -470,7 +479,7 @@ const ExploreLibraryScreen = ({
                         <ChecklistSvg width={10} />
                       ) : null}
                     </View>
-                    { userProfile?.data?.subscription?.id != 2 && userProfile?.data?.subscription?.id != 3  && (
+                    { userProfile?.data?.subscription?.plan_id != 2 && userProfile?.data?.subscription?.plan_id != 3  && (
                       <LockFree
                         height={16}
                         width={55}
@@ -484,7 +493,7 @@ const ExploreLibraryScreen = ({
                     )}
                     <Image
                       source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
-                      resizeMode='cover'
+                      resizeMode='contain'
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text
@@ -517,9 +526,12 @@ const ExploreLibraryScreen = ({
                 {data.most_share.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (!isPremium) {
+                      if(userProfile?.data?.subscription?.plan_id === 1){
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
+                      }else{
+                        setSelectedStory(itm);
+                        handlePremium()
                       }
                     }}
                     style={{
@@ -528,8 +540,8 @@ const ExploreLibraryScreen = ({
                         idx + 1 === data?.most_share?.length ? 0 : 16,
                     }}
                     key={idx}>
-                    {userProfile?.data?.subscription?.id != 2 &&
-                      userProfile?.data?.subscription?.id != 3 && (
+                    {userProfile?.data?.subscription?.plan_id != 2 &&
+                      userProfile?.data?.subscription?.plan_id != 3 && (
                         <LockFree
                           height={16}
                           width={55}

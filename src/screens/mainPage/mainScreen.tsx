@@ -280,6 +280,11 @@ const MainScreen = ({
       AsyncStorage.setItem('setToday', strTanggalSekarang);
     }
   };
+  const fecthNextStory = async() => {
+    const res = await getStoryList();
+    handleNextStory(res.data);
+    setShowModal(true);
+  }
   useEffect(() => {
     fetchCheckingDay();
   }, []);
@@ -338,7 +343,10 @@ const MainScreen = ({
       const resp = await addPastLevel(data)
       if(resp?.data){
         handleLeveling(resp?.data)
-        setShowModalCongrats(true);
+        setTimeout(() => {
+          setShowModalCongrats(true);
+        }, 200);
+        
       }
      
     } else if (
@@ -348,7 +356,10 @@ const MainScreen = ({
     ) {
      
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      setShowModalCongrats(true);
+      setTimeout(() => {
+        setShowModalCongrats(true);
+      }, 5000);
+    
     }
     if (pageNumber === dataBook?.content_en?.length - 1) {
       //   if(isPremium){
@@ -1069,7 +1080,8 @@ const MainScreen = ({
             isVisible={showModalGetPremium}
             onGotIt={() => {
               setShowModalGetPremium(false);
-              setShowModal(true);
+              fecthNextStory()
+             
             }}
             onClose={() => setShowModalGetPremium(false)}
           />

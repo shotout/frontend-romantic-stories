@@ -159,7 +159,7 @@ function ModalUnlockStory({
               </View>
 
               <Text style={{color: code_color.white, textAlign: 'center'}}>
-                [{price}] for 1 week access
+                {price} for 1 week access
               </Text>
             </Pressable>
             <Pressable

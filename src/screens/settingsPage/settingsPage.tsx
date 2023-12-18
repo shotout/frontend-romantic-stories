@@ -58,6 +58,7 @@ const SettingsPage = ({
   getAvatarFemale,
   levelingUser
 }) => {
+
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
   const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
@@ -154,15 +155,15 @@ const SettingsPage = ({
                 fontSize: moderateScale(14),
               }}>
               {userProfile?.data?.name} •{' '}
-              {userProfile?.data?.user_level?.level?.desc} •{' '}
-              {userProfile?.data?.user_level?.point} XP
+              {levelingUser?.user_level?.level?.desc} •{' '}
+              {levelingUser?.user_level?.point} XP
             </Text>
           </View>
           <View  style={{marginLeft: '30%', marginTop: 50}}>
 
             <ProgressBar
               bgTheme={bgTheme}
-              userProfile={userProfile}
+              levelingUser={levelingUser}
             />
           </View>
         </View>
@@ -280,10 +281,9 @@ const SettingsPage = ({
                   alignItems: 'center',
                   right: -5
                 }}>
-                <Image
+                   <Image
                   source={{
-                    uri:
-                      BACKEND_URL + getAvatarMale
+                    uri: BACKEND_URL + getAvatarFemale,
                   }}
                   style={{
                     width: 40,
@@ -295,6 +295,7 @@ const SettingsPage = ({
                     right: 0,
                   }}
                 />
+                
               </View>
               <View
                 style={{
@@ -308,9 +309,10 @@ const SettingsPage = ({
                   alignItems: 'center',
                   marginRight: 10,
                 }}>
-                <Image
+               <Image
                   source={{
-                    uri: BACKEND_URL + getAvatarFemale,
+                    uri:
+                      BACKEND_URL + getAvatarMale
                   }}
                   style={{
                     width: 40,

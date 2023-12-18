@@ -136,7 +136,7 @@ export default function Register5({gender, setTheme, userStory}) {
                   padding: 1,
                   paddingHorizontal: 7,
                   borderRadius: 20,
-                  backgroundColor: code_color.blueDark,
+                  backgroundColor: colorsDefault,
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',

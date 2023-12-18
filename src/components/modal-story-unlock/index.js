@@ -44,7 +44,7 @@ function ModalUnlockStory({
   const handleClose = () => {
     onClose();
   };
-
+  // alert(JSON.stringify(nextStory))
   const AddCollection = async () => {
     if (collect != '') {
       if (edit) {

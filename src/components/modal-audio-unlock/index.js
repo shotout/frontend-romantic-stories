@@ -370,7 +370,7 @@ function ModalAudioStory({
                  
                   
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {`Get 10 Audio Stories for  [${price}]`}
+                  {`Get 10 Audio Stories for  ${price}`}
                   </Text>
                 </Pressable>
               <Pressable
@@ -400,7 +400,7 @@ function ModalAudioStory({
                   </View>
                   
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {`Get 50 Audio Stories for [${price2}]`}
+                  {`Get 50 Audio Stories for ${price2}`}
                   </Text>
                 </Pressable>
               <View

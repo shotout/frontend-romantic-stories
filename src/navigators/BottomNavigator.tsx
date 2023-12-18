@@ -201,7 +201,10 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                       ? code_color.white
                       : userProfile?.colorTheme,
                 }}>
-                {item.name}
+                   {item.name === 'SAVE' &&
+              userProfile?.userStory?.is_collection === null ? 'SAVE' : item.name === 'SAVE' &&
+              userProfile?.userStory?.is_collection != null ? 'SAVED' : item.name}
+
               </Text>
             </TouchableOpacity>
           );
@@ -223,6 +226,7 @@ function MyTabs(props) {
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
   const [visibleModal, setVisibleModal] = React.useState(false);
   const [title, setTitle] = React.useState('Save');
+  const [titleBottom, setTitleBottom] = React.useState('SAVE');
   const [imgHeartsTranslateY] = useState(new Animated.Value(0));
   const [imgHeartsTranslateX] = useState(new Animated.Value(-50));
   const positionX = useRef(new Animated.Value(0)).current;
@@ -264,6 +268,7 @@ function MyTabs(props) {
  
     setTimeout(() => {
       setTitle('saved')
+      setTitleBottom('SAVED')
     }, 400);
     // Mulai animasi
     Animated.loop(jumpAndFallAnimation).start();
@@ -403,7 +408,7 @@ function MyTabs(props) {
                   fontSize: 11,
                   marginTop: 2,
                 }}>
-                SAVE
+                {props.userStory?.is_collection === null ? 'SAVE' : 'SAVED'}
               </Text>
             </TouchableOpacity>
           ),

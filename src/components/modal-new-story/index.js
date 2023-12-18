@@ -292,7 +292,7 @@ function ModalNewStory({
                     </Text>
                   </View>
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                    Unlock 1 more Story directly for [{price}]
+                    Unlock 1 more Story directly for {price}
                   </Text>
                 </Pressable>
                 <View

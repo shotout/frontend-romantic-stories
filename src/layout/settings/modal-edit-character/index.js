@@ -23,13 +23,15 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setProgress(
-      userProfile.gender === 'Male'
-        ? userProfile.avatar_male - 1
-        : userProfile.avatar_female - 4,
-    );
-  }, [userProfile.gender]);
+  // useEffect(() => {
+  //   setProgress(
+  //     userProfile.gender === 'Male'
+  //       ? userProfile.avatar_male - 1
+  //       : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4, 
+  //   );
+
+  // }, [userProfile.gender]);
+  
 
   useEffect(() => {
     fetchAva();
@@ -54,17 +56,33 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
   };
 
   const fetchAva = async value => {
+    console.log(userProfile.gender + '===='+userProfile.avatar_male+"====="+userProfile.avatar_female)
+    // alert(userProfile.gender === 'Male'
+    // ? userProfile.avatar_male - 1
+    // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female )
+
     try {
       if (!userProfile.gender) {
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
+      
+        // setProgress(
+        //   userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4, 
+        // );
       } else {
         const params = {
           gender: userProfile.gender === 'Male' ? 'male' : 'female',
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+        // setProgress(
+        //   userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 
+        // );
       }
     } catch (error) {
       // alert(JSON.stringify(error));
