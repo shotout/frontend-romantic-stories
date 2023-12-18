@@ -244,9 +244,6 @@ function MyTabs(props) {
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
   const handleFetchSaveAnim = async () => {
-   
-    // ... (your existing code)
-
     // Start the downward animation when the image is saved
     const jumpAndFallAnimation = Animated.parallel([
       // Animasi lompatan ke kiri
@@ -258,8 +255,8 @@ function MyTabs(props) {
       }),
       // Animasi jatuh ke bawah
       Animated.timing(positionY, {
-        toValue: 500, // Ganti nilai ini sesuai kebutuhan tinggi jatuh
-        duration: 1800,
+        toValue: 400, // Ganti nilai ini sesuai kebutuhan tinggi jatuh
+        duration: 1300,
         easing: Easing.linear,
         useNativeDriver: false,
       }),
@@ -268,9 +265,16 @@ function MyTabs(props) {
     setTimeout(() => {
       setTitle('saved')
       setTitleBottom('SAVED')
-    }, 400);
+    }, 1300);
     // Mulai animasi
-    Animated.loop(jumpAndFallAnimation).start();
+    setTimeout(() => {
+      jumpAndFallAnimation.start(() => {
+        setTimeout(() => {
+          positionX.setValue(0);
+          positionY.setValue(0);
+        }, 1000);
+      });
+    }, 500);
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
@@ -287,7 +291,7 @@ function MyTabs(props) {
       }, 300);
       setTimeout(() => {
         setVisibleModal(false);
-      }, 2000);
+      }, 2500);
     } else {
       const data = await deleteMyStory(props.userStory?.id);
       setTitle('save')

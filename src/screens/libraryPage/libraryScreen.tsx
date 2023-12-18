@@ -871,7 +871,12 @@ const LibraryScreen = ({
               value={keyword}
               onChangeText={value => setKeyword(value)}
               onSubmitEditing={() => handleRestart()}
-              style={{marginLeft: 10, fontSize: 14}}
+              style={{
+                marginLeft: 10,
+                fontSize: 14,
+                height: 40,
+                flex: 1,
+              }}
             />
           </View>
           <Pressable onPress={() => setShowModalSort(true)}>

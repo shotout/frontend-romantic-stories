@@ -668,7 +668,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       setTimeout(() => {
         setShowModal(true);
-      }, 3000);
+      }, 2500);
       return (
         <SafeAreaView
           // onTouchStart={handleTouchStart}
