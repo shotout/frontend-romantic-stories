@@ -30,6 +30,7 @@ import {
   imgBgTips,
   imgLoveLeft,
   imgLoveRight,
+  imgSelectGift,
   imgStep1,
   imgStep2,
   imgStep5,
@@ -104,7 +105,7 @@ const MainScreen = ({
   handleNextStory,
   nextStory,
   handleStoriesRelate,
-  handleLeveling
+  handleLeveling,
 }) => {
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
@@ -280,11 +281,11 @@ const MainScreen = ({
       AsyncStorage.setItem('setToday', strTanggalSekarang);
     }
   };
-  const fecthNextStory = async() => {
+  const fecthNextStory = async () => {
     const res = await getStoryList();
     handleNextStory(res.data);
     setShowModal(true);
-  }
+  };
   useEffect(() => {
     fetchCheckingDay();
   }, []);
@@ -338,28 +339,24 @@ const MainScreen = ({
       // jika nanti pertama kali melakukan update data terakhir
       await addPastStory(dataBook.id);
       const data = {
-        value: dataBook?.content_en?.length
-      }
-      const resp = await addPastLevel(data)
-      if(resp?.data){
-        handleLeveling(resp?.data)
+        value: dataBook?.content_en?.length,
+      };
+      const resp = await addPastLevel(data);
+      if (resp?.data) {
+        handleLeveling(resp?.data);
         setTimeout(() => {
           setShowModalCongrats(true);
         }, 200);
-        
       }
-     
     } else if (
       existingEntry &&
       pageNumber === dataBook?.content_en?.length - 1 &&
       !(isPremiumStory || isPremiumAudio)
     ) {
-     
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setTimeout(() => {
         setShowModalCongrats(true);
       }, 5000);
-    
     }
     if (pageNumber === dataBook?.content_en?.length - 1) {
       //   if(isPremium){
@@ -410,19 +407,22 @@ const MainScreen = ({
     const disabledWidth = 100;
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < screenWidth / 2 - disabledWidth / 2 || touchX > screenWidth / 2 + disabledWidth / 2) {
-     alert('ooooooo')
+    if (
+      touchX < screenWidth / 2 - disabledWidth / 2 ||
+      touchX > screenWidth / 2 + disabledWidth / 2
+    ) {
+      alert('ooooooo');
     }
-      // setIsSwipingLeft(true);
-      // if (activeStep === 1) {
-      // } else {
-      //   setTutorial({
-      //     ...isTutorial,
-      //     step: isTutorial.step - 1,
-      //   });
-      //   setActiveStep(prevStep => prevStep - 1);
-      //   handleSetSteps(activeStep - 1);
-      // }
+    // setIsSwipingLeft(true);
+    // if (activeStep === 1) {
+    // } else {
+    //   setTutorial({
+    //     ...isTutorial,
+    //     step: isTutorial.step - 1,
+    //   });
+    //   setActiveStep(prevStep => prevStep - 1);
+    //   handleSetSteps(activeStep - 1);
+    // }
     // } else if (touchX < halfScreenWidth){
     //   alert('okeee kiri')
     // }
@@ -506,8 +506,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
-    // AsyncStorage.setItem('isTutorial', 'yes');
+    handleSetSteps(5);
+    AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
@@ -529,7 +529,6 @@ const MainScreen = ({
           handleSetSteps(1);
         }, 3500);
       } else if (activeStep === 2) {
-       
         setFinishTutorial(false);
         setIsRippleAnimate(true);
         setTimeout(() => {
@@ -868,6 +867,12 @@ const MainScreen = ({
       } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
+
+        if(stepsTutorial === 5 || activeStep === 5){
+          setTimeout(() => {
+            handleNext()
+          }, 2500);
+        }
         return (
           <SafeAreaView
             // onTouchStart={handleTouchStart}
@@ -883,7 +888,25 @@ const MainScreen = ({
             {activeStep === 1 ? (
               <Step1 handleNext={handleNext} />
             ) : activeStep === 5 || stepsTutorial == 5 ? (
-              <Step5 handleNext={handleNext} />
+              <View style={{alignItems: 'center'}}>
+                <Step5 handleNext={handleNext} />
+
+                <Image
+                  source={imgSelectGift}
+                  style={{width: 280, height: 280, marginTop: '-25%'}}
+                />
+                <View style={{position: 'absolute', bottom: 30}}>
+                  <AnimatedLottieView
+                    source={rippleAnimate}
+                    style={{
+                      width: 100,
+                    }}
+                    autoPlay
+                    duration={1500}
+                    loop={true}
+                  />
+                </View>
+              </View>
             ) : (
               <Step2 handleNext={handleNext} />
             )}
@@ -1080,8 +1103,7 @@ const MainScreen = ({
             isVisible={showModalGetPremium}
             onGotIt={() => {
               setShowModalGetPremium(false);
-              fecthNextStory()
-             
+              fecthNextStory();
             }}
             onClose={() => setShowModalGetPremium(false)}
           />

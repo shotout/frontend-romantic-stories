@@ -1,11 +1,12 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Image, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import quoteAnimate from '../../assets/lottie/quote.json';
+import { imgSelectGift } from '../../assets/images';
 
 const Step5 = ({handleNext}) => {
   // return <></>;
@@ -17,7 +18,7 @@ const Step5 = ({handleNext}) => {
         padding: 10,
         marginHorizontal: 40,
         alignItems: 'center',
-        marginTop: '40%',
+        marginTop: '20%',
         paddingTop: 50,
       }}>
       <View
@@ -74,6 +75,7 @@ const Step5 = ({handleNext}) => {
           onPress={handleNext}
         />
       </Animatable.View>
+
     </View>
   );
 };

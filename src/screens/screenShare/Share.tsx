@@ -59,6 +59,7 @@ import {
   imgStep6,
   imgStep7,
   imgStep8,
+  imgSelectGift2,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -93,6 +94,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
+  const [showModal, setShowModal] = useState(false);
   const [fontSelect, setSelectFont] = useState({
     name: 'Roboto',
     value: 'Roboto-Regular',
@@ -664,6 +666,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   const renderProgress = () => <StepHeader currentStep={stepsTutorial + 2} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
+      setTimeout(() => {
+        setShowModal(true);
+      }, 3000);
       return (
         <SafeAreaView
           // onTouchStart={handleTouchStart}
@@ -679,12 +684,23 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           }}>
           {renderProgress()}
           {stepsTutorial === 6 ? (
-            <Step6
-              handleNext={() => {
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false);
-              }}
-            />
+            <View>
+              {showModal ? (
+                <Step6
+                  handleNext={() => {
+                    handleSetSteps(stepsTutorial + 1);
+                    setVisible(false);
+                  }}
+                />
+              ) : (
+                <View style={{alignItems: 'center'}}>
+                  <Image
+                    source={imgSelectGift2}
+                    style={{width: 280, height: 280, marginTop: '25%'}}
+                  />
+                </View>
+              )}
+            </View>
           ) : (
             <Step7
               handleNext={() => {
