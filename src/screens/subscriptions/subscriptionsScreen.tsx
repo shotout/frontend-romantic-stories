@@ -60,16 +60,15 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     userProfile?.data?.notif_ads_enable === 0 ? false : true,
   );
   const subscriptionStartDate = moment(userProfile?.data?.subscription.started);
+alert(JSON.stringify(userProfile?.data?.subscription))
+  // Mendapatkan tanggal berakhir langganan (1 tahun setelah tanggal mulai)
+  const subscriptionEndDate = subscriptionStartDate.add(1, 'year');
 
-// Mendapatkan tanggal berakhir langganan (1 tahun setelah tanggal mulai)
-const subscriptionEndDate = subscriptionStartDate.add(1, 'year');
+  // Mendapatkan tanggal saat ini
+  const currentDate = moment();
 
-// Mendapatkan tanggal saat ini
-const currentDate = moment();
-
-// Menghitung sisa hari
-const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
-
+  // Menghitung sisa hari
+  const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
 
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
@@ -125,7 +124,7 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
-      setTimeout(async() => {
+      setTimeout(async () => {
         setShowAudio(true);
         const payload = {
           _method: 'PATCH',
@@ -147,7 +146,7 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
       setShow(false);
-      setTimeout(async() => {
+      setTimeout(async () => {
         setShowAudio(true);
         const payload = {
           _method: 'PATCH',
@@ -208,7 +207,8 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
       </View>
       <ScrollView
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: '#D8DEFD',
+          opacity: 1,
           height: '100%',
           flex: 1,
           padding: moderateScale(20),
@@ -228,6 +228,14 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
         <View
           style={{
             backgroundColor: code_color.white,
+            shadowColor: code_color.grey,
+            // shadowRadius: 4,
+            // shadowOffset: {
+            //   width: 1,
+            //   height: 1,
+            // },
+            // shadowOpacity: 1,
+            // elevation:1,
             padding: 10,
             borderRadius: 10,
           }}>
@@ -289,69 +297,77 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
               </View>
             </View>
           ))}
-          {userProfile?.data?.subscription?.plan?.id != 1 ?
-          <View>
-          <View style={{flexDirection: 'row', marginVertical: 10}}>
-           <View style={{flex: 1, alignItems: 'flex-start'}}>
-            <Text
-                style={{
-                  fontSize: moderateScale(14),
-                  color: code_color.grey,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                 
-                }}>
-                Start
-              </Text>
-              <Text
-                style={{
-                  fontSize: moderateScale(14),
-                  color: code_color.blueDark,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {moment(userProfile?.data?.subscription.started).format('YYYY-MM-DD')}
-              </Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-            <Text
-                style={{
-                  fontSize: moderateScale(14),
-                  color: code_color.grey,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                 
-                }}>
-                End
-              </Text>
-              <Text
-                style={{
-                  fontSize: moderateScale(14),
-                  color: code_color.blueDark,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {moment(userProfile?.data?.subscription.started).add(1, 'year').format('YYYY-MM-DD')}
-              </Text>
-            </View>
-           </View>
-           <Progress.Bar progress={0.1} width={Dimensions.get('window').width - 60} color='#5873FF' />
-           <View style={{flex: 1, alignItems: 'flex-end', marginVertical: 10}}>
-              <Text
-                style={{
-                  fontSize: moderateScale(14),
-                  color: code_color.grey,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                 {remainingDays} Days
-              </Text>
-            </View>
-          </View> : null }
-          
+          <View style={{ borderStyle: 'dashed', marginHorizontal: 0, borderWidth: 1, marginVertical: 10, borderColor: code_color.greyDefault}} />
           {userProfile?.data?.subscription?.plan?.id != 1 ? (
-           
-             <Pressable onPress={() => openPaymentSettings()}> 
+            <View>
+              <View style={{flexDirection: 'row', marginVertical: 10}}>
+                <View style={{flex: 1, alignItems: 'flex-start'}}>
+                  <Text
+                    style={{
+                      fontSize: moderateScale(14),
+                      color: code_color.grey,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    Start
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: moderateScale(14),
+                      color: code_color.blueDark,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    {moment(userProfile?.data?.subscription.started).format(
+                      'YYYY-MM-DD',
+                    )}
+                  </Text>
+                </View>
+                <View style={{flex: 1, alignItems: 'flex-end'}}>
+                  <Text
+                    style={{
+                      fontSize: moderateScale(14),
+                      color: code_color.grey,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    End
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: moderateScale(14),
+                      color: code_color.blueDark,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    {moment(userProfile?.data?.subscription.started)
+                      .add(1, 'year')
+                      .format('YYYY-MM-DD')}
+                  </Text>
+                </View>
+              </View>
+              <Progress.Bar
+                progress={0.1}
+                width={Dimensions.get('window').width - 60}
+                color="#5873FF"
+              />
+              <View
+                style={{flex: 1, alignItems: 'flex-end', marginVertical: 10}}>
+                <Text
+                  style={{
+                    fontSize: moderateScale(14),
+                    color: code_color.grey,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  {remainingDays} Days
+                </Text>
+              </View>
+            </View>
+          ) : null}
+
+          {userProfile?.data?.subscription?.plan?.id != 1 ? (
+            <Pressable onPress={() => openPaymentSettings()}>
               <Text
                 style={{
                   fontSize: moderateScale(16),
@@ -409,7 +425,7 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
               </Text>
             </Pressable>
           )}
-          {userProfile?.data?.subscription?.is_audio != 0 ? (
+          {userProfile?.data?.subscription?.is_audio != 0 && userProfile?.data?.subscription?.plan_id == 1 ? (
             <View style={{marginBottom: 20}}>
               <Text
                 style={{
@@ -452,20 +468,21 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
                 <View
                   style={{flexDirection: 'row', marginLeft: 10, marginTop: 5}}>
                   <Progress.Circle
-                    size={50}
-                    borderWidth={5}
-                    indeterminate={false}
-                    progress={userProfile?.data?.subscription?.audio_take}
+                    size={60}
+                    thickness={5}
+                    borderWidth={2}
+                    progress={userProfile?.data?.subscription?.audio_take / 10}
                     showsText
                     formatText={() =>
                       `${Math.round(
-                        userProfile?.data?.subscription?.audio_take * 100,
+                        (userProfile?.data?.subscription?.audio_take * 100) /
+                          100,
                       )} / ${Math.round(
-                        userProfile?.data?.subscription?.audio_limit * 100,
+                        (userProfile?.data?.subscription?.audio_limit * 100) /
+                          100,
                       )}`
                     }
                     textStyle={{fontSize: 12, fontWeight: 'bold'}}
-                    thickness={10}
                   />
 
                   <View>
@@ -500,137 +517,157 @@ const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
               </Pressable>
             </View>
           ) : null}
-             {userProfile?.data?.subscription?.audio_take != 0 ?
-             <View>
- <View
-              style={{
-                flexDirection: 'row',
-                marginHorizontal: moderateScale(10),
-                alignItems: 'center',
-                marginVertical: moderateScale(20),
-                opacity: 0.2,
-              }}>
+          {userProfile?.data?.subscription?.audio_take != 0 && userProfile?.data?.subscription?.plan_id != 1 ? (
+            <View>
               <View
                 style={{
-                  backgroundColor: code_color.black,
-                  flex: 1,
-                  height: 1,
-                }}
-              />
-              <Text style={{marginHorizontal: moderateScale(8)}}>INACTIVE PACKAGE</Text>
-              <View
-                style={{
-                  backgroundColor: code_color.black,
-                  flex: 1,
-                  height: 1,
-                }}
-              />
-            </View>
-            <Text style={{marginHorizontal: moderateScale(8), textAlign: 'center'}}> You can still use the remaining Stories after your Subscription expired</Text>
-          <View style={{marginBottom: 20,}}>
-              <Text
-                style={{
-                  fontSize: moderateScale(16),
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  marginVertical: 20,
-                  color: '#505962'
-                }}>
-                Audio Stories:
-              </Text>
-              <Pressable
-                onPress={() => {
-                  handlePayment('inapp_paywall_a');
-                }}
-                style={{
-                  backgroundColor: '#DDDEE3',
-                  width: '100%',
-                  marginTop: moderateScale(10),
-                  paddingVertical: moderateScale(14),
-                  borderRadius: moderateScale(6),
+                  flexDirection: 'row',
+                  marginHorizontal: moderateScale(10),
+                  alignItems: 'center',
+                  marginVertical: moderateScale(20),
+                  opacity: 0.2,
                 }}>
                 <View
                   style={{
-                    position: 'absolute',
-                    marginHorizontal: 'auto',
-                    backgroundColor: '#93989F',
-                    alignSelf: 'center',
-                    paddingVertical: moderateScale(0),
-                    paddingHorizontal: moderateScale(24),
-                    borderRadius: moderateScale(10),
-                    zIndex: 1,
-                    top: -moderateScale(8),
-                  }}>
-                  <Text style={{color: code_color.white, fontWeight: 600}}>
-                    Package: {userProfile?.data?.subscription?.audio_limit}{' '}
-                    Audio Stories
-                  </Text>
-                </View>
-
+                    backgroundColor: code_color.black,
+                    flex: 1,
+                    height: 1,
+                  }}
+                />
+                <Text style={{marginHorizontal: moderateScale(8)}}>
+                  INACTIVE PACKAGE
+                </Text>
                 <View
-                  style={{flexDirection: 'row', marginLeft: 10, marginTop: 5}}>
-                  <Progress.Circle
-                    size={50}
-                    indeterminate={false}
-                    borderWidth={5}
-                    borderColor="#93989F"
-                    strokeCap='round'
-                    // progress={userProfile?.data?.subscription?.audio_take}
-                    progress={10}
-                    showsText
-                    formatText={() =>
-                      `${Math.round(
-                        userProfile?.data?.subscription?.audio_take * 100,
-                      )} / ${Math.round(
-                        userProfile?.data?.subscription?.audio_limit * 100,
-                      )}`
-                    }
-                    
-                    textStyle={{fontSize: 12, fontWeight: 'bold', color: '#93989F'}}
-                    thickness={0}
-                  />
-
-                  <View>
-                    <Text
-                      style={{
-                        color: '#93989F',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                      }}>
-                      {userProfile?.data?.subscription?.audio_take} Audio
-                      Stories remaining
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#93989F',
-                        marginVertical: 5,
-                        marginLeft: 20,
-                        width: 200,
-                        textAlign: 'center',
-                      }}>
-                      You can still listen to{' '}
-                      {userProfile?.data?.subscription?.audio_take}/
-                      {userProfile?.data?.subscription?.audio_limit} Audio
-                      Stories in your package.
+                  style={{
+                    backgroundColor: code_color.black,
+                    flex: 1,
+                    height: 1,
+                  }}
+                />
+              </View>
+              <Text
+                style={{
+                  marginHorizontal: moderateScale(8),
+                  textAlign: 'center',
+                }}>
+                {' '}
+                You can still use the remaining Stories after your Subscription
+                expired
+              </Text>
+              <View style={{marginBottom: 20}}>
+                <Text
+                  style={{
+                    fontSize: moderateScale(16),
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    marginVertical: 20,
+                    color: '#505962',
+                  }}>
+                  Audio Stories:
+                </Text>
+                <Pressable
+                  onPress={() => {
+                    handlePayment('inapp_paywall_a');
+                  }}
+                  style={{
+                    backgroundColor: '#DDDEE3',
+                    width: '100%',
+                    marginTop: moderateScale(10),
+                    paddingVertical: moderateScale(14),
+                    borderRadius: moderateScale(6),
+                  }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      marginHorizontal: 'auto',
+                      backgroundColor: '#93989F',
+                      alignSelf: 'center',
+                      paddingVertical: moderateScale(0),
+                      paddingHorizontal: moderateScale(24),
+                      borderRadius: moderateScale(10),
+                      zIndex: 1,
+                      top: -moderateScale(8),
+                    }}>
+                    <Text style={{color: code_color.white, fontWeight: 600}}>
+                      Package: {userProfile?.data?.subscription?.audio_limit}{' '}
+                      Audio Stories
                     </Text>
                   </View>
-                </View>
 
-                {/* <BookLockIcon
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginLeft: 10,
+                      marginTop: 5,
+                    }}>
+                    <Progress.Circle
+                      size={60}
+                      thickness={5}
+                      borderWidth={2}
+                      progress={
+                        userProfile?.data?.subscription?.audio_take / 10
+                      }
+                      showsText
+                      formatText={() =>
+                        `${Math.round(
+                          (userProfile?.data?.subscription?.audio_take * 100) /
+                            100,
+                        )} / ${Math.round(
+                          (userProfile?.data?.subscription?.audio_limit * 100) /
+                            100,
+                        )}`
+                      }
+                      borderColor="#93989F"
+                      // progress={userProfile?.data?.subscription?.audio_take}
+                      color="#93989F"
+                      textStyle={{
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        color: '#93989F',
+                      }}
+                    />
+
+                    <View>
+                      <Text
+                        style={{
+                          color: '#93989F',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                        }}>
+                        {userProfile?.data?.subscription?.audio_take} Audio
+                        Stories remaining
+                      </Text>
+                      <Text
+                        style={{
+                          color: '#93989F',
+                          marginVertical: 5,
+                          marginLeft: 20,
+                          width: 200,
+                          textAlign: 'center',
+                        }}>
+                        You can still listen to{' '}
+                        {userProfile?.data?.subscription?.audio_take}/
+                        {userProfile?.data?.subscription?.audio_limit} Audio
+                        Stories in your package.
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* <BookLockIcon
                     style={{position: 'absolute', top: '70%', left: '12%'}}
                   /> */}
-              </Pressable>
+                </Pressable>
+              </View>
             </View>
-             </View>
-          : null }
+          ) : null}
         </View>
       </ScrollView>
       <ModalAudioUnlock
         isVisible={show}
         onClose={() => setShow(false)}
         onGetAudio={() => handleAudio()}
-        onGetAudio1={() => handleAudioOne()} 
-            />
+        onGetAudio1={() => handleAudioOne()}
+      />
     </SafeAreaView>
   );
 };

@@ -159,7 +159,6 @@ export default function QuotesContent({
   const handleSuccessAudio = async () => {
     const payload = {
       _method: 'PATCH',
-      is_audio: 1,
       audio_take: 1,
     };
     await updateProfile(payload);
@@ -194,6 +193,7 @@ export default function QuotesContent({
         onClose={() => setShowAudio(false)}
         title={title}
         handleListen={() => {
+        
           handleSuccessAudio();
         }}
       />
@@ -287,7 +287,6 @@ export default function QuotesContent({
               ) {
                 const payload = {
                   _method: 'PATCH',
-                  is_audio: 1,
                   audio_take: 1,
                 };
                 await updateProfile(payload);
@@ -429,6 +428,7 @@ export default function QuotesContent({
                   height: 110,
                   left: '40%',
                   zIndex: 1,
+                  bottom: partner === '/assets/images/avatars/5/think.png' ? -5 : null
                 }}>
                 <FastImage
                   source={{
@@ -438,7 +438,7 @@ export default function QuotesContent({
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
                     width: 100,
-                    height: 400,
+                    height: partner != null && partner === '/assets/images/avatars/5/think.png' ? 580 : 400,
                   }}
                 />
               </View>

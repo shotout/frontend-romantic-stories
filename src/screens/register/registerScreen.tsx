@@ -373,7 +373,8 @@ function RegisterScreen({
             ) : null}
           </View>
         )}
-       <View
+       <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
         >
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
@@ -414,7 +415,7 @@ function RegisterScreen({
                   borderRadius: moderateScale(12),
                   width: '100%',
                   marginTop: moderateScale(10),
-                  marginBottom: moderateScale(10),
+                  marginBottom: stepRegister === 2 ? 0 : moderateScale(10),
                 }}
                 onPress={() => {
                   stepRegister === 8
@@ -440,13 +441,13 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
-                  marginBottom: stepRegister === 1 ? moderateScale(100) : moderateScale(40)
+                  marginBottom: stepRegister === 1 ? moderateScale(100) : stepRegister === 2 ? 0 : moderateScale(40)
                 }}>
                 <Text
                   allowFontScaling={false}
                   style={{
                     color: code_color.grey,
-                    fontSize: moderateScale(18),
+                    fontSize: moderateScale(16),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
                     marginVertical: moderateScale(15),
@@ -482,7 +483,7 @@ function RegisterScreen({
             ) : null}
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

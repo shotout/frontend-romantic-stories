@@ -169,7 +169,7 @@ how did you like your previous story?`}
                       fontWeight: 400,
                       fontSize: 14,
                     }}>
-                    {nextStory?.category.name}
+                    {nextStory?.category?.name}
                   </Text>
                   <Text
                     style={{

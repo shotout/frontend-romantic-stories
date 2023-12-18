@@ -56,7 +56,7 @@ export default function Register5({gender, setTheme, userStory}) {
       name: 'SETTINGS',
     },
   ]);
-  const text = `Supporting myself during summer was actually pretty easy. As people started to\r\nromanticize Brazil once again, they started to like the language and aim to learn it, and\r\nbeing a good English speaker and native Portuguese speaker, I decided to offer private\r\nlessons. To my delight, I have always had genuine clients who paid me really well, and\r\nmost of them were old people too. My latest client, however, a long term, was my age\r\nand she was just... my type.\r\nShe had a beautiful smile and her body was to die for, which she often used to\r\nher advantage to distract me,`
+  const text = `Supporting myself during summer was actually pretty easy. As people started to\r\nromanticize Brazil once again, they started to like the language and aim to learn it, and being a good English speaker and native Portuguese speaker, I decided to offer private lessons.\r\nTo my delight, I have always had genuine clients who paid me really well, and most of them were old people too. My latest client, however, a long term, was my age\r\nand she was just... my type.\r\nShe had a beautiful smile and her body was to die for, which she often used to\r\nher advantage to distract me,`
 
   useEffect(() => {
     fetchCategory();
@@ -162,6 +162,7 @@ export default function Register5({gender, setTheme, userStory}) {
               borderWidth: 0.5,
               borderColor: colorsDefault,
               marginVertical: moderateScale(10),
+              marginHorizontal: 10
             }}
           />
           <Text

@@ -56,9 +56,8 @@ const SettingsPage = ({
   backgroundColor,
   getAvatarMale,
   getAvatarFemale,
-  levelingUser
+  levelingUser,
 }) => {
-
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
   const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
@@ -84,6 +83,8 @@ const SettingsPage = ({
       action: 'subscription',
     },
   ]);
+
+  // alert(JSON.stringify(userProfile?.data?.gender))
   const [menuTwo, setlistMenuTwo] = useState([
     {
       name: 'App Icon',
@@ -159,12 +160,8 @@ const SettingsPage = ({
               {levelingUser?.user_level?.point} XP
             </Text>
           </View>
-          <View  style={{marginLeft: '30%', marginTop: 50}}>
-
-            <ProgressBar
-              bgTheme={bgTheme}
-              levelingUser={levelingUser}
-            />
+          <View style={{marginLeft: '30%', marginTop: 50}}>
+            <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} />
           </View>
         </View>
 
@@ -279,11 +276,14 @@ const SettingsPage = ({
                   position: 'relative',
                   overflow: 'hidden',
                   alignItems: 'center',
-                  right: -5
+                  right: -5,
                 }}>
-                   <Image
+                <Image
                   source={{
-                    uri: BACKEND_URL + getAvatarFemale,
+                    uri:
+                      BACKEND_URL + userProfile?.data?.gender === 'Female'
+                      ? BACKEND_URL + getAvatarFemale
+                      : BACKEND_URL + getAvatarMale,
                   }}
                   style={{
                     width: 40,
@@ -295,7 +295,6 @@ const SettingsPage = ({
                     right: 0,
                   }}
                 />
-                
               </View>
               <View
                 style={{
@@ -309,10 +308,12 @@ const SettingsPage = ({
                   alignItems: 'center',
                   marginRight: 10,
                 }}>
-               <Image
+                <Image
                   source={{
                     uri:
-                      BACKEND_URL + getAvatarMale
+                      userProfile?.data?.gender === 'Male'
+                        ? BACKEND_URL + getAvatarFemale
+                        : BACKEND_URL + getAvatarMale,
                   }}
                   style={{
                     width: 40,

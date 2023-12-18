@@ -142,7 +142,6 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           marginTop: 10,
           backgroundColor: 'white',
           paddingTop: 5,
-          backgroundColor: backgroundColor,
           shadowColor: code_color.grey,
           shadowOffset: {width: 5, height: 5},
           shadowRadius: 5,
@@ -311,16 +310,15 @@ function MyTabs(props) {
       //initialRouteName={screenName.HOMEPAGE}
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: props?.colorTheme,
-        tabBarInactiveTintColor:
-          props?.backgroundColor === '#2C3439' ? 'white' : '#C4C4C4',
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'white',
         headerShown: false,
         headerStyle: {
           backgroundColor: '#f2f2f2',
         },
         tabBarStyle: {
           height,
-          backgroundColor: props?.backgroundColor,
+          backgroundColor: 'white',
           display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
         },
       }}>

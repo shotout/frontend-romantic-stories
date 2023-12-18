@@ -318,7 +318,7 @@ const FontScreen = ({
           margin: 20,
         }}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text allowFontScaling={false} style={{color: backgroundColor }}>
+          <Text allowFontScaling={false} style={{color: code_color.white }}>
             BACKGROUND
           </Text>
           <View style={{flexDirection: 'row', marginVertical: 5}}>
@@ -379,7 +379,7 @@ const FontScreen = ({
                     <Watch fill={code_color.white} height={12} width={12} />
                     <Text
                       style={{
-                        color: backgroundColor,
+                        color: code_color.white,
                         fontSize: 8,
                         fontWeight: '700',
                         marginLeft: 2,
@@ -450,7 +450,7 @@ const FontScreen = ({
                     <Watch fill={code_color.white} height={12} width={12} />
                     <Text
                       style={{
-                        color: backgroundColor,
+                        color: code_color.white,
                         fontSize: 8,
                         fontWeight: '700',
                         marginLeft: 2,
@@ -472,14 +472,14 @@ const FontScreen = ({
           }}
         />
         <View style={{flex: 1}}>
-          <Text allowFontScaling={false} style={{color: backgroundColor}}>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
             TEXT SIZE
           </Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
             <Text
               allowFontScaling={false}
-              style={{flex: 1, color: backgroundColor}}>
+              style={{flex: 1, color: code_color.white}}>
               A-
             </Text>
             <Text
@@ -487,7 +487,7 @@ const FontScreen = ({
               style={{
                 flex: 1,
                 textAlign: 'right',
-                color: backgroundColor,
+                color: code_color.white,
                 fontSize: 18,
               }}>
               A+
@@ -524,10 +524,10 @@ const FontScreen = ({
           }}>
           <Text
             allowFontScaling={false}
-            style={{flex: 1, color: backgroundColor, textAlign: 'left'}}>
+            style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
             CHANGE FONT
           </Text>
-          <Text allowFontScaling={false} style={{color: backgroundColor}}>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
             {fontSelect.name}
           </Text>
           <Pressable
@@ -584,7 +584,7 @@ const FontScreen = ({
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark
-                        : backgroundColor,
+                        : 'white',
                   }}>
                   {item.name}
                 </Text>
@@ -619,7 +619,7 @@ const FontScreen = ({
                       <Watch fill={code_color.white} height={12} width={12} />
                       <Text
                         style={{
-                          color: backgroundColor,
+                          color: code_color.white,
                           fontSize: 8,
                           fontWeight: '700',
                           marginLeft: 2,
@@ -641,7 +641,7 @@ const FontScreen = ({
       <View style={{flex: 1, marginHorizontal: 20}}>
         <Text
           allowFontScaling={false}
-          style={{color: backgroundColor, textAlign: 'left'}}>
+          style={{color: code_color.white, textAlign: 'left'}}>
           CHANGE THEME COLOR
         </Text>
         <View
