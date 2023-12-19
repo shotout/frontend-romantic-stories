@@ -6,7 +6,7 @@ import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import levelAnimate from '../../assets/lottie/level.json';
 
-const Step7 = ({handleNext, stepsTutorial}) => {
+const Step8 = ({handleNext, handlePrev}) => {
   // return <></>;
   return (
     <View
@@ -60,14 +60,34 @@ const Step7 = ({handleNext, stepsTutorial}) => {
           'Gather Experience by\nfinishing Stories, Level\nUp and become a Master\nof Romance!'
         }
       </Animatable.Text>
-      <Animatable.View delay={2500} animation={'fadeIn'} duration={1000}>
+      <Animatable.View
+        delay={2500}
+        animation={'fadeIn'}
+        duration={1000}
+        style={{flexDirection: 'row', marginHorizontal: 15}}>
         <Button
           style={{
             backgroundColor: code_color.yellow,
             padding: 10,
-            paddingHorizontal: 40,
+            // paddingHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,
+            marginRight: 10,
+            flex: 1,
+            alignItems: 'center',
+          }}
+          title={'Prev'}
+          onPress={handlePrev}
+        />
+        <Button
+          style={{
+            backgroundColor: code_color.yellow,
+            padding: 10,
+            // paddingHorizontal: 30,
+            borderRadius: 20,
+            marginVertical: 10,
+            flex: 1,
+            alignItems: 'center',
           }}
           title={'Start reading'}
           onPress={handleNext}
@@ -77,4 +97,4 @@ const Step7 = ({handleNext, stepsTutorial}) => {
   );
 };
 
-export default Step7;
+export default Step8;

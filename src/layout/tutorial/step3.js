@@ -8,7 +8,7 @@ import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import listenAnimate from '../../assets/lottie/listen.json';
 
-const Step3 = ({handleNext}) => {
+const Step3 = ({handleNext, handlePrev}) => {
   // return <></>;
   return (
     <View
@@ -63,12 +63,28 @@ const Step3 = ({handleNext}) => {
           'You can also enjoy any of\r\nthe Stories as Audio-\r\nbook. Relax while we\r\nread it out for you'
         }
       </Animatable.Text>
-      <Animatable.View delay={2500} animation={'fadeIn'} duration={1000}>
+      <Animatable.View
+        delay={2500}
+        animation={'fadeIn'}
+        duration={1000}
+        style={{flexDirection: 'row'}}>
         <Button
           style={{
             backgroundColor: code_color.yellow,
             padding: 10,
-            paddingHorizontal: 40,
+            paddingHorizontal: 30,
+            borderRadius: 20,
+            marginVertical: 10,
+            marginRight: 14,
+          }}
+          title={i18n.t('Prev')}
+          onPress={handlePrev}
+        />
+        <Button
+          style={{
+            backgroundColor: code_color.yellow,
+            padding: 10,
+            paddingHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,
           }}

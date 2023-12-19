@@ -725,6 +725,7 @@ const LibraryScreen = ({
               handleSetSteps(3 + 1);
               navigate('ExploreLibrary');
             }}
+            handlePrev={() => navigate('Media')}
           />
         </SafeAreaView>
       );

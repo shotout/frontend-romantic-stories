@@ -264,6 +264,10 @@ const ExploreLibraryScreen = ({
               handleSetSteps(4 + 1);
               navigate('Main');
             }}
+            handlePrev={() => {
+              handleSetSteps(4 - 1);
+              navigate('Library');
+            }}
           />
         </SafeAreaView>
       );

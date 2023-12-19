@@ -691,6 +691,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                     handleSetSteps(stepsTutorial + 1);
                     setVisible(false);
                   }}
+                  handlePrev={() => {
+                    handleSetSteps(stepsTutorial - 2);
+                    navigate('ExploreLibrary');
+                  }}
                 />
               ) : (
                 <View style={{alignItems: 'center'}}>
@@ -706,6 +710,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               handleNext={() => {
                 handleSetSteps(stepsTutorial + 1);
                 setVisible(false);
+              }}
+              handlePrev={() => {
+                handleSetSteps(stepsTutorial - 1);
               }}
             />
           )}
@@ -780,7 +787,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
             }}>
             {renderProgress()}
             <Step8
-              stepsTutorial={stepsTutorial}
+              handlePrev={() => {
+                handleSetSteps(stepsTutorial - 1);
+                setShowModal(false);
+              }}
               handleNext={() => {
                 handleSetSteps(stepsTutorial + 1);
                 setVisible(false);

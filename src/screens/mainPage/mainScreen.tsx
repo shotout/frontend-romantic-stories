@@ -506,7 +506,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(5);
+    // handleSetSteps(0);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
@@ -574,7 +574,7 @@ const MainScreen = ({
   }, [visible]);
 
   const renderFactItem = ({item, index, title, category}) => {
-    console.log(category)
+    console.log(category);
     return (
       <>
         <QuotesContent
@@ -675,7 +675,7 @@ const MainScreen = ({
                   item: dtb,
                   index,
                   title: dataBook.title_en,
-                  category: dataBook?.category?.name
+                  category: dataBook?.category?.name,
                 })}
               </View>
             );
@@ -871,9 +871,9 @@ const MainScreen = ({
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
 
-        if(stepsTutorial === 5 || activeStep === 5){
+        if (stepsTutorial === 5 || activeStep === 5) {
           setTimeout(() => {
-            handleNext()
+            handleNext();
           }, 2500);
         }
         return (
@@ -911,7 +911,13 @@ const MainScreen = ({
                 </View>
               </View>
             ) : (
-              <Step2 handleNext={handleNext} />
+              <Step2
+                handleNext={handleNext}
+                handlePrev={() => {
+                  setActiveStep(1);
+                  handleSetSteps(1);
+                }}
+              />
             )}
           </SafeAreaView>
         );

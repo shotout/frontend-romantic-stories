@@ -64,12 +64,28 @@ const Step1 = ({handleNext}) => {
         }}>
         {'Unlock additional Stories\nanytime!'}
       </Animatable.Text>
-      <Animatable.View delay={3500} animation={'fadeIn'} duration={1000}>
+      <Animatable.View
+        delay={3500}
+        animation={'fadeIn'}
+        duration={1000}
+        style={{flexDirection: 'row'}}>
+        <Button
+          style={{
+            backgroundColor: code_color.greyDefault,
+            padding: 10,
+            paddingHorizontal: 30,
+            borderRadius: 20,
+            marginVertical: 10,
+            marginRight: 14,
+          }}
+          title={i18n.t('Prev')}
+          onPress={() => {}}
+        />
         <Button
           style={{
             backgroundColor: code_color.yellow,
             padding: 10,
-            paddingHorizontal: 40,
+            paddingHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,
           }}

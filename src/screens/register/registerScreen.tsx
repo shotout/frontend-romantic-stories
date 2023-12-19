@@ -83,8 +83,8 @@ function RegisterScreen({
     ),
     fcm_token: '',
     category_id: 1,
-    avatar_male: 1,
-    avatar_female: 1,
+    avatar_male: 2,
+    avatar_female: 5,
     theme_id: 1,
     language_id: 2,
     often: 3,
@@ -239,7 +239,7 @@ function RegisterScreen({
           setAvatar={text =>
             handleChange(
               values.gender === 'female' ? 'avatar_female' : 'avatar_male',
-              text,
+              values.gender === 'female' ? text + 3 : text,
             )
           }
         />
@@ -252,7 +252,7 @@ function RegisterScreen({
           setAvatar={text =>
             handleChange(
               values.gender === 'female' ? 'avatar_male' : 'avatar_female',
-              text,
+              values.gender === 'female' ? text : text + 3,
             )
           }
         />

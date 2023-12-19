@@ -122,8 +122,12 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           {renderProgress()}
           <Step3
             handleNext={() => {
-              handleSetSteps(3)
+              handleSetSteps(3);
               navigate('Library');
+            }}
+            handlePrev={() => {
+              handleSetSteps(1);
+              navigate('Main');
             }}
           />
         </SafeAreaView>

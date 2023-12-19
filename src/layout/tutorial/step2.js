@@ -7,7 +7,7 @@ import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import heartkAnimate from '../../assets/lottie/heart.json';
 
-const Step2 = ({handleNext}) => {
+const Step2 = ({handleNext, handlePrev}) => {
   // return <></>;
   return (
     <View
@@ -53,12 +53,28 @@ const Step2 = ({handleNext}) => {
         }}>
         {'Like & save your\r\nfavorite Stories.'}
       </Animatable.Text>
-      <Animatable.View delay={2500} animation={'fadeIn'} duration={1000}>
+      <Animatable.View
+        delay={2500}
+        animation={'fadeIn'}
+        duration={1000}
+        style={{flexDirection: 'row'}}>
         <Button
           style={{
             backgroundColor: code_color.yellow,
             padding: 10,
-            paddingHorizontal: 40,
+            paddingHorizontal: 30,
+            borderRadius: 20,
+            marginVertical: 10,
+            marginRight: 14,
+          }}
+          title={i18n.t('Prev')}
+          onPress={handlePrev}
+        />
+        <Button
+          style={{
+            backgroundColor: code_color.yellow,
+            padding: 10,
+            paddingHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,
           }}
