@@ -675,15 +675,12 @@ const LibraryScreen = ({
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width;
-    const disabledWidth = 100;
-
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (
-      touchX < screenWidth / 2 - disabledWidth / 2 ||
-      touchX > screenWidth / 2 + disabledWidth / 2
-    ) {
-      alert('ooooooo');
+    const screenWidth = Dimensions.get('window').width / 2.5;
+    if (touchX < screenWidth) {
+      navigate('Media');
+    } else {
+      handleSetSteps(3 + 1);
+      navigate('ExploreLibrary');
     }
     // setIsSwipingLeft(true);
     // if (activeStep === 1) {
@@ -710,8 +707,9 @@ const LibraryScreen = ({
     if (stepsTutorial === 3) {
       return (
         <SafeAreaView
-          // onTouchStart={handleTouchStart}
+          onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
