@@ -30,6 +30,7 @@ import FastImage from 'react-native-fast-image';
 import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 import {reloadUserProfile} from '../../utils/user';
 import { useFocusEffect } from '@react-navigation/native';
+import TrackPlayer from 'react-native-track-player';
 
 const loveAnimate = require('../../assets/lottie/love.json');
 
@@ -46,7 +47,8 @@ export default function QuotesContent({
   totalStory,
   pageActive,
   titleStory,
-  titleCategory
+  titleCategory,
+  
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -280,22 +282,22 @@ export default function QuotesContent({
 
           <TouchableOpacity
             onPress={async () => {
-              if (themeUser?.subscription?.plan?.id === 3) {
+              // if (themeUser?.subscription?.plan?.id === 3) {
                 navigate('Media');
-              } else if (
-                themeUser?.subscription?.plan?.id === 2 &&
-                themeUser?.subscription?.audio_limit != 0
-              ) {
-                const payload = {
-                  _method: 'PATCH',
-                  audio_take: 1,
-                };
-                await updateProfile(payload);
-                reloadUserProfile();
-                navigate('Media');
-              } else {
-                setShow(true);
-              }
+              // } else if (
+              //   themeUser?.subscription?.plan?.id === 2 &&
+              //   themeUser?.subscription?.audio_limit != 0
+              // ) {
+              //   const payload = {
+              //     _method: 'PATCH',
+              //     audio_take: 1,
+              //   };
+              //   await updateProfile(payload);
+              //   reloadUserProfile();
+              //   navigate('Media');
+              // } else {
+              //   setShow(true);
+              // }
             }}
             style={{
               padding: 5,

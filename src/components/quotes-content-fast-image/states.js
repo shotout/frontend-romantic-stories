@@ -3,4 +3,5 @@ export default states => ({
   userProfile: states.defaultState.userProfile,
   isPremium: states.defaultState.isPremium,
   nextStory: states.defaultState.nextStory,
+  userStory: states.defaultState.userStory,
 });

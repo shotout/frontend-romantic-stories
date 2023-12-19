@@ -709,7 +709,7 @@ const FontScreen = ({
                       <Watch fill={code_color.white} height={12} width={12} />
                       <Text
                         style={{
-                          color: backgroundColor,
+                          color: code_color.white,
                           fontSize: 8,
                           fontWeight: '700',
                           marginLeft: 2,

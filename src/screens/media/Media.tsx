@@ -1,5 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions, PanResponder} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+  PanResponder,
+  Modal,
+  ActivityIndicator,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 import TrackPlayer, {
@@ -33,6 +43,7 @@ import {Step3} from '../../layout/tutorial';
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [play, setPlay] = useState(false);
   const {position, duration} = useProgress();
+  const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState({});
   const track1 = {
     url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
@@ -42,7 +53,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     genre: 'Progressive House, Electro House',
     date: '2014-05-20T07:00:00+00:00',
     artwork: 'http://example.com/cover.png',
-    duration: 402,
+    duration: 10,
   };
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -61,6 +72,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchMedia();
   }, []);
 
@@ -68,7 +80,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     try {
       if (play) {
         await TrackPlayer.play();
-        setTrackInfo();
       } else {
         await TrackPlayer.pause();
       }
@@ -76,14 +87,21 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       console.error('Error handling playback:', error);
     }
   };
-
+  useEffect(() => {
+    setPlay(true);
+  }, []);
   useEffect(() => {
     playing();
   }, [play]);
+  useEffect(() => {
+    if(position != 0){
+      setLoading(false)
+    }
+  }, [position])
 
   async function setTrackInfo() {
     const currentTrack = await TrackPlayer.getCurrentTrack();
-    const info = await TrackPlayer.getTrack(currentTrack);
+    const info = await TrackPlayer.getTrack(currentTrack)
     setInfo(info);
   }
 
@@ -99,7 +117,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   //   }
   //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
   //   else {
-     
+
   //    console.log('kanan')
   //   }
   // };
@@ -109,7 +127,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     if (stepsTutorial === 3) {
       return (
         <SafeAreaView
-         
           // onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
           style={{
@@ -149,7 +166,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       </View>
       <View>
         <Image
-          source={{uri :`${BACKEND_URL}${userStory?.category?.cover?.url}`}}
+          source={{uri: `${BACKEND_URL}${userStory?.category?.cover?.url}`}}
           resizeMode="cover"
           style={{
             width: 352,
@@ -247,6 +264,22 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         <ShareSvg width={30} height={30} />
       </View>
       {renderTutorial()}
+      <Modal visible={loading} animationType="fade" transparent>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View style={{backgroundColor: 'white', alignItems: 'center', padding: 20, borderRadius: 20}}>
+            <Text style={{fontSize: 16, color: code_color.blackDark}}>
+              Loading
+            </Text>
+            <ActivityIndicator color={code_color.blueDark} size={20} />
+          </View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 }

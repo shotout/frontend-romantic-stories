@@ -403,15 +403,17 @@ const MainScreen = ({
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width;
-    const disabledWidth = 100;
+    const screenWidth = Dimensions.get('window').width / 2 ;
+   0;
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (
-      touchX < screenWidth / 2 - disabledWidth / 2 ||
-      touchX > screenWidth / 2 + disabledWidth / 2
+      touchX < screenWidth
+     
     ) {
       alert('ooooooo');
+    }else{
+      alert('IIII');
     }
     // setIsSwipingLeft(true);
     // if (activeStep === 1) {
@@ -878,7 +880,7 @@ const MainScreen = ({
         }
         return (
           <SafeAreaView
-            // onTouchStart={handleTouchStart}
+            onTouchStart={handleTouchStart}
             // onTouchEnd={handleTouchEnd}
             style={{
               position: 'absolute',
