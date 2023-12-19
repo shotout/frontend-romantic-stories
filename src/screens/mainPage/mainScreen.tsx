@@ -573,7 +573,8 @@ const MainScreen = ({
     }
   }, [visible]);
 
-  const renderFactItem = ({item, index, title}) => {
+  const renderFactItem = ({item, index, title, category}) => {
+    console.log(category)
     return (
       <>
         <QuotesContent
@@ -591,6 +592,7 @@ const MainScreen = ({
           partner={partner}
           source={undefined}
           titleStory={title}
+          titleCategory={category}
         />
         {isRippleAnimate && (
           <Animatable.View
@@ -673,6 +675,7 @@ const MainScreen = ({
                   item: dtb,
                   index,
                   title: dataBook.title_en,
+                  category: dataBook?.category?.name
                 })}
               </View>
             );

@@ -256,7 +256,7 @@ function MyTabs(props) {
       // Animasi jatuh ke bawah
       Animated.timing(positionY, {
         toValue: 400, // Ganti nilai ini sesuai kebutuhan tinggi jatuh
-        duration: 1300,
+        duration: 1800,
         easing: Easing.linear,
         useNativeDriver: false,
       }),
