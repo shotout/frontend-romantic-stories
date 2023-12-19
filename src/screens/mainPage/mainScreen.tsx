@@ -403,17 +403,24 @@ const MainScreen = ({
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 2 ;
-   0;
+    const screenWidth = Dimensions.get('window').width / 2.5;
+    0;
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (
-      touchX < screenWidth
+    if (touchX < screenWidth) {
+      if(activeStep === 1){
+
+      }else{
+        setTutorial({
+          ...isTutorial,
+          step: isTutorial.step - 1,
+        });
+        setActiveStep(prevStep => prevStep - 1);
+        handleSetSteps(activeStep - 1);
+      }
      
-    ) {
-      alert('ooooooo');
-    }else{
-      alert('IIII');
+    } else {
+      handleNext();
     }
     // setIsSwipingLeft(true);
     // if (activeStep === 1) {
@@ -435,6 +442,15 @@ const MainScreen = ({
     //   // setIsSwipingRight(true);
     // }
   };
+
+  const handlePrev = () => {
+    setTutorial({
+      ...isTutorial,
+      step: isTutorial.step - 1,
+    });
+    setActiveStep(prevStep => prevStep - 1);
+    handleSetSteps(activeStep - 1);
+  }
 
   const handleNext = () => {
     const content =
@@ -508,8 +524,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
-    // AsyncStorage.setItem('isTutorial', 'yes');
+    handleSetSteps(0);
+    AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
@@ -882,6 +898,7 @@ const MainScreen = ({
           <SafeAreaView
             onTouchStart={handleTouchStart}
             // onTouchEnd={handleTouchEnd}
+            pointerEvents="box-only"
             style={{
               position: 'absolute',
               width: Dimensions.get('window').width,
@@ -894,7 +911,7 @@ const MainScreen = ({
               <Step1 handleNext={handleNext} />
             ) : activeStep === 5 || stepsTutorial == 5 ? (
               <View style={{alignItems: 'center'}}>
-                <Step5 handleNext={handleNext} />
+                <Step5 handleNext={handleNext} handlePrev={handlePrev} />
 
                 <Image
                   source={imgSelectGift}

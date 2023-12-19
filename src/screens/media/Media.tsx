@@ -72,7 +72,12 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   };
 
   useEffect(() => {
-    setLoading(true);
+    
+    if(stepsTutorial === 3){
+    }else{
+      setLoading(true);
+    }
+     
     fetchMedia();
   }, []);
 
@@ -88,7 +93,11 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     }
   };
   useEffect(() => {
-    setPlay(true);
+    if(stepsTutorial === 3){
+    }else{
+      setPlay(true);
+    }
+    
   }, []);
   useEffect(() => {
     playing();
@@ -105,30 +114,37 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     setInfo(info);
   }
 
-  // const handleTouchStart = e => {
-  //   // Mendapatkan posisi sentuhan
-  //   const touchX = e.nativeEvent.locationX;
-  //   // Menghitung setengah lebar layar
-  //   const halfScreenWidth = Dimensions.get('window').width / 2;
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const halfScreenWidth = Dimensions.get('window').width / 2.5;
 
-  //   // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-  //   if (touchX < halfScreenWidth) {
-  //     console.log('kiri')
-  //   }
-  //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-  //   else {
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      handlePrev()
+    }
+    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    else {
 
-  //    console.log('kanan')
-  //   }
-  // };
+      handleSetSteps(3);
+      navigate('Library');
+    }
+  };
+  const handlePrev = () => {
+    handleSetSteps(2);
+    navigate('Main');
+  }
+
   const renderProgress = () => <StepHeader currentStep={4} />;
 
   const renderTutorial = () => {
     if (stepsTutorial === 3) {
       return (
         <SafeAreaView
-          // onTouchStart={handleTouchStart}
+          onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -143,7 +159,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
               navigate('Library');
             }}
             handlePrev={() => {
-              handleSetSteps(1);
+              handleSetSteps(2);
               navigate('Main');
             }}
           />
