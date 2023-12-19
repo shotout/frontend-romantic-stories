@@ -46,6 +46,7 @@ export default function QuotesContent({
   totalStory,
   pageActive,
   titleStory,
+  titleCategory
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -261,7 +262,7 @@ export default function QuotesContent({
                 color:
                   bg === '#2C3439' ? code_color.white : code_color.blackDark,
               }}>
-              {themeUser?.category?.name}
+              {titleCategory}
             </Text>
             <Text
               allowFontScaling={false}

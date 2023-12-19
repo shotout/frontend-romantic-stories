@@ -26,6 +26,7 @@ import {
   bg,
   cover1,
   cover2,
+  imgSearchNull,
   imgStep2,
   imgStep4,
   libraryAdd,
@@ -770,7 +771,30 @@ const LibraryScreen = ({
       </Text>
     </View>
   );
-
+  const renderEmptySearch = () => (
+    <View style={{flex: 1, }}>
+      <View style={{alignItems: 'center'}}>
+      <Image source={imgSearchNull} style={{width: 100, height: 100, marginTop: 20}} />
+      <Text
+        style={{
+          color:
+            backgroundColor === '#2C3439' ? code_color.black : code_color.white,
+          fontSize: 16,
+          fontWeight: '400',
+          textAlign: 'center',
+          lineHeight: 21,
+          marginTop: 22,
+          width: sizing.getDimensionWidth(0.9),
+        }}>
+        {
+          'We can’t find that title in your library.'
+        }
+      </Text>
+      </View>
+      
+      <View style={{borderColor: code_color.greyDefault, borderWidth: 1, borderStyle: 'solid', marginVertical: 20, marginHorizontal: 20  }}/>
+    </View>
+  );
   return (
     <View>
       <ModalUnlockStory
@@ -787,6 +811,7 @@ const LibraryScreen = ({
       />
       <ModalSuccessPurchase
         isVisible={showModalSuccessPurchase}
+        type={'watch'}
         onClose={() => {
           setShowModalSuccessPurchase(false);
           handleSetStory(nextStory);
@@ -851,7 +876,7 @@ const LibraryScreen = ({
             <Image source={libraryAdd} />
           </Pressable>
 
-          <View
+          <Pressable
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.6)',
               flex: 1,
@@ -862,23 +887,28 @@ const LibraryScreen = ({
               alignItems: 'center',
               paddingLeft: 10,
               height: 40,
-            }}>
+            }}
+            onPress={() => setKeyword('')}
+            >
             <SearchSvg />
             <TextInput
               placeholder="Search"
               placeholderTextColor={code_color.black}
               allowFontScaling={false}
               value={keyword}
+              autoFocus
+              selectTextOnFocus
               onChangeText={value => setKeyword(value)}
               onSubmitEditing={() => handleRestart()}
-              style={{marginLeft: 10, fontSize: 14}}
+              
+              style={{marginLeft: 10, fontSize: 14, }}
             />
-          </View>
+          </Pressable>
           <Pressable onPress={() => setShowModalSort(true)}>
             <DescendingSvg fill={code_color.white} />
           </Pressable>
         </View>
-        {listLibrary?.length > 0 || listCollection?.length > 0 ? (
+        {listLibrary?.length > 0 || listCollection?.length > 0  ? (
           <ScrollView>
             {detail != null ? (
               renderContentCollectionDetail()
@@ -1035,7 +1065,11 @@ const LibraryScreen = ({
               />
             )}
           </ScrollView>
-        ) : (
+        ) : listLibrary?.length === 0 || listCollection?.length === 0 || keyword != '' ? 
+        (
+          renderEmptySearch()
+          ) :
+         (
           renderEmpty()
         )}
         <View
