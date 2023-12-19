@@ -212,18 +212,13 @@ const ExploreLibraryScreen = ({
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width;
-    const disabledWidth = 250;
-    if (touchX < screenWidth / 3 - disabledWidth / 2) {
-      alert('kiiiiiri')
-    }
-    // Pengecekan untuk meng-handle sisi kanan
-    else if (touchX > (2 * screenWidth) / 3 + disabledWidth / 2)  {
-      alert('kanan')
-    }
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    else if (touchX >= screenWidth / 3 && touchX <= (2 * screenWidth) / 3) {
-    alert('tengahhh')
+    const screenWidth = Dimensions.get('window').width / 2.5;
+    if (touchX < screenWidth) {
+      handleSetSteps(4 - 1);
+      navigate('Library');
+    } else {
+      handleSetSteps(4 + 1);
+      navigate('Main');
     }
       // setIsSwipingLeft(true);
       // if (activeStep === 1) {
@@ -249,8 +244,9 @@ const ExploreLibraryScreen = ({
     if (stepsTutorial === 4) {
       return (
         <SafeAreaView
-          // onTouchStart={handleTouchStart}
+          onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
