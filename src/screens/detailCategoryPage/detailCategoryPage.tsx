@@ -9,7 +9,6 @@
 
 import React, {useEffect, useState} from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
@@ -20,7 +19,6 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import {imgStep4_2} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
 import LockFree from '../../assets/icons/lockFree';
@@ -31,36 +29,26 @@ import states from './states';
 import {connect} from 'react-redux';
 import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
-import AnimatedLottieView from 'lottie-react-native';
-import {moderateScale} from 'react-native-size-matters';
 import {
-  getExploreStory,
+  getCategoryDetail,
   getStoryDetail,
   updateProfile,
 } from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
-import {handleSetSteps} from '../../store/defaultState/actions';
-import i18n from '../../i18n';
-import Button from '../../components/buttons/Button';
-import StepHeader from '../../layout/step/stepHeader';
-import {Step4_2} from '../../layout/tutorial';
 import ModalSorting from '../../components/modal-sorting';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded, loadRewardedCategory} from '../../helpers/loadReward';
-import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {reloadUserProfile} from '../../utils/user';
-import ChecklistSvg from './../../assets/icons/checklist';
 import * as IAP from 'react-native-iap';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
-const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
-const ExploreLibraryScreen = ({
+const DetailCategoryScreen = ({
+  route,
   colorTheme,
-  categories,
-  isPremium,
   handleSetSteps,
   handleSetStory,
   handleNextStory,
@@ -76,8 +64,6 @@ const ExploreLibraryScreen = ({
   const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
-  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
-  const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [items, setItems] = useState(null);
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
@@ -132,7 +118,7 @@ const ExploreLibraryScreen = ({
           column: items?.column === 'name' ? 'title_en' : items?.column,
           dir: items?.value,
         };
-        const res = await getExploreStory(params);
+        const res = await getCategoryDetail(route?.params?.categoryId, params);
         setData(res);
       } catch (error) {
         setData(null);
@@ -142,35 +128,8 @@ const ExploreLibraryScreen = ({
   };
   useEffect(() => {
     handleRestart();
-  }, [keyword, items]);
+  }, [keyword, items, route?.params?.categoryId]);
 
-  // const handleTouchStart = e => {
-  //   // Mendapatkan posisi sentuhan
-  //   const touchX = e.nativeEvent.locationX;
-  //   // Menghitung setengah lebar layar
-  //   const halfScreenWidth = Dimensions.get('window').width / 2;
-  //   // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-  //   if (touchX < halfScreenWidth) {
-  //     console.log('masuk kiri');
-  //     handleSetSteps(3);
-  //     goBack();
-  //     setIsSwipingLeft(true);
-  //   }
-  //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-  //   else {
-  //     handleSetSteps(4 + 1);
-  //     navigate('Main');
-  //     setIsSwipingRight(true);
-  //   }
-  // };
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
-  useEffect(() => {
-    handleRestart();
-  }, [items]);
   const fetchUpdate = async () => {
     const payload = {
       _method: 'PATCH',
@@ -190,7 +149,7 @@ const ExploreLibraryScreen = ({
     }
     getPrice();
   }, []);
-  const renderProgress = () => <StepHeader currentStep={6} />;
+
   const showInterStialCategory = async () => {
     setLoadingAds(true);
     const advert = await loadRewardedCategory();
@@ -202,7 +161,7 @@ const ExploreLibraryScreen = ({
           Alert.alert('Congrats! You have unlocked the selected Topic.', '', [
             {
               text: 'OK',
-              onPress: async () => fetchUpdate(nextCategory),
+              onPress: async () => fetchUpdate(),
             },
           ]);
         }
@@ -210,67 +169,39 @@ const ExploreLibraryScreen = ({
       },
     );
   };
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 2.5;
-    if (touchX < screenWidth) {
-      handleSetSteps(4 - 1);
-      navigate('Library');
-    } else {
-      handleSetSteps(4 + 1);
-      navigate('Main');
-    }
-    // setIsSwipingLeft(true);
-    // if (activeStep === 1) {
-    // } else {
-    //   setTutorial({
-    //     ...isTutorial,
-    //     step: isTutorial.step - 1,
-    //   });
-    //   setActiveStep(prevStep => prevStep - 1);
-    //   handleSetSteps(activeStep - 1);
-    // }
-    // } else if (touchX < halfScreenWidth){
-    //   alert('okeee kiri')
-    // }
-    // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    // else {
-    //   alert('okeee KANAN')
-    //   // handleNext();
-    //   // setIsSwipingRight(true);
-    // }
-  };
-  const renderTutorial = () => {
-    if (stepsTutorial === 4) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            top: 30,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-          }}>
-          {renderProgress()}
-          <Step4_2
-            handleNext={() => {
-              handleSetSteps(4 + 1);
-              navigate('Main');
-            }}
-            handlePrev={() => {
-              handleSetSteps(4 - 1);
-              navigate('Library');
-            }}
-          />
-        </SafeAreaView>
-      );
-    }
-  };
+  // const handleTouchStart = e => {
+  // // Mendapatkan posisi sentuhan
+  // const touchX = e.nativeEvent.locationX;
+  // // Menghitung setengah lebar layar
+  // const screenWidth = Dimensions.get('window').width / 2.5;
+  // if (touchX < screenWidth) {
+  //   handleSetSteps(4 - 1);
+  //   navigate('Library');
+  // } else {
+  //   handleSetSteps(4 + 1);
+  //   navigate('Main');
+  // }
+  // setIsSwipingLeft(true);
+  // if (activeStep === 1) {
+  // } else {
+  //   setTutorial({
+  //     ...isTutorial,
+  //     step: isTutorial.step - 1,
+  //   });
+  //   setActiveStep(prevStep => prevStep - 1);
+  //   handleSetSteps(activeStep - 1);
+  // }
+  // } else if (touchX < halfScreenWidth){
+  //   alert('okeee kiri')
+  // }
+  // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+  // else {
+  //   alert('okeee KANAN')
+  //   // handleNext();
+  //   // setIsSwipingRight(true);
+  // }
+  // };
+
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <ModalSorting
@@ -313,7 +244,7 @@ const ExploreLibraryScreen = ({
             marginHorizontal: 10,
           }}>
           <Pressable
-            onPress={() => navigate('Library')}
+            onPress={() => goBack()}
             style={{
               width: 35,
               height: 35,
@@ -356,23 +287,33 @@ const ExploreLibraryScreen = ({
           backgroundColor: backgroundColor,
           height: '100%',
         }}>
-        {data?.most_read?.length > 0 && (
+        {data?.category?.name && (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '600',
+              marginVertical: 10,
+              marginLeft: 13,
+            }}>
+            Category: {data?.category?.name}
+          </Text>
+        )}
+        {data?.most_share?.length > 0 && (
           <View style={{flex: 0, height: 'auto'}}>
             <View
               style={{
                 backgroundColor: '#F0F2FF',
                 marginTop: 11,
                 marginHorizontal: 13,
-                // height: 250,
                 minWidth: Dimensions.get('screen').width - 26,
                 borderRadius: 8,
                 padding: 16,
               }}>
               <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                🔥 Most Read
+                🔥 Most liked Stories in this Category
               </Text>
               <ScrollView horizontal>
-                {data?.most_read.map((itm: any, idx: number) => (
+                {data?.most_share.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
                       if (userProfile?.data?.subscription?.plan_id === 1) {
@@ -428,173 +369,75 @@ const ExploreLibraryScreen = ({
             </View>
           </View>
         )}
-
-        {data?.category?.length > 0 && (
-          <View style={{flex: 0, height: 250}}>
-            <View
-              style={{
-                backgroundColor: '#F0F2FF',
-                marginTop: 13,
-                marginHorizontal: 13,
-                height: 230,
-                minWidth: Dimensions.get('screen').width - 26,
-                borderRadius: 8,
-                padding: 16,
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                📚 Try different story category
-              </Text>
-              <ScrollView horizontal>
-                {data?.category.map((itm: any, idx: number) => (
-                  <Pressable
-                    onPress={() =>
-                      navigate('CategoryDetail', {categoryId: itm.id})
-                    }
+        <View style={{marginTop: 20}}>
+          {data?.data?.length > 0 &&
+            data?.data.map((itm: any, idx: number) => (
+              <Pressable
+                onPress={() => {
+                  setSelectedStory({...itm});
+                  if (userProfile?.data?.subscription?.plan_id === 1) {
+                    setShowModalUnlock(true);
+                  } else {
+                    handlePremium();
+                  }
+                }}
+                key={idx}
+                style={{
+                  height: 'auto',
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginHorizontal: 13,
+                  borderBottomColor: '#F0F2FF',
+                  borderBottomWidth: 1,
+                }}>
+                <Image
+                  source={{
+                    uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                  }}
+                  resizeMode="cover"
+                  style={{
+                    height: 50,
+                    width: 36.5,
+                    borderRadius: 5,
+                    marginVertical: 10,
+                  }}
+                />
+                <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                  <Text
                     style={{
-                      width: 95,
-                      marginRight: idx + 1 === data?.category?.length ? 0 : 16,
-                    }}
-                    key={idx}>
-                    {/* <View
+                      fontSize: 12,
+                      fontWeight: '400',
+                      color: code_color.black,
+                      opacity: 0.5,
+                      marginBottom: 4,
+                    }}>
+                    {itm.category.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: '700',
+                      color: code_color.black,
+                    }}>
+                    {itm.title_en}
+                  </Text>
+                </View>
+                {userProfile?.data?.subscription?.plan_id != 2 &&
+                  userProfile?.data?.subscription?.plan_id != 3 && (
+                    <LockFree
+                      height={16}
+                      width={55}
                       style={{
-                        height: 18,
-                        width: 18,
-                        backgroundColor:
-                          itm.id === selectStory
-                            ? code_color.blueDark
-                            : code_color.white,
-                        borderRadius: 15,
-                        position: 'absolute',
-                        top: 4,
-                        right: 4,
+                        marginLeft: 'auto',
                         zIndex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      {itm.id === selectStory ? (
-                        <ChecklistSvg width={10} />
-                      ) : null}
-                    </View> */}
-                    {/* { userProfile?.data?.subscription?.plan_id != 2 && userProfile?.data?.subscription?.plan_id != 3  && (
-                      <LockFree
-                        height={16}
-                        width={55}
-                        style={{
-                          marginBottom: -20,
-                          marginTop: 4,
-                          marginLeft: 4,
-                          zIndex: 1,
-                        }}
-                      />
-                    )} */}
-                    <Image
-                      source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
-                      resizeMode="cover"
-                      style={{height: 130, width: 95, borderRadius: 6}}
-                    />
-                    <Text
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                      {itm.name}
-                    </Text>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            </View>
-          </View>
-        )}
-
-        {data?.most_share?.length > 0 && (
-          <View style={{flex: 0, height: 270, marginBottom: 50}}>
-            <View
-              style={{
-                backgroundColor: '#F0F2FF',
-                marginTop: 11,
-                marginHorizontal: 13,
-                height: 250,
-                minWidth: Dimensions.get('screen').width - 26,
-                borderRadius: 8,
-                padding: 16,
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                ❤️ You might also like
-              </Text>
-              <ScrollView horizontal>
-                {data.most_share.map((itm: any, idx: number) => (
-                  <Pressable
-                    onPress={() => {
-                      if (userProfile?.data?.subscription?.plan_id === 1) {
-                        setShowModalUnlock(true);
-                        setSelectedStory(itm);
-                      } else {
-                        setSelectedStory(itm);
-                        handlePremium();
-                      }
-                    }}
-                    style={{
-                      width: 95,
-                      marginRight:
-                        idx + 1 === data?.most_share?.length ? 0 : 16,
-                    }}
-                    key={idx}>
-                    {userProfile?.data?.subscription?.plan_id != 2 &&
-                      userProfile?.data?.subscription?.plan_id != 3 && (
-                        <LockFree
-                          height={16}
-                          width={55}
-                          style={{
-                            marginBottom: -20,
-                            marginTop: 4,
-                            marginLeft: 4,
-                            zIndex: 1,
-                          }}
-                        />
-                      )}
-                    <Image
-                      source={{
-                        uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                       }}
-                      resizeMode="cover"
-                      style={{height: 130, width: 95, borderRadius: 6}}
                     />
-                    <Text
-                      style={{
-                        fontSize: 9,
-                        fontWeight: '400',
-                        marginTop: 6,
-                        opacity: 0.8,
-                      }}>
-                      {itm?.category?.name}
-                    </Text>
-                    <Text
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
-                      {itm.title_en}
-                    </Text>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            </View>
-          </View>
-        )}
-        {/* <View
-          style={{
-            height: moderateScale(100),
-            width: moderateScale(100),
-            backgroundColor: bgTheme,
-            alignSelf: 'center',
-            marginBottom: 100,
-            borderRadius: moderateScale(8),
-          }}>
-          <AnimatedLottieView
-            source={swipeupIcon}
-            // style={styles.animationStyle}
-            autoPlay
-            // ref={firstStepTutorial}
-            duration={3000}
-            loop={true}
-          />
-        </View> */}
+                  )}
+              </Pressable>
+            ))}
+        </View>
       </ScrollView>
-      {renderTutorial()}
       <ModalUnlockedStory
         restart
         edit
@@ -612,14 +455,12 @@ const ExploreLibraryScreen = ({
   );
 };
 
-const styles = StyleSheet.create({});
-
-ExploreLibraryScreen.propTypes = {
+DetailCategoryScreen.propTypes = {
   activeVersion: PropTypes.any,
 };
 
-ExploreLibraryScreen.defaultProps = {
+DetailCategoryScreen.defaultProps = {
   activeVersion: null,
 };
 
-export default connect(states, dispatcher)(ExploreLibraryScreen);
+export default connect(states, dispatcher)(DetailCategoryScreen);

@@ -56,14 +56,14 @@ export const getStoryDetail = id =>
   });
 export const getMyCollection = (params = {}) =>
   Wrap({
-    url: `/collection`,
+    url: '/collection',
     method: 'get',
     params,
   });
 
 export const createCollection = data =>
   Wrap({
-    url: `/collection`,
+    url: '/collection',
     method: 'POST',
     data,
   });
@@ -208,10 +208,18 @@ export const removeQuoteCollection = ({idCollection, idQuote}) => {
 
 export const getExploreStory = (params = {}) =>
   Wrap({
-    url: `/stories/all`,
+    url: '/stories/all',
     method: 'get',
     params,
   });
+
+export const getCategoryDetail = (id = 1, params = {}) =>
+  Wrap({
+    url: `/stories/category/${id}`,
+    method: 'get',
+    params,
+  });
+
 export const submitRating = (id, data) =>
   Wrap({
     url: `/stories/rating/${id}`,
@@ -247,21 +255,18 @@ export const addPastStory = id => {
   });
 };
 
-export const getLeveling = () => 
+export const getLeveling = () =>
   Wrap({
-    url: `/list/levels`,
+    url: '/list/levels',
     method: 'GET',
   });
 
-
 export const addPastLevel = (data = {}) =>
   Wrap({
-    url: `/level`,
+    url: '/level',
     method: 'POST',
-    data
+    data,
   });
-  
-
 
 export const addStory = id =>
   Wrap({
@@ -347,7 +352,7 @@ export const getDetailCollection = id =>
     url: `/collection/${id}`,
     method: 'GET',
   });
-  export const deleteStoryCollection = (id, idStory) =>
+export const deleteStoryCollection = (id, idStory) =>
   Wrap({
     url: `/collection/story/${id}/${idStory}`,
     method: 'DELETE',

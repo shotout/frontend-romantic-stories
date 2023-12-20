@@ -17,6 +17,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import ExploreLibraryScreen from '../screens/exploreLibrary/index';
+import DetailCategoryScreen from '../screens/detailCategoryPage/detailCategoryPage';
 import modalShare from '../screens/screenShare/index';
 import screenMedia from '../screens/media/index';
 import screenNotification from '../screens/notification/index';
@@ -83,6 +84,10 @@ function Main({registerData, userProfile, props}) {
           <Stack.Screen
             name={'ExploreLibrary'}
             component={ExploreLibraryScreen}
+          />
+          <Stack.Screen
+            name={'CategoryDetail'}
+            component={DetailCategoryScreen}
           />
           <Stack.Screen name={'Share'} component={modalShare} />
           <Stack.Screen name={'Media'} component={screenMedia} />
