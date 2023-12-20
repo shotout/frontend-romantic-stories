@@ -139,6 +139,7 @@ const MainScreen = ({
   // const [dataBook, setBook] = useState(userStory);
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
+  const [screenNumber, setScreenNumber] = useState(0);
   const [readLater, setReadLater] = useState(false);
   const [isLoveAnimate, setIsLoveAnimate] = useState<boolean | string>(false);
   const [isRippleAnimate, setIsRippleAnimate] = useState<boolean>(false);
@@ -293,7 +294,6 @@ const MainScreen = ({
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
-    
     // const offsetY = e.nativeEvent.contentOffset.x;
     // const height = sizing.getDimensionWidth(0.89);
     // const pageNumber = Math.min(
@@ -302,6 +302,7 @@ const MainScreen = ({
     // );
     // setShowModalCongrats(true)
     const pageNumber = e.nativeEvent.position;
+    setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === dataBook?.content_en?.length - 1) {
         setIsLoveAnimate(false);
@@ -357,9 +358,8 @@ const MainScreen = ({
       !(isPremiumStory || isPremiumAudio)
     ) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-     
-        setShowModalCongrats(true);
-      
+
+      setShowModalCongrats(true);
     }
     if (pageNumber === dataBook?.content_en?.length - 1) {
       //   if(isPremium){
@@ -411,9 +411,8 @@ const MainScreen = ({
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < screenWidth) {
-      if(activeStep === 1){
-
-      }else{
+      if (activeStep === 1) {
+      } else {
         setTutorial({
           ...isTutorial,
           step: isTutorial.step - 1,
@@ -421,7 +420,6 @@ const MainScreen = ({
         setActiveStep(prevStep => prevStep - 1);
         handleSetSteps(activeStep - 1);
       }
-     
     } else {
       handleNext();
     }
@@ -453,7 +451,7 @@ const MainScreen = ({
     });
     setActiveStep(prevStep => prevStep - 1);
     handleSetSteps(activeStep - 1);
-  }
+  };
 
   const handleNext = () => {
     const content =
@@ -679,9 +677,10 @@ const MainScreen = ({
 
       // Menghitung panjang array setelah ditambahkan data kosong
       const panjangArrayBaru = dataBook.content_en.length + jumlahDataKosong;
-    
+
       // Membuat array baru dengan data yang sudah ada dan data kosong
-      const dataBaru = dataBook.content_en.concat(Array(jumlahDataKosong).fill(dataBook.content_en[dataBook.content_en.length - 1]));
+      // const dataBaru = dataBook.content_en.concat(Array(jumlahDataKosong).fill(dataBook.content_en[dataBook.content_en.length - 1]));
+      const dataBaru = dataBook.content_en;
       return (
         <PagerView
           style={{flex: 1}}
@@ -689,8 +688,7 @@ const MainScreen = ({
           ref={pagerRef}
           transitionStyle="curl"
           overdrag={false}
-          onPageScroll={e => onScroll(e)}
-          >
+          onPageScroll={e => onScroll(e)}>
           {dataBaru?.map((dtb: any, index: number) => {
             return (
               <View
@@ -730,7 +728,7 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
-    setLoading(true)
+    setLoading(true);
     const data = await handleNativePayment('unlock_story_1_week_only');
     if (data) {
       setShowModalNewStory(false);
@@ -742,10 +740,10 @@ const MainScreen = ({
       reloadUserProfile();
       const res = await getStoryList();
       handleNextStory(res.data);
-      setLoading(false)
+      setLoading(false);
       setShowModalSuccessPurchase(true);
     } else {
-      setLoading(false)
+      setLoading(false);
       // setShowModalNewStory(false);
     }
   };
@@ -1004,6 +1002,50 @@ const MainScreen = ({
     setBook(nextStory);
   };
 
+  const touchEndStory = async e => {
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const screenWidth = Dimensions.get('window').width / 2.5;
+    // Jika sentuhan terjadi di sebelah kanan
+    if (touchX > screenWidth) {
+      setTimeout(async () => {
+        if (screenNumber === dataBook?.content_en?.length - 1) {
+          const existingEntry = readStory
+            ? readStory.find(
+                (item: any) =>
+                  item?.id === dataBook.id && item?.page === screenNumber,
+              )
+            : undefined;
+          if (
+            !existingEntry &&
+            screenNumber === dataBook?.content_en?.length - 1
+          ) {
+            // jika nanti pertama kali melakukan update data terakhir
+            await addPastStory(dataBook.id);
+            const data = {
+              value: dataBook?.content_en?.length,
+            };
+            const resp = await addPastLevel(data);
+            if (resp?.data) {
+              handleLeveling(resp?.data);
+              setTimeout(() => {
+                setShowModalCongrats(true);
+              }, 200);
+            }
+          } else if (
+            existingEntry &&
+            screenNumber === dataBook?.content_en?.length - 1 &&
+            !(isPremiumStory || isPremiumAudio)
+          ) {
+            //jika tidak premium maka akan terus menampilan modal setiap terakhir
+
+            setShowModalCongrats(true);
+          }
+        }
+      }, 100);
+    }
+  };
+
   const handleSuccessRating = async () => {
     setRating(false);
     if (isPremiumStory || isPremiumAudio) {
@@ -1051,11 +1093,11 @@ const MainScreen = ({
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => {
-              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
-              setShowModalCongrats(false)
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+              setShowModalCongrats(false);
             }}
             onGotIt={async () => {
-              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1);
               setShowModalCongrats(false);
               if (userStory?.is_rating === null) {
                 setRating(true);
@@ -1077,6 +1119,7 @@ const MainScreen = ({
     } else {
       return (
         <View
+          onTouchStart={touchEndStory}
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
@@ -1117,11 +1160,11 @@ const MainScreen = ({
           <ModalCongrats
             isVisible={showModalCongrats}
             onClose={() => {
-              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
-              setShowModalCongrats(false)
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+              setShowModalCongrats(false);
             }}
             onGotIt={async () => {
-              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1);
               setShowModalCongrats(false);
               if (userStory?.is_rating === null) {
                 setRating(true);

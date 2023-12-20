@@ -808,7 +808,7 @@ const LibraryScreen = ({
   const handleNative = async() => {
     
     setLoading(true)
-    const data  = await handleNativePayment('unlock_story_1_week_only');
+    const data  = await handleNativePayment('unlock_story_1_week_only', selectedStory?.id);
     if(data){
       setLoading(false)
       setShowModalUnlock(false);
