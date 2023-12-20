@@ -14,13 +14,15 @@ import {book} from '../../assets/icons';
 import WatchIcon from '../../assets/icons/watch';
 import BookLockIcon from '../../assets/icons/bookLock';
 import * as IAP from 'react-native-iap'
+import { ActivityIndicator } from 'react-native-paper';
 function ModalNewStory({
   isVisible,
   onClose,
   onWatchAds,
   onUnlock,
   onGetUnlimit,
-  userProfile
+  userProfile,
+  isLoading
 }) {
   const [price, setPrice] = useState('')
   const [timeLeft, setTimeLeft] = useState({
@@ -291,9 +293,10 @@ function ModalNewStory({
                       MOST SELECTED
                     </Text>
                   </View>
+                  {isLoading ?<ActivityIndicator color={code_color.blueDark} /> : 
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                     Unlock 1 more Story directly for {price}
-                  </Text>
+                  </Text> }
                 </Pressable>
                 <View
                   style={{

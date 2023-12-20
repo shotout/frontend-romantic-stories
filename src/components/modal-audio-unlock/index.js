@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -38,7 +39,9 @@ function ModalAudioStory({
   data,
   onGetAudio,
   onGetAudio1,
-  userProfile
+  userProfile,
+  isLoading,
+  isLoading2
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const [price, setPrice] = useState('');
@@ -359,6 +362,7 @@ function ModalAudioStory({
                 {'Lean back and listen to this Story as Audio Book.'}
               </Text>
               <Pressable
+                disabled={isLoading}
                   onPress={() => onGetAudio1()}
                   style={{
                     backgroundColor: code_color.red,
@@ -368,12 +372,13 @@ function ModalAudioStory({
                     marginBottom: moderateScale(15),
                   }}>
                  
-                  
+                  {isLoading ? <ActivityIndicator color={code_color.blueDark} /> :
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                   {`Get 10 Audio Stories for  ${price}`}
-                  </Text>
+                  </Text> }
                 </Pressable>
               <Pressable
+               disabled={isLoading2}
                   onPress={() => onGetAudio()}
                   style={{
                     backgroundColor: code_color.green,
@@ -398,10 +403,10 @@ function ModalAudioStory({
                       MOST SELECTED
                     </Text>
                   </View>
-                  
+                  {isLoading2 ? <ActivityIndicator color={code_color.blueDark} /> :
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                   {`Get 50 Audio Stories for ${price2}`}
-                  </Text>
+                  </Text> }
                 </Pressable>
               <View
                   style={{

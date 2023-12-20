@@ -19,6 +19,7 @@ import BookLockIcon from '../../assets/icons/bookLock';
 import LockFree from '../../assets/icons/lockFree';
 import CloseSvg from '../../assets/icons/close';
 import {BACKEND_URL} from '../../shared/static';
+import { ActivityIndicator } from 'react-native-paper';
 
 function ModalUnlockStory({
   isVisible,
@@ -27,11 +28,13 @@ function ModalUnlockStory({
   onWatchAds,
   onUnlock,
   onGetUnlimit,
-  price
+  price,
+  isLoading
 }) {
   const handleClose = () => {
     onClose();
   };
+ 
   return (
     <Modal
       visible={isVisible}
@@ -112,7 +115,7 @@ function ModalUnlockStory({
                 color: '#505962',
                 marginTop: moderateScale(20),
               }}>
-              { data?.content_en.length > 0 ? data?.content_en[0]?.slice(0, 180) + '...' :  data?.content_en?.slice(0, 180) + '...'}
+              { data?.content_en[0].length  === 1 ? data?.content_en?.slice(0, 180) + '...' : data?.content_en[0]?.slice(0, 180) + '...'  }
             </Text>
             <View
               style={{
@@ -133,6 +136,7 @@ function ModalUnlockStory({
               {'To unlock this story, choose one of the\r\nfollowing options:'}
             </Text>
             <Pressable
+              disabled={isLoading}
               onPress={onUnlock}
               style={{
                 backgroundColor: code_color.green,
@@ -157,10 +161,10 @@ function ModalUnlockStory({
                   MOST SELECTED
                 </Text>
               </View>
-
+              {isLoading ? <ActivityIndicator color={code_color.blueDark} /> :
               <Text style={{color: code_color.white, textAlign: 'center'}}>
                 {price} for 1 week access
-              </Text>
+              </Text> }
             </Pressable>
             <Pressable
               onPress={onWatchAds}

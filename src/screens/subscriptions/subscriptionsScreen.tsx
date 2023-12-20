@@ -49,6 +49,8 @@ import moment from 'moment';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('10/10 Audio Stories');
   const [showAudio, setShowAudio] = useState(false);
@@ -60,7 +62,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     userProfile?.data?.notif_ads_enable === 0 ? false : true,
   );
   const subscriptionStartDate = moment(userProfile?.data?.subscription.started);
-alert(JSON.stringify(userProfile?.data?.subscription))
+
   // Mendapatkan tanggal berakhir langganan (1 tahun setelah tanggal mulai)
   const subscriptionEndDate = subscriptionStartDate.add(1, 'year');
 
@@ -121,6 +123,7 @@ alert(JSON.stringify(userProfile?.data?.subscription))
 
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
+    setLoading2(true)
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
@@ -132,19 +135,23 @@ alert(JSON.stringify(userProfile?.data?.subscription))
           audio_limit: 50,
         };
         await updateProfile(payload);
+        setLoading2(false)
         reloadUserProfile();
       }, 100);
     } else {
       setShow(false);
+      setLoading2(false)
       setTimeout(() => {
         setShowAudio(true);
       }, 100);
     }
   };
   const handleAudioOne = async () => {
+    setLoading(true)
     setTitle('10/10 Audio Stories');
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
+      setLoading(false)
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
@@ -157,6 +164,7 @@ alert(JSON.stringify(userProfile?.data?.subscription))
         reloadUserProfile();
       }, 100);
     } else {
+      setLoading(false)
       setShow(false);
       setTimeout(() => {
         setShowAudio(true);
@@ -663,6 +671,8 @@ alert(JSON.stringify(userProfile?.data?.subscription))
         </View>
       </ScrollView>
       <ModalAudioUnlock
+        isLoading={loading}
+        isLoading2={loading2}
         isVisible={show}
         onClose={() => setShow(false)}
         onGetAudio={() => handleAudio()}

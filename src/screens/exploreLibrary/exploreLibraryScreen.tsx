@@ -68,6 +68,7 @@ const ExploreLibraryScreen = ({
   backgroundColor,
   userProfile,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -210,6 +211,18 @@ const ExploreLibraryScreen = ({
       },
     );
   };
+  const handleNative = async() => {
+    setLoading(true)
+    const data  = await handleNativePayment('unlock_story_1_week_only');
+    if(data){
+      setLoading(false)
+      setShowModalUnlock(false);
+    }else{
+      setLoading(false)
+      setShowModalUnlock(false);
+    }
+  }
+  
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
@@ -279,13 +292,13 @@ const ExploreLibraryScreen = ({
         items={(value: any) => setItems(value)}
       />
       <ModalUnlockStory
+        isLoading={loading}
         isVisible={showModalUnlock}
         onClose={() => setShowModalUnlock(false)}
         data={selectedStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          setShowModalUnlock(false);
-          handleNativePayment('unlock_story_1_week_only');
+          handleNative()
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}

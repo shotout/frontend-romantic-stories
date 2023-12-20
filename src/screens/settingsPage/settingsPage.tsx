@@ -138,9 +138,7 @@ const SettingsPage = ({
           style={{position: 'absolute', top: 0}}
           bgTheme={bgTheme}
           profileUrl={
-            userProfile?.data?.gender === 'Male'
-              ? BACKEND_URL + getAvatarMale
-              :  userProfile?.data?.gender === null ? BACKEND_URL + getAvatarMale : BACKEND_URL + getAvatarFemale
+            BACKEND_URL + getAvatarMale 
           }
         />
         <View

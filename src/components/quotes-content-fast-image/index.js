@@ -50,11 +50,13 @@ export default function QuotesContent({
   titleCategory,
   
 }) {
-  console.log(bg)
+ 
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [title, setTitle] = useState('10/10 Audio Stories');
   const [showAudio, setShowAudio] = useState(false);
   const [me, setMe] = useState(null);
@@ -84,6 +86,7 @@ export default function QuotesContent({
 
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
+    setLoading2(true)
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
@@ -96,9 +99,11 @@ export default function QuotesContent({
         };
         await updateProfile(payload);
         reloadUserProfile();
+        setLoading2(false)
       }, 100);
     } else {
       setShow(false);
+      setLoading2(false)
       setTimeout(() => {
         setShowAudio(true);
       }, 100);
@@ -106,6 +111,7 @@ export default function QuotesContent({
   };
   const handleAudioOne = async () => {
     setTitle('10/10 Audio Stories');
+    setLoading(true)
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
       setShow(false);
@@ -118,9 +124,11 @@ export default function QuotesContent({
         };
         await updateProfile(payload);
         reloadUserProfile();
+        setLoading(false)
       }, 100);
     } else {
       setShow(false);
+      setLoading(false)
       setTimeout(() => {
         setShowAudio(true);
       }, 100);
@@ -203,6 +211,8 @@ export default function QuotesContent({
       />
       <ModalAudioUnlock
         isVisible={show}
+        isLoading={loading}
+        isLoading2={loading2}
         onClose={() => setShow(false)}
         onGetAudio={() => handleAudio()}
         onGetAudio1={() => handleAudioOne()}
@@ -283,22 +293,22 @@ export default function QuotesContent({
 
           <TouchableOpacity
             onPress={async () => {
-              // if (themeUser?.subscription?.plan?.id === 3) {
+              if (themeUser?.subscription?.plan?.id === 3) {
                 navigate('Media');
-              // } else if (
-              //   themeUser?.subscription?.plan?.id === 2 &&
-              //   themeUser?.subscription?.audio_limit != 0
-              // ) {
-              //   const payload = {
-              //     _method: 'PATCH',
-              //     audio_take: 1,
-              //   };
-              //   await updateProfile(payload);
-              //   reloadUserProfile();
-              //   navigate('Media');
-              // } else {
-              //   setShow(true);
-              // }
+              } else if (
+                themeUser?.subscription?.plan?.id === 2 &&
+                themeUser?.subscription?.audio_limit != 0
+              ) {
+                const payload = {
+                  _method: 'PATCH',
+                  audio_take: 1,
+                };
+                await updateProfile(payload);
+                reloadUserProfile();
+                navigate('Media');
+              } else {
+                setShow(true);
+              }
             }}
             style={{
               padding: 5,

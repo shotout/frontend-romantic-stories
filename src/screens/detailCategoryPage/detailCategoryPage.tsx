@@ -59,6 +59,8 @@ const DetailCategoryScreen = ({
   userProfile,
   nextStory,
 }) => {
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const flatListRef = useRef(null);
   const [selectedAlphabet, setSelectedAlphabet] = useState(null);
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -193,7 +195,7 @@ const DetailCategoryScreen = ({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gestureState) => {
-        alert('oiiii')
+      
         // Deteksi pergerakan sentuhan di sini
         // Anda dapat menggunakan gestureState untuk mendapatkan informasi lebih lanjut
         const touchX = event.nativeEvent.locationX;
@@ -206,7 +208,6 @@ const DetailCategoryScreen = ({
   ).current;
 
   const handleTouchMove = (touchX, touchY) => {
-   alert('siniii')
     const touchedAlphabetIndex = Math.floor(touchY / 30); // Misalkan setiap huruf memiliki tinggi 30
     if (
       touchedAlphabetIndex >= 0 &&
@@ -218,7 +219,30 @@ const DetailCategoryScreen = ({
       }
     }
   };
-
+const handleNative = async () => {
+  setLoading(true)
+  const data = await handleNativePayment('unlock_story_1_week_only');
+  if (data) {
+    
+    setTimeout(async () => {
+      // const payload = {
+      //   _method: 'PATCH',
+      //   is_audio: 1,
+      //   audio_limit: 10,
+      // };
+      // await updateProfile(payload);
+      // reloadUserProfile();
+      setLoading(false)
+      setShowModalUnlock(false);
+    }, 100);
+  } else {
+   
+    setLoading(false)
+    setShowModalUnlock(false);
+   
+  }
+  
+}
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -228,13 +252,13 @@ const DetailCategoryScreen = ({
         items={(value: any) => setItems(value)}
       />
       <ModalUnlockStory
+        isLoading={loading}
         isVisible={showModalUnlock}
         onClose={() => setShowModalUnlock(false)}
         data={nextStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          setShowModalUnlock(false);
-          handleNativePayment('unlock_story_1_week_only');
+          handleNative()
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}

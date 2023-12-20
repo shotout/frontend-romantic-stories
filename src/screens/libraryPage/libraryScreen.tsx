@@ -116,7 +116,7 @@ const LibraryScreen = ({
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [selectedStory, setSelectedStory] = useState(null);
   const [price, setPrice] = useState('');
@@ -804,16 +804,30 @@ const LibraryScreen = ({
     </View>
   );
 
+  const handleNative = async() => {
+    
+    setLoading(true)
+    const data  = await handleNativePayment('unlock_story_1_week_only');
+    if(data){
+      setLoading(false)
+      setShowModalUnlock(false);
+      setShowModalNewStory(false);
+    }else{
+      setLoading(false)
+      setShowModalUnlock(false);
+      setShowModalNewStory(false);
+    }
+  }
   return (
     <View>
       <ModalUnlockStory
+        isLoading={loading}
         isVisible={showModalUnlock}
         onClose={() => setShowModalUnlock(false)}
         data={selectedStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          setShowModalUnlock(false);
-          handleNativePayment('unlock_story_1_week_only');
+          handleNative()
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
@@ -861,6 +875,7 @@ const LibraryScreen = ({
           }}
         />
         <ModalNewStory
+          isLoading={loading}
           isVisible={showModalNewStory}
           onClose={() => setShowModalNewStory(false)}
           onWatchAds={() => {
@@ -868,8 +883,8 @@ const LibraryScreen = ({
             setShowModal(true);
           }}
           onUnlock={() => {
-            setShowModalNewStory(false);
-            handleNativePayment('unlock_story_1_week_only');
+           
+            handleNative()
           }}
           onGetUnlimit={() => {
             handleUnlimited();

@@ -107,6 +107,8 @@ const MainScreen = ({
   handleStoriesRelate,
   handleLeveling,
 }) => {
+  const [loadingOne, setLoadingOne] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
   const [products, setProducts] = useState([]);
@@ -291,6 +293,7 @@ const MainScreen = ({
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
+    
     // const offsetY = e.nativeEvent.contentOffset.x;
     // const height = sizing.getDimensionWidth(0.89);
     // const pageNumber = Math.min(
@@ -335,7 +338,7 @@ const MainScreen = ({
           (item: any) => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
-    if (!existingEntry && pageNumber === dataBook?.content_en?.length - 1) {
+    if (!existingEntry && pageNumber === dataBook?.content_en?.length + 1 - 1) {
       // jika nanti pertama kali melakukan update data terakhir
       await addPastStory(dataBook.id);
       const data = {
@@ -350,13 +353,13 @@ const MainScreen = ({
       }
     } else if (
       existingEntry &&
-      pageNumber === dataBook?.content_en?.length - 1 &&
+      pageNumber === dataBook?.content_en?.length + 1 - 1 &&
       !(isPremiumStory || isPremiumAudio)
     ) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      setTimeout(() => {
+     
         setShowModalCongrats(true);
-      }, 5000);
+      
     }
     if (pageNumber === dataBook?.content_en?.length - 1) {
       //   if(isPremium){
@@ -672,14 +675,23 @@ const MainScreen = ({
 
   function renderFlatList() {
     if (dataBook?.content_en?.length > 0) {
+      const jumlahDataKosong = 1; // Ganti dengan jumlah yang diinginkan
+
+      // Menghitung panjang array setelah ditambahkan data kosong
+      const panjangArrayBaru = dataBook.content_en.length + jumlahDataKosong;
+    
+      // Membuat array baru dengan data yang sudah ada dan data kosong
+      const dataBaru = dataBook.content_en.concat(Array(jumlahDataKosong).fill(dataBook.content_en[dataBook.content_en.length - 1]));
       return (
         <PagerView
           style={{flex: 1}}
           initialPage={0}
           ref={pagerRef}
           transitionStyle="curl"
-          onPageSelected={e => onScroll(e)}>
-          {dataBook?.content_en.map((dtb: any, index: number) => {
+          overdrag={false}
+          onPageScroll={e => onScroll(e)}
+          >
+          {dataBaru?.map((dtb: any, index: number) => {
             return (
               <View
                 style={{
@@ -718,6 +730,7 @@ const MainScreen = ({
   }, [isFocused]);
 
   const handleUnlock = async () => {
+    setLoading(true)
     const data = await handleNativePayment('unlock_story_1_week_only');
     if (data) {
       setShowModalNewStory(false);
@@ -729,8 +742,10 @@ const MainScreen = ({
       reloadUserProfile();
       const res = await getStoryList();
       handleNextStory(res.data);
+      setLoading(false)
       setShowModalSuccessPurchase(true);
     } else {
+      setLoading(false)
       // setShowModalNewStory(false);
     }
   };
@@ -1035,8 +1050,12 @@ const MainScreen = ({
           />
           <ModalCongrats
             isVisible={showModalCongrats}
-            onClose={() => setShowModalCongrats(false)}
+            onClose={() => {
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
+              setShowModalCongrats(false)
+            }}
             onGotIt={async () => {
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
               setShowModalCongrats(false);
               if (userStory?.is_rating === null) {
                 setRating(true);
@@ -1097,8 +1116,12 @@ const MainScreen = ({
           />
           <ModalCongrats
             isVisible={showModalCongrats}
-            onClose={() => setShowModalCongrats(false)}
+            onClose={() => {
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
+              setShowModalCongrats(false)
+            }}
             onGotIt={async () => {
+              pagerRef.current?.setPage(dataBook.content_en?.length - 1)
               setShowModalCongrats(false);
               if (userStory?.is_rating === null) {
                 setRating(true);
@@ -1108,6 +1131,7 @@ const MainScreen = ({
             }}
           />
           <ModalNewStory
+            isLoading={loading}
             isVisible={showModalNewStory}
             onClose={() => setShowModalNewStory(false)}
             onWatchAds={() => {
