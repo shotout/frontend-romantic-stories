@@ -122,59 +122,64 @@ const LibraryScreen = ({
   const [price, setPrice] = useState('');
   const activeStatus = useRef(false);
   const startBounceAnimation = () => {
-    Animated.spring(translateX, {
-      toValue: 1.2,  // Increase the scale to 1.2
-      friction: 1,   // Adjust the friction to control the bounciness
-      useNativeDriver: true,
-    }).start(() => {
-      // Reset to the original scale after the animation is complete
-      Animated.spring(translateX, {
-        toValue: 1,
-        friction: 1,
+    Animated.sequence([
+      Animated.timing(translateX, {
+        toValue: 100, // Turun ke bawah sejauh 100
+        duration: 500,
         useNativeDriver: true,
-      }).start();
-    });
+      }),
+      Animated.timing(translateX, {
+        toValue: -100, // Naik ke atas sejauh 100
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateX, {
+        toValue: 0, // Turun kembali ke posisi semula
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
-  const runAnimation = async () => {
-    try {
-      // First Animation
-      await Animated.timing(translateX, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+  // const runAnimation = async () => {
+  //   try {
+  //     // First Animation
+  //     await Animated.timing(translateX, {
+  //       toValue: 0,
+  //       duration: 1000,
+  //       useNativeDriver: true,
+  //     }).start();
   
-      // Increment counter and Second Animation
-      counter.current += 1;
-      await Animated.timing(translateX, {
-        toValue: 50,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
+  //     // Increment counter and Second Animation
+  //     counter.current += 1;
+  //     await Animated.timing(translateX, {
+  //       toValue: 50,
+  //       duration: 300,
+  //       useNativeDriver: true,
+  //     }).start();
   
-      if (activeStatus.current) {
-        const isStopAnimation = counter.current !== 0 && counter.current % 2 === 0;
+  //     if (activeStatus.current) {
+  //       const isStopAnimation = counter.current !== 0 && counter.current % 2 === 0;
         
-        if (isStopAnimation) {
-          // Stop Animation
-          await Animated.timing(translateX, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-          }).start();
+  //       if (isStopAnimation) {
+  //         // Stop Animation
+  //         await Animated.timing(translateX, {
+  //           toValue: 0,
+  //           duration: 300,
+  //           useNativeDriver: true,
+  //         }).start();
   
-          // Delay and Restart Animation
-          await Animated.delay(100); // Adjust the delay as needed
-          runAnimation();
-        } else {
-          // Continue Animation
-          runAnimation();
-        }
-      }
-    } catch (error) {
-      console.error('Animation error:', error?.message);
-    }
-  };
+  //         // Delay and Restart Animation
+  //         await Animated.delay(100); // Adjust the delay as needed
+  //         runAnimation();
+  //       } else {
+  //         // Continue Animation
+  //         runAnimation();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Animation error:', error?.message);
+  //   }
+  // };
   const stopAnimation = () => {
     translateX.stopAnimation(value => {
       translateX.setValue(0); // Set the animation value to the current value
@@ -297,6 +302,10 @@ const LibraryScreen = ({
       return (
         <View>
           {detailCollection?.stories_count != 0 ? (
+            < Animated.View
+            style={{
+              transform: [{translateX: translateX}],
+            }}>
             <View
               style={{
                 paddingHorizontal: 10,
@@ -380,16 +389,13 @@ const LibraryScreen = ({
                 </View>
               </View>
               <TouchableOpacity onPress={() => startBounceAnimation()}>
-                <Animated.View
-                  style={{
-                    width: '100%',
-                    height: sizing.getDimensionHeight(1),
-                    transform: [{scale: translateX}],
-                  }}>
+              
                   <DotSvg />
-                </Animated.View>
+               
               </TouchableOpacity>
+             
             </View>
+            </ Animated.View >
           ) : null}
           {/* <View
         style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
@@ -397,10 +403,13 @@ const LibraryScreen = ({
         </View>
       );
     } else {
-      console.log('masukkkk');
       return (
         <View>
-          <View
+           < Animated.View
+            style={{
+              transform: [{translateX: translateX}],
+            }}>
+  <View
             style={{
               paddingHorizontal: 10,
               paddingBottom: 10,
@@ -480,15 +489,14 @@ const LibraryScreen = ({
                 </TouchableOpacity>
               </View>
             </View>
-            <TouchableOpacity onPress={() => runAnimation()}>
-              <Animated.View
-                style={{
-                  transform: [{translateY: translateX}],
-                }}>
+            <TouchableOpacity onPress={() => startBounceAnimation()}>
+             
                 <DotSvg />
-              </Animated.View>
+              
             </TouchableOpacity>
           </View>
+            </Animated.View>
+        
         </View>
       );
     }
