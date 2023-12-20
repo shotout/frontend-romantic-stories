@@ -74,6 +74,7 @@ import {sizing} from '../../shared/styling';
 import {Step4} from '../../layout/tutorial';
 import LockFree from '../../assets/icons/lockFree';
 import ModalUnlockStory from '../../components/modal-unlock-story';
+import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
@@ -112,7 +113,7 @@ const LibraryScreen = ({
   const [listLibraryDetail, setListLibraryDetail] = useState([]);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
-
+  const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
@@ -192,7 +193,7 @@ const LibraryScreen = ({
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
         handleNextStory(resp.data);
-        setShowModalSuccessPurchase(true);
+        setShowUnlockedStory(true);
       }, 500);
     });
   };
@@ -820,6 +821,20 @@ const LibraryScreen = ({
   }
   return (
     <View>
+      <ModalUnlockedStory
+        restart
+        edit
+        isVisible={showUnlockedStory}
+        onClose={() => setShowUnlockedStory(false)}
+        readLater={true}
+        data={selectedStory}
+        handleRead={async () => {
+          setShowUnlockedStory(false)
+          const resp = await getStoryDetail(selectedStory?.id);
+          handleSetStory(resp.data);
+          navigate('Main');
+        }}
+      />
       <ModalUnlockStory
         isLoading={loading}
         isVisible={showModalUnlock}
