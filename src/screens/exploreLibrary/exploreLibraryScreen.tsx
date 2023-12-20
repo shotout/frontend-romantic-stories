@@ -446,13 +446,13 @@ const ExploreLibraryScreen = ({
                 {data?.category.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if(userProfile?.data?.subscription?.plan_id === 1){
-                        setSelectStory(itm.id);
-                        setShowModalUnlockCategory(true)
-                      }else{
+                      // if(userProfile?.data?.subscription?.plan_id === 1){
+                      //   setSelectStory(itm.id);
+                      //   setShowModalUnlockCategory(true)
+                      // }else{
                          setSelectStory(itm.id);
-                         fetchUpdate();
-                      }
+                      //    fetchUpdate();
+                      // }
                     }}
                     style={{
                       width: 95,
@@ -479,7 +479,7 @@ const ExploreLibraryScreen = ({
                         <ChecklistSvg width={10} />
                       ) : null}
                     </View>
-                    { userProfile?.data?.subscription?.plan_id != 2 && userProfile?.data?.subscription?.plan_id != 3  && (
+                    {/* { userProfile?.data?.subscription?.plan_id != 2 && userProfile?.data?.subscription?.plan_id != 3  && (
                       <LockFree
                         height={16}
                         width={55}
@@ -490,10 +490,10 @@ const ExploreLibraryScreen = ({
                           zIndex: 1,
                         }}
                       />
-                    )}
+                    )} */}
                     <Image
                       source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
-                      resizeMode='contain'
+                      resizeMode='cover'
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text
