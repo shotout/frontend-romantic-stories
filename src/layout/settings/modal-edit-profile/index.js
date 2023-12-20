@@ -122,12 +122,12 @@ function ModalEditProfile({
     {
       title: 'Select your character',
       icon: <ProfileSvg width={22} height={22} />,
-      value: userProfile.gender === 'Male' ? getAvatarMale : getAvatarFemale,
+      value:  getAvatarMale ,
     },
     {
       title: 'Select partner character',
       icon: <PartnerSvg width={20} height={20} />,
-      value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
+      value: getAvatarFemale,
     },
     // {
     //   title: 'Select language',

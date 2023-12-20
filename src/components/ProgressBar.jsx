@@ -19,9 +19,9 @@ const ProgressBar = ({  bgTheme, levelingUser }) => {
   }, [progress]);
 
   const renderProgress = () => {
-    if (progress <= 30) {
+    if (progress < 80) {
       return renderCase1();
-    } else if (progress >= 31 && progress <= 600) {
+    } else if (progress == 80 && progress <= 600) {
       return renderCase2();
     } else {
       return renderCase3();
@@ -36,7 +36,7 @@ const ProgressBar = ({  bgTheme, levelingUser }) => {
             styles.progressBar,
             {
               width: animatedProgress.interpolate({
-                inputRange: [0, 5, 25, 30],
+                inputRange: [0, 5, 25, 79],
                 outputRange: ['0%', '25%', '90%', '100%'],
               }),
               backgroundColor: bgTheme,

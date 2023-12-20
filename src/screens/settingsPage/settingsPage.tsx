@@ -140,7 +140,7 @@ const SettingsPage = ({
           profileUrl={
             userProfile?.data?.gender === 'Male'
               ? BACKEND_URL + getAvatarMale
-              : BACKEND_URL + getAvatarFemale
+              :  userProfile?.data?.gender === null ? BACKEND_URL + getAvatarMale : BACKEND_URL + getAvatarFemale
           }
         />
         <View
@@ -281,9 +281,7 @@ const SettingsPage = ({
                 <Image
                   source={{
                     uri:
-                    userProfile?.data?.gender === 'Male'
-                    ? BACKEND_URL + getAvatarMale
-                    : BACKEND_URL + getAvatarFemale
+                     BACKEND_URL + getAvatarMale
                   }}
                   style={{
                     width: 40,
@@ -310,10 +308,7 @@ const SettingsPage = ({
                 }}>
                 <Image
                   source={{
-                    uri:
-                    userProfile?.data?.gender === 'Male'
-                    ? BACKEND_URL + getAvatarFemale
-                    : BACKEND_URL + getAvatarMale
+                    uri: BACKEND_URL + getAvatarFemale
                   }}
                   style={{
                     width: 40,

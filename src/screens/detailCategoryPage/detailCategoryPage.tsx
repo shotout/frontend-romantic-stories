@@ -7,7 +7,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,8 @@ import {
   SafeAreaView,
   Dimensions,
   Alert,
+  FlatList,
+  PanResponder,
 } from 'react-native';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
@@ -55,7 +57,10 @@ const DetailCategoryScreen = ({
   stepsTutorial,
   backgroundColor,
   userProfile,
+  nextStory,
 }) => {
+  const flatListRef = useRef(null);
+  const [selectedAlphabet, setSelectedAlphabet] = useState(null);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -68,6 +73,12 @@ const DetailCategoryScreen = ({
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
   const [loadingAds, setLoadingAds] = useState(false);
+  const uniqueAlphabets = Array.from(
+    new Set(data?.data?.map(item => item.title_en[0])),
+  );
+  const filteredData = selectedAlphabet
+    ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
+    : data?.data;
 
   const showWatchAds = async () => {
     const advert = await loadRewarded();
@@ -89,6 +100,13 @@ const DetailCategoryScreen = ({
     }, 500);
   };
 
+  const handleFree = async () => {
+    setTimeout(async () => {
+      const resp = await getStoryDetail(selectedStory?.id);
+      handleNextStory(resp.data);
+      setShowModalUnlock(true);
+    }, 500);
+  };
   const handleUnlimited = async () => {
     //
     try {
@@ -169,38 +187,38 @@ const DetailCategoryScreen = ({
       },
     );
   };
-  // const handleTouchStart = e => {
-  // // Mendapatkan posisi sentuhan
-  // const touchX = e.nativeEvent.locationX;
-  // // Menghitung setengah lebar layar
-  // const screenWidth = Dimensions.get('window').width / 2.5;
-  // if (touchX < screenWidth) {
-  //   handleSetSteps(4 - 1);
-  //   navigate('Library');
-  // } else {
-  //   handleSetSteps(4 + 1);
-  //   navigate('Main');
-  // }
-  // setIsSwipingLeft(true);
-  // if (activeStep === 1) {
-  // } else {
-  //   setTutorial({
-  //     ...isTutorial,
-  //     step: isTutorial.step - 1,
-  //   });
-  //   setActiveStep(prevStep => prevStep - 1);
-  //   handleSetSteps(activeStep - 1);
-  // }
-  // } else if (touchX < halfScreenWidth){
-  //   alert('okeee kiri')
-  // }
-  // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-  // else {
-  //   alert('okeee KANAN')
-  //   // handleNext();
-  //   // setIsSwipingRight(true);
-  // }
-  // };
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gestureState) => {
+        alert('oiiii')
+        // Deteksi pergerakan sentuhan di sini
+        // Anda dapat menggunakan gestureState untuk mendapatkan informasi lebih lanjut
+        const touchX = event.nativeEvent.locationX;
+        const touchY = event.nativeEvent.locationY;
+        // Lakukan sesuatu dengan informasi sentuhan, misalnya memperbarui huruf terpilih
+        console.log(touchX)
+        handleTouchMove(touchX, touchY);
+      },
+    }),
+  ).current;
+
+  const handleTouchMove = (touchX, touchY) => {
+   alert('siniii')
+    const touchedAlphabetIndex = Math.floor(touchY / 30); // Misalkan setiap huruf memiliki tinggi 30
+    if (
+      touchedAlphabetIndex >= 0 &&
+      touchedAlphabetIndex < uniqueAlphabets.length
+    ) {
+      const touchedAlphabet = uniqueAlphabets[touchedAlphabetIndex];
+      if (selectedAlphabet !== touchedAlphabet) {
+        setSelectedAlphabet(touchedAlphabet);
+      }
+    }
+  };
+
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -212,7 +230,7 @@ const DetailCategoryScreen = ({
       <ModalUnlockStory
         isVisible={showModalUnlock}
         onClose={() => setShowModalUnlock(false)}
-        data={selectedStory}
+        data={nextStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
           setShowModalUnlock(false);
@@ -282,7 +300,7 @@ const DetailCategoryScreen = ({
           </Pressable>
         </View>
       </View>
-      <ScrollView
+      <View
         style={{
           backgroundColor: backgroundColor,
           height: '100%',
@@ -298,8 +316,8 @@ const DetailCategoryScreen = ({
             Category: {data?.category?.name}
           </Text>
         )}
-        {data?.most_share?.length > 0 && (
-          <View style={{flex: 0, height: 'auto'}}>
+        <View>
+          {data?.most_share?.length > 0 && (
             <View
               style={{
                 backgroundColor: '#F0F2FF',
@@ -312,12 +330,12 @@ const DetailCategoryScreen = ({
               <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
                 🔥 Most liked Stories in this Category
               </Text>
-              <ScrollView horizontal>
+              <ScrollView horizontal style={{flex: 0}}>
                 {data?.most_share.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
                       if (userProfile?.data?.subscription?.plan_id === 1) {
-                        setShowModalUnlock(true);
+                        handleFree();
                         setSelectedStory(itm);
                       } else {
                         setSelectedStory(itm);
@@ -367,77 +385,104 @@ const DetailCategoryScreen = ({
                 ))}
               </ScrollView>
             </View>
-          </View>
-        )}
-        <View style={{marginTop: 20}}>
-          {data?.data?.length > 0 &&
-            data?.data.map((itm: any, idx: number) => (
-              <Pressable
-                onPress={() => {
-                  setSelectedStory({...itm});
-                  if (userProfile?.data?.subscription?.plan_id === 1) {
-                    setShowModalUnlock(true);
-                  } else {
-                    handlePremium();
-                  }
-                }}
-                key={idx}
-                style={{
-                  height: 'auto',
-                  flex: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginHorizontal: 13,
-                  borderBottomColor: '#F0F2FF',
-                  borderBottomWidth: 1,
-                }}>
-                <Image
-                  source={{
-                    uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+          )}
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: '600',
+            marginVertical: 10,
+            marginLeft: 13,
+          }}>
+          {selectedAlphabet}
+        </Text>
+        <View style={{flexDirection: 'row', flex: 1, paddingBottom: 150}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{marginTop: 20, marginRight: 20, flex: 0}}>
+            {filteredData &&
+              filteredData.map((itm: any, idx: number) => (
+                <Pressable
+                  onPress={() => {
+                    setSelectedStory({...itm});
+                    if (userProfile?.data?.subscription?.plan_id === 1) {
+                      handleFree();
+                    } else {  
+                      handlePremium();
+                    }
                   }}
-                  resizeMode="cover"
+                  key={idx}
                   style={{
-                    height: 50,
-                    width: 36.5,
-                    borderRadius: 5,
-                    marginVertical: 10,
-                  }}
-                />
-                <View style={{marginLeft: 10, justifyContent: 'center'}}>
-                  <Text
+                    height: 'auto',
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginHorizontal: 13,
+                    borderBottomColor: '#F0F2FF',
+                    borderBottomWidth: 1,
+                  }}>
+                  <Image
+                    source={{
+                      uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                    }}
+                    resizeMode="cover"
                     style={{
-                      fontSize: 12,
-                      fontWeight: '400',
-                      color: code_color.black,
-                      opacity: 0.5,
-                      marginBottom: 4,
-                    }}>
-                    {itm.category.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: '700',
-                      color: code_color.black,
-                    }}>
-                    {itm.title_en}
-                  </Text>
-                </View>
-                {userProfile?.data?.subscription?.plan_id != 2 &&
-                  userProfile?.data?.subscription?.plan_id != 3 && (
-                    <LockFree
-                      height={16}
-                      width={55}
+                      height: 50,
+                      width: 36.5,
+                      borderRadius: 5,
+                      marginVertical: 10,
+                    }}
+                  />
+                  <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                    <Text
                       style={{
-                        marginLeft: 'auto',
-                        zIndex: 1,
-                      }}
-                    />
-                  )}
+                        fontSize: 12,
+                        fontWeight: '400',
+                        color: code_color.black,
+                        opacity: 0.5,
+                        marginBottom: 4,
+                      }}>
+                      {itm.category.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: '700',
+                        color: code_color.black,
+                      }}>
+                      {itm.title_en}
+                    </Text>
+                  </View>
+                  {userProfile?.data?.subscription?.plan_id != 2 &&
+                    userProfile?.data?.subscription?.plan_id != 3 && (
+                      <LockFree
+                        height={16}
+                        width={55}
+                        style={{
+                          marginLeft: 'auto',
+                          zIndex: 1,
+                        }}
+                      />
+                    )}
+                </Pressable>
+              ))}
+          </ScrollView>
+          <View
+            {...panResponder.panHandlers}
+            style={{width: 30, marginRight: 20, flex: 1}}>
+            {uniqueAlphabets.map((item, index) => (
+              <Pressable
+                onPress={() => setSelectedAlphabet(item)}
+                style={{
+                  padding: 0,
+                }}>
+                <Text style={{fontSize: 14, textAlign: 'right', marginVertical: 0}}>{item}</Text>
               </Pressable>
             ))}
+          </View>
         </View>
-      </ScrollView>
+      </View>
+
       <ModalUnlockedStory
         restart
         edit

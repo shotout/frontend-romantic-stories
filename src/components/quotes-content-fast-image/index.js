@@ -50,6 +50,7 @@ export default function QuotesContent({
   titleCategory,
   
 }) {
+  console.log(bg)
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -339,7 +340,7 @@ export default function QuotesContent({
                     color:
                       bg === '#2C3439'
                         ? code_color.white
-                        : code_color.blackDark,
+                        : bg === '#FFFFFF' ? code_color.blackDark : code_color.blackDark,
                   },
                 ]}
                 menuItems={['Share']}

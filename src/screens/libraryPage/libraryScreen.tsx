@@ -710,6 +710,7 @@ const LibraryScreen = ({
     //   // setIsSwipingRight(true);
     // }
   };
+  
   const renderProgress = () => <StepHeader currentStep={5} />;
   const renderTutorial = () => {
     if (stepsTutorial === 3) {
@@ -802,6 +803,7 @@ const LibraryScreen = ({
       <View style={{borderColor: code_color.greyDefault, borderWidth: 1, borderStyle: 'solid', marginVertical: 20, marginHorizontal: 20  }}/>
     </View>
   );
+
   return (
     <View>
       <ModalUnlockStory
@@ -895,7 +897,7 @@ const LibraryScreen = ({
               paddingLeft: 10,
               height: 40,
             }}
-            onPress={() => setKeyword('')}
+            
             >
             <SearchSvg />
             <TextInput
@@ -903,8 +905,6 @@ const LibraryScreen = ({
               placeholderTextColor={code_color.black}
               allowFontScaling={false}
               value={keyword}
-              autoFocus
-              selectTextOnFocus
               onChangeText={value => setKeyword(value)}
               onSubmitEditing={() => handleRestart()}
               style={{
@@ -1076,11 +1076,13 @@ const LibraryScreen = ({
               />
             )}
           </ScrollView>
-        ) : listLibrary?.length === 0 || listCollection?.length === 0 || keyword != '' ? 
+        ) : listLibrary?.length === 0 && listCollection?.length === 0 && keyword.length === 0  ? 
         (
-          renderEmptySearch()
-          ) :
+          renderEmpty()
+          ) : listLibrary?.length === 0 && listCollection?.length === 0 && keyword.length > 0  ? 
          (
+          renderEmptySearch()
+        ) : (
           renderEmpty()
         )}
         <View

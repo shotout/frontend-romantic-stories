@@ -41,8 +41,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
     try {
       setLoading(true);
       const payload = {
-        [userProfile.gender === 'Male' ? 'avatar_male' : 'avatar_female']:
-          avatar,
+         avatar_male: avatar,
         _method: 'PATCH',
       };
       await updateProfile(payload);
@@ -78,11 +77,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
-        // setProgress(
-        //   userProfile.gender === 'Male'
-        //     ? userProfile.avatar_male - 1
-        //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 
-        // );
+        setProgress(0);
       }
     } catch (error) {
       // alert(JSON.stringify(error));

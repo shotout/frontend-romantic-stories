@@ -238,7 +238,7 @@ function RegisterScreen({
           dataAvatar={dataAva}
           setAvatar={text =>
             handleChange(
-              values.gender === 'female' ? 'avatar_female' : 'avatar_male',
+            'avatar_male',
               values.gender === 'female' ? text + 3 : text,
             )
           }
@@ -251,7 +251,7 @@ function RegisterScreen({
           dataAvatar={dataAva2}
           setAvatar={text =>
             handleChange(
-              values.gender === 'female' ? 'avatar_male' : 'avatar_female',
+              'avatar_female',
               values.gender === 'female' ? text : text + 3,
             )
           }
@@ -404,34 +404,7 @@ function RegisterScreen({
               bottom: moderateScale(10),
               width: '80%',
             }}>
-         
-            {stepRegister != 1 ? (
-              <Button
-                style={{
-                  backgroundColor: code_color.yellow,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: moderateScale(52),
-                  borderRadius: moderateScale(12),
-                  width: '100%',
-                  marginTop: moderateScale(10),
-                  marginBottom: stepRegister === 2 ? 0 : moderateScale(10),
-                }}
-                onPress={() => {
-                  stepRegister === 8
-                    ? onSubmit()
-                    : setStepRegister(
-                        stepRegister + (stepRegister === 6 ? 2 : 1),
-                      );
-                }}
-                title={
-                  stepRegister === 8
-                    ? 'Ok, let’s do it'
-                    : i18n.t('register.continue')
-                }
-              />
-            ) : null}
-               {stepRegister <= 2 ? (
+            {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => {
                   handleChange('gender', null);
@@ -460,6 +433,33 @@ function RegisterScreen({
                 </Text>
               </TouchableOpacity>
             ) : null}
+            {stepRegister != 1 ? (
+              <Button
+                style={{
+                  backgroundColor: code_color.yellow,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: moderateScale(52),
+                  borderRadius: moderateScale(12),
+                  width: '100%',
+                  marginTop: moderateScale(10),
+                  marginBottom: moderateScale(10),
+                }}
+                onPress={() => {
+                  stepRegister === 8
+                    ? onSubmit()
+                    : setStepRegister(
+                        stepRegister + (stepRegister === 6 ? 2 : 1),
+                      );
+                }}
+                title={
+                  stepRegister === 8
+                    ? 'Ok, let’s do it'
+                    : i18n.t('register.continue')
+                }
+              />
+            ) : null}
+            
             {stepRegister === 8 ? (
               <TouchableOpacity
                 onPress={() => onSubmit()}

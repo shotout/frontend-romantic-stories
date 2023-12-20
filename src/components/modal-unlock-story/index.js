@@ -112,7 +112,7 @@ function ModalUnlockStory({
                 color: '#505962',
                 marginTop: moderateScale(20),
               }}>
-              {data?.content_en?.slice(0, 180) + '...'}
+              { data?.content_en.length > 0 ? data?.content_en[0]?.slice(0, 180) + '...' :  data?.content_en?.slice(0, 180) + '...'}
             </Text>
             <View
               style={{

@@ -34,12 +34,13 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
   }, [userProfile.gender]);
 
   const handleSubmit = async () => {
+   
     try {
+    
       setLoading(true);
       const payload = {
         _method: 'PATCH',
-        [userProfile.gender === 'Female'  ? 'avatar_male' : userProfile.gender === null ? 'avatar_female' : 'avatar_female']:
-          avatar,
+        avatar_female: avatar,
       };
       await updateProfile(payload);
       reloadUserProfile();
@@ -219,7 +220,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           marginBottom: moderateScale(10),
           display: dataAva ? undefined : 'none',
         }}
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         title={loading ? 'Loading...' : 'Save'}
       />
     </View>

@@ -633,49 +633,36 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 2.5;
-    if (touchX < screenWidth) {
+    const halfScreenWidth = Dimensions.get('window').width / 2.5;
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      handleSetSteps(stepsTutorial - 1);
       if (stepsTutorial === 6) {
-        handleSetSteps(stepsTutorial - 2);
-        navigate('ExploreLibrary');
-      } else if (stepsTutorial === 7) {
-        handleSetSteps(stepsTutorial - 1);
-      } else if (stepsTutorial === 8 || stepsTutorial === 9) {
-        handleSetSteps(stepsTutorial - 1);
-        setShowModal(false);
-      }
-    } else {
-      if (stepsTutorial === 6) {
-        handleSetSteps(stepsTutorial + 1);
-        setVisible(false);
-      } else if (stepsTutorial === 7) {
-        handleSetSteps(stepsTutorial + 1);
-        setVisible(false);
-      } else if (stepsTutorial === 8 || stepsTutorial === 9) {
-        handleSetSteps(stepsTutorial + 1);
-        setVisible(false);
-        if (stepsTutorial === 8) {
-          AsyncStorage.removeItem('isTutorial');
-          handleSetSteps(0);
-          goBack();
-          handlePayment('onboarding');
-        }
+        navigate('Main');
       }
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    // else {
-    //   handleSetSteps(stepsTutorial + 1);
-    //   {
-    //     stepsTutorial === 8 ? AsyncStorage.removeItem('isTutorial') : null;
-    //   }
-    //   {
-    //     stepsTutorial === 8 ? handleSetSteps(0) : null;
-    //   }
-    //   {
-    //     stepsTutorial === 8 ? goBack() : null;
-    //   }
-    //   setIsSwipingRight(true);
-    // }
+    else {
+      handleSetSteps(stepsTutorial + 1);
+      // handleSetSteps(stepsTutorial + 1);
+      setVisible(false);
+      if (stepsTutorial === 8) {
+        AsyncStorage.removeItem('isTutorial');
+        handleSetSteps(0);
+        goBack();
+        handlePayment('onboarding');
+      }
+      // {
+      //   stepsTutorial === 8 ? AsyncStorage.removeItem('isTutorial') : null;
+      // }
+      // {
+      //   stepsTutorial === 8 ? handleSetSteps(0) : null;
+      // }
+      // {
+      //   stepsTutorial === 8 ? goBack() : null;
+      // }
+      
+    }
   };
   const handleTouchEnd = () => {
     // Reset status swipe saat sentuhan selesai
@@ -784,9 +771,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {
       return (
         <SafeAreaView
-          onTouchStart={handleTouchStart}
+          // onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
