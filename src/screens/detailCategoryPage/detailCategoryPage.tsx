@@ -225,13 +225,6 @@ const handleNative = async () => {
   if (data) {
     
     setTimeout(async () => {
-      // const payload = {
-      //   _method: 'PATCH',
-      //   is_audio: 1,
-      //   audio_limit: 10,
-      // };
-      // await updateProfile(payload);
-      // reloadUserProfile();
       setLoading(false)
       setShowModalUnlock(false);
     }, 100);

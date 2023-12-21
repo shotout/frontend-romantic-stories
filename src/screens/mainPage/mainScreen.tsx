@@ -593,7 +593,6 @@ const MainScreen = ({
   }, [visible]);
 
   const renderFactItem = ({item, index, title, category}) => {
-    console.log(category);
     return (
       <>
         <QuotesContent
@@ -732,12 +731,6 @@ const MainScreen = ({
     const data = await handleNativePayment('unlock_story_1_week_only');
     if (data) {
       setShowModalNewStory(false);
-      const payload = {
-        _method: 'PATCH',
-        is_member: 3,
-      };
-      await updateProfile(payload);
-      reloadUserProfile();
       const res = await getStoryList();
       handleNextStory(res.data);
       setLoading(false);

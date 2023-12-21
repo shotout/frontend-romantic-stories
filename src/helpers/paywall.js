@@ -98,14 +98,12 @@ export const handleNativePayment = async (sku, storyId) => {
     const payload = {
       _method: 'PATCH',
       is_audio: 1,
-      audio_limit: sku === 'unlock_10_audio_stories' ? 10 : 50,
+      audio_limit: sku === 'unlock_10_audio_stories' ? 10 : 'unlock_5_audio_stories' ? 50 : 0,
     };
     const payloadStory = {
       _method: 'PATCH',
-      is_audio: 1,
       story_id: storyId,
       expire: 7,
-      audio_limit: sku === 'unlock_10_audio_stories' ? 10 : 50,
     };
     await updateProfile(
       sku === 'unlock_story_1_week_only' ? payloadStory : payload,

@@ -129,14 +129,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        const payload = {
-          _method: 'PATCH',
-          is_audio: 1,
-          audio_limit: 50,
-        };
-        await updateProfile(payload);
         setLoading2(false)
-        reloadUserProfile();
       }, 100);
     } else {
       setShow(false);
@@ -155,13 +148,6 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        const payload = {
-          _method: 'PATCH',
-          is_audio: 1,
-          audio_limit: 10,
-        };
-        await updateProfile(payload);
-        reloadUserProfile();
       }, 100);
     } else {
       setLoading(false)

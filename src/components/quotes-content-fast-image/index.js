@@ -92,13 +92,6 @@ export default function QuotesContent({
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        const payload = {
-          _method: 'PATCH',
-          is_audio: 1,
-          audio_limit: 50,
-        };
-        await updateProfile(payload);
-        reloadUserProfile();
         setLoading2(false)
       }, 100);
     } else {
@@ -117,13 +110,6 @@ export default function QuotesContent({
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        const payload = {
-          _method: 'PATCH',
-          is_audio: 1,
-          audio_limit: 10,
-        };
-        await updateProfile(payload);
-        reloadUserProfile();
         setLoading(false)
       }, 100);
     } else {
