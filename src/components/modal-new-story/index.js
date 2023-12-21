@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import {Modal, View, Text, Pressable, Image, Dimensions} from 'react-native';
+import {Modal, View, Text, Pressable, Image, Dimensions, Platform} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -268,7 +268,9 @@ function ModalNewStory({
                     Watch 2 Ads
                   </Text>
                 </Pressable>
+                {Platform.OS === 'android' ? null :
                 <Pressable
+                  disabled={isLoading}
                   onPress={() => onUnlock()}
                   style={{
                     backgroundColor: '#009A37',
@@ -297,7 +299,7 @@ function ModalNewStory({
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                     Unlock 1 more Story directly for {price}
                   </Text> }
-                </Pressable>
+                </Pressable> }
                 <View
                   style={{
                     flexDirection: 'row',

@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -135,6 +136,7 @@ function ModalUnlockStory({
               }}>
               {'To unlock this story, choose one of the\r\nfollowing options:'}
             </Text>
+            {Platform.OS === 'android' ? null :
             <Pressable
               disabled={isLoading}
               onPress={onUnlock}
@@ -165,7 +167,7 @@ function ModalUnlockStory({
               <Text style={{color: code_color.white, textAlign: 'center'}}>
                 {price} for 1 week access
               </Text> }
-            </Pressable>
+            </Pressable> }
             <Pressable
               onPress={onWatchAds}
               style={{

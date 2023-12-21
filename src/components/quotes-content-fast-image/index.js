@@ -425,20 +425,20 @@ export default function QuotesContent({
                   overflow: 'hidden',
                   marginBottom: -100,
                   width: 100,
-                  height: 110,
+                  height: Platform.OS === 'android' ? 110 : 110,
                   left: '40%',
                   zIndex: 1,
-                  bottom: partner === '/assets/images/avatars/5/think.png' ? -5 : null
+                  bottom: partner === '/assets/images/avatars/5/think.png' && Platform.OS === 'ios' ? -5 : partner === '/assets/images/avatars/5/think.png' && Platform.OS === 'android' ? 0 : null
                 }}>
                 <FastImage
                   source={{
                     uri: `${BACKEND_URL}/${partner}`,
                     priority: FastImage.priority.high,
                   }}
-                  resizeMode={FastImage.resizeMode.cover}
+                  resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: 100,
-                    height: partner != null && partner === '/assets/images/avatars/5/think.png' ? 580 : 400,
+                    height: 300,
                   }}
                 />
               </View>
@@ -478,11 +478,12 @@ export default function QuotesContent({
             <>
               <View
                 style={{
+                
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: -150,
                   width: 100,
-                  height: 150,
+                  height: 180,
                   left: '10%',
                   zIndex: -1,
                 }}>
@@ -491,10 +492,11 @@ export default function QuotesContent({
                     uri: `${BACKEND_URL}/${me}`,
                     priority: FastImage.priority.high,
                   }}
-                  resizeMode={FastImage.resizeMode.cover}
+                  resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: 100,
-                    height: 420,
+                    height: 300,
+                    backgroundColor: 'Transparent',
                   }}
                 />
               </View>
@@ -504,7 +506,7 @@ export default function QuotesContent({
                   overflow: 'hidden',
                   marginBottom: -130,
                   width: 100,
-                  height: 150,
+                  height: 100,
                   left: '35%',
                   zIndex: -1,
                 }}>
@@ -513,10 +515,11 @@ export default function QuotesContent({
                     uri: `${BACKEND_URL}/${partner}`,
                     priority: FastImage.priority.high,
                   }}
-                  resizeMode={FastImage.resizeMode.cover}
+                  resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: 100,
-                    height: 420,
+                    height: 300,
+                    backgroundColor: 'Transparent',
                   }}
                 />
               </View>
@@ -536,15 +539,17 @@ export default function QuotesContent({
                 duration={3000}
                 loop={false}
               />
-              <View style={{zIndex: -2}}>
+              <View style={{zIndex: -2,  backgroundColor: 'Transparent',}}>
                 <ImageBackground
                   source={imgLove}
                   resizeMode="contain"
+
                   style={{
                     width: '75%',
                     height: 130,
                     marginLeft: 20,
                     zIndex: -1,
+                    backgroundColor: 'Transparent',
                   }}>
                   <View
                     style={{

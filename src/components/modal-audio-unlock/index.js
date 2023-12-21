@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -361,6 +362,7 @@ function ModalAudioStory({
                 }}>
                 {'Lean back and listen to this Story as Audio Book.'}
               </Text>
+              {Platform.OS === 'android' ? null :
               <Pressable
                 disabled={isLoading}
                   onPress={() => onGetAudio1()}
@@ -376,7 +378,8 @@ function ModalAudioStory({
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                   {`Get 10 Audio Stories for  ${price}`}
                   </Text> }
-                </Pressable>
+                </Pressable> }
+                {Platform.OS === 'android' ? null :
               <Pressable
                disabled={isLoading2}
                   onPress={() => onGetAudio()}
@@ -407,8 +410,8 @@ function ModalAudioStory({
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
                   {`Get 50 Audio Stories for ${price2}`}
                   </Text> }
-                </Pressable>
-              <View
+                </Pressable> }
+              {Platform.OS === 'android' ? null : <View
                   style={{
                     flexDirection: 'row',
                    marginHorizontal: moderateScale(10),
@@ -431,7 +434,7 @@ function ModalAudioStory({
                       height: 1,
                     }}
                   />
-                </View>
+                </View> }
               <Pressable
                   onPress={() => handlePayment(userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'in_app' : 'upgrade_to_unlimited_audio_story'  )}
                   style={{

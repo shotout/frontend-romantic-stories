@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import Svg, {
   Rect,
   Path,
@@ -108,8 +108,8 @@ function SvgComponent(props) {
           href={{
             uri: profileUrl,
           }}
-          x={profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
-          y={profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
+          x={Platform.OS === 'android' ? '-27' : profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
+          y={Platform.OS === 'android' ? '15' : profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
           width="100%"
           height="300"
           rx="28"

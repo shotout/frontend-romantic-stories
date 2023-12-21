@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {connect} from 'react-redux';
@@ -60,7 +61,7 @@ function ModalCongrats({
   const newImgLvl = levelingUser?.user_level?.level?.image?.url;
   const [imgPopup, setImgPopup] = useState(currentImgLvl);
   const [lottieStart, setLottieStart] = useState(false);
-   
+ 
   const handleClose = () => {
     onClose();
   };
@@ -181,7 +182,7 @@ function ModalCongrats({
       </>
     );
   };
-
+console.log(`${BACKEND_URL}${imgPopup}`)
   const renderPopup = () => (
     <Animatable.View
       animation="fadeIn"
@@ -424,7 +425,7 @@ function ModalCongrats({
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
-                        {newXp} XP
+                          {newXp ? newXp : 0} XP
                       </Animatable.Text>
                     </View>
                   </Animatable.View>
@@ -432,22 +433,22 @@ function ModalCongrats({
                     source={imgLoveLeft}
                     resizeMode="contain"
                     style={{
-                      width: 150,
+                      width:  Platform.OS === 'android' ? 157 :  150,
                       height: 150,
                       position: 'absolute',
                       left: -20,
-                      bottom: -100,
+                      bottom:  Platform.OS === 'android' ? -90 : -100,
                     }}
                   />
                   <Image
                     source={imgLoveRight}
                     resizeMode="contain"
                     style={{
-                      width: 150,
+                      width:  Platform.OS === 'android' ? 145 :150,
                       height: 150,
                       position: 'absolute',
                       right: -20,
-                      bottom: -100,
+                      bottom:  Platform.OS === 'android' ? -90 : -100,
                     }}
                   />
                 </View>
@@ -459,9 +460,9 @@ function ModalCongrats({
                 borderTopLeftRadius: 70,
                 borderTopRightRadius: 70,
                 position: 'absolute',
-                top: '37%',
+                top: Platform.OS === 'android' ? '32%':'37%',
                 left: 0,
-                width: '100%',
+                width: Dimensions.get('window').width,
                 flex: 1,
                 height: '100%',
                 alignItems: 'center',
