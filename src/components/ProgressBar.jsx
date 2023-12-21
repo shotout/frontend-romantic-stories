@@ -8,7 +8,7 @@ const ProgressBar = ({  bgTheme, levelingUser }) => {
   const [showInfo, setShowInfo] = useState(null);
   const animatedProgress = new Animated.Value(0);
   const progress = levelingUser?.user_level?.point;
-
+  
   useEffect(() => {
     // Animasikan perubahan nilai progress
     Animated.timing(animatedProgress, {
@@ -19,7 +19,7 @@ const ProgressBar = ({  bgTheme, levelingUser }) => {
   }, [progress]);
 
   const renderProgress = () => {
-    if (progress < 80) {
+    if (progress < 80 || progress === undefined) {
       return renderCase1();
     } else if (progress == 80 && progress <= 600) {
       return renderCase2();

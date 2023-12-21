@@ -3,7 +3,7 @@ import {Image, View} from 'react-native';
 import styles from './styles';
 
 const activeLamp = require('../../assets/images/step.png');
-const lampUnactive = require('../..//assets/images/stepNull.png');
+const lampUnactive = require('../../assets/images/stepNull.png');
 const lampActiveAnimation = require('../../assets/images/step.png');
 
 export default function StepHeader({currentStep}) {

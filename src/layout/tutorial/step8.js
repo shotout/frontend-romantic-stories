@@ -65,7 +65,7 @@ const Step8 = ({handleNext, handlePrev}) => {
         animation={'fadeIn'}
         duration={1000}
         style={{flexDirection: 'row', marginHorizontal: 15}}>
-        <Button
+        {/* <Button
           style={{
             backgroundColor: code_color.yellow,
             padding: 10,
@@ -78,12 +78,12 @@ const Step8 = ({handleNext, handlePrev}) => {
           }}
           title={'Prev'}
           onPress={handlePrev}
-        />
+        /> */}
         <Button
           style={{
             backgroundColor: code_color.yellow,
             padding: 10,
-            // paddingHorizontal: 30,
+            marginHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,
             flex: 1,

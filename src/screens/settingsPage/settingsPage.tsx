@@ -154,8 +154,8 @@ const SettingsPage = ({
                 fontSize: moderateScale(14),
               }}>
               {userProfile?.data?.name} •{' '}
-              {levelingUser?.user_level?.level?.desc} •{' '}
-              {levelingUser?.user_level?.point} XP
+              {levelingUser?.user_level?.level?.desc  ? levelingUser?.user_level?.level?.desc  : userProfile?.data?.user_level?.level?.desc} •{' '}
+              {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
           <View style={{marginLeft: '30%', marginTop: 50}}>

@@ -39,6 +39,7 @@ import {
   getListAvatar,
   getStoryList,
   postRegister,
+  updateProfile,
 } from '../../shared/request';
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
@@ -95,7 +96,6 @@ function RegisterScreen({
 
   useEffect(() => {
     fetchDeviceId();
-    
   }, []);
 
 
@@ -161,9 +161,31 @@ function RegisterScreen({
   };
 
   const onSubmit = async () => {
-    await notifee.requestPermission();
+    
+    // await notifee.requestPermission();
+    const data = await DeviceInfo.getUniqueId();
+
+    const id = await Purchasely.getAnonymousUserId();
     try {
-      const res = await postRegister(values);
+     
+      const payload = {
+        name: values?.name,
+        gender:  values?.gender,
+        start:  values?.start,
+        end: values?.end,
+        device_id: data,
+        fcm_token: values?.fcm_token,
+        category_id: values?.category_id,
+        avatar_male:  values?.avatar_male,
+        avatar_female: values?.avatar_female,
+        theme_id: values?.theme_id,
+        language_id: values?.language_id,
+        often: values?.often,
+        timezone: values?.timezone,
+        notif_enable: values?.notif_enable,
+        purchasely_id: id,
+        }
+      const res = await postRegister(payload);
       handleSetProfile(res);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
@@ -186,6 +208,25 @@ function RegisterScreen({
         device_id: device,
       });
       handleSetProfile(res);
+      const payload = {
+        _method: 'PATCH',
+        name: values?.name,
+        gender:  values?.gender,
+        start:  values?.start,
+        end: values?.end,
+        device_id: device,
+        fcm_token: values?.fcm_token,
+        category_id: values?.category_id,
+        avatar_male:  values?.avatar_male,
+        avatar_female: values?.avatar_female,
+        theme_id: values?.theme_id,
+        language_id: values?.language_id,
+        often: values?.often,
+        timezone: values?.timezone,
+        notif_enable: values?.notif_enable,
+        purchasely_id: values?.purchasely_id,
+        }
+      await updateProfile(payload);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
       handleSetColorTheme(res?.data?.theme?.theme_color);
@@ -252,7 +293,7 @@ function RegisterScreen({
           setAvatar={text =>
             handleChange(
               'avatar_female',
-              values.gender === 'female' ? text : text + 3,
+              text,
             )
           }
         />

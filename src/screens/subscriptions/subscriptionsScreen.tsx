@@ -157,6 +157,26 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
       }, 100);
     }
   };
+  const handleInapp = async (value) => {
+    //
+    try {
+      const paymentResult = await handlePayment(value);
+      if (paymentResult.success) {
+        reloadUserProfile()
+        console.log('Pembayaran berhasil:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran berhasil
+      } else {
+        
+        console.log('Pembayaran gagal:', paymentResult.result);
+        // Lakukan tindakan setelah pembayaran gagal
+      }
+    } catch (error) {
+      
+      console.error('Terjadi kesalahan:', error);
+      // Tangani kesalahan yang mungkin terjadi
+    }
+    // setShowModalGetPremium(true);
+  };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
       <View
@@ -377,7 +397,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
             <Pressable
               onPress={() => {
                 userProfile?.data?.subscription?.plan?.id === 1
-                  ? handlePayment('in_app')
+                  ? handleInapp('in_app')
                   : userProfile?.data?.subscription?.plan?.id === 2
                   ? setShow(true)
                   : null;
@@ -432,7 +452,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               </Text>
               <Pressable
                 onPress={() => {
-                  handlePayment('inapp_paywall_a');
+                  handleInapp('inapp_paywall_a');
                 }}
                 style={{
                   backgroundColor: '#D8DEFD',
@@ -561,7 +581,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                 </Text>
                 <Pressable
                   onPress={() => {
-                    handlePayment('inapp_paywall_a');
+                    handleInapp('inapp_paywall_a');
                   }}
                   style={{
                     backgroundColor: '#DDDEE3',
