@@ -1006,7 +1006,7 @@ const MainScreen = ({
           const existingEntry = readStory
             ? readStory.find(
                 (item: any) =>
-                  item?.id === dataBook.id && item?.page === screenNumber,
+                  item?.id === dataBook.id && item?.page === screenNumber + 1,
               )
             : undefined;
           if (
@@ -1025,17 +1025,17 @@ const MainScreen = ({
                 setShowModalCongrats(true);
               }, 200);
             }
+            checkingRead(screenNumber + 1);
           } else if (
             existingEntry &&
             screenNumber === dataBook?.content_en?.length - 1 &&
             !(isPremiumStory || isPremiumAudio)
           ) {
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
-
             setShowModalCongrats(true);
           }
         }
-      }, 100);
+      }, 200);
     }
   };
 
