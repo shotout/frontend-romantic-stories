@@ -320,6 +320,143 @@ console.log(`${BACKEND_URL}${imgPopup}`)
     </Animatable.View>
   );
 
+  const renderPopup = () => (
+    <Animatable.View
+      animation="fadeIn"
+      duration={500}
+      style={{
+        position: 'absolute',
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        height: sizing.getDimensionHeight(1),
+        width: sizing.getDimensionWidth(1),
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <View style={{position: 'relative', overflow: 'hidden'}}>
+        <Animatable.Text
+          animation="fadeInUp"
+          style={{
+            fontSize: moderateScale(24),
+            fontWeight: '700',
+            color: code_color.white,
+            textAlign: 'center',
+          }}>
+          {'Congratulations,\r\nyou leveled up!'}
+        </Animatable.Text>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+        <Animatable.Image
+          duration={0}
+          delay={0}
+          animation="fadeInUpBig"
+          source={{
+            uri: `${BACKEND_URL}${imgPopup}`,
+          }}
+          resizeMode="contain"
+          style={{
+            width: sizing.getDimensionWidth(0.3),
+            height: sizing.getDimensionWidth(0.3),
+            marginVertical: moderateScale(50),
+          }}
+        />
+        <Animatable.View
+          duration={200}
+          animation="fadeOut"
+          delay={3000}
+          style={{
+            width: sizing.getDimensionWidth(1),
+            height: 200,
+            position: 'absolute',
+          }}>
+          <AnimatedLottieView
+            source={confettiAnimate}
+            style={{
+              alignSelf: 'center',
+            }}
+            autoPlay={lottieStart}
+            duration={1000}
+            loop={false}
+          />
+        </Animatable.View>
+      </View>
+      <View
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          marginTop: moderateScale(50),
+        }}>
+        <Animatable.View
+          animation="fadeInUp"
+          style={{
+            width: sizing.getDimensionWidth(0.5),
+            height: moderateScale(60),
+            borderRadius: moderateScale(20),
+            backgroundColor: code_color.yellow,
+          }}>
+          <ScrollView
+            ref={scrollViewRefPopup}
+            scrollEnabled={false}
+            style={{
+              flex: 1,
+              position: 'relative',
+              overflow: 'hidden',
+              height: moderateScale(60),
+              maxWidth: '100%',
+            }}>
+            {leveling &&
+              leveling
+                .filter(
+                  itm => itm?.id < newLevel + 1 && itm?.id + 1 > currentLevel,
+                )
+                .map((itm, idx) => (
+                  <View
+                    style={{
+                      height: moderateScale(60),
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: moderateScale(18),
+                        fontWeight: '700',
+                      }}>
+                      {itm?.desc?.replace(' ', '\r\n')}
+                    </Text>
+                  </View>
+                ))}
+          </ScrollView>
+        </Animatable.View>
+      </View>
+      <TouchableOpacity
+        onPress={() => setShowPopup(false)}
+        style={{
+          backgroundColor: '#DDDEE3',
+          marginTop: moderateScale(150),
+          width: sizing.getWindowWidth(0.8),
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: moderateScale(40),
+          borderRadius: moderateScale(6),
+        }}>
+        <Text
+          style={{
+            fontSize: moderateScale(16),
+            color: code_color.black,
+            fontWeight: '600',
+          }}>
+          Close
+        </Text>
+      </TouchableOpacity>
+    </Animatable.View>
+  );
+
   return (
     <Modal
       visible={isVisible}

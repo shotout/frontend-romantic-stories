@@ -59,6 +59,7 @@ import {
   imgStep7,
   imgStep8,
   imgSelectGift2,
+  imgQuote,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -77,10 +78,16 @@ import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
-import { Step6, Step7, Step8 } from '../../layout/tutorial';
-import { handlePayment } from '../../helpers/paywall';
+import {Step6, Step7, Step8} from '../../layout/tutorial';
+import {handlePayment} from '../../helpers/paywall';
 
-function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfile}) {
+function ScreenShare({
+  route,
+  stepsTutorial,
+  handleSetSteps,
+  isPremium,
+  userProfile,
+}) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
@@ -95,6 +102,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
     value: 'GeorgiaEstate-w15Mn',
   });
   const [showModal, setShowModal] = useState(false);
+  const [showModalTwo, setShowModalTwo] = useState(false);
   const [selectedFont, setSelectedFont] = useState<any>(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
@@ -196,8 +204,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
     }
   };
 
-  const handleScreenshot = async () => {
-  };
+  const handleScreenshot = async () => {};
 
   const handleWAShare = async () => {
     await handleShare();
@@ -408,36 +415,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
         ))}
       </View>
     );
-    // Gunakan x dan y untuk mengatur posisi gambar/stiker
-    // return (
-    //   // Asumsi Sticker adalah gambar
-    //   <Animated.View
-    //     style={{
-    //       transform: [
-    //         {translateX: pan.x},
-    //         {translateY: pan.y},
-    //         {scaleX: size.width / 100}, // asumsi ukuran awal sticker 100x100
-    //         {scaleY: size.height / 100},
-    //       ],
-    //       width: 100,
-    //       height: 100,
-    //       position: 'absolute',
-    //     }}
-    //     {...panResponder.panHandlers}>
-    //     <Image source={imgGift1} style={{flex: 1}} resizeMode="cover" />
-    //     <View
-    //       style={{
-    //         position: 'absolute',
-    //         right: 0,
-    //         bottom: 0,
-    //         width: 30,
-    //         height: 30,
-    //         backgroundColor: 'blue',
-    //       }}
-    //       {...resizePanResponder.panHandlers}
-    //     />
-    //   </Animated.View>
-    // );
   }
   const handleFont = value => {
     if (value === 0) {
@@ -475,7 +452,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2;
+    const halfScreenWidth = Dimensions.get('window').width / 2.5;
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
       handleSetSteps(stepsTutorial - 1);
@@ -510,7 +487,12 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       setTimeout(() => {
         setShowModal(true);
-      }, 2500);
+      }, 6000);
+      if(stepsTutorial === 7){
+        setTimeout(() => {
+          setShowModalTwo(true);
+        }, 3000);
+      }
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -525,9 +507,20 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          {renderProgress()}
+          {stepsTutorial != 6 || stepsTutorial != 7 ? renderProgress() : null}
           {stepsTutorial === 6 ? (
-            <View>
+            <ImageBackground
+              source={imgQuote}
+              resizeMode="contain"
+              style={{
+                position: 'absolute',
+                top: '0',
+                width: Dimensions.get('window').width,
+                height: Dimensions.get('window').height,
+
+                backgroundColor: 'rgba(0,0,0,0.3)',
+              }}>
+              {renderProgress()}
               {showModal ? (
                 <Step6
                   handleNext={() => {
@@ -539,25 +532,33 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
                     navigate('ExploreLibrary');
                   }}
                 />
-              ) : (
-                <View style={{alignItems: 'center'}}>
-                  <Image
-                    source={imgSelectGift2}
-                    style={{width: 280, height: 280, marginTop: '25%'}}
-                  />
-                </View>
-              )}
-            </View>
+              ) : null}
+            </ImageBackground>
           ) : (
-            <Step7
-              handleNext={() => {
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false);
-              }}
-              handlePrev={() => {
-                handleSetSteps(stepsTutorial - 1);
-              }}
-            />
+            <ImageBackground
+              source={imgQuote}
+              resizeMode="contain"
+              style={{
+                position: 'absolute',
+                top: '0',
+                width: Dimensions.get('window').width,
+                height: Dimensions.get('window').height,
+
+                backgroundColor: 'rgba(0,0,0,0.3)',
+              }}>
+              {renderProgress()}
+              {showModalTwo ? (
+                <Step7
+                  handleNext={() => {
+                    handleSetSteps(stepsTutorial + 1);
+                    setVisible(false);
+                  }}
+                  handlePrev={() => {
+                    handleSetSteps(stepsTutorial - 1);
+                  }}
+                />
+              ) : null}
+            </ImageBackground>
           )}
         </SafeAreaView>
       );
@@ -602,7 +603,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
                 }
               }}
             />
-           
           </ImageBackground>
         </SafeAreaView>
       );
@@ -910,7 +910,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
                   }}>
                   {item.name}
                 </Text>
-                {userProfile?.data?.subscription?.plan_id === 1 && fontSelect.name !== item.name ? (
+                {userProfile?.data?.subscription?.plan_id === 1 &&
+                fontSelect.name !== item.name ? (
                   <>
                     <View
                       style={{
@@ -988,7 +989,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium, userProfi
                       borderWidth: bgl === selectBg ? 2 : 0,
                     }}
                   />
-                  {userProfile?.data?.subscription?.plan_id != 1 && bgl !== selectBg ? (
+                  {userProfile?.data?.subscription?.plan_id != 1 &&
+                  bgl !== selectBg ? (
                     <LockFree
                       style={{
                         position: 'absolute',
