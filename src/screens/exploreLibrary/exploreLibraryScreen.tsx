@@ -269,7 +269,10 @@ const ExploreLibraryScreen = ({
             top: 30,
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-          {renderProgress()}
+            <View style={{marginTop: 15}}>
+            {renderProgress()}
+            </View>
+         
           <Step4_2
             handleNext={() => {
               handleSetSteps(4 + 1);

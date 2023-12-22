@@ -527,7 +527,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
+    // handleSetSteps(5);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
@@ -923,9 +923,9 @@ const MainScreen = ({
 
                 <ImageBackground
                   source={imgSelect}
-                  style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginTop: '-25%'}}
+                  style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginTop: '-10%'}}
                 >
-                  <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', opacity: 0.7,}}>
+                  <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', opacity: 1, marginTop: 40}}>
                   {renderProgress()}
                   </View>
                    

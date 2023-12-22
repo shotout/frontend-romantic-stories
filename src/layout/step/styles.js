@@ -5,7 +5,7 @@ import { code_color } from '../../utils/colors';
 
 export default StyleSheet.create({
   ctnRoot: {
-    margin: 20,
+    margin: -15,
     // paddingTop: 28,
     flexDirection: 'row',
     alignItems: 'center',

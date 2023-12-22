@@ -231,6 +231,14 @@ function ScreenShare({
     handleScreenshot();
   };
 
+
+  useEffect(() => {
+    {stepsTutorial === 6 ?
+      setTimeout(() => {
+           setShowModal(true);
+         }, 4000) : null
+         }
+  }, [stepsTutorial])
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
@@ -621,6 +629,7 @@ function ScreenShare({
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
       handleSetSteps(stepsTutorial + 1);
+     
       {stepsTutorial == 7 ?  setShowModalTwo(true) : null}
       {
         stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
@@ -641,15 +650,9 @@ function ScreenShare({
   };
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
+   
     if (stepsTutorial === 6 || stepsTutorial === 7) {
-      setTimeout(() => {
-        setShowModal(true);
-      }, 4000);
-      if(stepsTutorial === 7){
-        setTimeout(() => {
-          setShowModalTwo(true);
-        }, 3000);
-      }
+    
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -677,7 +680,10 @@ function ScreenShare({
 
                 backgroundColor: 'rgba(0,0,0,0.3)',
               }}>
-              {renderProgress()}
+                <View style={{marginTop: 10}}>
+                {renderProgress()}
+                </View>
+              
               {showModal ? (
                 <Step6
                   handleNext={() => {
@@ -704,8 +710,11 @@ function ScreenShare({
 
                 backgroundColor: 'rgba(0,0,0,0.3)',
               }}>
-              {renderProgress()}
-              {showModalTwo ? (
+                 <View style={{marginTop: 10}}>
+                 {renderProgress()}
+                 </View>
+            
+            
                 <Step7
                   handleNext={() => {
                     handleSetSteps(stepsTutorial + 1);
@@ -715,7 +724,6 @@ function ScreenShare({
                     handleSetSteps(stepsTutorial - 1);
                   }}
                 />
-              ) : null}
             </ImageBackground>
           )}
         </SafeAreaView>
@@ -744,7 +752,10 @@ function ScreenShare({
               backgroundColor: 'rgba(0,0,0,0.3)',
               paddingTop: 30,
             }}>
-            {renderProgress()}
+              <View style={{marginTop: 20}}>
+              {renderProgress()}
+              </View>
+           
             <Step8
               handlePrev={() => {
                 handleSetSteps(stepsTutorial - 1);
