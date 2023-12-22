@@ -64,7 +64,6 @@ export default StyleSheet.create({
     borderRadius: moderateScale(24),
     width: '80%',
     height: 'auto',
-    marginTop: moderateScale(10),
     textAlign: 'center',
   },
   dropDown: {
