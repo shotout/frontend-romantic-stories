@@ -469,6 +469,7 @@ const MainScreen = ({
         navigate('Media');
       }, 2000);
     } else if (stepsTutorial === 5) {
+      handleSetSteps(stepsTutorial + 1);
       navigate('Share', {
         selectedContent:
           ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
@@ -525,8 +526,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
-    // AsyncStorage.setItem('isTutorial', 'yes');
+    handleSetSteps(6);
+    AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
@@ -898,7 +899,7 @@ const MainScreen = ({
         if (stepsTutorial === 5 || activeStep === 5) {
           setTimeout(() => {
             handleNext();
-          }, 2500);
+          }, 3000);
         }
         return (
           <SafeAreaView

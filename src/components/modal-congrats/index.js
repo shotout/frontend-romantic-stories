@@ -182,7 +182,8 @@ function ModalCongrats({
       </>
     );
   };
-console.log(`${BACKEND_URL}${imgPopup}`)
+
+
   const renderPopup = () => (
     <Animatable.View
       animation="fadeIn"

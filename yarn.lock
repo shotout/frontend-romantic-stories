@@ -1757,28 +1757,28 @@
   resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.4.3.tgz"
   integrity sha512-WdjvGtqJfqcCiLwtbzie53Z/H6w6dIfRHhlW832D89ySAdE5DxLAsqRhDOG0eacuAxxEB+T9sGCkVMD0fa3aBg==
 
-"@react-native-firebase/analytics@18.5.0":
-  version "18.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-18.5.0.tgz#cca5858e44f3f8cbf387fa7cd6debb95fbcf8023"
-  integrity sha512-+8fkDedcftieOBEkNdqEW0lS/FB9SKzfUc3yYXnJcLTy3Ceg9JZga/tWz4BGbbxPddUy1Sm2UuWDuOxsdkFUyA==
+"@react-native-firebase/analytics@18.7.3":
+  version "18.7.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-18.7.3.tgz#2329c3ca1430cc342378ecabc052c8301effbe3a"
+  integrity sha512-bUofJYQvU93QSQAo2wob15vZ2ywWoqlHkOzVlU4F0ussgbwWzuJYBc0rLKbTg4+Q+nIhxKxyX5M68R3nxK8VjQ==
 
-"@react-native-firebase/app@18.5.0":
-  version "18.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.5.0.tgz#198a133229d1b8710f257e76d9703dcb7e4cd6e0"
-  integrity sha512-AhHQi5KFDlKZn/lH7rEYtLfpsGamEq+P/cXZWcNPcP0WGlmi++abk7Pxnn4MjnG7TNhEyG/C9uq//qb6VhXaZg==
+"@react-native-firebase/app@18.7.3":
+  version "18.7.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.7.3.tgz#e2d7d41b8df6173d270116762638f7e75cca76fe"
+  integrity sha512-KlUuLSCYrBMHXE2Evye1fzrqunUjFEPihxcpzuUyJ5yQyAuCNws7VGdEPIaXoKz1esof0uv8wMSxD+G6W+Vi8Q==
   dependencies:
-    opencollective-postinstall "^2.0.1"
+    opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
 
-"@react-native-firebase/dynamic-links@18.5.0":
-  version "18.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-18.5.0.tgz#6c63666171a16e5ccc1d0fe4f6924ed5d3b747b7"
-  integrity sha512-RQDhEmPN6w+1MFdpzlzS4DZShAfkVxObQTXZ9CCeO7dUdwlkUcJfXZSwDKl770C8hiuNUXlumztFepvoprrjlQ==
+"@react-native-firebase/dynamic-links@18.7.3":
+  version "18.7.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-18.7.3.tgz#c9e1ce4df5e71bc15531531806ed04a8174b07ac"
+  integrity sha512-Q22+3ZXsUfSdYGmhQHE1BiJJFx53SK/OpsrxytyV6PJz4acA8bN/ADh84mCbYTr0Mz6JiwSGrjBkDVkOS9Co7w==
 
-"@react-native-firebase/messaging@18.5.0":
-  version "18.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.5.0.tgz#2a80b25816470e9843682e031a3a113566067ce6"
-  integrity sha512-y1FApYxBMcygmbWBqUPFC+fCfvx6Yf6TdZewun7kPwx+S+tkYzoKx1IsXtxOXtqyJjCNEYirjFgNrs5SSd02zA==
+"@react-native-firebase/messaging@18.7.3":
+  version "18.7.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.7.3.tgz#ac24cd5a33a6910facd79f04e6d9125d2b4d8ce9"
+  integrity sha512-K2l8k9wif5mni85WP940uJjW3agnBqhgSTqtg7y+39EOnYJZ3WhIDpArHttTSbtTVB5OyJ8qLiOQm3gpkaKqPg==
 
 "@react-native/assets-registry@^0.72.0":
   version "0.72.0"
@@ -6332,9 +6332,9 @@ open@^7.4.2:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
 
-opencollective-postinstall@^2.0.1:
+opencollective-postinstall@^2.0.3:
   version "2.0.3"
-  resolved "https://registry.npmjs.org/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
   integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
 
 optionator@^0.9.3:
