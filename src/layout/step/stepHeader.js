@@ -34,7 +34,7 @@ export default function StepHeader({currentStep}) {
       {renderImageStep(7)}
       {renderImageStep(8)}
       {renderImageStep(9)}
-      {renderImageStep(10)}
+      {/* {renderImageStep(10)} */}
     </View>
   );
 }
