@@ -487,7 +487,7 @@ function ScreenShare({
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       setTimeout(() => {
         setShowModal(true);
-      }, 6000);
+      }, 4000);
       if(stepsTutorial === 7){
         setTimeout(() => {
           setShowModalTwo(true);
