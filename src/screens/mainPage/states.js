@@ -9,4 +9,5 @@ export default states => ({
   stepsTutorial: states.defaultState.stepsTutorial,
   readStory: states.defaultState.readStory,
   nextStory: states.defaultState.nextStory,
+  levelingUser: states.defaultState.levelingUser,
 });

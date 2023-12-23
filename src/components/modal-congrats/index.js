@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {connect} from 'react-redux';
@@ -55,13 +56,13 @@ function ModalCongrats({
   const scrollViewRefPopup = useRef(null);
   const currentLevel = userProfile?.data?.user_level?.level?.id;
   const newLevel = levelingUser?.user_level?.level?.id;
-  const currentXp = userProfile?.data?.user_level?.level?.value;
+  const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
   const currentImgLvl = userProfile?.data?.user_level?.level?.image?.url;
   const newImgLvl = levelingUser?.user_level?.level?.image?.url;
   const [imgPopup, setImgPopup] = useState(currentImgLvl);
   const [lottieStart, setLottieStart] = useState(false);
- 
+
   const handleClose = () => {
     onClose();
   };
@@ -93,7 +94,9 @@ function ModalCongrats({
         scrollToBottomRight();
       }, 2500);
       setTimeout(() => {
-        setShowPopup(true);
+        if (newLevel !== currentLevel) {
+          setShowPopup(true);
+        }
       }, 3000);
       setTimeout(() => {
         scrollToBottomPopup();
@@ -182,7 +185,6 @@ function ModalCongrats({
       </>
     );
   };
-
 
   const renderPopup = () => (
     <Animatable.View
@@ -426,7 +428,7 @@ function ModalCongrats({
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
-                          {newXp ? newXp : 0} XP
+                        {newXp ? newXp : 0} XP
                       </Animatable.Text>
                     </View>
                   </Animatable.View>
@@ -434,22 +436,22 @@ function ModalCongrats({
                     source={imgLoveLeft}
                     resizeMode="contain"
                     style={{
-                      width:  Platform.OS === 'android' ? 157 :  150,
+                      width: Platform.OS === 'android' ? 157 : 150,
                       height: 150,
                       position: 'absolute',
                       left: -20,
-                      bottom:  Platform.OS === 'android' ? -90 : -100,
+                      bottom: Platform.OS === 'android' ? -90 : -100,
                     }}
                   />
                   <Image
                     source={imgLoveRight}
                     resizeMode="contain"
                     style={{
-                      width:  Platform.OS === 'android' ? 145 :150,
+                      width: Platform.OS === 'android' ? 145 : 150,
                       height: 150,
                       position: 'absolute',
                       right: -20,
-                      bottom:  Platform.OS === 'android' ? -90 : -100,
+                      bottom: Platform.OS === 'android' ? -90 : -100,
                     }}
                   />
                 </View>
@@ -461,7 +463,7 @@ function ModalCongrats({
                 borderTopLeftRadius: 70,
                 borderTopRightRadius: 70,
                 position: 'absolute',
-                top: Platform.OS === 'android' ? '32%':'37%',
+                top: Platform.OS === 'android' ? '32%' : '37%',
                 left: 0,
                 width: Dimensions.get('window').width,
                 flex: 1,
@@ -506,11 +508,11 @@ function ModalCongrats({
                       ref={scrollViewRef}
                       scrollEnabled={false}
                       style={{
-                        flex: 1,
                         position: 'relative',
                         overflow: 'hidden',
                         height: moderateScale(36),
-                        maxWidth: moderateScale(70),
+                        left: -4,
+                        width: 'auto',
                       }}>
                       {Array.from(
                         {length: newXp - currentXp + 1},
@@ -520,8 +522,11 @@ function ModalCongrats({
                           key={itm}
                           style={{
                             fontWeight: 'bold',
-                            fontSize: moderateScale(30),
+                            fontSize: moderateScale(26),
+                            height: moderateScale(36),
+                            textAlignVertical: 'center',
                             textAlign: 'center',
+                            width: 'auto',
                           }}>
                           {itm}
                         </Text>
@@ -531,7 +536,8 @@ function ModalCongrats({
                       style={{
                         flex: 1,
                         fontWeight: 'bold',
-                        fontSize: moderateScale(22),
+                        fontSize: moderateScale(20),
+                        height: moderateScale(28),
                         left: -10,
                       }}>
                       XP

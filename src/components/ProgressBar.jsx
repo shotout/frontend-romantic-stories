@@ -7,7 +7,7 @@ const ProgressBar = ({  bgTheme, levelingUser }) => {
 
   const [showInfo, setShowInfo] = useState(null);
   const animatedProgress = new Animated.Value(0);
-  const progress = levelingUser?.user_level?.point;
+  const progress = levelingUser?.user_level?.level?.value;
  
   useEffect(() => {
     // Animasikan perubahan nilai progress
