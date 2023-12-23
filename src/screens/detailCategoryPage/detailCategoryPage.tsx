@@ -521,7 +521,6 @@ const DetailCategoryScreen = ({
             {...panResponder.panHandlers}
             style={{
               width: sizing.getDimensionWidth(0.05),
-              marginRight: 20,
             }}>
             {uniqueAlphabets.map((item, index) => (
               <Pressable
@@ -534,6 +533,7 @@ const DetailCategoryScreen = ({
                     fontSize: 12.5,
                     textAlign: 'right',
                     marginVertical: 0,
+                    paddingRight: 20,
                   }}>
                   {item}
                 </Text>
