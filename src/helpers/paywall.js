@@ -14,8 +14,8 @@ export const handlePayment = async (vendorId, cb) =>
     try {
       // eventTracking(SHOW_PAYWALL);
       let stringVendor = vendorId;
-      const subscriptions = await Purchasely.userSubscriptions();
-      console.log('Subscription status:', subscriptions);
+      // const subscriptions = await Purchasely.userSubscriptions();
+      // console.log('Subscription status:', subscriptions);
       // const purchaseId = await Purchasely.getAnonymousUserId();
       // if (vendorId === STATIC_ONBOARD) {
       //   // await setSubcription({

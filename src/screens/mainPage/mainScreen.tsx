@@ -30,6 +30,7 @@ import {
   imgBgTips,
   imgLoveLeft,
   imgLoveRight,
+  imgSelect,
   imgSelectGift,
   imgStep1,
   imgStep2,
@@ -526,7 +527,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
+    // handleSetSteps(5);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
@@ -899,7 +900,7 @@ const MainScreen = ({
         if (stepsTutorial === 5 || activeStep === 5) {
           setTimeout(() => {
             handleNext();
-          }, 3000);
+          }, 3500);
         }
         return (
           <SafeAreaView
@@ -913,18 +914,23 @@ const MainScreen = ({
 
               backgroundColor: 'rgba(0,0,0,0.3)',
             }}>
-            {renderProgress()}
+            {activeStep != 5  || stepsTutorial != 5 ? renderProgress() : null}
             {activeStep === 1 ? (
               <Step1 handleNext={handleNext} />
             ) : activeStep === 5 || stepsTutorial == 5 ? (
               <View style={{alignItems: 'center'}}>
-                <Step5 handleNext={handleNext} handlePrev={handlePrev} />
+               
 
-                <Image
-                  source={imgSelectGift}
-                  style={{width: 280, height: 280, marginTop: '-25%'}}
-                />
-                <View style={{position: 'absolute', bottom: 30}}>
+                <ImageBackground
+                  source={imgSelect}
+                  style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginTop: '-10%'}}
+                >
+                  <View style={{ backgroundColor: 'rgba(0,0,0,0.3)', opacity: 1, marginTop: 40}}>
+                  {renderProgress()}
+                  </View>
+                   
+                   <Step5 handleNext={handleNext} handlePrev={handlePrev} />
+                   <View style={{position: 'absolute', bottom: 30}}>
                   <AnimatedLottieView
                     source={rippleAnimate}
                     style={{
@@ -935,6 +941,8 @@ const MainScreen = ({
                     loop={true}
                   />
                 </View>
+                  </ImageBackground>
+           
               </View>
             ) : (
               <Step2

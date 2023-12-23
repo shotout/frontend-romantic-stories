@@ -62,7 +62,6 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     userProfile?.data?.notif_ads_enable === 0 ? false : true,
   );
   const subscriptionStartDate = moment(userProfile?.data?.subscription.started);
-
   // Mendapatkan tanggal berakhir langganan (1 tahun setelah tanggal mulai)
   const subscriptionEndDate = subscriptionStartDate.add(1, 'year');
 

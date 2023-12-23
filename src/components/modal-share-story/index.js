@@ -468,7 +468,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               lineHeight: moderateScale(35),
               fontWeight: '400',
             }}>
-            Romantic Stories for your everyday Fantasy
+            {sharedMessage}
           </Text>
           <View
             style={{
