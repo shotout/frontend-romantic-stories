@@ -339,7 +339,13 @@ const DetailCategoryScreen = ({
               value={keyword}
               onChangeText={value => setKeyword(value)}
               placeholderTextColor={code_color.black}
-              style={{marginLeft: 10, fontSize: 14, color: code_color.black}}
+              style={{
+                marginLeft: 10,
+                fontSize: 14,
+                color: code_color.black,
+                flex: 1,
+                height: '100%',
+              }}
             />
           </View>
           <Pressable onPress={() => setShowModalSort(true)}>
