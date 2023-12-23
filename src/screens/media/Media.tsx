@@ -47,8 +47,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [info, setInfo] = useState({});
   const track1 = {
     url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
-    title: 'See You Again',
-    artist: 'Wiz Khalifa',
+    title: userStory?.category?.name,
+    artist: userStory?.title_id,
     album: 'While(1<2)',
     genre: 'Progressive House, Electro House',
     date: '2014-05-20T07:00:00+00:00',
@@ -183,7 +183,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       <View>
         <Image
           source={{uri: `${BACKEND_URL}${userStory?.category?.cover?.url}`}}
-          resizeMode="cover"
+          resizeMode="contain"
           style={{
             width: 352,
             height: 350,

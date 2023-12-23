@@ -66,18 +66,22 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
       
-        // setProgress(
-        //   userProfile.gender === 'Male'
-        //     ? userProfile.avatar_male - 1
-        //     :  userProfile.gender === null ? userProfile.avatar_male : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4, 
-        // );
+        setProgress(
+         
+             userProfile.avatar_male - 1
+           
+        );
       } else {
         const params = {
           gender: userProfile.gender === 'Male' ? 'male' : 'female',
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
-        setProgress(0);
+        setProgress(
+         
+          userProfile.avatar_male - 1
+        
+     );
       }
     } catch (error) {
       // alert(JSON.stringify(error));

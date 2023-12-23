@@ -292,7 +292,19 @@ export default function QuotesContent({
                 await updateProfile(payload);
                 reloadUserProfile();
                 navigate('Media');
-              } else {
+              }  else if (
+                themeUser?.subscription?.plan?.id === 1 &&
+                themeUser?.subscription?.audio_limit != 0
+              ) {
+                const payload = {
+                  _method: 'PATCH',
+                  audio_take: 1,
+                };
+                await updateProfile(payload);
+                reloadUserProfile();
+                navigate('Media');
+              }
+              else {
                 setShow(true);
               }
             }}

@@ -58,6 +58,11 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
+        setProgress(
+         
+          userProfile.avatar_female - 1
+        
+     );
         // alert(userProfile.gender === 'Male'
         // ? userProfile.avatar_male - 1
         // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 )
@@ -72,6 +77,12 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+        setProgress(0)
+        //  setProgress(
+        //   userProfile.gender === 'Female'
+        //     ? userProfile.avatar_female - 3
+        //     :  userProfile.avatar_female - 1
+        // );
         // alert(userProfile.gender === 'Male'
         //     ? userProfile.avatar_male - 1
         //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 )
