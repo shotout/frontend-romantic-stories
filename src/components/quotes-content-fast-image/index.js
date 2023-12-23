@@ -55,6 +55,7 @@ export default function QuotesContent({
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
   const [show, setShow] = useState(false);
+  const [color, setSolor] = useState('');
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [title, setTitle] = useState('10/10 Audio Stories');
@@ -177,6 +178,8 @@ export default function QuotesContent({
         return bgStory1;
     }
   };
+
+
 
   return (
     <SafeAreaView
@@ -346,7 +349,8 @@ export default function QuotesContent({
                     fontFamily: fontFamily,
                     fontSize: Number(fontSize),
                     color:
-                      bg === '#2C3439'
+                      bg === code_color.blackDark
+                    
                         ? code_color.white
                         : bg === '#FFFFFF' ? code_color.blackDark : code_color.blackDark,
                   },
