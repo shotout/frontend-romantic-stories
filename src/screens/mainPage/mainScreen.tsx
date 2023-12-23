@@ -79,7 +79,7 @@ import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
-import {Step1, Step2, Step5} from '../../layout/tutorial';
+import {Step1, Step2, Step3, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
 import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
@@ -469,7 +469,7 @@ const MainScreen = ({
       }, 3000);
       setTimeout(() => {
         navigate('Media');
-      }, 2000);
+      }, 2500);
     } else if (stepsTutorial === 5) {
       handleSetSteps(stepsTutorial + 1);
       navigate('Share', {
@@ -528,7 +528,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(5);
+    // handleSetSteps(0);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
@@ -559,7 +559,7 @@ const MainScreen = ({
         }, 3000);
         setTimeout(() => {
           navigate('Media');
-        }, 2000);
+        }, 2500);
         // navigate('Media');
       } else if (activeStep === 3) {
         navigate('Library');
@@ -898,11 +898,6 @@ const MainScreen = ({
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
 
-        if (stepsTutorial === 5 || activeStep === 5) {
-          setTimeout(() => {
-            handleNext();
-          }, 3500);
-        }
         return (
           <SafeAreaView
             onTouchStart={handleTouchStart}
@@ -918,10 +913,8 @@ const MainScreen = ({
             {activeStep != 5  || stepsTutorial != 5 ? renderProgress() : null}
             {activeStep === 1 ? (
               <Step1 handleNext={handleNext} />
-            ) : activeStep === 5 || stepsTutorial == 5 ? (
+            ) :  activeStep === 5 || stepsTutorial == 5 ? (
               <View style={{alignItems: 'center'}}>
-               
-
                 <ImageBackground
                   source={imgSelect}
                   style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginTop: '-10%'}}
