@@ -211,18 +211,21 @@ const ExploreLibraryScreen = ({
       },
     );
   };
-  const handleNative = async() => {
-    setLoading(true)
-    const data  = await handleNativePayment('unlock_story_1_week_only', selectedStory?.id);
-    if(data){
-      setLoading(false)
+  const handleNative = async () => {
+    setLoading(true);
+    const data = await handleNativePayment(
+      'unlock_story_1_week_only',
+      selectedStory?.id,
+    );
+    if (data) {
+      setLoading(false);
       setShowModalUnlock(false);
-    }else{
-      setLoading(false)
+    } else {
+      setLoading(false);
       setShowModalUnlock(false);
     }
-  }
-  
+  };
+
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
@@ -269,10 +272,8 @@ const ExploreLibraryScreen = ({
             top: 30,
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-            <View style={{marginTop: 15}}>
-            {renderProgress()}
-            </View>
-         
+          <View style={{marginTop: 15}}>{renderProgress()}</View>
+
           <Step4_2
             handleNext={() => {
               handleSetSteps(4 + 1);
@@ -301,7 +302,7 @@ const ExploreLibraryScreen = ({
         data={selectedStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          handleNative()
+          handleNative();
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
@@ -359,7 +360,13 @@ const ExploreLibraryScreen = ({
               value={keyword}
               onChangeText={value => setKeyword(value)}
               placeholderTextColor={code_color.black}
-              style={{marginLeft: 10, fontSize: 14, color: code_color.black}}
+              style={{
+                marginLeft: 10,
+                fontSize: 14,
+                color: code_color.black,
+                flex: 1,
+                height: '100%',
+              }}
             />
           </View>
           <Pressable onPress={() => setShowModalSort(true)}>
