@@ -453,7 +453,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               alignSelf: 'center',
             }}
           />
-           <Text
+          <Text
             style={{
               color: code_color.white,
               marginTop: moderateScale(50),
@@ -468,7 +468,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
             best Romantic Stories ever! I just found this once:
             <Text style={{fontWeight: '700'}}>{storyData?.item?.title_en}</Text>
           </Text>
-        
+
           <View
             style={{
               height: moderateScale(34),
