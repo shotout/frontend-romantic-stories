@@ -24,7 +24,7 @@ export default StyleSheet.create({
   },
   ctnUnactiveLamp: {
     height: 30,
-    width: 30,
+    width: 40,
     resizeMode: 'contain',
   },
   ctnGiftLamp: {
