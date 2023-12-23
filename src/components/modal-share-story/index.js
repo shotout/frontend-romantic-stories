@@ -383,7 +383,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const renderScreenShotPost = () => {
     return (
       <ViewShot
-        style={{...styles.conQuotePost, top: 100}}
+        style={styles.conQuotePost}
         onLayout={event => {
           setViewShotLayout(event.nativeEvent.layout);
         }}
