@@ -110,6 +110,7 @@ const MainScreen = ({
 }) => {
   const [loadingOne, setLoadingOne] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
   const [products, setProducts] = useState([]);
@@ -965,6 +966,7 @@ const MainScreen = ({
       RewardedAdEventType.EARNED_REWARD,
       async reward => {
         setShowModalNewStory(false);
+        setLoadingAds(false)
         if (reward) {
           const res = await getStoryList();
           handleNextStory(res.data);
@@ -976,7 +978,7 @@ const MainScreen = ({
           };
           const resp = await getExploreStory(params);
           handleStoriesRelate(resp);
-
+          setLoadingAds(false)
           setTimeout(() => {
             setShowModal(true);
           }, 300);
@@ -989,7 +991,7 @@ const MainScreen = ({
   };
 
   const showWatchAds = async () => {
-    // setLoadingAds(true);
+    setLoadingAds(true);
     const advert = await loadRewarded();
     advert.addAdEventListener(AdEventType.CLOSED, () => {
       reloadWatch();
@@ -1176,6 +1178,7 @@ const MainScreen = ({
             }}
           />
           <ModalNewStory
+            loadingAds={loadingAds}
             isLoading={loading}
             isVisible={showModalNewStory}
             onClose={() => setShowModalNewStory(false)}

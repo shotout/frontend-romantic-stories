@@ -1,6 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
-import {Modal, View, Text, Pressable, Image, Dimensions, Platform} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  Image,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -13,8 +21,8 @@ import {moderateScale} from 'react-native-size-matters';
 import {book} from '../../assets/icons';
 import WatchIcon from '../../assets/icons/watch';
 import BookLockIcon from '../../assets/icons/bookLock';
-import * as IAP from 'react-native-iap'
-import { ActivityIndicator } from 'react-native-paper';
+import * as IAP from 'react-native-iap';
+import {ActivityIndicator} from 'react-native-paper';
 function ModalNewStory({
   isVisible,
   onClose,
@@ -22,9 +30,10 @@ function ModalNewStory({
   onUnlock,
   onGetUnlimit,
   userProfile,
-  isLoading
+  isLoading,
+  loadingAds,
 }) {
-  const [price, setPrice] = useState('')
+  const [price, setPrice] = useState('');
   const [timeLeft, setTimeLeft] = useState({
     hour: 0,
     minutes: 0,
@@ -57,12 +66,13 @@ function ModalNewStory({
   const handleClose = () => {
     onClose();
   };
-  useEffect(async() => {
-  const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
-      console.log('Products:', products);
-      setPrice(products[0].localizedPrice)
-      
-  }, [])
+  useEffect(async () => {
+    const products = await IAP.getProducts({
+      skus: ['unlock_story_1_week_only'],
+    });
+    console.log('Products:', products);
+    setPrice(products[0].localizedPrice);
+  }, []);
 
   return (
     <Modal
@@ -202,7 +212,7 @@ function ModalNewStory({
                         marginBottom: 0,
                         marginLeft: moderateScale(30),
                       }}>
-                       {`${timeLeft.hour}h ${timeLeft.minutes}m`}
+                      {`${timeLeft.hour}h ${timeLeft.minutes}m`}
                     </Text>
                     <Text
                       style={{
@@ -211,7 +221,8 @@ function ModalNewStory({
                         marginTop: 'auto',
                         marginBottom: moderateScale(5),
                         marginLeft: moderateScale(10),
-                      }}>{`${timeLeft.second}s`}
+                      }}>
+                      {`${timeLeft.second}s`}
                     </Text>
                   </View>
                 </View>
@@ -237,10 +248,12 @@ function ModalNewStory({
                   UNLIMITED to unlock everything.
                 </Text>
                 <Pressable
+                  disabled={loadingAds}
                   onPress={onWatchAds}
                   style={{
                     backgroundColor: '#ED5267',
                     width: '90%',
+                    height: 50,
                     paddingVertical: moderateScale(14),
                     borderRadius: moderateScale(6),
                     marginTop: moderateScale(30),
@@ -261,45 +274,58 @@ function ModalNewStory({
                       FREE
                     </Text>
                   </View>
-                  <WatchIcon
-                    style={{position: 'absolute', top: '80%', left: '22%'}}
-                  />
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
-                    Watch 2 Ads
-                  </Text>
+                  {loadingAds ? (
+                    <ActivityIndicator color={code_color.blueDark} size={14} />
+                  ) : (
+                    <>
+                      <WatchIcon
+                        style={{position: 'absolute', top: '80%', left: '22%'}}
+                      />
+                      <Text
+                        style={{color: code_color.white, textAlign: 'center'}}>
+                        Watch 2 Ads
+                      </Text>
+                    </>
+                  )}
                 </Pressable>
-                {Platform.OS === 'android' ? null :
-                <Pressable
-                  disabled={isLoading}
-                  onPress={() => onUnlock()}
-                  style={{
-                    backgroundColor: '#009A37',
-                    width: '90%',
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                    marginTop: moderateScale(30),
-                  }}>
-                  <View
+                {Platform.OS === 'android' ? null : (
+                  <Pressable
+                    disabled={isLoading}
+                    onPress={() => onUnlock()}
                     style={{
-                      position: 'absolute',
-                      marginHorizontal: 'auto',
-                      backgroundColor: '#FFD12F',
-                      alignSelf: 'center',
-                      paddingVertical: moderateScale(0),
-                      paddingHorizontal: moderateScale(24),
-                      borderRadius: moderateScale(10),
-                      zIndex: 1,
-                      top: -moderateScale(8),
+                      backgroundColor: '#009A37',
+                      width: '90%',
+                      height: 50,
+                      paddingVertical: moderateScale(14),
+                      borderRadius: moderateScale(6),
+                      marginTop: moderateScale(30),
                     }}>
-                    <Text style={{color: code_color.black, fontWeight: 600}}>
-                      MOST SELECTED
-                    </Text>
-                  </View>
-                  {isLoading ?<ActivityIndicator color={code_color.blueDark} /> : 
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
-                    Unlock 1 more Story directly for {price}
-                  </Text> }
-                </Pressable> }
+                    <View
+                      style={{
+                        position: 'absolute',
+                        marginHorizontal: 'auto',
+                        backgroundColor: '#FFD12F',
+                        alignSelf: 'center',
+                        paddingVertical: moderateScale(0),
+                        paddingHorizontal: moderateScale(24),
+                        borderRadius: moderateScale(10),
+                        zIndex: 1,
+                        top: -moderateScale(8),
+                      }}>
+                      <Text style={{color: code_color.black, fontWeight: 600}}>
+                        MOST SELECTED
+                      </Text>
+                    </View>
+                    {isLoading ? (
+                      <ActivityIndicator color={code_color.blueDark} size={14} />
+                    ) : (
+                      <Text
+                        style={{color: code_color.white, textAlign: 'center'}}>
+                        Unlock 1 more Story directly for {price}
+                      </Text>
+                    )}
+                  </Pressable>
+                )}
                 <View
                   style={{
                     flexDirection: 'row',

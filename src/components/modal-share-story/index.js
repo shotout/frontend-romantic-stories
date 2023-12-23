@@ -34,7 +34,7 @@ import AppStore from '../../assets/icons/appStore';
 import {isIphone} from '../../utils/devices';
 import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
-import {logo} from '../../assets/images';
+import {imgShare, logo} from '../../assets/images';
 
 function ModalShareStory({isVisible, onClose, storyData}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
@@ -396,9 +396,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
           quality: 1.0,
         }}>
         <Image
-          source={{
-            uri: `${BACKEND_URL}${storyData?.item?.category?.cover?.url}`,
-          }}
+          source={imgShare}
           style={{
             position: 'absolute',
             width: '100%',
@@ -457,19 +455,21 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               alignSelf: 'center',
             }}
           />
-          <Text
+           <Text
             style={{
               color: code_color.white,
               marginTop: moderateScale(70),
-              marginBottom: moderateScale(50),
               marginHorizontal: '10%',
               fontSize: moderateScale(20),
               textAlign: 'center',
               lineHeight: moderateScale(35),
               fontWeight: '400',
             }}>
-            {sharedMessage}
+            The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
+            best Romantic Stories ever! I just found this once:
+            <Text style={{fontWeight: '700'}}>{storyData?.item?.title_en}</Text>
           </Text>
+        
           <View
             style={{
               height: moderateScale(34),

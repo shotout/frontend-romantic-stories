@@ -78,6 +78,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
         setProgress(0)
+        // alert(avatar?.data.length, userProfile.avatar_female)
         //  setProgress(
         //   userProfile.gender === 'Female'
         //     ? userProfile.avatar_female - 3
