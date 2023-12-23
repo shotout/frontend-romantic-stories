@@ -249,9 +249,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
           quality: 1.0,
         }}>
         <Image
-          source={{
-            uri: `${BACKEND_URL}${storyData?.item?.category?.cover?.url}`,
-          }}
+          source={imgShare}
           style={{
             position: 'absolute',
             width: '100%',
@@ -385,7 +383,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const renderScreenShotPost = () => {
     return (
       <ViewShot
-        style={styles.conQuotePost}
+        style={{...styles.conQuotePost, top: 100}}
         onLayout={event => {
           setViewShotLayout(event.nativeEvent.layout);
         }}
@@ -458,12 +456,13 @@ function ModalShareStory({isVisible, onClose, storyData}) {
            <Text
             style={{
               color: code_color.white,
-              marginTop: moderateScale(70),
+              marginTop: moderateScale(50),
               marginHorizontal: '10%',
               fontSize: moderateScale(20),
               textAlign: 'center',
               lineHeight: moderateScale(35),
               fontWeight: '400',
+              marginBottom: moderateScale(20),
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
             best Romantic Stories ever! I just found this once:
