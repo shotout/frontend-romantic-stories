@@ -32,6 +32,7 @@ import {connect} from 'react-redux';
 import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
 import {
+  addStory,
   getCategoryDetail,
   getStoryDetail,
   updateProfile,
@@ -47,6 +48,7 @@ import {reloadUserProfile} from '../../utils/user';
 import * as IAP from 'react-native-iap';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
+import {sizing} from '../../utils/styling';
 
 const DetailCategoryScreen = ({
   route,
@@ -195,13 +197,12 @@ const DetailCategoryScreen = ({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gestureState) => {
-      
         // Deteksi pergerakan sentuhan di sini
         // Anda dapat menggunakan gestureState untuk mendapatkan informasi lebih lanjut
         const touchX = event.nativeEvent.locationX;
         const touchY = event.nativeEvent.locationY;
         // Lakukan sesuatu dengan informasi sentuhan, misalnya memperbarui huruf terpilih
-        console.log(touchX)
+        console.log(touchX);
         handleTouchMove(touchX, touchY);
       },
     }),
@@ -219,23 +220,52 @@ const DetailCategoryScreen = ({
       }
     }
   };
-const handleNative = async () => {
-  setLoading(true)
-  const data = await handleNativePayment('unlock_story_1_week_only', selectedStory?.id);
-  if (data) {
-    
-    setTimeout(async () => {
-      setLoading(false)
+  const handleNative = async () => {
+    setLoading(true);
+    const data = await handleNativePayment(
+      'unlock_story_1_week_only',
+      selectedStory?.id,
+    );
+    if (data) {
+      setTimeout(async () => {
+        setLoading(false);
+        setShowModalUnlock(false);
+      }, 100);
+    } else {
+      setLoading(false);
       setShowModalUnlock(false);
-    }, 100);
-  } else {
-   
-    setLoading(false)
-    setShowModalUnlock(false);
-   
-  }
-  
-}
+    }
+  };
+
+  // const dummyFilter = [
+  //   '#',
+  //   'A',
+  //   'B',
+  //   'C',
+  //   'D',
+  //   'E',
+  //   'F',
+  //   'G',
+  //   'H',
+  //   'I',
+  //   'J',
+  //   'K',
+  //   'L',
+  //   'M',
+  //   'N',
+  //   'O',
+  //   'P',
+  //   'Q',
+  //   'R',
+  //   'S',
+  //   'T',
+  //   'U',
+  //   'V',
+  //   'W',
+  //   'X',
+  //   'Y',
+  //   'Z',
+  // ];
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -251,7 +281,7 @@ const handleNative = async () => {
         data={nextStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          handleNative()
+          handleNative();
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
@@ -327,7 +357,7 @@ const handleNative = async () => {
             style={{
               fontSize: 16,
               fontWeight: '600',
-              marginVertical: 10,
+              marginTop: 10,
               marginLeft: 13,
             }}>
             Category: {data?.category?.name}
@@ -408,7 +438,7 @@ const handleNative = async () => {
           style={{
             fontSize: 16,
             fontWeight: '600',
-            marginVertical: 10,
+            marginTop: 10,
             marginLeft: 13,
           }}>
           {selectedAlphabet}
@@ -416,7 +446,10 @@ const handleNative = async () => {
         <View style={{flexDirection: 'row', flex: 1, paddingBottom: 150}}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{marginTop: 20, marginRight: 20, flex: 0}}>
+            style={{
+              marginTop: 20,
+              flex: 1,
+            }}>
             {filteredData &&
               filteredData.map((itm: any, idx: number) => (
                 <Pressable
@@ -424,7 +457,7 @@ const handleNative = async () => {
                     setSelectedStory({...itm});
                     if (userProfile?.data?.subscription?.plan_id === 1) {
                       handleFree();
-                    } else {  
+                    } else {
                       handlePremium();
                     }
                   }}
@@ -486,14 +519,24 @@ const handleNative = async () => {
           </ScrollView>
           <View
             {...panResponder.panHandlers}
-            style={{width: 30, marginRight: 20, flex: 1}}>
+            style={{
+              width: sizing.getDimensionWidth(0.05),
+              marginRight: 20,
+            }}>
             {uniqueAlphabets.map((item, index) => (
               <Pressable
                 onPress={() => setSelectedAlphabet(item)}
                 style={{
                   padding: 0,
                 }}>
-                <Text style={{fontSize: 14, textAlign: 'right', marginVertical: 0}}>{item}</Text>
+                <Text
+                  style={{
+                    fontSize: 12.5,
+                    textAlign: 'right',
+                    marginVertical: 0,
+                  }}>
+                  {item}
+                </Text>
               </Pressable>
             ))}
           </View>
@@ -511,6 +554,10 @@ const handleNative = async () => {
           const resp = await getStoryDetail(selectedStory?.id);
           handleSetStory(resp.data);
           navigate('Main');
+        }}
+        handleLater={async () => {
+          await addStory(nextStory.id);
+          setShowUnlockedStory(false);
         }}
       />
     </SafeAreaView>

@@ -37,7 +37,8 @@ function ModalUnlockStory({
   readLater,
   nextStory,
   handleRead,
-  relateStory
+  handleLater,
+  relateStory,
 }) {
 // alert(JSON.stringify(nextStory))
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
@@ -417,7 +418,7 @@ function ModalUnlockStory({
                 </TouchableOpacity>
                 {readLater && (
                   <TouchableOpacity
-                    onPress={onClose}
+                    onPress={handleLater ? handleLater : onClose}
                     style={{
                       backgroundColor: '#ED5267',
                       padding: moderateScale(4),
