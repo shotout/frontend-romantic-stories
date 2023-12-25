@@ -511,7 +511,7 @@ const ExploreLibraryScreen = ({
                       />
                     )} */}
                     <Image
-                      source={{uri: `${BACKEND_URL}${itm?.image?.url}`}}
+                      source={{uri: `${BACKEND_URL}${itm?.cover?.url}`}}
                       resizeMode="cover"
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />

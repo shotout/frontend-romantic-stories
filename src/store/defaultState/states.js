@@ -49,7 +49,8 @@ const INITIAL_STATE = {
   readStory: null,
   nextStory: null,
   relateStory: null,
-  levelingUser: null
+  levelingUser: null,
+  colorText: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -89,11 +90,11 @@ export default (state = INITIAL_STATE, action) => {
           counter: 0,
         },
       };
-      case types.SET_LEVELING_DATA:
-        return {
-          ...state,
-          levelingUser: action.payload,
-        };
+    case types.SET_LEVELING_DATA:
+      return {
+        ...state,
+        levelingUser: action.payload,
+      };
     case types.CHANGE_COUNTER_LOADING_MODAL:
       return {
         ...state,
@@ -334,6 +335,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isPremium: action.payload,
+      };
+    case types.SET_COLOR_TEXT:
+      console.log('setttttttt'+action.payload)
+      return {
+        ...state,
+        colorText: action.payload,
       };
     default:
       return state;

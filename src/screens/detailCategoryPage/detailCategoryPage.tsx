@@ -237,35 +237,35 @@ const DetailCategoryScreen = ({
     }
   };
 
-  // const dummyFilter = [
-  //   '#',
-  //   'A',
-  //   'B',
-  //   'C',
-  //   'D',
-  //   'E',
-  //   'F',
-  //   'G',
-  //   'H',
-  //   'I',
-  //   'J',
-  //   'K',
-  //   'L',
-  //   'M',
-  //   'N',
-  //   'O',
-  //   'P',
-  //   'Q',
-  //   'R',
-  //   'S',
-  //   'T',
-  //   'U',
-  //   'V',
-  //   'W',
-  //   'X',
-  //   'Y',
-  //   'Z',
-  // ];
+  const dummyFilter = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+    '#',
+  ];
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -355,7 +355,7 @@ const DetailCategoryScreen = ({
       </View>
       <View
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: code_color.white,
           height: '100%',
         }}>
         {data?.category?.name && (
@@ -528,7 +528,7 @@ const DetailCategoryScreen = ({
             style={{
               width: sizing.getDimensionWidth(0.05),
             }}>
-            {uniqueAlphabets.map((item, index) => (
+            {dummyFilter.map((item, index) => (
               <Pressable
                 onPress={() => setSelectedAlphabet(item)}
                 style={{

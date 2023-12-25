@@ -62,7 +62,7 @@ function Main({registerData, userProfile, props}) {
 
   const checkDevice = async () => {
     const device = await DeviceInfo.getUniqueId();
-    console.log(device)
+    console.log('masuk sini'+device)
     try {
       const res = await checkDeviceRegister({
         device_id: device,

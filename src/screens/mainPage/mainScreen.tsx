@@ -108,6 +108,7 @@ const MainScreen = ({
   nextStory,
   handleStoriesRelate,
   handleLeveling,
+  colorText
 }) => {
   const [loadingOne, setLoadingOne] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -119,6 +120,7 @@ const MainScreen = ({
     visible: false,
     step: stepsTutorial,
   });
+  const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -599,7 +601,9 @@ const MainScreen = ({
     }
   }, [visible]);
 
-  const renderFactItem = ({item, index, title, category}) => {
+
+
+  const renderFactItem = ({item, index, title, category, colorText}) => {
     return (
       <>
         <QuotesContent
@@ -607,13 +611,13 @@ const MainScreen = ({
           isActive={activeSlide === index}
           totalStory={dataBook?.content_en?.length}
           pageActive={index}
+          colorText={colorText}
           isAnimationStart={isLoveAnimate}
           themeUser={userProfile?.data}
           fontSize={fontSize}
           bgTheme={colorTheme}
           bg={backgroundColor}
           fontFamily={fontFamily}
-          me={me}
           partner={partner}
           source={undefined}
           titleStory={title}
@@ -710,6 +714,7 @@ const MainScreen = ({
                   index,
                   title: dataBook.title_en,
                   category: dataBook?.category?.name,
+                  colorText: colorText
                 })}
               </View>
             );
@@ -1235,6 +1240,7 @@ const styles = StyleSheet.create({});
 MainScreen.propTypes = {
   activeVersion: PropTypes.any,
   pressScreen: PropTypes.any,
+  colorText: PropTypes.any,
 };
 
 MainScreen.defaultProps = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { code_color } from '../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
@@ -6,22 +6,25 @@ import { moderateScale } from 'react-native-size-matters';
 const ProgressBar = ({  bgTheme, levelingUser }) => {
 
   const [showInfo, setShowInfo] = useState(null);
-  const animatedProgress = new Animated.Value(0);
-  const progress = levelingUser?.user_level?.level?.value;
- 
+  const animatedProgress = new Animated.Value(progress || 0);
+  const progress = levelingUser?.user_level?.point;
   useEffect(() => {
+    if (progress !== undefined) {
+      Animated.timing(animatedProgress, {
+        toValue: progress,
+        duration: 200, // Durasi animasi dalam milidetik
+        useNativeDriver: false, // Jika menggunakan Native Driver, beberapa properti tidak dapat diubah secara dinamis
+      }).start();
+    }
     // Animasikan perubahan nilai progress
-    Animated.timing(animatedProgress, {
-      toValue: progress,
-      duration: 1500, // Durasi animasi dalam milidetik
-      useNativeDriver: false, // Jika menggunakan Native Driver, beberapa properti tidak dapat diubah secara dinamis
-    }).start();
+    
   }, [progress]);
+  
 
   const renderProgress = () => {
     if (progress < 80 || progress === undefined) {
       return renderCase1();
-    } else if (progress == 80 && progress <= 600) {
+    } else if (progress => 80 && progress <= 600) {
       return renderCase2();
     } else {
       return renderCase3();

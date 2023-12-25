@@ -30,7 +30,8 @@ function ModalUnlockStory({
   onUnlock,
   onGetUnlimit,
   price,
-  isLoading
+  isLoading,
+  loadingOne
 }) {
   const handleClose = () => {
     onClose();
@@ -163,12 +164,13 @@ function ModalUnlockStory({
                   MOST SELECTED
                 </Text>
               </View>
-              {isLoading ? <ActivityIndicator color={code_color.blueDark} /> :
+              {isLoading ? <ActivityIndicator color={code_color.blueDark} size={13} /> :
               <Text style={{color: code_color.white, textAlign: 'center'}}>
                 {price} for 1 week access
               </Text> }
             </Pressable> }
             <Pressable
+              disabled={loadingOne}
               onPress={onWatchAds}
               style={{
                 backgroundColor: code_color.red,
@@ -194,9 +196,10 @@ function ModalUnlockStory({
                   FREE
                 </Text>
               </View>
+              {loadingOne ? <ActivityIndicator color={code_color.blueDark} size={13} /> :
               <Text style={{color: code_color.white, textAlign: 'center'}}>
                 Watch Ad for 12 hours Access
-              </Text>
+              </Text> }
             </Pressable>
             <View
               style={{

@@ -64,3 +64,8 @@ export const handleSetPremium = payload => ({
   type: types.SET_USER_PREMIUM,
   payload,
 });
+
+export const handleSetColor = payload => ({
+  type: types.SET_COLOR_TEXT,
+  payload,
+});

@@ -55,6 +55,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     artwork: 'http://example.com/cover.png',
     duration: 10,
   };
+  console.log(userStory?.audio?.audio_en)
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);

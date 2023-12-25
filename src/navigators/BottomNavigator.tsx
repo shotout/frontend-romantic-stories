@@ -126,6 +126,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
         <MainScreen
           pressScreen={() => handleSomeAction('Main')}
           route={undefined}
+          colorText={userProfile?.colorText}
         />
         {isBottomBarVisible === 'Settings' ? 
          <View style={{ position: 'absolute', top: -50, backgroundColor: 'rgba(0,0,0,0.5)', flex: 0, width: '100%', height: 200, alignItems: 'center' }}>
@@ -647,13 +648,14 @@ class MyTabsComponent extends Component {
     this.forceUpdate();
   };
   render() {
-    const {colorTheme, stepsTutorial, userStory, backgroundColor} = this.props;
+    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText} = this.props;
     const tapProps = {
       colorTheme,
       stepsTutorial,
       forceUpdate: this.forceComponentUpdate,
       userStory,
       backgroundColor,
+      colorText
     };
     return <MyTabs {...tapProps} />;
   }

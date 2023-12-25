@@ -484,11 +484,11 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     size={60}
                     thickness={5}
                     borderWidth={2}
-                    progress={userProfile?.data?.subscription?.audio_take / 10}
+                    progress={userProfile?.data?.subscription?.audio_take / userProfile?.data?.subscription?.audio_limit}
                     showsText
                     formatText={() =>
                       `${Math.round(
-                        (userProfile?.data?.subscription?.audio_take * 100) /
+                        ((userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take) * 100) /
                           100,
                       )} / ${Math.round(
                         (userProfile?.data?.subscription?.audio_limit * 100) /
@@ -505,7 +505,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                         textAlign: 'center',
                         fontWeight: 'bold',
                       }}>
-                      {userProfile?.data?.subscription?.audio_take} Audio
+                      {userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take} Audio
                       Stories remaining
                     </Text>
                     <Text
@@ -517,7 +517,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                         textAlign: 'center',
                       }}>
                       You can still listen to{' '}
-                      {userProfile?.data?.subscription?.audio_take}/
+                      {(userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take)}/
                       {userProfile?.data?.subscription?.audio_limit} Audio
                       Stories in your package.
                     </Text>
@@ -618,12 +618,12 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                       thickness={5}
                       borderWidth={2}
                       progress={
-                        userProfile?.data?.subscription?.audio_take / 10
+                        userProfile?.data?.subscription?.audio_take / userProfile?.data?.subscription?.audio_limit
                       }
                       showsText
                       formatText={() =>
                         `${Math.round(
-                          (userProfile?.data?.subscription?.audio_take * 100) /
+                          ((userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take) * 100) /
                             100,
                         )} / ${Math.round(
                           (userProfile?.data?.subscription?.audio_limit * 100) /
@@ -647,7 +647,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                           textAlign: 'center',
                           fontWeight: 'bold',
                         }}>
-                        {userProfile?.data?.subscription?.audio_take} Audio
+                        {userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take} Audio
                         Stories remaining
                       </Text>
                       <Text
@@ -659,7 +659,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                           textAlign: 'center',
                         }}>
                         You can still listen to{' '}
-                        {userProfile?.data?.subscription?.audio_take}/
+                        { userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take}/
                         {userProfile?.data?.subscription?.audio_limit} Audio
                         Stories in your package.
                       </Text>

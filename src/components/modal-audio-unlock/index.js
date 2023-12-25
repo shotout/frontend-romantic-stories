@@ -376,7 +376,7 @@ function ModalAudioStory({
                  
                   {isLoading ? <ActivityIndicator color={code_color.blueDark} /> :
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {`Get 10 Audio Stories for  ${price}`}
+                  {`Get 10 Audio Stories for  ${price2}`}
                   </Text> }
                 </Pressable> }
                 {Platform.OS === 'android' ? null :
@@ -408,7 +408,7 @@ function ModalAudioStory({
                   </View>
                   {isLoading2 ? <ActivityIndicator color={code_color.blueDark} /> :
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {`Get 50 Audio Stories for ${price2}`}
+                  {`Get 50 Audio Stories for ${price}`}
                   </Text> }
                 </Pressable> }
               {Platform.OS === 'android' ? null : <View

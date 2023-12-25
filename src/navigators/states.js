@@ -5,4 +5,5 @@ export default states => ({
   stepsTutorial:  states.defaultState.stepsTutorial,
   userStory: states.defaultState.userStory,
   backgroundColor: states.defaultState.backgroundColor,
+  colorText: states.defaultState.colorText,
 });

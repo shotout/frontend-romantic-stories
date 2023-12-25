@@ -72,6 +72,7 @@ const FontScreen = ({
   handleSetFontFamily,
   isPremium,
   fontFamily,
+  handleSetColor
 }) => {
 
   const [show, setShow] = useState(false);
@@ -114,6 +115,7 @@ const FontScreen = ({
   const setBg = value => {
     set_bgColor(value);
     handleSetBackground(value);
+    handleSetColor(value === code_color.white ? code_color.blackDark: code_color.white)
   };
 
   const handleFont = value => {
@@ -324,13 +326,13 @@ const FontScreen = ({
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => {
-                if (userProfile?.data?.subscription?.plan?.id === 1) {
-                  setModalUnlockBg(true);
-                }else{
+                // if (userProfile?.data?.subscription?.plan?.id === 1) {
+                //   setModalUnlockBg(true);
+                // }else{
                   setBg(
                    code_color.white
                   );
-                }
+                // }
               }}
               style={{
                 borderColor:
@@ -393,13 +395,14 @@ const FontScreen = ({
 
             <Pressable
               onPress={() => {
-                if (userProfile?.data?.subscription?.plan?.id === 1) {
-                  setModalUnlockBg(true);
-                }else{
+                // if (userProfile?.data?.subscription?.plan?.id === 1) {
+                //   setModalUnlockBg(true);
+                // }else{
                   setBg(
                     code_color.blackDark
                    );
-                }
+                  
+                // }
               }}
               style={{
                 borderColor:

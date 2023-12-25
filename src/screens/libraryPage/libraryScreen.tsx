@@ -60,6 +60,7 @@ import {
   deleteMyStory,
   deleteStoryCollection,
   getDetailCollection,
+  getExploreStory,
   getMyCollection,
   getStoryDetail,
 } from '../../shared/request';
@@ -76,7 +77,10 @@ import LockFree from '../../assets/icons/lockFree';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
-import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import {
+  AdsConsentPrivacyOptionsRequirementStatus,
+  RewardedAdEventType,
+} from 'react-native-google-mobile-ads';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import * as IAP from 'react-native-iap';
 import {backLeft} from '../../assets/icons';
@@ -117,7 +121,9 @@ const LibraryScreen = ({
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
+  const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [loadingOne, setLoadingOne] = useState(false);
   const [products, setProducts] = useState([]);
   const [selectedStory, setSelectedStory] = useState(null);
   const [price, setPrice] = useState('');
@@ -149,7 +155,7 @@ const LibraryScreen = ({
   //       duration: 1000,
   //       useNativeDriver: true,
   //     }).start();
-  
+
   //     // Increment counter and Second Animation
   //     counter.current += 1;
   //     await Animated.timing(translateX, {
@@ -157,10 +163,10 @@ const LibraryScreen = ({
   //       duration: 300,
   //       useNativeDriver: true,
   //     }).start();
-  
+
   //     if (activeStatus.current) {
   //       const isStopAnimation = counter.current !== 0 && counter.current % 2 === 0;
-        
+
   //       if (isStopAnimation) {
   //         // Stop Animation
   //         await Animated.timing(translateX, {
@@ -168,7 +174,7 @@ const LibraryScreen = ({
   //           duration: 300,
   //           useNativeDriver: true,
   //         }).start();
-  
+
   //         // Delay and Restart Animation
   //         await Animated.delay(100); // Adjust the delay as needed
   //         runAnimation();
@@ -187,9 +193,11 @@ const LibraryScreen = ({
     });
   };
   const showWatchAds = async () => {
+    setLoadingOne(true)
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       setShowModalUnlock(false);
+      setLoadingOne(false)
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
         handleNextStory(resp.data);
@@ -303,7 +311,107 @@ const LibraryScreen = ({
       return (
         <View>
           {detailCollection?.stories_count != 0 ? (
-            < Animated.View
+            <Animated.View
+              style={{
+                transform: [{translateX: translateX}],
+              }}>
+              <View
+                style={{
+                  paddingHorizontal: 10,
+                  paddingBottom: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: bgTheme,
+                  borderColor: '#778DFF',
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  paddingVertical: 10,
+                  paddingRight: 15,
+                }}>
+                <ImageBackground
+                  source={{
+                    uri: `${BACKEND_URL}${item?.item?.story?.category?.cover?.url}`,
+                  }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    alignItems: 'center',
+                    paddingTop: 5,
+                  }}
+                  resizeMode="contain">
+                  {userProfile?.data?.subscription?.plan?.id != 2 &&
+                    userProfile?.data?.subscription?.plan?.id != 3 && (
+                      <LockFree height={16} width={55} />
+                    )}
+                </ImageBackground>
+                <View
+                  style={{
+                    marginLeft: 0,
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                  }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flex: 1, marginRight: 10}}>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          fontSize: 12,
+                          marginBottom: 5,
+                        }}>
+                        {item?.item?.story?.category?.name}
+                      </Text>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          fontSize: 14,
+                          fontWeight: 400,
+                          textAlign: 'left',
+                        }}>
+                        {item?.item?.story?.title_en}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleReadDetail(item?.story);
+                      }}
+                      style={{
+                        backgroundColor: '#00B781',
+                        paddingHorizontal: 15,
+                        paddingVertical: 10,
+                        alignItems: 'center',
+                        marginRight: 10,
+                        borderRadius: 30,
+                      }}>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          fontWeight: 'bold',
+                          fontSize: 12,
+                        }}>
+                        Read Story
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => startBounceAnimation()}>
+                  <DotSvg />
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
+          ) : null}
+          {/* <View
+        style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
+      /> */}
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Animated.View
             style={{
               transform: [{translateX: translateX}],
             }}>
@@ -322,7 +430,7 @@ const LibraryScreen = ({
               }}>
               <ImageBackground
                 source={{
-                  uri: `${BACKEND_URL}${item?.item?.story?.category?.cover?.url}`,
+                  uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
                 }}
                 style={{
                   width: 100,
@@ -348,27 +456,25 @@ const LibraryScreen = ({
                     <Text
                       allowFontScaling={false}
                       style={{
-                        color: backgroundColor,
+                        color: code_color.white,
                         fontSize: 12,
                         marginBottom: 5,
                       }}>
-                      {item?.item?.story?.category?.name}
+                      {item?.item?.category?.name}
                     </Text>
                     <Text
                       allowFontScaling={false}
                       style={{
-                        color: backgroundColor,
+                        color: code_color.white,
                         fontSize: 14,
                         fontWeight: 400,
                         textAlign: 'left',
                       }}>
-                      {item?.item?.story?.title_en}
+                      {item?.item?.title_en}
                     </Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() => {
-                      handleReadDetail(item?.story);
-                    }}
+                    onPress={() => handleRead(item)}
                     style={{
                       backgroundColor: '#00B781',
                       paddingHorizontal: 15,
@@ -380,7 +486,7 @@ const LibraryScreen = ({
                     <Text
                       allowFontScaling={false}
                       style={{
-                        color: backgroundColor,
+                        color: code_color.white,
                         fontWeight: 'bold',
                         fontSize: 12,
                       }}>
@@ -390,13 +496,111 @@ const LibraryScreen = ({
                 </View>
               </View>
               <TouchableOpacity onPress={() => startBounceAnimation()}>
-              
-                  <DotSvg />
-               
+                <DotSvg />
               </TouchableOpacity>
-             
             </View>
-            </ Animated.View >
+          </Animated.View>
+        </View>
+      );
+    }
+  };
+  const renderContentSearch = item => {
+    console.log(item)
+    if (detail != null) {
+      return (
+        <View>
+          {detailCollection?.stories_count != 0 ? (
+            <Animated.View
+              style={{
+                transform: [{translateX: translateX}],
+              }}>
+              <View
+                style={{
+                  paddingHorizontal: 10,
+                  paddingBottom: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: bgTheme,
+                  borderColor: '#778DFF',
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  paddingVertical: 10,
+                  paddingRight: 15,
+                }}>
+                <ImageBackground
+                  source={{
+                    uri: `${BACKEND_URL}${item?.category?.cover?.url}`,
+                  }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    alignItems: 'center',
+                    paddingTop: 5,
+                  }}
+                  resizeMode="contain">
+                  {userProfile?.data?.subscription?.plan?.id != 2 &&
+                    userProfile?.data?.subscription?.plan?.id != 3 && (
+                      <LockFree height={16} width={55} />
+                    )}
+                </ImageBackground>
+                <View
+                  style={{
+                    marginLeft: 0,
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                  }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flex: 1, marginRight: 10}}>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          fontSize: 12,
+                          marginBottom: 5,
+                        }}>
+                        {item?.category?.name}
+                      </Text>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          fontSize: 14,
+                          fontWeight: 400,
+                          textAlign: 'left',
+                        }}>
+                        {item?.title_en}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleReadDetail(item?.story);
+                      }}
+                      style={{
+                        backgroundColor: '#00B781',
+                        paddingHorizontal: 15,
+                        paddingVertical: 10,
+                        alignItems: 'center',
+                        marginRight: 10,
+                        borderRadius: 30,
+                      }}>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          fontWeight: 'bold',
+                          fontSize: 12,
+                        }}>
+                        Read Story
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => startBounceAnimation()}>
+                  <DotSvg />
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
           ) : null}
           {/* <View
         style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
@@ -406,98 +610,95 @@ const LibraryScreen = ({
     } else {
       return (
         <View>
-           < Animated.View
+          <Animated.View
             style={{
               transform: [{translateX: translateX}],
             }}>
-  <View
-            style={{
-              paddingHorizontal: 10,
-              paddingBottom: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: bgTheme,
-              borderColor: '#778DFF',
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              paddingVertical: 10,
-              paddingRight: 15,
-            }}>
-            <ImageBackground
-              source={{
-                uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
-              }}
-              style={{
-                width: 100,
-                height: 100,
-                alignItems: 'center',
-                paddingTop: 5,
-              }}
-              resizeMode="contain">
-              {userProfile?.data?.subscription?.plan?.id != 2 &&
-                userProfile?.data?.subscription?.plan?.id != 3 && (
-                  <LockFree height={16} width={55} />
-                )}
-            </ImageBackground>
             <View
               style={{
-                marginLeft: 0,
-                flex: 1,
-                justifyContent: 'center',
-                alignContent: 'center',
+                paddingHorizontal: 10,
+                paddingBottom: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: bgTheme,
+                borderColor: '#778DFF',
+                // borderTopWidth: 1,
+                borderBottomWidth: 1,
+                paddingVertical: 10,
+                paddingRight: 15,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View style={{flex: 1, marginRight: 10}}>
-                  <Text
-                    allowFontScaling={false}
+              <ImageBackground
+                source={{
+                  uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
+                }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  alignItems: 'center',
+                  paddingTop: 5,
+                }}
+                resizeMode="contain">
+                {userProfile?.data?.subscription?.plan?.id != 2 &&
+                  userProfile?.data?.subscription?.plan?.id != 3 && (
+                    <LockFree height={16} width={55} />
+                  )}
+              </ImageBackground>
+              <View
+                style={{
+                  marginLeft: 0,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{flex: 1, marginRight: 10}}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontSize: 12,
+                        marginBottom: 5,
+                      }}>
+                      {item?.item?.category?.name}
+                    </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontSize: 14,
+                        fontWeight: 400,
+                        textAlign: 'left',
+                      }}>
+                      {item?.item?.title_en}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => handleRead(item)}
                     style={{
-                      color: backgroundColor,
-                      fontSize: 12,
-                      marginBottom: 5,
+                      backgroundColor: '#00B781',
+                      paddingHorizontal: 15,
+                      paddingVertical: 10,
+                      alignItems: 'center',
+                      marginRight: 10,
+                      borderRadius: 30,
                     }}>
-                    {item?.item?.category?.name}
-                  </Text>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: backgroundColor,
-                      fontSize: 14,
-                      fontWeight: 400,
-                      textAlign: 'left',
-                    }}>
-                    {item?.item?.title_en}
-                  </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontWeight: 'bold',
+                        fontSize: 12,
+                      }}>
+                      Read Story
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  onPress={() => handleRead(item)}
-                  style={{
-                    backgroundColor: '#00B781',
-                    paddingHorizontal: 15,
-                    paddingVertical: 10,
-                    alignItems: 'center',
-                    marginRight: 10,
-                    borderRadius: 30,
-                  }}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: backgroundColor,
-                      fontWeight: 'bold',
-                      fontSize: 12,
-                    }}>
-                    Read Story
-                  </Text>
-                </TouchableOpacity>
               </View>
-            </View>
-            <TouchableOpacity onPress={() => startBounceAnimation()}>
-             
+              <TouchableOpacity onPress={() => startBounceAnimation()}>
                 <DotSvg />
-              
-            </TouchableOpacity>
-          </View>
-            </Animated.View>
-        
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
         </View>
       );
     }
@@ -532,7 +733,7 @@ const LibraryScreen = ({
             <Text
               allowFontScaling={false}
               style={{
-                color: backgroundColor,
+                color: code_color.white,
                 paddingVertical: 15,
               }}>
               {item?.item?.name}
@@ -578,14 +779,14 @@ const LibraryScreen = ({
             <Text
               allowFontScaling={false}
               style={{
-                color: backgroundColor,
+                color: code_color.white,
               }}>
               {detailCollection?.name}
             </Text>
             <Text
               allowFontScaling={false}
               style={{
-                color: backgroundColor,
+                color: code_color.white,
               }}>
               {detailCollection?.stories_count} Stories
             </Text>
@@ -640,6 +841,21 @@ const LibraryScreen = ({
   useEffect(() => {
     handleRestart();
   }, [items]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        let params = {
+          search: keyword,
+        };
+        const res = await getExploreStory(params);
+        setData(res);
+      } catch (error) {
+        setData(null);
+      }
+    }
+    fetchData();
+  }, []);
   const handleRestart = async () => {
     setShowModalNew(false);
     try {
@@ -711,7 +927,7 @@ const LibraryScreen = ({
     //   // setIsSwipingRight(true);
     // }
   };
-  
+
   const renderProgress = () => <StepHeader currentStep={5} />;
   const renderTutorial = () => {
     if (stepsTutorial === 3) {
@@ -781,44 +997,121 @@ const LibraryScreen = ({
     </View>
   );
   const renderEmptySearch = () => (
-    <View style={{flex: 1, }}>
+    <ScrollView style={{flex: 1}}>
       <View style={{alignItems: 'center'}}>
-      <Image source={imgSearchNull} style={{width: 100, height: 100, marginTop: 20}} />
+        <Image
+          source={imgSearchNull}
+          style={{width: 100, height: 100, marginTop: 20}}
+        />
+        <Text
+          style={{
+            color: code_color.white,
+            fontSize: 16,
+            fontWeight: '400',
+            textAlign: 'center',
+            lineHeight: 21,
+            marginTop: 22,
+            width: sizing.getDimensionWidth(0.9),
+          }}>
+          {'We can’t find that title in your library.'}
+        </Text>
+      </View>
+
+      <View
+        style={{
+          borderColor: code_color.greyDefault,
+          borderWidth: 1,
+          borderStyle: 'solid',
+          marginVertical: 20,
+          marginHorizontal: 20,
+        }}
+      />
       <Text
         style={{
-          color:
-            backgroundColor === '#2C3439' ? code_color.black : code_color.white,
-          fontSize: 16,
-          fontWeight: '400',
+          color: code_color.white,
+          fontSize: 18,
+          fontWeight: '500',
           textAlign: 'center',
-          lineHeight: 21,
-          marginTop: 22,
-          width: sizing.getDimensionWidth(0.9),
+          marginVertical: 10,
         }}>
-        {
-          'We can’t find that title in your library.'
-        }
+        {'Read one of our other Stories now:'}
       </Text>
-      </View>
-      
-      <View style={{borderColor: code_color.greyDefault, borderWidth: 1, borderStyle: 'solid', marginVertical: 20, marginHorizontal: 20  }}/>
-    </View>
+
+      <SwipeListView
+                data={data?.most_share}
+                renderItem={item => renderContentSearch(item)}
+                swipeGestureEnded={(_data, _rowMap) => {
+                  stopAnimation();
+                }}
+                renderHiddenItem={(_data, _rowMap) => (
+                  <View style={styles.rowBack}>
+                    {detail != null ? null : (
+                      <TouchableOpacity
+                        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                        onPress={() => {
+                          setId(_data?.item?.id);
+                          setShowModal(true);
+                        }}>
+                        <LibraryAddSvg />
+                      </TouchableOpacity>
+                    )}
+                    <TouchableOpacity
+                      style={[styles.backRightBtn, styles.backRightCenter]}
+                      onPress={() => {
+                        setSharedStory(_data);
+                        setShowModalShareStory(true);
+                      }}>
+                      <ShareSvg />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.backRightBtn, styles.backRightBtnRight]}
+                      onPress={() => {
+                        Alert.alert(
+                          'Are you sure you want to remove this story from your library?',
+                          '',
+                          [
+                            {
+                              text: 'Yes',
+                              onPress: () => {
+                                deleteRowStory(_data);
+                              },
+                            },
+                            {text: 'Cancel', onPress: () => {}},
+                          ],
+                        );
+                      }}>
+                      <DeleteSvg />
+                    </TouchableOpacity>
+                  </View>
+                )}
+                rightOpenValue={-180}
+                previewRowKey={'0'}
+                previewOpenValue={-40}
+                previewOpenDelay={3000}
+              />
+
+    </ScrollView>
   );
 
-  const handleNative = async() => {
-    
-    setLoading(true)
-    const data  = await handleNativePayment('unlock_story_1_week_only', selectedStory?.id);
-    if(data){
-      setLoading(false)
+  const handleNative = async () => {
+    // // setLoading(true);
+    // const data = await handleNativePayment(
+    //   'unlock_story_1_week_only',
+    //   selectedStory?.id,
+    // );
+    // if (data) {
+      setLoading(false);
       setShowModalUnlock(false);
       setShowModalNewStory(false);
-    }else{
-      setLoading(false)
-      setShowModalUnlock(false);
-      setShowModalNewStory(false);
-    }
-  }
+      const resp = await getStoryDetail(selectedStory?.id);
+      handleNextStory(resp.data);
+      setShowModalSuccessPurchase(true)
+    // } else {
+    //   setLoading(false);
+    //   setShowModalUnlock(false);
+    //   setShowModalNewStory(false);
+    // }
+  };
   return (
     <View>
       <ModalUnlockedStory
@@ -829,7 +1122,7 @@ const LibraryScreen = ({
         readLater={true}
         data={selectedStory}
         handleRead={async () => {
-          setShowUnlockedStory(false)
+          setShowUnlockedStory(false);
           const resp = await getStoryDetail(selectedStory?.id);
           handleSetStory(resp.data);
           navigate('Main');
@@ -840,9 +1133,10 @@ const LibraryScreen = ({
         isVisible={showModalUnlock}
         onClose={() => setShowModalUnlock(false)}
         data={selectedStory}
+        loadingOne={loadingOne}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          handleNative()
+          handleNative();
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
@@ -898,8 +1192,7 @@ const LibraryScreen = ({
             setShowModal(true);
           }}
           onUnlock={() => {
-           
-            handleNative()
+            handleNative();
           }}
           onGetUnlimit={() => {
             handleUnlimited();
@@ -926,9 +1219,7 @@ const LibraryScreen = ({
               alignItems: 'center',
               paddingLeft: 10,
               height: 40,
-            }}
-            
-            >
+            }}>
             <SearchSvg />
             <TextInput
               placeholder="Search"
@@ -949,7 +1240,7 @@ const LibraryScreen = ({
             <DescendingSvg fill={code_color.white} />
           </Pressable>
         </View>
-        {listLibrary?.length > 0 || listCollection?.length > 0  ? (
+        {listLibrary?.length > 0 || listCollection?.length > 0 ? (
           <ScrollView>
             {detail != null ? (
               renderContentCollectionDetail()
@@ -1056,7 +1347,7 @@ const LibraryScreen = ({
                 data={listLibrary}
                 renderItem={item => renderContent(item)}
                 swipeGestureEnded={(_data, _rowMap) => {
-                  stopAnimation()
+                  stopAnimation();
                 }}
                 renderHiddenItem={(_data, _rowMap) => (
                   <View style={styles.rowBack}>
@@ -1106,11 +1397,13 @@ const LibraryScreen = ({
               />
             )}
           </ScrollView>
-        ) : listLibrary?.length === 0 && listCollection?.length === 0 && keyword.length === 0  ? 
-        (
+        ) : listLibrary?.length === 0 &&
+          listCollection?.length === 0 &&
+          keyword.length === 0 ? (
           renderEmpty()
-          ) : listLibrary?.length === 0 && listCollection?.length === 0 && keyword.length > 0  ? 
-         (
+        ) : listLibrary?.length === 0 &&
+          listCollection?.length === 0 &&
+          keyword.length > 0 ? (
           renderEmptySearch()
         ) : (
           renderEmpty()

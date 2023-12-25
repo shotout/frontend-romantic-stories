@@ -10,4 +10,5 @@ export default states => ({
   readStory: states.defaultState.readStory,
   nextStory: states.defaultState.nextStory,
   levelingUser: states.defaultState.levelingUser,
+  colorText: states.defaultState.colorText,
 });

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Image,
@@ -29,7 +29,7 @@ import {handleNativePayment} from '../../helpers/paywall';
 import FastImage from 'react-native-fast-image';
 import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 import {reloadUserProfile} from '../../utils/user';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
 
 const loveAnimate = require('../../assets/lottie/love.json');
@@ -48,14 +48,13 @@ export default function QuotesContent({
   pageActive,
   titleStory,
   titleCategory,
-  
+  colorText,
 }) {
- 
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
   const [show, setShow] = useState(false);
-  const [color, setSolor] = useState('');
+  const [color, setSolor] = useState(code_color.blackDark);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [title, setTitle] = useState('10/10 Audio Stories');
@@ -75,7 +74,6 @@ export default function QuotesContent({
   ];
   // Menghapus spasi dan baris baru (enter)
 
-
   // Remove <p> and </p> tags from the modified text
   const manipulatedResponse = item.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
@@ -83,21 +81,22 @@ export default function QuotesContent({
 
   useEffect(() => {
     handleThemeAvatar(pageActive);
+    checkingColor(bg);
   }, [pageActive]);
 
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
-    setLoading2(true)
+    setLoading2(true);
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        setLoading2(false)
+        setLoading2(false);
       }, 100);
     } else {
       setShow(false);
-      setLoading2(false)
+      setLoading2(false);
       setTimeout(() => {
         setShowAudio(true);
       }, 100);
@@ -105,17 +104,17 @@ export default function QuotesContent({
   };
   const handleAudioOne = async () => {
     setTitle('10/10 Audio Stories');
-    setLoading(true)
+    setLoading(true);
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        setLoading(false)
+        setLoading(false);
       }, 100);
     } else {
       setShow(false);
-      setLoading(false)
+      setLoading(false);
       setTimeout(() => {
         setShowAudio(true);
       }, 100);
@@ -143,18 +142,6 @@ export default function QuotesContent({
     } catch (error) {}
   };
 
-  function renderBackgroundImage() {
-    if (isActive) {
-      return (
-        <Image
-          source={ava1}
-          // style={[styles.ctnAbsolute]}
-        />
-      );
-    }
-    return null;
-  }
-
   const handleSuccessAudio = async () => {
     const payload = {
       _method: 'PATCH',
@@ -179,7 +166,32 @@ export default function QuotesContent({
     }
   };
 
+  const checkingColor = value => {
+    console.log(
+      'color set',
+      value === code_color.blackDark ? code_color.white : code_color.blackDark,
+    );
+    return value === code_color.blackDark
+      ? code_color.white
+      : code_color.blackDark;
+  };
 
+  const renderValue = value => {
+    return (
+      <Text
+        style={[
+          styles.ctnQuotes,
+          {
+            // marginBottom: pageActive != 0 ? -100 : 0,
+            fontFamily: fontFamily,
+            fontSize: Number(fontSize),
+            color: colorText,
+          },
+        ]}>
+        {value?.children}
+      </Text>
+    );
+  };
 
   return (
     <SafeAreaView
@@ -194,7 +206,6 @@ export default function QuotesContent({
         onClose={() => setShowAudio(false)}
         title={title}
         handleListen={() => {
-        
           handleSuccessAudio();
         }}
       />
@@ -283,7 +294,7 @@ export default function QuotesContent({
           <TouchableOpacity
             onPress={async () => {
               if (themeUser?.subscription?.plan?.id === 3) {
-                navigate('Media');
+              navigate('Media');
               } else if (
                 themeUser?.subscription?.plan?.id === 2 &&
                 themeUser?.subscription?.audio_limit != 0
@@ -342,19 +353,16 @@ export default function QuotesContent({
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
               <SelectableText
-                style={[
-                  styles.ctnQuotes,
-                  {
-                    // marginBottom: pageActive != 0 ? -100 : 0,
-                    fontFamily: fontFamily,
-                    fontSize: Number(fontSize),
-                    color:
-                      bg === code_color.blackDark
-                    
-                        ? code_color.white
-                        : bg === '#FFFFFF' ? code_color.blackDark : code_color.blackDark,
-                  },
-                ]}
+                // style={[
+                //   styles.ctnQuotes,
+                //   {
+                //     // marginBottom: pageActive != 0 ? -100 : 0,
+                //     fontFamily: fontFamily,
+                //     fontSize: Number(fontSize),
+                //     color: colorText,
+                //   },
+                // ]}
+                TextComponent={renderValue}
                 menuItems={['Share']}
                 onSelection={({
                   eventType,
@@ -444,7 +452,14 @@ export default function QuotesContent({
                   height: Platform.OS === 'android' ? 110 : 110,
                   left: '40%',
                   zIndex: 1,
-                  bottom: partner === '/assets/images/avatars/5/think.png' && Platform.OS === 'ios' ? -5 : partner === '/assets/images/avatars/5/think.png' && Platform.OS === 'android' ? 0 : null
+                  bottom:
+                    partner === '/assets/images/avatars/5/think.png' &&
+                    Platform.OS === 'ios'
+                      ? -5
+                      : partner === '/assets/images/avatars/5/think.png' &&
+                        Platform.OS === 'android'
+                      ? 0
+                      : null,
                 }}>
                 <FastImage
                   source={{
@@ -494,7 +509,6 @@ export default function QuotesContent({
             <>
               <View
                 style={{
-                
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: -150,
@@ -555,11 +569,10 @@ export default function QuotesContent({
                 duration={3000}
                 loop={false}
               />
-              <View style={{zIndex: -2,  backgroundColor: 'Transparent',}}>
+              <View style={{zIndex: -2, backgroundColor: 'Transparent'}}>
                 <ImageBackground
                   source={imgLove}
                   resizeMode="contain"
-
                   style={{
                     width: '75%',
                     height: 130,
