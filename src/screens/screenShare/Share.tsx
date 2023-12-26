@@ -804,50 +804,6 @@ function ScreenShare({
               height: '100%',
               borderRadius: 24,
               resizeMode: 'cover',
-            
-            }}
-          />
-           <View
-            style={{
-              borderColor: code_color.white,
-              borderWidth: 2,
-              height: '100%',
-              width: '35%',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              borderTopStartRadius: moderateScale(24),
-              borderBottomStartRadius: moderateScale(24),
-              borderRightWidth: 0,
-              margin: 20,
-              marginBottom: 20
-            }}
-          />
-          <View
-            style={{
-              borderColor: code_color.white,
-              borderWidth: 2,
-              height: '100%',
-              width: '35%',
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              borderTopEndRadius: moderateScale(24),
-              borderBottomEndRadius: moderateScale(24),
-              borderLeftWidth: 0,
-              margin: 20,
-              marginBottom: 20
-            }}
-          />
-          <Image
-            source={logo}
-            style={{
-              resizeMode: 'contain',
-              width: 65,
-              height: 65,
-              position: 'absolute',
-              top: -10,
-              alignSelf: 'center',
             }}
           />
           {isVisibleFont ? (
@@ -865,7 +821,7 @@ function ScreenShare({
               ...styles.textQuote,
               fontFamily: fontSelect.value,
               fontSize: moderateScale(16),
-              marginHorizontal: moderateScale(40)
+              marginHorizontal: moderateScale(20),
             }}>
             <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
               {route?.params?.start}
@@ -875,37 +831,16 @@ function ScreenShare({
               {route?.params?.end}
             </Text>
           </Text>
-          <View
+          <Text
             style={{
-              height: moderateScale(34),
-              backgroundColor: '#000',
-              borderRadius: 17,
-              paddingHorizontal: moderateScale(20),
-              justifyContent: 'center',
-              position: 'absolute',
-              bottom: -20,
+              color: code_color.black,
+              fontSize: moderateScale(18),
+              fontWeight: '600',
+              textAlign: 'center',
+              bottom: moderateScale(20),
             }}>
-            <Text
-              style={{
-                color: code_color.white,
-                fontSize: 14,
-                fontWeight: '400',
-                letterSpacing: 0.28,
-              }}>
-              https://EroTalesApp.com
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: moderateScale(60),
-              gap: moderateScale(10),
-            }}>
-            <AppStore />
-            <PlayStore />
-          </View>
+            @EroTales
+          </Text>
         </ViewShot>
         {renderHeaderScreenShot()}
         {/* <View style={styles.overlay} /> */}
@@ -934,6 +869,11 @@ function ScreenShare({
         )}
         {isVisibleFont ? (
           <Pressable
+            style={{
+              position: 'absolute',
+              right: 10,
+              top: 5,
+            }}
             onPress={() => {
               setDraggableItems([...draggableItems, userText]);
               setUserText('');
@@ -944,7 +884,7 @@ function ScreenShare({
               style={{
                 color: code_color.black,
                 position: 'absolute',
-                right: 10,
+                right: 0,
                 fontSize: 18,
                 top: 5,
               }}>
@@ -1044,7 +984,6 @@ function ScreenShare({
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
             style={{
-              flexDirection: isVisibleFont ? 'row' : 'column',
               alignItems: 'center',
             }}>
             {isVisibleFont ? (
@@ -1053,8 +992,10 @@ function ScreenShare({
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginRight: -20,
-                  marginLeft: -40,
+                  position: 'absolute',
+                  top: moderateScale(50),
+                  left: -80,
+                  zIndex: 1,
                 }}>
                 <Text
                   allowFontScaling={false}

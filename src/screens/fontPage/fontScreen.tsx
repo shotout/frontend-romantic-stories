@@ -46,7 +46,13 @@ import {
   getRewardedFontThemeID,
   getRewardedInsterstialStoryID,
 } from '../../shared/adsId';
-import {loadInterstialAds, loadRewarded, loadRewardedColorBg, loadRewardedColorTheme, loadRewardedFont} from '../../helpers/loadReward';
+import {
+  loadInterstialAds,
+  loadRewarded,
+  loadRewardedColorBg,
+  loadRewardedColorTheme,
+  loadRewardedFont,
+} from '../../helpers/loadReward';
 import LoadingFullScreen from '../../components/loading-fullscreen';
 const adUnitId = getRewardedFontThemeID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
@@ -72,9 +78,8 @@ const FontScreen = ({
   handleSetFontFamily,
   isPremium,
   fontFamily,
-  handleSetColor
+  handleSetColor,
 }) => {
-
   const [show, setShow] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
   const [fontSelect, setSelectFont] = useState({
@@ -115,7 +120,9 @@ const FontScreen = ({
   const setBg = value => {
     set_bgColor(value);
     handleSetBackground(value);
-    handleSetColor(value === code_color.white ? code_color.blackDark: code_color.white)
+    handleSetColor(
+      value === code_color.white ? code_color.blackDark : code_color.white,
+    );
   };
 
   const handleFont = value => {
@@ -320,19 +327,17 @@ const FontScreen = ({
           margin: 20,
         }}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text allowFontScaling={false} style={{color: code_color.white }}>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
             BACKGROUND
           </Text>
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => {
-                // if (userProfile?.data?.subscription?.plan?.id === 1) {
-                //   setModalUnlockBg(true);
-                // }else{
-                  setBg(
-                   code_color.white
-                  );
-                // }
+                if (userProfile?.data?.subscription?.plan?.id === 1) {
+                  setModalUnlockBg(true);
+                } else {
+                  setBg(code_color.white);
+                }
               }}
               style={{
                 borderColor:
@@ -350,7 +355,8 @@ const FontScreen = ({
                   borderRadius: 30,
                 }}
               />
-              {userProfile?.data?.subscription?.plan?.id === 1 && bg_color !== code_color.white ? (
+              {userProfile?.data?.subscription?.plan?.id === 1 &&
+              bg_color !== code_color.white ? (
                 <>
                   <View
                     style={{
@@ -395,14 +401,11 @@ const FontScreen = ({
 
             <Pressable
               onPress={() => {
-                // if (userProfile?.data?.subscription?.plan?.id === 1) {
-                //   setModalUnlockBg(true);
-                // }else{
-                  setBg(
-                    code_color.blackDark
-                   );
-                  
-                // }
+                if (userProfile?.data?.subscription?.plan?.id === 1) {
+                  setModalUnlockBg(true);
+                } else {
+                  setBg(code_color.blackDark);
+                }
               }}
               style={{
                 borderColor:
@@ -422,7 +425,8 @@ const FontScreen = ({
                   borderRadius: 30,
                 }}
               />
-              {userProfile?.data?.subscription?.plan?.id === 1 && bg_color !== code_color.blackDark ? (
+              {userProfile?.data?.subscription?.plan?.id === 1 &&
+              bg_color !== code_color.blackDark ? (
                 <>
                   <View
                     style={{
@@ -591,7 +595,8 @@ const FontScreen = ({
                   }}>
                   {item.name}
                 </Text>
-                {userProfile?.data?.subscription?.plan?.id === 1 && fontSelect.value !== item.value ? (
+                {userProfile?.data?.subscription?.plan?.id === 1 &&
+                fontSelect.value !== item.value ? (
                   <>
                     <View
                       style={{
@@ -682,7 +687,8 @@ const FontScreen = ({
                   justifyContent: 'center',
                 }}>
                 {bgTheme === item.code ? <ChecklistSvg /> : null}
-                {userProfile?.data?.subscription?.plan?.id === 1 && bgTheme !== item.code ? (
+                {userProfile?.data?.subscription?.plan?.id === 1 &&
+                bgTheme !== item.code ? (
                   <>
                     <View
                       style={{

@@ -82,7 +82,7 @@ export default StyleSheet.create({
     marginHorizontal: moderateScale(20),
     lineHeight: moderateScale(34),
     marginTop: moderateScale(40),
-    marginBottom: moderateScale(70),
+    marginBottom: moderateScale(50),
   },
   textMarker: {
     position: 'absolute',
