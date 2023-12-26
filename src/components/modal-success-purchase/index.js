@@ -14,7 +14,7 @@ import ReadingIcon from '../../assets/icons/reading';
 import LoveIcon from '../../assets/icons/loveOutline';
 import { BACKEND_URL } from '../../shared/static';
 
-function ModalSuccessPurchase({isVisible, onClose, nextStory, watch}) {
+function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
   const handleClose = () => {
     onClose();
   };
@@ -140,7 +140,7 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, watch}) {
               You have{' '}
               <Text style={{color: '#00B781', fontWeight: 700}}>
                 {' '}
-                {watch ? 'unlocked this story for 12 hour access free' : 'unlocked this story for 7 days'}
+                {type ? 'unlocked this story for 12 hour access free' : 'unlocked this story for 7 days'}
               </Text>
               . You can start reading it now or save it in the library to read
               it later.

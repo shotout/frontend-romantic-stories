@@ -201,7 +201,7 @@ const LibraryScreen = ({
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
         handleNextStory(resp.data);
-        setShowUnlockedStory(true);
+        setShowModalSuccessPurchase(true);
       }, 500);
     });
   };
