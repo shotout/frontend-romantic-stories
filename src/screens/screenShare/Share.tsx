@@ -15,7 +15,7 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
-  Clipboard
+  Clipboard,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -61,6 +61,8 @@ import {
   imgStep8,
   imgSelectGift2,
   imgQuote,
+  imgShare,
+  logo,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -81,8 +83,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import {Step6, Step7, Step8} from '../../layout/tutorial';
 import {handlePayment} from '../../helpers/paywall';
-import { loadRewarded } from '../../helpers/loadReward';
-import { RewardedAdEventType } from 'react-native-google-mobile-ads';
+import {loadRewarded} from '../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import PlayStore from '../../assets/icons/playStore';
+import AppStore from '../../assets/icons/appStore';
 
 function ScreenShare({
   route,
@@ -96,7 +100,7 @@ function ScreenShare({
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
-  const [selectBg, setSelectBg] = useState(null);
+  const [selectBg, setSelectBg] = useState(imgShare);
   const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
@@ -231,14 +235,15 @@ function ScreenShare({
     handleScreenshot();
   };
 
-
   useEffect(() => {
-    {stepsTutorial === 6 ?
-      setTimeout(() => {
-           setShowModal(true);
-         }, 4000) : null
-         }
-  }, [stepsTutorial])
+    {
+      stepsTutorial === 6
+        ? setTimeout(() => {
+            setShowModal(true);
+          }, 4000)
+        : null;
+    }
+  }, [stepsTutorial]);
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
@@ -331,7 +336,7 @@ function ScreenShare({
     //   }
     // }, 200);
   };
-  
+
   const handleIGStoryShare = async () => {
     await handleShare();
     setTimeout(async () => {
@@ -389,7 +394,7 @@ function ScreenShare({
     //   }
     // }, 200);
   };
-  
+
   const handleSharetoFBStory = async () => {
     await handleShare();
     setTimeout(async () => {
@@ -405,9 +410,6 @@ function ScreenShare({
       }
     }, 200);
   };
-
-
- 
 
   const handleShareFBDefault = async () => {
     await handleShare();
@@ -629,8 +631,10 @@ function ScreenShare({
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
       handleSetSteps(stepsTutorial + 1);
-     
-      {stepsTutorial == 7 ?  setShowModalTwo(true) : null}
+
+      {
+        stepsTutorial == 7 ? setShowModalTwo(true) : null;
+      }
       {
         stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
       }
@@ -650,9 +654,7 @@ function ScreenShare({
   };
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
-   
     if (stepsTutorial === 6 || stepsTutorial === 7) {
-    
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -667,7 +669,7 @@ function ScreenShare({
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          {stepsTutorial != 6 || stepsTutorial != 7 ? renderProgress() : null}
+          {stepsTutorial != 6 && stepsTutorial != 7 ? renderProgress() : null}
           {stepsTutorial === 6 ? (
             <ImageBackground
               source={imgQuote}
@@ -680,10 +682,8 @@ function ScreenShare({
 
                 backgroundColor: 'rgba(0,0,0,0.3)',
               }}>
-                <View style={{marginTop: 10}}>
-                {renderProgress()}
-                </View>
-              
+              <View style={{marginTop: 10}}>{renderProgress()}</View>
+
               {showModal ? (
                 <Step6
                   handleNext={() => {
@@ -710,20 +710,17 @@ function ScreenShare({
 
                 backgroundColor: 'rgba(0,0,0,0.3)',
               }}>
-                 <View style={{marginTop: 10}}>
-                 {renderProgress()}
-                 </View>
-            
-            
-                <Step7
-                  handleNext={() => {
-                    handleSetSteps(stepsTutorial + 1);
-                    setVisible(false);
-                  }}
-                  handlePrev={() => {
-                    handleSetSteps(stepsTutorial - 1);
-                  }}
-                />
+              <View style={{marginTop: 10}}>{renderProgress()}</View>
+
+              <Step7
+                handleNext={() => {
+                  handleSetSteps(stepsTutorial + 1);
+                  setVisible(false);
+                }}
+                handlePrev={() => {
+                  handleSetSteps(stepsTutorial - 1);
+                }}
+              />
             </ImageBackground>
           )}
         </SafeAreaView>
@@ -752,10 +749,8 @@ function ScreenShare({
               backgroundColor: 'rgba(0,0,0,0.3)',
               paddingTop: 30,
             }}>
-              <View style={{marginTop: 20}}>
-              {renderProgress()}
-              </View>
-           
+            <View style={{marginTop: 20}}>{renderProgress()}</View>
+
             <Step8
               handlePrev={() => {
                 handleSetSteps(stepsTutorial - 1);
@@ -778,9 +773,18 @@ function ScreenShare({
     }
   };
 
-
-  const renderScreenShot = () => {
-      return (
+  const renderLayout = () => {
+    return (
+      <View
+        style={{
+          position: 'relative',
+          backgroundColor: code_color.white,
+          borderRadius: moderateScale(24),
+          width: '90%',
+          height: 'auto',
+          // marginBottom: 20
+          // paddingTop: 40
+        }}>
         <ViewShot
           style={styles.conQuote}
           onLayout={event => {
@@ -800,9 +804,52 @@ function ScreenShare({
               height: '100%',
               borderRadius: 24,
               resizeMode: 'cover',
+            
             }}
           />
-          <View style={styles.overlay} />
+           <View
+            style={{
+              borderColor: code_color.white,
+              borderWidth: 2,
+              height: '100%',
+              width: '35%',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              borderTopStartRadius: moderateScale(24),
+              borderBottomStartRadius: moderateScale(24),
+              borderRightWidth: 0,
+              margin: 20,
+              marginBottom: 20
+            }}
+          />
+          <View
+            style={{
+              borderColor: code_color.white,
+              borderWidth: 2,
+              height: '100%',
+              width: '35%',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              borderTopEndRadius: moderateScale(24),
+              borderBottomEndRadius: moderateScale(24),
+              borderLeftWidth: 0,
+              margin: 20,
+              marginBottom: 20
+            }}
+          />
+          <Image
+            source={logo}
+            style={{
+              resizeMode: 'contain',
+              width: 65,
+              height: 65,
+              position: 'absolute',
+              top: -10,
+              alignSelf: 'center',
+            }}
+          />
           {isVisibleFont ? (
             <TextInput
               style={{padding: 10, marginTop: 30}}
@@ -817,7 +864,8 @@ function ScreenShare({
             style={{
               ...styles.textQuote,
               fontFamily: fontSelect.value,
-              fontSize: fontSizeDefault,
+              fontSize: moderateScale(16),
+              marginHorizontal: moderateScale(40)
             }}>
             <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
               {route?.params?.start}
@@ -827,77 +875,47 @@ function ScreenShare({
               {route?.params?.end}
             </Text>
           </Text>
-          <Text style={styles.textMarker}>@EroTales</Text>
+          <View
+            style={{
+              height: moderateScale(34),
+              backgroundColor: '#000',
+              borderRadius: 17,
+              paddingHorizontal: moderateScale(20),
+              justifyContent: 'center',
+              position: 'absolute',
+              bottom: -20,
+            }}>
+            <Text
+              style={{
+                color: code_color.white,
+                fontSize: 14,
+                fontWeight: '400',
+                letterSpacing: 0.28,
+              }}>
+              https://EroTalesApp.com
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: moderateScale(60),
+              gap: moderateScale(10),
+            }}>
+            <AppStore />
+            <PlayStore />
+          </View>
         </ViewShot>
-      );  
-  };
-  const renderLayout = () => {
-    return (
-      <View style ={{  position: 'relative',
-      backgroundColor: code_color.white,
-      borderRadius: moderateScale(24),
-      width: '90%',
-      height: 'auto',
-      paddingTop: 40
-     }}>
-         {renderHeaderScreenShot()}
-         <ViewShot
-         style={styles.conQuote}
-          onLayout={event => {
-            setViewShotLayout(event.nativeEvent.layout);
-          }}
-          ref={captureRef}
-          options={{
-            fileName: `Shortstory${Date.now()}`,
-            format: 'png',
-            quality: 1.0,
-          }}>
-            
-        <Image
-          source={selectBg}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            borderRadius: 24,
-            resizeMode: 'cover',
-          }}
-        />
-        {isVisibleFont ? (
-          <TextInput
-            style={{padding: 10, marginTop: 30}}
-            placeholder="Masukkan teks"
-            value={userText}
-            onChangeText={text => setUserText(text)}
-          />
-        ) : null}
-        <TextFontComponent />
-        <StickerComponent />
-        <Text
-          style={{
-            ...styles.textQuote,
-            fontFamily: fontSelect.value,
-            fontSize: moderateScale(16),
-          }}>
-          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-            {route?.params?.start}
-          </Text>{' '}
-          {route?.params?.selectedContent}{' '}
-          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-            {route?.params?.end}
-          </Text>
-        </Text>
-        <Text style={styles.textMarker}>@EroTales</Text>
-            </ViewShot>
-
+        {renderHeaderScreenShot()}
         {/* <View style={styles.overlay} /> */}
-       
       </View>
     );
   };
   const renderHeaderScreenShot = () => {
     return (
-      <View style={{flexDirection: 'row', position: 'absolute', top: 0, right: 0}}>
+      <View
+        style={{flexDirection: 'row', position: 'absolute', top: 0, right: 0}}>
         {isVisibleFont ? null : (
           <Pressable onPress={() => setVisible(true)}>
             <Image
@@ -909,6 +927,7 @@ function ScreenShare({
                 right: 50,
                 top: 10,
                 resizeMode: 'contain',
+                marginBottom: 10,
               }}
             />
           </Pressable>

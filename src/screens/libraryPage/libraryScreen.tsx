@@ -940,10 +940,18 @@ const LibraryScreen = ({
             position: 'absolute',
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
-            top: '-70%',
+            top: '-80%',
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-          {renderProgress()}
+             <View
+                    style={{
+                      backgroundColor: 'rgba(0,0,0,0.3)',
+                      opacity: 1,
+                      marginTop: 5,
+                    }}>
+            {renderProgress()}
+            </View>
+         
           <Step4
             handleNext={() => {
               handleSetSteps(3 + 1);

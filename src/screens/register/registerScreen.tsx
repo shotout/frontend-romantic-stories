@@ -162,7 +162,7 @@ function RegisterScreen({
 
   const onSubmit = async () => {
     
-    // await notifee.requestPermission();
+    await notifee.requestPermission();
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();

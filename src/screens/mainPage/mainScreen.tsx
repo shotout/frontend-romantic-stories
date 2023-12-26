@@ -908,7 +908,7 @@ const MainScreen = ({
       } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
-
+     
         return (
           <SafeAreaView
             onTouchStart={handleTouchStart}
@@ -921,7 +921,7 @@ const MainScreen = ({
 
               backgroundColor: 'rgba(0,0,0,0.3)',
             }}>
-            {activeStep != 5 || stepsTutorial != 5 ? renderProgress() : null}
+            {activeStep != 5 && stepsTutorial != 5  && stepsTutorial != 3  ? renderProgress() : null}
             {activeStep === 1 ? (
               <Step1 handleNext={handleNext} />
             ) : activeStep === 5 || stepsTutorial == 5 ? (

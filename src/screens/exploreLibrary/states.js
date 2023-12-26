@@ -8,4 +8,5 @@ export default states => ({
   colorTheme: states.defaultState.colorTheme,
   categories: states.defaultState.defaultData.categories,
   stepsTutorial: states.defaultState.stepsTutorial,
+  nextStory: states.defaultState.nextStory,
 });
