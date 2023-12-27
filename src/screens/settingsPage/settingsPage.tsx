@@ -243,7 +243,7 @@ const SettingsPage = ({
         break;
     }
   };
-
+console.log(getAvatarFemale)
   const listMenu = () => (
     <View>
       {menu.map((item, i) => (
@@ -288,7 +288,7 @@ const SettingsPage = ({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 0,
+                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : 0,
                   }}
                 />
               </View>
@@ -315,7 +315,7 @@ const SettingsPage = ({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 0,
+                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 : 0,
                   }}
                 />
               </View>

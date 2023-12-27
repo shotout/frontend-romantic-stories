@@ -397,7 +397,7 @@ const LibraryScreen = ({
                     </TouchableOpacity>
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => startBounceAnimation()}>
+                <TouchableOpacity style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>
@@ -495,7 +495,7 @@ const LibraryScreen = ({
                   </TouchableOpacity>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => startBounceAnimation()}>
+              <TouchableOpacity style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
                 <DotSvg />
               </TouchableOpacity>
             </View>
@@ -596,7 +596,7 @@ const LibraryScreen = ({
                     </TouchableOpacity>
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => startBounceAnimation()}>
+                <TouchableOpacity style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>
@@ -694,7 +694,7 @@ const LibraryScreen = ({
                   </TouchableOpacity>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => startBounceAnimation()}>
+              <TouchableOpacity  style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
                 <DotSvg />
               </TouchableOpacity>
             </View>

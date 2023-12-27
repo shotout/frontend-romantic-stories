@@ -117,7 +117,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           top:
             isBottomBarVisible === 'Settings'
               ? -70
-              : -Dimensions.get('window').height / 2.7,
+              : isBottomBarVisible === 'Font' ? -Dimensions.get('window').height / 2 : -Dimensions.get('window').height / 2.7,
           width: '100%',
           height: '100%',
           flex: 0,

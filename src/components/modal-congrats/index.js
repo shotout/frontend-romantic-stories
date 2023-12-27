@@ -48,6 +48,7 @@ function ModalCongrats({
   userProfile,
   levelingUser,
   colorTheme,
+  getAvatarMale
 }) {
   const [leveling, setLeveling] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -112,6 +113,7 @@ function ModalCongrats({
   }, [isVisible]);
 
   const renderIconTopCard = () => {
+    console.log(getAvatarMale)
     return (
       <>
         <Image
@@ -156,32 +158,68 @@ function ModalCongrats({
             {userProfile?.data?.name ? userProfile?.data?.name : ''}
           </Text>
         </View>
-        <Image
-          source={imgAvaXp}
+        <View
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100,
+                  // marginLeft: '20',
+                  backgroundColor: code_color.yellow,
+                  position: 'absolute',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  right: '49%',
+                  bottom: 110,
+                  borderRadius: 100,
+            borderColor: code_color.blueDark,
+            borderWidth: 5,
+                }}>
+                <Image
+                  source={{
+                    uri:
+                     BACKEND_URL + getAvatarMale
+                  }}
+                  style={{
+                    width: 80,
+                    height:  getAvatarMale === '/assets/images/avatars/2.png' ? 310 :  getAvatarMale === '/assets/images/avatars/3.png' ||  getAvatarMale === '/assets/images/avatars/4.png'  ? 350 :  250,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    // top: 3,
+                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -13 : getAvatarMale === '/assets/images/avatars/1.png' ? 0 : getAvatarMale === '/assets/images/avatars/2.png' ? -5 : 0,
+                  }}
+                />
+              </View>
+      
+        {/* <Image
+          source={{ uri: BACKEND_URL + getAvatarMale}}
           resizeMode="contain"
           style={{
             width: 80,
             height: 80,
+            alignItems: 'center',
+            justifyContent: 'center',
             position: 'absolute',
-            right: '49%',
+            right: '0%',
+            top: 3,
             bottom: 100,
             borderRadius: 100,
             borderColor: code_color.blueDark,
             borderWidth: 5,
+            right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : 0,
           }}
-        />
-        <Image
-          source={imgInfo}
-          resizeMode="contain"
-          style={{
-            width: 20,
-            height: 20,
-            marginRight: 10,
-            position: 'absolute',
-            top: 10,
-            right: 0,
-          }}
-        />
+          // style={{
+          //   width: 80,
+          //   height: 80,
+          //   position: 'absolute',
+          //   right: '49%',
+          //   bottom: 100,
+          //   borderRadius: 100,
+          //   borderColor: code_color.blueDark,
+          //   borderWidth: 5,
+          // }}
+        /> */}
+        
       </>
     );
   };

@@ -77,7 +77,7 @@ function ModalEditProfile({
         <Text
           allowFontScaling={false}
           style={{
-            color: backgroundColor,
+            color: backgroundColor === '#2C3439' ? 'white' : 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -183,7 +183,7 @@ function ModalEditProfile({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 0,
+                    right: edit.value === '/assets/images/avatars/5.png' ? -7 : 0,
                   }}
                 />
               </View>
@@ -208,14 +208,14 @@ function ModalEditProfile({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: 0,
+                    right:  edit.value === '/assets/images/avatars/5.png' ? -7 : 0,
                   }}
                 />
               </View>
             ) : (
               <Text
                 style={{
-                  color: code_color.black,
+                  color: backgroundColor === '#2C3439' ? 'white' : '#2C3439',
                   marginLeft: 'auto',
                   fontSize: 14,
                   fontWeight: '400',

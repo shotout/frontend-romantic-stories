@@ -57,7 +57,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: backgroundColor,
+            backgroundColor: backgroundColor === '#2C3439' ? 'white' : 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -71,7 +71,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
         <Text
           allowFontScaling={false}
           style={{
-            color: backgroundColor,
+            color: backgroundColor === '#2C3439' ? 'white' : 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',

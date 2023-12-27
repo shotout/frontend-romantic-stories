@@ -273,7 +273,7 @@ const FontScreen = ({
     };
   }, []);
   return (
-    <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
+    <View style={{flex: 0, height: 400, backgroundColor: bgTheme}}>
       <ModalUnlockPremium
         isVisible={modalUnlockBg}
         onClose={() => setModalUnlockBg(false)}

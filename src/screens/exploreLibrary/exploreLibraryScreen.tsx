@@ -465,7 +465,7 @@ const ExploreLibraryScreen = ({
                 padding: 16,
               }}>
               <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
-                📚 Try different story category
+                📚 Try a different category
               </Text>
               <ScrollView horizontal>
                 {data?.category.map((itm: any, idx: number) => (

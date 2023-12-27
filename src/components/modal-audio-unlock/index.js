@@ -52,11 +52,14 @@ function ModalAudioStory({
   };
   useEffect(async () => {
     const products = await IAP.getProducts({
-      skus: ['unlock_10_audio_stories', 'unlock_5_audio_stories'],
+      skus: ['unlock_10_audio_stories'],
     });
-    console.log('Products:', products);
-    setPrice(products[0].localizedPrice);
-    setPrice2(products[1].localizedPrice);
+    const products1 = await IAP.getProducts({
+      skus: ['unlock_5_audio_stories'],
+    });
+  
+    setPrice(products1[0].localizedPrice);
+    setPrice2(products[0].localizedPrice);
   }, []);
 
   const AddCollection = async () => {
