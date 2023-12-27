@@ -44,7 +44,7 @@ import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
 import {handlePayment} from '../../helpers/paywall';
-import {moderateScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {BACKEND_URL} from '../../shared/static';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
@@ -124,7 +124,7 @@ const SettingsPage = ({
   ]);
 
   const header = () => (
-    <View style={{height: moderateScale(230)}}>
+    <View style={{height: verticalScale(230)}}>
       <View
         style={{
           width: Dimensions.get('window').width,
@@ -158,7 +158,7 @@ const SettingsPage = ({
               {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginLeft: '30%', marginTop: 50}}>
+          <View style={{marginLeft: '30%', marginTop: moderateScale(50)}}>
             <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} />
           </View>
         </View>
@@ -250,11 +250,11 @@ console.log(getAvatarFemale)
         <TouchableOpacity
           key={i}
           onPress={() => handleOpenModal(item.name)}
-          style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
+          style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: backgroundColor, flex: 1}}>
+            style={{marginLeft: moderateScale(10), color: backgroundColor, flex: 1}}>
             {item.name}
           </Text>
           {item.name === 'Edit Profile' ? (
@@ -294,28 +294,28 @@ console.log(getAvatarFemale)
               </View>
               <View
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
+                  width: scale(40),
+                  height: verticalScale(40),
+                  borderRadius: scale(20),
                   marginLeft: 'auto',
                   backgroundColor: code_color.yellow,
                   position: 'relative',
                   overflow: 'hidden',
                   alignItems: 'center',
-                  marginRight: 10,
+                  marginRight: moderateScale(10),
                 }}>
                 <Image
                   source={{
                     uri: BACKEND_URL + getAvatarFemale
                   }}
                   style={{
-                    width: 40,
-                    height: 150,
+                    width:  scale(40),
+                    height: verticalScale(150),
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
-                    top: 3,
-                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 : 0,
+                    top: moderateScale(3),
+                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? moderateScale(-7) : moderateScale(0),
                   }}
                 />
               </View>
@@ -330,11 +330,11 @@ console.log(getAvatarFemale)
       {menuTwo.map((item, i) => (
         <Pressable
           onPress={() => handleOpenModal(item.name)}
-          style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
+          style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: backgroundColor}}>
+            style={{marginLeft: moderateScale(10), color: backgroundColor}}>
             {item.name}
           </Text>
         </Pressable>
@@ -345,7 +345,7 @@ console.log(getAvatarFemale)
     <View
       style={{
         flex: 0,
-        height: Dimensions.get('window').height - 170,
+        height: verticalScale(Dimensions.get('window').height - 170),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
@@ -397,9 +397,9 @@ console.log(getAvatarFemale)
       {header()}
       <ScrollView>
         {listMenu()}
-        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
+        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: moderateScale(10)}} />
         {listMenuTwo()}
-        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
+        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: moderateScale(10)}} />
         <View>
           {/* <View style={{margin: 10}}>
             <Text
@@ -427,7 +427,7 @@ console.log(getAvatarFemale)
             </View>
           </View> */}
           {/* <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} /> */}
-          <View style={{margin: 10, marginBottom: 40}}>
+          <View style={{margin: moderateScale(10), marginBottom: moderateScale(40)}}>
             <TouchableOpacity
               onPress={() =>
                 Linking.openURL('Https://erotalesapp.com/privacy')
@@ -435,8 +435,8 @@ console.log(getAvatarFemale)
               <Text
                 allowFontScaling={false}
                 style={{
-                  marginLeft: 10,
-                  marginBottom: 20,
+                  marginLeft: moderateScale(10),
+                  marginBottom: moderateScale(20),
                   color: backgroundColor,
                 }}>
                 Privacy Policy
@@ -447,7 +447,7 @@ console.log(getAvatarFemale)
               onPress={() => Linking.openURL('https://erotalesapp.com/terms')}>
               <Text
                 allowFontScaling={false}
-                style={{marginLeft: 10, color: backgroundColor}}>
+                style={{marginLeft: moderateScale(10), color: backgroundColor}}>
                 Terms & Conditions
               </Text>
             </TouchableOpacity>

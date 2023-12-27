@@ -4,7 +4,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 
 export default function Register1({setGender, selectedGender}) {
   return (
@@ -18,8 +18,8 @@ export default function Register1({setGender, selectedGender}) {
             selectedGender === 'Male'
               ? styles.borderBlue
               : {
-                  width: moderateScale(105),
-                  height: moderateScale(105),
+                  width: scale(105),
+                  height: verticalScale(105),
                   resizeMode: 'contain',
                 }
           }
@@ -45,8 +45,8 @@ export default function Register1({setGender, selectedGender}) {
             selectedGender === 'Female'
               ? styles.borderBlue
               : {
-                  width: moderateScale(105),
-                  height: moderateScale(105),
+                  width: scale(105),
+                  height: verticalScale(105),
                   resizeMode: 'contain',
                 }
           }
@@ -59,7 +59,7 @@ export default function Register1({setGender, selectedGender}) {
             fontSize: moderateScale(14),
             fontFamily: 'Roboto',
             textAlign: 'center',
-            marginTop: moderateScale(5),
+            marginTop: verticalScale(5),
             fontWeight: 'bold',
           }}>
           {'Female'}

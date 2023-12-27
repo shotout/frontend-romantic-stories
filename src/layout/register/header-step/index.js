@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, View} from 'react-native';
 import styles from './styles';
 import AnimatedLottieView from 'lottie-react-native';
+import { wp } from '../../../utils/screen';
 
 const activeLamp = require('../../../assets/icons/register_step/singleLove1.png');
 const lampUnactive = require('../../../assets/icons/register_step/unactiveLove1.png');
@@ -38,7 +39,7 @@ export default function HeaderStep({currentStep}) {
     return(
       <AnimatedLottieView
       source={love}
-      style={{width: 100, height: 100}}
+      style={{width:  wp(100), height: hp(100)}}
       autoPlay
       duration={3000}
       loop={true}

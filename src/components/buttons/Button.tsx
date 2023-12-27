@@ -5,6 +5,7 @@ import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
+import { hp, wp } from '../../utils/screen';
 
 export default function Button({style, onPress, title, colorsText, image}) {
   return (
@@ -18,12 +19,12 @@ export default function Button({style, onPress, title, colorsText, image}) {
                 backgroundColor: code_color.yellow,
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: moderateScale(52),
-                margin: moderateScale(20),
-                borderRadius: moderateScale(12),
+                height: hp(45),
+                margin: wp(20),
+                borderRadius: wp(12),
                 position: 'absolute',
-                bottom: moderateScale(20),
-                width: '90%',
+                bottom: wp(20),
+                width: wp(320),
               }
         }>
           <View>

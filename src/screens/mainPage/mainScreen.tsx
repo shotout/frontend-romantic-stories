@@ -1026,42 +1026,41 @@ const MainScreen = ({
     const screenWidth = Dimensions.get('window').width / 2.5;
     // Jika sentuhan terjadi di sebelah kanan
     if (touchX > screenWidth && !showModalCongrats) {
-      setShowModalCongrats(true);
-      // setTimeout(async () => {
-      //   if (screenNumber === dataBook?.content_en?.length - 1) {
-      //     const existingEntry = readStory
-      //       ? readStory.find(
-      //           (item: any) =>
-      //             item?.id === dataBook.id && item?.page === screenNumber + 1,
-      //         )
-      //       : undefined;
-      //     if (
-      //       typeof existingEntry === 'undefined' &&
-      //       screenNumber === dataBook?.content_en?.length - 1
-      //     ) {
-      //       // jika nanti pertama kali melakukan update data terakhir
-      //       await addPastStory(dataBook.id);
-      //       const data = {
-      //         value: dataBook?.content_en?.length,
-      //       };
-      //       const resp = await addPastLevel(data);
-      //       if (resp?.data) {
-      //         handleLeveling(resp?.data);
-      //         setTimeout(() => {
-      //           setShowModalCongrats(true);
-      //         }, 200);
-      //       }
-      //       checkingRead(screenNumber + 1);
-      //     } else if (
-      //       existingEntry &&
-      //       screenNumber === dataBook?.content_en?.length - 1 &&
-      //       !(isPremiumStory || isPremiumAudio)
-      //     ) {
-      //       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      //       setShowModalCongrats(true);
-      //     }
-      //   }
-      // }, 200);
+      setTimeout(async () => {
+        if (screenNumber === dataBook?.content_en?.length - 1) {
+          const existingEntry = readStory
+            ? readStory.find(
+                (item: any) =>
+                  item?.id === dataBook.id && item?.page === screenNumber + 1,
+              )
+            : undefined;
+          if (
+            typeof existingEntry === 'undefined' &&
+            screenNumber === dataBook?.content_en?.length - 1
+          ) {
+            // jika nanti pertama kali melakukan update data terakhir
+            await addPastStory(dataBook.id);
+            const data = {
+              value: dataBook?.content_en?.length,
+            };
+            const resp = await addPastLevel(data);
+            if (resp?.data) {
+              handleLeveling(resp?.data);
+              setTimeout(() => {
+                setShowModalCongrats(true);
+              }, 200);
+            }
+            checkingRead(screenNumber + 1);
+          } else if (
+            existingEntry &&
+            screenNumber === dataBook?.content_en?.length - 1 &&
+            !(isPremiumStory || isPremiumAudio)
+          ) {
+            //jika tidak premium maka akan terus menampilan modal setiap terakhir
+            setShowModalCongrats(true);
+          }
+        }
+      }, 200);
     }
   };
 

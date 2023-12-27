@@ -19,6 +19,7 @@ import ChecklistSvg from './../../../assets/icons/checklist';
 import {getListCategory} from '../../../shared/request';
 import {API_URL, BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
+import { fixedFontSize, hp, wp } from '../../../utils/screen';
 
 export default function Register3({setCategoryId}) {
   const [dataStory, setDataStory] = useState([]);
@@ -52,11 +53,11 @@ export default function Register3({setCategoryId}) {
               }}
               style={{
                 alignItems: 'center',
-                marginVertical: moderateScale(2),
+                marginVertical: wp(2),
                 backgroundColor:
                   selectStory === item.name ? code_color.splash : 'white',
-                padding: moderateScale(5),
-                borderRadius: moderateScale(10),
+                padding: wp(5),
+                borderRadius: wp(10),
                 justifyContent: 'center',
               }}>
               <Image
@@ -64,9 +65,9 @@ export default function Register3({setCategoryId}) {
                 source={{uri: `${BACKEND_URL}${item.image?.url}`}}
                 resizeMode="cover"
                 style={{
-                  width: moderateScale(320),
-                  height: moderateScale(80),
-                  borderRadius: moderateScale(10),
+                  width: wp(320),
+                  height: hp(80),
+                  borderRadius: wp(10),
                 }}
               />
               <Text
@@ -75,7 +76,7 @@ export default function Register3({setCategoryId}) {
                   position: 'absolute',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: moderateScale(16),
+                  fontSize: fixedFontSize(16),
                   fontWeight: 'bold',
                   color: code_color.white,
                 }}>
@@ -86,12 +87,12 @@ export default function Register3({setCategoryId}) {
                 style={{
                   backgroundColor:
                     selectStory === item.name ? code_color.splash : 'white',
-                  borderRadius: moderateScale(30),
-                  width: moderateScale(25),
-                  height: moderateScale(25),
+                  borderRadius: wp(30),
+                  width: wp(25),
+                  height: hp(25),
                   position: 'absolute',
-                  top: moderateScale(35),
-                  left: moderateScale(25),
+                  top: wp(35),
+                  left: wp(25),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>

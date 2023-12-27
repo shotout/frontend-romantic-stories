@@ -20,6 +20,7 @@ import {opacity, useSharedValue} from 'react-native-reanimated';
 import {getListAvatar} from '../../../shared/request';
 import { BACKEND_URL } from '../../../shared/static';
 import { moderateScale } from 'react-native-size-matters';
+import { fixedFontSize, hp, wp } from '../../../utils/screen';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
@@ -54,25 +55,23 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: wp(50),
+          borderBottomLeftRadius: wp(50),
         }}>
         <Text
         allowFontScaling={false}
           style={{
             color: 'white',
-            fontSize: 32,
+            fontSize: fixedFontSize(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 20,
-          }}>
-          What should your partner look like?
-        </Text>
+            marginTop: wp(20),
+          }}>{`What should your \npartner look like?`}</Text>
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.2}
-            height={Dimensions.get('window').height / 2}
+            width={wp(Dimensions.get('window').width / 1.2)}
+            height={hp(Dimensions.get('window').height / 2)}
             defaultIndex={1}
             data={dataAva}
             // scrollAnimationDuration={1000}

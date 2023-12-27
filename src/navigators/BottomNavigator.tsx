@@ -47,6 +47,7 @@ import {
   getStoryList,
 } from '../shared/request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { isIphoneXorAbove } from '../utils/devices';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -116,8 +117,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           position: 'absolute',
           top:
             isBottomBarVisible === 'Settings'
-              ? -70
-              : isBottomBarVisible === 'Font' ? -Dimensions.get('window').height / 2 : -Dimensions.get('window').height / 2.7,
+              ? -70 
+              : isBottomBarVisible === 'Font' ? -Dimensions.get('window').height /  (!isIphoneXorAbove() ? 2.8  : 2): -Dimensions.get('window').height / 2.7,
           width: '100%',
           height: '100%',
           flex: 0,

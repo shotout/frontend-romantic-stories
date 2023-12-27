@@ -2,10 +2,11 @@ import {StyleSheet} from 'react-native';
 // import {} from 'react-native-size-matters';
 import {isIphoneXorAbove} from '../../../shared/devices';
 import { code_color } from '../../../utils/colors';
+import { hp, wp } from '../../../utils/screen';
 
 export default StyleSheet.create({
   ctnRoot: {
-    margin: 20,
+    margin: wp(20),
     // paddingTop: 28,
     flexDirection: 'row',
     alignItems: 'center',
@@ -18,33 +19,33 @@ export default StyleSheet.create({
     resizeMode: 'contain',
   },
   ctnImgLamp: {
-    height: 24,
-    width: 24,
+    height: hp(24),
+    width: wp(24),
     resizeMode: 'contain',
   },
   ctnUnactiveLamp: {
-    height: 24,
-    width: 52,
+    height: hp(24),
+    width: wp(52),
     resizeMode: 'contain',
     marginLeft: 2
   },
   ctnAnimate: {
-    height: 48,
+    height: hp(48),
     resizeMode: 'contain',
-    marginTop: -4.5,
-    marginLeft: -10
+    marginTop: wp(-4.5),
+    marginLeft: wp(-10)
 
   },
   ctnGiftLamp: {
-    height: 70,
-    width: 78,
+    height: hp(70),
+    width: wp(78),
     resizeMode: 'contain',
     // backgroundColor: 'red',
-    left: -26,
-    top: -26,
+    left: wp(-26),
+    top: wp(-26),
   },
   ctnGift: {
-    height: 24,
-    width: 52,
+    height: wp(24),
+    width: wp(52),
   },
 });

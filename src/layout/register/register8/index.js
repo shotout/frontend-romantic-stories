@@ -33,6 +33,7 @@ import LoveSvg from '../../../assets/icons/bottom/love.jsx';
 import FontSvg from '../../../assets/icons/bottom/font.jsx';
 import LibrarySvg from '../../../assets/icons/bottom/library.jsx';
 import SettingSvg from '../../../assets/icons/bottom/settings.jsx';
+import { fixedFontSize, hp, wp } from '../../../utils/screen';
 
 export default function Register8({activeNotif}) {
   return (
@@ -45,17 +46,17 @@ export default function Register8({activeNotif}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: wp(50),
+          borderBottomLeftRadius: wp(50),
         }}>
         <Text
           allowFontScaling={false}
           style={{
             color: code_color.grey,
-            fontSize: 14,
-            marginHorizontal: 10,
+            fontSize: fixedFontSize(14),
+            marginHorizontal: wp(10),
             textAlign: 'center',
-            marginVertical: 10,
+            marginVertical: wp(10),
           }}>
           {'Be the first to get new Stories'}
         </Text>
@@ -63,10 +64,10 @@ export default function Register8({activeNotif}) {
           allowFontScaling={false}
           style={{
             color: code_color.blueDark,
-            fontSize: 32,
+            fontSize: fixedFontSize(32),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 20,
+            marginTop: wp(20),
           }}>
           {'Activate \n notifications for \n new Stories'}
         </Text>
@@ -76,10 +77,10 @@ export default function Register8({activeNotif}) {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 0,
-            marginTop: 80,
+            marginTop: wp(80),
           }}>
           <TouchableOpacity onPress={() => activeNotif()}>
-            <Image source={illustration_notif}  style={{ width: 200, height: 200}}/>
+            <Image source={illustration_notif}  style={{ width: wp(200), height: hp(200)}}/>
           </TouchableOpacity>
         </View>
       </View>

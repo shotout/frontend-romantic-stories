@@ -33,6 +33,7 @@ import {getListTheme} from '../../../shared/request';
 import ChecklistSvg from './../../../assets/icons/checklist';
 import {moderateScale} from 'react-native-size-matters';
 import Speaker from '../../../assets/icons/speaker';
+import { fixedFontSize, hp, wp } from '../../../utils/screen';
 
 export default function Register5({gender, setTheme, userStory}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
@@ -84,25 +85,25 @@ export default function Register5({gender, setTheme, userStory}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: moderateScale(50),
-          borderBottomLeftRadius: moderateScale(50),
+          borderBottomRightRadius: wp(50),
+          borderBottomLeftRadius: wp(50),
         }}>
         <Text
           allowFontScaling={false}
           style={{
             color: code_color.blueDark,
-            fontSize: 25,
+            fontSize: fixedFontSize(23),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 25,
+            marginTop: wp(23),
           }}>
           {'Choose color\n theme'}
         </Text>
 
         <View
           style={{
-            margin: moderateScale(20),
-            marginHorizontal: moderateScale(100),
+            margin: wp(15),
+            marginHorizontal: wp(100),
             borderWidth: 0.5,
             borderColor: '#D9D9D9',
             // padding: 10,
@@ -113,29 +114,29 @@ export default function Register5({gender, setTheme, userStory}) {
               <Text
                 allowFontScaling={false}
                 style={{
-                  fontSize: moderateScale(6),
+                  fontSize: fixedFontSize(6),
                   color: code_color.grey,
-                  paddingHorizontal: 10,
-                  paddingTop: 10,
+                  paddingHorizontal: wp(10),
+                  paddingTop: wp(10),
                 }}>
                 Relationship
               </Text>
               <Text
                 allowFontScaling={false}
                 style={{
-                  fontSize: moderateScale(7),
-                  paddingHorizontal: 10,
-                  paddingTop: 5,
+                  fontSize: fixedFontSize(7),
+                  paddingHorizontal: wp(10),
+                  paddingTop: wp(5),
                 }}>
                 Jealous Portuguese Teacher
               </Text>
             </View>
-            <View style={{justifyContent: 'flex-end', marginRight: 5}}>
+            <View style={{justifyContent: 'flex-end', marginRight: wp(5)}}>
               <TouchableOpacity
                 style={{
                   padding: 1,
-                  paddingHorizontal: 7,
-                  borderRadius: 20,
+                  paddingHorizontal: wp(7),
+                  borderRadius: wp(20),
                   backgroundColor: colorsDefault,
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -147,9 +148,9 @@ export default function Register5({gender, setTheme, userStory}) {
                   style={{
                     textAlign: 'center',
                     fontWeight: 'bold',
-                    fontSize: 6,
+                    fontSize: fixedFontSize(6),
                     color: code_color.white,
-                    marginLeft: 2,
+                    marginLeft: wp(2),
                   }}>
                   Listen
                 </Text>
@@ -161,16 +162,16 @@ export default function Register5({gender, setTheme, userStory}) {
             style={{
               borderWidth: 0.5,
               borderColor: colorsDefault,
-              marginVertical: moderateScale(10),
-              marginHorizontal: 10
+              marginVertical: wp(10),
+              marginHorizontal: wp(10)
             }}
           />
           <Text
             allowFontScaling={false}
             style={{
-              fontSize: moderateScale(7.5),
+              fontSize: fixedFontSize(7.5),
               textAlign: 'justify',
-              paddingHorizontal: moderateScale(10),
+              paddingHorizontal: wp(10),
               lineHeight: 13,
               fontFamily: 'Robotto'
             }}>
@@ -194,9 +195,9 @@ export default function Register5({gender, setTheme, userStory}) {
 
           <View
             style={{
-              borderWidth: 0.5,
+              borderWidth: wp(0.5),
               borderColor: code_color.grey,
-              marginBottom: moderateScale(1),
+              marginBottom: wp(1),
             }}
           />
 
@@ -205,7 +206,7 @@ export default function Register5({gender, setTheme, userStory}) {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: moderateScale(5),
+              marginTop: wp(5),
             }}>
             {menu.map((item, i) => {
               return (
@@ -216,13 +217,13 @@ export default function Register5({gender, setTheme, userStory}) {
                     justifyContent: 'center',
                   }}>
                   <item.image
-                    width={moderateScale(13)}
-                    height={moderateScale(13)}
+                    width={wp(13)}
+                    height={wp(13)}
                     fill={colorsDefault}
                   />
                   <Text
                     allowFontScaling={false}
-                    style={{fontSize: moderateScale(6)}}>
+                    style={{fontSize: fixedFontSize(6)}}>
                     {item.name}
                   </Text>
                 </View>
@@ -234,7 +235,7 @@ export default function Register5({gender, setTheme, userStory}) {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            marginHorizontal: moderateScale(20),
+            marginHorizontal: wp(20),
           }}>
           {colorsBg.map((item, i) => {
             return (
@@ -245,12 +246,12 @@ export default function Register5({gender, setTheme, userStory}) {
                 }}
                 style={{
                   backgroundColor: item.theme_color,
-                  width: moderateScale(30),
-                  height: moderateScale(30),
-                  borderRadius: moderateScale(20),
+                  width: wp(30),
+                  height: hp(30),
+                  borderRadius: wp(20),
                   borderWidth: 1,
                   borderColor: code_color.grey,
-                  marginHorizontal: moderateScale(10),
+                  marginHorizontal: wp(10),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>

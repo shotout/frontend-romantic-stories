@@ -49,9 +49,10 @@ import messaging from '@react-native-firebase/messaging';
 import {ONBOARDING_COMPLETE, eventTracking} from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handlePayment} from '../../helpers/paywall';
-import {moderateScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import Purchasely from 'react-native-purchasely';
 import { SafeAreaView } from 'react-native';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
 
 
 function RegisterScreen({
@@ -329,14 +330,14 @@ function RegisterScreen({
           <View
             style={{
               backgroundColor: code_color.headerBlack,
-              paddingTop: isIphoneXorAbove() ? moderateScale(40) : 0,
+              paddingTop: isIphoneXorAbove() ? wp(40) : 0,
             }}>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginHorizontal: moderateScale(20),
-                marginTop: moderateScale(20),
+                marginHorizontal: wp(20),
+                marginTop: wp(20),
               }}>
               {stepRegister > 1 ? (
                 <TouchableOpacity
@@ -350,7 +351,7 @@ function RegisterScreen({
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
-                  fontSize: moderateScale(18),
+                  fontSize: fixedFontSize(18),
                   flex: 1,
                 }}>
                 {stepRegister === 1
@@ -378,14 +379,14 @@ function RegisterScreen({
           <View
             style={{
               backgroundColor: code_color.white,
-              paddingTop: isIphoneXorAbove() ? 40 : 0,
+              paddingTop: isIphoneXorAbove() ? wp(40) : 0,
             }}>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginHorizontal: 20,
-                marginTop: 20,
+                marginHorizontal: wp(20),
+                marginTop: wp(20),
               }}>
               <TouchableOpacity
                 onPress={() =>
@@ -399,7 +400,7 @@ function RegisterScreen({
                 style={{
                   color: code_color.white,
                   textAlign: 'center',
-                  fontSize: 18,
+                  fontSize: fixedFontSize(18),
                   flex: 1,
                 }}>
                 {stepRegister === 1
@@ -423,10 +424,10 @@ function RegisterScreen({
             allowFontScaling={false}
             style={{
               color: code_color.blueDark,
-              fontSize: 24,
+              fontSize: fixedFontSize(24),
               fontFamily: 'Comfortaa-SemiBold',
               textAlign: 'center',
-              marginTop: moderateScale(20),
+              marginTop: wp(20),
             }}>
             {i18n.t(
               stepRegister === 1
@@ -442,8 +443,8 @@ function RegisterScreen({
           <View
             style={{
               position: 'absolute',
-              bottom: moderateScale(10),
-              width: '80%',
+              bottom: wp(10),
+              width: wp(200),
             }}>
             {stepRegister <= 2 ? (
               <TouchableOpacity
@@ -455,16 +456,16 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
-                  marginBottom: stepRegister === 1 && !isIphoneXorAbove() ? moderateScale(10) : stepRegister === 1 ? moderateScale(100) : stepRegister === 2 ? 0 : moderateScale(40)
+                  marginBottom: stepRegister === 1 && !isIphoneXorAbove() ? wp(10) : stepRegister === 1 ? wp(100) : stepRegister === 2 ? 0 : wp(40)
                 }}>
                 <Text
                   allowFontScaling={false}
                   style={{
                     color: code_color.grey,
-                    fontSize: moderateScale(16),
+                    fontSize: fixedFontSize(16),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginVertical: moderateScale(15),
+                    marginVertical: wp(10),
                   }}>
                   {i18n.t(
                     stepRegister === 1
@@ -480,11 +481,11 @@ function RegisterScreen({
                   backgroundColor: code_color.yellow,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  height: moderateScale(52),
-                  borderRadius: moderateScale(12),
+                  height: hp(45),
+                  borderRadius: wp(12),
                   width: '100%',
-                  marginTop: moderateScale(10),
-                  marginBottom: moderateScale(10),
+                  marginTop: wp(10),
+                  marginBottom: wp(10),
                 }}
                 onPress={() => {
                   stepRegister === 8
@@ -508,15 +509,15 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
-                  marginBottom: moderateScale(60)
+                  marginBottom: wp(60)
                 }}>
                 <Text
                   style={{
                     color: code_color.grey,
-                    fontSize: moderateScale(14),
+                    fontSize: fixedFontSize(14),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginTop: moderateScale(10),
+                    marginTop: wp(10),
                   }}>
                   {'Maybe later'}
                 </Text>
