@@ -91,10 +91,10 @@ export default function Register5({gender, setTheme, userStory}) {
           allowFontScaling={false}
           style={{
             color: code_color.blueDark,
-            fontSize: moderateScale(28),
+            fontSize: 25,
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: moderateScale(25),
+            marginTop: 25,
           }}>
           {'Choose color\n theme'}
         </Text>

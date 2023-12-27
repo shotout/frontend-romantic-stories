@@ -423,7 +423,7 @@ function RegisterScreen({
             allowFontScaling={false}
             style={{
               color: code_color.blueDark,
-              fontSize: moderateScale(30),
+              fontSize: 24,
               fontFamily: 'Comfortaa-SemiBold',
               textAlign: 'center',
               marginTop: moderateScale(20),
@@ -455,7 +455,7 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
-                  marginBottom: stepRegister === 1 ? moderateScale(100) : stepRegister === 2 ? 0 : moderateScale(40)
+                  marginBottom: stepRegister === 1 && !isIphoneXorAbove() ? moderateScale(10) : stepRegister === 1 ? moderateScale(100) : stepRegister === 2 ? 0 : moderateScale(40)
                 }}>
                 <Text
                   allowFontScaling={false}
