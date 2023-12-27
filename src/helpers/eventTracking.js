@@ -45,43 +45,32 @@ const getScreenName = id => {
 };
 
 export const eventTracking = async (id, message) => {
- console.log('Success tracking event:',id);
   try {
-    // const adjustEvent = new AdjustEvent(id);
-    // if (message) {
-    //   adjustEvent.setCallbackId(message);
-    // }
-    // console.log('Success tracking:', Adjust.trackEvent(adjustEvent));
-    // Adjust.trackEvent(adjustEvent);
-    // AppEventsLogger.logEvent(getScreenName(id))
+    const adjustEvent = new AdjustEvent(id);
+    if (message) {
+      adjustEvent.setCallbackId(message);
+    }
+    Adjust.trackEvent(adjustEvent);
     await analytics().logEvent(getScreenName(id), {
       id,
     });
-   
+    console.log('Success tracking:', getScreenName(id));
   } catch (err) {
     console.log('Err tracking:', err);
   }
 };
 
-
-export const revenueTracking = async (purchaseAmount, currencyCode) => {
-  console.log(purchaseAmount, currencyCode)
+export const revenueTracking = async (price, currency) => {
   const adjustEvent = new AdjustEvent(REVENUE_TRACKING);
 
-  adjustEvent.setRevenue(purchaseAmount, currencyCode);
+  adjustEvent.setRevenue(price, currency);
 
   Adjust.trackEvent(adjustEvent);
-  AppEventsLogger.logPurchase(5, currencyCode, { parameters: 5 });
-  AppEventsLogger.logEvent('fb_mobile_purchase', currencyCode, { parameters: 5 });
-  if(Platform.OS === 'ios'){
-    AEMReporterIOS.logAEMEvent('fb_mobile_purchase', 5, currencyCode, { parameters: 5 });
-  }
-  
-//   await analytics().logEvent(getScreenName(REVENUE_TRACKING), {
-//     id: REVENUE_TRACKING,
-//     item: `PRICE ${price}, currency ${currency}`,
-//   });
-  console.log('Revenue tracked:', purchaseAmount, currency);
+  await analytics().logEvent(getScreenName(REVENUE_TRACKING), {
+    id: REVENUE_TRACKING,
+    item: `PRICE ${price}, currency ${currency}`,
+  });
+  console.log('Revenue tracked:', price, currency);
 };
 
 export const askTrackingPermission = () => {
