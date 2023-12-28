@@ -1087,8 +1087,8 @@ const MainScreen = ({
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
-            paddingHorizontal: wp(20),
-            paddingTop: wp(20),
+            // paddingHorizontal: wp(20),
+            marginTop: wp(20),
           }}>
           <StatusBar
             barStyle={'dark-content'}

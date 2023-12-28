@@ -940,7 +940,7 @@ const LibraryScreen = ({
             position: 'absolute',
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
-            top: '-80%',
+            top: '-62%',
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
              <View
