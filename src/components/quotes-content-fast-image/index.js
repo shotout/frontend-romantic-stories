@@ -32,6 +32,7 @@ import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 import {reloadUserProfile} from '../../utils/user';
 import {useFocusEffect} from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
 
 const loveAnimate = require('../../assets/lottie/love.json');
 
@@ -351,8 +352,8 @@ const content_en = [
     <SafeAreaView
       style={{
         position: 'relative',
-        paddingHorizontal: 2,
-        paddingTop: 30,
+        paddingHorizontal: wp(2),
+        paddingTop: wp(30),
         flex: 1,
       }}>
       <ModalSuccessPurchaseAudio
@@ -398,8 +399,8 @@ const content_en = [
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: 100,
-                height: 300,
+                width: wp(100),
+                height: hp(300),
                 opacity: 0.6,
               }}
             />
@@ -410,8 +411,8 @@ const content_en = [
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: 100,
-                height: 300,
+                width: wp(100),
+                height: hp(300),
                 opacity: 0.6,
               }}
             />
@@ -423,9 +424,9 @@ const content_en = [
               allowFontScaling={false}
               style={{
                 textAlign: 'left',
-                fontSize: Number(fontSize),
+                fontSize: fixedFontSize(Number(fontSize)),
                 fontFamily: fontFamily,
-                marginBottom: 5,
+                marginBottom: wp(5),
                 color:
                   bg === '#2C3439' ? code_color.white : code_color.blackDark,
               }}>
@@ -436,7 +437,7 @@ const content_en = [
               style={{
                 textAlign: 'left',
                 fontWeight: 'bold',
-                fontSize: moderateScale(Number(fontSize) + 2),
+                fontSize:fixedFontSize(Number(fontSize) + 2),
                 fontFamily: fontFamily,
                 color:
                   bg === '#2C3439' ? code_color.white : code_color.blackDark,
@@ -477,9 +478,9 @@ const content_en = [
               // }
             }}
             style={{
-              padding: 5,
-              paddingHorizontal: 10,
-              borderRadius: 20,
+              padding: wp(5),
+              paddingHorizontal: wp(10),
+              borderRadius: wp(20),
               backgroundColor: bgTheme,
               flexDirection: 'row',
               alignItems: 'center',
@@ -491,10 +492,10 @@ const content_en = [
               style={{
                 textAlign: 'center',
                 fontWeight: 'bold',
-                fontSize: Number(fontSize),
+                fontSize: fixedFontSize(Number(fontSize)),
                 fontFamily: fontFamily,
                 color: code_color.white,
-                marginLeft: 5,
+                marginLeft: wp(5),
               }}>
               Listen
             </Text>
@@ -502,7 +503,7 @@ const content_en = [
         </View>
 
         <View />
-        <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: 10}} />
+        <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: wp(10)}} />
         <View style={[styles.ctnIcon]}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
@@ -512,7 +513,7 @@ const content_en = [
                   {
                     // marginBottom: pageActive != 0 ? -100 : 0,
                     fontFamily: fontFamily,
-                    fontSize: Number(fontSize),
+                    fontSize: fixedFontSize(Number(fontSize)),
                     color: colorText,
                   },
                 ]}
@@ -558,10 +559,10 @@ const content_en = [
                   backgroundColor: bgTheme,
                   flex: 0,
                   alignItems: 'center',
-                  paddingHorizontal: 10,
-                  borderRadius: 20,
-                  padding: 5,
-                  marginBottom: 25,
+                  paddingHorizontal: wp(10),
+                  borderRadius: wp(20),
+                  padding: wp(5),
+                  marginBottom: wp(25),
                 }}>
                 <Text style={{color: code_color.white, fontWeight: 'bold'}}>
                   Page {pageActive + 1} of {totalStory}
@@ -578,9 +579,9 @@ const content_en = [
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: -100,
-                  height: 110,
-                  width: 100,
+                  marginBottom: wp(-100),
+                  height: hp(110),
+                  width: wp(100),
                   left: 20,
                   zIndex: 1,
                   bottom: -10,
@@ -592,8 +593,8 @@ const content_en = [
                   }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
-                    width: 100,
-                    height: 400,
+                    width: wp(100),
+                    height: hp(400),
                   }}
                 />
               </View>
@@ -601,9 +602,9 @@ const content_en = [
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: -100,
-                  width: 100,
-                  height: Platform.OS === 'android' ? 110 : 110,
+                  marginBottom: wp(-100),
+                  width: wp(100),
+                  height: Platform.OS === 'android' ? hp(110) : hp(110),
                   left: '40%',
                   zIndex: 1,
                   bottom:
@@ -622,8 +623,8 @@ const content_en = [
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
-                    width: 100,
-                    height: 300,
+                    width: wp(100),
+                    height: hp(300),
                   }}
                 />
               </View>
@@ -633,22 +634,22 @@ const content_en = [
                   source={getBackgroundStory(pageActive)}
                   resizeMode="contain"
                   style={{
-                    borderRadius: 100,
-                    height: 100,
-                    marginBottom: 15,
-                    marginTop: 4,
+                    borderRadius: wp(100),
+                    height: hp(100),
+                    marginBottom: wp(15),
+                    marginTop: wp(4),
                   }}>
                   <View
                     style={{
                       backgroundColor: code_color.white,
                       flex: 0,
                       alignItems: 'center',
-                      borderRadius: 20,
-                      padding: 5,
-                      paddingHorizontal: 12,
-                      marginBottom: 30,
+                      borderRadius: wp(20),
+                      padding: wp(5),
+                      paddingHorizontal: wp(12),
+                      marginBottom: wp(30),
                       position: 'absolute',
-                      marginRight: 5,
+                      marginRight: wp(5),
                       bottom: 0,
                       right: 5,
                     }}>
@@ -665,9 +666,9 @@ const content_en = [
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: -150,
-                  width: 100,
-                  height: 180,
+                  marginBottom: wp(-150),
+                  width: wp(100),
+                  height: hp(180),
                   left: '10%',
                   zIndex: -1,
                 }}>
@@ -678,8 +679,8 @@ const content_en = [
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
-                    width: 100,
-                    height: 300,
+                    width: wp(100),
+                    height: hp(300),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -688,9 +689,9 @@ const content_en = [
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: -130,
-                  width: 100,
-                  height: 100,
+                  marginBottom: wp(-130),
+                  width: wp(100),
+                  height: hp(100),
                   left: '35%',
                   zIndex: -1,
                 }}>
@@ -701,8 +702,8 @@ const content_en = [
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
-                    width: 100,
-                    height: 300,
+                    width: wp(100),
+                    height: hp(300),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -711,9 +712,9 @@ const content_en = [
               <AnimatedLottieView
                 source={loveAnimate}
                 style={{
-                  width: 500,
-                  height: 500,
-                  bottom: 20,
+                  width: wp(500),
+                  height: hp(500),
+                  bottom: wp(20),
                   left: -40,
                   position: 'absolute',
                   zIndex: -1,
@@ -729,8 +730,8 @@ const content_en = [
                   resizeMode="contain"
                   style={{
                     width: '75%',
-                    height: 130,
-                    marginLeft: 20,
+                    height: hp(130),
+                    marginLeft: wp(20),
                     zIndex: -1,
                     backgroundColor: 'Transparent',
                   }}>
@@ -739,12 +740,12 @@ const content_en = [
                       backgroundColor: bgTheme,
                       flex: 0,
                       alignItems: 'center',
-                      width: 130,
-                      borderRadius: 20,
-                      padding: 5,
-                      paddingHorizontal: 5,
+                      width: wp(130),
+                      borderRadius: wp(20),
+                      padding: wp(5),
+                      paddingHorizontal: wp(5),
                       position: 'absolute',
-                      marginRight: 5,
+                      marginRight: wp(5),
                       bottom: '30%',
                       right: -80,
                     }}>

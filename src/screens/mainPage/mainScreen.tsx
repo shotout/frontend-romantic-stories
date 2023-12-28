@@ -83,6 +83,7 @@ import {Step1, Step2, Step3, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
 import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
+import { fixedFontSize, wp } from '../../utils/screen';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -706,8 +707,8 @@ const MainScreen = ({
                   flex: 0,
                   alignItems: 'center',
                   backgroundColor: backgroundColor,
-                  paddingTop: 20,
-                  paddingHorizontal: 20,
+                  paddingTop: wp(20),
+                  paddingHorizontal: wp(20),
                 }}>
                 {renderFactItem({
                   item: dtb,
@@ -844,15 +845,15 @@ const MainScreen = ({
                   bottom: 0,
                   width: Dimensions.get('window').width,
                   height: '58%',
-                  borderTopRightRadius: 60,
-                  borderTopLeftRadius: 60,
+                  borderTopRightRadius: wp(60),
+                  borderTopLeftRadius: wp(60),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
                 <View
                   style={{
                     width: Dimensions.get('window').width,
-                    height: 250,
+                    height: wp(250),
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
@@ -884,7 +885,7 @@ const MainScreen = ({
                       fontWeight: 'bold',
                       textAlign: 'center',
                       fontFamily: 'Comfortaa-SemiBold',
-                      marginBottom: 50,
+                      marginBottom: wp(50),
                     }}>
                     {`Hey, ${userProfile?.data?.name}\nYou’re all set!`}
                   </Animatable.Text>
@@ -893,10 +894,10 @@ const MainScreen = ({
                     animation={'fadeIn'}
                     duration={800}
                     style={{
-                      fontSize: 24,
+                      fontSize: fixedFontSize(24),
                       textAlign: 'center',
                       fontWeight: '100',
-                      marginTop: 10,
+                      marginTop: wp(10),
                     }}>
                     {"Let's show you how \nEroTales works..."}
                   </Animatable.Text>
@@ -937,7 +938,7 @@ const MainScreen = ({
                     style={{
                       backgroundColor: 'rgba(0,0,0,0.3)',
                       opacity: 1,
-                      marginTop: 40,
+                      marginTop: wp(40),
                     }}>
                     {renderProgress()}
                   </View>
@@ -947,7 +948,7 @@ const MainScreen = ({
                     <AnimatedLottieView
                       source={rippleAnimate}
                       style={{
-                        width: 100,
+                        width: wp(100),
                       }}
                       autoPlay
                       duration={1500}
@@ -1086,8 +1087,8 @@ const MainScreen = ({
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
-            paddingHorizontal: 20,
-            paddingTop: 20,
+            paddingHorizontal: wp(20),
+            paddingTop: wp(20),
           }}>
           <StatusBar
             barStyle={'dark-content'}

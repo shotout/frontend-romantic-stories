@@ -49,6 +49,7 @@ import {BACKEND_URL} from '../../shared/static';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
 import ProgressBar from '../../components/ProgressBar';
+import { hp } from '../../utils/screen';
 
 const SettingsPage = ({
   colorTheme,
@@ -345,7 +346,7 @@ console.log(getAvatarFemale)
     <View
       style={{
         flex: 0,
-        height: verticalScale(Dimensions.get('window').height - 170),
+        height: hp(Dimensions.get('window').height - 170),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
