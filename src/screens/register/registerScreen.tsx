@@ -462,7 +462,7 @@ function RegisterScreen({
                   allowFontScaling={false}
                   style={{
                     color: code_color.grey,
-                    fontSize: fixedFontSize(16),
+                    fontSize: fixedFontSize(14),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
                     marginVertical: wp(10),
