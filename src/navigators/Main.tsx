@@ -11,7 +11,7 @@ import {navigate, navigationRef} from '../shared/navigationRef';
 import MyTabsComponent from './BottomNavigator';
 import {BottomBarProvider} from './BottomBarContex';
 import messaging from '@react-native-firebase/messaging';
-import {checkDeviceRegister} from '../shared/request';
+import {checkDeviceRegister, getStoryDetail} from '../shared/request';
 import DeviceInfo from 'react-native-device-info';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -35,7 +35,7 @@ const screenOptionsDefault = {
 
 const Stack = createNativeStackNavigator();
 
-function Main({registerData, userProfile, props}) {
+function Main({registerData, userProfile, props, handleSetStory}) {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
     checkDevice();
@@ -49,8 +49,11 @@ function Main({registerData, userProfile, props}) {
     // const {navigate} = useNavigation()
     const handleDynamicLinks = async (link: any) => {
       let storyId = link.url.split('=').pop();
-      navigate('Library');
+      // navigate('Library');
       // Alert.alert(storyId);
+      const resp = await getStoryDetail(storyId);
+      handleSetStory(resp.data);
+      navigate('Main');
     };
     useEffect(() => {
       const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
@@ -62,7 +65,7 @@ function Main({registerData, userProfile, props}) {
 
   const checkDevice = async () => {
     const device = await DeviceInfo.getUniqueId();
-    console.log('masuk sini'+device)
+    console.log('masuk sini' + device);
     try {
       const res = await checkDeviceRegister({
         device_id: device,
@@ -94,7 +97,10 @@ function Main({registerData, userProfile, props}) {
           <Stack.Screen name={'Media'} component={screenMedia} />
           <Stack.Screen name={'Notification'} component={screenNotification} />
           <Stack.Screen name={'Categories'} component={screenCategories} />
-          <Stack.Screen name={'Subscriptions'} component={screenSubscriptions} />
+          <Stack.Screen
+            name={'Subscriptions'}
+            component={screenSubscriptions}
+          />
           <Stack.Screen name="Bottom" component={MyTabsComponent} />
         </Stack.Navigator>
       </NavigationContainer>

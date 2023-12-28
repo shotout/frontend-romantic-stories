@@ -20,7 +20,7 @@ import BookLockIcon from '../../assets/icons/bookLock';
 import LockFree from '../../assets/icons/lockFree';
 import CloseSvg from '../../assets/icons/close';
 import {BACKEND_URL} from '../../shared/static';
-import { ActivityIndicator } from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 
 function ModalUnlockStory({
   isVisible,
@@ -31,12 +31,12 @@ function ModalUnlockStory({
   onGetUnlimit,
   price,
   isLoading,
-  loadingOne
+  loadingOne,
 }) {
   const handleClose = () => {
     onClose();
   };
- 
+
   return (
     <Modal
       visible={isVisible}
@@ -93,15 +93,16 @@ function ModalUnlockStory({
               <View
                 style={{
                   marginLeft: moderateScale(10),
-                  width: 200
+                  width: 200,
+                  // justifyContent: 'center',
                 }}>
                 <Text
                   style={{
                     fontSize: 16,
                     fontWeight: '400',
                     color: '#3F58DD',
+                    marginTop: moderateScale(28),
                     marginBottom: moderateScale(10),
-                    marginTop: moderateScale(6),
                   }}>
                   {data?.category?.name}
                 </Text>
@@ -117,7 +118,9 @@ function ModalUnlockStory({
                 color: '#505962',
                 marginTop: moderateScale(20),
               }}>
-              { data?.content_en[0].length  === 1 ? data?.content_en?.slice(0, 180) + '...' : data?.content_en[0]?.slice(0, 180) + '...'  }
+              {data?.content_en[0].length === 1
+                ? data?.content_en?.slice(0, 210) + '...'
+                : data?.content_en[0]?.slice(0, 210) + '...'}
             </Text>
             <View
               style={{
@@ -137,38 +140,42 @@ function ModalUnlockStory({
               }}>
               {'To unlock this story, choose one of the\r\nfollowing options:'}
             </Text>
-            {Platform.OS === 'android' ? null :
-            <Pressable
-              disabled={isLoading}
-              onPress={onUnlock}
-              style={{
-                backgroundColor: code_color.green,
-                marginHorizontal: moderateScale(10),
-                marginBottom: moderateScale(6),
-                paddingVertical: moderateScale(14),
-                borderRadius: moderateScale(6),
-              }}>
-              <View
+            {Platform.OS === 'android' ? null : (
+              <Pressable
+                disabled={isLoading}
+                onPress={onUnlock}
                 style={{
-                  position: 'absolute',
-                  marginHorizontal: 'auto',
-                  backgroundColor: '#FFD12F',
-                  alignSelf: 'center',
-                  paddingVertical: moderateScale(0),
-                  paddingHorizontal: moderateScale(24),
-                  borderRadius: moderateScale(10),
-                  zIndex: 1,
-                  top: -moderateScale(8),
+                  backgroundColor: code_color.green,
+                  marginHorizontal: moderateScale(10),
+                  marginBottom: moderateScale(6),
+                  paddingVertical: moderateScale(14),
+                  borderRadius: moderateScale(6),
                 }}>
-                <Text style={{color: code_color.black, fontWeight: 600}}>
-                  MOST SELECTED
-                </Text>
-              </View>
-              {isLoading ? <ActivityIndicator color={code_color.blueDark} size={13} /> :
-              <Text style={{color: code_color.white, textAlign: 'center'}}>
-                {price} for 1 week access
-              </Text> }
-            </Pressable> }
+                <View
+                  style={{
+                    position: 'absolute',
+                    marginHorizontal: 'auto',
+                    backgroundColor: '#FFD12F',
+                    alignSelf: 'center',
+                    paddingVertical: moderateScale(0),
+                    paddingHorizontal: moderateScale(24),
+                    borderRadius: moderateScale(10),
+                    zIndex: 1,
+                    top: -moderateScale(8),
+                  }}>
+                  <Text style={{color: code_color.black, fontWeight: 600}}>
+                    MOST SELECTED
+                  </Text>
+                </View>
+                {isLoading ? (
+                  <ActivityIndicator color={code_color.blueDark} size={13} />
+                ) : (
+                  <Text style={{color: code_color.white, textAlign: 'center'}}>
+                    {price} for 1 week access
+                  </Text>
+                )}
+              </Pressable>
+            )}
             <Pressable
               disabled={loadingOne}
               onPress={onWatchAds}
@@ -196,10 +203,13 @@ function ModalUnlockStory({
                   FREE
                 </Text>
               </View>
-              {loadingOne ? <ActivityIndicator color={code_color.blueDark} size={13} /> :
-              <Text style={{color: code_color.white, textAlign: 'center'}}>
-                Watch Ad for 12 hours Access
-              </Text> }
+              {loadingOne ? (
+                <ActivityIndicator color={code_color.blueDark} size={13} />
+              ) : (
+                <Text style={{color: code_color.white, textAlign: 'center'}}>
+                  Watch Ad for 12 hours Access
+                </Text>
+              )}
             </Pressable>
             <View
               style={{

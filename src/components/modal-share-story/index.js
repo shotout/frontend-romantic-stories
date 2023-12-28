@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Modal,
   View,
@@ -39,22 +39,14 @@ import {imgShare, logo} from '../../assets/images';
 function ModalShareStory({isVisible, onClose, storyData}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
+  const [dinamicLink, setDinamicLink] = useState('');
   const [showSuccessCopy, setShowSuccessCopy] = useState(false);
-
-  const captureRef = useRef();
-  const captureRefPost = useRef();
-  const base64CaptureImage = useRef(null);
-  const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this one: ${storyData?.item?.title_en} Check out the Story here: LINK TO STORY Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
-
-  const handleClose = () => {
-    onClose();
-  };
 
   const generateLink = async () => {
     try {
-      const link = dynamicLinks().buildShortLink(
+      const link = await dynamicLinks().buildShortLink(
         {
-          link: `https://romanticstory.page.link/mVYD?storyId=${storyData?.item?.title_en}`,
+          link: `https://romanticstory.page.link/HNyL?storyId=${storyData?.item?.id}`,
           domainUriPrefix: 'https://romanticstory.page.link',
           android: {
             packageName: 'com.romanticstory',
@@ -68,8 +60,28 @@ function ModalShareStory({isVisible, onClose, storyData}) {
       );
       return link;
     } catch (error) {
-      console.log(error);
+      console.error('Error generating link:', error);
+      return ''; // return a default or error value
     }
+  };
+
+  useEffect(() => {
+    async function setLinks() {
+      setDinamicLink(await generateLink());
+    }
+    if (isVisible) {
+      setLinks();
+    }
+  }, [isVisible]);
+
+  const captureRef = useRef();
+  const captureRefPost = useRef();
+  const base64CaptureImage = useRef(null);
+  const sharedMessageWa = `The *EroTales App* has the best Romantic Stories ever! I just found this once: *${storyData?.item?.title_en}* Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
+  const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en} Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
+
+  const handleClose = () => {
+    onClose();
   };
 
   const handleCopyLink = async () => {
@@ -84,6 +96,17 @@ function ModalShareStory({isVisible, onClose, storyData}) {
     try {
       await Share.open({
         message: sharedMessage,
+        title: 'Shared-Short-Story',
+      });
+    } catch (err) {
+      console.log('Error share whatsapp:', err);
+    }
+  };
+
+  const handleShareOpenWA = async () => {
+    try {
+      await Share.open({
+        message: sharedMessageWa,
         title: 'Shared-Short-Story',
       });
     } catch (err) {
@@ -608,7 +631,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
             </TouchableOpacity>
             <TouchableOpacity
               style={{alignItems: 'center', justifyContent: 'center'}}
-              onPress={handleShareOpen}>
+              onPress={handleShareOpenWA}>
               <WAIcon height={36} bg="#00F356" />
               <Text
                 style={{

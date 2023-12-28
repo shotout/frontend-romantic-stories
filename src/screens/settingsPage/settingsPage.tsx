@@ -295,8 +295,8 @@ console.log(getAvatarFemale)
               </View>
               <View
                 style={{
-                  width: scale(40),
-                  height: verticalScale(40),
+                  width: 40,
+                  height: 40,
                   borderRadius: scale(20),
                   marginLeft: 'auto',
                   backgroundColor: code_color.yellow,
@@ -310,8 +310,8 @@ console.log(getAvatarFemale)
                     uri: BACKEND_URL + getAvatarFemale
                   }}
                   style={{
-                    width:  scale(40),
-                    height: verticalScale(150),
+                    width: 40,
+                    height: 150,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
