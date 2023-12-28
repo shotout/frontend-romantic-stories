@@ -384,7 +384,7 @@ function MyTabs(props) {
                         textAlign: 'center',
                         fontSize: fixedFontSize(15),
                       }}>
-                      {`Story ${title} &\nadded to library`}
+                      {`Story saved &\nadded to library`}
                     </Text>
                   </View>
                 </View>

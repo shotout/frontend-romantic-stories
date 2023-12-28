@@ -1,77 +1,256 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet, Easing } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Animated, ScrollView, Dimensions} from 'react-native';
+import {moderateScale} from 'react-native-size-matters';
+import {hp, wp} from '../../utils/screen';
+import { code_color } from '../../utils/colors';
 
-const ProgressBarWithIndicators = ({ progress }) => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
+const GojekProgressBar = ({levelingUser}) => {
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const animatedScrollOffset = new Animated.Value(scrollOffset);
+  const levels = [
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Romance \nRookie',
+      id: 1,
+      name: 'level 1',
+      status: 2,
+      updated_at: null,
+      value: 0,
+      value_desc: '0 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Heartfelt \nAdventurer',
+      id: 2,
+      name: 'level 2',
+      status: 2,
+      updated_at: null,
+      value: 5,
+      value_desc: '5 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Passion \nPioneer',
+      id: 3,
+      name: 'level 3',
+      status: 2,
+      updated_at: null,
+      value: 25,
+      value_desc: '25 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Flirty \nFictionista',
+      id: 4,
+      name: 'level 4',
+      status: 2,
+      updated_at: null,
+      value: 80,
+      value_desc: '80 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Passion \nProwler',
+      id: 5,
+      name: 'level 5',
+      status: 2,
+      updated_at: null,
+      value: 200,
+      value_desc: '200 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Heartfelt \nVoyager',
+      id: 6,
+      name: 'level 6',
+      status: 2,
+      updated_at: null,
+      value: 400,
+      value_desc: '400 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Sizzling \nStoryteller',
+      id: 7,
+      name: 'level 7',
+      status: 2,
+      updated_at: null,
+      value: 600,
+      value_desc: '600 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'Naughty \nNovelist',
+      id: 8,
+      name: 'level 8',
+      status: 2,
+      updated_at: null,
+      value: 800,
+      value_desc: '800 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'EroTales \nSuperstar',
+      id: 9,
+
+      name: 'level 9',
+      status: 2,
+      updated_at: null,
+      value: 1200,
+      value_desc: '1200 XP',
+    },
+    {
+      created_at: '2023-12-06T07:45:22.000000Z',
+      desc: 'EroTales \nLegend',
+      id: 10,
+      name: 'level 10',
+      status: 2,
+      updated_at: null,
+      value: 1800,
+      value_desc: '1800 XP',
+    },
+  ];
+  const progress = levelingUser?.user_level?.point;
 
   useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: 100,
-      duration: 500,
-      easing: Easing.linear,
+    const levelCount = levels.length;
+    const progressBarWidth = 1800;
+    const spaceBetweenLevels = progressBarWidth / (levelCount - 1);
+
+    // Calculate the position of the progress bar
+    const position =
+      (progress / levels[levelCount - 1].value) * (progressBarWidth - spaceBetweenLevels);
+
+
+    Animated.timing(animatedScrollOffset, {
+      toValue: position,
+      duration: 100,
       useNativeDriver: false,
     }).start();
-  }, [progress]);
+  }, [animatedScrollOffset, progress, levels]);
+  const calculateProgressPosition = (progress, levels) => {
+    const totalWidth = wp(950)
+    let position = 0;
 
-  const indicatorPositions = [20, 40, 60, 80, 100];
+    if (progress > 0 && levels && levels.length > 0) {
+      for (let i = 0; i < levels.length; i++) {
+        const currentLevel = levels[i];
 
-  const indicators = indicatorPositions.map((position, index) => {
-    const indicatorPosition = animatedValue.interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, position],
-    });
+        if (progress < currentLevel.value) {
+          const prevLevel = levels[i - 1] || { value: 0 };
+          const progressInRange = (progress - prevLevel.value) / (currentLevel.value - prevLevel.value);
+          position = (i - 1 + progressInRange) / (levels.length - 1) * totalWidth;
+          break;
+        }
+      }
+    }
 
-    return (
-      <Animated.View
-        key={index}
-        style={[
-          styles.progressIndicator,
-          { left: `${position}%`, transform: [{ translateX: indicatorPosition }] },
-        ]}
-      />
-    );
-  });
+    return position;
+  };
+  const renderLevels = () => {
+    return levels.map((level, index) => (
+      <View key={index} style={styles.levelContainer}>
+        
+        {/* Tambahkan titik di tengah level */}
+        {<View style={styles.point} />}
+        <Text style={styles.levelText}>{level?.desc}</Text>
+      </View>
+    ));
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.progressBar}>
-        <Animated.View style={[styles.progress, { width: `${progress}%` }]} />
-        {indicators}
-      </View>
-    </View>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      // onScroll={(event) => setScrollOffset(event.nativeEvent.contentOffset.x)}
+      scrollEventThrottle={16}>
+     
+        <View style={styles.container}>
+        <Animated.View
+          style={[
+            styles.progressBar,
+            {
+              width: wp(950),
+              backgroundColor:  code_color.greyDefault,
+            },
+          ]}
+        />
+       <Animated.View
+          style={[
+            styles.progressBar,
+            {
+              width: animatedScrollOffset.interpolate({
+                inputRange: levels.map(level => level.value),
+                outputRange: levels.map((_, index) => `${(index / (levels.length - 1)) * 100}%`),
+                extrapolate: 'clamp',
+              }),
+              backgroundColor: progress > 0 ? '#5873FF': code_color.grey,
+            },
+          ]}
+        />
+       
+  {/* Colored blue portion for the filled progress */}
+  
+
+  {/* Colored gray portion for the remaining progress */}
+  
+
+          {renderLevels()}
+        </View>
+        
+      
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: 30,
-    backgroundColor: '#ddd',
-    borderRadius: 15,
-    overflow: 'hidden',
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: wp(80)
   },
   progressBar: {
-    height: '100%',
-    width: '100%',
+    height: wp(15),
     position: 'absolute',
-    zIndex: 1,
+    top: '10%',
+    left: 0,
+    borderRadius: 10,
   },
-  progress: {
-    height: '100%',
-    backgroundColor: '#5cb85c',
-    borderRadius: 15,
-    position: 'absolute',
+  levelContainer: {
+    width: moderateScale(100),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  progressIndicator: {
+  levelText: {
+    marginTop: 30,
+    color: '#333',
+    textAlign: 'center'
+  },
+  point: {
+    width: wp(28),
+    height: wp(28),
+    backgroundColor: code_color.yellow,
+    borderColor: '#5873FF',
+    borderRadius: 20,
+    borderWidth: 5,
+    top: '10%',
+    right: '70%',
+    transform: [{ translateY: -5 }],
     position: 'absolute',
-    top: -15,
-    width: 40,
-    height: 40,
-    backgroundColor: '#d9534f',
-    borderRadius: 15,
-    marginLeft: -15,
-    zIndex: 2,
+    top: -4,
+  },
+  progressFilled: {
+    ...StyleSheet.absoluteFillObject,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    backgroundColor: '#4CAF50', // Set the color for the filled progress
+  },
+  progressRemaining: {
+    ...StyleSheet.absoluteFillObject,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    backgroundColor: 'gray', // Set the color for the remaining progress
   },
 });
 
-export default ProgressBarWithIndicators;
+export default GojekProgressBar;

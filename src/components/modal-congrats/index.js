@@ -30,7 +30,7 @@ import {
 } from '../../assets/images';
 import Button from '../buttons/Button';
 import CloseSvg from '../../assets/icons/close';
-import ProgressBar from '../ProgressBar';
+import ProgressBar from '../progress';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import AnimatedLottieView from 'lottie-react-native';
@@ -380,8 +380,7 @@ function ModalCongrats({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-        
-        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         <View
           style={{
             flex: 1,
@@ -652,54 +651,48 @@ function ModalCongrats({
                   </ScrollView>
                 </View>
 
-                <View style={{marginLeft: '20%', marginTop: wp(15)}}>
-                  <ProgressBar
-                    bgTheme={colorTheme}
-                    levelingUser={levelingUser}
-                  />
+                <View style={{ marginLeft: '10%', height: wp(80)}}>
+                  <ProgressBar levelingUser={levelingUser} />
                 </View>
-<ScrollView style={{flex: 0, paddingBottom: 300}}>
-<Text
-                  style={{
-                    color: code_color.grey,
-                    marginTop: wp(10),
-                    fontSize: fixedFontSize(14),
-                    marginHorizontal: wp(25),
-                    lineHeight: 24,
-                    textAlign: 'center',
-                  }}>
-                  Earn more XP by reading stories and to level up. The higher
-                  your rank, the more exciting stories are coming up for you!
-                  Stay tuned for more exclusive features for our Experienced
-                  Members!
-                </Text>
+                <ScrollView style={{flex: 0, paddingBottom: 300}}>
+                  <Text
+                    style={{
+                      color: code_color.grey,
+                      marginTop: wp(10),
+                      fontSize: fixedFontSize(14),
+                      marginHorizontal: wp(25),
+                      lineHeight: 24,
+                      textAlign: 'center',
+                    }}>
+                    Earn more XP by reading stories and to level up. The higher
+                    your rank, the more exciting stories are coming up for you!
+                    Stay tuned for more exclusive features for our Experienced
+                    Members!
+                  </Text>
 
-              <Button
-                title={'Got it'}
-                style={{
-                  backgroundColor: code_color.yellow,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  // height: 52,
-                  padding: wp(10),
-                  borderRadius: wp(8),
-                  // width: '90%',
-                  marginTop: wp(20),
-                  marginHorizontal: wp(20),
-                  marginBottom: wp(300),
-                }}
-                onPress={() => onGotIt()}
-              />
-</ScrollView>
-               
+                  <Button
+                    title={'Got it'}
+                    style={{
+                      backgroundColor: code_color.yellow,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      // height: 52,
+                      padding: wp(10),
+                      borderRadius: wp(8),
+                      // width: '90%',
+                      marginTop: wp(20),
+                      marginHorizontal: wp(20),
+                      marginBottom: wp(300),
+                    }}
+                    onPress={() => onGotIt()}
+                  />
+                </ScrollView>
               </View>
-
             </View>
           </SafeAreaView>
         </View>
       </View>
-       
-    
+
       {showPopup && renderPopup()}
     </Modal>
   );

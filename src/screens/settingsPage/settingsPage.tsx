@@ -48,7 +48,7 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {BACKEND_URL} from '../../shared/static';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
-import ProgressBar from '../../components/ProgressBar';
+import ProgressBar from '../../components/progress';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
 
 const SettingsPage = ({
@@ -160,8 +160,9 @@ console.log(levelingUser?.user_level?.level?.image?.url)
               {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginLeft: '30%', marginTop: wp(30)}}>
-            <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} />
+          <View style={{marginLeft: '10%', marginTop: wp(30)}}>
+            <ProgressBar  levelingUser={levelingUser} />
+            {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
         </View>
 

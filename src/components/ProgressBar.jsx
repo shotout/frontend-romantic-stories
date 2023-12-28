@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Animated, ScrollView } from 'react-native';
 import { code_color } from '../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
 
@@ -301,7 +301,7 @@ const ProgressBar = ({  bgTheme, levelingUser }) => {
   );
 
   return (
-    <View style={{ marginBottom: moderateScale(60) }}>
+    <View  style={{ marginBottom: moderateScale(60), }}>
       {renderProgress()}
     </View>
   );
