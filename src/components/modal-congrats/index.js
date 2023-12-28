@@ -37,6 +37,7 @@ import AnimatedLottieView from 'lottie-react-native';
 import {getLeveling} from '../../shared/request';
 import * as Progress from 'react-native-progress';
 import {sizing} from '../../shared/styling';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
 const badgeAnimate = require('../../assets/lottie/badge.json');
 const starAnimate = require('../../assets/lottie/stars.json');
 const confettiAnimate = require('../../assets/lottie/confetti.json');
@@ -48,7 +49,7 @@ function ModalCongrats({
   userProfile,
   levelingUser,
   colorTheme,
-  getAvatarMale
+  getAvatarMale,
 }) {
   const [leveling, setLeveling] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -113,84 +114,97 @@ function ModalCongrats({
   }, [isVisible]);
 
   const renderIconTopCard = () => {
-    console.log(getAvatarMale)
+    console.log(getAvatarMale);
     return (
       <>
         <Image
           source={imgGift1}
           resizeMode="contain"
           style={{
-            width: 100,
-            height: 100,
+            width: wp(100),
+            height: hp(100),
             position: 'absolute',
-            left: 50,
-            bottom: 70,
+            left: wp(50),
+            bottom: wp(70),
           }}
         />
         <Image
           source={imgGift2}
           resizeMode="contain"
           style={{
-            width: 80,
-            height: 80,
+            width: wp(80),
+            height: hp(80),
             position: 'absolute',
-            right: 70,
-            bottom: 80,
+            right: wp(70),
+            bottom: wp(80),
           }}
         />
         <View
           style={{
             backgroundColor: code_color.blueDark,
-            padding: 10,
+            padding: wp(10),
             position: 'absolute',
             top: -15,
             left: '25%',
             right: 0,
-            width: 200,
+            width: wp(200),
             alignItems: 'center',
-            borderRadius: 15,
+            borderRadius: wp(15),
           }}>
           <Text
             style={{
               color: code_color.white,
               fontWeight: 'bold',
+              fontSize: fixedFontSize(13),
             }}>
             {userProfile?.data?.name ? userProfile?.data?.name : ''}
           </Text>
         </View>
         <View
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100,
-                  // marginLeft: '20',
-                  backgroundColor: code_color.yellow,
-                  position: 'absolute',
-                  overflow: 'hidden',
-                  alignItems: 'center',
-                  right: '49%',
-                  bottom: 110,
-                  borderRadius: 100,
+          style={{
+            width: wp(80),
+            height: hp(80),
+            borderRadius: wp(100),
+            // marginLeft: '20',
+            backgroundColor: code_color.yellow,
+            position: 'absolute',
+            overflow: 'hidden',
+            alignItems: 'center',
+            right: '43%',
+            bottom: wp(90),
+            borderRadius: wp(100),
             borderColor: code_color.blueDark,
-            borderWidth: 5,
-                }}>
-                <Image
-                  source={{
-                    uri:
-                     BACKEND_URL + getAvatarMale
-                  }}
-                  style={{
-                    width: 80,
-                    height:  getAvatarMale === '/assets/images/avatars/2.png' ? 310 :  getAvatarMale === '/assets/images/avatars/3.png' ||  getAvatarMale === '/assets/images/avatars/4.png'  ? 350 :  250,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    // top: 3,
-                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -13 : getAvatarMale === '/assets/images/avatars/1.png' ? 0 : getAvatarMale === '/assets/images/avatars/2.png' ? -5 : 0,
-                  }}
-                />
-              </View>
-      
+            borderWidth: wp(5),
+          }}>
+          <Image
+            source={{
+              uri: BACKEND_URL + getAvatarMale,
+            }}
+            style={{
+              width: wp(80),
+              height:
+                getAvatarMale === '/assets/images/avatars/2.png'
+                  ? 310
+                  : getAvatarMale === '/assets/images/avatars/3.png' ||
+                    getAvatarMale === '/assets/images/avatars/4.png'
+                  ? 350
+                  : 250,
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              // top: 3,
+              right:
+                getAvatarMale === '/assets/images/avatars/5.png'
+                  ? -13
+                  : getAvatarMale === '/assets/images/avatars/1.png'
+                  ? 0
+                  : getAvatarMale === '/assets/images/avatars/2.png'
+                  ? -5
+                  : 0,
+            }}
+          />
+        </View>
+
         {/* <Image
           source={{ uri: BACKEND_URL + getAvatarMale}}
           resizeMode="contain"
@@ -219,7 +233,6 @@ function ModalCongrats({
           //   borderWidth: 5,
           // }}
         /> */}
-        
       </>
     );
   };
@@ -240,7 +253,7 @@ function ModalCongrats({
         <Animatable.Text
           animation="fadeInUp"
           style={{
-            fontSize: moderateScale(24),
+            fontSize: fixedFontSize(24),
             fontWeight: '700',
             color: code_color.white,
             textAlign: 'center',
@@ -276,7 +289,7 @@ function ModalCongrats({
           delay={3000}
           style={{
             width: sizing.getDimensionWidth(1),
-            height: 200,
+            height: hp(200),
             position: 'absolute',
           }}>
           <AnimatedLottieView
@@ -294,14 +307,14 @@ function ModalCongrats({
         style={{
           position: 'relative',
           overflow: 'hidden',
-          marginTop: moderateScale(50),
+          marginTop: wp(50),
         }}>
         <Animatable.View
           animation="fadeInUp"
           style={{
             width: sizing.getDimensionWidth(0.5),
-            height: moderateScale(60),
-            borderRadius: moderateScale(20),
+            height: hp(60),
+            borderRadius: wp(20),
             backgroundColor: code_color.yellow,
           }}>
           <ScrollView
@@ -311,7 +324,7 @@ function ModalCongrats({
               flex: 1,
               position: 'relative',
               overflow: 'hidden',
-              height: moderateScale(60),
+              height: hp(60),
               maxWidth: '100%',
             }}>
             {leveling &&
@@ -322,13 +335,13 @@ function ModalCongrats({
                 .map((itm, idx) => (
                   <View
                     style={{
-                      height: moderateScale(60),
+                      height: hp(60),
                       justifyContent: 'center',
                     }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        fontSize: moderateScale(18),
+                        fontSize: fixedFontSize(18),
                         fontWeight: '700',
                       }}>
                       {itm?.desc?.replace(' ', '\r\n')}
@@ -342,16 +355,16 @@ function ModalCongrats({
         onPress={() => setShowPopup(false)}
         style={{
           backgroundColor: '#DDDEE3',
-          marginTop: moderateScale(150),
-          width: sizing.getWindowWidth(0.8),
+          marginTop: wp(150),
+          width: wp(sizing.getWindowWidth(0.8)),
           justifyContent: 'center',
           alignItems: 'center',
-          height: moderateScale(40),
-          borderRadius: moderateScale(6),
+          height: hp(40),
+          borderRadius: wp(6),
         }}>
         <Text
           style={{
-            fontSize: moderateScale(16),
+            fontSize: fixedFontSize(16),
             color: code_color.black,
             fontWeight: '600',
           }}>
@@ -367,7 +380,8 @@ function ModalCongrats({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+        
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         <View
           style={{
             flex: 1,
@@ -387,8 +401,8 @@ function ModalCongrats({
               shadowOpacity: 0.22,
               shadowRadius: 2.22,
               elevation: 3,
-              borderRadius: 10,
-              padding: 10,
+              borderRadius: wp(10),
+              // padding: wp(10),
               height: '100%',
             }}>
             <View style={{backgroundColor: code_color.blueDark, flex: 1}}>
@@ -396,10 +410,14 @@ function ModalCongrats({
                 onPress={() => handleClose()}
                 style={{
                   alignItems: 'flex-end',
-                  paddingRight: 20,
-                  paddingTop: 20,
+                  paddingRight: wp(20),
+                  paddingTop: wp(20),
                 }}>
-                <CloseSvg width={15} height={15} fill={code_color.white} />
+                <CloseSvg
+                  width={wp(15)}
+                  height={hp(15)}
+                  fill={code_color.white}
+                />
               </Pressable>
               <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
                 <View style={{alignItems: 'center'}}>
@@ -407,7 +425,7 @@ function ModalCongrats({
                     style={{
                       color: code_color.white,
                       textAlign: 'center',
-                      fontSize: moderateScale(20),
+                      fontSize: fixedFontSize(20),
                       fontWeight: '700',
                     }}>
                     Congratulations!
@@ -416,7 +434,7 @@ function ModalCongrats({
                     style={{
                       color: code_color.white,
                       textAlign: 'center',
-                      fontSize: moderateScale(16),
+                      fontSize: fixedFontSize(16),
                       fontWeight: '400',
                     }}>
                     You just earned
@@ -432,8 +450,8 @@ function ModalCongrats({
                     <AnimatedLottieView
                       source={badgeAnimate}
                       style={{
-                        width: 140,
-                        height: 140,
+                        width: wp(130),
+                        height: hp(130),
                       }}
                       autoPlay={true}
                       duration={3000}
@@ -442,7 +460,7 @@ function ModalCongrats({
                     <AnimatedLottieView
                       source={starAnimate}
                       style={{
-                        width: 270,
+                        width: wp(200),
                         position: 'absolute',
                       }}
                       autoPlay={true}
@@ -453,8 +471,8 @@ function ModalCongrats({
                       style={{
                         position: 'relative',
                         overflow: 'hidden',
-                        marginTop: moderateScale(-60),
-                        marginBottom: moderateScale(40),
+                        marginTop: wp(-60),
+                        marginBottom: wp(40),
                       }}>
                       <Animatable.Text
                         delay={1000}
@@ -462,7 +480,7 @@ function ModalCongrats({
                         animation="slideInUp"
                         style={{
                           fontWeight: 'bold',
-                          fontSize: 18,
+                          fontSize: fixedFontSize(18),
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
@@ -474,22 +492,22 @@ function ModalCongrats({
                     source={imgLoveLeft}
                     resizeMode="contain"
                     style={{
-                      width: Platform.OS === 'android' ? 157 : 150,
-                      height: 150,
+                      width: Platform.OS === 'android' ? wp(157) : wp(150),
+                      height: hp(150),
                       position: 'absolute',
                       left: -20,
-                      bottom: Platform.OS === 'android' ? -90 : -100,
+                      bottom: Platform.OS === 'android' ? wp(-90) : wp(-100),
                     }}
                   />
                   <Image
                     source={imgLoveRight}
                     resizeMode="contain"
                     style={{
-                      width: Platform.OS === 'android' ? 145 : 150,
-                      height: 150,
+                      width: Platform.OS === 'android' ? wp(145) : wp(150),
+                      height: hp(150),
                       position: 'absolute',
                       right: -20,
-                      bottom: Platform.OS === 'android' ? -90 : -100,
+                      bottom: Platform.OS === 'android' ? wp(-90) : wp(-100),
                     }}
                   />
                 </View>
@@ -498,8 +516,8 @@ function ModalCongrats({
             <View
               style={{
                 backgroundColor: code_color.white,
-                borderTopLeftRadius: 70,
-                borderTopRightRadius: 70,
+                borderTopLeftRadius: wp(70),
+                borderTopRightRadius: wp(70),
                 position: 'absolute',
                 top: Platform.OS === 'android' ? '32%' : '37%',
                 left: 0,
@@ -508,15 +526,16 @@ function ModalCongrats({
                 height: '100%',
                 alignItems: 'center',
               }}>
-              <View style={{marginTop: 100}}>
+              <View style={{marginTop: wp(100)}}>
                 <View
                   style={{
                     backgroundColor: '#FFD12F',
                     flexDirection: 'row',
-                    marginHorizontal: 20,
-                    marginBottom: 20,
-                    padding: 30,
-                    borderRadius: 10,
+                    marginHorizontal: wp(20),
+                    marginBottom: wp(20),
+                    padding: wp(20),
+                    paddingTop: wp(25),
+                    borderRadius: wp(10),
                     shadowColor: '#000',
                     shadowOffset: {
                       width: 0,
@@ -532,14 +551,14 @@ function ModalCongrats({
                       flexDirection: 'row',
                       alignItems: 'center',
                       flex: 1,
-                      height: moderateScale(36),
+                      height: hp(36),
                     }}>
                     <Image
                       source={imgStar}
                       resizeMode="contain"
                       style={{
-                        width: 30,
-                        height: 30,
+                        width: wp(30),
+                        height: hp(30),
                       }}
                     />
                     <ScrollView
@@ -548,7 +567,7 @@ function ModalCongrats({
                       style={{
                         position: 'relative',
                         overflow: 'hidden',
-                        height: moderateScale(36),
+                        height: hp(36),
                         left: -4,
                         width: 'auto',
                       }}>
@@ -560,8 +579,8 @@ function ModalCongrats({
                           key={itm}
                           style={{
                             fontWeight: 'bold',
-                            fontSize: moderateScale(26),
-                            height: moderateScale(36),
+                            fontSize: fixedFontSize(26),
+                            height: hp(36),
                             textAlignVertical: 'center',
                             textAlign: 'center',
                             width: 'auto',
@@ -574,8 +593,8 @@ function ModalCongrats({
                       style={{
                         flex: 1,
                         fontWeight: 'bold',
-                        fontSize: moderateScale(20),
-                        height: moderateScale(28),
+                        fontSize: fixedFontSize(20),
+                        height: hp(28),
                         left: -10,
                       }}>
                       XP
@@ -588,7 +607,7 @@ function ModalCongrats({
                       flex: 1,
                       position: 'relative',
                       overflow: 'hidden',
-                      height: moderateScale(38),
+                      height: hp(38),
                     }}>
                     {leveling &&
                       leveling
@@ -604,7 +623,7 @@ function ModalCongrats({
                               flexDirection: 'row',
                               flex: 1,
                               alignItems: 'center',
-                              height: moderateScale(38),
+                              height: hp(38),
                             }}>
                             <Image
                               source={{
@@ -612,16 +631,17 @@ function ModalCongrats({
                               }}
                               resizeMode="contain"
                               style={{
-                                width: 30,
-                                height: 30,
-                                marginRight: 10,
+                                width: wp(30),
+                                height: hp(30),
+                                marginRight: wp(10),
                               }}
                             />
-                            <View style={{width: 100, alignItems: 'center'}}>
+                            <View
+                              style={{width: wp(100), alignItems: 'center'}}>
                               <Text
                                 style={{
                                   fontWeight: 'bold',
-                                  fontSize: 16,
+                                  fontSize: fixedFontSize(16),
                                   textAlign: 'center',
                                 }}>
                                 {itm.desc}
@@ -632,19 +652,19 @@ function ModalCongrats({
                   </ScrollView>
                 </View>
 
-                <View style={{marginLeft: '20%', marginTop: 20}}>
+                <View style={{marginLeft: '20%', marginTop: wp(15)}}>
                   <ProgressBar
                     bgTheme={colorTheme}
                     levelingUser={levelingUser}
                   />
                 </View>
-
-                <Text
+<ScrollView style={{flex: 0, paddingBottom: 300}}>
+<Text
                   style={{
                     color: code_color.grey,
-                    marginTop: 40,
-                    fontSize: 14,
-                    marginHorizontal: 30,
+                    marginTop: wp(10),
+                    fontSize: fixedFontSize(14),
+                    marginHorizontal: wp(25),
                     lineHeight: 24,
                     textAlign: 'center',
                   }}>
@@ -653,7 +673,6 @@ function ModalCongrats({
                   Stay tuned for more exclusive features for our Experienced
                   Members!
                 </Text>
-              </View>
 
               <Button
                 title={'Got it'}
@@ -662,17 +681,25 @@ function ModalCongrats({
                   alignItems: 'center',
                   justifyContent: 'center',
                   // height: 52,
-                  padding: 10,
-                  borderRadius: 8,
-                  width: '90%',
-                  marginTop: 20,
+                  padding: wp(10),
+                  borderRadius: wp(8),
+                  // width: '90%',
+                  marginTop: wp(20),
+                  marginHorizontal: wp(20),
+                  marginBottom: wp(300),
                 }}
                 onPress={() => onGotIt()}
               />
+</ScrollView>
+               
+              </View>
+
             </View>
           </SafeAreaView>
         </View>
       </View>
+       
+    
       {showPopup && renderPopup()}
     </Modal>
   );

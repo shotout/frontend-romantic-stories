@@ -48,6 +48,7 @@ import {
 } from '../shared/request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isIphoneXorAbove } from '../utils/devices';
+import { fixedFontSize, hp, wp } from '../utils/screen';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -235,9 +236,9 @@ function MyTabs(props) {
   const position = useRef(new Animated.Value(0)).current;
   let height = 0;
   if (Platform.OS === 'ios') {
-    height = 80;
+    height = wp(75);
   } else {
-    height = 55;
+    height = hp(55)
   }
   const [visible, setVisible] = useState(true);
 
@@ -360,8 +361,8 @@ function MyTabs(props) {
                   <View
                     style={{
                       backgroundColor: 'black',
-                      padding: 20,
-                      borderRadius: 20,
+                      padding: wp(20),
+                      borderRadius: wp(20),
                       alignItems: 'center',
                     }}>
                     <Animated.View
@@ -374,7 +375,7 @@ function MyTabs(props) {
                       <Image
                         source={imgHearts}
                         resizeMode="contain"
-                        style={{width: 50, height: 50}}
+                        style={{width: wp(50), height: hp(50)}}
                       />
                     </Animated.View>
                     <Text
@@ -382,7 +383,7 @@ function MyTabs(props) {
                       style={{
                         color: code_color.white,
                         textAlign: 'center',
-                        fontSize: 15,
+                        fontSize: fixedFontSize(15),
                       }}>
                       {`Story ${title} &\nadded to library`}
                     </Text>
@@ -390,10 +391,10 @@ function MyTabs(props) {
                 </View>
               </Modal>
               {props?.stepsTutorial === 2 ? (
-                <View style={{position: 'absolute', bottom: -20}}>
+                <View style={{position: 'absolute', bottom: wp(-20)}}>
                   <AnimatedLottieView
                     source={love}
-                    style={{width: 100, height: 100}}
+                    style={{width: wp(100), height: hp(100)}}
                     autoPlay
                     duration={3000}
                     loop={true}
@@ -401,16 +402,16 @@ function MyTabs(props) {
                 </View>
               ) : null}
               {props.userStory?.is_collection === null ? (
-                <LoveOutline width={20} height={20} fill={props?.colorTheme} />
+                <LoveOutline  width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
               ) : (
-                <LoveSvg width={20} height={20} fill={props?.colorTheme} />
+                <LoveSvg  width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
               )}
               <Text
                 allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: 11,
-                  marginTop: 2,
+                  fontSize: fixedFontSize(11),
+                  marginTop: wp(2),
                 }}>
                 {props.userStory?.is_collection === null ? 'SAVE' : 'SAVED'}
               </Text>
@@ -444,13 +445,13 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <LibrarySvg width={20} height={20} fill={props?.colorTheme} />
+                  <LibrarySvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: 11,
-                      marginTop: 2,
+                      fontSize: fixedFontSize(11),
+                      marginTop: wp(2),
                     }}>
                     MY LIBRARY
                   </Text>
@@ -465,13 +466,13 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <LibrarySvg width={20} height={20} fill={props?.colorTheme} />
+                  <LibrarySvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: 11,
-                      marginTop: 2,
+                      fontSize: fixedFontSize(11),
+                      marginTop: wp(2),
                     }}>
                     MY LIBRARY
                   </Text>
@@ -509,13 +510,13 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <FontSvg width={20} height={20} fill={props?.colorTheme} />
+                  <FontSvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: 11,
-                      marginTop: 2,
+                      fontSize: fixedFontSize(11),
+                      marginTop: wp(2),
                     }}>
                     TEXT
                   </Text>
@@ -534,13 +535,13 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <FontSvg width={20} height={20} fill={props?.colorTheme} />
+                  <FontSvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: 11,
-                      marginTop: 2,
+                      fontSize: fixedFontSize(11),
+                      marginTop: wp(2),
                     }}>
                     TEXT
                   </Text>
@@ -577,13 +578,13 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <SettingSvg width={20} height={20} fill={props?.colorTheme} />
+                  <SettingSvg width={wp(20)} height={wp(20)} fill={props?.colorTheme} />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: 11,
-                      marginTop: 2,
+                      fontSize: fixedFontSize(11),
+                      marginTop: wp(2),
                     }}>
                     SETTINGS
                   </Text>
@@ -602,13 +603,13 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <SettingSvg width={20} height={20} fill={props?.colorTheme} />
+                  <SettingSvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: 11,
-                      marginTop: 2,
+                      fontSize: fixedFontSize(11),
+                      marginTop: wp(2),
                     }}>
                     SETTINGS
                   </Text>
@@ -639,8 +640,8 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 25,
-    height: 25,
+    width: wp(25),
+    height: wp(25),
   },
 });
 
