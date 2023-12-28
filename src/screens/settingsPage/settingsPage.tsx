@@ -49,7 +49,7 @@ import {BACKEND_URL} from '../../shared/static';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
 import ProgressBar from '../../components/ProgressBar';
-import { hp } from '../../utils/screen';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
 
 const SettingsPage = ({
   colorTheme,
@@ -125,7 +125,7 @@ const SettingsPage = ({
   ]);
 
   const header = () => (
-    <View style={{height: verticalScale(230)}}>
+    <View style={{height: hp(230)}}>
       <View
         style={{
           width: Dimensions.get('window').width,
@@ -144,22 +144,22 @@ const SettingsPage = ({
         />
         <View
           style={{
-            marginTop: moderateScale(80),
+            marginTop: wp(80),
           }}>
-          <View style={{marginTop: moderateScale(20)}}>
+          <View style={{marginTop: wp(20)}}>
             <Text
               allowFontScaling={false}
               style={{
                 fontWeight: 'bold',
                 textAlign: 'center',
-                fontSize: moderateScale(14),
+                fontSize: fixedFontSize(14),
               }}>
               {userProfile?.data?.name} •{' '}
               {levelingUser?.user_level?.level?.desc  ? levelingUser?.user_level?.level?.desc  : userProfile?.data?.user_level?.level?.desc} •{' '}
               {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginLeft: '30%', marginTop: moderateScale(50)}}>
+          <View style={{marginLeft: '30%', marginTop: wp(30)}}>
             <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} />
           </View>
         </View>
@@ -346,7 +346,7 @@ console.log(getAvatarFemale)
     <View
       style={{
         flex: 0,
-        height: hp(Dimensions.get('window').height - 170),
+        height: hp(Dimensions.get('window').height - 200),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

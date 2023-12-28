@@ -18,7 +18,7 @@ function SvgComponent(props) {
     profileUrl = '',
     style,
   } = props;
-  console.log(JSON.stringify(profileUrl.includes('3')))
+  
   return (
     <Svg
       width={width}
