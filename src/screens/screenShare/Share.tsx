@@ -63,6 +63,8 @@ import {
   imgQuote,
   imgShare,
   logo,
+  xp,
+  xpAndLevel,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -737,37 +739,33 @@ function ScreenShare({
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          <ImageBackground
-            source={imgBgXp}
-            resizeMode="contain"
+          <Image
+            source={xpAndLevel}
             style={{
               position: 'absolute',
-              top: '-5%',
+              top: 0,
+              left: 0,
               width: Dimensions.get('window').width,
               height: Dimensions.get('window').height,
-
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              paddingTop: 30,
-            }}>
-            <View style={{marginTop: 20}}>{renderProgress()}</View>
-
-            <Step8
-              handlePrev={() => {
-                handleSetSteps(stepsTutorial - 1);
-                setShowModal(false);
-              }}
-              handleNext={() => {
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false);
-                if (stepsTutorial === 8) {
-                  AsyncStorage.removeItem('isTutorial');
-                  handleSetSteps(0);
-                  goBack();
-                  handlePayment('onboarding');
-                }
-              }}
-            />
-          </ImageBackground>
+            }}
+          />
+          <View style={{marginTop: 20}}>{renderProgress()}</View>
+          <Step8
+            handlePrev={() => {
+              handleSetSteps(stepsTutorial - 1);
+              setShowModal(false);
+            }}
+            handleNext={() => {
+              handleSetSteps(stepsTutorial + 1);
+              setVisible(false);
+              if (stepsTutorial === 8) {
+                AsyncStorage.removeItem('isTutorial');
+                handleSetSteps(0);
+                goBack();
+                handlePayment('onboarding');
+              }
+            }}
+          />
         </SafeAreaView>
       );
     }

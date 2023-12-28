@@ -71,6 +71,8 @@ export const imgSearchNull = require('./searchNull.png');
 export const imgQuote = require('./Quote_cropped.gif');
 export const imgSelect = require('./select.gif');
 export const imgShare = require('./imageShare.png');
+export const xpAndLevel = require('./xpAndLevel.gif');
+export const xp = require('./xp.png');
 
 export const sticker1 = require('./../sticker/Asset8.png');
 export const sticker2 = require('./../sticker/Asset9.png');

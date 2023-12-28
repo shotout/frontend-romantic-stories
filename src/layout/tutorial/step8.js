@@ -9,7 +9,9 @@ import levelAnimate from '../../assets/lottie/level.json';
 const Step8 = ({handleNext, handlePrev}) => {
   // return <></>;
   return (
-    <View
+    <Animatable.View
+      animation={'fadeIn'}
+      delay={4000}
       style={{
         backgroundColor: '#3F58DD',
         borderRadius: 20,
@@ -93,7 +95,7 @@ const Step8 = ({handleNext, handlePrev}) => {
           onPress={handleNext}
         />
       </Animatable.View>
-    </View>
+    </Animatable.View>
   );
 };
 
