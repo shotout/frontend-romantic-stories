@@ -260,6 +260,7 @@ function ModalNewStory({
                     paddingVertical: moderateScale(14),
                     borderRadius: moderateScale(6),
                     marginTop: moderateScale(30),
+                    alignItems: 'center'
                   }}>
                   <View
                     style={{
@@ -271,7 +272,7 @@ function ModalNewStory({
                       paddingHorizontal: wp(20),
                       borderRadius: wp(10),
                       zIndex: 1,
-                      top: -wp(8),
+                      top: wp(-8),
                     }}>
                     <Text style={{color: code_color.black, fontWeight: 600}}>
                       FREE

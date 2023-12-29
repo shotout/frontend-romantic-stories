@@ -18,15 +18,15 @@ import TrackPlayer, {
   Event,
   State,
 } from 'react-native-track-player';
-
+import ModalShareStory from '../../components/modal-share-story';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import styles from './styles';
 import {code_color} from '../../utils/colors';
-import {bgGetUnlimit} from '../../assets/images';
+import {bgGetUnlimit, imgHearts} from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
-
+import LoveSvg from '../../assets/icons/bottom/love.jsx';
 import CloseIcon from '../../assets/icons/close';
 import LoveOutline from '../../assets/icons/loveOutline';
 import Prev5 from '../../assets/icons/prev5';
@@ -39,9 +39,14 @@ import {sizing} from '../../shared/styling';
 import {BACKEND_URL} from '../../shared/static';
 import StepHeader from '../../layout/step/stepHeader';
 import {Step3} from '../../layout/tutorial';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
+import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
+import {handleSetStory} from '../../store/defaultState/actions';
+import store from '../../store/configure-store';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [play, setPlay] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
   const {position, duration} = useProgress();
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState({});
@@ -55,7 +60,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     artwork: 'http://example.com/cover.png',
     duration: 10,
   };
-  console.log(userStory?.audio?.audio_en)
+  const [showModalShareStory, setShowModalShareStory] = useState(false);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -73,12 +78,11 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   };
 
   useEffect(() => {
-    
-    if(stepsTutorial === 3){
-    }else{
+    if (stepsTutorial === 3) {
+    } else {
       setLoading(true);
     }
-     
+
     fetchMedia();
   }, []);
 
@@ -94,26 +98,33 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     }
   };
   useEffect(() => {
-    if(stepsTutorial === 3){
-    }else{
+    if (stepsTutorial === 3) {
+    } else {
       setPlay(true);
     }
-    
   }, []);
   useEffect(() => {
     playing();
   }, [play]);
   useEffect(() => {
-    if(position != 0){
-      setLoading(false)
+    if (position != 0) {
+      setLoading(false);
     }
-  }, [position])
+    if(position != 0 && position === duration){
+      TrackPlayer.seekTo(0)
+      setLoading(false);
+      console.log(position, duration)
+      
+      
+      navigate('Main', {successListen: true});
+    }
+  }, [position, duration]);
 
-  async function setTrackInfo() {
-    const currentTrack = await TrackPlayer.getCurrentTrack();
-    const info = await TrackPlayer.getTrack(currentTrack)
-    setInfo(info);
+  const reset = async() => {
+    await TrackPlayer.reset();
   }
+
+ 
 
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan
@@ -123,11 +134,10 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
 
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
-      handlePrev()
+      handlePrev();
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
-
       handleSetSteps(3);
       navigate('Library');
     }
@@ -135,7 +145,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const handlePrev = () => {
     handleSetSteps(2);
     navigate('Main');
-  }
+  };
 
   const renderProgress = () => <StepHeader currentStep={4} />;
 
@@ -168,9 +178,77 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       );
     }
   };
+  const handleFetchSave = async () => {
+    if (userStory?.is_collection === null) {
+      const response = await addStory(userStory?.id);
+      if (response.status === 'success') {
+        try {
+          const resp = await getStoryDetail(userStory?.id);
+          store.dispatch(handleSetStory(resp.data));
+        } catch (error) {}
+      }
+      setVisibleModal(true);
+      setTimeout(() => {
+        setVisibleModal(false);
+      }, 2500);
+    } else {
+      const data = await deleteMyStory(userStory?.id);
+      if (data.status === 'success') {
+        try {
+          const resp = await getStoryDetail(userStory?.id);
+          store.dispatch(handleSetStory(resp.data));
+        } catch (error) {}
+      }
+    }
+  };
 
   return (
     <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
+      <ModalShareStory
+          storyData={userStory}
+          isVisible={showModalShareStory}
+          onClose={() => {
+            setShowModalShareStory(false);
+            // setSharedStory(null);
+          }}
+        />
+      <Modal
+        visible={visibleModal}
+        animationType="fade"
+        transparent
+        onDismiss={() => setVisibleModal(false)}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              backgroundColor: 'black',
+              padding: wp(20),
+              borderRadius: wp(20),
+              alignItems: 'center',
+            }}>
+            <Image
+              source={imgHearts}
+              resizeMode="contain"
+              style={{width: wp(30), height: hp(30)}}
+            />
+
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: fixedFontSize(15),
+              }}>
+              {'Story saved &\nadded to library'}
+            </Text>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.row}>
         <Text style={styles.textTitle} />
         <TouchableOpacity
@@ -254,7 +332,14 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           justifyContent: 'space-between',
           width: sizing.getDimensionWidth(0.9),
         }}>
-        <LoveOutline />
+        <TouchableOpacity onPress={() => handleFetchSave()}>
+        {userStory?.is_collection === null ? (
+          <LoveOutline width={wp(35)} height={hp(35)} />
+        ) : (
+          <LoveSvg width={wp(35)} height={hp(35)} fill={code_color.white} />
+        )}
+        </TouchableOpacity>
+       
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
           <Prev5 />
         </TouchableOpacity>
@@ -278,7 +363,10 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>
           <Next5 />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowModalShareStory(true)}>
         <ShareSvg width={30} height={30} />
+        </TouchableOpacity>
+       
       </View>
       {renderTutorial()}
       <Modal visible={loading} animationType="fade" transparent>
@@ -289,7 +377,13 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <View style={{backgroundColor: 'white', alignItems: 'center', padding: 20, borderRadius: 20}}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              alignItems: 'center',
+              padding: 20,
+              borderRadius: 20,
+            }}>
             <Text style={{fontSize: 16, color: code_color.blackDark}}>
               Loading
             </Text>

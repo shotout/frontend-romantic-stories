@@ -46,7 +46,6 @@ import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import * as Progress from 'react-native-progress';
 import ModalAudioUnlock from '../../components/modal-audio-unlock';
 import moment from 'moment';
-import { wp } from '../../utils/screen';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
@@ -74,6 +73,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
 
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
+
   useEffect(() => {
     handleThemeAvatar();
   }, []);
@@ -225,7 +225,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
           height: '100%',
           flex: 1,
           padding: moderateScale(20),
-          paddingBottom: wp(500),
+          paddingBottom: moderateScale(50),
         }}>
         <Text
           style={{

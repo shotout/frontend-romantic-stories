@@ -37,6 +37,7 @@ import styles from './styles';
 import {imgShare, logo} from '../../assets/images';
 
 function ModalShareStory({isVisible, onClose, storyData}) {
+  console.log(JSON.stringify(storyData))
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
   const [dinamicLink, setDinamicLink] = useState('');
@@ -46,7 +47,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
     try {
       const link = await dynamicLinks().buildShortLink(
         {
-          link: `https://romanticstory.page.link/HNyL?storyId=${storyData?.item?.id}`,
+          link: `https://romanticstory.page.link/HNyL?storyId=${storyData?.item?.id || storyData?.id}`,
           domainUriPrefix: 'https://romanticstory.page.link',
           android: {
             packageName: 'com.romanticstory',
@@ -77,8 +78,8 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const captureRef = useRef();
   const captureRefPost = useRef();
   const base64CaptureImage = useRef(null);
-  const sharedMessageWa = `The *EroTales App* has the best Romantic Stories ever! I just found this once: *${storyData?.item?.title_en}* Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
-  const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en} Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
+  const sharedMessageWa = `The *EroTales App* has the best Romantic Stories ever! I just found this once: *${storyData?.item?.title_en || storyData?.title_en}* Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
+  const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en} Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
 
   const handleClose = () => {
     onClose();
@@ -145,7 +146,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const handleShareInstagramDefault = async () => {
     handleShare('post');
     Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
+      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
     Alert.alert(
       '',
@@ -194,7 +195,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const handleShareFacebookDefault = async () => {
     handleShare('post');
     Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
+      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
     Alert.alert(
       '',
@@ -231,6 +232,9 @@ function ModalShareStory({isVisible, onClose, storyData}) {
         const renamedURI = uri.replace(
           nameToChange,
           `EroTales - ${storyData?.item?.title_en?.substring(
+            0,
+            10,
+          ) || storyData?.title_en?.substring(
             0,
             10,
           )} ${Date.now()}.png`,
@@ -354,7 +358,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               lineHeight: moderateScale(35),
               fontWeight: '700',
             }}>
-            {storyData?.item?.title_en}
+            {storyData?.item?.title_en || storyData?.title_en}
           </Text>
           <Text
             style={{
@@ -489,7 +493,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
             best Romantic Stories ever! I just found this once:
-            <Text style={{fontWeight: '700'}}>{storyData?.item?.title_en}</Text>
+            <Text style={{fontWeight: '700'}}>{storyData?.item?.title_en || storyData?.title_en}</Text>
           </Text>
 
           <View

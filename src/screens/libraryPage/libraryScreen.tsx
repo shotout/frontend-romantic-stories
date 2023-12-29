@@ -1230,7 +1230,11 @@ const LibraryScreen = ({
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <AddCollection width={20} />
+            <Image
+            source={libraryAdd}
+            resizeMode='contain'
+            style={{width: 20, height: 20, }}
+          />
           </Pressable>
 
           <Pressable

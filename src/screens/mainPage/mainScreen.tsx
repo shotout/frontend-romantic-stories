@@ -110,6 +110,7 @@ const MainScreen = ({
   handleStoriesRelate,
   handleLeveling,
   colorText
+  
 }) => {
   const [loadingOne, setLoadingOne] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -229,6 +230,16 @@ const MainScreen = ({
   //   },
   // ]);
 
+    useEffect(() => {
+      if(route?.params?.successListen){
+        if (userStory?.is_rating === null) {
+          setRating(true);
+        } else {
+          handleSuccessRating();
+        }
+        pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+      }
+    }, [route?.params])
   const checkingRead = pageNumber => {
     const existingEntry = readStory
       ? readStory.find(
