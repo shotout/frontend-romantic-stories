@@ -257,7 +257,7 @@ console.log(getAvatarFemale)
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: moderateScale(10), color: backgroundColor, flex: 1}}>
+            style={{marginLeft: moderateScale(10), color: code_color.white, flex: 1}}>
             {item.name}
           </Text>
           {item.name === 'Edit Profile' ? (
@@ -337,7 +337,7 @@ console.log(getAvatarFemale)
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: moderateScale(10), color: backgroundColor}}>
+            style={{marginLeft: moderateScale(10), color: code_color.white}}>
             {item.name}
           </Text>
         </Pressable>
@@ -440,7 +440,7 @@ console.log(getAvatarFemale)
                 style={{
                   marginLeft: moderateScale(10),
                   marginBottom: moderateScale(20),
-                  color: backgroundColor,
+                  color: code_color.white,
                 }}>
                 Privacy Policy
               </Text>
@@ -450,7 +450,7 @@ console.log(getAvatarFemale)
               onPress={() => Linking.openURL('https://erotalesapp.com/terms')}>
               <Text
                 allowFontScaling={false}
-                style={{marginLeft: moderateScale(10), color: backgroundColor}}>
+                style={{marginLeft: moderateScale(10), color: code_color.white}}>
                 Terms & Conditions
               </Text>
             </TouchableOpacity>

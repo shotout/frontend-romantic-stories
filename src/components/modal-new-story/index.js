@@ -256,10 +256,10 @@ function ModalNewStory({
                   style={{
                     backgroundColor: '#ED5267',
                     width: '90%',
-                    height: hp(50),
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                    marginTop: moderateScale(30),
+                    height: 50,
+                    paddingVertical: wp(14),
+                    borderRadius: wp(6),
+                    marginTop: wp(30),
                     alignItems: 'center'
                   }}>
                   <View

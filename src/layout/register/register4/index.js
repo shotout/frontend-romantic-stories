@@ -73,8 +73,8 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={wp(Dimensions.get('window').width / 1.2)}
-            height={hp(Dimensions.get('window').height / 2)}
+            width={Dimensions.get('window').width / 1.2}
+            height={Dimensions.get('window').height / 2}
             defaultIndex={1}
             data={dataAva}
             // scrollAnimationDuration={1000}

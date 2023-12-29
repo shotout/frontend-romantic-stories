@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     height: wp(80)
   },
   progressBar: {
-    height: wp(15),
+    height: wp(10),
     position: 'absolute',
     top: '10%',
     left: 0,
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     right: '70%',
     transform: [{ translateY: -5 }],
     position: 'absolute',
-    top: -4,
+    top: -7,
   },
   progressFilled: {
     ...StyleSheet.absoluteFillObject,

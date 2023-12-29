@@ -549,8 +549,9 @@ function ModalCongrats({
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       flex: 1,
-                      height: hp(36),
+                     
                     }}>
                     <Image
                       source={imgStar}
@@ -593,7 +594,6 @@ function ModalCongrats({
                         flex: 1,
                         fontWeight: 'bold',
                         fontSize: fixedFontSize(20),
-                        height: hp(28),
                         left: -10,
                       }}>
                       XP

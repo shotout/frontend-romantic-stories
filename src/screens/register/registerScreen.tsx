@@ -83,7 +83,7 @@ function RegisterScreen({
       'YYYY-MM-DD HH:mm',
     ),
     fcm_token: '',
-    category_id: 1,
+    category_id: 0,
     avatar_male: 2,
     avatar_female: 5,
     theme_id: 1,
@@ -483,7 +483,7 @@ function RegisterScreen({
                 onPress={() => {
                   stepRegister === 8
                     ? onSubmit()
-                    : setStepRegister(
+                    : stepRegister == 2 && values.name === '' ||  stepRegister == 3 && values.category_id === 0 ? null : setStepRegister(
                         stepRegister + (stepRegister === 6 ? 2 : 1),
                       );
                 }}
