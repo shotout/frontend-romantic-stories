@@ -152,7 +152,7 @@ const GojekProgressBar = ({levelingUser}) => {
       <View key={index} style={styles.levelContainer}>
         
         {/* Tambahkan titik di tengah level */}
-        {<View style={styles.point} />}
+        <View style={styles.point} />
         <Text style={styles.levelText}>{level?.desc}</Text>
       </View>
     ));
@@ -224,7 +224,8 @@ const styles = StyleSheet.create({
   levelText: {
     marginTop: 30,
     color: '#333',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginRight: 30
   },
   point: {
     width: wp(28),

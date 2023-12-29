@@ -23,6 +23,7 @@ import {
   Modal,
   SafeAreaView,
   Alert,
+  Platform,
 } from 'react-native';
 import {
   imgBgAvaTips,
@@ -58,7 +59,6 @@ import {
   addPastLevel,
   addPastStory,
   addStory,
-  checkDeviceRegister,
   getExploreStory,
   getListAvatarTheme,
   getStoryDetail,
@@ -299,6 +299,14 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
+    if(Platform.OS === 'android'){
+      const payload = {
+        _method: 'PATCH',
+        is_member: 3
+      };
+      updateProfile(payload);
+      reloadUserProfile();
+    }
     fetchCheckingDay();
   }, []);
 

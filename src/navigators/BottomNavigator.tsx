@@ -117,8 +117,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
         style={{
           position: 'absolute',
           top:
-            isBottomBarVisible === 'Settings'&&  isIphoneXorAbove() ? hp(-80) : isBottomBarVisible === 'Settings'  &&  !isIphoneXorAbove() ?  hp(-130) 
-              : isBottomBarVisible === 'Font' ? -Dimensions.get('window').height /  (!isIphoneXorAbove() ? 2.8  : 2): -Dimensions.get('window').height / 2.7,
+            isBottomBarVisible === 'Settings' ? hp(-80) 
+              : isBottomBarVisible === 'Font' && Platform.OS === 'android' ? -Dimensions.get('window').height / 2 : isBottomBarVisible === 'Font' && Platform.OS === 'ios' ? -Dimensions.get('window').height /  (!isIphoneXorAbove() ? 2.8  : 2): -Dimensions.get('window').height / 2.7,
           width: '100%',
           height: '100%',
           flex: 0,

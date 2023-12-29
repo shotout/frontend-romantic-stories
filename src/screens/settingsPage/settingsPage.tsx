@@ -123,7 +123,7 @@ const SettingsPage = ({
       status: false,
     },
   ]);
-console.log(levelingUser?.user_level?.level?.image?.url)
+
   const header = () => (
     <View style={{height: hp(230)}}>
       <View
@@ -348,7 +348,7 @@ console.log(getAvatarFemale)
     <View
       style={{
         flex: 0,
-        height: hp(Dimensions.get('window').height - 200),
+        height: hp(Dimensions.get('window').height - wp(210)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

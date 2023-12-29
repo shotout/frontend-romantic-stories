@@ -38,7 +38,7 @@ const Stack = createNativeStackNavigator();
 function Main({registerData, userProfile, props, handleSetStory}) {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
-    checkDevice();
+    // checkDevice();
     const checkFirebase = async () => {
       const fcmToken = await messaging().getToken();
     };
@@ -65,7 +65,6 @@ function Main({registerData, userProfile, props, handleSetStory}) {
 
   const checkDevice = async () => {
     const device = await DeviceInfo.getUniqueId();
-    console.log('masuk sini' + device);
     try {
       const res = await checkDeviceRegister({
         device_id: device,

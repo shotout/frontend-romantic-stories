@@ -448,34 +448,34 @@ const content_en = [
 
           <TouchableOpacity
             onPress={async () => {
-              // if (themeUser?.subscription?.plan?.id === 3) {
-              // navigate('Media');
-              // } else if (
-              //   themeUser?.subscription?.plan?.id === 2 &&
-              //   themeUser?.subscription?.audio_limit != 0 
-              // ) {
-              //   const payload = {
-              //     _method: 'PATCH',
-              //     audio_take: 1,
-              //   };
-              //   await updateProfile(payload);
-              //   reloadUserProfile();
-              //   navigate('Media');
-              // }  else if (
-              //   themeUser?.subscription?.plan?.id === 1 &&
-              //   themeUser?.subscription?.audio_limit != 0
-              // ) {
-              //   const payload = {
-              //     _method: 'PATCH',
-              //     audio_take: 1,
-              //   };
-              //   await updateProfile(payload);
-              //   reloadUserProfile();
-              //   navigate('Media');
-              // }
-              // else {
+              if (themeUser?.subscription?.plan?.id === 3) {
+              navigate('Media');
+              } else if (
+                themeUser?.subscription?.plan?.id === 2 &&
+                themeUser?.subscription?.audio_limit != 0 
+              ) {
+                const payload = {
+                  _method: 'PATCH',
+                  audio_take: 1,
+                };
+                await updateProfile(payload);
+                reloadUserProfile();
+                navigate('Media');
+              }  else if (
+                themeUser?.subscription?.plan?.id === 1 &&
+                themeUser?.subscription?.audio_limit != 0
+              ) {
+                const payload = {
+                  _method: 'PATCH',
+                  audio_take: 1,
+                };
+                await updateProfile(payload);
+                reloadUserProfile();
+                navigate('Media');
+              }
+              else {
                 setShow(true);
-              // }
+              }
             }}
             style={{
               padding: wp(5),

@@ -51,9 +51,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handlePayment} from '../../helpers/paywall';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import Purchasely from 'react-native-purchasely';
-import { SafeAreaView } from 'react-native';
-import { fixedFontSize, hp, wp } from '../../utils/screen';
-
+import {SafeAreaView} from 'react-native';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
 
 function RegisterScreen({
   handleSetProfile,
@@ -63,7 +62,7 @@ function RegisterScreen({
   handleSetFontFamily,
   handleSetStory,
   handleSetSteps,
-  userStory
+  userStory,
 }) {
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
@@ -99,7 +98,6 @@ function RegisterScreen({
     fetchDeviceId();
   }, []);
 
-
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
     const fcmToken = await messaging().getToken();
@@ -108,7 +106,7 @@ function RegisterScreen({
       ...values,
       device_id: data,
       fcm_token: fcmToken,
-      purchasely_id: id
+      purchasely_id: id,
     });
   };
 
@@ -162,22 +160,20 @@ function RegisterScreen({
   };
 
   const onSubmit = async () => {
-    
     await notifee.requestPermission();
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();
     try {
-     
       const payload = {
         name: values?.name,
-        gender:  values?.gender,
-        start:  values?.start,
+        gender: values?.gender,
+        start: values?.start,
         end: values?.end,
         device_id: data,
         fcm_token: values?.fcm_token,
         category_id: values?.category_id,
-        avatar_male:  values?.avatar_male,
+        avatar_male: values?.avatar_male,
         avatar_female: values?.avatar_female,
         theme_id: values?.theme_id,
         language_id: values?.language_id,
@@ -185,7 +181,7 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: id,
-        }
+      };
       const res = await postRegister(payload);
       handleSetProfile(res);
       handleSetBackground(res?.data?.theme?.bg_color);
@@ -212,13 +208,13 @@ function RegisterScreen({
       const payload = {
         _method: 'PATCH',
         name: values?.name,
-        gender:  values?.gender,
-        start:  values?.start,
+        gender: values?.gender,
+        start: values?.start,
         end: values?.end,
         device_id: device,
         fcm_token: values?.fcm_token,
         category_id: values?.category_id,
-        avatar_male:  values?.avatar_male,
+        avatar_male: values?.avatar_male,
         avatar_female: values?.avatar_female,
         theme_id: values?.theme_id,
         language_id: values?.language_id,
@@ -226,7 +222,7 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: values?.purchasely_id,
-        }
+      };
       await updateProfile(payload);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
@@ -280,7 +276,7 @@ function RegisterScreen({
           dataAvatar={dataAva}
           setAvatar={text =>
             handleChange(
-            'avatar_male',
+              'avatar_male',
               values.gender === 'female' ? text + 3 : text,
             )
           }
@@ -291,12 +287,7 @@ function RegisterScreen({
         <Register5
           gender={values.gender}
           dataAvatar={dataAva2}
-          setAvatar={text =>
-            handleChange(
-              'avatar_female',
-              text,
-            )
-          }
+          setAvatar={text => handleChange('avatar_female', text)}
         />
       );
     } else if (stepRegister === 6) {
@@ -325,100 +316,95 @@ function RegisterScreen({
         barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-    
-        {stepRegister != 8 ? (
-          <View
-            style={{
-              backgroundColor: code_color.headerBlack,
-              paddingTop: isIphoneXorAbove() ? wp(40) : 0,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: wp(20),
-                marginTop: wp(20),
-              }}>
-              {stepRegister > 1 ? (
-                <TouchableOpacity
-                  onPress={() => setStepRegister(stepRegister - 1)}>
-                  <Image source={backLeft} />
-                </TouchableOpacity>
-              ) : null}
 
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: code_color.white,
-                  textAlign: 'center',
-                  fontSize: fixedFontSize(18),
-                  flex: 1,
-                }}>
-                {stepRegister === 1
-                  ? titleHeader
-                  : stepRegister === 2
-                  ? 'Be part of the story'
-                  : stepRegister === 3
-                  ? 'Select your favorite genre'
-                  : stepRegister === 4
-                  ? 'Select your look'
-                  : stepRegister === 5
-                  ? 'Select your partner'
-                  : stepRegister === 6
-                  ? 'Customize your page'
-                  : stepRegister === 7
-                  ? 'For effective expression'
-                  : null}
-              </Text>
-            </View>
-            {stepRegister != 8 ? (
-              <HeaderStep currentStep={stepRegister} />
-            ) : null}
-          </View>
-        ) : (
+      {stepRegister != 8 ? (
+        <View
+          style={{
+            backgroundColor: code_color.headerBlack,
+            paddingTop: isIphoneXorAbove() ? wp(40) : 0,
+          }}>
           <View
             style={{
-              backgroundColor: code_color.white,
-              paddingTop: isIphoneXorAbove() ? wp(40) : 0,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: wp(20),
+              marginTop: wp(20),
             }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: wp(20),
-                marginTop: wp(20),
-              }}>
+            {stepRegister > 1 ? (
               <TouchableOpacity
-                onPress={() =>
-                  setStepRegister(stepRegister - (stepRegister === 8 ? 2 : 1))
-                }>
-                <BackLeft />
+                onPress={() => setStepRegister(stepRegister - 1)}>
+                <Image source={backLeft} />
               </TouchableOpacity>
-
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: code_color.white,
-                  textAlign: 'center',
-                  fontSize: fixedFontSize(18),
-                  flex: 1,
-                }}>
-                {stepRegister === 1
-                  ? titleHeader
-                  : stepRegister === 2
-                  ? 'Be part of the story'
-                  : ''}
-              </Text>
-            </View>
-            {stepRegister != 8 ? (
-              <HeaderStep currentStep={stepRegister} />
             ) : null}
+
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: fixedFontSize(18),
+                flex: 1,
+              }}>
+              {stepRegister === 1
+                ? titleHeader
+                : stepRegister === 2
+                ? 'Be part of the story'
+                : stepRegister === 3
+                ? 'Select your favorite genre'
+                : stepRegister === 4
+                ? 'Select your look'
+                : stepRegister === 5
+                ? 'Select your partner'
+                : stepRegister === 6
+                ? 'Customize your page'
+                : stepRegister === 7
+                ? 'For effective expression'
+                : null}
+            </Text>
           </View>
-        )}
-       <KeyboardAvoidingView
+          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+        </View>
+      ) : (
+        <View
+          style={{
+            backgroundColor: code_color.white,
+            paddingTop: isIphoneXorAbove() ? wp(40) : 0,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: wp(20),
+              marginTop: wp(20),
+            }}>
+            <TouchableOpacity
+              onPress={() =>
+                setStepRegister(stepRegister - (stepRegister === 8 ? 2 : 1))
+              }>
+              <BackLeft />
+            </TouchableOpacity>
+
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: fixedFontSize(18),
+                flex: 1,
+              }}>
+              {stepRegister === 1
+                ? titleHeader
+                : stepRegister === 2
+                ? 'Be part of the story'
+                : ''}
+            </Text>
+          </View>
+          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+        </View>
+      )}
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        >
+        style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
             allowFontScaling={false}
@@ -456,7 +442,14 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
-                  marginBottom: stepRegister === 1 && !isIphoneXorAbove() ? wp(10) : stepRegister === 1 ? wp(100) : stepRegister === 2 ? 0 : wp(40)
+                  marginBottom:
+                    stepRegister === 1 && !isIphoneXorAbove()
+                      ? wp(10)
+                      : stepRegister === 1
+                      ? wp(100)
+                      : stepRegister === 2
+                      ? 0
+                      : wp(40),
                 }}>
                 <Text
                   allowFontScaling={false}
@@ -501,7 +494,7 @@ function RegisterScreen({
                 }
               />
             ) : null}
-            
+
             {stepRegister === 8 ? (
               <TouchableOpacity
                 onPress={() => onSubmit()}
@@ -509,7 +502,7 @@ function RegisterScreen({
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
-                  marginBottom: wp(60)
+                  marginBottom: wp(60),
                 }}>
                 <Text
                   style={{
