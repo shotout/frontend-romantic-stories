@@ -74,6 +74,7 @@ import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {sizing} from '../../shared/styling';
 import {Step4} from '../../layout/tutorial';
 import LockFree from '../../assets/icons/lockFree';
+import AddCollection from '../../assets/icons/addCollection';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
@@ -193,11 +194,11 @@ const LibraryScreen = ({
     });
   };
   const showWatchAds = async () => {
-    setLoadingOne(true)
+    setLoadingOne(true);
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       setShowModalUnlock(false);
-      setLoadingOne(false)
+      setLoadingOne(false);
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
         handleNextStory(resp.data);
@@ -397,7 +398,9 @@ const LibraryScreen = ({
                     </TouchableOpacity>
                   </View>
                 </View>
-                <TouchableOpacity style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
+                <TouchableOpacity
+                  style={{marginHorizontal: 5}}
+                  onPress={() => startBounceAnimation()}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>
@@ -495,7 +498,9 @@ const LibraryScreen = ({
                   </TouchableOpacity>
                 </View>
               </View>
-              <TouchableOpacity style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
+              <TouchableOpacity
+                style={{marginHorizontal: 5}}
+                onPress={() => startBounceAnimation()}>
                 <DotSvg />
               </TouchableOpacity>
             </View>
@@ -505,7 +510,7 @@ const LibraryScreen = ({
     }
   };
   const renderContentSearch = item => {
-    console.log(item)
+    console.log(item);
     if (detail != null) {
       return (
         <View>
@@ -596,7 +601,9 @@ const LibraryScreen = ({
                     </TouchableOpacity>
                   </View>
                 </View>
-                <TouchableOpacity style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
+                <TouchableOpacity
+                  style={{marginHorizontal: 5}}
+                  onPress={() => startBounceAnimation()}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>
@@ -694,7 +701,9 @@ const LibraryScreen = ({
                   </TouchableOpacity>
                 </View>
               </View>
-              <TouchableOpacity  style={{marginHorizontal: 5}} onPress={() => startBounceAnimation()}>
+              <TouchableOpacity
+                style={{marginHorizontal: 5}}
+                onPress={() => startBounceAnimation()}>
                 <DotSvg />
               </TouchableOpacity>
             </View>
@@ -943,15 +952,15 @@ const LibraryScreen = ({
             top: '-62%',
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
-             <View
-                    style={{
-                      backgroundColor: 'rgba(0,0,0,0.3)',
-                      opacity: 1,
-                      marginTop: 5,
-                    }}>
+          <View
+            style={{
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              opacity: 1,
+              marginTop: 5,
+            }}>
             {renderProgress()}
-            </View>
-         
+          </View>
+
           <Step4
             handleNext={() => {
               handleSetSteps(3 + 1);
@@ -1046,58 +1055,57 @@ const LibraryScreen = ({
       </Text>
 
       <SwipeListView
-                data={data?.most_share}
-                renderItem={item => renderContentSearch(item)}
-                swipeGestureEnded={(_data, _rowMap) => {
-                  stopAnimation();
-                }}
-                renderHiddenItem={(_data, _rowMap) => (
-                  <View style={styles.rowBack}>
-                    {detail != null ? null : (
-                      <TouchableOpacity
-                        style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                        onPress={() => {
-                          setId(_data?.item?.id);
-                          setShowModal(true);
-                        }}>
-                        <LibraryAddSvg />
-                      </TouchableOpacity>
-                    )}
-                    <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightCenter]}
-                      onPress={() => {
-                        setSharedStory(_data);
-                        setShowModalShareStory(true);
-                      }}>
-                      <ShareSvg />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightBtnRight]}
-                      onPress={() => {
-                        Alert.alert(
-                          'Are you sure you want to remove this story from your library?',
-                          '',
-                          [
-                            {
-                              text: 'Yes',
-                              onPress: () => {
-                                deleteRowStory(_data);
-                              },
-                            },
-                            {text: 'Cancel', onPress: () => {}},
-                          ],
-                        );
-                      }}>
-                      <DeleteSvg />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                rightOpenValue={-180}
-                previewRowKey={'0'}
-                previewOpenValue={-40}
-                previewOpenDelay={3000}
-              />
-
+        data={data?.most_share}
+        renderItem={item => renderContentSearch(item)}
+        swipeGestureEnded={(_data, _rowMap) => {
+          stopAnimation();
+        }}
+        renderHiddenItem={(_data, _rowMap) => (
+          <View style={styles.rowBack}>
+            {detail != null ? null : (
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                onPress={() => {
+                  setId(_data?.item?.id);
+                  setShowModal(true);
+                }}>
+                <LibraryAddSvg />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              style={[styles.backRightBtn, styles.backRightCenter]}
+              onPress={() => {
+                setSharedStory(_data);
+                setShowModalShareStory(true);
+              }}>
+              <ShareSvg />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.backRightBtn, styles.backRightBtnRight]}
+              onPress={() => {
+                Alert.alert(
+                  'Are you sure you want to remove this story from your library?',
+                  '',
+                  [
+                    {
+                      text: 'Yes',
+                      onPress: () => {
+                        deleteRowStory(_data);
+                      },
+                    },
+                    {text: 'Cancel', onPress: () => {}},
+                  ],
+                );
+              }}>
+              <DeleteSvg />
+            </TouchableOpacity>
+          </View>
+        )}
+        rightOpenValue={-180}
+        previewRowKey={'0'}
+        previewOpenValue={-40}
+        previewOpenDelay={3000}
+      />
     </ScrollView>
   );
 
@@ -1108,12 +1116,12 @@ const LibraryScreen = ({
     //   selectedStory?.id,
     // );
     // if (data) {
-      setLoading(false);
-      setShowModalUnlock(false);
-      setShowModalNewStory(false);
-      const resp = await getStoryDetail(selectedStory?.id);
-      handleNextStory(resp.data);
-      setShowModalSuccessPurchase(true)
+    setLoading(false);
+    setShowModalUnlock(false);
+    setShowModalNewStory(false);
+    const resp = await getStoryDetail(selectedStory?.id);
+    handleNextStory(resp.data);
+    setShowModalSuccessPurchase(true);
     // } else {
     //   setLoading(false);
     //   setShowModalUnlock(false);
@@ -1212,8 +1220,17 @@ const LibraryScreen = ({
             alignItems: 'center',
             marginHorizontal: 10,
           }}>
-          <Pressable onPress={() => setShowModalNew(true)}>
-            <Image source={libraryAdd} />
+          <Pressable
+            onPress={() => setShowModalNew(true)}
+            style={{
+              height: 30,
+              width: 30,
+              backgroundColor: code_color.white,
+              borderRadius: 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <AddCollection width={20} />
           </Pressable>
 
           <Pressable
