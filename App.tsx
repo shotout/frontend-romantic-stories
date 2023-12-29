@@ -102,7 +102,7 @@ function App({ userProfile }) {
       try {
         
         setTimeout(() => {
-          navigate('Onboard');
+          navigate('Bottom');
         }, 500);
       } catch (error) {
         setTimeout(() => {
