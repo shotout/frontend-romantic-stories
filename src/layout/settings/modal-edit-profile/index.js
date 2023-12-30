@@ -183,7 +183,7 @@ function ModalEditProfile({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: edit.value === '/assets/images/avatars/5.png' ? -7 : 0,
+                    right: edit.value === '/assets/images/avatars/5.png' ? -7 :  edit.value  === '/assets/images/avatars/1.png' ? 2 : 0,
                   }}
                 />
               </View>
@@ -208,7 +208,7 @@ function ModalEditProfile({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right:  edit.value === '/assets/images/avatars/5.png' ? -7 : 0,
+                    right:  edit.value === '/assets/images/avatars/5.png' ? -7 : edit.value  === '/assets/images/avatars/1.png' ? 2 : 0,
                   }}
                 />
               </View>

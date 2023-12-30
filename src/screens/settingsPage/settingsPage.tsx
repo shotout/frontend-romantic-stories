@@ -246,7 +246,7 @@ const SettingsPage = ({
         break;
     }
   };
-console.log(getAvatarFemale)
+console.log(getAvatarMale)
   const listMenu = () => (
     <View>
       {menu.map((item, i) => (
@@ -286,12 +286,12 @@ console.log(getAvatarFemale)
                   }}
                   style={{
                     width: 40,
-                    height: 150,
+                    height: 160,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : 0,
+                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 2 : 0,
                   }}
                 />
               </View>
@@ -313,12 +313,12 @@ console.log(getAvatarFemale)
                   }}
                   style={{
                     width: 40,
-                    height: 150,
+                    height: 160,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
-                    top: moderateScale(3),
-                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? moderateScale(-7) : moderateScale(0),
+                    top:3,
+                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 2 : 0,
                   }}
                 />
               </View>
@@ -348,7 +348,7 @@ console.log(getAvatarFemale)
     <View
       style={{
         flex: 0,
-        height: hp(Dimensions.get('window').height - wp(210)),
+        height: wp(Dimensions.get('window').height - wp(210)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

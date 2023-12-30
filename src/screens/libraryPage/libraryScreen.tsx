@@ -87,6 +87,7 @@ import * as IAP from 'react-native-iap';
 import {backLeft} from '../../assets/icons';
 import {Animated} from 'react-native';
 import {TouchableOpacityBase} from 'react-native';
+import { hp, wp } from '../../utils/screen';
 const LibraryScreen = ({
   colorTheme,
   handleSomeAction,
@@ -948,8 +949,8 @@ const LibraryScreen = ({
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            top: '-62%',
+            height: Dimensions.get('window').height + 100,
+            top:  (wp(-70) - Dimensions.get('window').height / 3),
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
           <View
@@ -1166,7 +1167,7 @@ const LibraryScreen = ({
           navigate('Main');
         }}
       />
-      <View style={{flex: 0, height: 500, backgroundColor: bgTheme}}>
+      <View style={{flex: 0, height: wp(480), backgroundColor: bgTheme}}>
         <ModalLibrary
           isVisible={showModal}
           onClose={() => {

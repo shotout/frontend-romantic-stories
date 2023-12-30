@@ -117,7 +117,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
         style={{
           position: 'absolute',
           top:
-            isBottomBarVisible === 'Settings' ? hp(-80) 
+            isBottomBarVisible === 'Settings' ? -151
               : isBottomBarVisible === 'Font' && Platform.OS === 'android' ? -Dimensions.get('window').height / 2 : isBottomBarVisible === 'Font' && Platform.OS === 'ios' ? -Dimensions.get('window').height /  (!isIphoneXorAbove() ? 2.8  : 2): -Dimensions.get('window').height / 2.7,
           width: '100%',
           height: '100%',
@@ -129,8 +129,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           route={undefined}
           colorText={userProfile?.colorText}
         />
-        {isBottomBarVisible === 'Settings' ? 
-         <View style={{ position: 'absolute', top: wp(-50), backgroundColor: 'rgba(0,0,0,0.5)', flex: 0, width: '100%', height: hp(200), alignItems: 'center' }}>
+        {isBottomBarVisible != 'Main'  ? 
+         <View style={{ position: 'absolute', top:  isBottomBarVisible === 'Settings' ? 10 : 150,  flex: 0, width: '100%', height: wp(200), alignItems: 'center' }}>
           <TouchableOpacity onPress={() => handleSomeAction('Main')} style={{ backgroundColor: code_color.white, position: 'absolute', top: wp(70), left: '30%', paddingHorizontal: wp(20), paddingVertical: wp(5), borderRadius: wp(20), alignItems: 'center'}}>
           <Text allowFontScaling={false} style={{textAlign: 'center'}}>{`Tap here to get back\n to the Story`}</Text>
           </TouchableOpacity>
