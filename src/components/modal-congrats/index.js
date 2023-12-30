@@ -483,7 +483,7 @@ function ModalCongrats({
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
-                        {newXp ? newXp : 0} XP
+                        {newXp - currentXp} XP
                       </Animatable.Text>
                     </View>
                   </Animatable.View>
