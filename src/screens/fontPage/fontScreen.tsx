@@ -54,6 +54,7 @@ import {
   loadRewardedFont,
 } from '../../helpers/loadReward';
 import LoadingFullScreen from '../../components/loading-fullscreen';
+import { wp } from '../../utils/screen';
 const adUnitId = getRewardedFontThemeID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -273,7 +274,7 @@ const FontScreen = ({
     };
   }, []);
   return (
-    <View style={{flex: 0, height: 400, backgroundColor: bgTheme}}>
+    <View style={{flex: 0, height: wp(375), backgroundColor: bgTheme}}>
       <ModalUnlockPremium
         isVisible={modalUnlockBg}
         onClose={() => setModalUnlockBg(false)}

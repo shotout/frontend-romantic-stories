@@ -24,6 +24,7 @@ import {
   SafeAreaView,
   Alert,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import {
   imgBgAvaTips,
@@ -84,6 +85,7 @@ import store from '../../store/configure-store';
 import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
 import { fixedFontSize, wp } from '../../utils/screen';
+import Speaker from '../../assets/icons/speaker';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -729,6 +731,7 @@ const MainScreen = ({
                   paddingTop: wp(20),
                   paddingHorizontal: wp(20),
                 }}>
+                
                 {renderFactItem({
                   item: dtb,
                   index,
@@ -928,7 +931,11 @@ const MainScreen = ({
       } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
-     
+     if(activeStep === 5 || stepsTutorial == 5){
+      setTimeout(() => {
+        handleNext()
+      }, 5000);
+     }
         return (
           <SafeAreaView
             onTouchStart={handleTouchStart}
@@ -1089,6 +1096,15 @@ const MainScreen = ({
     if (isPremiumStory || isPremiumAudio) {
       const res = await getStoryDetail(userStory?.id);
       setBook(res.data);
+      const response = await getStoryList();
+            handleNextStory(response.data);
+      let params = {
+        search: '',
+        column: 'title_en',
+        dir: 'asc',
+      };
+      const resp = await getExploreStory(params);
+      handleStoriesRelate(resp);
       setShowModal(true);
     } else {
       setShowModalNewStory(true);
