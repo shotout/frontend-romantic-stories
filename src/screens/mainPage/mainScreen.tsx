@@ -1188,6 +1188,7 @@ const MainScreen = ({
             restart={undefined}
             edit={undefined}
             readLater={readLater}
+            isPremium={isPremiumStory || isPremiumAudio}
             handleRead={() => handleRead()}
           />
           <ModalStoryRating
