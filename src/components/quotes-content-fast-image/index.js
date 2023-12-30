@@ -33,7 +33,6 @@ import {reloadUserProfile} from '../../utils/user';
 import {useFocusEffect} from '@react-navigation/native';
 import TrackPlayer from 'react-native-track-player';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
-
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -51,11 +50,13 @@ export default function QuotesContent({
   titleStory,
   titleCategory,
   colorText,
+  handleListen,
+  show,
+  setShow
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
-  const [show, setShow] = useState(false);
   const [color, setSolor] = useState(code_color.blackDark);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -276,6 +277,7 @@ const content_en = [
     }
   };
 
+  
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
@@ -448,34 +450,8 @@ const content_en = [
 
           <TouchableOpacity
             onPress={async () => {
-              if (themeUser?.subscription?.plan?.id === 3) {
-              navigate('Media');
-              } else if (
-                themeUser?.subscription?.plan?.id === 2 &&
-                themeUser?.subscription?.audio_limit != 0 
-              ) {
-                const payload = {
-                  _method: 'PATCH',
-                  audio_take: 1,
-                };
-                await updateProfile(payload);
-                reloadUserProfile();
-                navigate('Media');
-              }  else if (
-                themeUser?.subscription?.plan?.id === 1 &&
-                themeUser?.subscription?.audio_limit != 0
-              ) {
-                const payload = {
-                  _method: 'PATCH',
-                  audio_take: 1,
-                };
-                await updateProfile(payload);
-                reloadUserProfile();
-                navigate('Media');
-              }
-              else {
-                setShow(true);
-              }
+              handleListen()
+              
             }}
             style={{
               padding: wp(5),

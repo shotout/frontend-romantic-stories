@@ -6,7 +6,6 @@ import {
 
 // Get Responsive Hight DP
 export const wp = (px) => {
-  console.log(Dimensions.get('window').height)
   let resized = 0;
   if (
     Dimensions.get('window').height >= 400

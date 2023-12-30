@@ -85,10 +85,13 @@ const ExploreLibraryScreen = ({
   const [loadingAds, setLoadingAds] = useState(false);
 
   const showWatchAds = async () => {
+    setLoadingAds(true)
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       setShowModalUnlock(false);
+      setLoadingAds(false)
       setTimeout(async () => {
+        
         const resp = await getStoryDetail(selectedStory?.id);
         handleNextStory(resp.data);
         setShowUnlockedStory(true);
@@ -304,6 +307,7 @@ const ExploreLibraryScreen = ({
         onUnlock={() => {
           handleNative();
         }}
+        loadingOne={loadingAds}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
       />
