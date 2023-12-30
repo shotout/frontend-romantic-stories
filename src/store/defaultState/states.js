@@ -47,6 +47,7 @@ const INITIAL_STATE = {
   backgroundColor: null,
   isPremium: false,
   readStory: null,
+  listenStory: null,
   nextStory: null,
   relateStory: null,
   levelingUser: null,
@@ -264,6 +265,13 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         readStory: action.payload,
       };
+    case types.SET_LISTEN_STORY:
+      console.log(action.payload);
+      return {
+        ...state,
+        listenStory: action.payload,
+      };
+
     case types.SET_STORY_RELATE_DATA:
       return {
         ...state,
@@ -337,7 +345,7 @@ export default (state = INITIAL_STATE, action) => {
         isPremium: action.payload,
       };
     case types.SET_COLOR_TEXT:
-      console.log('setttttttt'+action.payload)
+      console.log('setttttttt' + action.payload);
       return {
         ...state,
         colorText: action.payload,

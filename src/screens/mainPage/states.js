@@ -8,6 +8,7 @@ export default states => ({
   colorTheme: states.defaultState.colorTheme,
   stepsTutorial: states.defaultState.stepsTutorial,
   readStory: states.defaultState.readStory,
+  listenStory:  states.defaultState.listenStory,
   nextStory: states.defaultState.nextStory,
   levelingUser: states.defaultState.levelingUser,
   colorText: states.defaultState.colorText,

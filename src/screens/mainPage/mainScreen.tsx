@@ -28,26 +28,14 @@ import {
 } from 'react-native';
 import {
   imgBgAvaTips,
-  imgBgContent,
   imgBgTips,
   imgLoveLeft,
   imgLoveRight,
   imgSelect,
-  imgSelectGift,
-  imgStep1,
-  imgStep2,
-  imgStep5,
 } from '../../assets/images';
-import {code_color} from '../../utils/colors';
-import i18n from '../../i18n/index';
-import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {
-  PanGestureHandler,
-  State,
-  TapGestureHandler,
-} from 'react-native-gesture-handler';
+import {State} from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
 import {sizing} from '../../utils/styling';
@@ -73,7 +61,6 @@ import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import ModalGetPremium from '../../components/modal-get-premium';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {moderateScale} from 'react-native-size-matters';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
 import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
@@ -84,7 +71,7 @@ import {Step1, Step2, Step3, Step5} from '../../layout/tutorial';
 import store from '../../store/configure-store';
 import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
-import { fixedFontSize, wp } from '../../utils/screen';
+import {fixedFontSize, wp} from '../../utils/screen';
 import Speaker from '../../assets/icons/speaker';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
@@ -111,8 +98,9 @@ const MainScreen = ({
   nextStory,
   handleStoriesRelate,
   handleLeveling,
-  colorText
-  
+  colorText,
+  listenStory,
+  handleListenStory,
 }) => {
   const [loadingOne, setLoadingOne] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -124,6 +112,7 @@ const MainScreen = ({
     visible: false,
     step: stepsTutorial,
   });
+  const [show, setShow] = useState(false);
   const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -232,16 +221,16 @@ const MainScreen = ({
   //   },
   // ]);
 
-    useEffect(() => {
-      if(route?.params?.successListen){
-        if (userStory?.is_rating === null) {
-          setRating(true);
-        } else {
-          handleSuccessRating();
-        }
-        pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+  useEffect(() => {
+    if (route?.params?.successListen) {
+      if (userStory?.is_rating === null) {
+        setRating(true);
+      } else {
+        handleSuccessRating();
       }
-    }, [route?.params])
+      pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+    }
+  }, [route?.params]);
   const checkingRead = pageNumber => {
     const existingEntry = readStory
       ? readStory.find(
@@ -263,6 +252,10 @@ const MainScreen = ({
     const resp = await getStoryList();
     handleSetStory(resp.data);
   };
+
+  useEffect(() => {
+    console.log(JSON.stringify(listenStory));
+  }, [listenStory]);
 
   useEffect(() => {
     // fetchStory()
@@ -312,10 +305,10 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
-    if(Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
       const payload = {
         _method: 'PATCH',
-        is_member: 3
+        is_member: 3,
       };
       updateProfile(payload);
       reloadUserProfile();
@@ -388,7 +381,6 @@ const MainScreen = ({
       !(isPremiumStory || isPremiumAudio)
     ) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-
       // setShowModalCongrats(true);
     }
     if (pageNumber === dataBook?.content_en?.length - 1) {
@@ -623,7 +615,100 @@ const MainScreen = ({
     }
   }, [visible]);
 
+  const checkingListen = async () => {
+    if (listenStory === null) {
+     if (
+        userProfile?.data?.subscription?.plan?.id === 2 &&
+        userProfile?.data?.subscription?.audio_limit != 0
+      ) {
+        const payload = {
+          _method: 'PATCH',
+          audio_take: 1,
+        };
+        await updateProfile(payload);
+        reloadUserProfile();
+        navigate('Media');
+      } else if (
+        userProfile?.data?.subscription?.plan?.id === 1 &&
+        userProfile?.data?.subscription?.audio_limit != 0
+      ) {
+        const payload = {
+          _method: 'PATCH',
+          audio_take: 1,
+        };
+        await updateProfile(payload);
+        reloadUserProfile();
+        navigate('Media');
+      } else {
+        setShow(true);
+      }
+      let data = [
+        {
+          id: dataBook.id,
+        },
+      ];
+      handleListenStory(data);
+    } else {
+      const existingEntry = listenStory
+        ? listenStory.find((item: any) => item?.id === dataBook.id)
+        : undefined;
+      if (!existingEntry) {
+        const newData = {
+          id: dataBook.id,
+        };
 
+        // Dispatch action to update readStory in the Redux store
+        handleListenStory([...listenStory, newData]);
+        if (
+          userProfile?.data?.subscription?.plan?.id === 2 &&
+          userProfile?.data?.subscription?.audio_limit != 0
+        ) {
+          const payload = {
+            _method: 'PATCH',
+            audio_take: 1,
+          };
+          await updateProfile(payload);
+          reloadUserProfile();
+          navigate('Media');
+        } else if (
+          userProfile?.data?.subscription?.plan?.id === 1 &&
+          userProfile?.data?.subscription?.audio_limit != 0
+        ) {
+          const payload = {
+            _method: 'PATCH',
+            audio_take: 1,
+          };
+          await updateProfile(payload);
+          reloadUserProfile();
+          navigate('Media');
+        } else {
+          setShow(true);
+        }
+      }else{
+        if (
+          userProfile?.data?.subscription?.plan?.id === 2 &&
+          userProfile?.data?.subscription?.audio_limit != 0
+        ) {
+          navigate('Media');
+        } else if (
+          userProfile?.data?.subscription?.plan?.id === 1 &&
+          userProfile?.data?.subscription?.audio_limit != 0
+        ) {
+          navigate('Media');
+        } else {
+          setShow(true);
+        }
+      }
+    }
+  };
+  const handleListening = async () => {
+    if (userProfile?.data?.subscription?.plan?.id === 3) {
+      navigate('Media');
+    } else {
+      checkingListen();
+    }
+   
+  };
 
   const renderFactItem = ({item, index, title, category, colorText}) => {
     return (
@@ -644,6 +729,9 @@ const MainScreen = ({
           source={undefined}
           titleStory={title}
           titleCategory={category}
+          show={show}
+          setShow={() => setShow(false)}
+          handleListen={() => handleListening()}
         />
         {isRippleAnimate && (
           <Animatable.View
@@ -731,13 +819,12 @@ const MainScreen = ({
                   paddingTop: wp(20),
                   paddingHorizontal: wp(20),
                 }}>
-                
                 {renderFactItem({
                   item: dtb,
                   index,
                   title: dataBook.title_en,
                   category: dataBook?.category?.name,
-                  colorText: colorText
+                  colorText: colorText,
                 })}
               </View>
             );
@@ -931,11 +1018,11 @@ const MainScreen = ({
       } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
-     if(activeStep === 5 || stepsTutorial == 5){
-      setTimeout(() => {
-        handleNext()
-      }, 5000);
-     }
+        if (activeStep === 5 || stepsTutorial == 5) {
+          setTimeout(() => {
+            handleNext();
+          }, 5000);
+        }
         return (
           <SafeAreaView
             onTouchStart={handleTouchStart}
@@ -948,7 +1035,9 @@ const MainScreen = ({
 
               backgroundColor: 'rgba(0,0,0,0.3)',
             }}>
-            {activeStep != 5 && stepsTutorial != 5  && stepsTutorial != 3  ? renderProgress() : null}
+            {activeStep != 5 && stepsTutorial != 5 && stepsTutorial != 3
+              ? renderProgress()
+              : null}
             {activeStep === 1 ? (
               <Step1 handleNext={handleNext} />
             ) : activeStep === 5 || stepsTutorial == 5 ? (
@@ -1097,7 +1186,7 @@ const MainScreen = ({
       const res = await getStoryDetail(userStory?.id);
       setBook(res.data);
       const response = await getStoryList();
-            handleNextStory(response.data);
+      handleNextStory(response.data);
       let params = {
         search: '',
         column: 'title_en',
