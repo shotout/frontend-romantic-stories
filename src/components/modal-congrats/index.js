@@ -551,7 +551,6 @@ function ModalCongrats({
                       alignItems: 'center',
                       justifyContent: 'center',
                       flex: 1,
-                     
                     }}>
                     <Image
                       source={imgStar}
@@ -640,7 +639,7 @@ function ModalCongrats({
                               <Text
                                 style={{
                                   fontWeight: 'bold',
-                                  fontSize: fixedFontSize(16),
+                                  fontSize: fixedFontSize(15),
                                   textAlign: 'center',
                                 }}>
                                 {itm.desc}
@@ -651,7 +650,11 @@ function ModalCongrats({
                   </ScrollView>
                 </View>
 
-                <View style={{ marginLeft: '10%', height: wp(80)}}>
+                <View
+                  style={{
+                    marginLeft: '10%',
+                    height: 90,
+                  }}>
                   <ProgressBar levelingUser={levelingUser} />
                 </View>
                 <ScrollView style={{flex: 0, paddingBottom: 300}}>

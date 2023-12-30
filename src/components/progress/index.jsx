@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: wp(80)
+    height: 90,
   },
   progressBar: {
     height: wp(10),
