@@ -420,63 +420,7 @@ const content_en = [
             />
           </View>
         ) : null}
-        <View style={{flexDirection: 'row', flex: 0, alignItems: 'center'}}>
-          <View style={{flex: 1}}>
-            <Text
-              allowFontScaling={false}
-              style={{
-                textAlign: 'left',
-                fontSize: fixedFontSize(Number(fontSize)),
-                fontFamily: fontFamily,
-                marginBottom: wp(5),
-                color:
-                  bg === '#2C3439' ? code_color.white : code_color.blackDark,
-              }}>
-              {titleCategory}
-            </Text>
-            <Text
-              allowFontScaling={false}
-              style={{
-                textAlign: 'left',
-                fontWeight: 'bold',
-                fontSize:fixedFontSize(Number(fontSize) + 2),
-                fontFamily: fontFamily,
-                color:
-                  bg === '#2C3439' ? code_color.white : code_color.blackDark,
-              }}>
-              {titleStory}
-            </Text>
-          </View>
-
-          <TouchableOpacity
-            onPress={async () => {
-              handleListen()
-              
-            }}
-            style={{
-              padding: wp(5),
-              paddingHorizontal: wp(10),
-              borderRadius: wp(20),
-              backgroundColor: bgTheme,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Speaker />
-            <Text
-              allowFontScaling={false}
-              style={{
-                textAlign: 'center',
-                fontWeight: 'bold',
-                fontSize: fixedFontSize(Number(fontSize)),
-                fontFamily: fontFamily,
-                color: code_color.white,
-                marginLeft: wp(5),
-              }}>
-              Listen
-            </Text>
-          </TouchableOpacity>
-        </View>
+      
 
         <View />
         <View style={{borderWidth: 1, borderColor: bgTheme, marginTop: wp(10)}} />

@@ -120,6 +120,7 @@ export default class Gestures extends Component {
     });
   }
 
+
   componentDidMount() {
     const { style } = this.state;
     this.prevStyles = style;

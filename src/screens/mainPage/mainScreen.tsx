@@ -73,6 +73,8 @@ import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
 import {fixedFontSize, wp} from '../../utils/screen';
 import Speaker from '../../assets/icons/speaker';
+import {code_color} from '../../utils/colors';
+import {isIphoneXorAbove} from '../../utils/devices';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -570,7 +572,7 @@ const MainScreen = ({
           setActiveStep(1);
           handleSetSteps(1);
         }, 3500);
-      } else if (activeStep === 2) {
+      } else if (activeStep === 2 || activeStep === 3) {
         setFinishTutorial(false);
         setIsRippleAnimate(true);
         setTimeout(() => {
@@ -581,8 +583,8 @@ const MainScreen = ({
           navigate('Media');
         }, 2500);
         // navigate('Media');
-      } else if (activeStep === 3) {
-        navigate('Library');
+      // } else if (activeStep === 3) {
+      //   navigate('Library');
       } else if (activeStep === 4) {
         navigate('ExploreLibrary');
       } else if (
@@ -617,7 +619,7 @@ const MainScreen = ({
 
   const checkingListen = async () => {
     if (listenStory === null) {
-     if (
+      if (
         userProfile?.data?.subscription?.plan?.id === 2 &&
         userProfile?.data?.subscription?.audio_limit != 0
       ) {
@@ -684,7 +686,7 @@ const MainScreen = ({
         } else {
           setShow(true);
         }
-      }else{
+      } else {
         if (
           userProfile?.data?.subscription?.plan?.id === 2 &&
           userProfile?.data?.subscription?.audio_limit != 0
@@ -707,7 +709,6 @@ const MainScreen = ({
     } else {
       checkingListen();
     }
-   
   };
 
   const renderFactItem = ({item, index, title, category, colorText}) => {
@@ -733,22 +734,7 @@ const MainScreen = ({
           setShow={() => setShow(false)}
           handleListen={() => handleListening()}
         />
-        {isRippleAnimate && (
-          <Animatable.View
-            duration={200}
-            animation={'fadeIn'}
-            style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
-            <AnimatedLottieView
-              source={rippleAnimate}
-              style={{
-                width: sizing.getDimensionWidth(0.8),
-              }}
-              autoPlay
-              duration={4000}
-              loop={false}
-            />
-          </Animatable.View>
-        )}
+        
       </>
     );
   };
@@ -1219,44 +1205,75 @@ const MainScreen = ({
             backgroundColor={backgroundStyle.backgroundColor}
           />
 
-          {/* <View
-        style={{
-          backgroundColor: code_color.white,
-          // paddingTop: isIphoneXorAbove() ? 40 : 0,
-        }}
-      /> */}
-          <ModalStoryUnlock
-            isVisible={showModal}
-            onClose={() => setShowModal(false)}
-            data={undefined}
-            restart={undefined}
-            edit={undefined}
-            readLater={readLater}
-          />
-          <ModalSuccessPurchase
-            isVisible={showModalSuccessPurchase}
-            onClose={() => {
-              setShowModalSuccessPurchase(false);
+<View
+            style={{
+              backgroundColor: backgroundColor,
+              paddingTop: isIphoneXorAbove() ? 40 : 25,
             }}
           />
+             <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', marginHorizontal: 20}}>
+            <View style={{flex: 1}}>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'left',
+                  fontSize: fixedFontSize(Number(fontSize)),
+                  fontFamily: fontFamily,
+                  marginBottom: wp(5),
+                  color:
+                    backgroundColor === '#2C3439'
+                      ? code_color.white
+                      : code_color.blackDark,
+                }}>
+                {dataBook?.category?.name}
+              </Text>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                  fontSize: fixedFontSize(Number(fontSize) + 2),
+                  fontFamily: fontFamily,
+                  color:
+                    backgroundColor === '#2C3439'
+                      ? code_color.white
+                      : code_color.blackDark,
+                }}>
+                {dataBook.title_en}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={async () => {
+                handleListening()
+              }}
+              style={{
+                padding: wp(5),
+                paddingHorizontal: wp(10),
+                borderRadius: wp(20),
+                backgroundColor: colorTheme,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Speaker />
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: fixedFontSize(Number(fontSize)),
+                  fontFamily: fontFamily,
+                  color: code_color.white,
+                  marginLeft: wp(5),
+                }}>
+                Listen
+              </Text>
+            </TouchableOpacity>
+          </View>
           {renderTutorial()}
           {renderFlatList()}
-          <ModalCongrats
-            isVisible={showModalCongrats}
-            onClose={() => {
-              pagerRef.current?.setPage(dataBook.content_en?.length - 1);
-              setShowModalCongrats(false);
-            }}
-            onGotIt={async () => {
-              pagerRef.current?.setPage(dataBook.content_en?.length - 1);
-              setShowModalCongrats(false);
-              if (userStory?.is_rating === null) {
-                setRating(true);
-              } else {
-                handleSuccessRating();
-              }
-            }}
-          />
+         
         </Pressable>
       );
     } else {
@@ -1274,12 +1291,12 @@ const MainScreen = ({
             backgroundColor={backgroundStyle.backgroundColor}
           />
 
-          {/* <View
-          style={{
-            backgroundColor: code_color.white,
-            // paddingTop: isIphoneXorAbove() ? 40 : 0,
-          }}
-          /> */}
+          <View
+            style={{
+              backgroundColor: backgroundColor,
+              paddingTop: isIphoneXorAbove() ? 40 : 25,
+            }}
+          />
           <ModalStoryUnlockDay
             isVisible={showModalDay}
             onClose={() => setShowModalDay(false)}
@@ -1331,6 +1348,81 @@ const MainScreen = ({
             }}
             onClose={() => setShowModalGetPremium(false)}
           />
+          <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', marginHorizontal: 20}}>
+            <View style={{flex: 1}}>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'left',
+                  fontSize: fixedFontSize(Number(fontSize)),
+                  fontFamily: fontFamily,
+                  marginBottom: wp(5),
+                  color:
+                    backgroundColor === '#2C3439'
+                      ? code_color.white
+                      : code_color.blackDark,
+                }}>
+                {dataBook?.category?.name}
+              </Text>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                  fontSize: fixedFontSize(Number(fontSize) + 2),
+                  fontFamily: fontFamily,
+                  color:
+                    backgroundColor === '#2C3439'
+                      ? code_color.white
+                      : code_color.blackDark,
+                }}>
+                {dataBook.title_en}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={async () => {
+                handleListening()
+              }}
+              style={{
+                padding: wp(5),
+                paddingHorizontal: wp(10),
+                borderRadius: wp(20),
+                backgroundColor: colorTheme,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Speaker />
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: fixedFontSize(Number(fontSize)),
+                  fontFamily: fontFamily,
+                  color: code_color.white,
+                  marginLeft: wp(5),
+                }}>
+                Listen
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {isRippleAnimate && (
+          <Animatable.View
+            duration={200}
+            animation={'fadeIn'}
+            style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
+            <AnimatedLottieView
+              source={rippleAnimate}
+              style={{
+                width: sizing.getDimensionWidth(0.8),
+              }}
+              autoPlay
+              duration={4000}
+            />
+          </Animatable.View>
+        )}
           {renderFlatList()}
           {renderTutorial()}
           {showModalCongrats && (

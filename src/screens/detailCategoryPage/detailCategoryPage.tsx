@@ -112,22 +112,19 @@ const DetailCategoryScreen = ({
     }, 500);
   };
   const handleUnlimited = async () => {
-    //
+  
     try {
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowUnlockedStory(false);
-        console.log('Pembayaran berhasil:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran berhasil
+     
       } else {
         setShowUnlockedStory(false);
-        console.log('Pembayaran gagal:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran gagal
+      
       }
     } catch (error) {
       setShowUnlockedStory(false);
-      console.error('Terjadi kesalahan:', error);
-      // Tangani kesalahan yang mungkin terjadi
+
     }
     // setShowModalGetPremium(true);
   };
@@ -166,7 +163,6 @@ const DetailCategoryScreen = ({
       const products = await IAP.getProducts({
         skus: ['unlock_story_1_week_only'],
       });
-      console.log('Products:', products);
       setPrice(products[0].localizedPrice);
     }
     getPrice();
@@ -194,27 +190,25 @@ const DetailCategoryScreen = ({
 
   const panResponder = useRef(
     PanResponder.create({
+      
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gestureState) => {
-        // Deteksi pergerakan sentuhan di sini
-        // Anda dapat menggunakan gestureState untuk mendapatkan informasi lebih lanjut
-        const touchX = event.nativeEvent.locationX;
+        alert(event.nativeEvent.locationY)
         const touchY = event.nativeEvent.locationY;
-        // Lakukan sesuatu dengan informasi sentuhan, misalnya memperbarui huruf terpilih
-        console.log(touchX);
-        handleTouchMove(touchX, touchY);
+        handleTouchMove(touchY);
       },
-    }),
+    })
   ).current;
 
-  const handleTouchMove = (touchX, touchY) => {
-    const touchedAlphabetIndex = Math.floor(touchY / 30); // Misalkan setiap huruf memiliki tinggi 30
+  const handleTouchMove = (touchY) => {
+    // Lakukan sesuatu dengan informasi pergerakan sentuhan, misalnya memperbarui huruf terpilih
+    const touchedAlphabetIndex = Math.floor(touchY / 10); // Sesuaikan dengan tinggi setiap elemen huruf
     if (
       touchedAlphabetIndex >= 0 &&
-      touchedAlphabetIndex < uniqueAlphabets.length
+      touchedAlphabetIndex < dummyFilter.length
     ) {
-      const touchedAlphabet = uniqueAlphabets[touchedAlphabetIndex];
+      const touchedAlphabet = dummyFilter[touchedAlphabetIndex];
       if (selectedAlphabet !== touchedAlphabet) {
         setSelectedAlphabet(touchedAlphabet);
       }
@@ -266,6 +260,30 @@ const DetailCategoryScreen = ({
     'Z',
     '#',
   ];
+
+
+// const remainingData = selectedAlphabet
+//   ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
+//   : [];
+
+// const combinedData = filteredData ? filteredData.concat(remainingData) : data?.data;
+
+const filteredDataSelected = selectedAlphabet
+  ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
+  : [];
+
+const filteredDataOthers = selectedAlphabet
+  ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
+  : data?.data;
+
+const combinedData = filteredDataSelected.concat(filteredDataOthers);
+const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
+
+const handleScroll = (event) => {
+  const offsetY = event.nativeEvent.contentOffset.y;
+  const alphabetIndex = Math.floor(offsetY / 16); 
+  const currentAlphabet = alphabets[alphabetIndex];
+};
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -440,7 +458,7 @@ const DetailCategoryScreen = ({
             </View>
           )}
         </View>
-        <Text
+        {/* <Text
           style={{
             fontSize: 16,
             fontWeight: '600',
@@ -448,16 +466,17 @@ const DetailCategoryScreen = ({
             marginLeft: 13,
           }}>
           {selectedAlphabet}
-        </Text>
+        </Text> */}
         <View style={{flexDirection: 'row', flex: 1, paddingBottom: 150}}>
           <ScrollView
+           onScroll={handleScroll}
             showsVerticalScrollIndicator={false}
             style={{
               marginTop: 20,
               flex: 1,
             }}>
-            {filteredData &&
-              filteredData.map((itm: any, idx: number) => (
+            {combinedData &&
+    combinedData.map((itm: any, idx: number) => (
                 <Pressable
                   onPress={() => {
                     setSelectedStory({...itm});
@@ -523,9 +542,10 @@ const DetailCategoryScreen = ({
                 </Pressable>
               ))}
           </ScrollView>
-          <View
+          {/* <View
             {...panResponder.panHandlers}
             style={{
+             
               width: sizing.getDimensionWidth(0.05),
             }}>
             {dummyFilter.map((item, index) => (
@@ -545,7 +565,7 @@ const DetailCategoryScreen = ({
                 </Text>
               </Pressable>
             ))}
-          </View>
+          </View> */}
         </View>
       </View>
 
