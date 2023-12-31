@@ -194,7 +194,6 @@ const DetailCategoryScreen = ({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gestureState) => {
-        alert(event.nativeEvent.locationY)
         const touchY = event.nativeEvent.locationY;
         handleTouchMove(touchY);
       },
