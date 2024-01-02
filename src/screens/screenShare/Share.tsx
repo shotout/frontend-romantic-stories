@@ -675,13 +675,13 @@ function ScreenShare({
           {stepsTutorial === 6 ? (
             <ImageBackground
               source={imgQuote}
-              resizeMode="contain"
+              resizeMode="cover"
               style={{
                 position: 'absolute',
                 top: '0',
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').height,
-
+                // backgroundColor: 'rgba(255,255,255,0.5)',
                 backgroundColor: 'rgba(0,0,0,0.3)',
               }}>
               <View style={{marginTop: 10}}>{renderProgress()}</View>

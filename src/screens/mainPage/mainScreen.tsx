@@ -550,7 +550,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
+    // handleSetSteps(5);
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');

@@ -24,7 +24,8 @@ import WatchIcon from '../../assets/icons/watch';
 import BookLockIcon from '../../assets/icons/bookLock';
 import * as IAP from 'react-native-iap';
 import {ActivityIndicator} from 'react-native-paper';
-import { fixedFontSize, hp, wp } from '../../utils/screen';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
+import {sizing} from '../../shared/styling';
 function ModalNewStory({
   isVisible,
   onClose,
@@ -68,12 +69,15 @@ function ModalNewStory({
   const handleClose = () => {
     onClose();
   };
-  useEffect(async () => {
-    const products = await IAP.getProducts({
-      skus: ['unlock_story_1_week_only'],
-    });
-    console.log('Products:', products);
-    setPrice(products[0].localizedPrice);
+  useEffect(() => {
+    async function getProductPrice() {
+      const products = await IAP.getProducts({
+        skus: ['unlock_story_1_week_only'],
+      });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice);
+    }
+    getProductPrice();
   }, []);
 
   return (
@@ -82,7 +86,11 @@ function ModalNewStory({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+        }}>
         <View
           style={{
             flex: 1,
@@ -90,9 +98,10 @@ function ModalNewStory({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View
+          <ScrollView
             style={{
-              width: '100%',
+              width: sizing.getDimensionWidth(1),
+              flex: 1,
               backgroundColor: code_color.white,
               shadowColor: '#000',
               shadowOffset: {
@@ -103,62 +112,62 @@ function ModalNewStory({
               shadowRadius: 2.22,
               elevation: 3,
               borderRadius: 10,
-              height: '100%',
             }}>
-            <View style={{backgroundColor: code_color.blueDark, flex: 1}}>
-              <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
-                <View style={{flexDirection: 'column'}}>
-                  <View
-                    style={{
-                      width: Dimensions.get('screen').width,
-                    }}>
-                    <Image
-                      source={bgNewStory}
-                      resizeMode="contain"
-                      style={{
-                        width: '100%',
-                        top: wp(-300),
-                        position: 'absolute',
-                      }}
-                    />
-                  </View>
-                  <Image
-                    source={imgLoveLeft}
-                    resizeMode="contain"
-                    style={{
-                      width: wp(150),
-                      height: hp(150),
-                      position: 'absolute',
-                      left: -20,
-                      top: wp(150),
-                    }}
-                  />
-
-                  <Image
-                    source={imgLoveRight}
-                    resizeMode="contain"
-                    style={{
-                      width: wp(150),
-                      height: hp(150),
-                      position: 'absolute',
-                      right: -20,
-                      top: wp(150),
-                    }}
-                  />
-                </View>
-              </View>
+            <View
+              style={{
+                width: Dimensions.get('screen').width,
+                height: wp(
+                  Dimensions.get('screen').width > 380
+                    ? sizing.getDimensionHeight(0.9)
+                    : sizing.getDimensionHeight(1.25),
+                ),
+              }}>
+              <Image
+                source={bgNewStory}
+                resizeMode="contain"
+                style={{
+                  width: '100%',
+                  top: wp(-150),
+                  maxHeight: sizing.getDimensionHeight(1),
+                  // position: 'absolute',
+                }}
+              />
             </View>
+            <Image
+              source={imgLoveLeft}
+              resizeMode="contain"
+              style={{
+                width: wp(150),
+                height: hp(150),
+                position: 'absolute',
+                left: -16,
+                top: wp(140),
+              }}
+            />
+
+            <Image
+              source={imgLoveRight}
+              resizeMode="contain"
+              style={{
+                width: wp(150),
+                height: hp(150),
+                position: 'absolute',
+                right: -24,
+                top: wp(140),
+              }}
+            />
+
             <View
               style={{
                 backgroundColor: code_color.white,
                 borderTopLeftRadius: wp(70),
                 borderTopRightRadius: wp(70),
                 position: 'absolute',
-                top: '25%',
+                top: wp(200),
                 left: 0,
-                width: '100%',
+                width: sizing.getDimensionWidth(1),
                 flex: 1,
-                height: '100%',
+                height: 'auto',
                 alignItems: 'center',
               }}>
               <View
@@ -210,7 +219,7 @@ function ModalNewStory({
                     <Text
                       style={{
                         fontSize: fixedFontSize(40),
-                        fontWeight: "700",
+                        fontWeight: '700',
                         marginBottom: 0,
                         marginLeft: wp(30),
                       }}>
@@ -219,7 +228,7 @@ function ModalNewStory({
                     <Text
                       style={{
                         fontSize: fixedFontSize(20),
-                        fontWeight: "700",
+                        fontWeight: '700',
                         marginTop: 'auto',
                         marginBottom: wp(5),
                         marginLeft: wp(10),
@@ -238,7 +247,7 @@ function ModalNewStory({
                 </Text>
                 <Text
                   style={{
-                    fontWeight: "400",
+                    fontWeight: '400',
                     fontSize: fixedFontSize(16),
                     lineHeight: moderateScale(24),
                     textAlign: 'center',
@@ -249,7 +258,7 @@ function ModalNewStory({
                   directly for free and without waiting or get EroTales
                   UNLIMITED to unlock everything.
                 </Text>
-             
+
                 <Pressable
                   disabled={loadingAds}
                   onPress={onWatchAds}
@@ -260,7 +269,7 @@ function ModalNewStory({
                     paddingVertical: wp(14),
                     borderRadius: wp(6),
                     marginTop: wp(30),
-                    alignItems: 'center'
+                    alignItems: 'center',
                   }}>
                   <View
                     style={{
@@ -321,7 +330,10 @@ function ModalNewStory({
                       </Text>
                     </View>
                     {isLoading ? (
-                      <ActivityIndicator color={code_color.blueDark} size={14} />
+                      <ActivityIndicator
+                        color={code_color.blueDark}
+                        size={14}
+                      />
                     ) : (
                       <Text
                         style={{color: code_color.white, textAlign: 'center'}}>
@@ -385,8 +397,6 @@ function ModalNewStory({
                     Get EroTales UNLIMITED
                   </Text>
                 </Pressable>
-               
-               
               </View>
 
               <Button
@@ -404,7 +414,7 @@ function ModalNewStory({
                 onPress={() => onClose()}
               />
             </View>
-          </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>

@@ -112,19 +112,15 @@ const DetailCategoryScreen = ({
     }, 500);
   };
   const handleUnlimited = async () => {
-  
     try {
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowUnlockedStory(false);
-     
       } else {
         setShowUnlockedStory(false);
-      
       }
     } catch (error) {
       setShowUnlockedStory(false);
-
     }
     // setShowModalGetPremium(true);
   };
@@ -190,17 +186,16 @@ const DetailCategoryScreen = ({
 
   const panResponder = useRef(
     PanResponder.create({
-      
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gestureState) => {
         const touchY = event.nativeEvent.locationY;
         handleTouchMove(touchY);
       },
-    })
+    }),
   ).current;
 
-  const handleTouchMove = (touchY) => {
+  const handleTouchMove = touchY => {
     // Lakukan sesuatu dengan informasi pergerakan sentuhan, misalnya memperbarui huruf terpilih
     const touchedAlphabetIndex = Math.floor(touchY / 10); // Sesuaikan dengan tinggi setiap elemen huruf
     if (
@@ -260,29 +255,28 @@ const DetailCategoryScreen = ({
     '#',
   ];
 
+  // const remainingData = selectedAlphabet
+  //   ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
+  //   : [];
 
-// const remainingData = selectedAlphabet
-//   ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
-//   : [];
+  // const combinedData = filteredData ? filteredData.concat(remainingData) : data?.data;
 
-// const combinedData = filteredData ? filteredData.concat(remainingData) : data?.data;
+  const filteredDataSelected = selectedAlphabet
+    ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
+    : [];
 
-const filteredDataSelected = selectedAlphabet
-  ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
-  : [];
+  const filteredDataOthers = selectedAlphabet
+    ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
+    : data?.data;
 
-const filteredDataOthers = selectedAlphabet
-  ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
-  : data?.data;
+  const combinedData = filteredDataSelected.concat(filteredDataOthers);
+  const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
 
-const combinedData = filteredDataSelected.concat(filteredDataOthers);
-const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
-
-const handleScroll = (event) => {
-  const offsetY = event.nativeEvent.contentOffset.y;
-  const alphabetIndex = Math.floor(offsetY / 16); 
-  const currentAlphabet = alphabets[alphabetIndex];
-};
+  const handleScroll = event => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const alphabetIndex = Math.floor(offsetY / 16);
+    const currentAlphabet = alphabets[alphabetIndex];
+  };
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -444,7 +438,7 @@ const handleScroll = (event) => {
                         marginTop: 6,
                         opacity: 0.8,
                       }}>
-                      {itm.category.name}
+                      {itm?.category?.name}
                     </Text>
                     <Text
                       allowFontScaling={false}
@@ -468,14 +462,14 @@ const handleScroll = (event) => {
         </Text> */}
         <View style={{flexDirection: 'row', flex: 1, paddingBottom: 150}}>
           <ScrollView
-           onScroll={handleScroll}
+            onScroll={handleScroll}
             showsVerticalScrollIndicator={false}
             style={{
               marginTop: 20,
               flex: 1,
             }}>
             {combinedData &&
-    combinedData.map((itm: any, idx: number) => (
+              combinedData.map((itm: any, idx: number) => (
                 <Pressable
                   onPress={() => {
                     setSelectedStory({...itm});
@@ -516,7 +510,7 @@ const handleScroll = (event) => {
                         opacity: 0.5,
                         marginBottom: 4,
                       }}>
-                      {itm.category.name}
+                      {itm?.category?.name}
                     </Text>
                     <Text
                       style={{
@@ -524,7 +518,7 @@ const handleScroll = (event) => {
                         fontWeight: '700',
                         color: code_color.black,
                       }}>
-                      {itm.title_en}
+                      {itm?.title_en}
                     </Text>
                   </View>
                   {userProfile?.data?.subscription?.plan_id != 2 &&
@@ -544,7 +538,7 @@ const handleScroll = (event) => {
           {/* <View
             {...panResponder.panHandlers}
             style={{
-             
+
               width: sizing.getDimensionWidth(0.05),
             }}>
             {dummyFilter.map((item, index) => (
