@@ -195,7 +195,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
             style={{
               width: 35,
               height: 35,
-              backgroundColor: backgroundColor,
+              backgroundColor: code_color.white,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
@@ -206,7 +206,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text
               allowFontScaling={false}
-              style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
+              style={{fontSize: 18, fontWeight: '600', color: code_color.white}}>
               Subscription
             </Text>
           </View>
@@ -272,7 +272,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                 fontWeight: 'bold',
                 color: code_color.white,
               }}>
-              {userProfile?.data?.subscription?.plan?.stripe_name}
+              {userProfile?.data?.subscription?.plan?.title}
             </Text>
           </View>
           {userProfile?.data?.subscription?.plan?.notes.map(item => (
