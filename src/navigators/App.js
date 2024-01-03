@@ -3,11 +3,13 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/lib/integration/react';
 import {AppState, LogBox} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import notifee from '@notifee/react-native';
+import notifee, {EventType} from '@notifee/react-native';
 
 import Main from './Main';
 import store, {persistor} from '../store/configure-store';
 import {PaperProvider} from 'react-native-paper';
+import {handleNativePayment, handlePayment} from '../helpers/paywall';
+import {OPEN_OFFER_NOTIFICATION, eventTracking} from '../helpers/eventTracking';
 
 LogBox.ignoreAllLogs();
 
@@ -16,13 +18,30 @@ const App = () => {
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        notifee.onForegroundEvent(async ({type, detail}) => {
+          if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
+            if (detail.notification.data?.type === 'paywall') {
+              console.log(
+                'Check paywall data new banget:',
+                detail.notification.data,
+              );
+              setTimeout(() => {
+                // handleNativePayment(detail.notification.data?.placement);
+                handlePayment(detail.notification.data?.placement);
+              }, 1000);
+              eventTracking(OPEN_OFFER_NOTIFICATION);
+            }
+          }
+        });
+      }
       setAppState(nextAppState);
     });
 
     return () => {
       subscription.remove();
     };
-  }, []);
+  }, [appState]);
 
   useEffect(() => {
     if (appState === 'active') {

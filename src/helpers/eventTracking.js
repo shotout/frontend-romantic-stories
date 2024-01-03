@@ -15,7 +15,7 @@ export const QUOTE_SHARED = 'wt1g6g';
 export const QUOTE_LIKED = 'sle19s';
 
 export const REVENUE_TRACKING = 'p495gn';
-export const OPEN_OFFER_NOTIFICATION = 'idgcal';
+export const OPEN_OFFER_NOTIFICATION = 'demye5';
 
 const getScreenName = id => {
   switch (id) {
