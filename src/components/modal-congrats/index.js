@@ -653,7 +653,7 @@ function ModalCongrats({
                 <View
                   style={{
                     marginLeft: '10%',
-                    height: 90,
+                    height: 150,
                   }}>
                   <ProgressBar levelingUser={levelingUser} />
                 </View>

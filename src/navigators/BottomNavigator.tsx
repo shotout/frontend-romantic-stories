@@ -130,8 +130,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
           colorText={userProfile?.colorText}
         />
         {isBottomBarVisible != 'Main'  ? 
-         <View style={{ position: 'absolute', top:  isBottomBarVisible === 'Settings' ? 10 : 150,  flex: 0, width: '100%', height: wp(200), alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => handleSomeAction('Main')} style={{ backgroundColor: code_color.white, position: 'absolute', top: wp(70), left: '30%', paddingHorizontal: wp(20), paddingVertical: wp(5), borderRadius: wp(20), alignItems: 'center'}}>
+         <View style={{ position: 'absolute', top:  isBottomBarVisible === 'Settings' ? 10 : wp(130),  flex: 0, width: '100%', height: wp(200), alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => handleSomeAction('Main')} style={{ backgroundColor: '#f1f1f1', position: 'absolute', top: wp(70), left: '30%', paddingHorizontal: wp(20), paddingVertical: wp(5), borderRadius: wp(20), alignItems: 'center'}}>
           <Text allowFontScaling={false} style={{textAlign: 'center'}}>{`Tap here to get back\n to the Story`}</Text>
           </TouchableOpacity>
         </View> : null }

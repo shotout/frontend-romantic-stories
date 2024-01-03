@@ -725,10 +725,10 @@ PODS:
     - React-Core
   - RNIap (11.0.0-rc.7):
     - React-Core
-  - RNNotifee (7.6.1):
+  - RNNotifee (7.8.0):
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.6.1)
-  - RNNotifee/NotifeeCore (7.6.1):
+    - RNNotifee/NotifeeCore (= 7.8.0)
+  - RNNotifee/NotifeeCore (7.8.0):
     - React-Core
   - RNReanimated (3.5.2):
     - DoubleConversion
@@ -1178,7 +1178,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNGoogleMobileAds: 2034e47995747a08ec0e095bf463e205434148bd
   RNIap: cc309cf426a6df5240e38108ffa6c270a52c03ac
-  RNNotifee: bdc064c29f4d558046f51f0c3ae02bab4fd3cd85
+  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
   RNReanimated: 2491645f0883526f4470d8b5c761308709ba31f8
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSentry: e668d4e68fe09d475dc084bab81f02c3be2db173

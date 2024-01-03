@@ -1,12 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Animated, ScrollView, Dimensions} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 import {hp, wp} from '../../utils/screen';
-import { code_color } from '../../utils/colors';
+import {code_color} from '../../utils/colors';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const GojekProgressBar = ({levelingUser}) => {
   const [scrollOffset, setScrollOffset] = useState(0);
   const animatedScrollOffset = new Animated.Value(scrollOffset);
+  const [infoCardPosition, setInfoCardPosition] = useState(0);
+  const animatedPosition = useRef(new Animated.Value(0)).current;
   const levels = [
     {
       created_at: '2023-12-06T07:45:22.000000Z',
@@ -110,36 +120,66 @@ const GojekProgressBar = ({levelingUser}) => {
       value_desc: '1800 XP',
     },
   ];
-  const progress = levelingUser?.user_level?.point;
+  const progress = 500;
+  const levelCount = levels.length;
+  const progressBarWidth = 1800;
+  const spaceBetweenLevels = progressBarWidth / (levelCount - 1);
+  const [lastAchievedLevelIndex, setLastAchievedLevelIndex] = useState(0);
+  // Calculate the position of the progress bar
+  const position =
+    (progress / levels[levelCount - 1].value) *
+    (progressBarWidth - spaceBetweenLevels);
 
+  const infoCardRef = useRef(null);
   useEffect(() => {
-    const levelCount = levels.length;
-    const progressBarWidth = 1800;
-    const spaceBetweenLevels = progressBarWidth / (levelCount - 1);
-
-    // Calculate the position of the progress bar
-    const position =
-      (progress / levels[levelCount - 1].value) * (progressBarWidth - spaceBetweenLevels);
-
-
     Animated.timing(animatedScrollOffset, {
       toValue: position,
       duration: 100,
       useNativeDriver: false,
     }).start();
-  }, [animatedScrollOffset, progress, levels]);
+    // Animated.timing(animatedPosition, {
+    //   toValue: position,
+    //   duration: 100,
+    //   useNativeDriver: false,
+    // }).start();
+    // const positions = calculateProgressPosition(progress, levels);
+    // console.log("Progress:", progress);
+    // console.log("Calculated Position:", positions);
+    // infoCardRef.current.setNativeProps({
+    //   style: { left: positions },
+    // });let lastAchievedIndex = 0;
+
+    if (progress > 0 && levels && levels.length > 0) {
+      for (let i = 0; i < levels.length; i++) {
+        const currentLevel = levels[i];
+
+        if (progress >= currentLevel.value) {
+          lastAchievedIndex = i;
+        } else {
+          break;
+        }
+      }
+    }
+
+    setLastAchievedLevelIndex(lastAchievedIndex);
+  }, [animatedScrollOffset, position, progress, levels]);
+
   const calculateProgressPosition = (progress, levels) => {
-    const totalWidth = wp(950)
+    const totalWidth = (Dimensions.get('window').width * 1000) / 100;
     let position = 0;
 
     if (progress > 0 && levels && levels.length > 0) {
       for (let i = 0; i < levels.length; i++) {
         const currentLevel = levels[i];
 
-        if (progress < currentLevel.value) {
-          const prevLevel = levels[i - 1] || { value: 0 };
-          const progressInRange = (progress - prevLevel.value) / (currentLevel.value - prevLevel.value);
-          position = (i - 1 + progressInRange) / (levels.length - 1) * totalWidth;
+        if (progress <= currentLevel.value) {
+          const prevLevel = levels[i - 1] || {value: 0};
+          const progressInRange =
+            (progress - prevLevel.value) /
+            (currentLevel.value - prevLevel.value);
+          position =
+            i * (totalWidth / (levels.length - 1)) +
+            progressInRange * (totalWidth / (levels.length - 1));
           break;
         }
       }
@@ -147,58 +187,74 @@ const GojekProgressBar = ({levelingUser}) => {
 
     return position;
   };
+
   const renderLevels = () => {
     return levels.map((level, index) => (
       <View key={index} style={styles.levelContainer}>
-        
+        {index === lastAchievedLevelIndex && (
+          <InfoCard
+            position={calculateProgressPosition(level.value, levels)}
+            message={'Your Level'}
+          />
+        )}
         {/* Tambahkan titik di tengah level */}
         <View style={styles.point} />
         <Text style={styles.levelText}>{level?.desc}</Text>
       </View>
     ));
   };
+  // useEffect(() => {
+  //   setInfoCardPosition(position);
+  // }, [progress, levels]);
 
+  const InfoCard = ({message}) => {
+    const positions = calculateProgressPosition(progress, levels);
+    return (
+      <Animated.View style={[styles.infoCardContainer]}>
+        <View style={styles.infoCardBubble} />
+        <View style={styles.infoCard}>
+          <Text allowFontScaling={false} style={{color: code_color.white}}>
+            {message}
+          </Text>
+        </View>
+      </Animated.View>
+    );
+  };
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       // onScroll={(event) => setScrollOffset(event.nativeEvent.contentOffset.x)}
       scrollEventThrottle={16}>
-     
-        <View style={styles.container}>
+      <View style={styles.container}>
         <Animated.View
           style={[
             styles.progressBar,
             {
               width: wp(950),
-              backgroundColor:  code_color.greyDefault,
+              backgroundColor: code_color.greyDefault,
             },
           ]}
         />
-       <Animated.View
+        {/* <InfoCard message={'Your Level'} /> */}
+        <Animated.View
           style={[
             styles.progressBar,
             {
               width: animatedScrollOffset.interpolate({
                 inputRange: levels.map(level => level.value),
-                outputRange: levels.map((_, index) => `${(index / (levels.length - 1)) * 100}%`),
+                outputRange: levels.map(
+                  (_, index) => `${(index / (levels.length - 1)) * 100}%`,
+                ),
                 extrapolate: 'clamp',
               }),
-              backgroundColor: progress > 0 ? '#5873FF': code_color.grey,
+              backgroundColor: progress > 0 ? '#5873FF' : code_color.grey,
             },
           ]}
         />
-       
-  {/* Colored blue portion for the filled progress */}
-  
 
-  {/* Colored gray portion for the remaining progress */}
-  
-
-          {renderLevels()}
-        </View>
-        
-      
+        {renderLevels()}
+      </View>
     </ScrollView>
   );
 };
@@ -207,12 +263,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 90,
+    height: 200,
   },
   progressBar: {
     height: wp(10),
     position: 'absolute',
-    top: '10%',
+    top: '25%',
     left: 0,
     borderRadius: 10,
   },
@@ -222,10 +278,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   levelText: {
-    marginTop: 30,
+    marginTop: 0,
     color: '#333',
     textAlign: 'center',
-    marginRight: 30
+    marginRight: 30,
   },
   point: {
     width: wp(28),
@@ -234,11 +290,10 @@ const styles = StyleSheet.create({
     borderColor: '#5873FF',
     borderRadius: 20,
     borderWidth: 5,
-    top: '10%',
     right: '70%',
-    transform: [{ translateY: -5 }],
+    transform: [{translateY: -5}],
     position: 'absolute',
-    top: -7,
+    top: -40,
   },
   progressFilled: {
     ...StyleSheet.absoluteFillObject,
@@ -251,6 +306,42 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     backgroundColor: 'gray', // Set the color for the remaining progress
+  },
+
+  infoCardContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    // justifyContent: 'flex-start', // Align to the top
+    padding: 10,
+    top: -90,
+  },
+  infoCardBubble: {
+    position: 'absolute',
+    top: '119%',
+    left: '13%',
+    width: 0,
+    height: 0,
+    borderLeftWidth: 8,
+    borderRightWidth: 8,
+    borderBottomWidth: 12,
+    borderStyle: 'solid',
+    backgroundColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: code_color.blackDark, // Adjust this color if needed
+    transform: [{rotate: '180deg'}],
+  },
+  infoCard: {
+    backgroundColor: code_color.blackDark,
+    borderRadius: 5,
+    height: 30,
+    paddingHorizontal: 5,
+    // width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
 

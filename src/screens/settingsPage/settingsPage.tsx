@@ -125,7 +125,7 @@ const SettingsPage = ({
   ]);
 
   const header = () => (
-    <View style={{height: hp(230)}}>
+    <View style={{height: hp(255)}}>
       <View
         style={{
           width: Dimensions.get('window').width,

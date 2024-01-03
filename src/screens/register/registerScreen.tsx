@@ -471,7 +471,7 @@ function RegisterScreen({
             {stepRegister != 1 ? (
               <Button
                 style={{
-                  backgroundColor: code_color.yellow,
+                  backgroundColor: stepRegister == 2 && values.name === '' ||  stepRegister == 3 && values.category_id === 0  ?  code_color.greyDefault :  code_color.yellow,
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: hp(45),
