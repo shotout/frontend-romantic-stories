@@ -141,7 +141,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
-      handleSetSteps(3);
+      handleSetSteps(4);
       navigate('Library');
     }
   };

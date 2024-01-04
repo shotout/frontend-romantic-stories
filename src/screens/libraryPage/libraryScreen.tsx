@@ -915,7 +915,7 @@ const LibraryScreen = ({
       handleSetSteps(stepsTutorial - 1);
       navigate('Media');
     } else {
-      handleSetSteps(3 + 1);
+      handleSetSteps(4 + 1);
       navigate('ExploreLibrary');
     }
     // setIsSwipingLeft(true);
@@ -941,7 +941,7 @@ const LibraryScreen = ({
 
   const renderProgress = () => <StepHeader currentStep={5} />;
   const renderTutorial = () => {
-    if (stepsTutorial === 3) {
+    if (stepsTutorial === 4) {
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -965,7 +965,7 @@ const LibraryScreen = ({
 
           <Step4
             handleNext={() => {
-              handleSetSteps(3 + 1);
+              handleSetSteps(4 + 1);
               navigate('ExploreLibrary');
             }}
             // handlePrev={() => navigate('Media')}

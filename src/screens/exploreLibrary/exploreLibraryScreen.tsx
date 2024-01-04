@@ -235,10 +235,10 @@ const ExploreLibraryScreen = ({
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 2.5;
     if (touchX < screenWidth) {
-      handleSetSteps(4 - 1);
+      handleSetSteps(5 - 1);
       navigate('Library');
     } else {
-      handleSetSteps(4 + 1);
+      handleSetSteps(5 + 1);
       navigate('Main');
     }
     // setIsSwipingLeft(true);
@@ -262,7 +262,7 @@ const ExploreLibraryScreen = ({
     // }
   };
   const renderTutorial = () => {
-    if (stepsTutorial === 4) {
+    if (stepsTutorial === 5) {
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -279,11 +279,11 @@ const ExploreLibraryScreen = ({
 
           <Step4_2
             handleNext={() => {
-              handleSetSteps(4 + 1);
+              handleSetSteps(5 + 1);
               navigate('Main');
             }}
             handlePrev={() => {
-              handleSetSteps(4 - 1);
+              handleSetSteps(5 - 1);
               navigate('Library');
             }}
           />

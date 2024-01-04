@@ -490,6 +490,7 @@ const MainScreen = ({
         setFinishTutorial(true);
         setIsRippleAnimate(false);
       }, 3000);
+      handleSetSteps(stepsTutorial + 1);
       setTimeout(() => {
         navigate('Media');
       }, 2500);
@@ -580,13 +581,14 @@ const MainScreen = ({
           setFinishTutorial(true);
           setIsRippleAnimate(false);
         }, 3000);
+        handleSetSteps(stepsTutorial + 1);
         setTimeout(() => {
           navigate('Media');
         }, 2500);
         // navigate('Media');
-      // } else if (activeStep === 3) {
-      //   navigate('Library');
       } else if (activeStep === 4) {
+        navigate('Library');
+      } else if (activeStep === 5) {
         navigate('ExploreLibrary');
       } else if (
         activeStep === 6 ||
