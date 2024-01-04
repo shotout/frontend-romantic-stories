@@ -399,7 +399,7 @@ function ModalNewStory({
                 </Pressable>
               </View>
 
-              <Button
+              {/* <Button
                 title={'Got it'}
                 style={{
                   backgroundColor: code_color.yellow,
@@ -412,7 +412,7 @@ function ModalNewStory({
                   marginTop: wp(20),
                 }}
                 onPress={() => onClose()}
-              />
+              /> */}
             </View>
           </ScrollView>
         </View>
