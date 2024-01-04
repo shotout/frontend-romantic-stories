@@ -36,21 +36,21 @@ export const handlePayment = async (vendorId, cb) =>
         placementVendorId: stringVendor,
         isFullscreen: true,
       });
-      console.log('Purchasely result:', res.result);
+      console.log('Purchasely result:', JSON.stringify(res));
       const user = store.getState().defaultState.userProfile;
       console.log('Check user data purchase:', user);
       switch (res.result) {
         case ProductResult.PRODUCT_RESULT_PURCHASED:
-          const payload = {
-            _method: 'PATCH',
-            is_member:
-              vendorId === 'in_app' || 'onboarding'
-                ? 2
-                : 'upgrade_to_unlimited_audio_story'
-                ? 3
-                : 1,
-          };
-          await updateProfile(payload);
+          // const payload = {
+          //   _method: 'PATCH',
+          //   is_member:
+          //     vendorId === 'in_app' && res?.plan?.vendorId === 'ErotalesUnlimitedStoriesandAudioAnnual' ? 3 :  vendorId === 'in_app' && res?.plan?.vendorId != 'ErotalesUnlimitedStoriesandAudioAnnual' ? 2 : vendorId === 'onboarding'
+          //       ? 2
+          //       : 'upgrade_to_unlimited_audio_story'
+          //       ? 3
+          //       : 1,
+          // };
+          // await updateProfile(payload);
           reloadUserProfile();
           console.log('FINISH PURCHASED:', res.result);
           resolve({success: true, result: res});

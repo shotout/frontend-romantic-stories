@@ -171,9 +171,10 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
       </Text>
       {dataAva && (
         <View style={{flex: 0, alignItems: 'center'}}>
+        
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
             defaultIndex={progressValue}
             data={dataAva}
@@ -182,8 +183,8 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             renderItem={({item, index}) => (

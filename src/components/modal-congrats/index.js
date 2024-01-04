@@ -184,7 +184,7 @@ function ModalCongrats({
               width: wp(80),
               height:
                 getAvatarMale === '/assets/images/avatars/2.png'
-                  ? 310
+                  ? 350
                   : getAvatarMale === '/assets/images/avatars/3.png' ||
                     getAvatarMale === '/assets/images/avatars/4.png'
                   ? 350

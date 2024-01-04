@@ -7,7 +7,7 @@ import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import libAnimate from '../../assets/lottie/library.json';
 
-const Step4 = ({handleNext, handlePrev}) => {
+const Step4 = ({handleNext}) => {
   return (
     <View
       style={{

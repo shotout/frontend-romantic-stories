@@ -912,6 +912,7 @@ const LibraryScreen = ({
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 2.5;
     if (touchX < screenWidth) {
+      handleSetSteps(stepsTutorial - 1);
       navigate('Media');
     } else {
       handleSetSteps(3 + 1);
@@ -967,7 +968,7 @@ const LibraryScreen = ({
               handleSetSteps(3 + 1);
               navigate('ExploreLibrary');
             }}
-            handlePrev={() => navigate('Media')}
+            // handlePrev={() => navigate('Media')}
           />
         </SafeAreaView>
       );

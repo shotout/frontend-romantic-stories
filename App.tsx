@@ -42,6 +42,7 @@ import { handleSetStory } from './src/store/defaultState/actions';
 import store from './src/store/configure-store';
 import { AppOpenAd } from 'react-native-google-mobile-ads';
 import { getAppOpenID } from './src/shared/adsId';
+import { reloadUserProfile } from './src/utils/user';
 
 Purchasely.startWithAPIKey(
   "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
@@ -100,7 +101,7 @@ function App({ userProfile }) {
    
     if (userProfile?.token) {
       try {
-        
+        reloadUserProfile()
         setTimeout(() => {
           navigate('Bottom');
         }, 500);
