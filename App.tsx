@@ -43,7 +43,12 @@ import store from './src/store/configure-store';
 import { AppOpenAd } from 'react-native-google-mobile-ads';
 import { getAppOpenID } from './src/shared/adsId';
 import { reloadUserProfile } from './src/utils/user';
-
+import TrackPlayer, {
+  useProgress,
+  useTrackPlayerEvents,
+  Event,
+  State,
+} from 'react-native-track-player';
 Purchasely.startWithAPIKey(
   "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
   ["Google"],
@@ -58,7 +63,7 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
 });
 appOpenAd.load();
 function App({ userProfile }) {
-  
+  TrackPlayer.setupPlayer()
   Sentry.init({
     environment: 'development',
     dsn: SENTRY_DSN,

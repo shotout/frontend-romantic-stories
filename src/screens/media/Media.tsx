@@ -72,7 +72,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   }
   const fetchMedia = async () => {
     try {
-      await TrackPlayer.setupPlayer();
       await TrackPlayer.add([track1]);
     } catch (error) {
       console.error('Error setting up media player:', error);
