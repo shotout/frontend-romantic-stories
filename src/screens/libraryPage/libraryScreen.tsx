@@ -964,10 +964,9 @@ const LibraryScreen = ({
 
           <Step4
             handleNext={() => {
-              handleSetSteps(3 + 1);
+              handleSetSteps(stepsTutorial + 1);
               navigate('ExploreLibrary');
             }}
-            handlePrev={() => navigate('Media')}
           />
         </SafeAreaView>
       );

@@ -580,9 +580,11 @@ const MainScreen = ({
           setFinishTutorial(true);
           setIsRippleAnimate(false);
         }, 3000);
-        setTimeout(() => {
-          navigate('Media');
-        }, 2500);
+        if (route?.name == 'Main') {
+          setTimeout(() => {
+            navigate('Media');
+          }, 2500);
+        }
         // navigate('Media');
       // } else if (activeStep === 3) {
       //   navigate('Library');
