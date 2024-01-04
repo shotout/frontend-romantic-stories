@@ -1239,7 +1239,7 @@ const MainScreen = ({
                       ? code_color.white
                       : code_color.blackDark,
                 }}>
-                {dataBook.title_en}
+                {dataBook?.title_en}
               </Text>
             </View>
 
@@ -1376,7 +1376,7 @@ const MainScreen = ({
                       ? code_color.white
                       : code_color.blackDark,
                 }}>
-                {dataBook.title_en}
+                {dataBook?.title_en}
               </Text>
             </View>
 

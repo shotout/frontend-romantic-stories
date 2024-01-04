@@ -120,7 +120,7 @@ const GojekProgressBar = ({levelingUser}) => {
       value_desc: '1800 XP',
     },
   ];
-  const progress = 500;
+  const progress = levelingUser?.user_level?.point;
   const levelCount = levels.length;
   const progressBarWidth = 1800;
   const spaceBetweenLevels = progressBarWidth / (levelCount - 1);
@@ -137,17 +137,8 @@ const GojekProgressBar = ({levelingUser}) => {
       duration: 100,
       useNativeDriver: false,
     }).start();
-    // Animated.timing(animatedPosition, {
-    //   toValue: position,
-    //   duration: 100,
-    //   useNativeDriver: false,
-    // }).start();
-    // const positions = calculateProgressPosition(progress, levels);
-    // console.log("Progress:", progress);
-    // console.log("Calculated Position:", positions);
-    // infoCardRef.current.setNativeProps({
-    //   style: { left: positions },
-    // });let lastAchievedIndex = 0;
+   
+    let lastAchievedIndex = 0;
 
     if (progress > 0 && levels && levels.length > 0) {
       for (let i = 0; i < levels.length; i++) {

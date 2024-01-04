@@ -50,6 +50,7 @@ import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
 import ProgressBar from '../../components/progress';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
+import DeviceInfo from 'react-native-device-info';
 
 const SettingsPage = ({
   colorTheme,
@@ -291,7 +292,7 @@ console.log(getAvatarMale)
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 2 : 0,
+                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 3.5 : 0,
                   }}
                 />
               </View>
@@ -318,7 +319,7 @@ console.log(getAvatarMale)
                     justifyContent: 'center',
                     position: 'absolute',
                     top:3,
-                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 2 : 0,
+                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 3.5 : 0,
                   }}
                 />
               </View>
@@ -344,11 +345,12 @@ console.log(getAvatarMale)
       ))}
     </View>
   );
+
   return (
     <View
       style={{
         flex: 0,
-        height: wp(Dimensions.get('window').height - wp(210)),
+        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : 208)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

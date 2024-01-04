@@ -242,7 +242,7 @@ function ScreenShare({
       stepsTutorial === 6
         ? setTimeout(() => {
             setShowModal(true);
-          }, 4000)
+          }, 10000)
         : null;
     }
   }, [stepsTutorial]);

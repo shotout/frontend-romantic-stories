@@ -21,10 +21,10 @@ import {API_URL, BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
 
-export default function Register3({setCategoryId}) {
+export default function Register3({setCategoryId, value}) {
   const [dataStory, setDataStory] = useState([]);
 
-  const [selectStory, setSelectStory] = useState('');
+  const [selectStory, setSelectStory] = useState(value);
 
   useEffect(() => {
     fetchCategory();
@@ -48,14 +48,14 @@ export default function Register3({setCategoryId}) {
             <TouchableOpacity
               key={index}
               onPress={() => {
-                setSelectStory(item.name);
+                setSelectStory(item.id);
                 setCategoryId(item.id);
               }}
               style={{
                 alignItems: 'center',
                 marginVertical: wp(2),
                 backgroundColor:
-                  selectStory === item.name ? code_color.splash : 'white',
+                  selectStory === item.id ? code_color.splash : 'white',
                 padding: wp(5),
                 borderRadius: wp(10),
                 justifyContent: 'center',
@@ -83,10 +83,10 @@ export default function Register3({setCategoryId}) {
                 {item?.name}
               </Text>
               <TouchableOpacity
-                onPress={() => setSelectStory(item.name)}
+                onPress={() => setSelectStory(item.id)}
                 style={{
                   backgroundColor:
-                    selectStory === item.name ? code_color.splash : 'white',
+                    selectStory === item.id ? code_color.splash : 'white',
                   borderRadius: wp(30),
                   width: wp(25),
                   height: hp(25),

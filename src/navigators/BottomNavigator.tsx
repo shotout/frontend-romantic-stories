@@ -47,8 +47,8 @@ import {
   getStoryList,
 } from '../shared/request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { isIphoneXorAbove } from '../utils/devices';
-import { fixedFontSize, hp, wp } from '../utils/screen';
+import {isIphoneXorAbove} from '../utils/devices';
+import {fixedFontSize, hp, wp} from '../utils/screen';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -117,24 +117,54 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
         style={{
           position: 'absolute',
           top:
-            isBottomBarVisible === 'Settings' ? -151
-              : isBottomBarVisible === 'Font' && Platform.OS === 'android' ? -Dimensions.get('window').height / 2 : isBottomBarVisible === 'Font' && Platform.OS === 'ios' ? -Dimensions.get('window').height /  (!isIphoneXorAbove() ? 2.8  : 2): -Dimensions.get('window').height / 2.7,
+            isBottomBarVisible === 'Settings'
+              ? -151
+              : isBottomBarVisible === 'Font' && Platform.OS === 'android'
+              ? -Dimensions.get('window').height / 2
+              : isBottomBarVisible === 'Font' && Platform.OS === 'ios'
+              ? -Dimensions.get('window').height /
+                (!isIphoneXorAbove() ? 2.8 : 2)
+              : -Dimensions.get('window').height / 2.7,
           width: '100%',
           height: '100%',
           flex: 0,
         }}>
-       
         <MainScreen
           pressScreen={() => handleSomeAction('Main')}
           route={undefined}
           colorText={userProfile?.colorText}
         />
-        {isBottomBarVisible != 'Main'  ? 
-         <View style={{ position: 'absolute', top:  isBottomBarVisible === 'Settings' ? 10 : wp(130),  flex: 0, width: '100%', height: wp(200), alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => handleSomeAction('Main')} style={{ backgroundColor: '#f1f1f1', position: 'absolute', top: wp(70), left: '30%', paddingHorizontal: wp(20), paddingVertical: wp(5), borderRadius: wp(20), alignItems: 'center'}}>
-          <Text allowFontScaling={false} style={{textAlign: 'center'}}>{`Tap here to get back\n to the Story`}</Text>
+        {isBottomBarVisible != 'Main' ? (
+          <TouchableOpacity
+            onPress={() => handleSomeAction('Main')}
+            style={{
+              position: 'absolute',
+              top: isBottomBarVisible === 'Settings' ? 10 : wp(130),
+              flex: 0,
+              width: '100%',
+              height: wp(200),
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => handleSomeAction('Main')}
+              style={{
+                backgroundColor: '#f1f1f1',
+                position: 'absolute',
+                top: wp(70),
+                left: '30%',
+                paddingHorizontal: wp(20),
+                paddingVertical: wp(5),
+                borderRadius: wp(20),
+                alignItems: 'center',
+              }}>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  textAlign: 'center',
+                }}>{`Tap here to get back\n to the Story`}</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
-        </View> : null }
+        ) : null}
       </SafeAreaView>
       <View
         style={{
@@ -202,10 +232,13 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                       ? code_color.white
                       : userProfile?.colorTheme,
                 }}>
-                   {item.name === 'SAVE' &&
-              userProfile?.userStory?.is_collection === null ? 'SAVE' : item.name === 'SAVE' &&
-              userProfile?.userStory?.is_collection != null ? 'SAVED' : item.name}
-
+                {item.name === 'SAVE' &&
+                userProfile?.userStory?.is_collection === null
+                  ? 'SAVE'
+                  : item.name === 'SAVE' &&
+                    userProfile?.userStory?.is_collection != null
+                  ? 'SAVED'
+                  : item.name}
               </Text>
             </TouchableOpacity>
           );
@@ -237,7 +270,7 @@ function MyTabs(props) {
   if (Platform.OS === 'ios') {
     height = wp(75);
   } else {
-    height = hp(55)
+    height = hp(55);
   }
   const [visible, setVisible] = useState(true);
 
@@ -263,10 +296,10 @@ function MyTabs(props) {
         useNativeDriver: false,
       }),
     ]);
- 
+
     setTimeout(() => {
-      setTitle('saved')
-      setTitleBottom('SAVED')
+      setTitle('saved');
+      setTitleBottom('SAVED');
     }, 1300);
     // Mulai animasi
     setTimeout(() => {
@@ -296,7 +329,7 @@ function MyTabs(props) {
       }, 2500);
     } else {
       const data = await deleteMyStory(props.userStory?.id);
-      setTitle('save')
+      setTitle('save');
       if (data.status === 'success') {
         try {
           const resp = await getStoryDetail(props.userStory?.id);
@@ -307,7 +340,7 @@ function MyTabs(props) {
   };
   const love = require('../assets/lottie/ripple.json');
   // alert(props?.backgroundColor)
- 
+
   return (
     <Tab.Navigator
       backBehavior="none"
@@ -401,9 +434,17 @@ function MyTabs(props) {
                 </View>
               ) : null}
               {props.userStory?.is_collection === null ? (
-                <LoveOutline  width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                <LoveOutline
+                  width={wp(20)}
+                  height={hp(20)}
+                  fill={props?.colorTheme}
+                />
               ) : (
-                <LoveSvg  width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                <LoveSvg
+                  width={wp(20)}
+                  height={hp(20)}
+                  fill={props?.colorTheme}
+                />
               )}
               <Text
                 allowFontScaling={false}
@@ -444,7 +485,11 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <LibrarySvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                  <LibrarySvg
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
                   <Text
                     allowFontScaling={false}
                     style={{
@@ -465,7 +510,11 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <LibrarySvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                  <LibrarySvg
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
                   <Text
                     allowFontScaling={false}
                     style={{
@@ -509,7 +558,11 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <FontSvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                  <FontSvg
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
                   <Text
                     allowFontScaling={false}
                     style={{
@@ -534,7 +587,11 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <FontSvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                  <FontSvg
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
                   <Text
                     allowFontScaling={false}
                     style={{
@@ -577,7 +634,11 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <SettingSvg width={wp(20)} height={wp(20)} fill={props?.colorTheme} />
+                  <SettingSvg
+                    width={wp(20)}
+                    height={wp(20)}
+                    fill={props?.colorTheme}
+                  />
                   <Text
                     allowFontScaling={false}
                     style={{
@@ -602,7 +663,11 @@ function MyTabs(props) {
                     justifyContent: 'center',
                     display: 'flex',
                   }}>
-                  <SettingSvg width={wp(20)} height={hp(20)} fill={props?.colorTheme} />
+                  <SettingSvg
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
                   <Text
                     allowFontScaling={false}
                     style={{
@@ -649,14 +714,15 @@ class MyTabsComponent extends Component {
     this.forceUpdate();
   };
   render() {
-    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText} = this.props;
+    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText} =
+      this.props;
     const tapProps = {
       colorTheme,
       stepsTutorial,
       forceUpdate: this.forceComponentUpdate,
       userStory,
       backgroundColor,
-      colorText
+      colorText,
     };
     return <MyTabs {...tapProps} />;
   }

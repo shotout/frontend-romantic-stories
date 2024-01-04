@@ -264,6 +264,7 @@ function RegisterScreen({
     } else if (stepRegister === 3) {
       return (
         <Register3
+          value={values?.category_id}
           setCategoryId={text => {
             handleChange('category_id', text);
           }}

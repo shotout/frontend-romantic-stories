@@ -60,6 +60,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     artwork: 'http://example.com/cover.png',
     duration: 10,
   };
+  console.log(JSON.stringify(userStory))
   const [showModalShareStory, setShowModalShareStory] = useState(false);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -261,8 +262,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       </View>
       <View>
         <Image
-          source={{uri: `${BACKEND_URL}${userStory?.category?.cover?.url}`}}
-          resizeMode="contain"
+          source={{uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`}}
+          resizeMode="cover"
           style={{
             width: 352,
             height: 350,
