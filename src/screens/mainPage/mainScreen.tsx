@@ -75,6 +75,7 @@ import {fixedFontSize, wp} from '../../utils/screen';
 import Speaker from '../../assets/icons/speaker';
 import {code_color} from '../../utils/colors';
 import {isIphoneXorAbove} from '../../utils/devices';
+import { FINISH_LISTEN_10, FINISH_LISTEN_3, eventTracking } from '../../helpers/eventTracking';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -1136,11 +1137,18 @@ const MainScreen = ({
                   item?.id === dataBook.id && item?.page === screenNumber + 1,
               )
             : undefined;
+            if(readStory?.length === 2){
+              eventTracking(FINISH_LISTEN_3)
+            }
+            if(readStory?.length === 9){
+              eventTracking(FINISH_LISTEN_10)
+            }
           if (
             typeof existingEntry === 'undefined' &&
             screenNumber === dataBook?.content_en?.length - 1
           ) {
             // jika nanti pertama kali melakukan update data terakhir
+            
             await addPastStory(dataBook.id);
             const data = {
               value: dataBook?.content_en?.length,

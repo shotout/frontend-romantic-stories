@@ -1,5 +1,5 @@
 import Purchasely, {ProductResult} from 'react-native-purchasely';
-import {eventTracking} from './eventTracking';
+import {BUY_10_AUDIO, BUY_50_AUDIO, eventTracking} from './eventTracking';
 import store from '../store/configure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
@@ -105,6 +105,7 @@ export const handleNativePayment = async (sku, storyId) => {
       story_id: storyId,
       expire: 7,
     };
+    eventTracking(sku === 'unlock_10_audio_stories' ? BUY_10_AUDIO : sku === 'unlock_5_audio_stories' ? BUY_50_AUDIO : null)
     await updateProfile(
       sku === 'unlock_story_1_week_only' ? payloadStory : payload,
     );

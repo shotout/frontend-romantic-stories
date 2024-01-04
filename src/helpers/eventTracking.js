@@ -1,11 +1,15 @@
 import {Adjust, AdjustEvent} from 'react-native-adjust';
 import analytics from '@react-native-firebase/analytics';
-import { Settings, AppEventsLogger, AEMReporterIOS } from 'react-native-fbsdk-next';
+import {
+  Settings,
+  AppEventsLogger,
+  AEMReporterIOS,
+} from 'react-native-fbsdk-next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 
 export const ONBOARDING_COMPLETE = 'se2bvp';
-export const APP_INSTALLED = 'e6a5ns';
+export const APP_INSTALLED = 'oo3wj0';
 export const SHOW_PAYWALL = 's2ei1x';
 export const FREE_TRIAL = '7ajk5x';
 
@@ -16,6 +20,13 @@ export const QUOTE_LIKED = 'sle19s';
 
 export const REVENUE_TRACKING = 'p495gn';
 export const OPEN_OFFER_NOTIFICATION = 'demye5';
+
+export const ADD_STORY_TO_LIBRARY = '3odq5e';
+export const AUDIO_PLAYED = 'w89cr0';
+export const BUY_10_AUDIO = '75mvdx';
+export const BUY_50_AUDIO = 'dgq6u0';
+export const FINISH_LISTEN_3 = 'cg5y5b';
+export const FINISH_LISTEN_10 = 'ni1wnz';
 
 const getScreenName = id => {
   switch (id) {
@@ -39,6 +50,18 @@ const getScreenName = id => {
       return 'FACT_LIKED';
     case REVENUE_TRACKING:
       return 'SUBSCRIBE';
+    case ADD_STORY_TO_LIBRARY:
+      return 'ADD_STORY_TO_LIBRARY';
+    case AUDIO_PLAYED:
+      return 'AUDIO_PLAYED';
+    case BUY_10_AUDIO:
+      return 'BUY_10_AUDIO';
+    case BUY_50_AUDIO:
+      return 'BUY_50_AUDIO';
+    case FINISH_LISTEN_3:
+      return 'FINISH_LISTEN_3';
+    case FINISH_LISTEN_10:
+      return 'FINISH_LISTEN_10';
     default:
       return id;
   }
@@ -74,7 +97,7 @@ export const revenueTracking = async (price, currency) => {
 };
 
 export const askTrackingPermission = () => {
-  AsyncStorage.setItem('allowTracking', 'yes')
+  AsyncStorage.setItem('allowTracking', 'yes');
   if (Platform.OS === 'ios') {
     Adjust.requestTrackingAuthorizationWithCompletionHandler(status => {
       switch (status) {
@@ -86,36 +109,34 @@ export const askTrackingPermission = () => {
           // ATTrackingManagerAuthorizationStatusRestricted case
           console.log('The user device is restricted');
           setTimeout(() => {
-            AsyncStorage.removeItem('allowTracking')
-          }, 200); 
+            AsyncStorage.removeItem('allowTracking');
+          }, 200);
           break;
         case 2:
           // ATTrackingManagerAuthorizationStatusDenied case
           console.log('The user denied access to IDFA');
           setTimeout(() => {
-            AsyncStorage.removeItem('allowTracking')
-          }, 200); 
+            AsyncStorage.removeItem('allowTracking');
+          }, 200);
           break;
         case 3:
-          Settings.setAdvertiserTrackingEnabled(true)
-          Settings.setAdvertiserIDCollectionEnabled(true)
-          Settings.setAutoLogAppEventsEnabled(true)
+          Settings.setAdvertiserTrackingEnabled(true);
+          Settings.setAdvertiserIDCollectionEnabled(true);
+          Settings.setAutoLogAppEventsEnabled(true);
           // ATTrackingManagerAuthorizationStatusAuthorized case
           console.log('The user authorized access to IDFA');
           setTimeout(() => {
-            AsyncStorage.removeItem('allowTracking')
-          }, 200); 
+            AsyncStorage.removeItem('allowTracking');
+          }, 200);
           break;
         default:
           console.log('The status is not available');
           break;
       }
     });
-  }else{
-    
-    Settings.setAdvertiserTrackingEnabled(true)
-       Settings.setAdvertiserIDCollectionEnabled(true)
-       Settings.setAutoLogAppEventsEnabled(true)
-      
+  } else {
+    Settings.setAdvertiserTrackingEnabled(true);
+    Settings.setAdvertiserIDCollectionEnabled(true);
+    Settings.setAutoLogAppEventsEnabled(true);
   }
 };

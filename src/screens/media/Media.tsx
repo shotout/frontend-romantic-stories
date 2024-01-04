@@ -43,6 +43,7 @@ import {fixedFontSize, hp, wp} from '../../utils/screen';
 import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
 import {handleSetStory} from '../../store/defaultState/actions';
 import store from '../../store/configure-store';
+import { ADD_STORY_TO_LIBRARY, AUDIO_PLAYED, eventTracking } from '../../helpers/eventTracking';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [play, setPlay] = useState(false);
@@ -90,6 +91,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const playing = async () => {
     try {
       if (play) {
+        eventTracking(AUDIO_PLAYED)
         await TrackPlayer.play();
       } else {
         await TrackPlayer.pause();
@@ -186,6 +188,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         try {
           const resp = await getStoryDetail(userStory?.id);
           store.dispatch(handleSetStory(resp.data));
+          eventTracking(ADD_STORY_TO_LIBRARY)
         } catch (error) {}
       }
       setVisibleModal(true);

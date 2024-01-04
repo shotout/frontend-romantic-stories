@@ -49,6 +49,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isIphoneXorAbove} from '../utils/devices';
 import {fixedFontSize, hp, wp} from '../utils/screen';
+import { ADD_STORY_TO_LIBRARY, eventTracking } from '../helpers/eventTracking';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -317,6 +318,7 @@ function MyTabs(props) {
       if (response.status === 'success') {
         try {
           const resp = await getStoryDetail(props.userStory?.id);
+          eventTracking(ADD_STORY_TO_LIBRARY);
           store.dispatch(handleSetStory(resp.data));
         } catch (error) {}
       }
