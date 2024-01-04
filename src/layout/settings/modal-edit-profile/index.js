@@ -178,7 +178,7 @@ function ModalEditProfile({
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
                   style={{
                     width: 40,
-                    height: 150,
+                    height: edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
@@ -203,7 +203,7 @@ function ModalEditProfile({
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
                   style={{
                     width: 40,
-                    height: 150,
+                    height: edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',

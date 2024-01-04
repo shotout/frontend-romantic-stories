@@ -253,9 +253,6 @@ const content_en = [
     } else {
       setShow(false);
       setLoading2(false);
-      setTimeout(() => {
-        setShowAudio(true);
-      }, 100);
     }
   };
   const handleAudioOne = async () => {
@@ -271,9 +268,6 @@ const content_en = [
     } else {
       setShow(false);
       setLoading(false);
-      setTimeout(() => {
-        setShowAudio(true);
-      }, 100);
     }
   };
 

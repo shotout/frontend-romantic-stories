@@ -133,9 +133,6 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     } else {
       setShow(false);
       setLoading2(false)
-      setTimeout(() => {
-        setShowAudio(true);
-      }, 100);
     }
   };
   const handleAudioOne = async () => {
@@ -151,9 +148,6 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     } else {
       setLoading(false)
       setShow(false);
-      setTimeout(() => {
-        setShowAudio(true);
-      }, 100);
     }
   };
   const handleInapp = async (value) => {
