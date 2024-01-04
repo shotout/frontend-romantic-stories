@@ -1139,18 +1139,18 @@ const MainScreen = ({
                   item?.id === dataBook.id && item?.page === screenNumber + 1,
               )
             : undefined;
-            if(readStory?.length === 2){
-              eventTracking(FINISH_LISTEN_3)
-            }
-            if(readStory?.length === 9){
-              eventTracking(FINISH_LISTEN_10)
-            }
+          if (readStory?.length === 2) {
+            eventTracking(FINISH_LISTEN_3);
+          }
+          if (readStory?.length === 9) {
+            eventTracking(FINISH_LISTEN_10);
+          }
           if (
             typeof existingEntry === 'undefined' &&
             screenNumber === dataBook?.content_en?.length - 1
           ) {
             // jika nanti pertama kali melakukan update data terakhir
-            
+
             await addPastStory(dataBook.id);
             const data = {
               value: dataBook?.content_en?.length,
@@ -1163,15 +1163,12 @@ const MainScreen = ({
               }, 200);
             }
             checkingRead(screenNumber + 1);
+          } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+            //jika tidak premium maka akan terus menampilan modal setiap terakhir
+            setShowModalCongrats(true);
           }
-          //jika tidak premium maka akan terus menampilan modal setiap terakhir
-          setTimeout(() => {
-            if (screenNumber === dataBook?.content_en?.length - 1) {
-              setShowModalCongrats(true);
-            }
-          }, 500);
         }
-      }, 200);
+      }, 700);
     }
   };
 
