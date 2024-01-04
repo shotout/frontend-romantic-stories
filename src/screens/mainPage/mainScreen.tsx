@@ -985,7 +985,7 @@ const MainScreen = ({
                       fontFamily: 'Comfortaa-SemiBold',
                       marginBottom: wp(50),
                     }}>
-                    {`Hey, ${userProfile?.data?.name}\nYou’re all set!`}
+                    {`Hey, ${userProfile?.data?.name === null ? '' : userProfile?.data?.name}\nYou’re all set!`}
                   </Animatable.Text>
                   <Animatable.Text
                     delay={2000}
