@@ -1163,14 +1163,13 @@ const MainScreen = ({
               }, 200);
             }
             checkingRead(screenNumber + 1);
-          } else if (
-            existingEntry &&
-            screenNumber === dataBook?.content_en?.length - 1 &&
-            !(isPremiumStory || isPremiumAudio)
-          ) {
-            //jika tidak premium maka akan terus menampilan modal setiap terakhir
-            setShowModalCongrats(true);
           }
+          //jika tidak premium maka akan terus menampilan modal setiap terakhir
+          setTimeout(() => {
+            if (screenNumber === dataBook?.content_en?.length - 1) {
+              setShowModalCongrats(true);
+            }
+          }, 500);
         }
       }, 200);
     }
@@ -1439,7 +1438,7 @@ const MainScreen = ({
             <ModalCongrats
               isVisible={showModalCongrats}
               onClose={async () => {
-                pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+                // pagerRef.current?.setPage(dataBook.content_en?.length - 1);
                 if (currentXp !== newXp) {
                   reloadUserProfile();
                 }
@@ -1452,7 +1451,7 @@ const MainScreen = ({
                 } else {
                   handleSuccessRating();
                 }
-                pagerRef.current?.setPage(dataBook.content_en?.length - 1);
+                // pagerRef.current?.setPage(dataBook.content_en?.length - 1);
               }}
             />
           )}
