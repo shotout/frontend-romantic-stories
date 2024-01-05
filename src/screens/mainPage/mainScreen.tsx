@@ -1442,6 +1442,7 @@ const MainScreen = ({
           {renderTutorial()}
           {showModalCongrats && (
             <ModalCongrats
+              pastLevel={dataBook?.content_en?.length}
               isVisible={showModalCongrats}
               onClose={async () => {
                 // pagerRef.current?.setPage(dataBook.content_en?.length - 1);

@@ -50,6 +50,7 @@ function ModalCongrats({
   levelingUser,
   colorTheme,
   getAvatarMale,
+  pastLevel
 }) {
   const [leveling, setLeveling] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -64,7 +65,6 @@ function ModalCongrats({
   const newImgLvl = levelingUser?.user_level?.level?.image?.url;
   const [imgPopup, setImgPopup] = useState(currentImgLvl);
   const [lottieStart, setLottieStart] = useState(false);
-
   const handleClose = () => {
     onClose();
   };
@@ -483,7 +483,7 @@ function ModalCongrats({
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
-                        {newXp - currentXp} XP
+                        {pastLevel} XP
                       </Animatable.Text>
                     </View>
                   </Animatable.View>
