@@ -52,7 +52,7 @@ export default function QuotesContent({
   colorText,
   handleListen,
   show,
-  setShow
+  setShow,
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -453,7 +453,7 @@ const content_en = [
                   eventTracking(QUOTE_SHARED);
                 }}
                 value={
-                  themeUser?.language_id === '2' ? formattedText : formattedText
+                  themeUser?.language_id === '2' ? item : item
                 }
               />
             </View>
