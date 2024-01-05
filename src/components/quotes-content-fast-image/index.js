@@ -236,8 +236,7 @@ const content_en = [
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
   useEffect(() => {
-    handleThemeAvatar(pageActive);
-    checkingColor(bg);
+    handleThemeAvatar(pageActive)
   }, [pageActive]);
 
   const handleAudio = async () => {
@@ -245,13 +244,13 @@ const content_en = [
     setLoading2(true);
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
-      setShow(false);
+      setShow();
       setTimeout(async () => {
         setShowAudio(true);
         setLoading2(false);
       }, 100);
     } else {
-      setShow(false);
+      setShow();
       setLoading2(false);
     }
   };
@@ -260,13 +259,13 @@ const content_en = [
     setLoading(true);
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
-      setShow(false);
+      setShow();
       setTimeout(async () => {
         setShowAudio(true);
         setLoading(false);
       }, 100);
     } else {
-      setShow(false);
+      setShow();
       setLoading(false);
     }
   };
@@ -318,10 +317,7 @@ const content_en = [
   };
 
   const checkingColor = value => {
-    console.log(
-      'color set',
-      value === code_color.blackDark ? code_color.white : code_color.blackDark,
-    );
+   
     return value === code_color.blackDark
       ? code_color.white
       : code_color.blackDark;
@@ -428,10 +424,10 @@ const content_en = [
                     // marginBottom: pageActive != 0 ? -100 : 0,
                     fontFamily: fontFamily,
                     fontSize: fixedFontSize(Number(fontSize)),
-                    color: colorText,
+                    color:  bg === code_color.blackDark ? code_color.white : code_color.blackDark,
                   },
                 ]}
-                TextComponent={renderValue}
+               
                 menuItems={['Share']}
                 onSelection={({
                   eventType,

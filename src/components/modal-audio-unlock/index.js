@@ -442,7 +442,10 @@ function ModalAudioStory({
                   />
                 </View> }
               <Pressable
-                  onPress={() => handlePayment(userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'in_app' : 'upgrade_to_unlimited_audio_story'  )}
+                  onPress={() => {
+                    onClose()
+                    handlePayment(userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'in_app' : 'upgrade_to_unlimited_audio_story'  )}
+                  }
                   style={{
                     backgroundColor: '#ADC3D2',
                     // width: '90%',

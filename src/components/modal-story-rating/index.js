@@ -45,11 +45,17 @@ function ModalStoryRating({
     const data = {
       value : rating
     }
-    const resp = await submitRating(nextStory?.id, data)
-    if(resp){
-      handleSuccess()
-      setRating(0)
+    try {
+      const resp = await submitRating(nextStory?.id, data)
+      if(resp){
+        handleSuccess()
+        setRating(0)
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error))
+      handleClose()
     }
+   
   }
   const handleRating = rated => {
     // Kustom logika yang ingin Anda terapkan saat peringkat berubah

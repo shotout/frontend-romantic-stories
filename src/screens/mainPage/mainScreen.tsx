@@ -1321,8 +1321,17 @@ const MainScreen = ({
           />
           <ModalStoryRating
             isVisible={showRating}
-            onClose={() => setRating(false)}
-            handleSuccess={() => handleSuccessRating()}
+            onClose={() => 
+              {
+
+                setRating(false)
+                handleSuccessRating()
+              }}
+            handleSuccess={() => {
+              // alert('oieeee')
+              setRating(false)
+              // handleSuccessRating()
+            }}
           />
           <ModalNewStory
             loadingAds={loadingAds}
@@ -1444,7 +1453,9 @@ const MainScreen = ({
               onGotIt={async () => {
                 setShowModalCongrats(false);
                 if (userStory?.is_rating === null) {
-                  setRating(true);
+                  setScreenNumber(0)
+                  setRating(true)
+                  // handleSuccessRating();
                 } else {
                   handleSuccessRating();
                 }
