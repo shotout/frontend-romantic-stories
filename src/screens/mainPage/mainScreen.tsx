@@ -1323,14 +1323,14 @@ const MainScreen = ({
             isVisible={showRating}
             onClose={() => 
               {
-
                 setRating(false)
+                setScreenNumber(0)
                 handleSuccessRating()
               }}
             handleSuccess={() => {
-              // alert('oieeee')
               setRating(false)
-              // handleSuccessRating()
+              setScreenNumber(0)
+              handleSuccessRating()
             }}
           />
           <ModalNewStory
