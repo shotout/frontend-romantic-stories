@@ -37,6 +37,7 @@ import {
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {State} from 'react-native-gesture-handler';
+import messaging from '@react-native-firebase/messaging';
 import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
 import notifee, {EventType} from '@notifee/react-native';
@@ -77,7 +78,11 @@ import {fixedFontSize, wp} from '../../utils/screen';
 import Speaker from '../../assets/icons/speaker';
 import {code_color} from '../../utils/colors';
 import {isIphoneXorAbove} from '../../utils/devices';
-import { FINISH_LISTEN_10, FINISH_LISTEN_3, eventTracking } from '../../helpers/eventTracking';
+import {
+  FINISH_LISTEN_10,
+  FINISH_LISTEN_3,
+  eventTracking,
+} from '../../helpers/eventTracking';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -233,30 +238,31 @@ const MainScreen = ({
         notifee.onForegroundEvent(async ({type, detail}) => {
           if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
             if (detail?.notification?.data?.type === 'story') {
-              console.log('okeoke JALAN', nextAppState);
               setTimeout(async () => {
-                // handleNativePayment(detail.notification.data?.placement);
-                // if (isPremiumStory || isPremiumAudio) {
-                console.log('okeoke', detail?.notification?.data?.id);
+                const value = await AsyncStorage.getItem('setToday');
+                const stringifyDateNow = new Date();
+                let strTanggalSekarang = stringifyDateNow.getDate().toString();
                 const res = await getStoryDetail(
                   detail?.notification?.data?.id,
                 );
-                // setBook(res.data);
-                // const response = await getStoryList();
                 handleNextStory(res.data);
                 navigate('Main');
-                setShowModalDay(true);
-                // let params = {
-                //   search: '',
-                //   column: 'title_en',
-                //   dir: 'asc',
-                // };
-                // const resp = await getExploreStory(params);
-                // handleStoriesRelate(resp);
-                // setShowModal(true);
-                // } else {
-                //   setShowModalNewStory(true);
-                // }
+
+                // jika free user
+                if (!(isPremiumStory || isPremiumAudio)) {
+                  // sudah pergantian tanggal
+                  if (value != strTanggalSekarang) {
+                    // langsung read story
+                    handleRead();
+                  } else {
+                    // menutup modal countdown & open modal new story unlock
+                    setShowModalNewStory(false);
+                    setShowModalDay(true);
+                  }
+                } else {
+                  // open modal new story unlock
+                  setShowModalDay(true);
+                }
               }, 100);
               // eventTracking(OPEN_OFFER_NOTIFICATION);
             }
@@ -364,6 +370,11 @@ const MainScreen = ({
       reloadUserProfile();
     }
     fetchCheckingDay();
+    // async function apa() {
+    //   const fcmToken = await messaging().getToken();
+    //   console.log(fcmToken);
+    // }
+    // apa();
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
@@ -598,8 +609,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    handleSetSteps(0);
-    AsyncStorage.setItem('isTutorial', 'yes');
+    // handleSetSteps(0);
+    // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
@@ -633,8 +644,8 @@ const MainScreen = ({
           }, 2500);
         }
         // navigate('Media');
-      // } else if (activeStep === 3) {
-      //   navigate('Library');
+        // } else if (activeStep === 3) {
+        //   navigate('Library');
       } else if (activeStep === 4) {
         navigate('ExploreLibrary');
       } else if (
@@ -764,7 +775,7 @@ const MainScreen = ({
     const words = text.split(' ');
     const resultArray = [];
     let currentChunk = '';
-  
+
     for (const word of words) {
       if ((currentChunk + word).length <= chunkLength) {
         currentChunk += word + ' ';
@@ -773,23 +784,24 @@ const MainScreen = ({
         currentChunk = word + ' ';
       }
     }
-  
+
     if (currentChunk.trim() !== '') {
       resultArray.push(currentChunk.trim());
     }
-  
+
     return resultArray;
   };
-  const text = dataBook?.content_en
-  console.log('INI DATA', userStory)
-  const textChunks = splitTextIntoArray(text, Dimensions.get('window').height <= 667 ? 600 : 750);
+  const text = dataBook?.content_en;
+  console.log('INI DATA', userStory);
+  const textChunks = splitTextIntoArray(
+    text,
+    Dimensions.get('window').height <= 667 ? 600 : 750,
+  );
   const renderFactItem = ({item, index, title, category, colorText}) => {
-   
     return (
       <>
         <QuotesContent
           item={item}
-         
           isActive={activeSlide === index}
           totalStory={textChunks?.length}
           pageActive={index}
@@ -808,7 +820,6 @@ const MainScreen = ({
           setShow={() => setShow(false)}
           handleListen={() => handleListening()}
         />
-        
       </>
     );
   };
@@ -851,7 +862,7 @@ const MainScreen = ({
   //   );
   // }
   function renderFlatList() {
-    if (textChunks?.length > 0) { 
+    if (textChunks?.length > 0) {
       return (
         <PagerView
           style={{flex: 1}}
@@ -1047,7 +1058,11 @@ const MainScreen = ({
                       fontFamily: 'Comfortaa-SemiBold',
                       marginBottom: wp(50),
                     }}>
-                    {`Hey, ${userProfile?.data?.name === null ? '' : userProfile?.data?.name}\nYou’re all set!`}
+                    {`Hey, ${
+                      userProfile?.data?.name === null
+                        ? ''
+                        : userProfile?.data?.name
+                    }\nYou’re all set!`}
                   </Animatable.Text>
                   <Animatable.Text
                     delay={2000}
@@ -1273,13 +1288,19 @@ const MainScreen = ({
             backgroundColor={backgroundStyle.backgroundColor}
           />
 
-<View
+          <View
             style={{
               backgroundColor: backgroundColor,
               paddingTop: isIphoneXorAbove() ? 40 : 25,
             }}
           />
-             <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', marginHorizontal: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 0,
+              alignItems: 'center',
+              marginHorizontal: 20,
+            }}>
             <View style={{flex: 1}}>
               <Text
                 allowFontScaling={false}
@@ -1313,7 +1334,7 @@ const MainScreen = ({
 
             <TouchableOpacity
               onPress={async () => {
-                handleListening()
+                handleListening();
               }}
               style={{
                 padding: wp(5),
@@ -1341,7 +1362,6 @@ const MainScreen = ({
           </View>
           {renderTutorial()}
           {renderFlatList()}
-         
         </Pressable>
       );
     } else {
@@ -1383,16 +1403,15 @@ const MainScreen = ({
           />
           <ModalStoryRating
             isVisible={showRating}
-            onClose={() => 
-              {
-                setRating(false)
-                setScreenNumber(0)
-                handleSuccessRating()
-              }}
+            onClose={() => {
+              setRating(false);
+              setScreenNumber(0);
+              handleSuccessRating();
+            }}
             handleSuccess={() => {
-              setRating(false)
-              setScreenNumber(0)
-              handleSuccessRating()
+              setRating(false);
+              setScreenNumber(0);
+              handleSuccessRating();
             }}
           />
           <ModalNewStory
@@ -1425,7 +1444,13 @@ const MainScreen = ({
             }}
             onClose={() => setShowModalGetPremium(false)}
           />
-          <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', marginHorizontal: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 0,
+              alignItems: 'center',
+              marginHorizontal: 20,
+            }}>
             <View style={{flex: 1}}>
               <Text
                 allowFontScaling={false}
@@ -1459,7 +1484,7 @@ const MainScreen = ({
 
             <TouchableOpacity
               onPress={async () => {
-                handleListening()
+                handleListening();
               }}
               style={{
                 padding: wp(5),
@@ -1486,20 +1511,20 @@ const MainScreen = ({
             </TouchableOpacity>
           </View>
           {isRippleAnimate && (
-          <Animatable.View
-            duration={200}
-            animation={'fadeIn'}
-            style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
-            <AnimatedLottieView
-              source={rippleAnimate}
-              style={{
-                width: sizing.getDimensionWidth(0.8),
-              }}
-              autoPlay
-              duration={4000}
-            />
-          </Animatable.View>
-        )}
+            <Animatable.View
+              duration={200}
+              animation={'fadeIn'}
+              style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
+              <AnimatedLottieView
+                source={rippleAnimate}
+                style={{
+                  width: sizing.getDimensionWidth(0.8),
+                }}
+                autoPlay
+                duration={4000}
+              />
+            </Animatable.View>
+          )}
           {renderFlatList()}
           {renderTutorial()}
           {showModalCongrats && (
@@ -1516,8 +1541,8 @@ const MainScreen = ({
               onGotIt={async () => {
                 setShowModalCongrats(false);
                 if (userStory?.is_rating === null) {
-                  setScreenNumber(0)
-                  setRating(true)
+                  setScreenNumber(0);
+                  setRating(true);
                   // handleSuccessRating();
                 } else {
                   handleSuccessRating();

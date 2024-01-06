@@ -22,11 +22,10 @@ const App = () => {
         notifee.onForegroundEvent(async ({type, detail}) => {
           if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
             if (detail.notification.data?.type === 'paywall') {
-              console.log('okeoke JALAN', nextAppState);
               setTimeout(() => {
                 // handleNativePayment(detail.notification.data?.placement);
                 handlePayment(detail.notification.data?.placement);
-              }, 1000);
+              }, 100);
               eventTracking(OPEN_OFFER_NOTIFICATION);
             }
           }
