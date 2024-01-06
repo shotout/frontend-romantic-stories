@@ -25,6 +25,7 @@ import {
   Alert,
   Platform,
   TouchableOpacity,
+  AppState,
 } from 'react-native';
 import {
   imgBgAvaTips,
@@ -38,6 +39,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {State} from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
+import notifee, {EventType} from '@notifee/react-native';
 import {sizing} from '../../utils/styling';
 import QuotesContent from '../../components/quotes-content-fast-image';
 import PropTypes from 'prop-types';
@@ -145,6 +147,7 @@ const MainScreen = ({
   const [isLoveAnimate, setIsLoveAnimate] = useState<boolean | string>(false);
   const [isRippleAnimate, setIsRippleAnimate] = useState<boolean>(false);
   const [isStartConfetti, setIsStartConfetti] = useState(false);
+  const [appState, setAppState] = useState(AppState.currentState);
   const isFocused = useIsFocused();
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
@@ -223,6 +226,50 @@ const MainScreen = ({
   //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
   //   },
   // ]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/background/) && nextAppState === 'active') {
+        notifee.onForegroundEvent(async ({type, detail}) => {
+          if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
+            if (detail?.notification?.data?.type === 'story') {
+              console.log('okeoke JALAN', nextAppState);
+              setTimeout(async () => {
+                // handleNativePayment(detail.notification.data?.placement);
+                // if (isPremiumStory || isPremiumAudio) {
+                console.log('okeoke', detail?.notification?.data?.id);
+                const res = await getStoryDetail(
+                  detail?.notification?.data?.id,
+                );
+                // setBook(res.data);
+                // const response = await getStoryList();
+                handleNextStory(res.data);
+                navigate('Main');
+                setShowModalDay(true);
+                // let params = {
+                //   search: '',
+                //   column: 'title_en',
+                //   dir: 'asc',
+                // };
+                // const resp = await getExploreStory(params);
+                // handleStoriesRelate(resp);
+                // setShowModal(true);
+                // } else {
+                //   setShowModalNewStory(true);
+                // }
+              }, 100);
+              // eventTracking(OPEN_OFFER_NOTIFICATION);
+            }
+          }
+        });
+      }
+      setAppState(nextAppState);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
 
   useEffect(() => {
     if (route?.params?.successListen) {

@@ -101,6 +101,7 @@ function RegisterScreen({
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
     const fcmToken = await messaging().getToken();
+    console.log('okeoke', fcmToken);
     const id = await Purchasely.getAnonymousUserId();
     setFormValues({
       ...values,

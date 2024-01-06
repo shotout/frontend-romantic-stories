@@ -18,14 +18,11 @@ const App = () => {
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+      if (appState.match(/background/) && nextAppState === 'active') {
         notifee.onForegroundEvent(async ({type, detail}) => {
           if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
             if (detail.notification.data?.type === 'paywall') {
-              console.log(
-                'Check paywall data new banget:',
-                detail.notification.data,
-              );
+              console.log('okeoke JALAN', nextAppState);
               setTimeout(() => {
                 // handleNativePayment(detail.notification.data?.placement);
                 handlePayment(detail.notification.data?.placement);
