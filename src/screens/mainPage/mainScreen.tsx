@@ -243,9 +243,9 @@ const MainScreen = ({
       }
       pagerRef.current?.setPage(textChunks?.length - 1);
     } else if (route?.params?.storyId) {
-      setReadLater(true)
+      setReadLater(true);
       if (isPremiumStory || isPremiumAudio) {
-        fecthNextStoryPremium(route?.params?.storyId)
+        fecthNextStoryPremium(route?.params?.storyId);
       } else {
         handleFreeUserStory(route?.params?.storyId);
       }
@@ -254,7 +254,7 @@ const MainScreen = ({
     }
   }, [route?.params]);
 
-  const fecthNextStoryPremium = async (id) => {
+  const fecthNextStoryPremium = async id => {
     const resp = await getStoryDetail(id);
     handleNextStory(resp.data);
     setShowModal(true);
@@ -894,34 +894,24 @@ const MainScreen = ({
   };
 
   const showWatchAdsFree = async () => {
-    setLoadingAds(true)
+    setLoadingAds(true);
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
-      setLoadingAds(false)
-      setShowStoryFree(false)
+      setLoadingAds(false);
+      setShowStoryFree(false);
       setTimeout(() => {
-        fetchStoryFree()
+        fetchStoryFree();
       }, 200);
-     
     });
   };
 
-  const fetchStoryFree = async() => {
-      try {
-        const resp = await getStoryDetail(route?.params?.storyId);
+  const fetchStoryFree = async () => {
+    const resp = await getStoryDetail(route?.params?.storyId);
     handleNextStory(resp.data);
     setTimeout(() => {
       setShowModal(true);
     }, 500);
-   
-      } catch (error) {
-        alert(JSON.stringify(error))
-      }
-    
-    // setTimeout(() => {
-    //   setShowModal(true);
-    // }, 200);
-  }
+  };
   const handleUnlimited = async () => {
     //
     try {
@@ -930,7 +920,7 @@ const MainScreen = ({
         setShowModalGetPremium(true);
         setShowModalNewStory(false);
         setShowModalCongrats(false);
-        setShowStoryFree(false)
+        setShowStoryFree(false);
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -1283,7 +1273,7 @@ const MainScreen = ({
     setLoadingStory(true);
     const data = await handleNativePayment(
       'unlock_story_1_week_only',
-      route?.params?.storyId
+      route?.params?.storyId,
     );
     if (data) {
       setTimeout(async () => {
@@ -1426,10 +1416,9 @@ const MainScreen = ({
               handleRead();
             }}
             handleLater={async () => {
-             
               await addStory(nextStory.id);
               setShowModal(false);
-              setReadLater(false)
+              setReadLater(false);
             }}
           />
           <ModalStoryRating
