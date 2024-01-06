@@ -609,8 +609,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
-    // AsyncStorage.setItem('isTutorial', 'yes');
+    handleSetSteps(0);
+    AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
