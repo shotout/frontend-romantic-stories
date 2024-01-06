@@ -670,7 +670,7 @@ function ScreenShare({
                 />
               ) : null}
             </ImageBackground>
-          ) : stepsTutorial === 7 ? (
+          ) : (
             <ImageBackground
               source={imgQuote}
               resizeMode="contain"
@@ -694,7 +694,7 @@ function ScreenShare({
                 }}
               />
             </ImageBackground>
-          ) : null}
+          )}
         </SafeAreaView>
       );
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {
