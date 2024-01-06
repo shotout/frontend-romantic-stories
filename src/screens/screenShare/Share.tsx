@@ -636,7 +636,6 @@ function ScreenShare({
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
-      console.log('STEP BERAPA', stepsTutorial)
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}

@@ -51,12 +51,14 @@ function Main({registerData, userProfile, props, handleSetStory}) {
       let storyId = link.url.split('=').pop();
       // navigate('Library');
       // Alert.alert(storyId);
-      const resp = await getStoryDetail(storyId);
-      handleSetStory(resp.data);
-      navigate('Main');
+      // const resp = await getStoryDetail(storyId);
+      // // handleSetStory(resp.data);
+      // alert(link)
+      navigate('Main', {storyId: storyId});
     };
     useEffect(() => {
       const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
+    
       return () => unsubscribe();
     }, []);
 

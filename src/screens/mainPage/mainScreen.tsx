@@ -75,7 +75,13 @@ import {fixedFontSize, wp} from '../../utils/screen';
 import Speaker from '../../assets/icons/speaker';
 import {code_color} from '../../utils/colors';
 import {isIphoneXorAbove} from '../../utils/devices';
-import { FINISH_LISTEN_10, FINISH_LISTEN_3, eventTracking } from '../../helpers/eventTracking';
+import {
+  FINISH_LISTEN_10,
+  FINISH_LISTEN_3,
+  eventTracking,
+} from '../../helpers/eventTracking';
+import ModalUnlockStory from '../../components/modal-unlock-story';
+import * as IAP from 'react-native-iap';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -105,7 +111,8 @@ const MainScreen = ({
   listenStory,
   handleListenStory,
 }) => {
-  const [loadingOne, setLoadingOne] = useState(false);
+  const [loadingStory, setLoadingStory] = useState(false);
+  const [showStoryFree, setShowStoryFree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
   const [activeStep, setActiveStep] = useState(stepsTutorial);
@@ -115,6 +122,7 @@ const MainScreen = ({
     visible: false,
     step: stepsTutorial,
   });
+  const [price, setPrice] = useState('');
   const [show, setShow] = useState(false);
   const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
@@ -227,13 +235,35 @@ const MainScreen = ({
   useEffect(() => {
     if (route?.params?.successListen) {
       if (userStory?.is_rating === null) {
+        setScreenNumber(0);
         setRating(true);
       } else {
-        handleSuccessRating();
+        setScreenNumber(0);
+        setShowModalCongrats(true);
       }
       pagerRef.current?.setPage(textChunks?.length - 1);
+    } else if (route?.params?.storyId) {
+      setReadLater(true)
+      if (isPremiumStory || isPremiumAudio) {
+        fecthNextStoryPremium(route?.params?.storyId)
+      } else {
+        handleFreeUserStory(route?.params?.storyId);
+      }
+
+      // handleSuccessRating();
     }
   }, [route?.params]);
+
+  const fecthNextStoryPremium = async (id) => {
+    const resp = await getStoryDetail(id);
+    handleNextStory(resp.data);
+    setShowModal(true);
+  };
+  const handleFreeUserStory = async id => {
+    const resp = await getStoryDetail(id);
+    handleNextStory(resp.data);
+    setShowStoryFree(true);
+  };
   const checkingRead = pageNumber => {
     const existingEntry = readStory
       ? readStory.find(
@@ -255,10 +285,6 @@ const MainScreen = ({
     const resp = await getStoryList();
     handleSetStory(resp.data);
   };
-
-  useEffect(() => {
-    console.log(JSON.stringify(listenStory));
-  }, [listenStory]);
 
   useEffect(() => {
     // fetchStory()
@@ -586,8 +612,8 @@ const MainScreen = ({
           }, 2500);
         }
         // navigate('Media');
-      // } else if (activeStep === 3) {
-      //   navigate('Library');
+        // } else if (activeStep === 3) {
+        //   navigate('Library');
       } else if (activeStep === 4) {
         navigate('ExploreLibrary');
       } else if (
@@ -717,7 +743,7 @@ const MainScreen = ({
     const words = text.split(' ');
     const resultArray = [];
     let currentChunk = '';
-  
+
     for (const word of words) {
       if ((currentChunk + word).length <= chunkLength) {
         currentChunk += word + ' ';
@@ -726,22 +752,23 @@ const MainScreen = ({
         currentChunk = word + ' ';
       }
     }
-  
+
     if (currentChunk.trim() !== '') {
       resultArray.push(currentChunk.trim());
     }
-  
+
     return resultArray;
   };
-  const text = dataBook?.content_en
-  const textChunks = splitTextIntoArray(text, Dimensions.get('window').height <= 667 ? 600 : 750);
+  const text = dataBook?.content_en;
+  const textChunks = splitTextIntoArray(
+    text,
+    Dimensions.get('window').height <= 667 ? 600 : 750,
+  );
   const renderFactItem = ({item, index, title, category, colorText}) => {
-   
     return (
       <>
         <QuotesContent
           item={item}
-         
           isActive={activeSlide === index}
           totalStory={textChunks?.length}
           pageActive={index}
@@ -760,7 +787,6 @@ const MainScreen = ({
           setShow={() => setShow(false)}
           handleListen={() => handleListening()}
         />
-        
       </>
     );
   };
@@ -803,7 +829,7 @@ const MainScreen = ({
   //   );
   // }
   function renderFlatList() {
-    if (textChunks?.length > 0) { 
+    if (textChunks?.length > 0) {
       return (
         <PagerView
           style={{flex: 1}}
@@ -866,6 +892,36 @@ const MainScreen = ({
       // setShowModalNewStory(false);
     }
   };
+
+  const showWatchAdsFree = async () => {
+    setLoadingAds(true)
+    const advert = await loadRewarded();
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+      setLoadingAds(false)
+      setShowStoryFree(false)
+      setTimeout(() => {
+        fetchStoryFree()
+      }, 200);
+     
+    });
+  };
+
+  const fetchStoryFree = async() => {
+      try {
+        const resp = await getStoryDetail(route?.params?.storyId);
+    handleNextStory(resp.data);
+    setTimeout(() => {
+      setShowModal(true);
+    }, 500);
+   
+      } catch (error) {
+        alert(JSON.stringify(error))
+      }
+    
+    // setTimeout(() => {
+    //   setShowModal(true);
+    // }, 200);
+  }
   const handleUnlimited = async () => {
     //
     try {
@@ -874,6 +930,7 @@ const MainScreen = ({
         setShowModalGetPremium(true);
         setShowModalNewStory(false);
         setShowModalCongrats(false);
+        setShowStoryFree(false)
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -999,7 +1056,11 @@ const MainScreen = ({
                       fontFamily: 'Comfortaa-SemiBold',
                       marginBottom: wp(50),
                     }}>
-                    {`Hey, ${userProfile?.data?.name === null ? '' : userProfile?.data?.name}\nYou’re all set!`}
+                    {`Hey, ${
+                      userProfile?.data?.name === null
+                        ? ''
+                        : userProfile?.data?.name
+                    }\nYou’re all set!`}
                   </Animatable.Text>
                   <Animatable.Text
                     delay={2000}
@@ -1131,12 +1192,12 @@ const MainScreen = ({
     });
   };
   const handleRead = () => {
+    pagerRef.current?.setPage(0);
+    setScreenNumber(0);
     handleSetStory(nextStory);
     setShowModalDay(false);
     setShowModal(false);
     setBook(nextStory);
-    pagerRef.current?.setPage(0);
-    setScreenNumber(0);
   };
 
   const touchEndStory = async e => {
@@ -1185,7 +1246,16 @@ const MainScreen = ({
       }, 700);
     }
   };
-
+  useEffect(() => {
+    async function getPrice() {
+      const products = await IAP.getProducts({
+        skus: ['unlock_story_1_week_only'],
+      });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice);
+    }
+    getPrice();
+  }, []);
   const handleSuccessRating = async () => {
     setRating(false);
     if (isPremiumStory || isPremiumAudio) {
@@ -1209,6 +1279,22 @@ const MainScreen = ({
     const response = await addStory(nextStory.id);
     setShowModalDay(false);
   };
+  const handleNative = async () => {
+    setLoadingStory(true);
+    const data = await handleNativePayment(
+      'unlock_story_1_week_only',
+      route?.params?.storyId
+    );
+    if (data) {
+      setTimeout(async () => {
+        setLoadingStory(false);
+        setShowStoryFree(false);
+      }, 100);
+    } else {
+      setLoadingStory(false);
+      setShowStoryFree(false);
+    }
+  };
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -1225,13 +1311,19 @@ const MainScreen = ({
             backgroundColor={backgroundStyle.backgroundColor}
           />
 
-<View
+          <View
             style={{
               backgroundColor: backgroundColor,
               paddingTop: isIphoneXorAbove() ? 40 : 25,
             }}
           />
-             <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', marginHorizontal: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 0,
+              alignItems: 'center',
+              marginHorizontal: 20,
+            }}>
             <View style={{flex: 1}}>
               <Text
                 allowFontScaling={false}
@@ -1265,7 +1357,7 @@ const MainScreen = ({
 
             <TouchableOpacity
               onPress={async () => {
-                handleListening()
+                handleListening();
               }}
               style={{
                 padding: wp(5),
@@ -1293,7 +1385,6 @@ const MainScreen = ({
           </View>
           {renderTutorial()}
           {renderFlatList()}
-         
         </Pressable>
       );
     } else {
@@ -1330,21 +1421,28 @@ const MainScreen = ({
             restart={undefined}
             edit={undefined}
             readLater={readLater}
-            isPremium={isPremiumStory || isPremiumAudio}
-            handleRead={() => handleRead()}
+            isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
+            handleRead={() => {
+              handleRead();
+            }}
+            handleLater={async () => {
+             
+              await addStory(nextStory.id);
+              setShowModal(false);
+              setReadLater(false)
+            }}
           />
           <ModalStoryRating
             isVisible={showRating}
-            onClose={() => 
-              {
-                setRating(false)
-                setScreenNumber(0)
-                handleSuccessRating()
-              }}
+            onClose={() => {
+              setRating(false);
+              setScreenNumber(0);
+              handleSuccessRating();
+            }}
             handleSuccess={() => {
-              setRating(false)
-              setScreenNumber(0)
-              handleSuccessRating()
+              setRating(false);
+              setScreenNumber(0);
+              handleSuccessRating();
             }}
           />
           <ModalNewStory
@@ -1377,7 +1475,13 @@ const MainScreen = ({
             }}
             onClose={() => setShowModalGetPremium(false)}
           />
-          <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', marginHorizontal: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 0,
+              alignItems: 'center',
+              marginHorizontal: 20,
+            }}>
             <View style={{flex: 1}}>
               <Text
                 allowFontScaling={false}
@@ -1411,7 +1515,7 @@ const MainScreen = ({
 
             <TouchableOpacity
               onPress={async () => {
-                handleListening()
+                handleListening();
               }}
               style={{
                 padding: wp(5),
@@ -1438,22 +1542,35 @@ const MainScreen = ({
             </TouchableOpacity>
           </View>
           {isRippleAnimate && (
-          <Animatable.View
-            duration={200}
-            animation={'fadeIn'}
-            style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
-            <AnimatedLottieView
-              source={rippleAnimate}
-              style={{
-                width: sizing.getDimensionWidth(0.8),
-              }}
-              autoPlay
-              duration={4000}
-            />
-          </Animatable.View>
-        )}
+            <Animatable.View
+              duration={200}
+              animation={'fadeIn'}
+              style={{top: -80, right: -100, position: 'absolute', zIndex: 2}}>
+              <AnimatedLottieView
+                source={rippleAnimate}
+                style={{
+                  width: sizing.getDimensionWidth(0.8),
+                }}
+                autoPlay
+                duration={4000}
+              />
+            </Animatable.View>
+          )}
           {renderFlatList()}
           {renderTutorial()}
+          <ModalUnlockStory
+            isLoading={loadingStory}
+            isVisible={showStoryFree}
+            onClose={() => setShowStoryFree(false)}
+            data={nextStory}
+            onWatchAds={showWatchAdsFree}
+            onUnlock={() => {
+              handleNative();
+            }}
+            loadingOne={loadingAds}
+            price={price}
+            onGetUnlimit={() => handleUnlimited()}
+          />
           {showModalCongrats && (
             <ModalCongrats
               pastLevel={textChunks?.length}
@@ -1468,10 +1585,11 @@ const MainScreen = ({
               onGotIt={async () => {
                 setShowModalCongrats(false);
                 if (userStory?.is_rating === null) {
-                  setScreenNumber(0)
-                  setRating(true)
+                  setScreenNumber(0);
+                  setRating(true);
                   // handleSuccessRating();
                 } else {
+                  setScreenNumber(0);
                   handleSuccessRating();
                 }
                 // pagerRef.current?.setPage(dataBook.content_en?.length - 1);
