@@ -118,9 +118,9 @@ function ModalUnlockStory({
                 color: '#505962',
                 marginTop: moderateScale(20),
               }}>
-              {data?.content_en[0].length === 1
+              {data?.content_en.length === 1
                 ? data?.content_en?.slice(0, 210) + '...'
-                : data?.content_en[0]?.slice(0, 210) + '...'}
+                : data?.content_en?.slice(0, 210) + '...'}
             </Text>
             <View
               style={{

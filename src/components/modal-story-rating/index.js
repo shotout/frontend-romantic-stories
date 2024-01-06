@@ -195,7 +195,7 @@ how did you like your previous story?`}
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                {nextStory?.content_en[0].substring(0, 120)}...
+                {nextStory?.content_en.substring(0, 120)}...
               </Text>
             </View>
             <View style={{alignItems: 'center', borderTopColor: code_color.greyDefault, borderTopWidth: 1, paddingTop: 10}}>
