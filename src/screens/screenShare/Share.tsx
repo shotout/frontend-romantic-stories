@@ -243,26 +243,23 @@ function ScreenShare({
         ? setTimeout(() => {
             setShowModal(true);
           }, 3000)
-         
         : null;
-
-      
     }
   }, [stepsTutorial]);
 
   useEffect(() => {
-    if(showModal){
+    if (showModal) {
       setTimeout(() => {
         setShowModal(false);
-      }, 3000)
+      }, 3000);
       setTimeout(() => {
         setShowModalTwo(true);
         handleSetSteps(stepsTutorial + 1);
         setVisible(false);
-        console.log('STEP BERAPA inii', stepsTutorial)
-      }, 5000)
+        console.log('STEP BERAPA inii', stepsTutorial);
+      }, 10000);
     }
-  }, [showModal])
+  }, [showModal]);
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
@@ -389,7 +386,6 @@ function ScreenShare({
       ],
       {cancelable: false},
     );
-   
   };
 
   const handleSharetoFBStory = async () => {
@@ -434,7 +430,6 @@ function ScreenShare({
       ],
       {cancelable: false},
     );
-    
   };
 
   function renderCard() {
@@ -600,7 +595,7 @@ function ScreenShare({
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const halfScreenWidth = Dimensions.get('window').width / 2.5;
-   
+
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
       handleSetSteps(stepsTutorial - 1);
@@ -667,11 +662,11 @@ function ScreenShare({
 
               {showModal ? (
                 <Step6
-                  // handleNext={() => {
-                  //   setShowModalTwo(true);
-                  //   handleSetSteps(stepsTutorial + 1);
-                  //   setVisible(false);
-                  // }}
+                // handleNext={() => {
+                //   setShowModalTwo(true);
+                //   handleSetSteps(stepsTutorial + 1);
+                //   setVisible(false);
+                // }}
                 />
               ) : null}
             </ImageBackground>
