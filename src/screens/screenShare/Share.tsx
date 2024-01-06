@@ -242,10 +242,27 @@ function ScreenShare({
       stepsTutorial === 6
         ? setTimeout(() => {
             setShowModal(true);
-          }, 10000)
+          }, 3000)
+         
         : null;
+
+      
     }
   }, [stepsTutorial]);
+
+  useEffect(() => {
+    if(showModal){
+      setTimeout(() => {
+        setShowModal(false);
+      }, 3000)
+      setTimeout(() => {
+        setShowModalTwo(true);
+        handleSetSteps(stepsTutorial + 1);
+        setVisible(false);
+        console.log('STEP BERAPA inii', stepsTutorial)
+      }, 5000)
+    }
+  }, [showModal])
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
@@ -327,16 +344,6 @@ function ScreenShare({
       ],
       {cancelable: false},
     );
-    // setTimeout(async () => {
-    //   try {
-    //     await Share.open({
-    //       url: base64CaptureImage.current!,
-    //       title: 'Shared-Short-Story',
-    //     });
-    //   } catch (err) {
-    //     console.log('Error share whatsapp:', err);
-    //   }
-    // }, 200);
   };
 
   const handleIGStoryShare = async () => {
@@ -382,19 +389,7 @@ function ScreenShare({
       ],
       {cancelable: false},
     );
-    // setTimeout(async () => {
-    //   try {
-    //     const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-    //     await Share.shareSingle({
-    //       title: 'Share image to instagram',
-    //       type: 'image/jpeg',
-    //       url: contentURL,
-    //       social: Share.Social.INSTAGRAM,
-    //     });
-    //   } catch (err) {
-    //     console.log('Err share default ig:', err);
-    //   }
-    // }, 200);
+   
   };
 
   const handleSharetoFBStory = async () => {
@@ -439,23 +434,7 @@ function ScreenShare({
       ],
       {cancelable: false},
     );
-    // setTimeout(async () => {
-    //   try {
-    //     const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-    //     await Share.shareSingle({
-    //       url: contentURL!,
-    //       // title: 'Share file',
-    //       // message: 'Simple share with message',
-    //       // appId: '637815961525510', // facebook appId
-    //       // backgroundBottomColor: '#fff',
-    //       // backgroundTopColor: '#fff',
-    //       // type: 'image/*',
-    //       social: Social.Facebook,
-    //     });
-    //   } catch (err) {
-    //     console.log('Err fb default:', err);
-    //   }
-    // }, 200);
+    
   };
 
   function renderCard() {
@@ -657,6 +636,7 @@ function ScreenShare({
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
+      console.log('STEP BERAPA', stepsTutorial)
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -688,19 +668,15 @@ function ScreenShare({
 
               {showModal ? (
                 <Step6
-                  handleNext={() => {
-                    setShowModalTwo(true);
-                    handleSetSteps(stepsTutorial + 1);
-                    setVisible(false);
-                  }}
-                  handlePrev={() => {
-                    handleSetSteps(stepsTutorial - 2);
-                    navigate('ExploreLibrary');
-                  }}
+                  // handleNext={() => {
+                  //   setShowModalTwo(true);
+                  //   handleSetSteps(stepsTutorial + 1);
+                  //   setVisible(false);
+                  // }}
                 />
               ) : null}
             </ImageBackground>
-          ) : (
+          ) : stepsTutorial === 7 ? (
             <ImageBackground
               source={imgQuote}
               resizeMode="contain"
@@ -724,7 +700,7 @@ function ScreenShare({
                 }}
               />
             </ImageBackground>
-          )}
+          ) : null}
         </SafeAreaView>
       );
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {

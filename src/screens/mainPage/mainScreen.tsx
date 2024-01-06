@@ -108,7 +108,7 @@ const MainScreen = ({
   const [loadingOne, setLoadingOne] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
   const [products, setProducts] = useState([]);
   const [isTutorial, setTutorial] = useState({
@@ -551,8 +551,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    handleSetSteps(0);
-    AsyncStorage.setItem('isTutorial', 'yes');
+    // handleSetSteps(0);
+    // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
@@ -734,7 +734,6 @@ const MainScreen = ({
     return resultArray;
   };
   const text = dataBook?.content_en
-  console.log('INI DATA', userStory)
   const textChunks = splitTextIntoArray(text, Dimensions.get('window').height <= 667 ? 600 : 750);
   const renderFactItem = ({item, index, title, category, colorText}) => {
    
