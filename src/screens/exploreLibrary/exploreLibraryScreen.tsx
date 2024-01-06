@@ -34,6 +34,7 @@ import {goBack, navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
 import {
+  addStory,
   getExploreStory,
   getStoryDetail,
   updateProfile,
@@ -633,6 +634,10 @@ const ExploreLibraryScreen = ({
           const resp = await getStoryDetail(selectedStory?.id);
           handleSetStory(resp.data);
           navigate('Main');
+        }}
+        handleLater={async () => {
+          await addStory(selectedStory?.id);
+          setShowUnlockedStory(false);
         }}
       />
     </SafeAreaView>

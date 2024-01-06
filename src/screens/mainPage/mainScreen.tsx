@@ -83,6 +83,8 @@ import {
   FINISH_LISTEN_3,
   eventTracking,
 } from '../../helpers/eventTracking';
+import ModalUnlockStory from '../../components/modal-unlock-story';
+import * as IAP from 'react-native-iap';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -112,16 +114,18 @@ const MainScreen = ({
   listenStory,
   handleListenStory,
 }) => {
-  const [loadingOne, setLoadingOne] = useState(false);
+  const [loadingStory, setLoadingStory] = useState(false);
+  const [showStoryFree, setShowStoryFree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
   const [products, setProducts] = useState([]);
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
   });
+  const [price, setPrice] = useState('');
   const [show, setShow] = useState(false);
   const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
@@ -280,13 +284,35 @@ const MainScreen = ({
   useEffect(() => {
     if (route?.params?.successListen) {
       if (userStory?.is_rating === null) {
+        setScreenNumber(0);
         setRating(true);
       } else {
-        handleSuccessRating();
+        setScreenNumber(0);
+        setShowModalCongrats(true);
       }
       pagerRef.current?.setPage(textChunks?.length - 1);
+    } else if (route?.params?.storyId) {
+      setReadLater(true);
+      if (isPremiumStory || isPremiumAudio) {
+        fecthNextStoryPremium(route?.params?.storyId);
+      } else {
+        handleFreeUserStory(route?.params?.storyId);
+      }
+
+      // handleSuccessRating();
     }
   }, [route?.params]);
+
+  const fecthNextStoryPremium = async id => {
+    const resp = await getStoryDetail(id);
+    handleNextStory(resp.data);
+    setShowModal(true);
+  };
+  const handleFreeUserStory = async id => {
+    const resp = await getStoryDetail(id);
+    handleNextStory(resp.data);
+    setShowStoryFree(true);
+  };
   const checkingRead = pageNumber => {
     const existingEntry = readStory
       ? readStory.find(
@@ -308,10 +334,6 @@ const MainScreen = ({
     const resp = await getStoryList();
     handleSetStory(resp.data);
   };
-
-  useEffect(() => {
-    console.log(JSON.stringify(listenStory));
-  }, [listenStory]);
 
   useEffect(() => {
     // fetchStory()
@@ -370,11 +392,11 @@ const MainScreen = ({
       reloadUserProfile();
     }
     fetchCheckingDay();
-    // async function apa() {
+    // async function fcmt() {
     //   const fcmToken = await messaging().getToken();
     //   console.log(fcmToken);
     // }
-    // apa();
+    // fcmt();
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
@@ -609,8 +631,8 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    handleSetSteps(0);
-    AsyncStorage.setItem('isTutorial', 'yes');
+    // handleSetSteps(0);
+    // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
     const checkTutorial = async () => {
@@ -792,7 +814,6 @@ const MainScreen = ({
     return resultArray;
   };
   const text = dataBook?.content_en;
-  console.log('INI DATA', userStory);
   const textChunks = splitTextIntoArray(
     text,
     Dimensions.get('window').height <= 667 ? 600 : 750,
@@ -925,6 +946,26 @@ const MainScreen = ({
       // setShowModalNewStory(false);
     }
   };
+
+  const showWatchAdsFree = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewarded();
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+      setLoadingAds(false);
+      setShowStoryFree(false);
+      setTimeout(() => {
+        fetchStoryFree();
+      }, 200);
+    });
+  };
+
+  const fetchStoryFree = async () => {
+    const resp = await getStoryDetail(route?.params?.storyId);
+    handleNextStory(resp.data);
+    setTimeout(() => {
+      setShowModal(true);
+    }, 500);
+  };
   const handleUnlimited = async () => {
     //
     try {
@@ -933,6 +974,7 @@ const MainScreen = ({
         setShowModalGetPremium(true);
         setShowModalNewStory(false);
         setShowModalCongrats(false);
+        setShowStoryFree(false);
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -1194,12 +1236,12 @@ const MainScreen = ({
     });
   };
   const handleRead = () => {
+    pagerRef.current?.setPage(0);
+    setScreenNumber(0);
     handleSetStory(nextStory);
     setShowModalDay(false);
     setShowModal(false);
     setBook(nextStory);
-    pagerRef.current?.setPage(0);
-    setScreenNumber(0);
   };
 
   const touchEndStory = async e => {
@@ -1248,7 +1290,16 @@ const MainScreen = ({
       }, 700);
     }
   };
-
+  useEffect(() => {
+    async function getPrice() {
+      const products = await IAP.getProducts({
+        skus: ['unlock_story_1_week_only'],
+      });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice);
+    }
+    getPrice();
+  }, []);
   const handleSuccessRating = async () => {
     setRating(false);
     if (isPremiumStory || isPremiumAudio) {
@@ -1271,6 +1322,22 @@ const MainScreen = ({
   const handleLater = async () => {
     const response = await addStory(nextStory.id);
     setShowModalDay(false);
+  };
+  const handleNative = async () => {
+    setLoadingStory(true);
+    const data = await handleNativePayment(
+      'unlock_story_1_week_only',
+      route?.params?.storyId,
+    );
+    if (data) {
+      setTimeout(async () => {
+        setLoadingStory(false);
+        setShowStoryFree(false);
+      }, 100);
+    } else {
+      setLoadingStory(false);
+      setShowStoryFree(false);
+    }
   };
   const renderView = () => {
     if (route?.name != 'Main') {
@@ -1398,8 +1465,15 @@ const MainScreen = ({
             restart={undefined}
             edit={undefined}
             readLater={readLater}
-            isPremium={isPremiumStory || isPremiumAudio}
-            handleRead={() => handleRead()}
+            isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
+            handleRead={() => {
+              handleRead();
+            }}
+            handleLater={async () => {
+              await addStory(nextStory.id);
+              setShowModal(false);
+              setReadLater(false);
+            }}
           />
           <ModalStoryRating
             isVisible={showRating}
@@ -1527,6 +1601,19 @@ const MainScreen = ({
           )}
           {renderFlatList()}
           {renderTutorial()}
+          <ModalUnlockStory
+            isLoading={loadingStory}
+            isVisible={showStoryFree}
+            onClose={() => setShowStoryFree(false)}
+            data={nextStory}
+            onWatchAds={showWatchAdsFree}
+            onUnlock={() => {
+              handleNative();
+            }}
+            loadingOne={loadingAds}
+            price={price}
+            onGetUnlimit={() => handleUnlimited()}
+          />
           {showModalCongrats && (
             <ModalCongrats
               pastLevel={textChunks?.length}
@@ -1545,6 +1632,7 @@ const MainScreen = ({
                   setRating(true);
                   // handleSuccessRating();
                 } else {
+                  setScreenNumber(0);
                   handleSuccessRating();
                 }
                 // pagerRef.current?.setPage(dataBook.content_en?.length - 1);

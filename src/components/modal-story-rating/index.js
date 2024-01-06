@@ -23,19 +23,18 @@ import {
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
 import Reading from '../../assets/icons/reading.jsx';
-import {addNewCollection, submitRating, updateMyCollection} from '../../shared/request';
+import {
+  addNewCollection,
+  submitRating,
+  updateMyCollection,
+} from '../../shared/request';
 import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
 import {BACKEND_URL} from '../../shared/static';
 import StarRating, {StarIconProps} from 'react-native-star-rating-widget';
 import {Path, Svg} from 'react-native-svg';
 
-function ModalStoryRating({
-  isVisible,
-  onClose,
-  nextStory,
-  handleSuccess
-}) {
+function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
   const [rating, setRating] = useState(0);
   const handleClose = () => {
     onClose();
@@ -43,20 +42,19 @@ function ModalStoryRating({
 
   const handleSubmit = async () => {
     const data = {
-      value : rating
-    }
+      value: rating,
+    };
     try {
-      const resp = await submitRating(nextStory?.id, data)
-      if(resp){
-        handleSuccess()
-        setRating(0)
+      const resp = await submitRating(nextStory?.id, data);
+      if (resp) {
+        handleSuccess();
+        setRating(0);
       }
     } catch (error) {
-      console.log(JSON.stringify(error))
-      handleClose()
+      console.log(JSON.stringify(error));
+      handleClose();
     }
-   
-  }
+  };
   const handleRating = rated => {
     // Kustom logika yang ingin Anda terapkan saat peringkat berubah
     console.log(`Rated: ${rated}`);
@@ -104,6 +102,7 @@ function ModalStoryRating({
 
     return <HeartFull fill={color} width={size} height={size} />;
   };
+  
   const renderPremium = () => {
     return (
       <View
@@ -195,47 +194,51 @@ how did you like your previous story?`}
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                {nextStory?.content_en.substring(0, 120)}...
+                {nextStory?.content_en.substring(0, 100)}...
               </Text>
             </View>
-            <View style={{alignItems: 'center', borderTopColor: code_color.greyDefault, borderTopWidth: 1, paddingTop: 10}}>
-          <StarRating
-            rating={rating}
-            onChange={setRating}
-            StarIconComponent={HeartIcon}
-            color="tomato"
-            starSize={40}
-          />
-          </View>
-          
-          <View
-            style={{
-            
-              marginBottom: moderateScale(20),
-            }}>
-            <TouchableOpacity
-              onPress={() => handleSubmit()}
+            <View
               style={{
-                backgroundColor: code_color.yellow,
-                marginTop: moderateScale(20),
-                padding: moderateScale(12),
                 alignItems: 'center',
-                borderRadius: 8,
-                width: moderateScale(280),
-                flex: 0
+                borderTopColor: code_color.greyDefault,
+                borderTopWidth: 1,
+                paddingTop: 10,
               }}>
-              <Text
-                style={{
-                  color: code_color.black,
-                  fontWeight: 600,
-                  fontSize: moderateScale(14),
-                }}>
-                Submit
-              </Text>
-            </TouchableOpacity>
-          </View>
-          </View>
+              <StarRating
+                rating={rating}
+                onChange={setRating}
+                StarIconComponent={HeartIcon}
+                color="tomato"
+                starSize={40}
+              />
+            </View>
 
+            <View
+              style={{
+                marginBottom: moderateScale(20),
+              }}>
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                style={{
+                  backgroundColor: code_color.yellow,
+                  marginTop: moderateScale(20),
+                  padding: moderateScale(12),
+                  alignItems: 'center',
+                  borderRadius: 8,
+                  width: moderateScale(280),
+                  flex: 0,
+                }}>
+                <Text
+                  style={{
+                    color: code_color.black,
+                    fontWeight: 600,
+                    fontSize: moderateScale(14),
+                  }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
     );

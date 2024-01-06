@@ -7,7 +7,7 @@ import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import themeAnimate from '../../assets/lottie/theme.json';
 
-const Step6 = ({handleNext, handlePrev}) => {
+const Step6 = ({}) => {
   // return <></>;
   return (
     <View
@@ -17,7 +17,7 @@ const Step6 = ({handleNext, handlePrev}) => {
         padding: 10,
         marginHorizontal: 40,
         alignItems: 'center',
-        marginTop: '20%',
+        marginTop: '70%',
         paddingTop: 50,
       }}>
       <View
@@ -55,23 +55,11 @@ const Step6 = ({handleNext, handlePrev}) => {
           'Customize your selected\ntext, change the font and\nadd a background.'
         }
       </Animatable.Text>
-      <Animatable.View
+      {/* <Animatable.View
         delay={2500}
         animation={'fadeIn'}
         duration={1000}
         style={{flexDirection: 'row'}}>
-        {/* <Button
-          style={{
-            backgroundColor: code_color.yellow,
-            padding: 10,
-            paddingHorizontal: 30,
-            borderRadius: 20,
-            marginVertical: 10,
-            marginRight: 14,
-          }}
-          title={i18n.t('Prev')}
-          onPress={handlePrev}
-        /> */}
         <Button
           style={{
             backgroundColor: code_color.yellow,
@@ -83,7 +71,7 @@ const Step6 = ({handleNext, handlePrev}) => {
           title={i18n.t('Next')}
           onPress={handleNext}
         />
-      </Animatable.View>
+      </Animatable.View> */}
     </View>
   );
 };

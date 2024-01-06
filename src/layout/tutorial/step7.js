@@ -62,7 +62,7 @@ const Step7 = ({handleNext, handlePrev}) => {
         }
       </Animatable.Text>
       <Animatable.View
-        delay={2500}
+        delay={4000}
         animation={'fadeIn'}
         duration={1000}
         style={{flexDirection: 'row'}}>

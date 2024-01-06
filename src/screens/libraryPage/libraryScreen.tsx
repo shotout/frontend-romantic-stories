@@ -87,7 +87,8 @@ import * as IAP from 'react-native-iap';
 import {backLeft} from '../../assets/icons';
 import {Animated} from 'react-native';
 import {TouchableOpacityBase} from 'react-native';
-import { hp, wp } from '../../utils/screen';
+import {hp, wp} from '../../utils/screen';
+import AnimatedLottieView from 'lottie-react-native';
 const LibraryScreen = ({
   colorTheme,
   handleSomeAction,
@@ -950,7 +951,7 @@ const LibraryScreen = ({
             position: 'absolute',
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height + 100,
-            top:  (wp(-70) - Dimensions.get('window').height / 3),
+            top: wp(-70) - Dimensions.get('window').height / 3,
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
           <View
@@ -1128,6 +1129,7 @@ const LibraryScreen = ({
     //   setShowModalNewStory(false);
     // }
   };
+  const rippleAnimate = require('../../assets/lottie/ripple.json');
   return (
     <View>
       <ModalUnlockedStory
@@ -1231,10 +1233,10 @@ const LibraryScreen = ({
               alignItems: 'center',
             }}>
             <Image
-            source={libraryAdd}
-            resizeMode='contain'
-            style={{width: 20, height: 20, }}
-          />
+              source={libraryAdd}
+              resizeMode="contain"
+              style={{width: 20, height: 20}}
+            />
           </Pressable>
 
           <Pressable
@@ -1451,6 +1453,7 @@ const LibraryScreen = ({
             shadowRadius: 4,
             elevation: 8,
           }}>
+          
           <TouchableOpacity
             onPress={() => handleSomeAction('ExploreLibrary')}
             style={{
@@ -1475,6 +1478,18 @@ const LibraryScreen = ({
               Explore more Stories
             </Text>
           </TouchableOpacity>
+          {stepsTutorial === 3 ? 
+          <View style={{position: 'absolute', bottom: -30}}>
+            <AnimatedLottieView
+              source={rippleAnimate}
+              style={{
+                width: wp(150),
+              }}
+              autoPlay
+              duration={3000}
+              loop={true}
+            />
+          </View> : null}
         </View>
       </View>
       {renderTutorial()}
