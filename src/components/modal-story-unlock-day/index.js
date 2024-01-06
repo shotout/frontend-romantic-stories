@@ -127,7 +127,7 @@ function ModalUnlockStoryDay({
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                {nextStory?.content_en[0].substring(0, 100)}...
+                {nextStory?.content_en.substring(0, 100)}...
               </Text>
             </View>
           </View>

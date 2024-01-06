@@ -49,7 +49,7 @@ const Step1 = ({handleNext}) => {
           fontWeight: 'bold',
           marginBottom: 20,
         }}>
-        {'Discover a brand new\nEroTales Story every day.\nHungry for more?'}
+        {'Discover a brand new\nEroTales Story every day.'}
       </Animatable.Text>
       <Animatable.Text
         delay={2500}
@@ -62,7 +62,7 @@ const Step1 = ({handleNext}) => {
           fontWeight: 'bold',
           marginBottom: 20,
         }}>
-        {'Unlock additional Stories\nanytime!'}
+        {'Hungry for more?\nUnlock additional Stories\nanytime!'}
       </Animatable.Text>
       <Animatable.View
         delay={3500}
