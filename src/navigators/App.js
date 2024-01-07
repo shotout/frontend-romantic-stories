@@ -10,6 +10,7 @@ import store, {persistor} from '../store/configure-store';
 import {PaperProvider} from 'react-native-paper';
 import {handleNativePayment, handlePayment} from '../helpers/paywall';
 import {OPEN_OFFER_NOTIFICATION, eventTracking} from '../helpers/eventTracking';
+import { navigate } from '../shared/navigationRef';
 
 LogBox.ignoreAllLogs();
 
@@ -27,6 +28,8 @@ const App = () => {
                 handlePayment(detail.notification.data?.placement);
               }, 100);
               eventTracking(OPEN_OFFER_NOTIFICATION);
+            }else if(detail.notification.data?.type === 'story'){
+              navigate('Main');
             }
           }
         });

@@ -598,7 +598,7 @@ function ScreenShare({
       {
         stepsTutorial === 9 ? goBack() : null;
       }
-      // setIsSwipingRight(true);
+      setIsSwipingRight(true);
     }
   };
  

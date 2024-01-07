@@ -530,7 +530,6 @@ const MainScreen = ({
       'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
     setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
     handleSetSteps(stepsTutorial + 1);
-    console.log('klikkk sini terus'+stepsTutorial)
     if (stepsTutorial === 2) {
       setFinishTutorial(false);
       setIsRippleAnimate(true);
@@ -757,11 +756,11 @@ const MainScreen = ({
     }
   };
   const handleListening = async () => {
-    if (userProfile?.data?.subscription?.plan?.id === 3) {
+    // if (userProfile?.data?.subscription?.plan?.id === 3) {
     navigate('Media');
-    } else {
-      checkingListen();
-    }
+    // } else {
+    //   checkingListen();
+    // }
   };
   const splitTextIntoArray = (text, chunkLength) => {
     const words = text.split(' ');
@@ -1211,7 +1210,6 @@ const MainScreen = ({
     });
   };
   const handleRead = () => {
-    console.log('masuk read')
     pagerRef.current?.setPage(0);
     setScreenNumber(0);
     setTimeout(() => {

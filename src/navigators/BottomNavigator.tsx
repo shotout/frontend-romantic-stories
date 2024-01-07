@@ -506,7 +506,11 @@ function MyTabs(props) {
             } else {
               return (
                 <TouchableOpacity
-                  onPress={() => {}}
+                  onPress={() => {
+                    if (props.stepsTutorial === 0) {
+                      handleSomeAction('Library');
+                    }
+                  }}
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
