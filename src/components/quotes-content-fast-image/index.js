@@ -31,7 +31,6 @@ import FastImage from 'react-native-fast-image';
 import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 import {reloadUserProfile} from '../../utils/user';
 import {useFocusEffect} from '@react-navigation/native';
-import TrackPlayer from 'react-native-track-player';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
 const loveAnimate = require('../../assets/lottie/love.json');
 

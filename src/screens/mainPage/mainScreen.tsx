@@ -169,72 +169,6 @@ const MainScreen = ({
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
-  //   const [trial, setTrial] = useState([
-  //     "Supporting myself during summer was actually pretty easy. As people started to\r\nromanticize Brazil once again, they started to like the language and aim to learn it, and\r\nbeing a good English speaker and native Portuguese speaker, I decided to offer private\r\nlessons. To my delight, I have always had genuine clients who paid me really well, and\r\nmost of them were old people too. My latest client, however, a long term, was my age\r\nand she was just... my type.\r\nShe had a beautiful smile and her body was to die for, which she often used to\r\nher advantage to distract me, which worked more often than not. She was tall, had long\r\nbrown hair, and had the most wonderful pair of breasts I have ever seen. It wasn't fair\r\nthat someone had such a nice rack, but hey, I wasn't complaining.\r\nThe lesson went well, and as per usual, we started to talk.\r\n\"You know, you're the best teacher I've ever had,\" she told me with a smile.\r\n\"You're also cute. Do you want to grab something to eat? My treat!\"\r\nI was, going to say yes, because, well, free food, but I then thought of it again and\r\nI remembered seeing her the other day in town with someone, and the thought itself\r\nwas like fuel. I'm not gonna go out with someone who already has someone else, but\r\ndeep inside I want to, and I also wanted her to tell me about him.\r\n\"I would do anything for a swim on the beach now. You do realize I need to learn\r\nsome beach-related vocabulary, right?\" she teased and sipped on her wine.\r\n\"Oh yeah? You mean... you’d do anything for that?\" I got comfortable in my seat.\r\nShe looked ethereal that day, \"I'll think about it.\" I finally said.\r\n\"Oh, please, come on, come one. You're the only one I wanna tour Rio with,\" she\r\nsaid, pleading. She probably knew it was impossible to resist the looks she was giving\r\nme.\r\n\"And do you take out everyone?\" I asked.\r\nShe shook her head, the smile never leaving her beautiful face, \"why do you\r\nask?\" she said.\r\n\"Well, I saw you in town the other day and it seemed you were ",
-  //     "having a lot of fun.\r\nI didn’t wanna bump into you and ruin the moment though... whatever type of fun you\r\nwere having.\" I must have sounded like a possessive freak.\r\n\r\n\"Oh, you saw me?\" she asked and scoffed, \"why didn’t you say anything, then?\r\nOr you didn’t wanna ruin the spark? \"\r\n\"You looked happy. And I gotta admit...\" I chuckled, \"It was nice seeing you\r\nhappy. It made me feel good, you know?\"\r\n\"You're so dorky. A dorky teacher.\" she rolled her eyes. She possibly did not\r\nknow that I don't like girls roll their eyes on me.\r\n\"So, who was he?\" I spread my legs and asked.\r\n\"Just a friend?\" she shrugged and looked away. I knew she was hiding something\r\nand she didn't do it in the best way too.\r\n\"You’re making friends, already? I mean- did you get lucky?\" I asked.\r\nShe shook her head, eyeing me up and down, confused.\r\nI cringed at myself... and my poor knowledge of English proverbs so I tried to\r\ncorrect it, \"That’s not what I meant, Beleza. Or maybe I did but- I-\" I stutte",
-  //     "red... as\r\nusual... and I laughed. It was awkward but it was nice to see her joyful, \"I know you’ve\r\nbeen wanting to have some friends here, but maybe I am just over-questioning things\r\nthat are none of my business. You looked happy regardless of who took you out. Even if\r\nit wasn’t me. \"\r\n\"Even if it wasn't you, huh?\" she tilted her head and asked.\r\nI couldn't help but scoff. She was seriously testing my patience, \"Oh, I don’t really\r\nmean anything. Just the fact that you picked him over me- I mean you picked going out\r\nwith him over doing that with... me. I’m definitely a lot more fun and you know that.\r\nPlus, I could teach you a lot of things.\" I said.\r\n\"Perhaps I didn't think of it that way,\" she said and poured herself some more\r\nwine. She loved it.\r\n\"There’s much to do in Rio than being indoors anyways. I would’ve taken you to\r\nthe beach, had a nice walk, had some good food, and tried out beach bars where we\r\ncould dance the night away. That would be a typical night i",
-  //     "n Rio, and I bet you’d love it.\r\nBet you’d also learn a lot of words in just one day. \" I said, this time trying to keep it\r\nprofessional. After all, I was getting paid hourly, and wasting time talking nonsense\r\n\r\nwould look bad on my reviews, even though she did not seem like the type who would\r\nleave a bad review.\r\n\"Okay, okay, fine,\" she said throwing her hands in the air, \"next time be the\r\ngentleman who takes me out instead.\"\r\n\"It sounds like a challenge, beleza.\" I raised an eyebrow.\r\n\"No,\" she shook her head and chuckled, \"unless you want it to be.\"\r\n\"No, really, I am going to prove myself, because I'm the best,\" I said.\r\nShe rolled her eyes.\r\n\"Don't roll your eyes on me,\" I said, slightly warning her.\r\n\"You didn't really say that.\" She scoffed and did it again and again. She was\r\ntesting my limits.\r\n\"I just did.\" She did it again and smirked.\r\n\"Why did you have to be the type that tends to be so bratty?\" I asked.\r\n\"I didn't.\" She shrugged and took another sip of her wine, \"",
-  //     "I am just your favorite\r\nclient,\" she giggled. It was too cute.\r\n\"That you are.\" I chuckled and leaned back on my chair.\r\n\"So, when are you going to teach me all those beach words?\" she asked.\r\n\"I am available anytime, beleza.\"\r\n\"Okay, how about Saturday?\" she asked, \"I have already bought a really beautiful\r\nswimsuit and I can't wait to put it on.\"\r\nI smiled at her and nodded. I was definitely excited to take her out and show her\r\naround the city and the beach, especially the nightlife.\r\n\"You are going to love it.\"\r\n\"I will, especially if I'm with you,\" she smiled and blushed. I wondered whether\r\nshe was just being flirty or she meant it\r\n\"And who says you can't have your fun while learning? \" I raised an eyebrow."
-  // ])
-  // const [content, setContent] = useState({
-  //   content_id: "",
-  //   content_en: "",
-  // });
-  // useEffect(() => {
-  //   const charactersPerPage = 1000;
-  //   let content_id = "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n        \n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>";
-  //   let content_en = "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n        \n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>\n\n        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>";
-  //   // Membagi konten HTML menjadi blok-blok teks dengan panjang karakter tertentu
-  //   const removeHtmlTags = (html) => {
-  //     const text = he.decode(html.replace(/<[^>]+>/g, '')); // Use he library for HTML entity decoding
-  //     return text || '';
-  //   };
-  //   content_id = removeHtmlTags(content_id);
-  //   content_en = removeHtmlTags(content_en);
-
-  //   // Membuat halaman dengan blok-blok teks
-  //   // const blocks_id = content_id.match(new RegExp(`.{1,${charactersPerPage}}`, 'g'));
-  //   // const blocks_en = content_en.match(new RegExp(`.{1,${charactersPerPage}}`, 'g'));
-  //   const splitContent = (text) => {
-  //     const regex = new RegExp(`.{1,${charactersPerPage}}`, 'g');
-  //     return text.match(regex) || [];
-  //   };
-  //   const blocks_id = splitContent(content_id);
-  //   const blocks_en = splitContent(content_en);
-
-  //   const pagesArray_id = blocks_id.map((block, index) => ({
-  //     id: index,
-  //     content: block,
-  //   }));
-
-  //   const pagesArray_en = blocks_en.map((block, index) => ({
-  //     id: index,
-  //     content: block,
-  //   }));
-  //  alert('data content'+JSON.stringify(pagesArray_en))
-  //   console.log('data content'+JSON.stringify(pagesArray_en))
-  //   setContent({
-  //     content_id: pagesArray_id,
-  //     content_en: pagesArray_en,
-  //   });
-
-  // }, []);
-  // const [dataBook, setBook] = useState([
-  //   {
-  //     title: 'Fistful of Reefer: Test 1',
-  //     detail:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
-  //   },
-  //   {
-  //     title: 'Fistful of Reefer: Test 2',
-  //     detail: 'hemmm',
-  //   },
-  //   {
-  //     title: 'Fistful of Reefer: Test 3',
-  //     detail:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque, arcu in imperdiet auctor, metus sem cursus tortor, sed fringilla orci metus ac ex. Nunc pharetra, lacus in egestas vulputate, nisi erat auctor lectus, vitae pulvinar metus metus et ligula. Etiam porttitor urna nec dignissim lacinia. Ut eget justo congue, aliquet tellus eget, consectetur metus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut ac turpis dolor. Donec eu arcu luctus, volutpat dolor et, dapibus libero. Curabitur porttitor lorem non felis porta, ut ultricies sem maximus. In hac habitasse platea dictumst. Aenean in congue orci. Nulla sollicitudin feugiat diam et tristique. Vestibulum',
-  //   },
-  // ]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -281,15 +215,48 @@ const MainScreen = ({
     };
   }, [appState]);
 
-  useEffect(() => {
-    if (route?.params?.successListen) {
-      if (userStory?.is_rating === null) {
-        setScreenNumber(0);
-        setRating(true);
-      } else {
-        setScreenNumber(0);
+  const handleSuccessListen = async () => {
+  
+      const existingEntry = readStory
+        ? readStory.find(
+            (item: any) =>
+              item?.id === dataBook.id && item?.page === textChunks?.length + 1,
+          )
+        : undefined;
+      if (readStory?.length === 2) {
+        eventTracking(FINISH_LISTEN_3);
+      }
+      if (readStory?.length === 9) {
+        eventTracking(FINISH_LISTEN_10);
+      }
+      if (
+        typeof existingEntry === 'undefined'
+      ) {
+        // jika nanti pertama kali melakukan update data terakhir
+
+        await addPastStory(dataBook.id);
+        const data = {
+          value: textChunks?.length,
+        };
+        const resp = await addPastLevel(data);
+        if (resp?.data) {
+          handleLeveling(resp?.data);
+          setTimeout(() => {
+            setShowModalCongrats(true);
+          }, 200);
+        }
+        checkingRead(textChunks?.length + 1);
+      } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+        //jika tidak premium maka akan terus menampilan modal setiap terakhir
         setShowModalCongrats(true);
       }
+  };
+  useEffect(() => {
+    if (route?.params?.successListen) {
+      checkingRead(textChunks?.length + 1);
+      setScreenNumber(textChunks?.length + 1)
+      handleSuccessListen();
+
       pagerRef.current?.setPage(textChunks?.length - 1);
     } else if (route?.params?.storyId) {
       setReadLater(true);
@@ -325,7 +292,6 @@ const MainScreen = ({
         id: dataBook.id,
         page: pageNumber,
       };
-
       // Dispatch action to update readStory in the Redux store
       handleReadStory([...readStory, newData]);
     }
@@ -787,11 +753,11 @@ const MainScreen = ({
     }
   };
   const handleListening = async () => {
-    if (userProfile?.data?.subscription?.plan?.id === 3) {
-      navigate('Media');
-    } else {
-      checkingListen();
-    }
+    // if (userProfile?.data?.subscription?.plan?.id === 3) {
+    navigate('Media');
+    // } else {
+    //   checkingListen();
+    // }
   };
   const splitTextIntoArray = (text, chunkLength) => {
     const words = text.split(' ');
@@ -1236,12 +1202,16 @@ const MainScreen = ({
     });
   };
   const handleRead = () => {
+    console.log('masuk read')
     pagerRef.current?.setPage(0);
     setScreenNumber(0);
-    handleSetStory(nextStory);
-    setShowModalDay(false);
-    setShowModal(false);
-    setBook(nextStory);
+    setTimeout(() => {
+      handleSetStory(nextStory);
+      setShowModalDay(false);
+      setShowModal(false);
+      setBook(nextStory);
+    }, 200);
+   
   };
 
   const touchEndStory = async e => {
