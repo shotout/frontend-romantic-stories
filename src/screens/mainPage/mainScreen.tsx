@@ -525,10 +525,12 @@ const MainScreen = ({
   };
 
   const handleNext = () => {
-    const content =
+    if(stepsTutorial <= 5){
+      const content =
       'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
     setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
     handleSetSteps(stepsTutorial + 1);
+    console.log('klikkk sini terus'+stepsTutorial)
     if (stepsTutorial === 2) {
       setFinishTutorial(false);
       setIsRippleAnimate(true);
@@ -540,7 +542,7 @@ const MainScreen = ({
         navigate('Media');
       }, 2500);
     } else if (stepsTutorial === 5) {
-      handleSetSteps(stepsTutorial + 1);
+      handleSetSteps(5 + 1);
       navigate('Share', {
         selectedContent:
           ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
@@ -548,6 +550,8 @@ const MainScreen = ({
         end: content.substring(30, 30 + 30),
       });
     }
+    }
+    
   };
 
   const handleTouchEnd = () => {
@@ -784,7 +788,7 @@ const MainScreen = ({
     text,
     Dimensions.get('window').height <= 667 ? 600 : 750,
   );
-  const renderFactItem = ({item, index, title, category, colorText}) => {
+  const renderFactItem = ({item, index, title, category, colorText, type}) => {
     return (
       <>
         <QuotesContent
@@ -806,6 +810,7 @@ const MainScreen = ({
           show={show}
           setShow={() => setShow(false)}
           handleListen={() => handleListening()}
+          type={type}
         />
       </>
     );
@@ -848,7 +853,7 @@ const MainScreen = ({
   //     </PanGestureHandler>
   //   );
   // }
-  function renderFlatList() {
+  function renderFlatList(type) {
     if (textChunks?.length > 0) {
       return (
         <PagerView
@@ -874,6 +879,7 @@ const MainScreen = ({
                   title: dataBook.title_en,
                   category: dataBook?.category?.name,
                   colorText: colorText,
+                  type: type
                 })}
               </View>
             );
@@ -961,6 +967,14 @@ const MainScreen = ({
       currentStep={stepsTutorial === 5 ? stepsTutorial + 2 : stepsTutorial + 1}
     />
   );
+
+  useEffect(() => {
+    if(activeStep === 5 || stepsTutorial === 5){
+      setTimeout(() => {
+        handleNext();
+      }, 5000);
+    } 
+  }, [activeStep, stepsTutorial])
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {
@@ -1092,11 +1106,6 @@ const MainScreen = ({
       } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
-        if (activeStep === 5 || stepsTutorial == 5) {
-          setTimeout(() => {
-            handleNext();
-          }, 5000);
-        }
         return (
           <SafeAreaView
             onTouchStart={handleTouchStart}
@@ -1132,7 +1141,7 @@ const MainScreen = ({
                     {renderProgress()}
                   </View>
 
-                  <Step5 handleNext={handleNext} handlePrev={handlePrev} />
+                  <Step5 handleNext={() => handleNext()} handlePrev={handlePrev} />
                   <View style={{position: 'absolute', bottom: 30}}>
                     <AnimatedLottieView
                       source={rippleAnimate}
@@ -1398,7 +1407,7 @@ const MainScreen = ({
             </TouchableOpacity>
           </View>
           {renderTutorial()}
-          {renderFlatList()}
+          {renderFlatList('view')}
         </Pressable>
       );
     } else {
@@ -1569,7 +1578,7 @@ const MainScreen = ({
               />
             </Animatable.View>
           )}
-          {renderFlatList()}
+          {renderFlatList('main')}
           {renderTutorial()}
           <ModalUnlockStory
             isLoading={loadingStory}

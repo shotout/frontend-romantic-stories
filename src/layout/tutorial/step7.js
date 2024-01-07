@@ -7,7 +7,7 @@ import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import shareAnimate from '../../assets/lottie/share.json';
 
-const Step7 = ({handleNext, handlePrev}) => {
+const Step7 = ({handleNext}) => {
   // return <></>;
   return (
     <View
@@ -87,7 +87,7 @@ const Step7 = ({handleNext, handlePrev}) => {
             marginVertical: 10,
           }}
           title={i18n.t('Next')}
-          onPress={handleNext}
+          onPress={() => handleNext()}
         />
       </Animatable.View>
     </View>

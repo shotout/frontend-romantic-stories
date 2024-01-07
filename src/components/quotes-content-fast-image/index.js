@@ -52,6 +52,7 @@ export default function QuotesContent({
   handleListen,
   show,
   setShow,
+  type
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -369,7 +370,7 @@ const content_en = [
           width: sizing.getDimensionWidth(0.89),
           transform: [{translateY: translateX}],
         }}>
-        {pageActive === 0 ||
+        {type === 'main' && pageActive === 0 ||
         pageActive === 3 ||
         pageActive === 6 ||
         pageActive === 9 ? (
@@ -457,7 +458,7 @@ const content_en = [
               />
             </View>
           </View>
-          {pageActive === 0 ||
+          {type === 'main' && pageActive === 0 ||
           pageActive === 3 ||
           pageActive === 6 ||
           pageActive === 9 ||
@@ -478,7 +479,7 @@ const content_en = [
                 </Text>
               </View>
             </View>
-          ) : pageActive === 1 ||
+          ) : type === 'main' && pageActive === 1 ||
             pageActive === 4 ||
             pageActive === 7 ||
             pageActive === 10 ||
@@ -569,7 +570,7 @@ const content_en = [
                 </ImageBackground>
               </View>
             </>
-          ) : (
+          ) : type === 'main'  ? (
             <>
               <View
                 style={{
@@ -664,8 +665,8 @@ const content_en = [
                   </View>
                 </ImageBackground>
               </View>
-            </>
-          )}
+            </> 
+          ) : null}
         </View>
       </Animated.View>
     </SafeAreaView>

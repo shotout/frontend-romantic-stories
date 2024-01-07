@@ -237,29 +237,8 @@ function ScreenShare({
     handleScreenshot();
   };
 
-  useEffect(() => {
-    {
-      stepsTutorial === 6
-        ? setTimeout(() => {
-            setShowModal(true);
-          }, 3000)
-        : null;
-    }
-  }, [stepsTutorial]);
 
-  useEffect(() => {
-    if (showModal) {
-      setTimeout(() => {
-        setShowModal(false);
-      }, 3000);
-      setTimeout(() => {
-        setShowModalTwo(true);
-        handleSetSteps(stepsTutorial + 1);
-        setVisible(false);
-        console.log('STEP BERAPA inii', stepsTutorial);
-      }, 10000);
-    }
-  }, [showModal]);
+
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
@@ -595,7 +574,6 @@ function ScreenShare({
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const halfScreenWidth = Dimensions.get('window').width / 2.5;
-
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
       handleSetSteps(stepsTutorial - 1);
@@ -620,17 +598,33 @@ function ScreenShare({
       {
         stepsTutorial === 9 ? goBack() : null;
       }
-      setIsSwipingRight(true);
+      // setIsSwipingRight(true);
     }
   };
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
+ 
+  useEffect(() => {
+    if(stepsTutorial === 6){
+      setTimeout(() => {
+        setShowModal(true);
+      }, 3000);
+    }
+    if(showModal){
+      setTimeout(() => {
+        setShowModal(false);
+        handleSetSteps(6 + 1)
+      }, 3000);
+     
+    }
+    if(stepsTutorial === 7){
+      setTimeout(() => {
+        setShowModalTwo(true);
+      }, 10000);
+    }
+  }, [stepsTutorial, showModal])
+
   const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
   const renderTutorial = () => {
-    if (stepsTutorial === 6 || stepsTutorial === 7) {
+    if (stepsTutorial === 6) {
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -645,56 +639,64 @@ function ScreenShare({
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          {stepsTutorial != 6 && stepsTutorial != 7 ? renderProgress() : null}
-          {stepsTutorial === 6 ? (
-            <ImageBackground
-              source={imgQuote}
-              resizeMode="cover"
-              style={{
-                position: 'absolute',
-                top: '0',
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').height,
-                // backgroundColor: 'rgba(255,255,255,0.5)',
-                backgroundColor: 'rgba(0,0,0,0.3)',
-              }}>
-              <View style={{marginTop: 10}}>{renderProgress()}</View>
+          {stepsTutorial != 6 ? renderProgress() : null}
 
-              {showModal ? (
-                <Step6
-                // handleNext={() => {
-                //   setShowModalTwo(true);
-                //   handleSetSteps(stepsTutorial + 1);
-                //   setVisible(false);
-                // }}
-                />
-              ) : null}
-            </ImageBackground>
-          ) : (
-            <ImageBackground
-              source={imgQuote}
-              resizeMode="contain"
-              style={{
-                position: 'absolute',
-                top: '0',
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').height,
+          <ImageBackground
+            source={imgQuote}
+            resizeMode="cover"
+            style={{
+              position: 'absolute',
+              top: '0',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              // backgroundColor: 'rgba(255,255,255,0.5)',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+            }}>
+            <View style={{marginTop: 10}}>{renderProgress()}</View>
 
-                backgroundColor: 'rgba(0,0,0,0.3)',
-              }}>
-              <View style={{marginTop: 10}}>{renderProgress()}</View>
+            {showModal ? <Step6 /> : null}
+          </ImageBackground>
+        </SafeAreaView>
+      );
+    }
+    if (stepsTutorial === 7) {
+      return (
+        <SafeAreaView
+          onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
+          style={{
+            position: 'absolute',
 
-              <Step7
-                handleNext={() => {
-                  handleSetSteps(stepsTutorial + 1);
-                  setVisible(false);
-                }}
-                handlePrev={() => {
-                  handleSetSteps(stepsTutorial - 1);
-                }}
-              />
-            </ImageBackground>
-          )}
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            paddingTop: 40,
+          }}>
+          {stepsTutorial != 7 ? renderProgress() : null}
+
+          <ImageBackground
+            source={imgQuote}
+            resizeMode="contain"
+            style={{
+              position: 'absolute',
+              top: '0',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+
+              backgroundColor: 'rgba(0,0,0,0.3)',
+            }}>
+            <View style={{marginTop: 10}}>{renderProgress()}</View>
+            {showModalTwo ? 
+            <Step7
+              handleNext={() => {
+                setShowModalTwo(false)
+                handleSetSteps(7 + 1);
+                setVisible(false);
+              }}
+            /> : null }
+          </ImageBackground>
         </SafeAreaView>
       );
     } else if (stepsTutorial === 8 || stepsTutorial === 9) {
@@ -722,10 +724,6 @@ function ScreenShare({
           />
           <View style={{marginTop: 20}}>{renderProgress()}</View>
           <Step8
-            handlePrev={() => {
-              handleSetSteps(stepsTutorial - 1);
-              setShowModal(false);
-            }}
             handleNext={() => {
               handleSetSteps(stepsTutorial + 1);
               setVisible(false);
@@ -949,6 +947,7 @@ function ScreenShare({
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
+      {stepsTutorial ? renderTutorial() :
       <ScrollView style={{flex: 1, width: '100%'}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
@@ -1166,7 +1165,7 @@ function ScreenShare({
         </View>
         {renderCard()}
       </ScrollView>
-      {renderTutorial()}
+}
     </View>
   );
 }

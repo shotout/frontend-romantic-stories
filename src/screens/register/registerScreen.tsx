@@ -436,7 +436,10 @@ function RegisterScreen({
             {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => {
-                  handleChange('gender', null);
+                  if(stepRegister === 1){
+                    handleChange('gender', null);
+                  }
+                 
                   setStepRegister(stepRegister + 1);
                 }}
                 style={{
