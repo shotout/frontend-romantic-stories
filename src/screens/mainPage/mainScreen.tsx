@@ -753,11 +753,11 @@ const MainScreen = ({
     }
   };
   const handleListening = async () => {
-    // if (userProfile?.data?.subscription?.plan?.id === 3) {
+    if (userProfile?.data?.subscription?.plan?.id === 3) {
     navigate('Media');
-    // } else {
-    //   checkingListen();
-    // }
+    } else {
+      checkingListen();
+    }
   };
   const splitTextIntoArray = (text, chunkLength) => {
     const words = text.split(' ');
