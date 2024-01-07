@@ -49,7 +49,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isIphoneXorAbove} from '../utils/devices';
 import {fixedFontSize, hp, wp} from '../utils/screen';
-import { ADD_STORY_TO_LIBRARY, eventTracking } from '../helpers/eventTracking';
+import {ADD_STORY_TO_LIBRARY, eventTracking} from '../helpers/eventTracking';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -162,7 +162,9 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                 allowFontScaling={false}
                 style={{
                   textAlign: 'center',
-                }}>{`Tap here to get back\n to the Story`}</Text>
+                }}>
+                {'Tap here to get back\n to the Story'}
+              </Text>
             </TouchableOpacity>
           </TouchableOpacity>
         ) : null}
@@ -249,8 +251,10 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
         <LibraryScreen handleSomeAction={handleSomeAction} />
       ) : isBottomBarVisible === 'Font' ? (
         <FontScreen />
-      ) : (
+      ) : isBottomBarVisible === 'Settings' ? (
         <SettingsPage />
+      ) : (
+        <LibraryScreen handleSomeAction={handleSomeAction} />
       )}
     </View>
   );
@@ -419,7 +423,7 @@ function MyTabs(props) {
                         textAlign: 'center',
                         fontSize: fixedFontSize(15),
                       }}>
-                      {`Story saved &\nadded to library`}
+                      {'Story saved &\nadded to library'}
                     </Text>
                   </View>
                 </View>
