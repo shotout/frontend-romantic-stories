@@ -280,6 +280,32 @@ const DetailCategoryScreen = ({
     const currentAlphabet = alphabets[alphabetIndex];
   };
 
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedStory) {
+        try {
+          const resp = await getStoryDetail(selectedStory?.id);
+        handleSetStory(resp.data);
+        handleNextStory(resp.data)
+        if(userProfile?.data?.subscription?.plan_id === 1){
+          setTimeout(() => {
+            setShowModalUnlock(true)
+          }, 200);
+         
+        }else{
+          setShowUnlockedStory(true)
+        }
+        } catch (error) {
+          
+        }
+        
+      }
+    };
+
+    fetchData();
+  }, [selectedStory]); 
+
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <ModalSorting
@@ -401,13 +427,7 @@ const DetailCategoryScreen = ({
                 {data?.most_share.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (userProfile?.data?.subscription?.plan_id === 1) {
-                        handleFree();
-                        setSelectedStory(itm);
-                      } else {
-                        setSelectedStory(itm);
-                        handlePremium();
-                      }
+                      setSelectedStory(itm);
                     }}
                     style={{
                       width: 95,
@@ -474,14 +494,9 @@ const DetailCategoryScreen = ({
             {combinedData &&
               combinedData.map((itm: any, idx: number) => (
                 <Pressable
-                  onPress={() => {
-                    setSelectedStory(itm);
-                    if (userProfile?.data?.subscription?.plan_id === 1) {
-                      handleFree();
-                    } else {
-                      handlePremium();
-                    }
-                  }}
+                onPress={() => {
+                   setSelectedStory(itm);
+                }}
                   key={idx}
                   style={{
                     height: 'auto',
