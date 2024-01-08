@@ -85,8 +85,10 @@ const DetailCategoryScreen = ({
     : data?.data;
 
   const showWatchAds = async () => {
+    setLoading2(true)
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+      setLoading2(false)
       setShowModalUnlock(false);
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
@@ -294,6 +296,7 @@ const DetailCategoryScreen = ({
         onUnlock={() => {
           handleNative();
         }}
+        loadingOne={loading2}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
       />
@@ -472,7 +475,7 @@ const DetailCategoryScreen = ({
               combinedData.map((itm: any, idx: number) => (
                 <Pressable
                   onPress={() => {
-                    setSelectedStory({...itm});
+                    setSelectedStory(itm);
                     if (userProfile?.data?.subscription?.plan_id === 1) {
                       handleFree();
                     } else {

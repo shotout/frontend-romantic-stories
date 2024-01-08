@@ -35,7 +35,7 @@ import {moderateScale} from 'react-native-size-matters';
 import Speaker from '../../../assets/icons/speaker';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
 
-export default function Register5({gender, setTheme, userStory}) {
+export default function Register5({gender, setTheme, userStory, handleSetColorTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
 
   const [colorsBg, setColorsBg] = useState([]);
@@ -67,6 +67,8 @@ export default function Register5({gender, setTheme, userStory}) {
     try {
       const avatar = await getListTheme();
       setColorsBg(avatar?.data);
+      setBgThem(code ? code : selectedBgTheme.code);
+      handleSetColorTheme(code ? code : selectedBgTheme.code);
     } catch (error) {
       // alert(JSON.stringify(error));
     }
@@ -243,6 +245,7 @@ export default function Register5({gender, setTheme, userStory}) {
                 onPress={() => {
                   setTheme(item.id);
                   setColorsDefault(item.theme_color);
+                  handleSetColorTheme(item.theme_color)
                 }}
                 style={{
                   backgroundColor: item.theme_color,

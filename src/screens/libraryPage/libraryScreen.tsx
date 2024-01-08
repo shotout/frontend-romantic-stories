@@ -99,7 +99,9 @@ const LibraryScreen = ({
   userProfile,
   handleNextStory,
   nextStory,
+  userStory
 }) => {
+  // alert(JSON.stringify(userStory))
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
@@ -260,7 +262,7 @@ const LibraryScreen = ({
 
   const handleRead = async item => {
     setSelectedStory(item?.item);
-    if (userProfile?.data?.subscription?.plan?.id != 1) {
+    if (userProfile?.data?.subscription?.plan?.id != 1 || userStory?.id != item?.item?.story?.id) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -343,7 +345,7 @@ const LibraryScreen = ({
                   }}
                   resizeMode="contain">
                   {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 && (
+                    userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.story?.id &&(
                       <LockFree height={16} width={55} />
                     )}
                 </ImageBackground>
@@ -445,7 +447,7 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 && (
+                  userProfile?.data?.subscription?.plan?.id != 3 ||  userStory?.id != item?.item?.story?.id && (
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>
@@ -546,7 +548,7 @@ const LibraryScreen = ({
                   }}
                   resizeMode="contain">
                   {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 && (
+                    userProfile?.data?.subscription?.plan?.id != 3 ||  userStory?.id != item?.item?.story?.id && (
                       <LockFree height={16} width={55} />
                     )}
                 </ImageBackground>
@@ -648,7 +650,7 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 && (
+                  userProfile?.data?.subscription?.plan?.id != 3 ||  userStory?.id != item?.item?.story?.id &&(
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>

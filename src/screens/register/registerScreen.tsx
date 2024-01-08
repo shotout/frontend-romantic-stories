@@ -186,7 +186,7 @@ function RegisterScreen({
       handleSetProfile(res);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
-      handleSetColorTheme(res?.data?.theme?.theme_color);
+      // handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
       await AsyncStorage.setItem('isTutorial', 'yes');
       eventTracking(ONBOARDING_COMPLETE);
@@ -226,7 +226,7 @@ function RegisterScreen({
       await updateProfile(payload);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
-      handleSetColorTheme(res?.data?.theme?.theme_color);
+      // handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
@@ -300,6 +300,9 @@ function RegisterScreen({
             handleChange('theme_id', text);
             // bypass question language
             handleChange('language_id', 1);
+          }}
+          handleSetColorTheme={value => {
+            handleSetColorTheme(value)
           }}
         />
       );
