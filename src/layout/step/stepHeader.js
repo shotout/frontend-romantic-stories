@@ -1,5 +1,6 @@
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Image, ImageBackground, View} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import styles from './styles';
 
 const activeLamp = require('../../assets/images/step.png');
@@ -7,6 +8,34 @@ const lampUnactive = require('../../assets/images/stepNull.png');
 const lampActiveAnimation = require('../../assets/images/step.png');
 
 export default function StepHeader({currentStep}) {
+  const animateGift = () => (
+    <ImageBackground
+      source={lampUnactive}
+      style={{
+        height: 8,
+        position: 'relative',
+        marginTop: 0,
+        borderRadius: 4,
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}>
+      <Animatable.Image
+        animation={{
+          from: {
+            left: -40,
+          },
+          to: {
+            left: 0,
+          },
+          easing: 'linear',
+        }}
+        duration={2000}
+        source={lampActiveAnimation}
+        style={styles.ctnUnactiveLamp}
+      />
+    </ImageBackground>
+  );
+
   const activeGift = () => (
     <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} />
   );
@@ -16,8 +45,12 @@ export default function StepHeader({currentStep}) {
   );
 
   function renderImageStep(stepItem) {
-    if (stepItem <= currentStep) {
+    if (stepItem < currentStep) {
       return activeGift();
+    }
+
+    if (stepItem == currentStep) {
+      return animateGift();
     }
 
     return unactiveLamp();

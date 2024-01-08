@@ -6,6 +6,7 @@ import { code_color } from '../../utils/colors';
 export default StyleSheet.create({
   ctnRoot: {
     margin: -15,
+    marginTop: 10,
     // paddingTop: 28,
     flexDirection: 'row',
     alignItems: 'center',
@@ -23,7 +24,7 @@ export default StyleSheet.create({
     resizeMode: 'contain',
   },
   ctnUnactiveLamp: {
-    height: 30,
+    height: 10,
     width: 40,
     resizeMode: 'contain',
   },

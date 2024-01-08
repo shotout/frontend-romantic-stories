@@ -650,11 +650,7 @@ function ModalCongrats({
                   </ScrollView>
                 </View>
 
-                <View
-                  style={{
-                    marginLeft: '10%',
-                    height: 150,
-                  }}>
+                <View style={{height: 150}}>
                   <ProgressBar levelingUser={levelingUser} bgTheme={colorTheme} />
                 </View>
                 <ScrollView style={{flex: 0, paddingBottom: 300}}>

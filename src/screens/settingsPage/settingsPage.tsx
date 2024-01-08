@@ -161,8 +161,8 @@ const SettingsPage = ({
               {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginLeft: '10%', marginTop: wp(30)}}>
-            <ProgressBar  levelingUser={levelingUser} bgTheme={bgTheme} />
+          <View style={{marginTop: wp(30)}}>
+            <ProgressBar levelingUser={levelingUser} bgTheme={bgTheme} />
             {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
         </View>

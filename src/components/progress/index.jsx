@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 200,
+    marginLeft: wp(30),
   },
   progressBar: {
     height: wp(10),
