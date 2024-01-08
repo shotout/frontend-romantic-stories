@@ -1141,17 +1141,6 @@ const MainScreen = ({
                   </View>
 
                   <Step5 handleNext={() => handleNext()} handlePrev={handlePrev} />
-                  <View style={{position: 'absolute', bottom: 30}}>
-                    <AnimatedLottieView
-                      source={rippleAnimate}
-                      style={{
-                        width: wp(100),
-                      }}
-                      autoPlay
-                      duration={1500}
-                      loop={true}
-                    />
-                  </View>
                 </ImageBackground>
               </View>
             ) : (
