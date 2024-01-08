@@ -243,7 +243,7 @@ function ModalEditProfile({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <TouchableOpacity  onPress={handleClose} style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         <View
           style={{
             height: moderateScale('60%'),
@@ -254,7 +254,7 @@ function ModalEditProfile({
           {header()}
           {form()}
         </View>
-      </View>
+      </TouchableOpacity>
     </Modal>
   );
 }
