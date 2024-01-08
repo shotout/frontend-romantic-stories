@@ -125,7 +125,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: backgroundColor,
+            backgroundColor: 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -133,13 +133,13 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={20} height={20}  />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: backgroundColor,
+            color: 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',

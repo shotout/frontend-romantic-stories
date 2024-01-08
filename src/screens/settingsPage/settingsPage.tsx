@@ -162,7 +162,7 @@ const SettingsPage = ({
             </Text>
           </View>
           <View style={{marginLeft: '10%', marginTop: wp(30)}}>
-            <ProgressBar  levelingUser={levelingUser} />
+            <ProgressBar  levelingUser={levelingUser} bgTheme={bgTheme} />
             {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
         </View>

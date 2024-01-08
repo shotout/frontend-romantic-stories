@@ -12,7 +12,7 @@ import {hp, wp} from '../../utils/screen';
 import {code_color} from '../../utils/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const GojekProgressBar = ({levelingUser}) => {
+const GojekProgressBar = ({levelingUser, bgTheme}) => {
   const [scrollOffset, setScrollOffset] = useState(0);
   const animatedScrollOffset = new Animated.Value(scrollOffset);
   const [infoCardPosition, setInfoCardPosition] = useState(0);
@@ -189,7 +189,7 @@ const GojekProgressBar = ({levelingUser}) => {
           />
         )}
         {/* Tambahkan titik di tengah level */}
-        <View style={styles.point} />
+        <View style={[styles.point, {borderColor: bgTheme}]} />
         <Text style={styles.levelText}>{level?.desc}</Text>
       </View>
     ));
@@ -239,7 +239,7 @@ const GojekProgressBar = ({levelingUser}) => {
                 ),
                 extrapolate: 'clamp',
               }),
-              backgroundColor: progress > 0 ? '#5873FF' : code_color.grey,
+              backgroundColor: progress > 0 ? bgTheme : code_color.grey,
             },
           ]}
         />
@@ -278,7 +278,6 @@ const styles = StyleSheet.create({
     width: wp(28),
     height: wp(28),
     backgroundColor: code_color.yellow,
-    borderColor: '#5873FF',
     borderRadius: 20,
     borderWidth: 5,
     right: '70%',
