@@ -302,7 +302,7 @@ function RegisterScreen({
             handleChange('language_id', 1);
           }}
           handleSetColorTheme={value => {
-            handleSetColorTheme(value)
+            handleSetColorTheme(value === undefined ? code_color.splash : value)
           }}
         />
       );

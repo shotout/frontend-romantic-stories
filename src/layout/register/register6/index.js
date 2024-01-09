@@ -68,8 +68,9 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
       const avatar = await getListTheme();
       setColorsBg(avatar?.data);
       setBgThem(code ? code : selectedBgTheme.code);
-      handleSetColorTheme(code ? code : selectedBgTheme.code);
+      handleSetColorTheme(code_color.splash);
     } catch (error) {
+      handleSetColorTheme(code_color.splash);
       // alert(JSON.stringify(error));
     }
   };

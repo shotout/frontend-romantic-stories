@@ -70,6 +70,41 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       remainingSeconds,
     ).padStart(2, '0')}`;
   }
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        setLoading(true);
+        // Dapatkan URL MP3 terbaru
+        const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+
+        // Hentikan pemutaran sebelumnya dan reset pemutaran
+        await TrackPlayer.stop();
+        await TrackPlayer.reset();
+
+        // Tambahkan dan konfigurasi lagu baru
+        await TrackPlayer.add({
+          id: 'track1',
+          url: newMp3Url,
+          title: userStory?.category?.name,
+          artist: userStory?.title_id,
+          album: 'While(1<2)',
+          genre: 'Progressive House, Electro House',
+          date: '2014-05-20T07:00:00+00:00',
+          artwork: 'http://example.com/cover.png',
+          duration: 10,
+        });
+
+        // Jalankan pemutaran baru
+        await TrackPlayer.play();
+      } catch (error) {
+        console.error('Error setting up media player:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMedia();
+  }, [userStory]); 
   const fetchMedia = async () => {
     try {
       await TrackPlayer.add([track1]);
