@@ -95,6 +95,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         });
 
         // Jalankan pemutaran baru
+        setLoading(false);
         await TrackPlayer.play();
       } catch (error) {
         console.error('Error setting up media player:', error);
@@ -115,11 +116,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
 
   useEffect(() => {
     if (stepsTutorial === 3) {
-    } else {
-      setLoading(true);
-    }
-
-    fetchMedia();
+    } 
   }, []);
 
   const playing = async () => {
@@ -156,10 +153,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       navigate('Main', {successListen: true});
     }
   }, [position, duration]);
-
-  const reset = async() => {
-    await TrackPlayer.reset();
-  }
 
  
 
