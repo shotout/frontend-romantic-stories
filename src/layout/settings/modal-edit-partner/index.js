@@ -171,7 +171,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
       />
       <Text
         style={{
-          color: backgroundColor,
+          color: 'white',
           fontSize: moderateScale(30),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
