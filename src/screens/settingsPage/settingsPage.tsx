@@ -247,7 +247,7 @@ const SettingsPage = ({
         break;
     }
   };
-console.log(getAvatarMale)
+
   const listMenu = () => (
     <View>
       {menu.map((item, i) => (

@@ -266,7 +266,6 @@ export default (state = INITIAL_STATE, action) => {
         readStory: action.payload,
       };
     case types.SET_LISTEN_STORY:
-      console.log(action.payload);
       return {
         ...state,
         listenStory: action.payload,
@@ -345,7 +344,6 @@ export default (state = INITIAL_STATE, action) => {
         isPremium: action.payload,
       };
     case types.SET_COLOR_TEXT:
-      console.log('setttttttt' + action.payload);
       return {
         ...state,
         colorText: action.payload,

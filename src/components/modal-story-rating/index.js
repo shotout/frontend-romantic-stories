@@ -51,7 +51,6 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
         setRating(0);
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
       handleClose();
     }
   };

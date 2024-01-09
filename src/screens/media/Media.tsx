@@ -103,21 +103,14 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         setLoading(false);
       }
     };
-
-    fetchMedia();
-  }, [userStory]); 
-  const fetchMedia = async () => {
-    try {
-      await TrackPlayer.add([track1]);
-    } catch (error) {
-      console.error('Error setting up media player:', error);
-    }
-  };
-
-  useEffect(() => {
     if (stepsTutorial === 3) {
-    } 
-  }, []);
+    } else{
+      fetchMedia();
+    }
+   
+  }, [userStory]); 
+  
+ 
 
   const playing = async () => {
     try {

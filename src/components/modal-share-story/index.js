@@ -37,7 +37,6 @@ import styles from './styles';
 import {imgShare, logo} from '../../assets/images';
 
 function ModalShareStory({isVisible, onClose, storyData}) {
-  console.log(JSON.stringify(storyData))
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
   const [dinamicLink, setDinamicLink] = useState('');

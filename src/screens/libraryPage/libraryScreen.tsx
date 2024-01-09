@@ -417,7 +417,6 @@ const LibraryScreen = ({
         </View>
       );
     } else {
-      console.log(userStory?.id+"====="+JSON.stringify(item))
       return (
         <View>
           <Animated.View
@@ -516,7 +515,6 @@ const LibraryScreen = ({
     }
   };
   const renderContentSearch = item => {
-    console.log(item);
     if (detail != null) {
       return (
         <View>
