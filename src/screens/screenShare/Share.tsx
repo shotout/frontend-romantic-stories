@@ -61,10 +61,12 @@ import {
   imgStep8,
   imgSelectGift2,
   imgQuote,
+  imgQuote2,
   imgShare,
   logo,
   xp,
   xpAndLevel,
+  imgQuote2Jpg,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -117,6 +119,7 @@ function ScreenShare({
   });
   const [showModal, setShowModal] = useState(false);
   const [showModalTwo, setShowModalTwo] = useState(false);
+  const [isStatic, setIsStatic] = useState(false);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
@@ -580,11 +583,13 @@ function ScreenShare({
       if (stepsTutorial === 6) {
         navigate('Main');
       }
+      setIsStatic(false);
       setIsSwipingLeft(true);
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
       handleSetSteps(stepsTutorial + 1);
+      setIsStatic(false);
 
       {
         stepsTutorial == 7 ? setShowModalTwo(true) : null;
@@ -612,17 +617,20 @@ function ScreenShare({
       setTimeout(() => {
         setShowModal(false);
         handleSetSteps(6 + 1)
-      }, 3000);
+      }, 4000);
      
     }
     if(stepsTutorial === 7){
       setTimeout(() => {
         setShowModalTwo(true);
       }, 10000);
+      setTimeout(() => {
+        setIsStatic(true);
+      }, 10000);
     }
   }, [stepsTutorial, showModal])
 
-  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6) {
       return (
@@ -677,7 +685,7 @@ function ScreenShare({
           {stepsTutorial != 7 ? renderProgress() : null}
 
           <ImageBackground
-            source={imgQuote}
+            source={isStatic ? imgQuote2Jpg : imgQuote2}
             resizeMode="contain"
             style={{
               position: 'absolute',
@@ -693,7 +701,6 @@ function ScreenShare({
               handleNext={() => {
                 setShowModalTwo(false)
                 handleSetSteps(7 + 1);
-                setVisible(false);
               }}
             /> : null }
           </ImageBackground>
