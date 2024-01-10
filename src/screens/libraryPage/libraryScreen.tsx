@@ -133,6 +133,7 @@ const LibraryScreen = ({
   const [selectedStory, setSelectedStory] = useState(null);
   const [price, setPrice] = useState('');
   const activeStatus = useRef(false);
+
   const startBounceAnimation = () => {
     Animated.sequence([
       Animated.timing(translateX, {
@@ -152,46 +153,7 @@ const LibraryScreen = ({
       }),
     ]).start();
   };
-  // const runAnimation = async () => {
-  //   try {
-  //     // First Animation
-  //     await Animated.timing(translateX, {
-  //       toValue: 0,
-  //       duration: 1000,
-  //       useNativeDriver: true,
-  //     }).start();
 
-  //     // Increment counter and Second Animation
-  //     counter.current += 1;
-  //     await Animated.timing(translateX, {
-  //       toValue: 50,
-  //       duration: 300,
-  //       useNativeDriver: true,
-  //     }).start();
-
-  //     if (activeStatus.current) {
-  //       const isStopAnimation = counter.current !== 0 && counter.current % 2 === 0;
-
-  //       if (isStopAnimation) {
-  //         // Stop Animation
-  //         await Animated.timing(translateX, {
-  //           toValue: 0,
-  //           duration: 300,
-  //           useNativeDriver: true,
-  //         }).start();
-
-  //         // Delay and Restart Animation
-  //         await Animated.delay(100); // Adjust the delay as needed
-  //         runAnimation();
-  //       } else {
-  //         // Continue Animation
-  //         runAnimation();
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Animation error:', error?.message);
-  //   }
-  // };
   const stopAnimation = () => {
     translateX.stopAnimation(value => {
       translateX.setValue(0); // Set the animation value to the current value
@@ -210,43 +172,7 @@ const LibraryScreen = ({
       }, 500);
     });
   };
-  // useEffect(() => {
-  //   const initializeConnection = async () => {
-  //     try {
-  //       await initConnection();
-  //       if (Platform.OS === "android") {
-  //         await flushFailedPurchasesCachedAsPendingAndroid();
-  //       }
-  //     } catch (error) {
-  //       console.error("An error occurred", error.message);
-  //     }
-  //   }
-  //   const purchaseUpdate = purchaseUpdatedListener(
-  //     async (purchase) => {
-  //       const receipt = purchase.transactionReceipt;
-
-  //       if (receipt) {
-  //         try {
-  //           await finishTransaction({ purchase, isConsumable: true });
-  //         } catch (error) {
-  //           console.error("An error occurred", error.message);
-  //         }
-  //       }
-  //     });
-
-  //   const purchaseError = purchaseErrorListener((error) =>
-  //     console.error('Purchase error', error.message));
-  //   initializeConnection();
-  //   new purchaseUpdate();
-  //   new purchaseError();
-  //   fetchProducts();
-  //   return () => {
-  //     endConnection();
-  //     purchaseUpdate.remove();
-  //     purchaseError.remove();
-  //   }
-  // }, []);
-
+ 
   const fecthProduct = async () => {
     const products = await IAP.getProducts({
       skus: ['unlock_story_1_week_only'],
@@ -261,9 +187,8 @@ const LibraryScreen = ({
   }, []);
 
   const handleRead = async item => {
-    
     setSelectedStory(item?.item);
-    if (userProfile?.data?.subscription?.plan?.id != 1 ||  userStory?.id === item?.item?.id) {
+    if (userProfile?.data?.subscription?.plan?.id != 1 ||  userStory?.id === item?.item?.id || new Date > new Date(item?.item?.expire)) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -276,7 +201,7 @@ const LibraryScreen = ({
 
   const handleReadDetail = async item => {
     setSelectedStory(item);
-    if (userProfile?.data?.subscription?.plan?.id != 1) {
+    if (userProfile?.data?.subscription?.plan?.id != 1 ||  userStory?.id === item?.item?.id || new Date > new Date(item?.item?.expire)) {
       const resp = await getStoryDetail(item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -346,7 +271,7 @@ const LibraryScreen = ({
                   }}
                   resizeMode="contain">
                   {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id  &&(
+                    userProfile?.data?.subscription?.plan?.id != 3 || userStory?.id != item?.item?.id || new Date > new Date(item?.item?.expire)   &&(
                       <LockFree height={16} width={55} />
                     )}
                 </ImageBackground>
@@ -448,7 +373,7 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id && (
+                  userProfile?.data?.subscription?.plan?.id != 3 || userStory?.id != item?.item?.id || new Date > new Date(item?.item?.expire) &&(
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>
@@ -548,7 +473,7 @@ const LibraryScreen = ({
                   }}
                   resizeMode="contain">
                   {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id  && (
+                    userProfile?.data?.subscription?.plan?.id != 3 || userStory?.id != item?.item?.id  || new Date > new Date(item?.item?.expire)  && (
                       <LockFree height={16} width={55} />
                     )}
                 </ImageBackground>
@@ -650,7 +575,7 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id &&(
+                  userProfile?.data?.subscription?.plan?.id != 3 || userStory?.id != item?.item?.id || new Date > new Date(item?.item?.expire) &&(
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>
@@ -878,6 +803,7 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
+      console.log('DATA INI'+JSON.stringify(res))
       setListCollection(res.data);
       setListLibrary(res.outsides);
     } catch (error) {

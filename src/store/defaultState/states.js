@@ -246,6 +246,7 @@ export default (state = INITIAL_STATE, action) => {
         userProfile: action.payload,
       };
     case types.SET_STEP_TUTORIAL:
+      console.log('SET STEP'+action.payload)
       return {
         ...state,
         stepsTutorial: action.payload,

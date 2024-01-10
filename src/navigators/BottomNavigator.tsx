@@ -375,7 +375,7 @@ function MyTabs(props) {
           tabBarIcon: ({color, focused}) => (
             <TouchableOpacity
               onPress={() => {
-                if (props.stepsTutorial === 0) {
+                if (props.stepsTutorial <= 1  ) {
                   handleFetchSave();
                 }
               }}
@@ -483,7 +483,7 @@ function MyTabs(props) {
         )}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => {
-            if (props.stepsTutorial === 0) {
+            if (props.stepsTutorial <= 1  ) {
               return (
                 <View
                   style={{
@@ -511,7 +511,7 @@ function MyTabs(props) {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    if (props.stepsTutorial === 0) {
+                    if (props.stepsTutorial <= 1  ) {
                       handleSomeAction('Library');
                     }
                   }}
@@ -560,7 +560,7 @@ function MyTabs(props) {
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => {
-            if (props.stepsTutorial === 0) {
+            if (props.stepsTutorial <= 1  ) {
               return (
                 <View
                   style={{
@@ -588,7 +588,7 @@ function MyTabs(props) {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    if (props.stepsTutorial === 0) {
+                    if (props.stepsTutorial <= 1  ) {
                       handleSomeAction('Font');
                     }
                   }}
@@ -636,7 +636,7 @@ function MyTabs(props) {
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => {
-            if (props.stepsTutorial === 0) {
+            if (props.stepsTutorial <= 1  ) {
               return (
                 <View
                   style={{
@@ -664,7 +664,7 @@ function MyTabs(props) {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    if (props.stepsTutorial === 0) {
+                    if (props.stepsTutorial <= 1  ) {
                       handleSomeAction('Settings');
                     }
                   }}

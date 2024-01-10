@@ -56,6 +56,7 @@ import ChecklistSvg from './../../assets/icons/checklist';
 import * as IAP from 'react-native-iap';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
+import ModalSuccessPurchase from '../../components/modal-success-purchase';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -68,6 +69,7 @@ const ExploreLibraryScreen = ({
   stepsTutorial,
   backgroundColor,
   userProfile,
+  nextStory
 }) => {
   const [loading, setLoading] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -84,6 +86,8 @@ const ExploreLibraryScreen = ({
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
   const [loadingAds, setLoadingAds] = useState(false);
+  const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
+  useState(false);
 
   const showWatchAds = async () => {
     setLoadingAds(true)
@@ -224,6 +228,9 @@ const ExploreLibraryScreen = ({
     if (data) {
       setLoading(false);
       setShowModalUnlock(false);
+      const resp = await getStoryDetail(selectedStory?.id);
+      handleNextStory(resp.data);
+      setShowModalSuccessPurchase(true)
     } else {
       setLoading(false);
       setShowModalUnlock(false);
@@ -311,6 +318,14 @@ const ExploreLibraryScreen = ({
         loadingOne={loadingAds}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
+      />
+       <ModalSuccessPurchase
+        isVisible={showModalSuccessPurchase}
+        onClose={() => {
+          setShowModalSuccessPurchase(false);
+          handleSetStory(nextStory);
+          navigate('Main');
+        }}
       />
       <ModalUnlockPremium
         isVisible={showModalUnlockCategory}
@@ -403,7 +418,7 @@ const ExploreLibraryScreen = ({
                 {data?.most_read.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (userProfile?.data?.subscription?.plan_id === 1) {
+                      if (userProfile?.data?.subscription?.plan_id === 1 && itm?.is_collection === null) {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       } else {
@@ -417,7 +432,7 @@ const ExploreLibraryScreen = ({
                     }}
                     key={idx}>
                     {userProfile?.data?.subscription?.plan_id != 2 &&
-                      userProfile?.data?.subscription?.plan_id != 3 && (
+                      userProfile?.data?.subscription?.plan_id != 3 && itm?.is_collection === null && (
                         <LockFree
                           height={16}
                           width={55}
@@ -550,7 +565,7 @@ const ExploreLibraryScreen = ({
                 {data.most_share.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (userProfile?.data?.subscription?.plan_id === 1) {
+                      if (userProfile?.data?.subscription?.plan_id === 1 && itm?.is_collection === null) {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       } else {
@@ -565,7 +580,7 @@ const ExploreLibraryScreen = ({
                     }}
                     key={idx}>
                     {userProfile?.data?.subscription?.plan_id != 2 &&
-                      userProfile?.data?.subscription?.plan_id != 3 && (
+                      userProfile?.data?.subscription?.plan_id != 3 && itm?.is_collection === null && (
                         <LockFree
                           height={16}
                           width={55}
@@ -632,7 +647,9 @@ const ExploreLibraryScreen = ({
         data={selectedStory}
         handleRead={async () => {
           const resp = await getStoryDetail(selectedStory?.id);
+         
           handleSetStory(resp.data);
+          const response = await addStory(selectedStory?.id);
           navigate('Main');
         }}
         handleLater={async () => {
