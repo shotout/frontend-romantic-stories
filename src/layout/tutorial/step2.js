@@ -79,7 +79,7 @@ const Step2 = ({handleNext, handlePrev}) => {
             marginVertical: 10,
           }}
           title={i18n.t('Next')}
-          onPress={handleNext}
+          onPress={() => handleNext()}
         />
       </Animatable.View>
     </View>

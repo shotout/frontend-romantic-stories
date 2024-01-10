@@ -590,6 +590,7 @@ const DetailCategoryScreen = ({
         handleRead={async () => {
           const resp = await getStoryDetail(selectedStory?.id);
           handleSetStory(resp.data);
+          const response = await addStory(selectedStory?.id);
           navigate('Main');
         }}
         handleLater={async () => {

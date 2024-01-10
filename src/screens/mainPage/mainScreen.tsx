@@ -759,7 +759,12 @@ const MainScreen = ({
     if (userProfile?.data?.subscription?.plan?.id === 3) {
     navigate('Media');
     } else {
-      checkingListen();
+      if(dataBook?.audio_enable != null){
+        navigate('Media');
+      }else{
+        checkingListen();
+      }
+     
     }
   };
   const splitTextIntoArray = (text, chunkLength) => {
@@ -904,12 +909,12 @@ const MainScreen = ({
 
   const handleUnlock = async () => {
     setLoading(true);
-    const data = await handleNativePayment('unlock_story_1_week_only');
+    const res = await getStoryList();
+    handleNextStory(res.data);
+    const data = await handleNativePayment('unlock_story_1_week_only', res?.data?.id);
     if (data) {
       setShowModalCongrats(false);
       setShowModalNewStory(false);
-      const res = await getStoryList();
-      handleNextStory(res.data);
       setLoading(false);
       setShowModalSuccessPurchase(true);
     } else {
@@ -1145,7 +1150,7 @@ const MainScreen = ({
               </View>
             ) : (
               <Step2
-                handleNext={handleNext}
+                handleNext={() => handleNext()}
                 handlePrev={() => {
                   setActiveStep(1);
                   handleSetSteps(1);
@@ -1198,7 +1203,20 @@ const MainScreen = ({
       // setLoadingAds(false);
     });
   };
-  const handleRead = () => {
+  const handleRead = async() => {
+    pagerRef.current?.setPage(0);
+    const response = await addStory(nextStory.id);
+    setScreenNumber(0);
+    setTimeout(() => {
+      handleSetStory(nextStory);
+      setShowModalDay(false);
+      setShowModal(false);
+      setBook(nextStory);
+    }, 200);
+   
+  };
+
+  const handleReadAds = async() => {
     pagerRef.current?.setPage(0);
     setScreenNumber(0);
     setTimeout(() => {
@@ -1421,7 +1439,7 @@ const MainScreen = ({
           <ModalStoryUnlockDay
             isVisible={showModalDay}
             onClose={() => setShowModalDay(false)}
-            handleRead={() => handleRead()}
+            handleRead={() => handleReadAds()}
             handleLater={() => handleLater()}
           />
           <ModalStoryUnlock
@@ -1473,6 +1491,9 @@ const MainScreen = ({
             isVisible={showModalSuccessPurchase}
             onClose={() => {
               setBook(nextStory);
+              addStory(nextStory.id);
+              pagerRef.current?.setPage(0);
+              setScreenNumber(0)
               setShowModalSuccessPurchase(false);
             }}
           />
