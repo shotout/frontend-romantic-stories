@@ -52,7 +52,8 @@ export default function QuotesContent({
   handleListen,
   show,
   setShow,
-  type
+  type,
+  isRippleAnimate
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -417,7 +418,19 @@ const content_en = [
         <View style={[styles.ctnIcon]}>
           <View style={styles.quotesWrapper}>
             <View style={styles.txtQuotesWrapper}>
+              {isRippleAnimate ? <Text style={[
+                  styles.ctnQuotes,
+                  {
+                    // marginBottom: pageActive != 0 ? -100 : 0,
+                    fontFamily: fontFamily,
+                    fontSize: fixedFontSize(Number(fontSize)),
+                    color:  bg === code_color.blackDark ? code_color.white : code_color.blackDark,
+                  },
+                ]}>
+{item}
+              </Text> :
               <SelectableText
+                
                 style={[
                   styles.ctnQuotes,
                   {
@@ -455,7 +468,7 @@ const content_en = [
                 value={
                   themeUser?.language_id === '2' ? item : item
                 }
-              />
+              /> }
             </View>
           </View>
           {type === 'main' && pageActive === 0 ||
