@@ -89,6 +89,8 @@ import {Animated} from 'react-native';
 import {TouchableOpacityBase} from 'react-native';
 import {hp, wp} from '../../utils/screen';
 import AnimatedLottieView from 'lottie-react-native';
+import { useIsFocused } from '@react-navigation/native';
+
 const LibraryScreen = ({
   colorTheme,
   handleSomeAction,
@@ -104,6 +106,7 @@ const LibraryScreen = ({
   // alert(JSON.stringify(userStory))
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
+  const isFocused = useIsFocused();
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
@@ -778,7 +781,7 @@ const LibraryScreen = ({
   };
   useEffect(() => {
     handleRestart();
-  }, [items]);
+  }, [items, isFocused]);
 
   useEffect(() => {
     async function fetchData() {

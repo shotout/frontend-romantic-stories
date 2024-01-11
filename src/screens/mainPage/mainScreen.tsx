@@ -191,7 +191,7 @@ const MainScreen = ({
                   // sudah pergantian tanggal
                   if (value != strTanggalSekarang) {
                     // langsung read story
-                    handleRead();
+                    handleReadAds();
                   } else {
                     // menutup modal countdown & open modal new story unlock
                     setShowModalNewStory(false);
@@ -1452,7 +1452,7 @@ const MainScreen = ({
             readLater={readLater}
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
             handleRead={() => {
-              handleRead();
+              handleReadAds();
             }}
             handleLater={async () => {
               await addStory(nextStory.id);
