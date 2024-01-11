@@ -66,7 +66,6 @@ import {
   logo,
   xp,
   xpAndLevel,
-  imgQuote2Jpg,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -623,7 +622,7 @@ function ScreenShare({
     if(stepsTutorial === 7){
       setTimeout(() => {
         setShowModalTwo(true);
-      }, 10000);
+      }, 2500);
       setTimeout(() => {
         setIsStatic(true);
       }, 10000);
@@ -632,7 +631,7 @@ function ScreenShare({
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
   const renderTutorial = () => {
-    if (stepsTutorial === 6) {
+    if (stepsTutorial === 6 || stepsTutorial === 7) {
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
@@ -647,7 +646,7 @@ function ScreenShare({
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          {stepsTutorial != 6 ? renderProgress() : null}
+          {renderProgress()}
 
           <ImageBackground
             source={imgQuote}
@@ -662,51 +661,60 @@ function ScreenShare({
             }}>
             <View style={{marginTop: 10}}>{renderProgress()}</View>
 
-            {showModal ? <Step6 /> : null}
+            {stepsTutorial === 6 && showModal ? (
+              <Step6 />
+            ) : showModalTwo ? (
+              <Step7
+                handleNext={() => {
+                  setShowModalTwo(false);
+                  handleSetSteps(7 + 1);
+                }}
+              />
+            ) : null}
           </ImageBackground>
         </SafeAreaView>
       );
     }
-    if (stepsTutorial === 7) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
+    // if (stepsTutorial === 7) {
+    //   return (
+    //     <SafeAreaView
+    //       onTouchStart={handleTouchStart}
+    //       // onTouchEnd={handleTouchEnd}
+    //       pointerEvents="box-only"
+    //       style={{
+    //         position: 'absolute',
 
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
+    //         width: Dimensions.get('window').width,
+    //         height: Dimensions.get('window').height,
 
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            paddingTop: 40,
-          }}>
-          {stepsTutorial != 7 ? renderProgress() : null}
+    //         backgroundColor: 'rgba(0,0,0,0.3)',
+    //         paddingTop: 40,
+    //       }}>
+    //       {stepsTutorial != 7 ? renderProgress() : null}
 
-          <ImageBackground
-            source={isStatic ? imgQuote2Jpg : imgQuote2}
-            resizeMode="contain"
-            style={{
-              position: 'absolute',
-              top: '0',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
+    //       <ImageBackground
+    //         source={imgQuote2}
+    //         resizeMode="contain"
+    //         style={{
+    //           position: 'absolute',
+    //           top: '0',
+    //           width: Dimensions.get('window').width,
+    //           height: Dimensions.get('window').height,
 
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }}>
-            <View style={{marginTop: 10}}>{renderProgress()}</View>
-            {showModalTwo ? 
-            <Step7
-              handleNext={() => {
-                setShowModalTwo(false)
-                handleSetSteps(7 + 1);
-              }}
-            /> : null }
-          </ImageBackground>
-        </SafeAreaView>
-      );
-    } else if (stepsTutorial === 8 || stepsTutorial === 9) {
+    //           backgroundColor: 'rgba(0,0,0,0.3)',
+    //         }}>
+    //         <View style={{marginTop: 10}}>{renderProgress()}</View>
+    //         {showModalTwo ? 
+    //         <Step7
+    //           handleNext={() => {
+    //             setShowModalTwo(false)
+    //             handleSetSteps(7 + 1);
+    //           }}
+    //         /> : null }
+    //       </ImageBackground>
+    //     </SafeAreaView>
+    //   );
+    else if (stepsTutorial === 8 || stepsTutorial === 9) {
       return (
         <SafeAreaView
           onTouchStart={handleTouchStart}
