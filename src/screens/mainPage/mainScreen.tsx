@@ -790,7 +790,7 @@ const MainScreen = ({
   const text = dataBook?.content_en;
   const textChunks = splitTextIntoArray(
     text,
-    Dimensions.get('window').height <= 667 ? 600 : 750,
+    Dimensions.get('window').height <= 667 ? 630 : 800,
   );
   const renderFactItem = ({item, index, title, category, colorText, type}) => {
     return (
@@ -815,6 +815,7 @@ const MainScreen = ({
           setShow={() => setShow(false)}
           handleListen={() => handleListening()}
           type={type}
+          isRippleAnimate={isRippleAnimate}
         />
       </>
     );
