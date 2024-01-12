@@ -129,6 +129,8 @@ const LibraryScreen = ({
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
+    const [showModalSuccessPurchaseNative, setShowModalSuccessPurchaseNative] =
+    useState(false);
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [loadingOne, setLoadingOne] = useState(false);
@@ -191,7 +193,7 @@ const LibraryScreen = ({
 
   const handleRead = async item => {
     setSelectedStory(item?.item);
-    if (userProfile?.data?.subscription?.plan?.id != 1 && userStory?.id != item?.item?.id && item?.item?.expire != null  && new Date < new Date(item?.item?.expire)) {
+    if (userProfile?.data?.subscription?.plan?.id != 1 || userStory?.id != item?.item?.id && item?.item?.expire != null  && new Date < new Date(item?.item?.expire)) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -1042,23 +1044,23 @@ const LibraryScreen = ({
   );
 
   const handleNative = async () => {
-    // // setLoading(true);
-    // const data = await handleNativePayment(
-    //   'unlock_story_1_week_only',
-    //   selectedStory?.id,
-    // );
-    // if (data) {
+    setLoading(true);
+    const data = await handleNativePayment(
+      'unlock_story_1_week_only',
+      selectedStory?.id,
+    );
+    if (data) {
     setLoading(false);
     setShowModalUnlock(false);
     setShowModalNewStory(false);
     const resp = await getStoryDetail(selectedStory?.id);
     handleNextStory(resp.data);
-    setShowModalSuccessPurchase(true);
-    // } else {
-    //   setLoading(false);
-    //   setShowModalUnlock(false);
-    //   setShowModalNewStory(false);
-    // }
+    setShowModalSuccessPurchaseNative(true);
+    } else {
+      setLoading(false);
+      setShowModalUnlock(false);
+      setShowModalNewStory(false);
+    }
   };
   const rippleAnimate = require('../../assets/lottie/ripple.json');
   return (
@@ -1095,6 +1097,14 @@ const LibraryScreen = ({
         type={'watch'}
         onClose={() => {
           setShowModalSuccessPurchase(false);
+          handleSetStory(nextStory);
+          navigate('Main');
+        }}
+      />
+      <ModalSuccessPurchase
+        isVisible={showModalSuccessPurchaseNative}
+        onClose={() => {
+          setShowModalSuccessPurchaseNative(false);
           handleSetStory(nextStory);
           navigate('Main');
         }}
