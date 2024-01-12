@@ -360,6 +360,7 @@ const MainScreen = ({
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
+    console.log(pageNumber + 'INI SCROLL')
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -387,26 +388,26 @@ const MainScreen = ({
           (item: any) => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
-    if (!existingEntry && pageNumber === textChunks?.length + 1 - 1) {
-      await addPastStory(dataBook.id);
-      const data = {
-        value: textChunks?.length,
-      };
-      const resp = await addPastLevel(data);
-      if (resp?.data) {
-        handleLeveling(resp?.data);
-        setTimeout(() => {
-          setShowModalCongrats(true);
-        }, 200);
-      }
-    } else if (
-      existingEntry &&
-      pageNumber === textChunks?.length + 1 - 1 &&
-      !(isPremiumStory || isPremiumAudio)
-    ) {
-      //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      // setShowModalCongrats(true);
-    }
+    // if (!existingEntry && pageNumber === textChunks?.length + 1 - 1) {
+    //   await addPastStory(dataBook.id);
+    //   const data = {
+    //     value: textChunks?.length,
+    //   };
+    //   const resp = await addPastLevel(data);
+    //   if (resp?.data) {
+    //     handleLeveling(resp?.data);
+    //     setTimeout(() => {
+    //       setShowModalCongrats(true);
+    //     }, 200);
+    //   }
+    // } else if (
+    //   existingEntry &&
+    //   pageNumber === textChunks?.length + 1 - 1 &&
+    //   !(isPremiumStory || isPremiumAudio)
+    // ) {
+    //   //jika tidak premium maka akan terus menampilan modal setiap terakhir
+    //   // setShowModalCongrats(true);
+    // }
     if (pageNumber === textChunks?.length - 1) {
     }
     setActiveSlide(pageNumber - 1);
@@ -1129,6 +1130,7 @@ const MainScreen = ({
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 2.5;
     // Jika sentuhan terjadi di sebelah kanan
+    console.log(touchX > screenWidth)
     if (touchX > screenWidth && !showModalCongrats) {
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
@@ -1163,8 +1165,13 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+           console.log('INI DATAAAA' +screenNumber +"===="+ textChunks?.length)
+            // if(screenNumber ===  textChunks?.length){
+              setShowModalCongrats(true);
+            // }
+           
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
-            setShowModalCongrats(true);
+           
           }
         }
       }, 700);
