@@ -514,7 +514,7 @@ const content_en = [
                     uri: `${BACKEND_URL}/${me}`,
                     priority: FastImage.priority.high,
                   }}
-                  resizeMode={FastImage.resizeMode.cover}
+                  resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
                     height: hp(400),

@@ -172,50 +172,38 @@ const MainScreen = ({
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.match(/background/) && nextAppState === 'active') {
-        notifee.onForegroundEvent(async ({type, detail}) => {
-          if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
-            if (detail?.notification?.data?.type === 'story') {
-              setTimeout(async () => {
-                const value = await AsyncStorage.getItem('setToday');
-                const stringifyDateNow = new Date();
-                let strTanggalSekarang = stringifyDateNow.getDate().toString();
-                const res = await getStoryDetail(
-                  detail?.notification?.data?.id,
-                );
-                handleNextStory(res.data);
-                navigate('Main');
 
-                // jika free user
-                if (!(isPremiumStory || isPremiumAudio)) {
-                  // sudah pergantian tanggal
-                  if (value != strTanggalSekarang) {
-                    // langsung read story
-                    handleReadAds();
-                  } else {
-                    // menutup modal countdown & open modal new story unlock
-                    setShowModalNewStory(false);
-                    setShowModalDay(true);
-                  }
-                } else {
-                  // open modal new story unlock
-                  setShowModalDay(true);
-                }
-              }, 100);
-              // eventTracking(OPEN_OFFER_NOTIFICATION);
+  useEffect(() => {
+    async function getDataStory() {
+      const res = await getStoryList();
+      handleNextStory(res.data);
+    }
+    async function handleOpenNotif() {
+      if (route?.params?.isFromNotif) {
+        const value = await AsyncStorage.getItem('setToday');
+        const stringifyDateNow = new Date();
+        let strTanggalSekarang = stringifyDateNow.getDate().toString();
+        if (value !== null) {
+          // jika sudah ganti tanggal
+          if (value != strTanggalSekarang) {
+            // jika modal coundown open
+            if (showModalNewStory) {
+              setShowModalNewStory(false);
+            }
+            await getDataStory();
+            setShowModal(true); // ga ada read later
+          } else {
+            // jika modal coundown close
+            if (!showModalNewStory) {
+              await getDataStory();
+              setShowModalDay(true); // ini yang ada read laternya
             }
           }
-        });
+        }
       }
-      setAppState(nextAppState);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [appState]);
+    }
+    handleOpenNotif();
+  }, [route?.params]);
 
   const handleSuccessListen = async () => {
     const existingEntry = readStory
