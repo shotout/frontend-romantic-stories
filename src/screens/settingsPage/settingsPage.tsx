@@ -146,7 +146,7 @@ const SettingsPage = ({
         />
         <View
           style={{
-            marginTop: wp(80),
+            marginTop: Dimensions.get('window').height === 667 ? wp(90) : wp(80),
           }}>
           <View style={{marginTop: wp(20)}}>
             <Text
@@ -402,9 +402,9 @@ const SettingsPage = ({
       {header()}
       <ScrollView>
         {listMenu()}
-        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: moderateScale(10)}} />
+        <View style={{borderColor: 'white', borderWidth: 0.5, margin: moderateScale(10)}} />
         {listMenuTwo()}
-        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: moderateScale(10)}} />
+        <View style={{borderColor: 'white', borderWidth: 0.5, margin: moderateScale(10)}} />
         <View>
           {/* <View style={{margin: 10}}>
             <Text

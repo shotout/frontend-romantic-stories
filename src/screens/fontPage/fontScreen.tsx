@@ -521,7 +521,7 @@ const FontScreen = ({
         </View>
       </View>
       <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
+        style={{borderColor: 'white', borderWidth: 0.5, marginVertical: 10}}
       />
       <View style={{flex: 0}}>
         <View
@@ -645,7 +645,7 @@ const FontScreen = ({
       </View>
 
       <View
-        style={{borderColor: '#778DFF', borderWidth: 1, marginVertical: 10}}
+        style={{borderColor: 'white', borderWidth: 0.5, marginVertical: 10}}
       />
       <View style={{flex: 1, marginHorizontal: 20}}>
         <Text

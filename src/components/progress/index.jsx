@@ -17,6 +17,7 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
   const animatedScrollOffset = new Animated.Value(scrollOffset);
   const [infoCardPosition, setInfoCardPosition] = useState(0);
   const animatedPosition = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef(null);
   const levels = [
     {
       created_at: '2023-12-06T07:45:22.000000Z',
@@ -194,6 +195,33 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
       </View>
     ));
   };
+  useEffect(() => {
+    Animated.timing(animatedScrollOffset, {
+      toValue: position,
+      duration: 100,
+      useNativeDriver: false,
+    }).start();
+  
+    let lastAchievedIndex = 0;
+  
+    if (progress > 0 && levels && levels.length > 0) {
+      for (let i = 0; i < levels.length; i++) {
+        const currentLevel = levels[i];
+  
+        if (progress >= currentLevel.value) {
+          lastAchievedIndex = i;
+        } else {
+          break;
+        }
+      }
+    }
+  
+    setLastAchievedLevelIndex(lastAchievedIndex);
+  
+    // Scroll ke posisi baru
+    scrollViewRef.current.scrollTo({ x: position, animated: true });
+  
+  }, [animatedScrollOffset, position, progress, levels]);
   // useEffect(() => {
   //   setInfoCardPosition(position);
   // }, [progress, levels]);
@@ -213,10 +241,11 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
   };
   return (
     <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      // onScroll={(event) => setScrollOffset(event.nativeEvent.contentOffset.x)}
-      scrollEventThrottle={16}>
+    ref={scrollViewRef}
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    // onScroll={(event) => setScrollOffset(event.nativeEvent.contentOffset.x)}
+    scrollEventThrottle={16}>
       <View style={styles.container}>
         <Animated.View
           style={[
@@ -281,10 +310,10 @@ const styles = StyleSheet.create({
     backgroundColor: code_color.yellow,
     borderRadius: 20,
     borderWidth: 5,
-    right: '70%',
+    right:  Dimensions.get('window').height === 667 ? '80%':'70%',
     transform: [{translateY: -5}],
     position: 'absolute',
-    top: -40,
+    top: Dimensions.get('window').height === 667 ? -35 : -40,
   },
   progressFilled: {
     ...StyleSheet.absoluteFillObject,

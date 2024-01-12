@@ -7,7 +7,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
 import {
   StyleSheet,
   View,
@@ -84,6 +84,7 @@ import {
   eventTracking,
 } from '../../helpers/eventTracking';
 import ModalUnlockStory from '../../components/modal-unlock-story';
+import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
@@ -116,6 +117,7 @@ const MainScreen = ({
 }) => {
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
+  const [showMedia, setShowMedia] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
   const [activeStep, setActiveStep] = useState(stepsTutorial);
@@ -169,7 +171,7 @@ const MainScreen = ({
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
-
+  const [textChunks, setTextChunks] = useState([]);
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (appState.match(/background/) && nextAppState === 'active') {
@@ -191,7 +193,7 @@ const MainScreen = ({
                   // sudah pergantian tanggal
                   if (value != strTanggalSekarang) {
                     // langsung read story
-                    handleRead();
+                    handleReadAds();
                   } else {
                     // menutup modal countdown & open modal new story unlock
                     setShowModalNewStory(false);
@@ -216,48 +218,44 @@ const MainScreen = ({
   }, [appState]);
 
   const handleSuccessListen = async () => {
-  
-      const existingEntry = readStory
-        ? readStory.find(
-            (item: any) =>
-              item?.id === dataBook.id && item?.page === textChunks?.length + 1,
-          )
-        : undefined;
-      if (readStory?.length === 2) {
-        eventTracking(FINISH_LISTEN_3);
-      }
-      if (readStory?.length === 9) {
-        eventTracking(FINISH_LISTEN_10);
-      }
-      if (
-        typeof existingEntry === 'undefined'
-      ) {
-        // jika nanti pertama kali melakukan update data terakhir
+    const existingEntry = readStory
+      ? readStory.find(
+          (item: any) =>
+            item?.id === dataBook.id && item?.page === textChunks?.length + 1,
+        )
+      : undefined;
+    if (readStory?.length === 2) {
+      eventTracking(FINISH_LISTEN_3);
+    }
+    if (readStory?.length === 9) {
+      eventTracking(FINISH_LISTEN_10);
+    }
+    if (typeof existingEntry === 'undefined') {
+      // jika nanti pertama kali melakukan update data terakhir
 
-        await addPastStory(dataBook.id);
-        const data = {
-          value: textChunks?.length,
-        };
-        const resp = await addPastLevel(data);
-        if (resp?.data) {
-          handleLeveling(resp?.data);
-          setTimeout(() => {
-            setShowModalCongrats(true);
-          }, 200);
-        }
-        checkingRead(textChunks?.length + 1);
-      } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-        //jika tidak premium maka akan terus menampilan modal setiap terakhir
-        setShowModalCongrats(true);
+      await addPastStory(dataBook.id);
+      const data = {
+        value: textChunks?.length,
+      };
+      const resp = await addPastLevel(data);
+      if (resp?.data) {
+        handleLeveling(resp?.data);
+        setTimeout(() => {
+          setShowModalCongrats(true);
+        }, 200);
       }
+      checkingRead(textChunks?.length + 1);
+    } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+      //jika tidak premium maka akan terus menampilan modal setiap terakhir
+      setShowModalCongrats(true);
+    }
   };
   useEffect(() => {
     if (route?.params?.successListen) {
+      // pagerRef.current?.setPage(textChunks?.length - 1);
       checkingRead(textChunks?.length + 1);
-      setScreenNumber(textChunks?.length + 1)
+      setScreenNumber(textChunks?.length + 1);
       handleSuccessListen();
-
-      pagerRef.current?.setPage(textChunks?.length - 1);
     } else if (route?.params?.storyId) {
       setReadLater(true);
       if (isPremiumStory || isPremiumAudio) {
@@ -358,22 +356,11 @@ const MainScreen = ({
       reloadUserProfile();
     }
     fetchCheckingDay();
-    // async function fcmt() {
-    //   const fcmToken = await messaging().getToken();
-    //   console.log(fcmToken);
-    // }
-    // fcmt();
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
-    // const offsetY = e.nativeEvent.contentOffset.x;
-    // const height = sizing.getDimensionWidth(0.89);
-    // const pageNumber = Math.min(
-    //   Math.max(Math.floor(offsetY / height + 0.5), 0),
-    //   dataBook?.length || 0,
-    // );
-    // setShowModalCongrats(true)
     const pageNumber = e.nativeEvent.position;
+    console.log(pageNumber + 'INI SCROLL')
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -382,16 +369,6 @@ const MainScreen = ({
     }, 3000);
 
     checkingRead(pageNumber);
-    // handleReadStory(pageNumber)
-    // setReadBook(prevReadBook => {
-    //   // Use Set to store unique page numbers
-    //   const updatedReadBook = new Set([...prevReadBook, pageNumber]);
-    //   return Array.from(updatedReadBook);
-    // });
-    // if (pageNumber === dataBook?.length - 1 && readBook.includes(pageNumber)) {
-    //   // Show alert or perform other actions
-    //   alert('You reached the last page and it is marked as read!');
-    // }
     if (pageNumber === 2 || pageNumber === 5 || pageNumber === 8) {
       setIsLoveAnimate(true);
       if (isLoveAnimate !== 'stop') {
@@ -411,45 +388,28 @@ const MainScreen = ({
           (item: any) => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
-    if (!existingEntry && pageNumber === textChunks?.length + 1 - 1) {
-      // jika nanti pertama kali melakukan update data terakhir
-      await addPastStory(dataBook.id);
-      const data = {
-        value: textChunks?.length,
-      };
-      const resp = await addPastLevel(data);
-      if (resp?.data) {
-        handleLeveling(resp?.data);
-        setTimeout(() => {
-          setShowModalCongrats(true);
-        }, 200);
-      }
-    } else if (
-      existingEntry &&
-      pageNumber === textChunks?.length + 1 - 1 &&
-      !(isPremiumStory || isPremiumAudio)
-    ) {
-      //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      // setShowModalCongrats(true);
-    }
+    // if (!existingEntry && pageNumber === textChunks?.length + 1 - 1) {
+    //   await addPastStory(dataBook.id);
+    //   const data = {
+    //     value: textChunks?.length,
+    //   };
+    //   const resp = await addPastLevel(data);
+    //   if (resp?.data) {
+    //     handleLeveling(resp?.data);
+    //     setTimeout(() => {
+    //       setShowModalCongrats(true);
+    //     }, 200);
+    //   }
+    // } else if (
+    //   existingEntry &&
+    //   pageNumber === textChunks?.length + 1 - 1 &&
+    //   !(isPremiumStory || isPremiumAudio)
+    // ) {
+    //   //jika tidak premium maka akan terus menampilan modal setiap terakhir
+    //   // setShowModalCongrats(true);
+    // }
     if (pageNumber === textChunks?.length - 1) {
-      //   if(isPremium){
-      //     const data = await AsyncStorage.getItem('isFirstTime');
-      //     // AsyncStorage.removeItem('isFirstTime');
-      //     // alert(data)
-      //     if (data === 'yes') {
-      //     } else {
-      //       setShowModalCongrats(true);
-      //       AsyncStorage.setItem('isFirstTime', 'yes');
-      //     }
-      //   }else{
-      //     setShowModalCongrats(true);
-      //   }
-      // } else {
-      //   clearTimeout(timeoutLove);
-      //   setIsLoveAnimate(false);
     }
-    // purchaseSubscription()
     setActiveSlide(pageNumber - 1);
 
     startAnimation();
@@ -460,19 +420,6 @@ const MainScreen = ({
     }
   };
 
-  const handleGesture = evt => {
-    const {nativeEvent} = evt;
-    if (nativeEvent.velocityX < -614) {
-    }
-  };
-  const onDoubleTap = event => {
-    if (!isUserHasScroll && event.nativeEvent.state === State.BEGAN) {
-      setUserScrollQuotes(true);
-    }
-    if (event.nativeEvent.state === State.ACTIVE) {
-      // handleLike();
-    }
-  };
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
@@ -494,25 +441,6 @@ const MainScreen = ({
     } else {
       handleNext();
     }
-    // setIsSwipingLeft(true);
-    // if (activeStep === 1) {
-    // } else {
-    //   setTutorial({
-    //     ...isTutorial,
-    //     step: isTutorial.step - 1,
-    //   });
-    //   setActiveStep(prevStep => prevStep - 1);
-    //   handleSetSteps(activeStep - 1);
-    // }
-    // } else if (touchX < halfScreenWidth){
-    //   alert('okeee kiri')
-    // }
-    // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    // else {
-    //   alert('okeee KANAN')
-    //   // handleNext();
-    //   // setIsSwipingRight(true);
-    // }
   };
 
   const handlePrev = () => {
@@ -525,39 +453,33 @@ const MainScreen = ({
   };
 
   const handleNext = () => {
-    if(stepsTutorial <= 5){
+    if (stepsTutorial <= 5) {
       const content =
-      'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-    setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
-    handleSetSteps(stepsTutorial + 1);
-    if (stepsTutorial === 2) {
-      setFinishTutorial(false);
-      setIsRippleAnimate(true);
-      setTimeout(() => {
-        setFinishTutorial(true);
-        setIsRippleAnimate(false);
-      }, 3000);
-      setTimeout(() => {
-        navigate('Media');
-      }, 2500);
-    } else if (stepsTutorial === 5) {
-      handleSetSteps(5 + 1);
-      navigate('Share', {
-        selectedContent:
-          ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-        start: content?.substring(0, 30),
-        end: content.substring(30, 30 + 30),
-      });
+        'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
+      setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+      handleSetSteps(stepsTutorial + 1);
+      if (stepsTutorial === 2) {
+        setFinishTutorial(false);
+        setIsRippleAnimate(true);
+        setTimeout(() => {
+          setFinishTutorial(true);
+          setIsRippleAnimate(false);
+        }, 3000);
+        setTimeout(() => {
+          navigate('Media');
+        }, 2500);
+      } else if (stepsTutorial === 5) {
+        handleSetSteps(5 + 1);
+        navigate('Share', {
+          selectedContent:
+            ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+          start: content?.substring(0, 30),
+          end: content.substring(30, 30 + 30),
+        });
+      }
     }
-    }
-    
   };
 
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
   const startAnimation = () => {
     setFolded(!folded);
 
@@ -567,23 +489,7 @@ const MainScreen = ({
       useNativeDriver: false, // Set this to true for better performance, but note that not all properties are supported with native driver
     }).start();
   };
-  const handleLoadMore = async value => {
-    // const params = {
-    //   page: userStory?.current_page + 1,
-    // };
-    // try {
-    //   const res = await getStoryList(params);
-    //   // alert(JSON.stringify(res))
-    //   setBook(res.data);
-    //   handleSetStory(res.data);
-    // } catch (error) {
-    //   // alert(error)
-    // }
-  };
-  const rotation = animationValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'],
-  });
+  const handleLoadMore = async value => {};
 
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
@@ -608,10 +514,6 @@ const MainScreen = ({
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
         setFinishTutorial(true);
-        // setTutorial({
-        //   visible: true,
-        //   step: 1,
-        // });
         setVisible(true);
         setTimeout(() => {
           setVisible(false);
@@ -634,9 +536,6 @@ const MainScreen = ({
             navigate('Media');
           }, 2500);
         }
-        // navigate('Media');
-        // } else if (activeStep === 3) {
-        //   navigate('Library');
       } else if (activeStep === 4) {
         navigate('ExploreLibrary');
       } else if (
@@ -757,16 +656,16 @@ const MainScreen = ({
   };
   const handleListening = async () => {
     if (userProfile?.data?.subscription?.plan?.id === 3) {
-    navigate('Media');
+      navigate('Media');
     } else {
-      if(dataBook?.audio_enable != null){
+      if (dataBook?.audio_enable != null) {
         navigate('Media');
-      }else{
+      } else {
         checkingListen();
       }
-     
     }
   };
+
   const splitTextIntoArray = (text, chunkLength) => {
     const words = text.split(' ');
     const resultArray = [];
@@ -787,114 +686,75 @@ const MainScreen = ({
 
     return resultArray;
   };
-  const text = dataBook?.content_en;
-  const textChunks = splitTextIntoArray(
-    text,
-    Dimensions.get('window').height <= 667 ? 630 : 800,
-  );
-  const renderFactItem = ({item, index, title, category, colorText, type}) => {
-    return (
-      <>
-        <QuotesContent
-          item={item}
-          isActive={activeSlide === index}
-          totalStory={textChunks?.length}
-          pageActive={index}
-          colorText={colorText}
-          isAnimationStart={isLoveAnimate}
-          themeUser={userProfile?.data}
-          fontSize={fontSize}
-          bgTheme={colorTheme}
-          bg={backgroundColor}
-          fontFamily={fontFamily}
-          partner={partner}
-          source={undefined}
-          titleStory={title}
-          titleCategory={category}
-          show={show}
-          setShow={() => setShow(false)}
-          handleListen={() => handleListening()}
-          type={type}
-          isRippleAnimate={isRippleAnimate}
-        />
-      </>
+  // const textChunks = splitTextIntoArray(
+  //   dataBook?.content_en,
+  //   Dimensions.get('window').height <= 667 ? 630 : 800,
+  // );
+  useEffect(() => {
+    const newChunks = splitTextIntoArray(
+      dataBook?.content_en,
+      Dimensions.get('window').height <= 667 ? 630 : 800,
     );
-  };
+    setTextChunks(newChunks);
+  }, [dataBook, Dimensions.get('window').height]);
+  const renderFactItem = ({item, index, title, category, colorText, type}) => (
+    <>
+      <QuotesContent
+        item={item}
+        isActive={activeSlide === index}
+        totalStory={textChunks?.length}
+        pageActive={index}
+        colorText={colorText}
+        isAnimationStart={isLoveAnimate}
+        themeUser={userProfile?.data}
+        fontSize={fontSize}
+        bgTheme={colorTheme}
+        bg={backgroundColor}
+        fontFamily={fontFamily}
+        partner={partner}
+        source={undefined}
+        titleStory={title}
+        titleCategory={category}
+        show={show}
+        setShow={() => setShow(false)}
+        handleListen={() => handleListening()}
+        type={type}
+        isRippleAnimate={isRippleAnimate}
+      />
+    </>
+  );
 
-  // function renderFlatList() {
-  //   return (
-  //     <PanGestureHandler
-  //       onGestureEvent={handleGesture}
-  //       activeOffsetX={[-40, 40]}>
-  //       <TapGestureHandler onHandlerStateChange={onDoubleTap} numberOfTaps={3}>
-  //         <FlatList
-  //           // ref={flatListRef}
-  //           style={{
-  //             flex: 1,
-  //             backgroundColor: backgroundColor,
-  //           }}
-  //           data={dataBook}
-  //           pagingEnabled
-  //           onMomentumScrollEnd={onMomentoumScrollEnd}
-  //           scrollsToTop={false}
-  //           horizontal
-  //           showsVerticalScrollIndicator={false}
-  //           showsHorizontalScrollIndicator={false}
-  //           // onEndReached={handleEndReach}
-  //           onEndReachedThreshold={0.9}
-  //           renderItem={renderFactItem}
-  //           keyExtractor={(_item, index) => `${index}`}
-  //           initialScrollIndex={0}
-  //           getItemLayout={(_data, index) => ({
-  //             length: sizing.getDimensionWidth(0.5),
-  //             offset: sizing.getDimensionWidth(0.5) * index,
-  //             index,
-  //           })}
-  //           onScrollToIndexFailed={() => {
-  //             console.log('FAILED SCROLL TO INDEX', 5);
-  //           }}
-  //         />
-  //       </TapGestureHandler>
-  //     </PanGestureHandler>
-  //   );
-  // }
-  function renderFlatList(type) {
-    if (textChunks?.length > 0) {
-      return (
-        <PagerView
-          style={{flex: 1}}
-          initialPage={0}
-          ref={pagerRef}
-          transitionStyle="curl"
-          overdrag={false}
-          onPageScroll={e => onScroll(e)}>
-          {textChunks?.map((dtb: any, index: number) => {
-            return (
-              <View
-                style={{
-                  flex: 0,
-                  alignItems: 'center',
-                  backgroundColor: backgroundColor,
-                  paddingTop: wp(20),
-                  paddingHorizontal: wp(20),
-                }}>
-                {renderFactItem({
-                  item: dtb,
-                  index,
-                  title: dataBook.title_en,
-                  category: dataBook?.category?.name,
-                  colorText: colorText,
-                  type: type
-                })}
-              </View>
-            );
-          })}
-        </PagerView>
-      );
-    } else {
-      return null;
-    }
-  }
+  const renderFlatList = (type: any) => (
+    <PagerView
+      style={{flex: 1}}
+      initialPage={0}
+      ref={pagerRef}
+      transitionStyle="curl"
+      overdrag={false}
+      onPageScroll={e => onScroll(e)}>
+      {textChunks?.map((dtb: any, index: number) => {
+        return (
+          <View
+            style={{
+              flex: 0,
+              alignItems: 'center',
+              backgroundColor: backgroundColor,
+              paddingTop: wp(20),
+              paddingHorizontal: wp(20),
+            }}>
+            {renderFactItem({
+              item: dtb,
+              index,
+              title: dataBook.title_en,
+              category: dataBook?.category?.name,
+              colorText: colorText,
+              type: type,
+            })}
+          </View>
+        );
+      })}
+    </PagerView>
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -907,12 +767,47 @@ const MainScreen = ({
     }
     fetchData();
   }, [isFocused]);
+  useEffect(() => {
+    setBook(userStory);
+  }, [isFocused]);
+
+  const renderList = useMemo(
+    type => {
+      {
+        textChunks?.map((dtb: any, index: number) => {
+          return (
+            <View
+              style={{
+                flex: 0,
+                alignItems: 'center',
+                backgroundColor: backgroundColor,
+                paddingTop: wp(20),
+                paddingHorizontal: wp(20),
+              }}>
+              {renderFactItem({
+                item: dtb,
+                index,
+                title: dataBook.title_en,
+                category: dataBook?.category?.name,
+                colorText: colorText,
+                type: type,
+              })}
+            </View>
+          );
+        });
+      }
+    },
+    [textChunks, userStory],
+  );
 
   const handleUnlock = async () => {
     setLoading(true);
     const res = await getStoryList();
     handleNextStory(res.data);
-    const data = await handleNativePayment('unlock_story_1_week_only', res?.data?.id);
+    const data = await handleNativePayment(
+      'unlock_story_1_week_only',
+      res?.data?.id,
+    );
     if (data) {
       setShowModalCongrats(false);
       setShowModalNewStory(false);
@@ -974,12 +869,12 @@ const MainScreen = ({
   );
 
   useEffect(() => {
-    if(activeStep === 5 || stepsTutorial === 5){
+    if (activeStep === 5 || stepsTutorial === 5) {
       setTimeout(() => {
         handleNext();
       }, 5000);
-    } 
-  }, [activeStep, stepsTutorial])
+    }
+  }, [activeStep, stepsTutorial]);
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {
@@ -1146,7 +1041,10 @@ const MainScreen = ({
                     {renderProgress()}
                   </View>
 
-                  <Step5 handleNext={() => handleNext()} handlePrev={handlePrev} />
+                  <Step5
+                    handleNext={() => handleNext()}
+                    handlePrev={handlePrev}
+                  />
                 </ImageBackground>
               </View>
             ) : (
@@ -1204,7 +1102,7 @@ const MainScreen = ({
       // setLoadingAds(false);
     });
   };
-  const handleRead = async() => {
+  const handleRead = async () => {
     pagerRef.current?.setPage(0);
     const response = await addStory(nextStory.id);
     setScreenNumber(0);
@@ -1214,19 +1112,17 @@ const MainScreen = ({
       setShowModal(false);
       setBook(nextStory);
     }, 200);
-   
   };
 
-  const handleReadAds = async() => {
+  const handleReadAds = async () => {
     pagerRef.current?.setPage(0);
     setScreenNumber(0);
+    setBook(nextStory);
     setTimeout(() => {
       handleSetStory(nextStory);
       setShowModalDay(false);
       setShowModal(false);
-      setBook(nextStory);
     }, 200);
-   
   };
 
   const touchEndStory = async e => {
@@ -1234,6 +1130,7 @@ const MainScreen = ({
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 2.5;
     // Jika sentuhan terjadi di sebelah kanan
+    console.log(touchX > screenWidth)
     if (touchX > screenWidth && !showModalCongrats) {
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
@@ -1268,8 +1165,13 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+           console.log('INI DATAAAA' +screenNumber +"===="+ textChunks?.length)
+            // if(screenNumber ===  textChunks?.length){
+              setShowModalCongrats(true);
+            // }
+           
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
-            setShowModalCongrats(true);
+           
           }
         }
       }, 700);
@@ -1452,7 +1354,7 @@ const MainScreen = ({
             readLater={readLater}
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
             handleRead={() => {
-              handleRead();
+              handleReadAds();
             }}
             handleLater={async () => {
               await addStory(nextStory.id);
@@ -1494,7 +1396,7 @@ const MainScreen = ({
               setBook(nextStory);
               addStory(nextStory.id);
               pagerRef.current?.setPage(0);
-              setScreenNumber(0)
+              setScreenNumber(0);
               setShowModalSuccessPurchase(false);
             }}
           />
@@ -1589,6 +1491,10 @@ const MainScreen = ({
           )}
           {renderFlatList('main')}
           {renderTutorial()}
+          <ModalMedia
+            isVisible={showMedia}
+            onClose={() => setShowMedia(false)}
+          />
           <ModalUnlockStory
             isLoading={loadingStory}
             isVisible={showStoryFree}
