@@ -1179,7 +1179,8 @@ const MainScreen = ({
     setRating(false);
     if (isPremiumStory || isPremiumAudio) {
       const res = await getStoryDetail(userStory?.id);
-      setBook(res.data);
+      handleSetStory(res.data);
+      setBook(res.data)
       const response = await getStoryList();
       handleNextStory(response.data);
       let params = {
@@ -1191,6 +1192,9 @@ const MainScreen = ({
       handleStoriesRelate(resp);
       setShowModal(true);
     } else {
+      const res = await getStoryDetail(userStory?.id);
+      handleSetStory(res.data);
+      setBook(res.data)
       setShowModalNewStory(true);
     }
   };

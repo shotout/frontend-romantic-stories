@@ -18,9 +18,10 @@ import {avam1, avam2, avam3, avam4} from '../../../assets/images';
 import Carousel from 'react-native-reanimated-carousel';
 import {opacity, useSharedValue} from 'react-native-reanimated';
 import {getListAvatar} from '../../../shared/request';
-import { BACKEND_URL } from '../../../shared/static';
-import { moderateScale } from 'react-native-size-matters';
-import { fixedFontSize, hp, wp } from '../../../utils/screen';
+import {BACKEND_URL} from '../../../shared/static';
+import {moderateScale} from 'react-native-size-matters';
+import {fixedFontSize, hp, wp} from '../../../utils/screen';
+import FastImage from 'react-native-fast-image';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
@@ -59,7 +60,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
           borderBottomLeftRadius: wp(50),
         }}>
         <Text
-        allowFontScaling={false}
+          allowFontScaling={false}
           style={{
             color: 'white',
             fontSize: fixedFontSize(28),
@@ -79,7 +80,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
             //   (progressValue.value = absoluteProgress)
 
             // }
-            onSnapToItem={(index) => {
+            onSnapToItem={index => {
               setProgress(index);
               handleChange(index);
             }}
@@ -96,7 +97,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
+                {/* <Image
                   // blurRadius={progressValue != index ? 2 : null}
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
@@ -109,6 +110,18 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
                       // backgroundColor: 'rgba( 0, 0, 0, 0.1 )',
                     },
                   ]}
+                /> */}
+                <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
                 />
               </Pressable>
             )}
