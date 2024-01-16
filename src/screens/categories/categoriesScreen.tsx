@@ -44,6 +44,8 @@ import ChecklistSvg from './../../assets/icons/checklist';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import {loadRewardedCategory} from '../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import Loading from '../../components/loading';
+import FastImage from 'react-native-fast-image';
 
 const CategoriesScreen = ({
   colorTheme,
@@ -61,19 +63,24 @@ const CategoriesScreen = ({
     userProfile?.category?.id,
   );
   const [nextCategory, setNextCategory] = useState();
+  const [loading, setLoading] = useState(false);
   const isPremium =
     userProfile?.subscription?.plan?.id === 2 ||
     userProfile?.subscription?.plan?.id === 3;
 
   useEffect(() => {
+    setLoading(true)
     fetchCategory();
   }, []);
+ 
 
   const fetchCategory = async () => {
     try {
       const category = await getListCategory();
       setDataStory(category?.data);
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       // alert(JSON.stringify(error));
     }
   };
@@ -180,9 +187,9 @@ const CategoriesScreen = ({
               padding: 2,
               justifyContent: 'center',
             }}>
-            <Image
-              source={{uri: `${BACKEND_URL}${item.image?.url}`}}
-              resizeMode="cover"
+            <FastImage
+              source={{uri: `${BACKEND_URL}${item.image?.url}`,  priority: FastImage.priority.high,}}
+              resizeMode={FastImage.resizeMode.cover}
               style={{
                 width: moderateScale(Dimensions.get('window').width - 50),
                 height: moderateScale(90),
@@ -306,6 +313,7 @@ const CategoriesScreen = ({
         Icon={() => <UnlockCategoryIcon style={{marginBottom: 20}} />}
         isLoadingAds={loadingAds}
       />
+      <Loading loading={loading} />
     </SafeAreaView>
   );
 };

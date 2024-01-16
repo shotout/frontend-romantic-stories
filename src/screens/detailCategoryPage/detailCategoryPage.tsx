@@ -49,6 +49,8 @@ import * as IAP from 'react-native-iap';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
 import {sizing} from '../../utils/styling';
+import Loading from '../../components/loading';
+import FastImage from 'react-native-fast-image';
 
 const DetailCategoryScreen = ({
   route,
@@ -77,6 +79,7 @@ const DetailCategoryScreen = ({
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
   const [loadingAds, setLoadingAds] = useState(false);
+  const [load, setLoad] = useState(false);
   const uniqueAlphabets = Array.from(
     new Set(data?.data?.map(item => item.title_en[0])),
   );
@@ -137,10 +140,13 @@ const DetailCategoryScreen = ({
         };
         const res = await getCategoryDetail(route?.params?.categoryId, params);
         setData(res);
+        setLoad(false)
       } catch (error) {
         setData(null);
+        setLoad(false)
       }
     }
+    setLoad(true)
     fetchData();
   };
   useEffect(() => {
@@ -302,7 +308,6 @@ const DetailCategoryScreen = ({
         
       }
     };
-
     fetchData();
   }, [selectedStory]); 
 
@@ -447,11 +452,12 @@ const DetailCategoryScreen = ({
                           }}
                         />
                       )}
-                    <Image
+                       <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                        priority: FastImage.priority.high,
                       }}
-                      resizeMode="cover"
+                      resizeMode={FastImage.resizeMode.cover}
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text
@@ -507,18 +513,20 @@ const DetailCategoryScreen = ({
                     borderBottomColor: '#F0F2FF',
                     borderBottomWidth: 1,
                   }}>
-                  <Image
-                    source={{
-                      uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
-                    }}
-                    resizeMode="cover"
-                    style={{
-                      height: 50,
-                      width: 36.5,
-                      borderRadius: 5,
-                      marginVertical: 10,
-                    }}
-                  />
+                     <FastImage
+                      source={{
+                        uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.cover}
+                      style={{
+                        height: 50,
+                        width: 36.5,
+                        borderRadius: 5,
+                        marginVertical: 10,
+                      }}
+                    />
+                  
                   <View style={{marginLeft: 10, justifyContent: 'center'}}>
                     <Text
                       style={{
@@ -598,6 +606,7 @@ const DetailCategoryScreen = ({
           setShowUnlockedStory(false);
         }}
       />
+       <Loading loading={load} />
     </SafeAreaView>
   );
 };

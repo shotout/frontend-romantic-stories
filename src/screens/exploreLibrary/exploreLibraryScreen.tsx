@@ -57,6 +57,9 @@ import * as IAP from 'react-native-iap';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
+import Loading from '../../components/loading';
+import FastImage from 'react-native-fast-image';
+
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const ExploreLibraryScreen = ({
@@ -69,7 +72,7 @@ const ExploreLibraryScreen = ({
   stepsTutorial,
   backgroundColor,
   userProfile,
-  nextStory
+  nextStory,
 }) => {
   const [loading, setLoading] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -86,17 +89,17 @@ const ExploreLibraryScreen = ({
   const [selectStory, setSelectStory] = useState('');
   const [price, setPrice] = useState('');
   const [loadingAds, setLoadingAds] = useState(false);
+  const [load, setLoad] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
-  useState(false);
+    useState(false);
 
   const showWatchAds = async () => {
-    setLoadingAds(true)
+    setLoadingAds(true);
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       setShowModalUnlock(false);
-      setLoadingAds(false)
+      setLoadingAds(false);
       setTimeout(async () => {
-        
         const resp = await getStoryDetail(selectedStory?.id);
         handleNextStory(resp.data);
         setShowUnlockedStory(true);
@@ -143,10 +146,13 @@ const ExploreLibraryScreen = ({
         };
         const res = await getExploreStory(params);
         setData(res);
+        setLoad(false);
       } catch (error) {
         setData(null);
+        setLoad(false);
       }
     }
+    setLoad(true);
     fetchData();
   };
   useEffect(() => {
@@ -230,7 +236,7 @@ const ExploreLibraryScreen = ({
       setShowModalUnlock(false);
       const resp = await getStoryDetail(selectedStory?.id);
       handleNextStory(resp.data);
-      setShowModalSuccessPurchase(true)
+      setShowModalSuccessPurchase(true);
     } else {
       setLoading(false);
       setShowModalUnlock(false);
@@ -301,6 +307,7 @@ const ExploreLibraryScreen = ({
   };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
+    
       <ModalSorting
         isVisible={showModalSort}
         onClose={() => setShowModalSort(false)}
@@ -319,7 +326,7 @@ const ExploreLibraryScreen = ({
         price={price}
         onGetUnlimit={() => handleUnlimited()}
       />
-       <ModalSuccessPurchase
+      <ModalSuccessPurchase
         isVisible={showModalSuccessPurchase}
         onClose={() => {
           setShowModalSuccessPurchase(false);
@@ -418,7 +425,10 @@ const ExploreLibraryScreen = ({
                 {data?.most_read.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (userProfile?.data?.subscription?.plan_id === 1 && itm?.is_collection === null) {
+                      if (
+                        userProfile?.data?.subscription?.plan_id === 1 &&
+                        itm?.is_collection === null
+                      ) {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       } else {
@@ -432,7 +442,8 @@ const ExploreLibraryScreen = ({
                     }}
                     key={idx}>
                     {userProfile?.data?.subscription?.plan_id != 2 &&
-                      userProfile?.data?.subscription?.plan_id != 3 && itm?.is_collection === null && (
+                      userProfile?.data?.subscription?.plan_id != 3 &&
+                      itm?.is_collection === null && (
                         <LockFree
                           height={16}
                           width={55}
@@ -444,11 +455,12 @@ const ExploreLibraryScreen = ({
                           }}
                         />
                       )}
-                    <Image
+                      <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                        priority: FastImage.priority.high,
                       }}
-                      resizeMode="cover"
+                      resizeMode={FastImage.resizeMode.cover}
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text
@@ -530,11 +542,15 @@ const ExploreLibraryScreen = ({
                         }}
                       />
                     )} */}
-                    <Image
-                      source={{uri: `${BACKEND_URL}${itm?.cover?.url}`}}
-                      resizeMode="cover"
+                    <FastImage
+                      source={{
+                        uri: `${BACKEND_URL}${itm.cover?.url}`,
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.cover}
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
+
                     <Text
                       style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
                       {itm.name}
@@ -565,7 +581,10 @@ const ExploreLibraryScreen = ({
                 {data.most_share.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() => {
-                      if (userProfile?.data?.subscription?.plan_id === 1 && itm?.is_collection === null) {
+                      if (
+                        userProfile?.data?.subscription?.plan_id === 1 &&
+                        itm?.is_collection === null
+                      ) {
                         setShowModalUnlock(true);
                         setSelectedStory(itm);
                       } else {
@@ -580,7 +599,8 @@ const ExploreLibraryScreen = ({
                     }}
                     key={idx}>
                     {userProfile?.data?.subscription?.plan_id != 2 &&
-                      userProfile?.data?.subscription?.plan_id != 3 && itm?.is_collection === null && (
+                      userProfile?.data?.subscription?.plan_id != 3 &&
+                      itm?.is_collection === null && (
                         <LockFree
                           height={16}
                           width={55}
@@ -592,11 +612,12 @@ const ExploreLibraryScreen = ({
                           }}
                         />
                       )}
-                    <Image
+                      <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                        priority: FastImage.priority.high,
                       }}
-                      resizeMode="cover"
+                      resizeMode={FastImage.resizeMode.cover}
                       style={{height: 130, width: 95, borderRadius: 6}}
                     />
                     <Text
@@ -647,7 +668,7 @@ const ExploreLibraryScreen = ({
         data={selectedStory}
         handleRead={async () => {
           const resp = await getStoryDetail(selectedStory?.id);
-         
+
           handleSetStory(resp.data);
           const response = await addStory(selectedStory?.id);
           navigate('Main');
@@ -657,6 +678,7 @@ const ExploreLibraryScreen = ({
           setShowUnlockedStory(false);
         }}
       />
+        <Loading loading={load} />
     </SafeAreaView>
   );
 };
