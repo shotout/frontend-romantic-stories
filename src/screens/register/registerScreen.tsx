@@ -37,6 +37,7 @@ import {
   addStory,
   checkDeviceRegister,
   getListAvatar,
+  getListCategory,
   getStoryList,
   postRegister,
   updateProfile,
@@ -69,6 +70,7 @@ function RegisterScreen({
   const isDarkMode = useColorScheme() === 'dark';
   const [dataAva, setDataAva] = useState([]);
   const [dataAva2, setDataAva2] = useState([]);
+  const [dataStory, setDataStory] = useState([]);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -158,7 +160,18 @@ function RegisterScreen({
       // alert(JSON.stringify(error));
     }
   };
+  useEffect(() => {
+    fetchCategory();
+  }, []);
 
+  const fetchCategory = async () => {
+    try {
+      const category = await getListCategory();
+      setDataStory(category?.data);
+    } catch (error) {
+      // alert(JSON.stringify(error));
+    }
+  };
   const onSubmit = async () => {
     await notifee.requestPermission();
     const data = await DeviceInfo.getUniqueId();
@@ -264,6 +277,7 @@ function RegisterScreen({
     } else if (stepRegister === 3) {
       return (
         <Register3
+          dataCategory={dataStory}
           value={values?.category_id}
           setCategoryId={text => {
             handleChange('category_id', text);

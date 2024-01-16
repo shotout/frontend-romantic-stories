@@ -20,15 +20,24 @@ import {BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import {fixedFontSize, hp, wp} from '../../../utils/screen';
 import FastImage from 'react-native-fast-image';
+import Loading from '../../../components/loading';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [dataAva, setDataAva] = useState(dataAvatar ? dataAvatar : [{"id":1,"name":"avatar1","gender":"male","status":2,"created_at":"2023-12-06T07:45:22.000000Z","updated_at":null,"image":{"id":19,"owner_id":1,"type":"avatar","name":"1.png","url":"\/assets\/images\/avatars\/1.png","audio_en":null,"audio_id":null,"created_at":"2023-12-06T14:45:22.000000Z","updated_at":null}},{"id":2,"name":"avatar2","gender":"male","status":2,"created_at":"2023-12-06T07:45:22.000000Z","updated_at":null,"image":{"id":20,"owner_id":2,"type":"avatar","name":"2.png","url":"\/assets\/images\/avatars\/2.png","audio_en":null,"audio_id":null,"created_at":"2023-12-06T14:45:22.000000Z","updated_at":null}},{"id":3,"name":"avatar3","gender":"male","status":2,"created_at":"2023-12-06T07:45:22.000000Z","updated_at":null,"image":{"id":21,"owner_id":3,"type":"avatar","name":"3.png","url":"\/assets\/images\/avatars\/3.png","audio_en":null,"audio_id":null,"created_at":"2023-12-06T14:45:22.000000Z","updated_at":null}}]);
 
   useEffect(() => {
     setProgress(1);
   }, []);
 
+  useEffect(() => {
+  setLoading(true)
+  setTimeout(() => {
+    setLoading(false)
+  }, 300);
+
+  }, [])
   // const fetchCategory = async () => {
   //   try {
   //     const params = {
@@ -58,6 +67,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
           borderBottomRightRadius: wp(50),
           borderBottomLeftRadius: wp(50),
         }}>
+
         <Text
           allowFontScaling={false}
           style={{
@@ -130,7 +140,9 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
             )}
           />
         </View>
+        
       </View>
+      <Loading loading={loading} />
     </>
   );
 }

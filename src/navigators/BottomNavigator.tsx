@@ -160,18 +160,19 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                 onPress={() => handleSomeAction('Main')}
                 style={{
                   position: 'absolute',
-                  top: isBottomBarVisible === 'Settings' ? 10 : wp(130),
+                  top: isBottomBarVisible === 'Settings' ? 10 : isBottomBarVisible === 'Library' ? wp(20) : wp(130),
                   flex: 0,
                   width: '100%',
-                  height: wp(200),
+                  height: isBottomBarVisible === 'Library' ? wp(350) : wp(200),
                   alignItems: 'center',
+                  backgroundColor: isBottomBarVisible === 'Library' || isBottomBarVisible === 'Settings' ?  'rgba(0,0,0,0.5)' : null
                 }}>
                 <TouchableOpacity
                   onPress={() => handleSomeAction('Main')}
                   style={{
                     backgroundColor: '#f1f1f1',
                     position: 'absolute',
-                    top: wp(70),
+                    top: isBottomBarVisible === 'Library' ? wp(120) : wp(70),
                     left: '30%',
                     paddingHorizontal: wp(20),
                     paddingVertical: wp(5),

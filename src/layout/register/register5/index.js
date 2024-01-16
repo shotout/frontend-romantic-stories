@@ -22,30 +22,27 @@ import {BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import {fixedFontSize, hp, wp} from '../../../utils/screen';
 import FastImage from 'react-native-fast-image';
+import Loading from '../../../components/loading';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(dataAvatar);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setProgress(1);
   }, []);
 
-  const fetchCategory = async () => {
-    try {
-      const params = {
-        gender: gender === 'Female' ? 'male' : 'female',
-      };
-      const avatar = await getListAvatar(params);
-      setDataAva(avatar?.data);
-      setProgress(1);
-    } catch (error) {
-      // alert(JSON.stringify(error));
-    }
-  };
+ 
   const handleChange = index => {
     setAvatar(dataAva[index].id);
   };
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 200);
+  
+    }, [dataAvatar])
   return (
     <>
       <View
@@ -128,6 +125,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
           />
         </View>
       </View>
+      <Loading loading={loading} />
     </>
   );
 }

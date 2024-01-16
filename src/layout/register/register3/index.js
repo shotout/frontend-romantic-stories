@@ -20,24 +20,20 @@ import {getListCategory} from '../../../shared/request';
 import {API_URL, BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
-
-export default function Register3({setCategoryId, value}) {
-  const [dataStory, setDataStory] = useState([]);
-
+import Loading from '../../../components/loading';
+import FastImage from 'react-native-fast-image';
+export default function Register3({setCategoryId, value, dataCategory}) {
+  const [dataStory, setDataStory] = useState(dataCategory);
+  const [loading, setLoading] = useState(false);
   const [selectStory, setSelectStory] = useState(value);
-
   useEffect(() => {
-    fetchCategory();
-  }, []);
-
-  const fetchCategory = async () => {
-    try {
-      const category = await getListCategory();
-      setDataStory(category?.data);
-    } catch (error) {
-      // alert(JSON.stringify(error));
-    }
-  };
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 200);
+  
+    }, [dataCategory])
+ 
   return (
     <>
       <FlatList
@@ -60,16 +56,19 @@ export default function Register3({setCategoryId, value}) {
                 borderRadius: wp(10),
                 justifyContent: 'center',
               }}>
-              <Image
-                key={index}
-                source={{uri: `${BACKEND_URL}${item.image?.url}`}}
-                resizeMode="cover"
-                style={{
-                  width: wp(320),
-                  height: hp(80),
-                  borderRadius: wp(10),
-                }}
-              />
+                <FastImage
+                 key={index}
+                  source={{
+                    uri: `${BACKEND_URL}${item.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={{
+                    width: wp(320),
+                    height: hp(80),
+                    borderRadius: wp(10),
+                  }}
+                />
               <Text
                 allowFontScaling={false}
                 style={{

@@ -86,11 +86,7 @@ const NotificationScreen = ({
   };
 
   useEffect(() => {
-    if(newStories || promotions){
       fetchUpdate()
-    }
-   
-
   }, [newStories, promotions])
 
   return (

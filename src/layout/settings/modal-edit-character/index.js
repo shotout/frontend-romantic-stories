@@ -17,7 +17,13 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 
-function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
+function ModalEditCharacter({
+  isVisible,
+  onClose,
+  colorTheme,
+  userProfile,
+  backgroundColor,
+}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(null);
   const [avatar, setAvatar] = useState(null);
@@ -27,11 +33,10 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
   //   setProgress(
   //     userProfile.gender === 'Male'
   //       ? userProfile.avatar_male - 1
-  //       : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4, 
+  //       : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4,
   //   );
 
   // }, [userProfile.gender]);
-  
 
   useEffect(() => {
     fetchAva();
@@ -41,7 +46,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
     try {
       setLoading(true);
       const payload = {
-         avatar_male: avatar,
+        avatar_male: avatar,
         _method: 'PATCH',
       };
       await updateProfile(payload);
@@ -55,7 +60,13 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
   };
 
   const fetchAva = async value => {
-    console.log(userProfile.gender + '===='+userProfile.avatar_male+"====="+userProfile.avatar_female)
+    console.log(
+      userProfile.gender +
+        '====' +
+        userProfile.avatar_male +
+        '=====' +
+        userProfile.avatar_female,
+    );
     // alert(userProfile.gender === 'Male'
     // ? userProfile.avatar_male - 1
     // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female )
@@ -65,12 +76,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
-      
-        setProgress(
-         
-             userProfile.avatar_male - 1
-           
-        );
+        setProgress(userProfile.avatar_male - 1);
       } else {
         const params = {
           gender: userProfile.gender === 'Male' ? 'male' : 'female',
@@ -78,10 +84,10 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
         setProgress(
-         
-          userProfile.avatar_male - 1
-        
-     );
+          userProfile.gender != "Male"
+            ? userProfile.avatar_male - 4
+            : (userProfile.avatar_male > 2 ? userProfile.avatar_male - 4 : userProfile.avatar_male - 1),
+        );
       }
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -122,7 +128,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20}  />
+            <BackLeft width={20} height={20} />
           </View>
         </Pressable>
         <Text
@@ -171,7 +177,6 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile, backgr
       </Text>
       {dataAva && (
         <View style={{flex: 0, alignItems: 'center'}}>
-        
           <Carousel
             loop={false}
             width={Dimensions.get('window').width / 1.2}

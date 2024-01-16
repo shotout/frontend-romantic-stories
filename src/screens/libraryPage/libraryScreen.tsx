@@ -731,7 +731,7 @@ const LibraryScreen = ({
               style={{
                 color: code_color.white,
               }}>
-              {detailCollection?.stories_count} Stories
+              {detailCollection?.stories_count}  {detailCollection?.stories_count > 1 ? 'Stories' : 'Story'}
             </Text>
           </View>
         </Pressable>

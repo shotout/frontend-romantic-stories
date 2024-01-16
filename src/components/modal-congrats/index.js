@@ -187,19 +187,25 @@ function ModalCongrats({
                   ? 350
                   : getAvatarMale === '/assets/images/avatars/3.png' ||
                     getAvatarMale === '/assets/images/avatars/4.png'
-                  ? 350
+                  ? 350 :
+                  getAvatarMale === '/assets/images/avatars/1.png' ?
+                  280 
                   : 250,
               alignItems: 'center',
               justifyContent: 'center',
               position: 'absolute',
-              // top: 3,
+              top: getAvatarMale === '/assets/images/avatars/1.png' ? 5 : getAvatarMale === '/assets/images/avatars/6.png'? 5: getAvatarMale === '/assets/images/avatars/4.png' ? 5 : 0,
               right:
                 getAvatarMale === '/assets/images/avatars/5.png'
-                  ? -13
+                  ? -15 :
+                  getAvatarMale === '/assets/images/avatars/3.png' ?
+                  -3 
                   : getAvatarMale === '/assets/images/avatars/1.png'
-                  ? 0
+                  ? 2
                   : getAvatarMale === '/assets/images/avatars/2.png'
-                  ? -5
+                  ? -5 :
+                  getAvatarMale === '/assets/images/avatars/6.png' ?
+                  -4
                   : 0,
             }}
           />
