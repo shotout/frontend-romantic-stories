@@ -297,12 +297,14 @@ const styles = StyleSheet.create({
     width: moderateScale(100),
     justifyContent: 'center',
     alignItems: 'center',
+    left: -3,
   },
   levelText: {
     marginTop: 0,
     color: '#333',
     textAlign: 'center',
     marginRight: 30,
+    left: Dimensions.get('screen').width > 380 ? -wp(20) : -wp(30),
   },
   point: {
     width: wp(28),

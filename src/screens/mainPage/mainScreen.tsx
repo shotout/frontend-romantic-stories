@@ -183,7 +183,12 @@ const MainScreen = ({
         const value = await AsyncStorage.getItem('setToday');
         const stringifyDateNow = new Date();
         let strTanggalSekarang = stringifyDateNow.getDate().toString();
-        if (value !== null) {
+        AsyncStorage.setItem('setToday', strTanggalSekarang);
+
+        if (userProfile?.data?.subscription?.plan?.id != 1) {
+          await getDataStory();
+          setShowModalDay(true); // ini yang ada read laternya
+        } else if (value !== null) {
           // jika sudah ganti tanggal
           if (value != strTanggalSekarang) {
             // jika modal coundown open
@@ -191,7 +196,8 @@ const MainScreen = ({
               setShowModalNewStory(false);
             }
             await getDataStory();
-            setShowModal(true); // ga ada read later
+            // setShowModal(true); // ga ada read later
+            setShowModalDay(true); // ini yang ada read laternya
           } else {
             // jika modal coundown close
             if (!showModalNewStory) {
@@ -314,16 +320,16 @@ const MainScreen = ({
     let strTanggalSekarang = stringifyDateNow.getDate().toString();
     if (value != null) {
       if (value != strTanggalSekarang) {
-        AsyncStorage.setItem('setToday', strTanggalSekarang);
-        try {
-          if (userProfile?.data?.subscription?.plan?.id != 1) {
-            const res = await getStoryList();
-            handleNextStory(res.data);
-            setShowModalDay(true);
-          } else {
-            setShowModalNewStory(true);
-          }
-        } catch (error) {}
+        if (!route?.params?.isFromNotif) {
+          AsyncStorage.setItem('setToday', strTanggalSekarang);
+        }
+        if (userProfile?.data?.subscription?.plan?.id != 1) {
+          const res = await getStoryList();
+          handleNextStory(res.data);
+          setShowModalDay(true);
+        } else {
+          setShowModalNewStory(true);
+        }
       }
     } else if (value === null) {
       AsyncStorage.setItem('setToday', strTanggalSekarang);

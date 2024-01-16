@@ -125,6 +125,7 @@ const LibraryScreen = ({
   const [listLibraryDetail, setListLibraryDetail] = useState([]);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [indexSweepLeft, setIndexSweepLeft] = useState(null);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
@@ -142,20 +143,20 @@ const LibraryScreen = ({
   const startBounceAnimation = () => {
     Animated.sequence([
       Animated.timing(translateX, {
-        toValue: 100, // Turun ke bawah sejauh 100
+        toValue: -180, // Geser ke kiri
         duration: 500,
         useNativeDriver: true,
       }),
-      Animated.timing(translateX, {
-        toValue: -100, // Naik ke atas sejauh 100
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.timing(translateX, {
-        toValue: 0, // Turun kembali ke posisi semula
-        duration: 500,
-        useNativeDriver: true,
-      }),
+      // Animated.timing(translateX, {
+      //   toValue: -100, // Naik ke atas sejauh 100
+      //   duration: 500,
+      //   useNativeDriver: true,
+      // }),
+      // Animated.timing(translateX, {
+      //   toValue: 0, // Turun kembali ke posisi semula
+      //   duration: 500,
+      //   useNativeDriver: true,
+      // }),
     ]).start();
   };
 
@@ -350,9 +351,13 @@ const LibraryScreen = ({
       return (
         <View>
           <Animated.View
-            style={{
-              transform: [{translateX: translateX}],
-            }}>
+            style={
+              indexSweepLeft === item?.item?.id
+                ? {
+                    transform: [{translateX: translateX}],
+                  }
+                : undefined
+            }>
             <View
               style={{
                 paddingHorizontal: 10,
@@ -435,7 +440,12 @@ const LibraryScreen = ({
               </View>
               <TouchableOpacity
                 style={{marginHorizontal: 5}}
-                onPress={() => startBounceAnimation()}>
+                onPress={async () => {
+                  setIndexSweepLeft(item?.item?.id);
+                  setTimeout(() => {
+                    startBounceAnimation();
+                  }, 100);
+                }}>
                 <DotSvg />
               </TouchableOpacity>
             </View>

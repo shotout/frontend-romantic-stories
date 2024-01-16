@@ -17,6 +17,7 @@ import {
   Dimensions,
   Pressable,
   Linking,
+  Clipboard,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
 import BgSettings from '../../assets/icons/bgSetting';
@@ -51,6 +52,7 @@ import {Image} from 'react-native';
 import ProgressBar from '../../components/progress';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
 import DeviceInfo from 'react-native-device-info';
+import messaging from '@react-native-firebase/messaging';
 
 const SettingsPage = ({
   colorTheme,
@@ -250,6 +252,19 @@ const SettingsPage = ({
 
   const listMenu = () => (
     <View>
+      {/* <TouchableOpacity
+        style={{
+          height: 50,
+          width: Dimensions.get('window').width,
+          backgroundColor: 'red',
+        }}
+        onPress={async () => {
+          const fcmToken = await messaging().getToken();
+          Clipboard.setString(fcmToken);
+          console.log(fcmToken);
+        }}>
+        <Text>fcm token</Text>
+      </TouchableOpacity> */}
       {menu.map((item, i) => (
         <TouchableOpacity
           key={i}

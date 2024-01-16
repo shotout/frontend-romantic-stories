@@ -145,10 +145,10 @@ function ModalCongrats({
             padding: wp(10),
             position: 'absolute',
             top: -15,
-            left: '25%',
-            right: 0,
-            width: wp(200),
+            left: sizing.getDimensionWidth(0.45) - wp(100),
+            justifyContent: 'center',
             alignItems: 'center',
+            width: wp(200),
             borderRadius: wp(15),
           }}>
           <Text
@@ -562,8 +562,8 @@ function ModalCongrats({
                       source={imgStar}
                       resizeMode="contain"
                       style={{
-                        width: wp(30),
-                        height: hp(30),
+                        width: wp(26),
+                        height: hp(26),
                       }}
                     />
                     <ScrollView
@@ -574,6 +574,7 @@ function ModalCongrats({
                         overflow: 'hidden',
                         height: hp(36),
                         left: -4,
+                        bottom: -2,
                         width: 'auto',
                       }}>
                       {Array.from(
@@ -584,11 +585,13 @@ function ModalCongrats({
                           key={itm}
                           style={{
                             fontWeight: 'bold',
-                            fontSize: fixedFontSize(26),
+                            fontSize:
+                              itm > 999 ? fixedFontSize(26) : fixedFontSize(30),
                             height: hp(36),
                             textAlignVertical: 'center',
                             textAlign: 'center',
                             width: 'auto',
+                            bottom: itm > 999 ? -3 : 0,
                           }}>
                           {itm}
                         </Text>
@@ -598,8 +601,16 @@ function ModalCongrats({
                       style={{
                         flex: 1,
                         fontWeight: 'bold',
-                        fontSize: fixedFontSize(20),
-                        left: -10,
+                        fontSize: fixedFontSize(18),
+                        left:
+                          newXp > 999
+                            ? -14
+                            : newXp > 99
+                            ? -16
+                            : newXp > 9
+                            ? -20
+                            : -26,
+                        bottom: newXp > 999 ? -5 : -5,
                       }}>
                       XP
                     </Text>
@@ -657,7 +668,10 @@ function ModalCongrats({
                 </View>
 
                 <View style={{height: 150}}>
-                  <ProgressBar levelingUser={levelingUser} bgTheme={colorTheme} />
+                  <ProgressBar
+                    levelingUser={levelingUser}
+                    bgTheme={colorTheme}
+                  />
                 </View>
                 <ScrollView style={{flex: 0, paddingBottom: 300}}>
                   <Text

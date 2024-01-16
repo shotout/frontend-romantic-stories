@@ -304,7 +304,7 @@ function MyTabs(props) {
   const [visible, setVisible] = useState(false);
 
   const handleSomeAction = value => {
-    setVisible(true)
+    setVisible(true);
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value); // Memunculkan bottom bar
   };
@@ -314,32 +314,28 @@ function MyTabs(props) {
       // Animasi lompatan ke kiri
       Animated.timing(positionX, {
         toValue: -50,
-        duration: 1000,
+        duration: 900,
         easing: Easing.linear,
         useNativeDriver: false,
       }),
       // Animasi jatuh ke bawah
       Animated.timing(positionY, {
         toValue: 400, // Ganti nilai ini sesuai kebutuhan tinggi jatuh
-        duration: 1800,
+        duration: 900,
         easing: Easing.linear,
         useNativeDriver: false,
       }),
     ]);
 
-    setTimeout(() => {
-      setTitle('saved');
-      setTitleBottom('SAVED');
-    }, 1300);
-    // Mulai animasi
-    setTimeout(() => {
-      jumpAndFallAnimation.start(() => {
-        setTimeout(() => {
-          positionX.setValue(0);
-          positionY.setValue(0);
-        }, 1000);
-      });
-    }, 500);
+    setTitle('saved');
+    setTitleBottom('SAVED');
+
+    jumpAndFallAnimation.start(() => {
+      setTimeout(() => {
+        positionX.setValue(0);
+        positionY.setValue(0);
+      }, 1000);
+    });
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
@@ -354,10 +350,10 @@ function MyTabs(props) {
       setVisibleModal(true);
       setTimeout(() => {
         handleFetchSaveAnim();
-      }, 300);
+      }, 500);
       setTimeout(() => {
         setVisibleModal(false);
-      }, 2500);
+      }, 1600);
     } else {
       const data = await deleteMyStory(props.userStory?.id);
       setTitle('save');
