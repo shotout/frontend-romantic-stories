@@ -58,7 +58,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: backgroundColor,
+            backgroundColor: 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -66,13 +66,13 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={20} height={20}  />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: backgroundColor,
+            color: 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -111,10 +111,11 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
       <TouchableOpacity onPress={() => setGender(null)}>
         <Text
           style={{
-            color: backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
+            color: backgroundColor != '#2C3439' && gender === null ?  '#5873FF' : backgroundColor != '#2C3439' && gender != null ?  code_color.blackDark :  backgroundColor === '#2C3439' && gender != null ?  'white' :  backgroundColor === '#2C3439' && gender === null ?  '#5873FF' : code_color.blackDark,
             fontWeight: '400',
             fontSize: moderateScale(17),
             textAlign: 'center',
+            textDecorationLine: gender === null ? 'underline' : null,
             marginVertical: 20,
           }}>
           Prefer not to say
