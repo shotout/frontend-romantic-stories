@@ -394,7 +394,7 @@ const content_en = [
               style={{
                 width: wp(100),
                 height: hp(300),
-                opacity: 0.6,
+                opacity: 0.3,
               }}
             />
             <FastImage
@@ -406,7 +406,7 @@ const content_en = [
               style={{
                 width: wp(100),
                 height: hp(300),
-                opacity: 0.6,
+                opacity: 0.3,
               }}
             />
           </View>
