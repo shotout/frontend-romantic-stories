@@ -16,6 +16,7 @@ import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 function ModalEditCharacter({
   isVisible,
@@ -46,7 +47,7 @@ function ModalEditCharacter({
     try {
       setLoading(true);
       const payload = {
-        avatar_male: avatar,
+        avatar_male: avatar === null ? progressValue : avatar,
         _method: 'PATCH',
       };
       await updateProfile(payload);
@@ -199,7 +200,19 @@ function ModalEditCharacter({
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
+                   <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
+                />
+                {/* <Image
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -209,7 +222,7 @@ function ModalEditCharacter({
                       opacity: progressValue !== index ? 0.5 : 1,
                     },
                   ]}
-                />
+                /> */}
               </Pressable>
             )}
           />

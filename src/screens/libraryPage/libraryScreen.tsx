@@ -89,7 +89,7 @@ import {Animated} from 'react-native';
 import {TouchableOpacityBase} from 'react-native';
 import {hp, wp} from '../../utils/screen';
 import AnimatedLottieView from 'lottie-react-native';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 const LibraryScreen = ({
   colorTheme,
@@ -101,7 +101,7 @@ const LibraryScreen = ({
   userProfile,
   handleNextStory,
   nextStory,
-  userStory
+  userStory,
 }) => {
   // alert(JSON.stringify(userStory))
   const translateX = useRef(new Animated.Value(0)).current;
@@ -130,7 +130,7 @@ const LibraryScreen = ({
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
     useState(false);
-    const [showModalSuccessPurchaseNative, setShowModalSuccessPurchaseNative] =
+  const [showModalSuccessPurchaseNative, setShowModalSuccessPurchaseNative] =
     useState(false);
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -178,7 +178,7 @@ const LibraryScreen = ({
       }, 500);
     });
   };
- 
+
   const fecthProduct = async () => {
     const products = await IAP.getProducts({
       skus: ['unlock_story_1_week_only'],
@@ -194,7 +194,12 @@ const LibraryScreen = ({
 
   const handleRead = async item => {
     setSelectedStory(item?.item);
-    if (userProfile?.data?.subscription?.plan?.id != 1 || userStory?.id != item?.item?.id && item?.item?.expire != null  && new Date < new Date(item?.item?.expire)) {
+    if (
+      userProfile?.data?.subscription?.plan?.id != 1 ||
+      (userStory?.id != item?.item?.id &&
+        item?.item?.expire != null &&
+        new Date() < new Date(item?.item?.expire))
+    ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -207,7 +212,11 @@ const LibraryScreen = ({
 
   const handleReadDetail = async item => {
     setSelectedStory(item);
-    if (userProfile?.data?.subscription?.plan?.id != 1 ||  userStory?.id === item?.item?.id || new Date > new Date(item?.item?.expire)) {
+    if (
+      userProfile?.data?.subscription?.plan?.id != 1 ||
+      userStory?.id === item?.item?.id ||
+      new Date() > new Date(item?.item?.expire)
+    ) {
       const resp = await getStoryDetail(item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -276,10 +285,12 @@ const LibraryScreen = ({
                     paddingTop: 5,
                   }}
                   resizeMode="contain">
-                  {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 || userStory?.id != item?.item?.id || new Date > new Date(item?.item?.expire)   &&(
+                  {(userProfile?.data?.subscription?.plan?.id != 2 &&
+                    userProfile?.data?.subscription?.plan?.id != 3) ||
+                    userStory?.id != item?.item?.id ||
+                    (new Date() > new Date(item?.item?.expire) && (
                       <LockFree height={16} width={55} />
-                    )}
+                    ))}
                 </ImageBackground>
                 <View
                   style={{
@@ -383,7 +394,10 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id && item?.item?.expire === null  && new Date > new Date(item?.item?.expire)  &&(
+                  userProfile?.data?.subscription?.plan?.id != 3 &&
+                  userStory?.id != item?.item?.id &&
+                  item?.item?.expire === null &&
+                  new Date() > new Date(item?.item?.expire) && (
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>
@@ -488,7 +502,10 @@ const LibraryScreen = ({
                   }}
                   resizeMode="contain">
                   {userProfile?.data?.subscription?.plan?.id != 2 &&
-                     userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id && item?.item?.expire === null  && new Date > new Date(item?.item?.expire)  &&(
+                    userProfile?.data?.subscription?.plan?.id != 3 &&
+                    userStory?.id != item?.item?.id &&
+                    item?.item?.expire === null &&
+                    new Date() > new Date(item?.item?.expire) && (
                       <LockFree height={16} width={55} />
                     )}
                 </ImageBackground>
@@ -590,7 +607,10 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                   userProfile?.data?.subscription?.plan?.id != 3 && userStory?.id != item?.item?.id && item?.item?.expire === null  && new Date > new Date(item?.item?.expire)  &&(
+                  userProfile?.data?.subscription?.plan?.id != 3 &&
+                  userStory?.id != item?.item?.id &&
+                  item?.item?.expire === null &&
+                  new Date() > new Date(item?.item?.expire) && (
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>
@@ -741,29 +761,13 @@ const LibraryScreen = ({
               style={{
                 color: code_color.white,
               }}>
-              {detailCollection?.stories_count}  {detailCollection?.stories_count > 1 ? 'Stories' : 'Story'}
+              {detailCollection?.stories_count}{' '}
+              {detailCollection?.stories_count > 1 ? 'Stories' : 'Story'}
             </Text>
           </View>
         </Pressable>
       </View>
     );
-  };
-  const closeRow = (rowMap, rowKey) => {
-    // if (rowMap[rowKey]) {
-    //     rowMap[rowKey].closeRow();
-    // }
-    setShowModal(true);
-  };
-
-  const deleteRow = (rowMap, rowKey) => {
-    // closeRow(rowMap, rowKey);
-    // const [section] = rowKey.split('.');
-    // const newData = [...listData];
-    // const prevIndex = listData[section].data.findIndex(
-    //     item => item.key === rowKey
-    // );
-    // newData[section].data.splice(prevIndex, 1);
-    // setListData(newData);
   };
 
   const deleteRowCollection = async rowMap => {
@@ -818,7 +822,7 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
-      console.log('DATA INI'+JSON.stringify(res))
+      console.log('DATA INI' + JSON.stringify(res));
       setListCollection(res.data);
       setListLibrary(res.outsides);
     } catch (error) {
@@ -1060,12 +1064,12 @@ const LibraryScreen = ({
       selectedStory?.id,
     );
     if (data) {
-    setLoading(false);
-    setShowModalUnlock(false);
-    setShowModalNewStory(false);
-    const resp = await getStoryDetail(selectedStory?.id);
-    handleNextStory(resp.data);
-    setShowModalSuccessPurchaseNative(true);
+      setLoading(false);
+      setShowModalUnlock(false);
+      setShowModalNewStory(false);
+      const resp = await getStoryDetail(selectedStory?.id);
+      handleNextStory(resp.data);
+      setShowModalSuccessPurchaseNative(true);
     } else {
       setLoading(false);
       setShowModalUnlock(false);
@@ -1279,10 +1283,7 @@ const LibraryScreen = ({
                   <View style={styles.rowBack}>
                     {detail != null ? null : (
                       <TouchableOpacity
-                        style={[
-                          styles.backLeftCollectBtn,
-                          styles.backLeftBtnCollect,
-                        ]}
+                        style={[styles.backRightBtn, styles.backRightBtnLeft]}
                         onPress={() => {
                           setId(_data?.item?.id);
                           setShowModal(true);
@@ -1290,6 +1291,7 @@ const LibraryScreen = ({
                         <LibraryAddSvg />
                       </TouchableOpacity>
                     )}
+
                     <TouchableOpacity
                       style={[styles.backRightBtn, styles.backRightCenter]}
                       onPress={() => {
@@ -1319,7 +1321,7 @@ const LibraryScreen = ({
                     </TouchableOpacity>
                   </View>
                 )}
-                rightOpenValue={-180}
+                rightOpenValue={detail != null ? -120 : -180}
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
@@ -1404,7 +1406,6 @@ const LibraryScreen = ({
             shadowRadius: 4,
             elevation: 8,
           }}>
-          
           <TouchableOpacity
             onPress={() => handleSomeAction('ExploreLibrary')}
             style={{
@@ -1429,18 +1430,19 @@ const LibraryScreen = ({
               Explore more Stories
             </Text>
           </TouchableOpacity>
-          {stepsTutorial === 3 ? 
-          <View style={{position: 'absolute', bottom: -30}}>
-            <AnimatedLottieView
-              source={rippleAnimate}
-              style={{
-                width: wp(150),
-              }}
-              autoPlay
-              duration={3000}
-              loop={true}
-            />
-          </View> : null}
+          {stepsTutorial === 3 ? (
+            <View style={{position: 'absolute', bottom: -30}}>
+              <AnimatedLottieView
+                source={rippleAnimate}
+                style={{
+                  width: wp(150),
+                }}
+                autoPlay
+                duration={3000}
+                loop={true}
+              />
+            </View>
+          ) : null}
         </View>
       </View>
       {renderTutorial()}
@@ -1455,7 +1457,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 15,
+    // paddingLeft: 15,
   },
   backLeftCollectBtn: {
     alignItems: 'center',

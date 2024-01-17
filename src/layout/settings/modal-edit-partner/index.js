@@ -16,6 +16,7 @@ import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [progressValue, setProgress] = useState(0);
@@ -40,7 +41,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
       setLoading(true);
       const payload = {
         _method: 'PATCH',
-        avatar_female: avatar,
+        avatar_female: avatar === null ? progressValue : avatar,
       };
       await updateProfile(payload);
       reloadUserProfile();
@@ -77,7 +78,12 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
-        setProgress(0)
+        // setProgress(0)
+        setProgress(
+          userProfile.gender != "Male"
+            ? userProfile.avatar_male - 4
+            : (userProfile.avatar_male > 2 ? userProfile.avatar_male - 4 : userProfile.avatar_male - 1),
+        );
         // alert(avatar?.data.length, userProfile.avatar_female)
         //  setProgress(
         //   userProfile.gender === 'Female'
@@ -204,7 +210,19 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
+                   <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
+                />
+                {/* <Image
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -214,7 +232,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
                       opacity: progressValue !== index ? 0.5 : 1,
                     },
                   ]}
-                />
+                /> */}
               </Pressable>
             )}
           />

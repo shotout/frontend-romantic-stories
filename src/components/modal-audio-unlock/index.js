@@ -29,7 +29,7 @@ import {addNewCollection, updateMyCollection} from '../../shared/request';
 import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
 import BookLockIcon from '../../assets/icons/bookLock';
-import { handlePayment } from '../../helpers/paywall';
+import {handlePayment} from '../../helpers/paywall';
 import CloseSvg from '../../assets/icons/close';
 import * as IAP from 'react-native-iap';
 function ModalAudioStory({
@@ -42,7 +42,7 @@ function ModalAudioStory({
   onGetAudio1,
   userProfile,
   isLoading,
-  isLoading2
+  isLoading2,
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const [price, setPrice] = useState('');
@@ -51,7 +51,7 @@ function ModalAudioStory({
     onClose();
   };
   useEffect(() => {
-    async function getPrice(){
+    async function getPrice() {
       const products = await IAP.getProducts({
         skus: ['unlock_10_audio_stories'],
       });
@@ -318,170 +318,185 @@ function ModalAudioStory({
       transparent
       onDismiss={handleClose}>
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
-      
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}>
           <View
             style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
+              backgroundColor: code_color.white,
+              width: '90%',
+              borderRadius: moderateScale(24),
             }}>
-              
-            <View
+            <Pressable
+              onPress={() => handleClose()}
+              style={{alignItems: 'flex-end', marginRight: 20, marginTop: 20}}>
+              <CloseSvg width={15} height={15} fill={code_color.black} />
+            </Pressable>
+            <Image
+              source={imgAudio}
               style={{
-                backgroundColor: code_color.white,
-                width: '90%',
-                borderRadius: moderateScale(24),
+                height: 100,
+                marginTop: 15,
+                aspectRatio: '1',
+                alignSelf: 'center',
+              }}
+            />
+            <Text
+              allowFontScaling={false}
+              style={{
+                fontSize: moderateScale(18),
+                color: '#5873FF',
+                fontWeight: 700,
+                textAlign: 'center',
+                marginTop: moderateScale(10),
+                marginBottom: moderateScale(10),
               }}>
-                <Pressable
-                onPress={() => handleClose()}
-                style={{alignItems: 'flex-end', marginRight: 20, marginTop: 20}}>
-                <CloseSvg width={15} height={15} fill={code_color.black} />
-              </Pressable>
-              <Image
-                source={imgAudio}
-                style={{
-                  height: 100,
-                  marginTop: 15,
-                  aspectRatio: '1',
-                  alignSelf: 'center',
-                }}
-              />
-              <Text
-                allowFontScaling={false}
-                style={{
-                  fontSize: moderateScale(18),
-                  color: '#5873FF',
-                  fontWeight: 700,
-                  textAlign: 'center',
-                  marginTop: moderateScale(10),
-                  marginBottom: moderateScale(10),
-                }}>
-                {'Don’t feel like reading?'}
-              </Text>
-              <Text
-                allowFontScaling={false}
-                style={{
-                  fontSize: moderateScale(14),
-                  color: code_color.blackDark,
-                  textAlign: 'center',
-                  marginBottom: moderateScale(20),
-                }}>
-                {'Lean back and listen to this Story as Audio Book.'}
-              </Text>
-              {Platform.OS === 'android' ? null :
+              {'Don’t feel like reading?'}
+            </Text>
+            <Text
+              allowFontScaling={false}
+              style={{
+                fontSize: moderateScale(14),
+                color: code_color.blackDark,
+                textAlign: 'center',
+                marginBottom: moderateScale(20),
+              }}>
+              {'Lean back and listen to this Story as Audio Book.'}
+            </Text>
+            {Platform.OS === 'android' ? null : (
               <Pressable
                 disabled={isLoading}
-                  onPress={() => onGetAudio1()}
-                  style={{
-                    backgroundColor: code_color.red,
-                    marginHorizontal: moderateScale(10),
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                    marginBottom: moderateScale(15),
-                  }}>
-                 
-                  {isLoading ? <ActivityIndicator color={code_color.blueDark} /> :
+                onPress={() => onGetAudio1()}
+                style={{
+                  backgroundColor: code_color.red,
+                  marginHorizontal: moderateScale(10),
+                  paddingVertical: moderateScale(14),
+                  borderRadius: moderateScale(6),
+                  marginBottom: moderateScale(15),
+                }}>
+                {isLoading ? (
+                  <ActivityIndicator color={code_color.blueDark} />
+                ) : (
                   <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {`Get 10 Audio Stories for ${price2}`}
-                  </Text> }
-                </Pressable> }
-                {Platform.OS === 'android' ? null :
-              <Pressable
-               disabled={isLoading2}
-                  onPress={() => onGetAudio()}
-                  style={{
-                    backgroundColor: code_color.green,
-                    // width: '90%',
-                    marginHorizontal: moderateScale(10),
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                  }}>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      marginHorizontal: 'auto',
-                      backgroundColor: '#FFD12F',
-                      alignSelf: 'center',
-                      paddingVertical: moderateScale(0),
-                      paddingHorizontal: moderateScale(24),
-                      borderRadius: moderateScale(10),
-                      zIndex: 1,
-                      top: -moderateScale(8),
-                    }}>
-                    <Text style={{color: code_color.black, fontWeight: 600}}>
-                      MOST SELECTED
-                    </Text>
-                  </View>
-                  {isLoading2 ? <ActivityIndicator color={code_color.blueDark} /> :
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {`Get 50 Audio Stories for ${price}`}
-                  </Text> }
-                </Pressable> }
-              {Platform.OS === 'android' ? null : <View
-                  style={{
-                    flexDirection: 'row',
-                   marginHorizontal: moderateScale(10),
-                    alignItems: 'center',
-                    marginVertical: moderateScale(30),
-                    opacity: 0.2,
-                  }}>
-                  <View
-                    style={{
-                      backgroundColor: code_color.black,
-                      flex: 1,
-                      height: 1,
-                    }}
-                  />
-                  <Text style={{marginHorizontal: moderateScale(8)}}>OR</Text>
-                  <View
-                    style={{
-                      backgroundColor: code_color.black,
-                      flex: 1,
-                      height: 1,
-                    }}
-                  />
-                </View> }
-              <Pressable
-                  onPress={() => {
-                    onClose()
-                    handlePayment(userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'in_app' : 'upgrade_to_unlimited_audio_story'  )}
-                  }
-                  style={{
-                    backgroundColor: '#ADC3D2',
-                    // width: '90%',
-                    marginHorizontal: moderateScale(10),
-                    marginBottom: moderateScale(10),
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                  }}>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      marginHorizontal: 'auto',
-                      backgroundColor: '#FFD12F',
-                      alignSelf: 'center',
-                      paddingVertical: moderateScale(0),
-                      paddingHorizontal: moderateScale(24),
-                      borderRadius: moderateScale(10),
-                      zIndex: 1,
-                      top: -moderateScale(8),
-                    }}>
-                    <Text style={{color: code_color.black, fontWeight: 600}}>
-                      {userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'UNLOCK EVERYTHING' : 'UPGRADE YOUR PACKAGE'}
-                    </Text>
-                  </View>
-                  <BookLockIcon
-                    style={{position: 'absolute', top: '70%', left: '5%'}}
-                  />
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
-                  {userProfile?.data?.subscription?.plan?.id === 1 || userProfile?.data?.subscription?.plan?.id === 2  ? 'Get EroTales UNLIMITED' : 'Get EroTales UNLIMITED + Audio'}
-                  
+                    {`Get 10 Audio Stories for ${price2}`}
                   </Text>
-                </Pressable>
-            </View>
-            
+                )}
+              </Pressable>
+            )}
+            {Platform.OS === 'android' ? null : (
+              <Pressable
+                disabled={isLoading2}
+                onPress={() => onGetAudio()}
+                style={{
+                  backgroundColor: code_color.green,
+                  // width: '90%',
+                  marginHorizontal: moderateScale(10),
+                  paddingVertical: moderateScale(14),
+                  borderRadius: moderateScale(6),
+                }}>
+                <View
+                  style={{
+                    position: 'absolute',
+                    marginHorizontal: 'auto',
+                    backgroundColor: '#FFD12F',
+                    alignSelf: 'center',
+                    paddingVertical: moderateScale(0),
+                    paddingHorizontal: moderateScale(24),
+                    borderRadius: moderateScale(10),
+                    zIndex: 1,
+                    top: -moderateScale(8),
+                  }}>
+                  <Text style={{color: code_color.black, fontWeight: 600}}>
+                    MOST SELECTED
+                  </Text>
+                </View>
+                {isLoading2 ? (
+                  <ActivityIndicator color={code_color.blueDark} />
+                ) : (
+                  <Text style={{color: code_color.white, textAlign: 'center'}}>
+                    {`Get 50 Audio Stories for ${price}`}
+                  </Text>
+                )}
+              </Pressable>
+            )}
+            {Platform.OS === 'android' ? null : (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginHorizontal: moderateScale(10),
+                  alignItems: 'center',
+                  marginVertical: moderateScale(30),
+                  opacity: 0.2,
+                }}>
+                <View
+                  style={{
+                    backgroundColor: code_color.black,
+                    flex: 1,
+                    height: 1,
+                  }}
+                />
+                <Text style={{marginHorizontal: moderateScale(8)}}>OR</Text>
+                <View
+                  style={{
+                    backgroundColor: code_color.black,
+                    flex: 1,
+                    height: 1,
+                  }}
+                />
+              </View>
+            )}
+            <Pressable
+              onPress={() => {
+                onClose();
+                handlePayment(
+                  userProfile?.data?.subscription?.plan?.id === 1 ||
+                    userProfile?.data?.subscription?.plan?.id === 2
+                    ? 'in_app'
+                    : 'upgrade_to_unlimited_audio_story',
+                );
+              }}
+              style={{
+                backgroundColor: '#ADC3D2',
+                // width: '90%',
+                marginHorizontal: moderateScale(10),
+                marginBottom: moderateScale(10),
+                paddingVertical: moderateScale(14),
+                borderRadius: moderateScale(6),
+              }}>
+              <View
+                style={{
+                  position: 'absolute',
+                  marginHorizontal: 'auto',
+                  backgroundColor: '#FFD12F',
+                  alignSelf: 'center',
+                  paddingVertical: moderateScale(0),
+                  paddingHorizontal: moderateScale(24),
+                  borderRadius: moderateScale(10),
+                  zIndex: 1,
+                  top: -moderateScale(8),
+                }}>
+                <Text style={{color: code_color.black, fontWeight: 600}}>
+                  {userProfile?.data?.subscription?.plan?.id === 1 ||
+                  userProfile?.data?.subscription?.plan?.id === 2
+                    ? 'UNLOCK EVERYTHING'
+                    : 'UPGRADE YOUR PACKAGE'}
+                </Text>
+              </View>
+              <BookLockIcon
+                style={{position: 'absolute', top: '70%', left: '5%'}}
+              />
+              <Text style={{color: code_color.white, textAlign: 'center'}}>
+                {userProfile?.data?.subscription?.plan?.id === 1 ||
+                userProfile?.data?.subscription?.plan?.id === 2
+                  ? 'Get EroTales UNLIMITED'
+                  : 'Get EroTales UNLIMITED + Audio'}
+              </Text>
+            </Pressable>
           </View>
-       
+        </View>
       </View>
     </Modal>
   );
