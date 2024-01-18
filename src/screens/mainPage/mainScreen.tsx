@@ -32,7 +32,9 @@ import {
   imgBgTips,
   imgLoveLeft,
   imgLoveRight,
+  imgQuote,
   imgSelect,
+  xpAndLevel,
 } from '../../assets/images';
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -86,6 +88,7 @@ import {
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
+import InstagramStories from '@birdwingo/react-native-instagram-stories';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -354,7 +357,7 @@ const MainScreen = ({
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
-    console.log(pageNumber + 'INI SCROLL')
+    console.log(pageNumber + 'INI SCROLL');
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -1124,7 +1127,7 @@ const MainScreen = ({
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 2.5;
     // Jika sentuhan terjadi di sebelah kanan
-    console.log(touchX > screenWidth)
+    console.log(touchX > screenWidth);
     if (touchX > screenWidth && !showModalCongrats) {
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
@@ -1159,13 +1162,14 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-           console.log('INI DATAAAA' +screenNumber +"===="+ textChunks?.length)
+            console.log(
+              'INI DATAAAA' + screenNumber + '====' + textChunks?.length,
+            );
             // if(screenNumber ===  textChunks?.length){
-              setShowModalCongrats(true);
+            setShowModalCongrats(true);
             // }
-           
+
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
-           
           }
         }
       }, 700);
@@ -1186,7 +1190,7 @@ const MainScreen = ({
     if (isPremiumStory || isPremiumAudio) {
       const res = await getStoryDetail(userStory?.id);
       handleSetStory(res.data);
-      setBook(res.data)
+      setBook(res.data);
       const response = await getStoryList();
       handleNextStory(response.data);
       let params = {
@@ -1200,7 +1204,7 @@ const MainScreen = ({
     } else {
       const res = await getStoryDetail(userStory?.id);
       handleSetStory(res.data);
-      setBook(res.data)
+      setBook(res.data);
       setShowModalNewStory(true);
     }
   };
@@ -1224,6 +1228,76 @@ const MainScreen = ({
       setShowStoryFree(false);
     }
   };
+
+  // react-native-insta-story
+  const dataStories = [
+    {
+      user_id: 1,
+      user_image:
+        'https://pbs.twimg.com/profile_images/1222140802475773952/61OmyINj.jpg',
+      user_name: 'Ahmet Çağlar Durmuş',
+      stories: [
+        {
+          story_id: 1,
+          story_image:
+            'https://image.freepik.com/free-vector/universe-mobile-wallpaper-with-planets_79603-600.jpg',
+          swipeText: 'Custom swipe text for this story',
+          onPress: () => console.log('story 1 swiped'),
+        },
+        {
+          story_id: 2,
+          story_image:
+            'https://image.freepik.com/free-vector/mobile-wallpaper-with-fluid-shapes_79603-601.jpg',
+        },
+      ],
+    },
+    {
+      user_id: 2,
+      user_image:
+        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
+      user_name: 'Test User',
+      stories: [
+        {
+          story_id: 1,
+          story_image:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjORKvjcbMRGYPR3QIs3MofoWkD4wHzRd_eg&usqp=CAU',
+          swipeText: 'Custom swipe text for this story',
+          onPress: () => console.log('story 1 swiped'),
+        },
+        {
+          story_id: 2,
+          story_image:
+            'https://files.oyebesmartest.com/uploads/preview/vivo-u20-mobile-wallpaper-full-hd-(1)qm6qyz9v60.jpg',
+          swipeText: 'Custom swipe text for this story',
+          onPress: () => console.log('story 2 swiped'),
+        },
+      ],
+    },
+  ];
+
+  // @birdwingo/react-native-instagram-stories
+  const stories = [
+    {
+      id: '1',
+      name: 'User 1',
+      imgUrl:
+        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
+      stories: [
+        {
+          id: '1',
+          sourceUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjORKvjcbMRGYPR3QIs3MofoWkD4wHzRd_eg&usqp=CAU',
+        },
+        {
+          id: '2',
+          sourceUrl:
+            'https://files.oyebesmartest.com/uploads/preview/vivo-u20-mobile-wallpaper-full-hd-(1)qm6qyz9v60.jpg',
+        },
+        // ...
+      ],
+    }, // ...\
+  ];
+
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -1330,6 +1404,8 @@ const MainScreen = ({
             barStyle={'dark-content'}
             backgroundColor={backgroundStyle.backgroundColor}
           />
+
+          <InstagramStories stories={stories} />
 
           <View
             style={{
