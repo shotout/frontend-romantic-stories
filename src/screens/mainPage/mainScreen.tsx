@@ -88,7 +88,7 @@ import {
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
-import InstagramStories from '@birdwingo/react-native-instagram-stories';
+import InstagramStories from './../../components/modal-stories/index';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
