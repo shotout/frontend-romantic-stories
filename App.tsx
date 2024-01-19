@@ -107,9 +107,17 @@ function App({ userProfile }) {
     if (userProfile?.token) {
       try {
         reloadUserProfile()
-        setTimeout(() => {
-          navigate('Bottom');
-        }, 500);
+        const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+        if (isFinishTutorial === 'yes') {
+          setTimeout(() => {
+            navigate('Tutorial');
+          }, 500);
+        }else{
+          setTimeout(() => {
+            navigate('Bottom');
+          }, 500);
+        }
+      
       } catch (error) {
         setTimeout(() => {
           navigate('Onboard');

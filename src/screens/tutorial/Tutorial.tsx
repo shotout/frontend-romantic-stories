@@ -25,7 +25,7 @@ import dispatcher from './dispatcher';
 import states from './states';
 import styles from './styles';
 import {code_color} from '../../utils/colors';
-import {bgGetUnlimit, imgBgAvaTips, imgBgTips, imgHearts, imgLoveLeft, imgLoveRight, imgSelect} from '../../assets/images';
+import {bgGetUnlimit, imgBgAvaTips, imgBgTips, imgHearts, imgLoveLeft, imgLoveRight, imgSelect, tips_step1} from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
 import LoveSvg from '../../assets/icons/bottom/love.jsx';
 import CloseIcon from '../../assets/icons/close';
@@ -48,6 +48,7 @@ import { ADD_STORY_TO_LIBRARY, AUDIO_PLAYED, eventTracking } from '../../helpers
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
+import FastImage from 'react-native-fast-image';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -94,6 +95,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   }, [visible]);
 
   useEffect(() => {
+    handleSetSteps(0)
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
@@ -141,7 +143,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     checkTutorial();
   }, [])
 
-  const renderProgress = () => <StepHeader currentStep={4} />;
+  const renderProgress = () => <StepHeader currentStep={2} />;
 
   // const renderTutorial = () => {
   //   if (stepsTutorial === 3) {
@@ -360,6 +362,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   };
   return (
     <>
+    <FastImage source={tips_step1}  style={{width: '100%', height: '100%'}} resizeMode={FastImage.resizeMode.contain} />
     {renderTutorial()}
     </>
       

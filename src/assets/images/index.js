@@ -134,3 +134,4 @@ export const sticker58 = require('./../sticker/Asset65.png');
 export const sticker59 = require('./../sticker/Asset66.png');
 export const sticker60 = require('./../sticker/Asset67.png');
 export const imgSC = require('./../images/screenshot.png');
+export const tips_step1 = require('./../images/Tips_Discover.png');
