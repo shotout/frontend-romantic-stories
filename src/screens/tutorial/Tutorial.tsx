@@ -25,7 +25,16 @@ import dispatcher from './dispatcher';
 import states from './states';
 import styles from './styles';
 import {code_color} from '../../utils/colors';
-import {bgGetUnlimit, imgBgAvaTips, imgBgTips, imgHearts, imgLoveLeft, imgLoveRight, imgSelect, tips_step1} from '../../assets/images';
+import {
+  bgGetUnlimit,
+  imgBgAvaTips,
+  imgBgTips,
+  imgHearts,
+  imgLoveLeft,
+  imgLoveRight,
+  imgSelect,
+  tips_step1,
+} from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
 import LoveSvg from '../../assets/icons/bottom/love.jsx';
 import CloseIcon from '../../assets/icons/close';
@@ -44,7 +53,11 @@ import {fixedFontSize, hp, wp} from '../../utils/screen';
 import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
 import {handleSetStory} from '../../store/defaultState/actions';
 import store from '../../store/configure-store';
-import { ADD_STORY_TO_LIBRARY, AUDIO_PLAYED, eventTracking } from '../../helpers/eventTracking';
+import {
+  ADD_STORY_TO_LIBRARY,
+  AUDIO_PLAYED,
+  eventTracking,
+} from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
@@ -75,12 +88,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
-      navigate('Library');
+      handleNext()
+      // navigate('Library');
     }
   };
   const handlePrev = () => {
-    handleSetSteps(2);
-    navigate('Main');
+    handleSetSteps(0);
+    // navigate('Main');
   };
 
   useEffect(() => {
@@ -95,7 +109,10 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   }, [visible]);
 
   useEffect(() => {
-    handleSetSteps(0)
+    handleSetSteps(0);
+    setTutorial({ ...isTutorial, step: 0 })
+    setActiveStep(0)
+    AsyncStorage.setItem('isTutorial', 'yes');
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
@@ -141,7 +158,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       }
     };
     checkTutorial();
-  }, [])
+  }, []);
 
   const renderProgress = () => <StepHeader currentStep={2} />;
 
@@ -173,7 +190,34 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   //     );
   //   }
   // };
-
+  const handleNext = () => {
+    if (stepsTutorial <= 5) {
+      const content =
+        'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
+      setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+      handleSetSteps(stepsTutorial + 1);
+      if (stepsTutorial === 2) {
+        setFinishTutorial(false);
+        // setIsRippleAnimate(true);
+        setTimeout(() => {
+          setFinishTutorial(true);
+          // setIsRippleAnimate(false);
+        }, 3000);
+        setTimeout(() => {
+          navigate('Media');
+        }, 2500);
+      } else if (stepsTutorial === 5) {
+        handleSetSteps(5 + 1);
+        navigate('Share', {
+          selectedContent:
+            ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+          start: content?.substring(0, 30),
+          end: content.substring(30, 30 + 30),
+        });
+      }
+    }
+  };
+  alert(activeStep)
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {
@@ -306,17 +350,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
       I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
         return (
-          <SafeAreaView
-            onTouchStart={handleTouchStart}
-            // onTouchEnd={handleTouchEnd}
-            pointerEvents="box-only"
-            style={{
-              position: 'absolute',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
-
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }}>
+          <>
             {activeStep != 5 && stepsTutorial != 5 && stepsTutorial != 3
               ? renderProgress()
               : null}
@@ -340,33 +374,46 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                     {renderProgress()}
                   </View>
 
-                  <Step5
-                    handleNext={() => {}}
-                    handlePrev={handlePrev}
-                  />
+                  <Step5 handleNext={() => {}} handlePrev={handlePrev} />
                 </ImageBackground>
               </View>
             ) : (
               <Step2
-                handleNext={() => {}}
+                handleNext={() => {
+                  alert('okkee');
+                }}
                 handlePrev={() => {
                   setActiveStep(1);
                   handleSetSteps(1);
                 }}
               />
             )}
-          </SafeAreaView>
+          </>
         );
       }
     }
   };
   return (
     <>
-    <FastImage source={tips_step1}  style={{width: '100%', height: '100%'}} resizeMode={FastImage.resizeMode.contain} />
-    {renderTutorial()}
+      <FastImage
+        source={tips_step1}
+        style={{width: '100%', height: '100%'}}
+        resizeMode={FastImage.resizeMode.contain} />
+        <SafeAreaView
+            onTouchStart={handleTouchStart}
+            // onTouchEnd={handleTouchEnd}
+            pointerEvents="box-only"
+            style={{
+              position: 'absolute',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+
+              backgroundColor: 'rgba(0,0,0,0.3)',
+            }}>
+              {renderTutorial()}
+            </SafeAreaView>
+     
     </>
-      
-      
   );
 }
 
