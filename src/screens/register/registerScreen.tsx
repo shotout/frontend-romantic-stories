@@ -205,7 +205,7 @@ function RegisterScreen({
       eventTracking(ONBOARDING_COMPLETE);
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      navigate('Bottom');
+      navigate('Tutorial');
       handleSetSteps(0);
     } catch (error) {
       checkDevice();
@@ -244,7 +244,7 @@ function RegisterScreen({
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      navigate('Bottom');
+      navigate('Tutorial');
       handleSetSteps(0);
     } catch (error) {}
   };

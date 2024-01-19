@@ -23,7 +23,7 @@ import screenMedia from '../screens/media/index';
 import screenNotification from '../screens/notification/index';
 import screenCategories from '../screens/categories/index';
 import screenSubscriptions from '../screens/subscriptions/index';
-
+import screenTutorial from '../screens/tutorial/index'
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
   // presentation: 'transparentModal',
@@ -94,6 +94,7 @@ function Main({registerData, userProfile, props, handleSetStory}) {
             name={'CategoryDetail'}
             component={DetailCategoryScreen}
           />
+          <Stack.Screen name={'Tutorial'} component={screenTutorial} />
           <Stack.Screen name={'Share'} component={modalShare} />
           <Stack.Screen name={'Media'} component={screenMedia} />
           <Stack.Screen name={'Notification'} component={screenNotification} />
