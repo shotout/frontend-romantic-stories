@@ -10,7 +10,10 @@ import heartkAnimate from '../../assets/lottie/heart.json';
 const Step2 = ({handleNext, handlePrev}) => {
   // return <></>;
   return (
-    <View
+    <Animatable.View
+      animation={'fadeOut'}
+      duration={200}
+      delay={4000}
       style={{
         backgroundColor: '#3F58DD',
         borderRadius: 20,
@@ -82,7 +85,7 @@ const Step2 = ({handleNext, handlePrev}) => {
           onPress={() => handleNext()}
         />
       </Animatable.View>
-    </View>
+    </Animatable.View>
   );
 };
 

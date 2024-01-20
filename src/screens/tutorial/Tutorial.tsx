@@ -144,7 +144,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     clearTimeout(step7_2Ref.current); // Clears existing timeout
     step7_2Ref.current = setTimeout(() => {
       setShowModal2Step7(true);
-    }, 1000);
+    }, 4000);
   };
 
   const startStep7 = () => {
@@ -155,16 +155,19 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       setTimeout(() => {
         setShowModal1Step7(false);
         startStep7_2();
-      }, 2500);
-    }, 1000);
+      }, 6000);
+    }, 2000);
   };
 
   const startTimeout = () => {
     clearTimeout(timeout7SecRef.current); // Clears existing timeout
-    timeout7SecRef.current = setTimeout(() => {
-      // Your logic here
-      handleNext();
-    }, 7000); // Set a new timeout
+    timeout7SecRef.current = setTimeout(
+      () => {
+        // Your logic here
+        handleNext();
+      },
+      stepsTutorial === 7 ? 16000 : 7000,
+    ); // Set a new timeout
   };
   const stopTimeout = () => {
     clearTimeout(timeout7SecRef.current); // Stop the active timeout
@@ -399,7 +402,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   style={{
                     width: Dimensions.get('window').width,
                     height: Dimensions.get('window').height,
-                    marginTop: '-10%',
+                    marginTop: '-13%',
                   }}>
                   <View style={{top: wp(50)}}>
                     <Step5 handleNext={() => {}} handlePrev={handlePrev} />
@@ -422,12 +425,12 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                       width: wp(150),
                     }}
                     autoPlay
-                    duration={3000}
+                    duration={4000}
                     loop={true}
                   />
                 </Animatable.View>
                 <Animatable.View
-                  delay={3000}
+                  delay={4000}
                   animation={'fadeIn'}
                   style={{
                     position: 'absolute',
