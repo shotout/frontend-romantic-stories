@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, ImageBackground, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import FastImage from 'react-native-fast-image';
 import styles from './styles';
 
 const activeLamp = require('../../assets/images/step.png');
@@ -29,7 +30,7 @@ export default function StepHeader({currentStep}) {
           },
           easing: 'linear',
         }}
-        duration={2000}
+        duration={7000}
         source={lampActiveAnimation}
         style={styles.ctnUnactiveLamp}
       />
@@ -37,11 +38,19 @@ export default function StepHeader({currentStep}) {
   );
 
   const activeGift = () => (
-    <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} />
+    <FastImage
+      source={lampActiveAnimation}
+      style={styles.ctnUnactiveLamp}
+      resizeMode={FastImage.resizeMode.contain}
+    />
   );
 
   const unactiveLamp = () => (
-    <Image source={lampUnactive} style={styles.ctnUnactiveLamp} />
+    <FastImage
+      source={lampUnactive}
+      style={styles.ctnUnactiveLamp}
+      resizeMode={FastImage.resizeMode.contain}
+    />
   );
 
   function renderImageStep(stepItem) {

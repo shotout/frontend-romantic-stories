@@ -17,7 +17,7 @@ const Step6 = ({}) => {
         padding: 10,
         marginHorizontal: 40,
         alignItems: 'center',
-        marginTop: '70%',
+        marginTop: '40%',
         paddingTop: 50,
       }}>
       <View
@@ -39,7 +39,7 @@ const Step6 = ({}) => {
         />
       </View>
       <Animatable.Text
-        delay={1500}
+        delay={500}
         duration={1000}
         animation={'fadeIn'}
         style={{

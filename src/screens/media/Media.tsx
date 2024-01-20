@@ -390,7 +390,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         </TouchableOpacity>
        
       </View>
-      {renderTutorial()}
+      {/* {renderTutorial()} */}
       <Modal visible={loading} animationType="fade" transparent>
         <View
           style={{

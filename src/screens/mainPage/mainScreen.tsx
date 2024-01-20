@@ -862,13 +862,13 @@ const MainScreen = ({
     />
   );
 
-  useEffect(() => {
-    if (activeStep === 5 || stepsTutorial === 5) {
-      setTimeout(() => {
-        handleNext();
-      }, 5000);
-    }
-  }, [activeStep, stepsTutorial]);
+  // useEffect(() => {
+  //   if (activeStep === 5 || stepsTutorial === 5) {
+  //     setTimeout(() => {
+  //       handleNext();
+  //     }, 5000);
+  //   }
+  // }, [activeStep, stepsTutorial]);
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {
@@ -1312,7 +1312,7 @@ const MainScreen = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {renderTutorial()}
+          {/* {renderTutorial()} */}
           {renderFlatList('view')}
         </Pressable>
       );
@@ -1472,7 +1472,7 @@ const MainScreen = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {isRippleAnimate && (
+          {/* {isRippleAnimate && (
             <Animatable.View
               duration={200}
               animation={'fadeIn'}
@@ -1486,9 +1486,9 @@ const MainScreen = ({
                 duration={4000}
               />
             </Animatable.View>
-          )}
+          )} */}
           {renderFlatList('main')}
-          {renderTutorial()}
+          {/* {renderTutorial()} */}
           <ModalMedia
             isVisible={showMedia}
             onClose={() => setShowMedia(false)}

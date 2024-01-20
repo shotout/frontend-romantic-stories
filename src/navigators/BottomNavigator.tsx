@@ -449,7 +449,7 @@ function MyTabs(props) {
                   </View>
                 </View>
               </Modal>
-              {props?.stepsTutorial === 2 ? (
+              {/* {props?.stepsTutorial === 2 ? (
                 <View style={{position: 'absolute', bottom: wp(-20)}}>
                   <AnimatedLottieView
                     source={love}
@@ -459,7 +459,7 @@ function MyTabs(props) {
                     loop={true}
                   />
                 </View>
-              ) : null}
+              ) : null} */}
               {props.userStory?.is_collection === null ? (
                 <LoveOutline
                   width={wp(20)}

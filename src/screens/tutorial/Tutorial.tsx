@@ -32,8 +32,13 @@ import {
   imgHearts,
   imgLoveLeft,
   imgLoveRight,
+  imgQuote,
   imgSelect,
   tips_step1,
+  tips_step3,
+  tips_step4,
+  tips_step5,
+  xpAndLevel,
 } from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
 import LoveSvg from '../../assets/icons/bottom/love.jsx';
@@ -48,7 +53,17 @@ import {connect} from 'react-redux';
 import {sizing} from '../../shared/styling';
 import {BACKEND_URL} from '../../shared/static';
 import StepHeader from '../../layout/step/stepHeader';
-import {Step1, Step2, Step3, Step5} from '../../layout/tutorial';
+import {
+  Step1,
+  Step2,
+  Step3,
+  Step4,
+  Step4_2,
+  Step5,
+  Step6,
+  Step7,
+  Step8,
+} from '../../layout/tutorial';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
 import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
 import {handleSetStory} from '../../store/defaultState/actions';
@@ -62,6 +77,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
+import {handlePayment} from '../../helpers/paywall';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -70,11 +86,17 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [showModal1Step7, setShowModal1Step7] = useState(false);
+  const [showModal2Step7, setShowModal2Step7] = useState(false);
   const [isStartConfetti, setIsStartConfetti] = useState(false);
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
   });
+
+  const timeout7SecRef = useRef<any>();
+  const step7Ref = useRef<any>();
+  const step7_2Ref = useRef<any>();
 
   const handleTouchStart = e => {
     // Mendapatkan posisi sentuhan
@@ -88,13 +110,23 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
-      handleNext()
+      handleNext();
       // navigate('Library');
     }
   };
   const handlePrev = () => {
-    handleSetSteps(0);
-    // navigate('Main');
+    if (stepsTutorial > 1) {
+      stopTimeout();
+      setActiveStep((prevStep: number) => prevStep - 1);
+      handleSetSteps(stepsTutorial - 1);
+      if (stepsTutorial === 8) {
+        clearTimeout(step7Ref.current);
+        clearTimeout(step7_2Ref.current);
+        setShowModal1Step7(false);
+        setShowModal2Step7(false);
+        startStep7();
+      }
+    }
   };
 
   useEffect(() => {
@@ -108,15 +140,50 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     }
   }, [visible]);
 
+  const startStep7_2 = () => {
+    clearTimeout(step7_2Ref.current); // Clears existing timeout
+    step7_2Ref.current = setTimeout(() => {
+      setShowModal2Step7(true);
+    }, 1000);
+  };
+
+  const startStep7 = () => {
+    clearTimeout(step7Ref.current); // Clears existing timeout
+    step7Ref.current = setTimeout(() => {
+      setShowModal1Step7(true);
+      clearTimeout(step7Ref.current);
+      setTimeout(() => {
+        setShowModal1Step7(false);
+        startStep7_2();
+      }, 2500);
+    }, 1000);
+  };
+
+  const startTimeout = () => {
+    clearTimeout(timeout7SecRef.current); // Clears existing timeout
+    timeout7SecRef.current = setTimeout(() => {
+      // Your logic here
+      handleNext();
+    }, 7000); // Set a new timeout
+  };
+  const stopTimeout = () => {
+    clearTimeout(timeout7SecRef.current); // Stop the active timeout
+  };
   useEffect(() => {
-    handleSetSteps(0);
-    setTutorial({ ...isTutorial, step: 0 })
-    setActiveStep(0)
+    if (stepsTutorial < 8) {
+      startTimeout();
+    }
+  }, [stepsTutorial]);
+
+  useEffect(() => {
+    // handleSetSteps(0);
+    // setTutorial({...isTutorial, step: 0});
+    // setActiveStep(0);
     AsyncStorage.setItem('isTutorial', 'yes');
+    setFinishTutorial(true);
     const checkTutorial = async () => {
       const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
       if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
-        setFinishTutorial(true);
         setVisible(true);
         setTimeout(() => {
           setVisible(false);
@@ -128,19 +195,19 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
           handleSetSteps(1);
         }, 3500);
       } else if (activeStep === 2 || activeStep === 3) {
-        setFinishTutorial(false);
+        // setFinishTutorial(false);
         // setIsRippleAnimate(true);
         // setTimeout(() => {
         //   setFinishTutorial(true);
         //   setIsRippleAnimate(false);
         // }, 3000);
-        if (route?.name == 'Main') {
-          setTimeout(() => {
-            navigate('Media');
-          }, 2500);
-        }
+        // if (route?.name == 'Main') {
+        //   setTimeout(() => {
+        //     navigate('Media');
+        //   }, 2500);
+        // }
       } else if (activeStep === 4) {
-        navigate('ExploreLibrary');
+        // navigate('ExploreLibrary');
       } else if (
         activeStep === 6 ||
         activeStep === 7 ||
@@ -149,75 +216,43 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       ) {
         const content =
           'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-        navigate('Share', {
-          selectedContent:
-            ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-          start: content?.substring(0, 30),
-          end: content.substring(30, 30 + 30),
-        });
+        // navigate('Share', {
+        //   selectedContent:
+        //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+        //   start: content?.substring(0, 30),
+        //   end: content.substring(30, 30 + 30),
+        // });
       }
     };
     checkTutorial();
   }, []);
 
-  const renderProgress = () => <StepHeader currentStep={2} />;
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
 
-  // const renderTutorial = () => {
-  //   if (stepsTutorial === 3) {
-  //     return (
-  //       <SafeAreaView
-  //         onTouchStart={handleTouchStart}
-  //         // onTouchEnd={handleTouchEnd}
-  //         pointerEvents="box-only"
-  //         style={{
-  //           position: 'absolute',
-  //           width: Dimensions.get('window').width,
-  //           height: Dimensions.get('window').height,
-  //           top: 0,
-  //           backgroundColor: 'rgba(0,0,0,0.3)',
-  //         }}>
-  //         {renderProgress()}
-  //         <Step3
-  //           handleNext={() => {
-  //             navigate('Library');
-  //           }}
-  //           handlePrev={() => {
-  //             handleSetSteps(2);
-  //             navigate('Main');
-  //           }}
-  //         />
-  //       </SafeAreaView>
-  //     );
-  //   }
-  // };
   const handleNext = () => {
-    if (stepsTutorial <= 5) {
-      const content =
-        'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-      setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+    if (stepsTutorial < 8) {
+      setActiveStep((prevStep: number) => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
       handleSetSteps(stepsTutorial + 1);
-      if (stepsTutorial === 2) {
-        setFinishTutorial(false);
-        // setIsRippleAnimate(true);
-        setTimeout(() => {
-          setFinishTutorial(true);
-          // setIsRippleAnimate(false);
-        }, 3000);
-        setTimeout(() => {
-          navigate('Media');
-        }, 2500);
-      } else if (stepsTutorial === 5) {
-        handleSetSteps(5 + 1);
-        navigate('Share', {
-          selectedContent:
-            ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-          start: content?.substring(0, 30),
-          end: content.substring(30, 30 + 30),
-        });
+      if (stepsTutorial === 6) {
+        clearTimeout(step7Ref.current);
+        clearTimeout(step7_2Ref.current);
+        setShowModal1Step7(false);
+        setShowModal2Step7(false);
+        startStep7();
+      } else {
+        clearTimeout(step7Ref.current);
+        clearTimeout(step7_2Ref.current);
+        setShowModal1Step7(false);
+        setShowModal2Step7(false);
       }
+    } else {
+      AsyncStorage.removeItem('isTutorial');
+      handleSetSteps(0);
+      handlePayment('onboarding');
+      navigate('Bottom');
     }
   };
-  alert(activeStep)
+
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {
@@ -346,17 +381,18 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
             </ImageBackground>
           </Modal>
         );
-      } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
-        const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
-      I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
+      } else if (
+        activeStep < 3 ||
+        (activeStep > 3 && activeStep == 6) ||
+        (stepsTutorial > 3 && stepsTutorial == 6)
+      ) {
         return (
           <>
-            {activeStep != 5 && stepsTutorial != 5 && stepsTutorial != 3
-              ? renderProgress()
-              : null}
             {activeStep === 1 ? (
-              <Step1 handleNext={() => {}} />
-            ) : activeStep === 5 || stepsTutorial == 5 ? (
+              <>
+                <Step1 handleNext={() => {}} />
+              </>
+            ) : activeStep === 6 || stepsTutorial == 6 ? (
               <View style={{alignItems: 'center'}}>
                 <ImageBackground
                   source={imgSelect}
@@ -365,54 +401,143 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                     height: Dimensions.get('window').height,
                     marginTop: '-10%',
                   }}>
-                  <View
-                    style={{
-                      backgroundColor: 'rgba(0,0,0,0.3)',
-                      opacity: 1,
-                      marginTop: wp(40),
-                    }}>
-                    {renderProgress()}
+                  <View style={{top: wp(50)}}>
+                    <Step5 handleNext={() => {}} handlePrev={handlePrev} />
                   </View>
-
-                  <Step5 handleNext={() => {}} handlePrev={handlePrev} />
                 </ImageBackground>
               </View>
             ) : (
-              <Step2
-                handleNext={() => {
-                  alert('okkee');
-                }}
-                handlePrev={() => {
-                  setActiveStep(1);
-                  handleSetSteps(1);
-                }}
-              />
+              <>
+                <Animatable.View
+                  delay={3000}
+                  animation={'fadeOut'}
+                  style={{
+                    position: 'absolute',
+                    bottom: -wp(24),
+                    left: -wp(15),
+                  }}>
+                  <AnimatedLottieView
+                    source={rippleAnimate}
+                    style={{
+                      width: wp(150),
+                    }}
+                    autoPlay
+                    duration={3000}
+                    loop={true}
+                  />
+                </Animatable.View>
+                <Animatable.View
+                  delay={3000}
+                  animation={'fadeIn'}
+                  style={{
+                    position: 'absolute',
+                    top: wp(20),
+                    right: -wp(14),
+                  }}>
+                  <AnimatedLottieView
+                    source={rippleAnimate}
+                    style={{
+                      width: wp(150),
+                    }}
+                    autoPlay
+                    duration={3000}
+                    loop={true}
+                  />
+                </Animatable.View>
+                <Step2
+                  handleNext={() => handleNext()}
+                  handlePrev={() => {
+                    setActiveStep(1);
+                    handleSetSteps(1);
+                  }}
+                />
+              </>
             )}
           </>
+        );
+      } else if (stepsTutorial === 3) {
+        return <Step3 handleNext={handleNext} handlePrev={handlePrev} />;
+      } else if (stepsTutorial === 4) {
+        return (
+          <>
+            <Step4 handleNext={handleNext} />
+            <Animatable.View
+              delay={3000}
+              animation={'fadeIn'}
+              style={{
+                position: 'absolute',
+                bottom: -wp(100),
+                left: '10%',
+              }}>
+              <AnimatedLottieView
+                source={rippleAnimate}
+                style={{
+                  width: wp(300),
+                }}
+                autoPlay
+                duration={3000}
+                loop={true}
+              />
+            </Animatable.View>
+          </>
+        );
+      } else if (stepsTutorial === 5) {
+        return <Step4_2 handleNext={handleNext} handlePrev={handlePrev} />;
+      } else if (stepsTutorial === 7) {
+        return (
+          <View>
+            {showModal1Step7 ? <Step6 /> : null}
+            {showModal2Step7 ? <Step7 handleNext={handleNext} /> : null}
+          </View>
+        );
+      } else if (stepsTutorial === 8) {
+        return (
+          <View>
+            <Step8 handleNext={handleNext} />
+          </View>
         );
       }
     }
   };
+
+  function imageBG() {
+    if (stepsTutorial < 3) {
+      return tips_step1;
+    } else if (stepsTutorial === 3) {
+      return tips_step3;
+    } else if (stepsTutorial === 4) {
+      return tips_step4;
+    } else if (stepsTutorial === 5) {
+      return tips_step5;
+    } else if (stepsTutorial === 7) {
+      return imgQuote;
+    } else if (stepsTutorial === 8) {
+      return xpAndLevel;
+    } else {
+      return tips_step1;
+    }
+  }
+
   return (
     <>
       <FastImage
-        source={tips_step1}
+        source={imageBG()}
         style={{width: '100%', height: '100%'}}
-        resizeMode={FastImage.resizeMode.contain} />
-        <SafeAreaView
-            onTouchStart={handleTouchStart}
-            // onTouchEnd={handleTouchEnd}
-            pointerEvents="box-only"
-            style={{
-              position: 'absolute',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
+        resizeMode={FastImage.resizeMode.contain}
+      />
+      <SafeAreaView
+        onTouchStart={handleTouchStart}
+        pointerEvents="box-only"
+        style={{
+          position: 'absolute',
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
 
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }}>
-              {renderTutorial()}
-            </SafeAreaView>
-     
+          backgroundColor: 'rgba(0,0,0,0.3)',
+        }}>
+        {renderProgress()}
+        {renderTutorial()}
+      </SafeAreaView>
     </>
   );
 }

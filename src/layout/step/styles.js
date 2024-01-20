@@ -11,7 +11,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '',
+    zIndex: 1000,
   },
   imgStep: {
     width: '100%',

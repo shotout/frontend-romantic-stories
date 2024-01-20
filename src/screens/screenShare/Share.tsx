@@ -962,7 +962,7 @@ function ScreenShare({
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
-      {stepsTutorial ? renderTutorial() :
+      
       <ScrollView style={{flex: 1, width: '100%'}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
@@ -1180,7 +1180,6 @@ function ScreenShare({
         </View>
         {renderCard()}
       </ScrollView>
-}
     </View>
   );
 }

@@ -45,7 +45,7 @@ const Step7 = ({handleNext}) => {
         />
       </View>
       <Animatable.Text
-        delay={1500}
+        delay={500}
         duration={1000}
         animation={'fadeIn'}
         style={{
@@ -62,7 +62,7 @@ const Step7 = ({handleNext}) => {
         }
       </Animatable.Text>
       <Animatable.View
-        delay={4000}
+        delay={2000}
         animation={'fadeIn'}
         duration={1000}
         style={{flexDirection: 'row'}}>

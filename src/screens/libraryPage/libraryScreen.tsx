@@ -1430,7 +1430,7 @@ const LibraryScreen = ({
               Explore more Stories
             </Text>
           </TouchableOpacity>
-          {stepsTutorial === 3 ? (
+          {/* {stepsTutorial === 3 ? (
             <View style={{position: 'absolute', bottom: -30}}>
               <AnimatedLottieView
                 source={rippleAnimate}
@@ -1442,10 +1442,10 @@ const LibraryScreen = ({
                 loop={true}
               />
             </View>
-          ) : null}
+          ) : null} */}
         </View>
       </View>
-      {renderTutorial()}
+      {/* {renderTutorial()} */}
     </View>
   );
 };
