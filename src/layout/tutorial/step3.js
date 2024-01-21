@@ -12,7 +12,7 @@ const Step3 = ({handleNext, handlePrev}) => {
   const [show, setShow] = useState(false)
   setTimeout(() => {
     setShow(true)
-  }, 1000);
+  }, 500);
   // return <></>;
   return (
     <>
