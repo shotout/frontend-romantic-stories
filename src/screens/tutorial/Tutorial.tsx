@@ -536,7 +536,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       setTimeout(() => {
         setImage(tips_step3)
         setShow(true)
-      }, 1500);
+      }, 3000);
      
     } else {
       setImageSource(getImageBasedOnStep(stepsTutorial));

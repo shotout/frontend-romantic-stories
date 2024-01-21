@@ -10,13 +10,13 @@ import listenAnimate from '../../assets/lottie/listen.json';
 
 const Step3 = ({handleNext, handlePrev}) => {
   const [show, setShow] = useState(false)
-  setTimeout(() => {
-    setShow(true)
-  }, 500);
+  // setTimeout(() => {
+  //   setShow(true)
+  // }, 500);
   // return <></>;
   return (
     <>
-    {show ?
+    {/* {show ? */}
      <View
       style={{
         backgroundColor: '#3F58DD',
@@ -98,7 +98,7 @@ const Step3 = ({handleNext, handlePrev}) => {
           onPress={handleNext}
         />
       </Animatable.View>
-    </View>: null }
+    </View>
     </>
    
   );
