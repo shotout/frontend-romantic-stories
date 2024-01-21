@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Image, View} from 'react-native';
 import {imgStep2} from '../../assets/images';
 import * as Animatable from 'react-native-animatable';
@@ -9,9 +9,15 @@ import AnimatedLottieView from 'lottie-react-native';
 import listenAnimate from '../../assets/lottie/listen.json';
 
 const Step3 = ({handleNext, handlePrev}) => {
+  const [show, setShow] = useState(false)
+  setTimeout(() => {
+    setShow(true)
+  }, 1000);
   // return <></>;
   return (
-    <View
+    <>
+    {show ?
+     <View
       style={{
         backgroundColor: '#3F58DD',
         borderRadius: 20,
@@ -92,7 +98,9 @@ const Step3 = ({handleNext, handlePrev}) => {
           onPress={handleNext}
         />
       </Animatable.View>
-    </View>
+    </View>: null }
+    </>
+   
   );
 };
 

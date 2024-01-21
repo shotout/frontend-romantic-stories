@@ -89,11 +89,14 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const [showModal1Step7, setShowModal1Step7] = useState(false);
   const [showModal2Step7, setShowModal2Step7] = useState(false);
   const [isStartConfetti, setIsStartConfetti] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [imageSource, setImageSource] = useState(tips_step1);
+  const [image, setImage] = useState(tips_step1);
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
   });
-
+  const [show, setShow] = useState(false);
   const timeout7SecRef = useRef<any>();
   const step7Ref = useRef<any>();
   const step7_2Ref = useRef<any>();
@@ -150,12 +153,15 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const startStep7 = () => {
     clearTimeout(step7Ref.current); // Clears existing timeout
     step7Ref.current = setTimeout(() => {
-      setShowModal1Step7(true);
+      setTimeout(() => {
+        setShowModal1Step7(true);
+      }, 4000);
+     
       clearTimeout(step7Ref.current);
       setTimeout(() => {
         setShowModal1Step7(false);
         startStep7_2();
-      }, 6000);
+      }, 7000);
     }, 2000);
   };
 
@@ -243,6 +249,9 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         setShowModal2Step7(false);
         startStep7();
       } else {
+        if(stepsTutorial === 4){
+          setImage(tips_step1)
+        }
         clearTimeout(step7Ref.current);
         clearTimeout(step7_2Ref.current);
         setShowModal1Step7(false);
@@ -429,24 +438,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                     loop={true}
                   />
                 </Animatable.View>
-                <Animatable.View
-                  delay={4000}
-                  animation={'fadeIn'}
-                  style={{
-                    position: 'absolute',
-                    top: wp(20),
-                    right: -wp(14),
-                  }}>
-                  <AnimatedLottieView
-                    source={rippleAnimate}
-                    style={{
-                      width: wp(150),
-                    }}
-                    autoPlay
-                    duration={3000}
-                    loop={true}
-                  />
-                </Animatable.View>
+
                 <Step2
                   handleNext={() => handleNext()}
                   handlePrev={() => {
@@ -459,7 +451,40 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
           </>
         );
       } else if (stepsTutorial === 3) {
-        return <Step3 handleNext={handleNext} handlePrev={handlePrev} />;
+        return (
+          <View style={{alignItems: 'center'}}>
+            <ImageBackground
+              source={image}
+              style={{
+                width: Dimensions.get('window').width,
+                height: Dimensions.get('window').height,
+                marginTop: '-13%',
+              }}>
+                {show === false ?
+              <Animatable.View
+                delay={100}
+                animation={'fadeIn'}
+                style={{
+                  position: 'absolute',
+                  top: wp(20),
+                  right: -wp(14),
+                }}>
+                <AnimatedLottieView
+                  source={rippleAnimate}
+                  style={{
+                    width: wp(150),
+                  }}
+                  autoPlay
+                  duration={1000}
+                  loop={true}
+                />
+              </Animatable.View> : null }
+              {show ? (
+                <Step3 handleNext={handleNext} handlePrev={handlePrev} />
+              ) : null}
+            </ImageBackground>
+          </View>
+        );
       } else if (stepsTutorial === 4) {
         return (
           <>
@@ -502,29 +527,43 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       }
     }
   };
+  useEffect(() => {
+  
 
-  function imageBG() {
-    if (stepsTutorial < 3) {
-      return tips_step1;
-    } else if (stepsTutorial === 3) {
-      return tips_step3;
-    } else if (stepsTutorial === 4) {
-      return tips_step4;
-    } else if (stepsTutorial === 5) {
-      return tips_step5;
-    } else if (stepsTutorial === 7) {
-      return imgQuote;
-    } else if (stepsTutorial === 8) {
-      return xpAndLevel;
+    if (stepsTutorial === 3) {
+      setImage(tips_step1)
+      setShow(false)
+      setTimeout(() => {
+        setImage(tips_step3)
+        setShow(true)
+      }, 2000);
+     
     } else {
-      return tips_step1;
+      setImageSource(getImageBasedOnStep(stepsTutorial));
     }
-  }
+  }, [stepsTutorial, activeStep]);
+  
+  const getImageBasedOnStep = step => {
+    switch (step) {
+      case 3:
+        return tips_step1;
+      case 4:
+        return tips_step4;
+      case 5:
+        return tips_step5;
+      case 7:
+        return imgQuote;
+      case 8:
+        return xpAndLevel;
+      default:
+        return tips_step1;
+    }
+  };
 
   return (
     <>
       <FastImage
-        source={imageBG()}
+        source={imageSource}
         style={{width: '100%', height: '100%'}}
         resizeMode={FastImage.resizeMode.contain}
       />
@@ -536,7 +575,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
 
-          backgroundColor: 'rgba(0,0,0,0.3)',
+          backgroundColor:  stepsTutorial > 6 ? null : 'rgba(0,0,0,0.3)',
         }}>
         {renderProgress()}
         {renderTutorial()}
