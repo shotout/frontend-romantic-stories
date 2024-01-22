@@ -17,7 +17,7 @@ const Step6 = ({}) => {
         padding: 10,
         marginHorizontal: 40,
         alignItems: 'center',
-        marginTop: '40%',
+        marginTop: '60%',
         paddingTop: 50,
       }}>
       <View
