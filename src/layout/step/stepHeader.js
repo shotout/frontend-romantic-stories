@@ -30,7 +30,7 @@ export default function StepHeader({currentStep}) {
           },
           easing: 'linear',
         }}
-        duration={currentStep === 8 ? 16000 : 7000}
+        duration={currentStep === 8 ? 18000 : 7000}
         source={lampActiveAnimation}
         style={styles.ctnUnactiveLamp}
       />

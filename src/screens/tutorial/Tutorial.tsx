@@ -26,6 +26,7 @@ import states from './states';
 import styles from './styles';
 import {code_color} from '../../utils/colors';
 import {
+  audioScreen,
   bgGetUnlimit,
   imgBgAvaTips,
   imgBgTips,
@@ -147,7 +148,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     clearTimeout(step7_2Ref.current); // Clears existing timeout
     step7_2Ref.current = setTimeout(() => {
       setShowModal2Step7(true);
-    }, 1500);
+    }, 500);
   };
 
   const startStep7 = () => {
@@ -171,7 +172,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         // Your logic here
         handleNext();
       },
-      stepsTutorial === 7 ? 16000 : 7000,
+      stepsTutorial === 7 ? 18000 : 7000,
     ); // Set a new timeout
   };
   const stopTimeout = () => {
@@ -248,8 +249,8 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         setShowModal2Step7(false);
         startStep7();
       } else {
-        if(stepsTutorial === 4){
-          setImage(tips_step1)
+        if (stepsTutorial === 4) {
+          setImage(tips_step1);
         }
         clearTimeout(step7Ref.current);
         clearTimeout(step7_2Ref.current);
@@ -453,34 +454,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         return (
           <View style={{alignItems: 'center'}}>
             <ImageBackground
-              source={image}
+              source={audioScreen}
               style={{
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').height,
                 marginTop: '-13%',
               }}>
-                {show === false ?
-              <Animatable.View
-                delay={100}
-                animation={'fadeIn'}
-                style={{
-                  position: 'absolute',
-                  top: wp(20),
-                  right: -wp(14),
-                }}>
-                <AnimatedLottieView
-                  source={rippleAnimate}
-                  style={{
-                    width: wp(150),
-                  }}
-                  autoPlay
-                  duration={1000}
-                  loop={true}
-                />
-              </Animatable.View> : null }
-              {show ? (
-                <Step3 handleNext={handleNext} handlePrev={handlePrev} />
-              ) : null}
+              <Step3 handleNext={handleNext} handlePrev={handlePrev} />
             </ImageBackground>
           </View>
         );
@@ -527,22 +507,10 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     }
   };
   useEffect(() => {
-  
-
-    if (stepsTutorial === 3) {
-      setImage(tips_step1)
-      setShow(false)
-      setTimeout(() => {
-        setImage(tips_step3)
-        setShow(true)
-      }, 3000);
-     
-    } else {
-      setImageSource(getImageBasedOnStep(stepsTutorial));
-    }
+    setImageSource(getImageBasedOnStep(stepsTutorial));
   }, [stepsTutorial, activeStep]);
-  
-  const getImageBasedOnStep = step => {
+
+  const getImageBasedOnStep = (step: number) => {
     switch (step) {
       case 3:
         return tips_step1;
@@ -573,8 +541,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
           position: 'absolute',
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
-
-          backgroundColor:  stepsTutorial > 6 ? null : 'rgba(0,0,0,0.3)',
+          backgroundColor: stepsTutorial > 6 ? undefined : 'rgba(0,0,0,0.3)',
         }}>
         {renderProgress()}
         {renderTutorial()}

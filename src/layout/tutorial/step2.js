@@ -11,9 +11,6 @@ const Step2 = ({handleNext, handlePrev}) => {
   // return <></>;
   return (
     <Animatable.View
-      animation={'fadeOut'}
-      duration={200}
-      delay={6500}
       style={{
         backgroundColor: '#3F58DD',
         borderRadius: 20,
