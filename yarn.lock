@@ -1175,7 +1175,7 @@
 
 "@brigad/react-native-skadnetwork@^0.1.2":
   version "0.1.2"
-  resolved "https://registry.npmjs.org/@brigad/react-native-skadnetwork/-/react-native-skadnetwork-0.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/@brigad/react-native-skadnetwork/-/react-native-skadnetwork-0.1.2.tgz#73f790eb4e0726dd28683663f302e9c7a0e9dc48"
   integrity sha512-KM8DF14jBIWS729n/PU4QsUCm1ekAFA/20Si9GmHtqlTtTWXIF5W22n6Tn3Qlafvp99WoayjTu+jLEp86bua3w==
 
 "@callstack/react-theme-provider@^3.0.9":

@@ -7,6 +7,7 @@ import {
 } from 'react-native-fbsdk-next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Platform} from 'react-native';
+import {updatePostbackConversionValue} from '@brigad/react-native-skadnetwork';
 
 export const ONBOARDING_COMPLETE = 'se2bvp';
 export const APP_INSTALLED = 'oo3wj0';
@@ -27,6 +28,10 @@ export const BUY_10_AUDIO = '75mvdx';
 export const BUY_50_AUDIO = 'dgq6u0';
 export const FINISH_LISTEN_3 = 'cg5y5b';
 export const FINISH_LISTEN_10 = 'ni1wnz';
+
+const setAdsConversion = async () => {
+  await updatePostbackConversionValue(0);
+};
 
 const getScreenName = id => {
   switch (id) {
@@ -106,6 +111,7 @@ export const askTrackingPermission = () => {
           console.log("The user hasn't been asked yet");
           break;
         case 1:
+          setAdsConversion();
           // ATTrackingManagerAuthorizationStatusRestricted case
           console.log('The user device is restricted');
           setTimeout(() => {
@@ -123,6 +129,7 @@ export const askTrackingPermission = () => {
           Settings.setAdvertiserTrackingEnabled(true);
           Settings.setAdvertiserIDCollectionEnabled(true);
           Settings.setAutoLogAppEventsEnabled(true);
+          setAdsConversion();
           // ATTrackingManagerAuthorizationStatusAuthorized case
           console.log('The user authorized access to IDFA');
           setTimeout(() => {

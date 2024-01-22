@@ -96,7 +96,7 @@ function App({ userProfile }) {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
       AdjustConfig.EnvironmentSandbox,
-      // AdjustConfig.EnvironmentProduction,
+       //AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
