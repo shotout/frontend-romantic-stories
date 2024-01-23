@@ -82,6 +82,9 @@ import {
   FINISH_LISTEN_10,
   FINISH_LISTEN_3,
   FINISH_LISTEN_7,
+  FINISH_READ_10,
+  FINISH_READ_3,
+  FINISH_READ_7,
   eventTracking,
 } from '../../helpers/eventTracking';
 import ModalUnlockStory from '../../components/modal-unlock-story';
@@ -283,7 +286,16 @@ const MainScreen = ({
         (          item: { id: any; page: any; }) => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
-
+      const uniqueData = [...new Map(readStory.map((item: { id: any; }) => [item.id, item])).values()]
+      if (uniqueData?.length === 2) {
+        eventTracking(FINISH_READ_3);
+      }
+      if (uniqueData?.length === 6) {
+        eventTracking(FINISH_READ_7);
+      }
+      if (uniqueData?.length === 9) {
+        eventTracking(FINISH_READ_10);
+      }
     if (!existingEntry) {
       const newData = {
         id: dataBook.id,
