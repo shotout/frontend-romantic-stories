@@ -11,7 +11,7 @@ function SvgComponent(props) {
       fill={fill}
       style={style}
       xmlns="http://www.w3.org/2000/svg">
-      <Path d="M20 12.0829L6 20.1658L6 4L20 12.0829Z" fill="white" />
+      <Path d="M20 12.0829L6 20.1658L6 4L20 12.0829Z" fill={fill} />
     </Svg>
   );
 }

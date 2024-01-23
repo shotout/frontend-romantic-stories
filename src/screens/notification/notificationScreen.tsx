@@ -41,15 +41,16 @@ import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
 import { Switch } from 'react-native-gesture-handler';
 import { reloadUserProfile } from '../../utils/user';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const NotificationScreen = ({
   colorTheme,
   categories,
-  isPremium,
   handleSetSteps,
   stepsTutorial,
   userProfile,
+  backgroundColor
 }) => {
   
   const [bgTheme, setBgTheme] = useState(colorTheme);
@@ -85,11 +86,7 @@ const NotificationScreen = ({
   };
 
   useEffect(() => {
-    if(newStories || promotions){
       fetchUpdate()
-    }
-   
-
   }, [newStories, promotions])
 
   return (
@@ -103,16 +100,16 @@ const NotificationScreen = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 10,
-            marginVertical: 10,
+            marginHorizontal: wp(10),
+            marginVertical: wp(10),
           }}>
           <Pressable
             onPress={() => goBack()}
             style={{
-              width: 35,
-              height: 35,
-              backgroundColor: code_color.white,
-              borderRadius: 20,
+              width: wp(35),
+              height: wp(35),
+              backgroundColor: backgroundColor,
+              borderRadius: wp(20),
               alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(180deg)',
@@ -120,29 +117,29 @@ const NotificationScreen = ({
             <BackRight fill={bgTheme} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>
+            <Text allowFontScaling={false} style={{fontSize: fixedFontSize(18), fontWeight: '600', color: backgroundColor}}>
               Notifications
             </Text>
           </View>
           <View
             style={{
-              width: 35,
-              height: 35,
+              width: wp(35),
+              height: wp(35),
             }}
           />
         </View>
       </View>
       <ScrollView
         style={{
-          backgroundColor: code_color.white,
+          backgroundColor: backgroundColor,
           height: '100%',
-          padding: 20,
+          padding: wp(20),
         }}>
-        <Text style={{fontSize: 18, fontWeight: '600', color: code_color.grey, marginBottom: 20}}>
+        <Text style={{fontSize: fixedFontSize(18), fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, marginBottom: wp(20)}}>
           Set your notifications
         </Text>
-        <View style={{flexDirection: 'row', marginVertical: 20, borderBottomColor: code_color.grey, borderBottomWidth: 1, paddingBottom: 10}}>
-        <Text style={{fontSize: 16, fontWeight: '600', color: code_color.grey}}>
+        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
+        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,}}>
           New Stories 
         </Text>
         <Switch
@@ -154,8 +151,8 @@ const NotificationScreen = ({
           value={newStories}
         />
         </View>
-        <View style={{flexDirection: 'row', marginVertical: 20, borderBottomColor: code_color.grey, borderBottomWidth: 1, paddingBottom: 10}}>
-        <Text style={{fontSize: 16, fontWeight: '600', color: code_color.grey}}>
+        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor:  backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
+        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,}}>
           Promotions
         </Text>
         <Switch
@@ -173,10 +170,10 @@ const NotificationScreen = ({
             style={{
               position: 'relative',
               overflow: 'hidden',
-              marginBottom: -100,
+              marginBottom: wp(-100),
               bottom: -50,
-              width: 200,
-              height: 150,
+              width: wp(200),
+              height: hp(150),
               left: '5%',
               zIndex: 1,
             }}>
@@ -184,8 +181,8 @@ const NotificationScreen = ({
               source={{uri: `${BACKEND_URL}/${me}`}}
               resizeMode="cover"
               style={{
-                width: 140,
-                height: 400,
+                width: wp(140),
+                height: hp(500),
               }}
             />
           </View>
@@ -193,9 +190,9 @@ const NotificationScreen = ({
             style={{
               position: 'relative',
               overflow: 'hidden',
-              marginBottom: -100,
-              width: 140,
-              height: 150,
+              marginBottom: wp(-100),
+              width: wp(200),
+              height: hp(150),
               left: '30%',
               zIndex: 1,
             }}>
@@ -203,8 +200,8 @@ const NotificationScreen = ({
               source={{uri: `${BACKEND_URL}/${partner}`}}
               resizeMode="cover"
               style={{
-                width: 140,
-                height: 420,
+                width: wp(140),
+                height: hp(500),
               }}
             />
           </View>
@@ -212,24 +209,24 @@ const NotificationScreen = ({
           <View>
             <ImageBackground
               source={{
-                uri: `${BACKEND_URL}/${userProfile?.data?.category?.image?.url}`,
+                uri: `${BACKEND_URL}${userProfile?.data?.category?.image?.url}`,
               }}
               resizeMode="contain"
               style={{
                 width: '100%',
-                height: 100,
+                height: wp(100),
               }}>
               <View
                 style={{
                   alignItems: 'center',
                   position: 'absolute',
-                  top: -80,
+                  top: wp(-80),
                   right: 0,
                 }}>
                 <Image
                   source={imgNotif}
                   resizeMode="contain"
-                  style={{width: 100, height: 100}}
+                  style={{width: wp(100), height: hp(100)}}
                 />
               </View>
             </ImageBackground>

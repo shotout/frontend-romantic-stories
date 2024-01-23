@@ -32,7 +32,7 @@ export const getListAvatarTheme = (params = {}) =>
     method: 'get',
     params,
   });
-  
+
 export const getListTheme = () =>
   Wrap({
     url: '/list/themes',
@@ -49,23 +49,32 @@ export const getStoryList = (params = {}) =>
     method: 'get',
     params,
   });
-
+export const getStoryDetail = id =>
+  Wrap({
+    url: `/stories/${id}`,
+    method: 'get',
+  });
 export const getMyCollection = (params = {}) =>
   Wrap({
-    url: `/collection`,
+    url: '/collection',
     method: 'get',
     params,
   });
 
 export const createCollection = data =>
   Wrap({
-    url: `/collection`,
+    url: '/collection',
     method: 'POST',
     data,
   });
 export const deleteMyCollection = id =>
   Wrap({
     url: `/collection/${id}`,
+    method: 'DELETE',
+  });
+export const deleteMyStory = id =>
+  Wrap({
+    url: `/collection/story/${id}`,
     method: 'DELETE',
   });
 export const updateMyCollection = (data, id) =>
@@ -176,9 +185,9 @@ export const addNewCollection = data =>
     data,
   });
 
-export const addToCollection = ({idCollection, idQuote}) =>
+export const addToCollection = (idCollection, idQuote) =>
   Wrap({
-    url: `/collection/quote/${idCollection}/${idQuote}`,
+    url: `/collection/story/${idCollection}/${idQuote}`,
     method: 'POST',
   });
 
@@ -197,10 +206,25 @@ export const removeQuoteCollection = ({idCollection, idQuote}) => {
   });
 };
 
-export const getExploreStory = ({search}) =>
+export const getExploreStory = (params = {}) =>
   Wrap({
-    url: `/stories/all?search=${search}`,
+    url: '/stories/all',
     method: 'get',
+    params,
+  });
+
+export const getCategoryDetail = (id = 1, params = {}) =>
+  Wrap({
+    url: `/stories/category/${id}`,
+    method: 'get',
+    params,
+  });
+
+export const submitRating = (id, data) =>
+  Wrap({
+    url: `/stories/rating/${id}`,
+    method: 'POST',
+    data,
   });
 
 export const getListPastQuotes = (params = {}) =>
@@ -224,12 +248,31 @@ export const repeatQuotes = idQuote => {
   });
 };
 
-export const addPastQuotes = idQuote => {
+export const addPastStory = id => {
   Wrap({
-    url: `/past-quote/${idQuote}`,
+    url: `/past-story/${id}`,
     method: 'POST',
   });
 };
+
+export const getLeveling = () =>
+  Wrap({
+    url: '/list/levels',
+    method: 'GET',
+  });
+
+export const addPastLevel = (data = {}) =>
+  Wrap({
+    url: '/level',
+    method: 'POST',
+    data,
+  });
+
+export const addStory = id =>
+  Wrap({
+    url: `/collection/story/${id}`,
+    method: 'POST',
+  });
 
 export const getListLiked = (params = {}) =>
   Wrap({
@@ -302,4 +345,15 @@ export const resetBadge = (data = {}) =>
     url: '/notif/reset-badge',
     method: 'POST',
     data,
+  });
+
+export const getDetailCollection = id =>
+  Wrap({
+    url: `/collection/${id}`,
+    method: 'GET',
+  });
+export const deleteStoryCollection = (id, idStory) =>
+  Wrap({
+    url: `/collection/story/${id}/${idStory}`,
+    method: 'DELETE',
   });

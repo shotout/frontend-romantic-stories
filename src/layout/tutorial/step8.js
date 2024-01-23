@@ -1,0 +1,88 @@
+import React from 'react';
+import {View} from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import {code_color} from '../../utils/colors';
+import Button from '../../components/buttons/Button';
+import AnimatedLottieView from 'lottie-react-native';
+import levelAnimate from '../../assets/lottie/level.json';
+
+const Step8 = ({handleNext}) => {
+  // return <></>;
+  return (
+    <Animatable.View
+      animation={'fadeIn'}
+      delay={4000}
+      style={{
+        backgroundColor: '#3F58DD',
+        borderRadius: 20,
+        padding: 10,
+        marginHorizontal: 40,
+        alignItems: 'center',
+        marginTop: '40%',
+        paddingTop: 50,
+      }}>
+      <View
+        style={{
+          width: 80,
+          height: 80,
+          position: 'absolute',
+          top: -40,
+          backgroundColor: code_color.white,
+          borderRadius: 50,
+          borderColor: '#3F58DD',
+          borderWidth: 4,
+        }}>
+        <AnimatedLottieView
+          source={levelAnimate}
+          autoPlay={true}
+          duration={2000}
+          loop={false}
+          style={{
+            height: 60,
+            width: 60,
+            left: 2,
+            top: 2,
+          }}
+        />
+      </View>
+      <Animatable.Text
+        delay={1500}
+        duration={1000}
+        animation={'fadeIn'}
+        style={{
+          color: code_color.white,
+          textAlign: 'center',
+          fontSize: 18,
+          fontWeight: 'bold',
+          marginBottom: 20,
+          marginTop: 20,
+          lineHeight: 25,
+        }}>
+        {
+          'Gather Experience by\nfinishing Stories, Level\nUp and become a Master\nof Romance!'
+        }
+      </Animatable.Text>
+      <Animatable.View
+        delay={2500}
+        animation={'fadeIn'}
+        duration={1000}
+        style={{flexDirection: 'row', marginHorizontal: 15}}>
+        <Button
+          style={{
+            backgroundColor: code_color.yellow,
+            padding: 10,
+            marginHorizontal: 30,
+            borderRadius: 20,
+            marginVertical: 10,
+            flex: 1,
+            alignItems: 'center',
+          }}
+          title={'Start reading'}
+          onPress={() => handleNext()}
+        />
+      </Animatable.View>
+    </Animatable.View>
+  );
+};
+
+export default Step8;

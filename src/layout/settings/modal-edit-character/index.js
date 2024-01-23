@@ -16,20 +16,28 @@ import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
-function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
+function ModalEditCharacter({
+  isVisible,
+  onClose,
+  colorTheme,
+  userProfile,
+  backgroundColor,
+}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setProgress(
-      userProfile.gender === 'Male'
-        ? userProfile.avatar_male - 1
-        : userProfile.avatar_female - 1,
-    );
-  }, [userProfile.gender]);
+  // useEffect(() => {
+  //   setProgress(
+  //     userProfile.gender === 'Male'
+  //       ? userProfile.avatar_male - 1
+  //       : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4,
+  //   );
+
+  // }, [userProfile.gender]);
 
   useEffect(() => {
     fetchAva();
@@ -39,8 +47,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
     try {
       setLoading(true);
       const payload = {
-        [userProfile.gender === 'Male' ? 'avatar_male' : 'avatar_female']:
-          avatar,
+        avatar_male: avatar === null ? progressValue : avatar,
         _method: 'PATCH',
       };
       await updateProfile(payload);
@@ -54,17 +61,34 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
   };
 
   const fetchAva = async value => {
+    console.log(
+      userProfile.gender +
+        '====' +
+        userProfile.avatar_male +
+        '=====' +
+        userProfile.avatar_female,
+    );
+    // alert(userProfile.gender === 'Male'
+    // ? userProfile.avatar_male - 1
+    // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female )
+
     try {
       if (!userProfile.gender) {
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
+        setProgress(userProfile.avatar_male - 1);
       } else {
         const params = {
           gender: userProfile.gender === 'Male' ? 'male' : 'female',
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+        setProgress(
+          userProfile.gender != "Male"
+            ? userProfile.avatar_male - 4
+            : (userProfile.avatar_male > 2 ? userProfile.avatar_male - 4 : userProfile.avatar_male - 1),
+        );
       }
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -97,7 +121,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -105,13 +129,13 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={20} height={20} />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -128,7 +152,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
         width: Dimensions.get('window').width,
       }}>
       <View
@@ -156,17 +180,17 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
-            defaultIndex={1}
+            defaultIndex={progressValue}
             data={dataAva}
             onSnapToItem={index => {
               setProgress(index);
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             renderItem={({item, index}) => (
@@ -176,7 +200,19 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
+                   <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
+                />
+                {/* <Image
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -186,7 +222,7 @@ function ModalEditCharacter({isVisible, onClose, colorTheme, userProfile}) {
                       opacity: progressValue !== index ? 0.5 : 1,
                     },
                   ]}
-                />
+                /> */}
               </Pressable>
             )}
           />

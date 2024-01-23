@@ -14,7 +14,7 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 
-function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
+function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundColor}) {
   const [name, setName] = useState(userProfile.name);
   const [loading, setLoading] = useState(false);
 
@@ -57,7 +57,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: backgroundColor === '#2C3439' ? 'white' : 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -71,7 +71,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: backgroundColor === '#2C3439' ? 'white' : 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -88,7 +88,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
       }}>
       <Text
         style={{
@@ -108,6 +108,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
           fontWeight: '400',
           lineHeight: 22,
           marginTop: 30,
+          color: backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
         }}>
         Using your real name creates a
         <Text style={{color: code_color.splash, fontWeight: 700}}>
@@ -120,14 +121,14 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme}) {
         allowFontScaling={false}
         style={{
           borderColor: code_color.blueDark,
-          color: code_color.black,
+         color: backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
           borderWidth: 2,
           borderRadius: 6,
           padding: 12,
           marginTop: 30,
           marginBottom: 40,
         }}
-        placeholderTextColor={code_color.blackDark}
+        placeholderTextColor={backgroundColor === '#2C3439' ? 'white' : code_color.blackDark}
         value={name}
         onChangeText={text => setName(text)}
         placeholder="Your name"

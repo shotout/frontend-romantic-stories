@@ -16,32 +16,32 @@ import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
-function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
+function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setProgress(
-      userProfile.gender === 'Female'
-        ? userProfile.avatar_male - 1
-        : userProfile.avatar_female - 1,
-    );
-  }, [userProfile.gender]);
+  // useEffect(() => {
+  //   setProgress(userProfile.gender === 'Female'
+  //   ?  userProfile.avatar_male - 1
+  //   :  userProfile.avatar_female - 4 )
+  // }, [userProfile.gender]);
 
   useEffect(() => {
     fetchAva();
   }, [userProfile.gender]);
 
   const handleSubmit = async () => {
+   
     try {
+    
       setLoading(true);
       const payload = {
         _method: 'PATCH',
-        [userProfile.gender === 'Female' ? 'avatar_male' : 'avatar_female']:
-          avatar,
+        avatar_female: avatar === null ? progressValue : avatar,
       };
       await updateProfile(payload);
       reloadUserProfile();
@@ -59,12 +59,46 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
+        setProgress(
+         
+          userProfile.avatar_female - 1
+        
+     );
+        // alert(userProfile.gender === 'Male'
+        // ? userProfile.avatar_male - 1
+        // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 )
+        // setProgress(
+        //   userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male : userProfile.avatar_female < 3 ? userProfile.avatar_female + 3 : userProfile.avatar_female - 4, 
+        // );
       } else {
         const params = {
           gender: userProfile.gender === 'Female' ? 'male' : 'female',
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+        // setProgress(0)
+        setProgress(
+          userProfile.gender != "Male"
+            ? userProfile.avatar_male - 4
+            : (userProfile.avatar_male > 2 ? userProfile.avatar_male - 4 : userProfile.avatar_male - 1),
+        );
+        // alert(avatar?.data.length, userProfile.avatar_female)
+        //  setProgress(
+        //   userProfile.gender === 'Female'
+        //     ? userProfile.avatar_female - 3
+        //     :  userProfile.avatar_female - 1
+        // );
+        // alert(userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 )
+        // setProgress(
+        //   userProfile.gender === 'Male'
+        //     ? userProfile.avatar_male - 1
+        //     :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female - 3 
+        // );
+      
       }
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -97,7 +131,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -105,13 +139,13 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={20} height={20}  />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -128,7 +162,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
         width: Dimensions.get('window').width,
       }}>
       <View
@@ -143,7 +177,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
       />
       <Text
         style={{
-          color: code_color.white,
+          color: 'white',
           fontSize: moderateScale(30),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
@@ -156,17 +190,17 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
-            defaultIndex={1}
+            defaultIndex={progressValue}
             data={dataAva}
             onSnapToItem={index => {
               setProgress(index);
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             renderItem={({item, index}) => (
@@ -176,7 +210,19 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
+                   <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
+                />
+                {/* <Image
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -186,7 +232,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
                       opacity: progressValue !== index ? 0.5 : 1,
                     },
                   ]}
-                />
+                /> */}
               </Pressable>
             )}
           />
@@ -204,7 +250,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
           marginBottom: moderateScale(10),
           display: dataAva ? undefined : 'none',
         }}
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         title={loading ? 'Loading...' : 'Save'}
       />
     </View>

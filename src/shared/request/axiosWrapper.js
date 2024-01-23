@@ -47,6 +47,7 @@ const request = options => {
   const onSuccess = response => response.data;
 
   const onError = error => {
+    console.log(JSON.stringify(error))
     if (error.response) {
       if (options.handles && error.response.status) {
         if (options.handles.includes(error.response.status)) {

@@ -1,25 +1,65 @@
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Image, ImageBackground, View} from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import FastImage from 'react-native-fast-image';
 import styles from './styles';
 
 const activeLamp = require('../../assets/images/step.png');
-const lampUnactive = require('../..//assets/images/stepNull.png');
+const lampUnactive = require('../../assets/images/stepNull.png');
 const lampActiveAnimation = require('../../assets/images/step.png');
 
 export default function StepHeader({currentStep}) {
-  const activeGift = () => (
+  const animateGift = () => (
+    <ImageBackground
+      source={lampUnactive}
+      style={{
+        height: 8,
+        position: 'relative',
+        marginTop: 0,
+        borderRadius: 4,
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}>
+      <Animatable.Image
+        animation={{
+          from: {
+            left: -40,
+          },
+          to: {
+            left: 0,
+          },
+          easing: 'linear',
+        }}
+        duration={currentStep === 8 ? 18000 : 7000}
+        source={lampActiveAnimation}
+        style={styles.ctnUnactiveLamp}
+      />
+    </ImageBackground>
+  );
 
-      <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} />
-  
+  const activeGift = () => (
+    <FastImage
+      source={lampActiveAnimation}
+      style={styles.ctnUnactiveLamp}
+      resizeMode={FastImage.resizeMode.contain}
+    />
   );
 
   const unactiveLamp = () => (
-    <Image source={lampUnactive} style={styles.ctnUnactiveLamp} />
+    <FastImage
+      source={lampUnactive}
+      style={styles.ctnUnactiveLamp}
+      resizeMode={FastImage.resizeMode.contain}
+    />
   );
 
   function renderImageStep(stepItem) {
-    if (stepItem <= currentStep) {
+    if (stepItem < currentStep) {
       return activeGift();
+    }
+
+    if (stepItem == currentStep) {
+      return animateGift();
     }
 
     return unactiveLamp();
@@ -27,7 +67,6 @@ export default function StepHeader({currentStep}) {
 
   return (
     <View style={styles.ctnRoot}>
-      {renderImageStep(1)}
       {renderImageStep(2)}
       {renderImageStep(3)}
       {renderImageStep(4)}

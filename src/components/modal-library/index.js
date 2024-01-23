@@ -8,6 +8,7 @@ import {
   Pressable,
   Image,
   TextInput,
+  Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -16,35 +17,26 @@ import dispatcher from './dispatcher';
 import states from './states';
 import BackLeft from '../../assets/icons/bottom/backLeft';
 import {code_color} from '../../utils/colors';
-import {libraryAdd} from '../../assets/images';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import SearchSvg from '../../assets/icons/search.jsx';
 import DescendingSvg from '../../assets/icons/descending.jsx';
 import Button from '../buttons/Button';
 import BackRightSvg from '../../assets/icons/backRight';
 import ChecklistSvg from '../../assets/icons/checklist';
+import {addToCollection} from '../../shared/request';
+import {libraryAdd} from '../../assets/images';
 
-function ModalLibrary({isVisible, onClose}) {
-  const [listLibrary, setList] = useState([
-    {
-      name: 'Recently added collection',
-      icon: <LibrarySvg />,
-      iconRight: <BackRightSvg />,
-      type: 1,
-      title: '',
-      desc: '',
-      price: '',
-    },
-  ]);
+function ModalLibrary({isVisible, onClose, data, storyId, colorTheme}) {
+  const [listLibrary, setList] = useState(data);
+  const [id, setId] = useState(storyId);
   const [select, setSelect] = useState(null);
   const handleClose = () => {
     // if (typeof onClose === 'function') {
     //   onClose();
     // }
   };
-
   const header = () => (
-    <View style={{backgroundColor: code_color.splash}}>
+    <View style={{backgroundColor: colorTheme}}>
       <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
         <Pressable
           onPress={() => onClose()}
@@ -57,7 +49,7 @@ function ModalLibrary({isVisible, onClose}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={code_color.splash} />
+            <BackLeft width={20} height={20} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -77,19 +69,21 @@ function ModalLibrary({isVisible, onClose}) {
           alignItems: 'center',
           marginHorizontal: 10,
         }}>
-        <Image source={libraryAdd} />
+        <Image
+          source={libraryAdd}
+          style={{height: 30, width: 30}}
+          resizeMode="contain"
+        />
         <View
           style={{
             backgroundColor: code_color.white,
             flex: 1,
-         
-      
             borderRadius: 10,
             margin: 10,
             flexDirection: 'row',
             alignItems: 'center',
             paddingLeft: 10,
-            height: 40
+            height: 40,
           }}>
           <SearchSvg />
           <TextInput
@@ -105,7 +99,7 @@ function ModalLibrary({isVisible, onClose}) {
 
   const renderList = () => (
     <View>
-      {listLibrary.map(item => (
+      {data?.map(item => (
         <View
           style={{
             flexDirection: 'row',
@@ -120,18 +114,21 @@ function ModalLibrary({isVisible, onClose}) {
             {item.name}
           </Text>
           <Pressable
-            onPress={() => setSelect(item.name)}
+            onPress={() => setSelect(item)}
             style={{
               borderWidth: 1,
               borderColor: code_color.blackDark,
-              backgroundColor: select ? code_color.splash : null,
+              backgroundColor:
+                select?.name === item.name ? code_color.splash : null,
               width: 30,
               height: 30,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            {select ? <ChecklistSvg fill={code_color.white} /> : null}
+            {select?.name === item.name ? (
+              <ChecklistSvg fill={code_color.white} />
+            ) : null}
           </Pressable>
         </View>
       ))}
@@ -170,7 +167,12 @@ function ModalLibrary({isVisible, onClose}) {
               bottom: 20,
               width: '90%',
             }}
-            onPress={() => {}}
+            onPress={() => {
+              addToCollection(select?.id, storyId);
+              setTimeout(() => {
+                onClose();
+              }, 200);
+            }}
           />
         </View>
       </View>

@@ -7,5 +7,9 @@ export default states => ({
   fontSize: states.defaultState.fontSize,
   colorTheme: states.defaultState.colorTheme,
   stepsTutorial: states.defaultState.stepsTutorial,
-  isPremium: states.defaultState.isPremium,
+  readStory: states.defaultState.readStory,
+  listenStory:  states.defaultState.listenStory,
+  nextStory: states.defaultState.nextStory,
+  levelingUser: states.defaultState.levelingUser,
+  colorText: states.defaultState.colorText,
 });

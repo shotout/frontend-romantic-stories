@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -25,6 +26,7 @@ import Reading from '../../assets/icons/reading.jsx';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
 import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
+import {BACKEND_URL} from '../../shared/static';
 
 function ModalUnlockStory({
   isVisible,
@@ -34,12 +36,17 @@ function ModalUnlockStory({
   data,
   isPremium,
   readLater,
+  nextStory,
+  handleRead,
+  handleLater,
+  relateStory,
 }) {
+  // alert(JSON.stringify(nextStory))
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
   };
-
+  // alert(JSON.stringify(nextStory))
   const AddCollection = async () => {
     if (collect != '') {
       if (edit) {
@@ -135,7 +142,9 @@ function ModalUnlockStory({
               }}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={cover1}
+                  source={{
+                    uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                  }}
                   resizeMode="contain"
                   style={{
                     width: 65,
@@ -146,21 +155,21 @@ function ModalUnlockStory({
                 <View style={{flex: 1}}>
                   <Text
                     style={{
-                      color: code_color.blueDark,
-                      marginTop: 10,
-                      fontWeight: 'bold',
-                      fontSize: 16,
-                    }}>
-                    [Suggested story this user never read before]
-                  </Text>
-                  <Text
-                    style={{
                       color: '#3F58DD',
                       marginTop: 10,
                       fontWeight: 400,
                       fontSize: 14,
                     }}>
-                    [Story category]
+                    {nextStory?.category.name}
+                  </Text>
+                  <Text
+                    style={{
+                      color: code_color.blueDark,
+                      marginTop: 10,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
+                    {nextStory?.title_en}
                   </Text>
                 </View>
               </View>
@@ -171,11 +180,10 @@ function ModalUnlockStory({
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                Lorem ipsum dolor sit amet consectetur. Pretium consequat odio
-                ornare aliquet curabitur tincidunt ipsum. Nisi lectus a si...
+                {nextStory?.content_en.substring(0, 100)}...
               </Text>
               <TouchableOpacity
-                onPress={onClose}
+                onPress={handleRead}
                 style={{
                   backgroundColor: '#009A37',
                   marginTop: moderateScale(20),
@@ -218,36 +226,50 @@ function ModalUnlockStory({
                 }}>
                 Other Stories you might like:
               </Text>
-              <View style={{flexDirection: 'row'}}>
-                {[1, 2, 3].map(itm => (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {relateStory?.most_read?.slice(0, 3).map(itm => (
                   <Pressable
                     style={{
                       flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginHorizontal: 10,
+                      // alignItems: 'center',
+                      // backgroundColor: 'red',
+                      // justifyContent: 'center',
+                      width: 110,
+                     marginRight: 5
                     }}>
                     <Image
                       source={cover1}
                       resizeMode="contain"
                       style={{
-                        width: 65,
-                        height: 87,
+                        width: 130,
+                        height: 130,
                         marginBottom: moderateScale(10),
                       }}
                     />
+
+                    <Text
+                      style={{
+                        color: code_color.black,
+                        fontSize: moderateScale(10),
+                        textAlign: 'left',
+                        marginBottom: 5,
+                        marginLeft: 15
+                      }}>
+                      {itm.category.name}
+                    </Text>
                     <Text
                       style={{
                         color: code_color.black,
                         fontWeight: 500,
                         fontSize: moderateScale(12),
-                        textAlign: 'center',
+                        marginLeft: 15
+                        // textAlign: 'center',
                       }}>
-                      Title of the Story A
+                      {itm.title_en}
                     </Text>
                   </Pressable>
                 ))}
-              </View>
+              </ScrollView>
 
               <TouchableOpacity
                 onPress={() => {
@@ -294,8 +316,8 @@ function ModalUnlockStory({
       onDismiss={handleClose}>
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         {isPremium ? (
-          renderPremium()
-        ) : (
+        renderPremium()
+         ) : (
           <View
             style={{
               alignItems: 'center',
@@ -352,6 +374,15 @@ function ModalUnlockStory({
                       }}
                     />
                     <View style={{flex: 1}}>
+                    <Text
+                        style={{
+                          color: '#3F58DD',
+                          marginTop: 10,
+                          fontWeight: 400,
+                          fontSize: 14,
+                        }}>
+                        {nextStory?.category?.name}
+                      </Text>
                       <Text
                         style={{
                           color: code_color.blueDark,
@@ -359,16 +390,7 @@ function ModalUnlockStory({
                           fontWeight: 'bold',
                           fontSize: 16,
                         }}>
-                        [Suggested story this user never read before]
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#3F58DD',
-                          marginTop: 10,
-                          fontWeight: 400,
-                          fontSize: 14,
-                        }}>
-                        [Story category]
+                        {nextStory?.title_en}
                       </Text>
                     </View>
                   </View>
@@ -378,13 +400,11 @@ function ModalUnlockStory({
                       fontSize: 12,
                       marginTop: moderateScale(16),
                     }}>
-                    Lorem ipsum dolor sit amet consectetur. Pretium consequat
-                    odio ornare aliquet curabitur tincidunt ipsum. Nisi lectus a
-                    si...
+                    {nextStory?.content_en?.slice(0, 130)}...
                   </Text>
                 </View>
                 <TouchableOpacity
-                  onPress={onClose}
+                  onPress={handleRead}
                   style={{
                     backgroundColor: '#009A37',
                     marginTop: moderateScale(20),
@@ -405,7 +425,7 @@ function ModalUnlockStory({
                 </TouchableOpacity>
                 {readLater && (
                   <TouchableOpacity
-                    onPress={onClose}
+                    onPress={handleLater ? handleLater : onClose}
                     style={{
                       backgroundColor: '#ED5267',
                       padding: moderateScale(4),

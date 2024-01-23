@@ -26,11 +26,20 @@ import {
 } from '../../../assets/icons/app-icon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
+import {loadRewardedAppIcon} from '../../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 
-function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
-  const [selectIcon, setSelectIcon] = useState('default');
+function ModalChangeIcon({
+  isVisible,
+  onClose,
+  isPremium,
+  colorTheme,
+  backgroundColor,
+}) {
+  const [selectIcon, setSelectIcon] = useState('first');
   const [selectedIcon, setSelectedIcon] = useState('');
   const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
 
   useEffect(() => {
     const getCustomIcon = async () => {
@@ -107,6 +116,24 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
     }, 1000);
   };
 
+  const showIntersialAppIcon = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewardedAppIcon();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          setShowModalUnlock(false);
+          setTimeout(() => {
+            handleChangeIcon(null);
+          }, 500);
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
+
   const handleClose = () => {
     if (typeof onClose === 'function') {
       onClose();
@@ -127,7 +154,9 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
           'Watch a Video to unlock this App Icon for Free or go UNLIMITED to\r\nunlock everything!'
         }
         Icon={() => <UnlockIcon style={{marginBottom: 20}} />}
-        onSuccess={() => handleChangeIcon(null)}
+        // onSuccess={() => handleChangeIcon(null)}
+        onSuccess={() => showIntersialAppIcon()}
+        isLoadingAds={loadingAds}
       />
       <View
         style={{
@@ -139,7 +168,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: backgroundColor,
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -153,7 +182,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: backgroundColor,
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -170,15 +199,19 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
       }}>
       <Text
         style={{
-          color: code_color.black,
+          color:
+            backgroundColor === code_color.blackDark
+              ? 'white'
+              : code_color.blackDark,
           fontSize: 17,
           marginTop: 10,
           lineHeight: 24,
           fontWeight: '500',
+          marginBottom: 10,
         }}>
         Select your favorite App Icon for your Home Screen.
       </Text>

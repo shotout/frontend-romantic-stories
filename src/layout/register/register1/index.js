@@ -4,13 +4,14 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { fixedFontSize, wp } from '../../../utils/screen';
 
 export default function Register1({setGender, selectedGender}) {
   return (
     <>
       <TouchableOpacity
-        style={{marginBottom: moderateScale(30), alignItems: 'center'}}
+        style={{marginBottom: wp(30), alignItems: 'center'}}
         onPress={() => setGender('Male')}>
         <Image
           source={male}
@@ -18,8 +19,8 @@ export default function Register1({setGender, selectedGender}) {
             selectedGender === 'Male'
               ? styles.borderBlue
               : {
-                  width: moderateScale(105),
-                  height: moderateScale(105),
+                  width: wp(105),
+                  height: wp(105),
                   resizeMode: 'contain',
                 }
           }
@@ -29,10 +30,10 @@ export default function Register1({setGender, selectedGender}) {
           style={{
             color:
               selectedGender === 'Male' ? code_color.splash : code_color.grey,
-            fontSize: moderateScale(14),
+            fontSize: fixedFontSize(14),
             fontFamily: 'Roboto',
             textAlign: 'center',
-            marginTop: moderateScale(5),
+            marginTop: wp(5),
             fontWeight: 'bold',
           }}>
           {'Male'}
@@ -45,8 +46,8 @@ export default function Register1({setGender, selectedGender}) {
             selectedGender === 'Female'
               ? styles.borderBlue
               : {
-                  width: moderateScale(105),
-                  height: moderateScale(105),
+                  width: wp(105),
+                  height: wp(105),
                   resizeMode: 'contain',
                 }
           }
@@ -56,10 +57,10 @@ export default function Register1({setGender, selectedGender}) {
           style={{
             color:
               selectedGender === 'Female' ? code_color.splash : code_color.grey,
-            fontSize: moderateScale(14),
+            fontSize: fixedFontSize(14),
             fontFamily: 'Roboto',
             textAlign: 'center',
-            marginTop: moderateScale(5),
+            marginTop: wp(5),
             fontWeight: 'bold',
           }}>
           {'Female'}

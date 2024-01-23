@@ -15,6 +15,7 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
+  Clipboard,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -58,6 +59,13 @@ import {
   imgStep6,
   imgStep7,
   imgStep8,
+  imgSelectGift2,
+  imgQuote,
+  imgQuote2,
+  imgShare,
+  logo,
+  xp,
+  xpAndLevel,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -76,22 +84,41 @@ import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
+import {Step6, Step7, Step8} from '../../layout/tutorial';
+import {handlePayment} from '../../helpers/paywall';
+import {loadRewarded} from '../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import PlayStore from '../../assets/icons/playStore';
+import AppStore from '../../assets/icons/appStore';
 
-function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
+function ScreenShare({
+  route,
+  stepsTutorial,
+  handleSetSteps,
+  isPremium,
+  userProfile,
+}) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
-  const [selectBg, setSelectBg] = useState(null);
+  const [loadingAds, setLoadingAds] = useState(false);
+  const [selectBg, setSelectBg] = useState(imgShare);
   const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
   const [fontSelect, setSelectFont] = useState({
-    name: 'Georgia',
-    value: 'GeorgiaEstate-w15Mn',
+    name: 'Roboto',
+    value: 'Roboto-Regular',
   });
-  const [selectedFont, setSelectedFont] = useState<any>(null);
+  const [selectedFont, setSelectedFont] = useState({
+    name: '',
+    value: '',
+  });
+  const [showModal, setShowModal] = useState(false);
+  const [showModalTwo, setShowModalTwo] = useState(false);
+  const [isStatic, setIsStatic] = useState(false);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [sticker, setSticker] = useState([]);
@@ -158,11 +185,61 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       pan.setValue({x: 0, y: 0});
     },
   });
+  const showInterStialFont = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                setSelectFont(selectedFont);
+                setModalUnlockFont(false);
+              },
+            },
+          ]);
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
 
+  const showInterStialBg = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  setSelectBg(selectedBg);
+                  setModalUnlockBg(false);
+                },
+              },
+            ],
+          );
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
   const handleShare = async () => {
     base64CaptureImage.current = null;
     handleScreenshot();
   };
+
+
 
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -222,28 +299,38 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         console.log('Capture Error:', err.message);
       });
   };
-
   const handleWAShare = async () => {
     await handleShare();
-    setTimeout(async () => {
-      try {
-        await Share.open({
-          url: base64CaptureImage.current!,
-          title: 'Shared-Short-Story',
-        });
-      } catch (err) {
-        console.log('Error share whatsapp:', err);
-      }
-    }, 200);
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              await Share.open({
+                url: base64CaptureImage.current!,
+                title: 'Shared-Short-Story',
+              });
+            } catch (err) {
+              console.log('Error share whatsapp:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   const handleIGStoryShare = async () => {
-    handleShare();
+    await handleShare();
     setTimeout(async () => {
       try {
         const contentURL = isIphone ? base64CaptureImage.current : captureUri;
         await Share.shareSingle({
-          backgroundImage: contentURL, // url or an base64 string
+          backgroundImage: contentURL!, // url or an base64 string
           social: Share.Social.INSTAGRAM_STORIES,
           appId: '637815961525510', // facebook appId
         });
@@ -252,26 +339,38 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       }
     }, 200);
   };
-
   const handleShareInstagramDefault = async () => {
-    handleShare();
-    setTimeout(async () => {
-      try {
-        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.shareSingle({
-          title: 'Share image to instagram',
-          type: 'image/jpeg',
-          url: contentURL,
-          social: Share.Social.INSTAGRAM,
-        });
-      } catch (err) {
-        console.log('Err share default ig:', err);
-      }
-    }, 200);
+    await handleShare();
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const contentURL = isIphone
+                ? base64CaptureImage.current
+                : captureUri;
+              await Share.shareSingle({
+                title: 'Share image to instagram',
+                type: 'image/jpeg',
+                url: contentURL,
+                social: Share.Social.INSTAGRAM,
+              });
+            } catch (err) {
+              console.log('Err share default ig:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   const handleSharetoFBStory = async () => {
-    handleShare();
+    await handleShare();
     setTimeout(async () => {
       try {
         const contentURL = isIphone ? base64CaptureImage.current : captureUri;
@@ -287,24 +386,31 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   };
 
   const handleShareFBDefault = async () => {
-    handleShare();
-    setTimeout(async () => {
-      try {
-        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.shareSingle({
-          url: contentURL!,
-          // title: 'Share file',
-          // message: 'Simple share with message',
-          // appId: '637815961525510', // facebook appId
-          // backgroundBottomColor: '#fff',
-          // backgroundTopColor: '#fff',
-          // type: 'image/*',
-          social: Social.Facebook,
-        });
-      } catch (err) {
-        console.log('Err fb default:', err);
-      }
-    }, 200);
+    await handleShare();
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const contentURL = isIphone
+                ? base64CaptureImage.current
+                : captureUri;
+              await Share.shareSingle({
+                url: contentURL!,
+                social: Social.Facebook,
+              });
+            } catch (err) {
+              console.log('Err fb default:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   function renderCard() {
@@ -424,44 +530,14 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               style={{
                 alignContent: 'center',
                 justifyContent: 'center',
-                width: 150,
-                height: 150,
+                width: 50,
+                height: 50,
               }}
             />
           </Gestures>
         ))}
       </View>
     );
-    // Gunakan x dan y untuk mengatur posisi gambar/stiker
-    // return (
-    //   // Asumsi Sticker adalah gambar
-    //   <Animated.View
-    //     style={{
-    //       transform: [
-    //         {translateX: pan.x},
-    //         {translateY: pan.y},
-    //         {scaleX: size.width / 100}, // asumsi ukuran awal sticker 100x100
-    //         {scaleY: size.height / 100},
-    //       ],
-    //       width: 100,
-    //       height: 100,
-    //       position: 'absolute',
-    //     }}
-    //     {...panResponder.panHandlers}>
-    //     <Image source={imgGift1} style={{flex: 1}} resizeMode="cover" />
-    //     <View
-    //       style={{
-    //         position: 'absolute',
-    //         right: 0,
-    //         bottom: 0,
-    //         width: 30,
-    //         height: 30,
-    //         backgroundColor: 'blue',
-    //       }}
-    //       {...resizePanResponder.panHandlers}
-    //     />
-    //   </Animated.View>
-    // );
   }
   const handleFont = value => {
     if (value === 0) {
@@ -499,19 +575,24 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2;
+    const halfScreenWidth = Dimensions.get('window').width / 2.5;
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
       handleSetSteps(stepsTutorial - 1);
       if (stepsTutorial === 6) {
         navigate('Main');
       }
-
+      setIsStatic(false);
       setIsSwipingLeft(true);
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
       handleSetSteps(stepsTutorial + 1);
+      setIsStatic(false);
+
+      {
+        stepsTutorial == 7 ? setShowModalTwo(true) : null;
+      }
       {
         stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
       }
@@ -524,18 +605,38 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       setIsSwipingRight(true);
     }
   };
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
-  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
+ 
+  useEffect(() => {
+    if(stepsTutorial === 6){
+      setTimeout(() => {
+        setShowModal(true);
+      }, 3000);
+    }
+    if(showModal){
+      setTimeout(() => {
+        setShowModal(false);
+        handleSetSteps(6 + 1)
+      }, 4000);
+     
+    }
+    if(stepsTutorial === 7){
+      setTimeout(() => {
+        setShowModalTwo(true);
+      }, 2500);
+      setTimeout(() => {
+        setIsStatic(true);
+      }, 10000);
+    }
+  }, [stepsTutorial, showModal])
+
+  const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
   const renderTutorial = () => {
     if (stepsTutorial === 6 || stepsTutorial === 7) {
       return (
         <SafeAreaView
-          // onTouchStart={handleTouchStart}
+          onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
           style={{
             position: 'absolute',
 
@@ -546,56 +647,79 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
             paddingTop: 40,
           }}>
           {renderProgress()}
-          <View
-            style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '40%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={stepsTutorial === 6 ? imgStep6 : imgStep7}
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginVertical: 20,
-              }}>
-              {stepsTutorial === 6
-                ? 'Customize your selected\ntext, change the font and\nadd a background.'
-                : 'Everything ready? Save\nyour Custom Quote or\nShare it with your Friends!'}
-            </Text>
 
-            <Button
-              style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
-                borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={i18n.t('Next')}
-              onPress={() => {
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false);
-              }}
-            />
-          </View>
+          <ImageBackground
+            source={imgQuote}
+            resizeMode="cover"
+            style={{
+              position: 'absolute',
+              top: '0',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              // backgroundColor: 'rgba(255,255,255,0.5)',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+            }}>
+            <View style={{marginTop: 10}}>{renderProgress()}</View>
+
+            {stepsTutorial === 6 && showModal ? (
+              <Step6 />
+            ) : showModalTwo ? (
+              <Step7
+                handleNext={() => {
+                  setShowModalTwo(false);
+                  handleSetSteps(7 + 1);
+                }}
+              />
+            ) : null}
+          </ImageBackground>
         </SafeAreaView>
       );
-    } else if (stepsTutorial === 8 || stepsTutorial === 9) {
+    }
+    // if (stepsTutorial === 7) {
+    //   return (
+    //     <SafeAreaView
+    //       onTouchStart={handleTouchStart}
+    //       // onTouchEnd={handleTouchEnd}
+    //       pointerEvents="box-only"
+    //       style={{
+    //         position: 'absolute',
+
+    //         width: Dimensions.get('window').width,
+    //         height: Dimensions.get('window').height,
+
+    //         backgroundColor: 'rgba(0,0,0,0.3)',
+    //         paddingTop: 40,
+    //       }}>
+    //       {stepsTutorial != 7 ? renderProgress() : null}
+
+    //       <ImageBackground
+    //         source={imgQuote2}
+    //         resizeMode="contain"
+    //         style={{
+    //           position: 'absolute',
+    //           top: '0',
+    //           width: Dimensions.get('window').width,
+    //           height: Dimensions.get('window').height,
+
+    //           backgroundColor: 'rgba(0,0,0,0.3)',
+    //         }}>
+    //         <View style={{marginTop: 10}}>{renderProgress()}</View>
+    //         {showModalTwo ? 
+    //         <Step7
+    //           handleNext={() => {
+    //             setShowModalTwo(false)
+    //             handleSetSteps(7 + 1);
+    //           }}
+    //         /> : null }
+    //       </ImageBackground>
+    //     </SafeAreaView>
+    //   );
+    else if (stepsTutorial === 8 || stepsTutorial === 9) {
       return (
         <SafeAreaView
-          // onTouchStart={handleTouchStart}
+          onTouchStart={handleTouchStart}
           // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
           style={{
             position: 'absolute',
             width: Dimensions.get('window').width,
@@ -603,142 +727,112 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
             backgroundColor: 'rgba(0,0,0,0.3)',
             paddingTop: 40,
           }}>
-          <ImageBackground
-            source={imgBgXp}
-            resizeMode="contain"
+          <Image
+            source={xpAndLevel}
             style={{
               position: 'absolute',
-              top: '-5%',
+              top: 0,
+              left: 0,
               width: Dimensions.get('window').width,
               height: Dimensions.get('window').height,
-
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              paddingTop: 40,
-            }}>
-            {renderProgress()}
-            <View
-              style={{
-                backgroundColor: '#3F58DD',
-                borderRadius: 20,
-                padding: 10,
-                marginHorizontal: 40,
-                alignItems: 'center',
-                marginTop: '45%',
-                paddingTop: 50,
-              }}>
-              <Image
-                source={imgStep8}
-                resizeMode="contain"
-                style={{
-                  width: 100,
-                  height: 200,
-                  position: 'absolute',
-                  top: -100,
-                }}
-              />
-              <Text
-                style={{
-                  color: code_color.white,
-                  textAlign: 'center',
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginVertical: 20,
-                }}>
-                {
-                  'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'
-                }
-              </Text>
-
-              <Button
-                style={{
-                  backgroundColor: code_color.yellow,
-                  padding: 10,
-                  paddingHorizontal: 40,
-                  borderRadius: 20,
-                  marginVertical: 10,
-                }}
-                title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
-                onPress={() => {
-                 
-                  handleSetSteps(stepsTutorial + 1);
-                  setVisible(false);
-                  {
-                    stepsTutorial === 9
-                      ? AsyncStorage.removeItem('isTutorial')
-                      : null;
-                  }
-                  {
-                    stepsTutorial === 9 ? handleSetSteps(0) : null;
-                  }
-                  {
-                    stepsTutorial === 9 ? goBack() : null;
-                  }
-                }}
-              />
-            </View>
-          </ImageBackground>
+            }}
+          />
+          <View style={{marginTop: 20}}>{renderProgress()}</View>
+          <Step8
+            handleNext={() => {
+              handleSetSteps(stepsTutorial + 1);
+              setVisible(false);
+              if (stepsTutorial === 8) {
+                AsyncStorage.removeItem('isTutorial');
+                handleSetSteps(0);
+                goBack();
+                handlePayment('onboarding');
+              }
+            }}
+          />
         </SafeAreaView>
       );
     }
   };
 
-  const renderScreenShot = () => {
+  const renderLayout = () => {
     return (
-      <ViewShot
-        style={styles.conQuote}
-        onLayout={event => {
-          setViewShotLayout(event.nativeEvent.layout);
-        }}
-        ref={captureRef}
-        options={{
-          fileName: `Shortstory${Date.now()}`,
-          format: 'png',
-          quality: 1.0,
+      <View
+        style={{
+          position: 'relative',
+          backgroundColor: code_color.white,
+          borderRadius: moderateScale(24),
+          width: '90%',
+          height: 'auto',
+          // marginBottom: 20
+          // paddingTop: 40
         }}>
-        <Image
-          source={selectBg}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            borderRadius: 24,
-            resizeMode: 'cover',
+        <ViewShot
+          style={styles.conQuote}
+          onLayout={event => {
+            setViewShotLayout(event.nativeEvent.layout);
           }}
-        />
-        <View style={styles.overlay} />
-        {renderHeaderScreenShot()}
-        {isVisibleFont ? (
-          <TextInput
-            style={{padding: 10, marginTop: 30}}
-            placeholder="Masukkan teks"
-            value={userText}
-            onChangeText={text => setUserText(text)}
-          />
-        ) : null}
-        <TextFontComponent />
-        <StickerComponent />
-        <Text
-          style={{
-            ...styles.textQuote,
-            fontFamily: fontSelect.value,
-            fontSize: fontSizeDefault,
+          ref={captureRef}
+          options={{
+            fileName: `Shortstory${Date.now()}`,
+            format: 'png',
+            quality: 1.0,
           }}>
-          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-            {route?.params?.start}
-          </Text>{' '}
-          {route?.params?.selectedContent}{' '}
-          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-            {route?.params?.end}
+          <Image
+            source={selectBg}
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              borderRadius: 24,
+              resizeMode: 'cover',
+            }}
+          />
+          {isVisibleFont ? (
+            <TextInput
+              style={{padding: 10, marginTop: 30}}
+              placeholder="Masukkan teks"
+              value={userText}
+              onChangeText={text => setUserText(text)}
+            />
+          ) : null}
+          <TextFontComponent />
+          <StickerComponent />
+          <Text
+            style={{
+              ...styles.textQuote,
+              fontFamily: fontSelect.value,
+              fontSize: moderateScale(16),
+              marginHorizontal: moderateScale(20),
+            }}>
+            <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+              {route?.params?.start}
+            </Text>{' '}
+            {route?.params?.selectedContent}{' '}
+            <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+              {route?.params?.end}
+            </Text>
           </Text>
-        </Text>
-        <Text style={styles.textMarker}>@EroTales</Text>
-      </ViewShot>
+          <Text
+            style={{
+              color: code_color.black,
+              fontSize: moderateScale(18),
+              fontWeight: '600',
+              textAlign: 'center',
+              bottom: moderateScale(20),
+            }}>
+            @EroTales
+          </Text>
+        </ViewShot>
+        {renderHeaderScreenShot()}
+        {/* <View style={styles.overlay} /> */}
+      </View>
     );
   };
-
   const renderHeaderScreenShot = () => {
     return (
-      <View>
+      <View
+        style={{flexDirection: 'row', position: 'absolute', top: 0, right: 0}}>
         {isVisibleFont ? null : (
           <Pressable onPress={() => setVisible(true)}>
             <Image
@@ -750,12 +844,18 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 right: 50,
                 top: 10,
                 resizeMode: 'contain',
+                marginBottom: 10,
               }}
             />
           </Pressable>
         )}
         {isVisibleFont ? (
           <Pressable
+            style={{
+              position: 'absolute',
+              right: 10,
+              top: 5,
+            }}
             onPress={() => {
               setDraggableItems([...draggableItems, userText]);
               setUserText('');
@@ -766,7 +866,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               style={{
                 color: code_color.black,
                 position: 'absolute',
-                right: 10,
+                right: 0,
                 fontSize: 18,
                 top: 5,
               }}>
@@ -819,16 +919,25 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         desc={
           'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
         }
-        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        Icon={() => (
+          <UnlockFontIcon
+            style={{marginBottom: 20}}
+            width={'50%'}
+            fontBefore={fontSelect.value}
+            fontAfter={selectedFont.value}
+          />
+        )}
+        isLoadingAds={loadingAds}
         onSuccess={() => {
-          setModalUnlockFont(false);
-          setSelectFont(selectedFont);
-          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
-            {
-              text: 'OK',
-              onPress: () => {},
-            },
-          ]);
+          showInterStialFont();
+          // setModalUnlockFont(false);
+          // setSelectFont(selectedFont);
+          // Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+          //   {
+          //     text: 'OK',
+          //     onPress: () => {},
+          //   },
+          // ]);
         }}
       />
       <ModalUnlockPremium
@@ -844,20 +953,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         Icon={() => (
           <UnlockBgShareIcon style={{marginBottom: 20}} width={'50%'} />
         )}
-        onSuccess={() => {
-          setSelectBg(selectedBg);
-          setModalUnlockBg(false);
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: () => {},
-              },
-            ],
-          );
-        }}
+        isLoadingAds={loadingAds}
+        onSuccess={showInterStialBg}
       />
       <View style={styles.row}>
         <Text style={styles.textTitle}>Share Quote</Text>
@@ -865,11 +962,11 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
+      
       <ScrollView style={{flex: 1, width: '100%'}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
             style={{
-              flexDirection: isVisibleFont ? 'row' : 'column',
               alignItems: 'center',
             }}>
             {isVisibleFont ? (
@@ -878,8 +975,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginRight: -20,
-                  marginLeft: -40,
+                  position: 'absolute',
+                  top: moderateScale(50),
+                  left: -80,
+                  zIndex: 1,
                 }}>
                 <Text
                   allowFontScaling={false}
@@ -926,7 +1025,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 </Text>
               </View>
             ) : null}
-            {renderScreenShot()}
+            {/* {renderScreenShot()} */}
+            {renderLayout()}
           </View>
 
           <View style={styles.conFont}>
@@ -957,7 +1057,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               <Pressable
                 onPress={() => {
                   setSelectedFont(item);
-                  if (isPremium) {
+                  if (userProfile?.data?.subscription?.plan_id != 1) {
                     setSelectFont(item);
                   } else {
                     setModalUnlockFont(true);
@@ -983,7 +1083,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   }}>
                   {item.name}
                 </Text>
-                {!isPremium && fontSelect.name !== item.name ? (
+                {userProfile?.data?.subscription?.plan_id === 1 &&
+                fontSelect.name !== item.name ? (
                   <>
                     <View
                       style={{
@@ -1043,7 +1144,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   }}
                   onPress={() => {
                     setSelectedBg(bgl);
-                    if (isPremium) {
+                    if (userProfile?.data?.subscription?.plan_id != 1) {
                       setSelectBg(bgl);
                       setSelectedBg(null);
                     } else {
@@ -1061,7 +1162,8 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                       borderWidth: bgl === selectBg ? 2 : 0,
                     }}
                   />
-                  {!isPremium && bgl !== selectBg ? (
+                  {userProfile?.data?.subscription?.plan_id === 1 &&
+                  bgl !== selectBg ? (
                     <LockFree
                       style={{
                         position: 'absolute',
@@ -1078,7 +1180,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         </View>
         {renderCard()}
       </ScrollView>
-      {renderTutorial()}
     </View>
   );
 }

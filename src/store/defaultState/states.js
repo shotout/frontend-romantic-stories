@@ -43,9 +43,15 @@ const INITIAL_STATE = {
   userStory: null,
   colorTheme: null,
   fontFamily: null,
-  fontSize: null,
+  fontSize: 16,
   backgroundColor: null,
   isPremium: false,
+  readStory: null,
+  listenStory: null,
+  nextStory: null,
+  relateStory: null,
+  levelingUser: null,
+  colorText: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -84,6 +90,11 @@ export default (state = INITIAL_STATE, action) => {
           visible: true,
           counter: 0,
         },
+      };
+    case types.SET_LEVELING_DATA:
+      return {
+        ...state,
+        levelingUser: action.payload,
       };
     case types.CHANGE_COUNTER_LOADING_MODAL:
       return {
@@ -235,7 +246,7 @@ export default (state = INITIAL_STATE, action) => {
         userProfile: action.payload,
       };
     case types.SET_STEP_TUTORIAL:
-      console.log(JSON.stringify('SET STEP'+action.payload));
+      console.log('SET STEP'+action.payload)
       return {
         ...state,
         stepsTutorial: action.payload,
@@ -245,13 +256,33 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         userStory: action.payload,
       };
+    case types.SET_STORY_NEXT_DATA:
+      return {
+        ...state,
+        nextStory: action.payload,
+      };
+    case types.SET_READ_STORY:
+      return {
+        ...state,
+        readStory: action.payload,
+      };
+    case types.SET_LISTEN_STORY:
+      return {
+        ...state,
+        listenStory: action.payload,
+      };
+
+    case types.SET_STORY_RELATE_DATA:
+      return {
+        ...state,
+        relateStory: action.payload,
+      };
     case types.SET_BACKGROUND_COLOR:
       return {
         ...state,
         backgroundColor: action.payload,
       };
     case types.SET_FONT_FAMILY:
-      console.log('SET FONT' + action.payload);
       return {
         ...state,
         fontFamily: action.payload,
@@ -312,6 +343,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isPremium: action.payload,
+      };
+    case types.SET_COLOR_TEXT:
+      return {
+        ...state,
+        colorText: action.payload,
       };
     default:
       return state;

@@ -1,6 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {Modal, View, Text, Pressable, Image, Dimensions} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  Image,
+  Dimensions,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -13,17 +22,63 @@ import {moderateScale} from 'react-native-size-matters';
 import {book} from '../../assets/icons';
 import WatchIcon from '../../assets/icons/watch';
 import BookLockIcon from '../../assets/icons/bookLock';
-
+import * as IAP from 'react-native-iap';
+import {ActivityIndicator} from 'react-native-paper';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
+import {sizing} from '../../shared/styling';
 function ModalNewStory({
   isVisible,
   onClose,
   onWatchAds,
   onUnlock,
   onGetUnlimit,
+  userProfile,
+  isLoading,
+  loadingAds,
 }) {
+  const [price, setPrice] = useState('');
+  const [timeLeft, setTimeLeft] = useState({
+    hour: 0,
+    minutes: 0,
+    second: 0,
+  });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const tomorrow = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+      );
+      const timeUntilTomorrow = tomorrow - now;
+      const hours = Math.floor(timeUntilTomorrow / (1000 * 60 * 60));
+      const minutes = Math.floor((timeUntilTomorrow / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeUntilTomorrow / 1000) % 60);
+      setTimeLeft({
+        hour: hours,
+        minutes,
+        second: seconds,
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   const handleClose = () => {
     onClose();
   };
+  useEffect(() => {
+    async function getProductPrice() {
+      const products = await IAP.getProducts({
+        skus: ['unlock_story_1_week_only'],
+      });
+      console.log('Products:', products);
+      setPrice(products[0].localizedPrice);
+    }
+    getProductPrice();
+  }, []);
 
   return (
     <Modal
@@ -31,7 +86,11 @@ function ModalNewStory({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+        }}>
         <View
           style={{
             flex: 1,
@@ -39,9 +98,10 @@ function ModalNewStory({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View
+          <ScrollView
             style={{
-              width: '100%',
+              width: sizing.getDimensionWidth(1),
+              flex: 1,
               backgroundColor: code_color.white,
               shadowColor: '#000',
               shadowOffset: {
@@ -52,67 +112,67 @@ function ModalNewStory({
               shadowRadius: 2.22,
               elevation: 3,
               borderRadius: 10,
-              height: '100%',
             }}>
-            <View style={{backgroundColor: code_color.blueDark, flex: 1}}>
-              <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
-                <View style={{flexDirection: 'column'}}>
-                  <View
-                    style={{
-                      width: Dimensions.get('screen').width,
-                    }}>
-                    <Image
-                      source={bgNewStory}
-                      resizeMode="contain"
-                      style={{
-                        width: '100%',
-                        top: -300,
-                        position: 'absolute',
-                      }}
-                    />
-                  </View>
-                  <Image
-                    source={imgLoveLeft}
-                    resizeMode="contain"
-                    style={{
-                      width: 150,
-                      height: 150,
-                      position: 'absolute',
-                      left: -20,
-                      top: 150,
-                    }}
-                  />
-
-                  <Image
-                    source={imgLoveRight}
-                    resizeMode="contain"
-                    style={{
-                      width: 150,
-                      height: 150,
-                      position: 'absolute',
-                      right: -20,
-                      top: 150,
-                    }}
-                  />
-                </View>
-              </View>
+            <View
+              style={{
+                width: Dimensions.get('screen').width,
+                height: wp(
+                  Dimensions.get('screen').width > 380
+                    ? sizing.getDimensionHeight(0.9)
+                    : sizing.getDimensionHeight(1.25),
+                ),
+              }}>
+              <Image
+                source={bgNewStory}
+                resizeMode="contain"
+                style={{
+                  width: '100%',
+                  top: wp(-150),
+                  maxHeight: sizing.getDimensionHeight(1),
+                  // position: 'absolute',
+                }}
+              />
             </View>
+            <Image
+              source={imgLoveLeft}
+              resizeMode="contain"
+              style={{
+                width: wp(150),
+                height: hp(150),
+                position: 'absolute',
+                left: -16,
+                top: wp(140),
+              }}
+            />
+
+            <Image
+              source={imgLoveRight}
+              resizeMode="contain"
+              style={{
+                width: wp(150),
+                height: hp(150),
+                position: 'absolute',
+                right: -24,
+                top: wp(140),
+              }}
+            />
+
             <View
               style={{
                 backgroundColor: code_color.white,
-                borderTopLeftRadius: 70,
-                borderTopRightRadius: 70,
+                borderTopLeftRadius: wp(70),
+                borderTopRightRadius: wp(70),
                 position: 'absolute',
-                top: '25%',
+                top: wp(200),
                 left: 0,
-                width: '100%',
+                width: sizing.getDimensionWidth(1),
                 flex: 1,
-                height: '100%',
+                height: 'auto',
                 alignItems: 'center',
               }}>
               <View
                 style={{
-                  marginTop: 30,
+                  marginTop: wp(30),
                   flex: 1,
                   width: '100%',
                   alignItems: 'center',
@@ -120,10 +180,10 @@ function ModalNewStory({
                 <View
                   style={{
                     backgroundColor: '#FFD12F',
-                    paddingHorizontal: 30,
-                    paddingVertical: 20,
+                    paddingHorizontal: wp(30),
+                    paddingVertical: wp(20),
                     width: '80%',
-                    borderRadius: 10,
+                    borderRadius: wp(10),
                     shadowColor: '#000',
                     shadowOffset: {
                       width: 0,
@@ -136,21 +196,21 @@ function ModalNewStory({
                   <View
                     style={{
                       backgroundColor: code_color.blueDark,
-                      padding: 10,
-                      top: -35,
+                      padding: wp(10),
+                      top: wp(-35),
                       alignItems: 'center',
-                      borderRadius: 15,
+                      borderRadius: wp(15),
                     }}>
                     <Text style={{color: code_color.white}}>
                       New Story in...
                     </Text>
                   </View>
-                  <View style={{flexDirection: 'row', marginTop: -30}}>
+                  <View style={{flexDirection: 'row', marginTop: wp(-30)}}>
                     <Image
                       source={book}
                       style={{
-                        height: 59,
-                        width: 45,
+                        height: hp(59),
+                        width: wp(45),
                         position: 'absolute',
                         left: -48,
                         top: -10,
@@ -158,37 +218,37 @@ function ModalNewStory({
                     />
                     <Text
                       style={{
-                        fontSize: moderateScale(40),
-                        fontWeight: 700,
+                        fontSize: fixedFontSize(40),
+                        fontWeight: '700',
                         marginBottom: 0,
-                        marginLeft: 10,
+                        marginLeft: wp(30),
                       }}>
-                      23h 59m
+                      {`${timeLeft.hour}h ${timeLeft.minutes}m`}
                     </Text>
                     <Text
                       style={{
-                        fontSize: moderateScale(20),
-                        fontWeight: 700,
+                        fontSize: fixedFontSize(20),
+                        fontWeight: '700',
                         marginTop: 'auto',
-                        marginBottom: moderateScale(5),
-                        marginLeft: moderateScale(10),
+                        marginBottom: wp(5),
+                        marginLeft: wp(10),
                       }}>
-                      25s
+                      {`${timeLeft.second}s`}
                     </Text>
                   </View>
                 </View>
                 <Text
                   style={{
-                    fontWeight: 700,
-                    fontSize: moderateScale(19),
-                    marginVertical: moderateScale(15),
+                    fontWeight: '700',
+                    fontSize: fixedFontSize(19),
+                    marginVertical: wp(15),
                   }}>
                   UNLOCK MORE STORIES NOW
                 </Text>
                 <Text
                   style={{
-                    fontWeight: 400,
-                    fontSize: moderateScale(16),
+                    fontWeight: '400',
+                    fontSize: fixedFontSize(16),
                     lineHeight: moderateScale(24),
                     textAlign: 'center',
                     maxWidth: '80%',
@@ -198,14 +258,18 @@ function ModalNewStory({
                   directly for free and without waiting or get EroTales
                   UNLIMITED to unlock everything.
                 </Text>
+
                 <Pressable
+                  disabled={loadingAds}
                   onPress={onWatchAds}
                   style={{
                     backgroundColor: '#ED5267',
                     width: '90%',
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                    marginTop: moderateScale(30),
+                    height: 50,
+                    paddingVertical: wp(14),
+                    borderRadius: wp(6),
+                    marginTop: wp(30),
+                    alignItems: 'center',
                   }}>
                   <View
                     style={{
@@ -213,58 +277,77 @@ function ModalNewStory({
                       marginHorizontal: 'auto',
                       backgroundColor: '#FFD12F',
                       alignSelf: 'center',
-                      paddingVertical: moderateScale(0),
-                      paddingHorizontal: moderateScale(20),
-                      borderRadius: moderateScale(10),
+                      paddingVertical: wp(0),
+                      paddingHorizontal: wp(20),
+                      borderRadius: wp(10),
                       zIndex: 1,
-                      top: -moderateScale(8),
+                      top: wp(-8),
                     }}>
                     <Text style={{color: code_color.black, fontWeight: 600}}>
                       FREE
                     </Text>
                   </View>
-                  <WatchIcon
-                    style={{position: 'absolute', top: '80%', left: '22%'}}
-                  />
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
-                    Watch 2 Ads
-                  </Text>
+                  {loadingAds ? (
+                    <ActivityIndicator color={code_color.blueDark} size={14} />
+                  ) : (
+                    <>
+                      <WatchIcon
+                        style={{position: 'absolute', top: '80%', left: '22%'}}
+                      />
+                      <Text
+                        style={{color: code_color.white, textAlign: 'center'}}>
+                        Watch 2 Ads
+                      </Text>
+                    </>
+                  )}
                 </Pressable>
-                <Pressable
-                  onPress={onUnlock}
-                  style={{
-                    backgroundColor: '#009A37',
-                    width: '90%',
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
-                    marginTop: moderateScale(30),
-                  }}>
-                  <View
+                {Platform.OS === 'android' ? null : (
+                  <Pressable
+                    disabled={isLoading}
+                    onPress={() => onUnlock()}
                     style={{
-                      position: 'absolute',
-                      marginHorizontal: 'auto',
-                      backgroundColor: '#FFD12F',
-                      alignSelf: 'center',
-                      paddingVertical: moderateScale(0),
-                      paddingHorizontal: moderateScale(24),
-                      borderRadius: moderateScale(10),
-                      zIndex: 1,
-                      top: -moderateScale(8),
+                      backgroundColor: '#009A37',
+                      width: '90%',
+                      height: hp(50),
+                      paddingVertical: wp(14),
+                      borderRadius: wp(6),
+                      marginTop: wp(30),
                     }}>
-                    <Text style={{color: code_color.black, fontWeight: 600}}>
-                      MOST SELECTED
-                    </Text>
-                  </View>
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
-                    Unlock 1 more Story directly for [PRICE]
-                  </Text>
-                </Pressable>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        marginHorizontal: 'auto',
+                        backgroundColor: '#FFD12F',
+                        alignSelf: 'center',
+                        paddingVertical: wp(0),
+                        paddingHorizontal: wp(24),
+                        borderRadius: wp(10),
+                        zIndex: 1,
+                        top: -wp(8),
+                      }}>
+                      <Text style={{color: code_color.black, fontWeight: 600}}>
+                        MOST SELECTED
+                      </Text>
+                    </View>
+                    {isLoading ? (
+                      <ActivityIndicator
+                        color={code_color.blueDark}
+                        size={14}
+                      />
+                    ) : (
+                      <Text
+                        style={{color: code_color.white, textAlign: 'center'}}>
+                        Unlock 1 more Story directly for {price}
+                      </Text>
+                    )}
+                  </Pressable>
+                )}
                 <View
                   style={{
                     flexDirection: 'row',
                     width: '90%',
                     alignItems: 'center',
-                    marginVertical: moderateScale(30),
+                    marginVertical: wp(30),
                     opacity: 0.2,
                   }}>
                   <View
@@ -274,7 +357,7 @@ function ModalNewStory({
                       height: 1,
                     }}
                   />
-                  <Text style={{marginHorizontal: moderateScale(8)}}>OR</Text>
+                  <Text style={{marginHorizontal: wp(8)}}>OR</Text>
                   <View
                     style={{
                       backgroundColor: code_color.black,
@@ -288,8 +371,8 @@ function ModalNewStory({
                   style={{
                     backgroundColor: '#ADC3D2',
                     width: '90%',
-                    paddingVertical: moderateScale(14),
-                    borderRadius: moderateScale(6),
+                    paddingVertical: wp(14),
+                    borderRadius: wp(6),
                   }}>
                   <View
                     style={{
@@ -297,11 +380,11 @@ function ModalNewStory({
                       marginHorizontal: 'auto',
                       backgroundColor: '#FFD12F',
                       alignSelf: 'center',
-                      paddingVertical: moderateScale(0),
-                      paddingHorizontal: moderateScale(24),
-                      borderRadius: moderateScale(10),
+                      paddingVertical: wp(0),
+                      paddingHorizontal: wp(24),
+                      borderRadius: wp(10),
                       zIndex: 1,
-                      top: -moderateScale(8),
+                      top: -wp(8),
                     }}>
                     <Text style={{color: code_color.black, fontWeight: 600}}>
                       UNLOCK EVERYTHING
@@ -316,22 +399,22 @@ function ModalNewStory({
                 </Pressable>
               </View>
 
-              <Button
+              {/* <Button
                 title={'Got it'}
                 style={{
                   backgroundColor: code_color.yellow,
                   alignItems: 'center',
                   justifyContent: 'center',
                   // height: 52,
-                  padding: 10,
+                  padding: wp(10),
                   borderRadius: 8,
                   width: '90%',
-                  marginTop: 20,
+                  marginTop: wp(20),
                 }}
                 onPress={() => onClose()}
-              />
+              /> */}
             </View>
-          </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>

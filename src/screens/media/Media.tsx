@@ -1,39 +1,68 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+  PanResponder,
+  Modal,
+  ActivityIndicator,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
-import TrackPlayer, {useProgress, useTrackPlayerEvents, Event, State} from 'react-native-track-player';
-
+import TrackPlayer, {
+  useProgress,
+  useTrackPlayerEvents,
+  Event,
+  State,
+} from 'react-native-track-player';
+import ModalShareStory from '../../components/modal-share-story';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import styles from './styles';
 import {code_color} from '../../utils/colors';
-import {bgGetUnlimit} from '../../assets/images';
+import {bgGetUnlimit, imgHearts} from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
-
+import LoveSvg from '../../assets/icons/bottom/love.jsx';
 import CloseIcon from '../../assets/icons/close';
 import LoveOutline from '../../assets/icons/loveOutline';
 import Prev5 from '../../assets/icons/prev5';
 import Pause from '../../assets/icons/pause';
+import Play from '../../assets/icons/play';
 import Next5 from '../../assets/icons/next5';
 import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
+import {sizing} from '../../shared/styling';
+import {BACKEND_URL} from '../../shared/static';
+import StepHeader from '../../layout/step/stepHeader';
+import {Step3} from '../../layout/tutorial';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
+import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
+import {handleSetStory} from '../../store/defaultState/actions';
+import store from '../../store/configure-store';
+import { ADD_STORY_TO_LIBRARY, AUDIO_PLAYED, eventTracking } from '../../helpers/eventTracking';
 
-function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
+function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [play, setPlay] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
   const {position, duration} = useProgress();
+  const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState({});
   const track1 = {
-    url: require('../../assets/music/seeyouagain.mp3'),
-    title: 'See You Again',
-    artist: 'Wiz Khalifa',
+    url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
+    title: userStory?.category?.name,
+    artist: userStory?.title_id,
     album: 'While(1<2)',
     genre: 'Progressive House, Electro House',
     date: '2014-05-20T07:00:00+00:00',
     artwork: 'http://example.com/cover.png',
-    duration: 402,
+    duration: 10,
   };
+
+  const [showModalShareStory, setShowModalShareStory] = useState(false);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -41,24 +70,53 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       remainingSeconds,
     ).padStart(2, '0')}`;
   }
-  const fetchMedia = async () => {
-    try {
-      await TrackPlayer.setupPlayer();
-      await TrackPlayer.add([track1]);
-    } catch (error) {
-      console.error('Error setting up media player:', error);
-    }
-  };
-
   useEffect(() => {
-    fetchMedia();
-  }, []);
+    const fetchMedia = async () => {
+      try {
+        setLoading(true);
+        // Dapatkan URL MP3 terbaru
+        const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+
+        // Hentikan pemutaran sebelumnya dan reset pemutaran
+        await TrackPlayer.stop();
+        await TrackPlayer.reset();
+
+        // Tambahkan dan konfigurasi lagu baru
+        await TrackPlayer.add({
+          id: 'track1',
+          url: newMp3Url,
+          title: userStory?.category?.name,
+          artist: userStory?.title_id,
+          album: 'While(1<2)',
+          genre: 'Progressive House, Electro House',
+          date: '2014-05-20T07:00:00+00:00',
+          artwork: 'http://example.com/cover.png',
+          duration: 10,
+        });
+
+        // Jalankan pemutaran baru
+        setLoading(false);
+        await TrackPlayer.play();
+      } catch (error) {
+        console.error('Error setting up media player:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (stepsTutorial === 3) {
+    } else{
+      fetchMedia();
+    }
+   
+  }, [userStory]); 
+  
+ 
 
   const playing = async () => {
     try {
       if (play) {
-          await TrackPlayer.play();
-          setTrackInfo()
+        eventTracking(AUDIO_PLAYED)
+        await TrackPlayer.play();
       } else {
         await TrackPlayer.pause();
       }
@@ -66,21 +124,153 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       console.error('Error handling playback:', error);
     }
   };
-  
   useEffect(() => {
-      playing();
+    if (stepsTutorial === 3) {
+    } else {
+      setPlay(true);
+    }
+  }, []);
+  useEffect(() => {
+    playing();
   }, [play]);
+  useEffect(() => {
+    if (position != 0) {
+      setLoading(false);
+    }
+    if(position != 0 && position === duration){
+      TrackPlayer.seekTo(0)
+      setLoading(false);
+      console.log(position, duration)
+      
+      
+      navigate('Main', {successListen: true});
+    }
+  }, [position, duration]);
 
-  async function setTrackInfo() {
-    const currentTrack = await TrackPlayer.getCurrentTrack();
-    const info = await TrackPlayer.getTrack(currentTrack);
-    setInfo(info);
-  }
  
+
+  const handleTouchStart = e => {
+    // Mendapatkan posisi sentuhan
+    const touchX = e.nativeEvent.locationX;
+    // Menghitung setengah lebar layar
+    const halfScreenWidth = Dimensions.get('window').width / 2.5;
+
+    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
+    if (touchX < halfScreenWidth) {
+      handlePrev();
+    }
+    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
+    else {
+      navigate('Library');
+    }
+  };
+  const handlePrev = () => {
+    handleSetSteps(2);
+    navigate('Main');
+  };
+
+  const renderProgress = () => <StepHeader currentStep={4} />;
+
+  const renderTutorial = () => {
+    if (stepsTutorial === 3) {
+      return (
+        <SafeAreaView
+          onTouchStart={handleTouchStart}
+          // onTouchEnd={handleTouchEnd}
+          pointerEvents="box-only"
+          style={{
+            position: 'absolute',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+            top: 0,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}>
+          {renderProgress()}
+          <Step3
+            handleNext={() => {
+              navigate('Library');
+            }}
+            handlePrev={() => {
+              handleSetSteps(2);
+              navigate('Main');
+            }}
+          />
+        </SafeAreaView>
+      );
+    }
+  };
+  const handleFetchSave = async () => {
+    if (userStory?.is_collection === null) {
+      const response = await addStory(userStory?.id);
+      if (response.status === 'success') {
+        try {
+          const resp = await getStoryDetail(userStory?.id);
+          store.dispatch(handleSetStory(resp.data));
+          eventTracking(ADD_STORY_TO_LIBRARY)
+        } catch (error) {}
+      }
+      setVisibleModal(true);
+      setTimeout(() => {
+        setVisibleModal(false);
+      }, 2500);
+    } else {
+      const data = await deleteMyStory(userStory?.id);
+      if (data.status === 'success') {
+        try {
+          const resp = await getStoryDetail(userStory?.id);
+          store.dispatch(handleSetStory(resp.data));
+        } catch (error) {}
+      }
+    }
+  };
+
   return (
-    <LinearGradient
-      colors={['#4c669f', '#3b5998', '#192f6a']}
-      style={styles.ctnContent}>
+    <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
+      <ModalShareStory
+          storyData={userStory}
+          isVisible={showModalShareStory}
+          onClose={() => {
+            setShowModalShareStory(false);
+            // setSharedStory(null);
+          }}
+        />
+      <Modal
+        visible={visibleModal}
+        animationType="fade"
+        transparent
+        onDismiss={() => setVisibleModal(false)}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              backgroundColor: 'black',
+              padding: wp(20),
+              borderRadius: wp(20),
+              alignItems: 'center',
+            }}>
+            <Image
+              source={imgHearts}
+              resizeMode="contain"
+              style={{width: wp(30), height: hp(30)}}
+            />
+
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: fixedFontSize(15),
+              }}>
+              {'Story saved &\nadded to library'}
+            </Text>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.row}>
         <Text style={styles.textTitle} />
         <TouchableOpacity
@@ -93,24 +283,33 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
       </View>
       <View>
         <Image
-          source={bgGetUnlimit}
-          resizeMode="contain"
-          style={{width: 300, height: 300}}
+          source={{uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`}}
+          resizeMode="cover"
+          style={{
+            width: 352,
+            height: 350,
+            borderRadius: 8,
+          }}
         />
         <Text
           allowFontScaling={false}
           style={{
             color: code_color.white,
             marginBottom: 10,
-            fontSize: 16,
-            fontWeight: 'bold',
+            marginTop: 40,
+            fontSize: 14,
           }}>
-          {info?.title}
+          {userStory?.category?.name}
         </Text>
         <Text
           allowFontScaling={false}
-          style={{color: code_color.white, marginBottom: 40, fontSize: 14}}>
-          {info?.album}
+          style={{
+            color: code_color.white,
+            marginBottom: 40,
+            fontSize: 16,
+            fontWeight: 'bold',
+          }}>
+          {userStory?.title_id}
         </Text>
         <Slider
           step={1}
@@ -120,8 +319,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#B2B6BB"
           thumbTintColor="#fff"
-          onValueChange={async (value) => {
-          
+          onValueChange={async value => {
             await TrackPlayer.seekTo(value);
           }}
         />
@@ -145,7 +343,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
               flex: 1,
               textAlign: 'right',
             }}>
-            {formatTime(duration - position)}
+            -{formatTime(duration - position)}
           </Text>
         </View>
       </View>
@@ -153,20 +351,68 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps}) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          width: sizing.getDimensionWidth(0.9),
         }}>
-        <LoveOutline style={{marginRight: 40}} />
-        <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
-          <Prev5 style={{marginHorizontal: 5}} />
+        <TouchableOpacity onPress={() => handleFetchSave()}>
+        {userStory?.is_collection === null ? (
+          <LoveOutline width={wp(35)} height={hp(35)} />
+        ) : (
+          <LoveSvg width={wp(35)} height={hp(35)} fill={code_color.white} />
+        )}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() =>     setPlay((prev) => !prev)}>
-          <Pause style={{marginHorizontal: 40}} />
+       
+        <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
+          <Prev5 />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
+          {play ? (
+            <Pause />
+          ) : (
+            <View
+              style={{
+                width: 55,
+                height: 55,
+                borderRadius: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'white',
+              }}>
+              <Play fill={'#6B7C8C'} width={35} height={35} />
+            </View>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>
-          <Next5 style={{marginHorizontal: 5}} />
+          <Next5 />
         </TouchableOpacity>
-        <ShareSvg style={{marginLeft: 40}} />
+        <TouchableOpacity onPress={() => setShowModalShareStory(true)}>
+        <ShareSvg width={30} height={30} />
+        </TouchableOpacity>
+       
       </View>
+      {/* {renderTutorial()} */}
+      <Modal visible={loading} animationType="fade" transparent>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              alignItems: 'center',
+              padding: 20,
+              borderRadius: 20,
+            }}>
+            <Text style={{fontSize: 16, color: code_color.blackDark}}>
+              Loading
+            </Text>
+            <ActivityIndicator color={code_color.blueDark} size={20} />
+          </View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 }

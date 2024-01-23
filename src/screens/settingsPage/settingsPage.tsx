@@ -17,8 +17,10 @@ import {
   Dimensions,
   Pressable,
   Linking,
+  Clipboard,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
+import BgSettings from '../../assets/icons/bgSetting';
 import {code_color} from '../../utils/colors';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import LockSvg from '../../assets/icons/lock.jsx';
@@ -33,7 +35,6 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {connect} from 'react-redux';
-import ProgressBar from '../../components/ProgressBar';
 import ModalEditProfile from '../../layout/settings/modal-edit-profile';
 import ModalEditName from '../../layout/settings/modal-edit-name';
 import ModalEditGender from '../../layout/settings/modal-edit-gender';
@@ -43,10 +44,24 @@ import ModalEditLanguage from '../../layout/settings/modal-edit-language';
 import ModalChangeIcon from '../../layout/settings/modal-change-icon';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigate} from '../../shared/navigationRef';
-import { handlePayment } from '../../helpers/paywall';
-import { moderateScale } from 'react-native-size-matters';
+import {handlePayment} from '../../helpers/paywall';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {BACKEND_URL} from '../../shared/static';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {Image} from 'react-native';
+import ProgressBar from '../../components/progress';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
+import DeviceInfo from 'react-native-device-info';
+import messaging from '@react-native-firebase/messaging';
 
-const SettingsPage = ({colorTheme}) => {
+const SettingsPage = ({
+  colorTheme,
+  userProfile,
+  backgroundColor,
+  getAvatarMale,
+  getAvatarFemale,
+  levelingUser,
+}) => {
   const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
   const [showModalGender, setShowModalGender] = useState<boolean>(false);
   const [showModalCharacter, setShowModalCharacter] = useState<boolean>(false);
@@ -72,6 +87,8 @@ const SettingsPage = ({colorTheme}) => {
       action: 'subscription',
     },
   ]);
+
+  // alert(JSON.stringify(userProfile?.data?.gender))
   const [menuTwo, setlistMenuTwo] = useState([
     {
       name: 'App Icon',
@@ -111,26 +128,44 @@ const SettingsPage = ({colorTheme}) => {
   ]);
 
   const header = () => (
-    <View style={{height: '25%'}}>
-      <ImageBackground
-        source={bgSettings}
-        resizeMode="cover"
+    <View style={{height: hp(255)}}>
+      <View
         style={{
           width: Dimensions.get('window').width,
           height: '100%',
           // alignItems: 'center',
           justifyContent: 'center',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
-        <View style={{marginTop: moderateScale(30)}}>
-          <View style={{marginTop: moderateScale(40)}}>
+        <BgSettings
+          style={{position: 'absolute', top: 0}}
+          bgTheme={bgTheme}
+          levelUrl={BACKEND_URL + levelingUser?.user_level?.level?.image?.url}
+          profileUrl={
+            BACKEND_URL + getAvatarMale 
+          }
+        />
+        <View
+          style={{
+            marginTop: Dimensions.get('window').height === 667 ? wp(90) : wp(80),
+          }}>
+          <View style={{marginTop: wp(20)}}>
             <Text
               allowFontScaling={false}
-              style={{fontWeight: 'bold', textAlign: 'center', fontSize: moderateScale(9)}}>
-              John Smith • Noob • 10 XP
+              style={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: fixedFontSize(14),
+              }}>
+              {userProfile?.data?.name} •{' '}
+              {levelingUser?.user_level?.level?.desc  ? levelingUser?.user_level?.level?.desc  : userProfile?.data?.user_level?.level?.desc} •{' '}
+              {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginLeft: '30%', marginTop: 20}}>
-            <ProgressBar progress={20} />
+          <View style={{marginTop: wp(30)}}>
+            <ProgressBar levelingUser={levelingUser} bgTheme={bgTheme} />
+            {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
         </View>
 
@@ -163,7 +198,7 @@ const SettingsPage = ({colorTheme}) => {
             </View>
           ))}
         </View> */}
-      </ImageBackground>
+      </View>
     </View>
   );
 
@@ -205,8 +240,8 @@ const SettingsPage = ({colorTheme}) => {
         navigate('Categories');
         break;
       case 'Subscription':
-          navigate('Subscriptions');
-          break;
+        navigate('Subscriptions');
+        break;
       case 'App Icon':
         setShowModalIcon(true);
         break;
@@ -217,17 +252,94 @@ const SettingsPage = ({colorTheme}) => {
 
   const listMenu = () => (
     <View>
+      {/* <TouchableOpacity
+        style={{
+          height: 50,
+          width: Dimensions.get('window').width,
+          backgroundColor: 'red',
+        }}
+        onPress={async () => {
+          const fcmToken = await messaging().getToken();
+          Clipboard.setString(fcmToken);
+          console.log(fcmToken);
+        }}>
+        <Text>fcm token</Text>
+      </TouchableOpacity> */}
       {menu.map((item, i) => (
         <TouchableOpacity
           key={i}
           onPress={() => handleOpenModal(item.name)}
-          style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
+          style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: code_color.white}}>
+            style={{marginLeft: moderateScale(10), color: code_color.white, flex: 1}}>
             {item.name}
           </Text>
+          {item.name === 'Edit Profile' ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignContent: 'flex-end',
+                alignItems: 'flex-end',
+              }}>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  right: -5,
+                }}>
+                <Image
+                  source={{
+                    uri:
+                     BACKEND_URL + getAvatarMale
+                  }}
+                  style={{
+                    width: 40,
+                    height: 160,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: 3,
+                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 4 : 0,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: scale(20),
+                  marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  marginRight: moderateScale(10),
+                }}>
+                <Image
+                  source={{
+                    uri: BACKEND_URL + getAvatarFemale
+                  }}
+                  style={{
+                    width: 40,
+                    height: 160,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top:3,
+                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 4 : 0,
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
         </TouchableOpacity>
       ))}
     </View>
@@ -237,22 +349,23 @@ const SettingsPage = ({colorTheme}) => {
       {menuTwo.map((item, i) => (
         <Pressable
           onPress={() => handleOpenModal(item.name)}
-          style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
+          style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: 10, color: code_color.white}}>
+            style={{marginLeft: moderateScale(10), color: code_color.white}}>
             {item.name}
           </Text>
         </Pressable>
       ))}
     </View>
   );
+
   return (
     <View
       style={{
         flex: 0,
-        height: Dimensions.get('window').height - 130,
+        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : 208)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
@@ -304,9 +417,9 @@ const SettingsPage = ({colorTheme}) => {
       {header()}
       <ScrollView>
         {listMenu()}
-        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
+        <View style={{borderColor: 'white', borderWidth: 0.5, margin: moderateScale(10)}} />
         {listMenuTwo()}
-        <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} />
+        <View style={{borderColor: 'white', borderWidth: 0.5, margin: moderateScale(10)}} />
         <View>
           {/* <View style={{margin: 10}}>
             <Text
@@ -334,20 +447,27 @@ const SettingsPage = ({colorTheme}) => {
             </View>
           </View> */}
           {/* <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} /> */}
-          <View style={{margin: 10, marginBottom: 40}}>
-          <TouchableOpacity onPress={() => Linking.openURL('Https://erotalesapp.com/privacy')} >
-          <Text
-              allowFontScaling={false}
-              style={{marginLeft: 10, marginBottom: 20, color: code_color.white}}>
-              Privacy Policy
-            </Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => Linking.openURL('https://erotalesapp.com/terms')}
-             >
+          <View style={{margin: moderateScale(10), marginBottom: moderateScale(40)}}>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL('Https://erotalesapp.com/privacy')
+              }>
               <Text
                 allowFontScaling={false}
-                style={{marginLeft: 10, color: code_color.white}}>
+                style={{
+                  marginLeft: moderateScale(10),
+                  marginBottom: moderateScale(20),
+                  color: code_color.white,
+                }}>
+                Privacy Policy
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => Linking.openURL('https://erotalesapp.com/terms')}>
+              <Text
+                allowFontScaling={false}
+                style={{marginLeft: moderateScale(10), color: code_color.white}}>
                 Terms & Conditions
               </Text>
             </TouchableOpacity>

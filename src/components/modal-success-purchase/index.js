@@ -12,8 +12,9 @@ import {moderateScale} from 'react-native-size-matters';
 import {successPurchase} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
 import LoveIcon from '../../assets/icons/loveOutline';
+import { BACKEND_URL } from '../../shared/static';
 
-function ModalSuccessPurchase({isVisible, onClose}) {
+function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
   const handleClose = () => {
     onClose();
   };
@@ -87,7 +88,9 @@ function ModalSuccessPurchase({isVisible, onClose}) {
             }}>
             <View style={{flexDirection: 'row'}}>
               <Image
-                source={cover1}
+                source={{
+                  uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                }}
                 resizeMode="contain"
                 style={{
                   width: 65,
@@ -96,6 +99,15 @@ function ModalSuccessPurchase({isVisible, onClose}) {
                 }}
               />
               <View style={{flex: 1}}>
+              <Text
+                  style={{
+                    color: '#3F58DD',
+                    marginTop: 10,
+                    fontWeight: 400,
+                    fontSize: 14,
+                  }}>
+  {nextStory?.category.name}
+                </Text>
                 <Text
                   style={{
                     color: code_color.blueDark,
@@ -103,17 +115,9 @@ function ModalSuccessPurchase({isVisible, onClose}) {
                     fontWeight: 'bold',
                     fontSize: 16,
                   }}>
-                  [Suggested story this user never read before]
+                    {nextStory?.title_en}
                 </Text>
-                <Text
-                  style={{
-                    color: '#3F58DD',
-                    marginTop: 10,
-                    fontWeight: 400,
-                    fontSize: 14,
-                  }}>
-                  [Story category]
-                </Text>
+               
               </View>
             </View>
             <View
@@ -136,7 +140,7 @@ function ModalSuccessPurchase({isVisible, onClose}) {
               You have{' '}
               <Text style={{color: '#00B781', fontWeight: 700}}>
                 {' '}
-                unlocked this story for 7 days
+                {type ? 'unlocked this story for 12 hour access free' : 'unlocked this story for 7 days'}
               </Text>
               . You can start reading it now or save it in the library to read
               it later.

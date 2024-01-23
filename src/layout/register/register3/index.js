@@ -18,25 +18,22 @@ import {story1, story2, story3, story4} from '../../../assets/images';
 import ChecklistSvg from './../../../assets/icons/checklist';
 import {getListCategory} from '../../../shared/request';
 import {API_URL, BACKEND_URL} from '../../../shared/static';
-import { moderateScale } from 'react-native-size-matters';
-
-export default function Register3({setCategoryId}) {
-  const [dataStory, setDataStory] = useState([]);
-
-  const [selectStory, setSelectStory] = useState('');
-
+import {moderateScale} from 'react-native-size-matters';
+import { fixedFontSize, hp, wp } from '../../../utils/screen';
+import Loading from '../../../components/loading';
+import FastImage from 'react-native-fast-image';
+export default function Register3({setCategoryId, value, dataCategory}) {
+  const [dataStory, setDataStory] = useState(dataCategory);
+  const [loading, setLoading] = useState(false);
+  const [selectStory, setSelectStory] = useState(value);
   useEffect(() => {
-    fetchCategory();
-  }, []);
-
-  const fetchCategory = async () => {
-    try {
-      const category = await getListCategory();
-      setDataStory(category?.data);
-    } catch (error) {
-      // alert(JSON.stringify(error));
-    }
-  };
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 200);
+  
+    }, [dataCategory])
+ 
   return (
     <>
       <FlatList
@@ -47,55 +44,54 @@ export default function Register3({setCategoryId}) {
             <TouchableOpacity
               key={index}
               onPress={() => {
-                setSelectStory(item.name);
+                setSelectStory(item.id);
                 setCategoryId(item.id);
               }}
               style={{
                 alignItems: 'center',
-                marginVertical: moderateScale(2),
+                marginVertical: wp(2),
                 backgroundColor:
-                  selectStory === item.name ? code_color.splash : 'white',
-                padding: moderateScale(2),
-                borderRadius: moderateScale(10),
+                  selectStory === item.id ? code_color.splash : 'white',
+                padding: wp(5),
+                borderRadius: wp(10),
                 justifyContent: 'center',
               }}>
-              <Image
-                key={index}
-                source={{uri: `${BACKEND_URL}${item.image?.url}`}}
-                resizeMode="contain"
-                // source={{
-                //   uri: 'https://backend-dev-erotales.mooti.app/assets/images/categories/i_miss_u.png',
-                // }}
-                style={{
-                  width: moderateScale(320),
-                  height: moderateScale(80),
-                  // backgroundColor:
-                  //   selectStory === item.name ? code_color.splash : 'white',
-                }}
-              />
+                <FastImage
+                 key={index}
+                  source={{
+                    uri: `${BACKEND_URL}${item.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={{
+                    width: wp(320),
+                    height: hp(80),
+                    borderRadius: wp(10),
+                  }}
+                />
               <Text
-              allowFontScaling={false}
+                allowFontScaling={false}
                 style={{
                   position: 'absolute',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: moderateScale(16),
+                  fontSize: fixedFontSize(16),
                   fontWeight: 'bold',
                   color: code_color.white,
                 }}>
                 {item?.name}
               </Text>
               <TouchableOpacity
-                onPress={() => setSelectStory(item.name)}
+                onPress={() => setSelectStory(item.id)}
                 style={{
                   backgroundColor:
-                    selectStory === item.name ? code_color.splash : 'white',
-                  borderRadius: moderateScale(30),
-                  width: moderateScale(25),
-                  height: moderateScale(25),
+                    selectStory === item.id ? code_color.splash : 'white',
+                  borderRadius: wp(30),
+                  width: wp(25),
+                  height: hp(25),
                   position: 'absolute',
-                  top: moderateScale(35),
-                  left: moderateScale(25),
+                  top: wp(35),
+                  left: wp(25),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>

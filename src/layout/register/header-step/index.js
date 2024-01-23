@@ -1,15 +1,26 @@
 import React from 'react';
 import {Image, View} from 'react-native';
 import styles from './styles';
+import AnimatedLottieView from 'lottie-react-native';
+import { wp } from '../../../utils/screen';
 
 const activeLamp = require('../../../assets/icons/register_step/singleLove1.png');
 const lampUnactive = require('../../../assets/icons/register_step/unactiveLove1.png');
-const lampActiveAnimation = require('../../../assets/icons/register_step/activeLove1.png');
-
+// const lampActiveAnimation = require('../../../assets/icons/register_step/activeLove1.png');
+const lampActiveAnimation = require('../../../assets/images/heart-progress-bar.gif');
+const love = require('../../../assets/lottie/heart-progress-bar.json');
 export default function HeaderStep({currentStep}) {
   const activeGift = () => (
     <View style={styles.ctnGift}>
-      <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} />
+      <AnimatedLottieView
+      style={styles.ctnAnimate}
+      source={love}
+      // style={{width: 50, height: 50}}
+      autoPlay
+      duration={3000}
+      loop={false}
+    />
+      {/* <Image source={lampActiveAnimation} style={styles.ctnUnactiveLamp} /> */}
     </View>
   );
 
@@ -24,6 +35,18 @@ export default function HeaderStep({currentStep}) {
 
     return unactiveLamp();
   }
+  const animation = () => {
+    return(
+      <AnimatedLottieView
+      source={love}
+      style={{width:  wp(100), height: hp(100)}}
+      autoPlay
+      duration={3000}
+      loop={true}
+    />
+    )
+   
+  }
 
   return (
     <View style={styles.ctnRoot}>
@@ -33,7 +56,7 @@ export default function HeaderStep({currentStep}) {
       {renderImageStep(4)}
       {renderImageStep(5)}
       {renderImageStep(6)}
-      {renderImageStep(7)}
+      {/* {renderImageStep(7)} */}
     </View>
   );
 }

@@ -5,12 +5,13 @@ import { code_color } from '../../utils/colors';
 
 export default StyleSheet.create({
   ctnRoot: {
-    margin: 20,
+    margin: -15,
+    marginTop: 10,
     // paddingTop: 28,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '',
+    zIndex: 1000,
   },
   imgStep: {
     width: '100%',
@@ -23,8 +24,8 @@ export default StyleSheet.create({
     resizeMode: 'contain',
   },
   ctnUnactiveLamp: {
-    height: 30,
-    width: 30,
+    height: 10,
+    width: 40,
     resizeMode: 'contain',
   },
   ctnGiftLamp: {

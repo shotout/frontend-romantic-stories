@@ -11,7 +11,7 @@ export default {
     whatsname: 'What‘s your \n name?',
     usingyrname: 'Using your real name creates',
     bttrexp: 'better \n experience',
-    wthstry: 'a with the story.',
+    wthstry: 'with the story.',
     skipfrnw: 'Skip for now',
     continue: 'Continue',
     wyfs: 'What’s your favorite story?',

@@ -1,8 +1,8 @@
-import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import * as React from 'react';
+import Svg, {Path} from 'react-native-svg';
 
 function SvgComponent(props) {
-    const {width = 32, height = 32, fill = '#3F58DD'} = props;
+  const {color = '#3F58DD'} = props;
   return (
     <Svg
       width={15}
@@ -10,18 +10,17 @@ function SvgComponent(props) {
       viewBox="0 0 15 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+      {...props}>
       <Path
         d="M1.5 2l6 6 6-6"
-        stroke="#3F58DD"
+        stroke={color}
         strokeWidth={3}
         strokeMiterlimit={10}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

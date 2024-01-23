@@ -15,7 +15,7 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 
-function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
+function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [gender, setGender] = useState(userProfile.gender);
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +58,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -66,13 +66,13 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={20} height={20}  />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -89,7 +89,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
         padding: 25,
         paddingTop: moderateScale(5),
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: backgroundColor,
       }}>
       <Text
         style={{
@@ -111,10 +111,11 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
       <TouchableOpacity onPress={() => setGender(null)}>
         <Text
           style={{
-            color: code_color.grey,
+            color: backgroundColor != '#2C3439' && gender === null ?  '#5873FF' : backgroundColor != '#2C3439' && gender != null ?  code_color.blackDark :  backgroundColor === '#2C3439' && gender != null ?  'white' :  backgroundColor === '#2C3439' && gender === null ?  '#5873FF' : code_color.blackDark,
             fontWeight: '400',
             fontSize: moderateScale(17),
             textAlign: 'center',
+            textDecorationLine: gender === null ? 'underline' : null,
             marginVertical: 20,
           }}>
           Prefer not to say

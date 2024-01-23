@@ -38,7 +38,17 @@ import { Adjust, AdjustConfig } from 'react-native-adjust';
 import * as Sentry from '@sentry/react-native';
 import { SENTRY_DSN } from './src/shared/static';
 import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
-
+import { handleSetStory } from './src/store/defaultState/actions';
+import store from './src/store/configure-store';
+import { AppOpenAd } from 'react-native-google-mobile-ads';
+import { getAppOpenID } from './src/shared/adsId';
+import { reloadUserProfile } from './src/utils/user';
+import TrackPlayer, {
+  useProgress,
+  useTrackPlayerEvents,
+  Event,
+  State,
+} from 'react-native-track-player';
 Purchasely.startWithAPIKey(
   "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
   ["Google"],
@@ -46,8 +56,14 @@ Purchasely.startWithAPIKey(
   LogLevels.DEBUG,
   RunningMode.FULL
 );
+const adUnitId = getAppOpenID();
+const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ["fashion", "clothing"],
+});
+appOpenAd.load();
 function App({ userProfile }) {
-  
+  TrackPlayer.setupPlayer()
   Sentry.init({
     environment: 'development',
     dsn: SENTRY_DSN,
@@ -80,26 +96,41 @@ function App({ userProfile }) {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
       AdjustConfig.EnvironmentSandbox,
-      // AdjustConfig.EnvironmentProduction,
+       //AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
     console.log("Finish set configtracker");
   };
   async function getInitialRoute() {
+   
     if (userProfile?.token) {
-    
-      const res = await getStoryList();
-      // // handleSetStory(res.data);
-      setTimeout(() => {
-        navigate('Onboard');
-      }, 500);
+      try {
+        reloadUserProfile()
+        const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+        if (isFinishTutorial === 'yes') {
+          setTimeout(() => {
+            navigate('Tutorial');
+          }, 500);
+        }else{
+          setTimeout(() => {
+            navigate('Bottom');
+          }, 500);
+        }
+      
+      } catch (error) {
+        setTimeout(() => {
+          navigate('Onboard');
+        }, 500);
+      }
+     
     } else {
       setTimeout(() => {
         navigate('Onboard');
       }, 500);
     }
   }
+   
   return (
     <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
       <View
@@ -122,7 +153,7 @@ function App({ userProfile }) {
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
           }}>
-          {'Romantic Story \n for your everyday fantasy'}
+          {'Exciting Stories \n for your everyday fantasy'}
         </Text>
       </View>
     </ImageBackground>

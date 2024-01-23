@@ -159,7 +159,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Our application needs permission to share images.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -376,6 +376,16 @@
 		<string>BigshotOne-Regular.ttf</string>
 		<string>GentiumBookPlus-Regular.ttf</string>
 		<string>GeorgiaEstate-w15Mn.ttf</string>
+		<string>EBGaramond-Regular.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>Merriweather-Regular.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>PlayfairDisplay-Regular.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Quicksand-Regular.ttf</string>
+		<string>Raleway-Regular.ttf</string>
+		<string>Roboto-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -383,7 +393,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string></string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
