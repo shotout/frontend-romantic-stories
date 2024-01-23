@@ -81,6 +81,7 @@ import {isIphoneXorAbove} from '../../utils/devices';
 import {
   FINISH_LISTEN_10,
   FINISH_LISTEN_3,
+  FINISH_LISTEN_7,
   eventTracking,
 } from '../../helpers/eventTracking';
 import ModalUnlockStory from '../../components/modal-unlock-story';
@@ -218,10 +219,14 @@ const MainScreen = ({
             item?.id === dataBook.id && item?.page === textChunks?.length + 1,
         )
       : undefined;
-    if (readStory?.length === 2) {
+      const uniqueData = [...new Map(readStory.map((item: { id: any; }) => [item.id, item])).values()]
+    if (uniqueData?.length === 2) {
       eventTracking(FINISH_LISTEN_3);
     }
-    if (readStory?.length === 9) {
+    if (uniqueData?.length === 6) {
+      eventTracking(FINISH_LISTEN_7);
+    }
+    if (uniqueData?.length === 9) {
       eventTracking(FINISH_LISTEN_10);
     }
     if (typeof existingEntry === 'undefined') {
@@ -262,20 +267,20 @@ const MainScreen = ({
     }
   }, [route?.params]);
 
-  const fecthNextStoryPremium = async id => {
+  const fecthNextStoryPremium = async (id: any) => {
     const resp = await getStoryDetail(id);
     handleNextStory(resp.data);
     setShowModal(true);
   };
-  const handleFreeUserStory = async id => {
+  const handleFreeUserStory = async (id: any) => {
     const resp = await getStoryDetail(id);
     handleNextStory(resp.data);
     setShowStoryFree(true);
   };
-  const checkingRead = pageNumber => {
+  const checkingRead = (pageNumber: number) => {
     const existingEntry = readStory
       ? readStory.find(
-          item => item?.id === dataBook.id && item?.page === pageNumber,
+        (          item: { id: any; page: any; }) => item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
 
@@ -417,7 +422,7 @@ const MainScreen = ({
     }
   };
 
-  const handleTouchStart = e => {
+  const handleTouchStart = (e: { nativeEvent: { locationX: any; }; }) => {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
@@ -432,7 +437,7 @@ const MainScreen = ({
           ...isTutorial,
           step: isTutorial.step - 1,
         });
-        setActiveStep(prevStep => prevStep - 1);
+        setActiveStep((prevStep: number) => prevStep - 1);
         handleSetSteps(activeStep - 1);
       }
     } else {
@@ -445,7 +450,7 @@ const MainScreen = ({
       ...isTutorial,
       step: isTutorial.step - 1,
     });
-    setActiveStep(prevStep => prevStep - 1);
+    setActiveStep((prevStep: number) => prevStep - 1);
     handleSetSteps(activeStep - 1);
   };
 
@@ -453,7 +458,7 @@ const MainScreen = ({
     if (stepsTutorial <= 5) {
       const content =
         'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-      setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+      setActiveStep((prevStep: number) => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
       handleSetSteps(stepsTutorial + 1);
       if (stepsTutorial === 2) {
         setFinishTutorial(false);
@@ -486,7 +491,7 @@ const MainScreen = ({
       useNativeDriver: false, // Set this to true for better performance, but note that not all properties are supported with native driver
     }).start();
   };
-  const handleLoadMore = async value => {};
+  const handleLoadMore = async (value: number) => {};
 
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
@@ -663,7 +668,7 @@ const MainScreen = ({
     }
   };
 
-  const splitTextIntoArray = (text, chunkLength) => {
+  const splitTextIntoArray = (text: string, chunkLength: number) => {
     const words = text.split(' ');
     const resultArray = [];
     let currentChunk = '';
@@ -769,7 +774,7 @@ const MainScreen = ({
   }, [isFocused]);
 
   const renderList = useMemo(
-    type => {
+    (    type: any) => {
       {
         textChunks?.map((dtb: any, index: number) => {
           return (
@@ -819,7 +824,7 @@ const MainScreen = ({
   const showWatchAdsFree = async () => {
     setLoadingAds(true);
     const advert = await loadRewarded();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
       setLoadingAds(false);
       setShowStoryFree(false);
       setTimeout(() => {
@@ -1064,7 +1069,7 @@ const MainScreen = ({
     setShowModalCongrats(false);
     advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      async reward => {
+      async (reward: any) => {
         setShowModalNewStory(false);
         setLoadingAds(false);
         if (reward) {
@@ -1122,7 +1127,7 @@ const MainScreen = ({
     }, 200);
   };
 
-  const touchEndStory = async e => {
+  const touchEndStory = async (e: { nativeEvent: { locationX: any; }; }) => {
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 1.5;
