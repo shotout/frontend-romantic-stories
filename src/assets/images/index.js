@@ -68,6 +68,7 @@ export const imgRating = require('./Rating.png');
 export const imgSelectGift = require('./Quote-share1.gif');
 export const imgSelectGift2 = require('./Quote-share2.gif');
 export const imgSearchNull = require('./searchNull.png');
+export const imgQuoteNew = require('./share.gif');
 export const imgQuote = require('./Quote_cropped.gif');
 export const imgQuote2 = require('./Quote_cropped2.gif');
 export const imgQuote2Jpg = require('./Quote_cropped2.jpg');
