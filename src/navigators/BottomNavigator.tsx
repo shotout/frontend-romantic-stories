@@ -207,6 +207,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
             {menu.map((item, i) => {
               return (
                 <TouchableOpacity
+                  key={i}
                   onPress={() => handleSomeAction(item.value)}
                   style={{
                     flex: 1,
@@ -396,9 +397,7 @@ function MyTabs(props) {
           tabBarIcon: ({color, focused}) => (
             <TouchableOpacity
               onPress={() => {
-                if (props.stepsTutorial <= 1) {
-                  handleFetchSave();
-                }
+                handleFetchSave();
               }}
               style={{
                 alignItems: 'center',
@@ -504,9 +503,8 @@ function MyTabs(props) {
         )}
         options={({route}) => ({
           tabBarIcon: ({color, focused}) => {
-            if (props.stepsTutorial <= 1) {
-              return (
-                <View
+            return (
+              <View
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -527,37 +525,7 @@ function MyTabs(props) {
                     MY LIBRARY
                   </Text>
                 </View>
-              );
-            } else {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (props.stepsTutorial <= 1) {
-                      handleSomeAction('Library');
-                    }
-                  }}
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                  }}>
-                  <LibrarySvg
-                    width={wp(20)}
-                    height={hp(20)}
-                    fill={props?.colorTheme}
-                  />
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: fixedFontSize(11),
-                      marginTop: wp(2),
-                    }}>
-                    MY LIBRARY
-                  </Text>
-                </TouchableOpacity>
-              );
-            }
+            );
           },
         })}
         listeners={({route, navigation}) => ({
@@ -581,7 +549,6 @@ function MyTabs(props) {
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => {
-            if (props.stepsTutorial <= 1) {
               return (
                 <View
                   style={{
@@ -605,36 +572,6 @@ function MyTabs(props) {
                   </Text>
                 </View>
               );
-            } else {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (props.stepsTutorial <= 1) {
-                      handleSomeAction('Font');
-                    }
-                  }}
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                  }}>
-                  <FontSvg
-                    width={wp(20)}
-                    height={hp(20)}
-                    fill={props?.colorTheme}
-                  />
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: fixedFontSize(11),
-                      marginTop: wp(2),
-                    }}>
-                    TEXT
-                  </Text>
-                </TouchableOpacity>
-              );
-            }
           },
         })}
         listeners={({route, navigation}) => ({
@@ -657,7 +594,6 @@ function MyTabs(props) {
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, focused}) => {
-            if (props.stepsTutorial <= 1) {
               return (
                 <View
                   style={{
@@ -681,36 +617,6 @@ function MyTabs(props) {
                   </Text>
                 </View>
               );
-            } else {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (props.stepsTutorial <= 1) {
-                      handleSomeAction('Settings');
-                    }
-                  }}
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                  }}>
-                  <SettingSvg
-                    width={wp(20)}
-                    height={hp(20)}
-                    fill={props?.colorTheme}
-                  />
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: fixedFontSize(11),
-                      marginTop: wp(2),
-                    }}>
-                    SETTINGS
-                  </Text>
-                </TouchableOpacity>
-              );
-            }
           },
         })}
         listeners={({route, navigation}) => ({

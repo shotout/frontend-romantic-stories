@@ -122,7 +122,7 @@ function ModalEditProfile({
     {
       title: 'Select your character',
       icon: <ProfileSvg width={22} height={22} />,
-      value:  getAvatarMale ,
+      value: getAvatarMale,
     },
     {
       title: 'Select partner character',
@@ -178,12 +178,20 @@ function ModalEditProfile({
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
                   style={{
                     width: 40,
-                    height: edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
+                    height:
+                      edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: edit.value === '/assets/images/avatars/5.png' ? -7 :  edit.value  === '/assets/images/avatars/1.png' ? 3.5 : 0,
+                    right:
+                      edit.value === '/assets/images/avatars/5.png'
+                        ? -7
+                        : edit.value === '/assets/images/avatars/1.png'
+                        ? 3.5
+                        : edit.value === '/assets/images/avatars/4.png'
+                        ? 2
+                        : 0,
                   }}
                 />
               </View>
@@ -203,12 +211,20 @@ function ModalEditProfile({
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
                   style={{
                     width: 40,
-                    height: edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
+                    height:
+                      edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right:  edit.value === '/assets/images/avatars/5.png' ? -7 : edit.value  === '/assets/images/avatars/1.png' ? 3.5 : 0,
+                    right:
+                      edit.value === '/assets/images/avatars/5.png'
+                        ? -7
+                        : edit.value === '/assets/images/avatars/1.png'
+                        ? 3.5
+                        : edit.value === '/assets/images/avatars/4.png'
+                        ? 2
+                        : 0,
                   }}
                 />
               </View>
@@ -243,7 +259,9 @@ function ModalEditProfile({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-      <TouchableOpacity  onPress={handleClose} style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <TouchableOpacity
+        onPress={handleClose}
+        style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         <View
           style={{
             height: moderateScale('60%'),

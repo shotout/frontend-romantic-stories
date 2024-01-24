@@ -65,15 +65,16 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
     setSelect(item.name);
     setSelectItem(item);
     items(item);
-    handleClose()
+    handleClose();
   };
   const renderList = () => (
     <View style={{alignItems: 'center', flex: 1}}>
-      {listSort.map(item => (
+      {listSort.map((item, idx) => (
         <Pressable
-        onPress={() => {
-          handleSelect(item);
-        }}
+          key={idx}
+          onPress={() => {
+            handleSelect(item);
+          }}
           style={{
             flexDirection: 'row',
             alignItems: 'center',

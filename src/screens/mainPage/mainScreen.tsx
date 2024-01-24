@@ -322,14 +322,11 @@ const MainScreen = ({
       if (value != strTanggalSekarang) {
         if (!route?.params?.isFromNotif) {
           AsyncStorage.setItem('setToday', strTanggalSekarang);
+          setShowModalNewStory(false);
         }
-        if (userProfile?.data?.subscription?.plan?.id != 1) {
-          const res = await getStoryList();
-          handleNextStory(res.data);
-          setShowModalDay(true);
-        } else {
-          setShowModalNewStory(true);
-        }
+        const res = await getStoryList();
+        handleNextStory(res.data);
+        setShowModalDay(true);
       }
     } else if (value === null) {
       AsyncStorage.setItem('setToday', strTanggalSekarang);
@@ -464,12 +461,12 @@ const MainScreen = ({
         }, 2500);
       } else if (stepsTutorial === 5) {
         handleSetSteps(5 + 1);
-        navigate('Share', {
-          selectedContent:
-            ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-          start: content?.substring(0, 30),
-          end: content.substring(30, 30 + 30),
-        });
+        // navigate('Share', {
+        //   selectedContent:
+        //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+        //   start: content?.substring(0, 30),
+        //   end: content.substring(30, 30 + 30),
+        // });
       }
     }
   };
@@ -540,12 +537,12 @@ const MainScreen = ({
       ) {
         const content =
           'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-        navigate('Share', {
-          selectedContent:
-            ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-          start: content?.substring(0, 30),
-          end: content.substring(30, 30 + 30),
-        });
+        // navigate('Share', {
+        //   selectedContent:
+        //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+        //   start: content?.substring(0, 30),
+        //   end: content.substring(30, 30 + 30),
+        // });
       }
     };
     checkTutorial();
@@ -862,13 +859,6 @@ const MainScreen = ({
     />
   );
 
-  // useEffect(() => {
-  //   if (activeStep === 5 || stepsTutorial === 5) {
-  //     setTimeout(() => {
-  //       handleNext();
-  //     }, 5000);
-  //   }
-  // }, [activeStep, stepsTutorial]);
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {

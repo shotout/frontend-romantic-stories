@@ -64,7 +64,7 @@ function ModalUnlockStoryDay({
           <Text
             style={{
               fontSize: moderateScale(18),
-              color: code_color.white,
+              color: code_color.black,
               fontWeight: 700,
               textAlign: 'center',
               marginTop: moderateScale(25),
