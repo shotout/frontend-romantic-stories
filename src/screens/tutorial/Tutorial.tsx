@@ -34,7 +34,6 @@ import {
   imgLoveLeft,
   imgLoveRight,
   imgQuote,
-  imgQuoteNew,
   imgSelect,
   tips_step1,
   tips_step3,
@@ -73,6 +72,7 @@ import store from '../../store/configure-store';
 import {
   ADD_STORY_TO_LIBRARY,
   AUDIO_PLAYED,
+  ONBOARDING_COMPLETE,
   eventTracking,
 } from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -261,6 +261,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     } else {
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
+      eventTracking(ONBOARDING_COMPLETE)
       handlePayment('onboarding');
       navigate('Bottom');
     }
@@ -520,7 +521,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       case 5:
         return tips_step5;
       case 7:
-        return imgQuoteNew;
+        return imgQuote;
       case 8:
         return xpAndLevel;
       default:

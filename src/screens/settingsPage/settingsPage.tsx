@@ -307,7 +307,7 @@ const SettingsPage = ({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: 3,
-                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 4 : 0,
+                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0,
                   }}
                 />
               </View>
@@ -334,7 +334,7 @@ const SettingsPage = ({
                     justifyContent: 'center',
                     position: 'absolute',
                     top:3,
-                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 4 : 0,
+                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0,
                   }}
                 />
               </View>

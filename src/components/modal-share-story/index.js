@@ -35,6 +35,7 @@ import {isIphone} from '../../utils/devices';
 import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
 import {imgShare, logo} from '../../assets/images';
+import { STORY_SHARED, eventTracking } from '../../helpers/eventTracking';
 
 function ModalShareStory({isVisible, onClose, storyData}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
@@ -85,6 +86,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleCopyLink = async () => {
+    eventTracking(STORY_SHARED);
     Clipboard.setString(await generateLink());
     setShowSuccessCopy(true);
     setTimeout(() => {
@@ -93,6 +95,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShareOpen = async () => {
+    eventTracking(STORY_SHARED);
     try {
       await Share.open({
         message: sharedMessage,
@@ -104,6 +107,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShareOpenWA = async () => {
+    eventTracking(STORY_SHARED);
     try {
       await Share.open({
         message: sharedMessageWa,
@@ -257,6 +261,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShare = async share => {
+    eventTracking(STORY_SHARED);
     base64CaptureImage.current = null;
     handleScreenshot(share);
   };

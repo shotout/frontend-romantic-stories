@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Image,
@@ -20,7 +20,7 @@ import {sizing} from '../../utils/styling';
 import {ava1, bgStory1, bgStory2, bgStory3, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
-import {QUOTE_SHARED, eventTracking} from '../../helpers/eventTracking';
+import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
 import {navigate, navigationRef} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme, updateProfile} from '../../shared/request';
@@ -237,7 +237,7 @@ export default function QuotesContent({
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
   useEffect(() => {
-    handleThemeAvatar(pageActive);
+    handleThemeAvatar(pageActive)
   }, [pageActive]);
 
   const handleAudio = async () => {
@@ -271,6 +271,7 @@ export default function QuotesContent({
     }
   };
 
+  
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
@@ -317,6 +318,7 @@ export default function QuotesContent({
   };
 
   const checkingColor = value => {
+   
     return value === code_color.blackDark
       ? code_color.white
       : code_color.blackDark;

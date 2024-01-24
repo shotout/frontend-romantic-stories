@@ -1,5 +1,5 @@
 import Purchasely, {ProductResult} from 'react-native-purchasely';
-import {BUY_10_AUDIO, BUY_50_AUDIO, eventTracking} from './eventTracking';
+import {BUY_10_AUDIO, BUY_50_AUDIO, SHOW_PAYWALL, SUBSCRIPTION_STORIES_AUDIO, eventTracking} from './eventTracking';
 import store from '../store/configure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
@@ -12,7 +12,7 @@ import {reloadUserProfile} from '../utils/user';
 export const handlePayment = async (vendorId, cb) =>
   new Promise(async (resolve, reject) => {
     try {
-      // eventTracking(SHOW_PAYWALL);
+      eventTracking(SHOW_PAYWALL);
       let stringVendor = vendorId;
       // const subscriptions = await Purchasely.userSubscriptions();
       // console.log('Subscription status:', subscriptions);
@@ -53,6 +53,7 @@ export const handlePayment = async (vendorId, cb) =>
           // await updateProfile(payload);
           reloadUserProfile();
           console.log('FINISH PURCHASED:', res.result);
+          eventTracking(res?.plan?.vendorId === 'ErotalesUnlimitedStoriesandAudioAnnual' ? SUBSCRIPTION_STORIES_AUDIO : SUBSCRIPTION_STORIES_AUDIO)
           resolve({success: true, result: res});
           if (user.token) {
             Purchasely.closePaywall();

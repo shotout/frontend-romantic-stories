@@ -49,8 +49,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isIphoneXorAbove} from '../utils/devices';
 import {fixedFontSize, hp, wp} from '../utils/screen';
-import {ADD_STORY_TO_LIBRARY, eventTracking} from '../helpers/eventTracking';
-import { useIsFocused } from '@react-navigation/native';
+import {ADD_STORY_TO_LIBRARY, STORY_LIKED, eventTracking} from '../helpers/eventTracking';
+import {useIsFocused} from '@react-navigation/native';
 
 import FastImage from 'react-native-fast-image';
 const Drawer = createDrawerNavigator();
@@ -113,17 +113,16 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
     <View style={{flex: 1}}>
       {isBottomBarVisible === 'Main' ? (
         <View style={{flex: 1, top: -20}}>
- <MainScreen
-         pressScreen={() => handleSomeAction('Main')}
-         route={undefined}
-         colorText={userProfile?.colorText}
-       />
+          <MainScreen
+            pressScreen={() => handleSomeAction('Main')}
+            route={undefined}
+            colorText={userProfile?.colorText}
+          />
         </View>
-        
+      ) : (
         // <FastImage source={imgSC}
         // resizeMode={FastImage.resizeMode.contain}
         // style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }} />
-      ) : (
         <View
           style={{
             flex: 1,
@@ -160,12 +159,21 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                 onPress={() => handleSomeAction('Main')}
                 style={{
                   position: 'absolute',
-                  top: isBottomBarVisible === 'Settings' ? 10 : isBottomBarVisible === 'Library' ? wp(20) : wp(130),
+                  top:
+                    isBottomBarVisible === 'Settings'
+                      ? 10
+                      : isBottomBarVisible === 'Library'
+                      ? wp(20)
+                      : wp(130),
                   flex: 0,
                   width: '100%',
                   height: isBottomBarVisible === 'Library' ? wp(350) : wp(200),
                   alignItems: 'center',
-                  backgroundColor: isBottomBarVisible === 'Library' || isBottomBarVisible === 'Settings' ?  'rgba(0,0,0,0.5)' : null
+                  backgroundColor:
+                    isBottomBarVisible === 'Library' ||
+                    isBottomBarVisible === 'Settings'
+                      ? 'rgba(0,0,0,0.5)'
+                      : null,
                 }}>
                 <TouchableOpacity
                   onPress={() => handleSomeAction('Main')}
@@ -345,6 +353,7 @@ function MyTabs(props) {
         try {
           const resp = await getStoryDetail(props.userStory?.id);
           eventTracking(ADD_STORY_TO_LIBRARY);
+          eventTracking(STORY_LIKED);
           store.dispatch(handleSetStory(resp.data));
         } catch (error) {}
       }
