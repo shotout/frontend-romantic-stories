@@ -524,51 +524,51 @@ const MainScreen = ({
     // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
     // AsyncStorage.removeItem('isTutorial');
-    const checkTutorial = async () => {
-      const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-      if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
-        setFinishTutorial(true);
-        setVisible(true);
-        setTimeout(() => {
-          setVisible(false);
-          setTutorial({
-            ...isTutorial,
-            step: isTutorial.step + 1,
-          });
-          setActiveStep(1);
-          handleSetSteps(1);
-        }, 3500);
-      } else if (activeStep === 2 || activeStep === 3) {
-        setFinishTutorial(false);
-        setIsRippleAnimate(true);
-        setTimeout(() => {
-          setFinishTutorial(true);
-          setIsRippleAnimate(false);
-        }, 3000);
-        if (route?.name == 'Main') {
-          setTimeout(() => {
-            navigate('Media');
-          }, 2500);
-        }
-      } else if (activeStep === 4) {
-        navigate('ExploreLibrary');
-      } else if (
-        activeStep === 6 ||
-        activeStep === 7 ||
-        activeStep === 8 ||
-        activeStep === 9
-      ) {
-        const content =
-          'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-        // navigate('Share', {
-        //   selectedContent:
-        //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-        //   start: content?.substring(0, 30),
-        //   end: content.substring(30, 30 + 30),
-        // });
-      }
-    };
-    checkTutorial();
+    // const checkTutorial = async () => {
+    //   const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+    //   if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
+    //     setFinishTutorial(true);
+    //     setVisible(true);
+    //     setTimeout(() => {
+    //       setVisible(false);
+    //       setTutorial({
+    //         ...isTutorial,
+    //         step: isTutorial.step + 1,
+    //       });
+    //       setActiveStep(1);
+    //       handleSetSteps(1);
+    //     }, 3500);
+    //   } else if (activeStep === 2 || activeStep === 3) {
+    //     setFinishTutorial(false);
+    //     setIsRippleAnimate(true);
+    //     setTimeout(() => {
+    //       setFinishTutorial(true);
+    //       setIsRippleAnimate(false);
+    //     }, 3000);
+    //     if (route?.name == 'Main') {
+    //       setTimeout(() => {
+    //         navigate('Media');
+    //       }, 2500);
+    //     }
+    //   } else if (activeStep === 4) {
+    //     navigate('ExploreLibrary');
+    //   } else if (
+    //     activeStep === 6 ||
+    //     activeStep === 7 ||
+    //     activeStep === 8 ||
+    //     activeStep === 9
+    //   ) {
+    //     const content =
+    //       'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
+    //     // navigate('Share', {
+    //     //   selectedContent:
+    //     //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
+    //     //   start: content?.substring(0, 30),
+    //     //   end: content.substring(30, 30 + 30),
+    //     // });
+    //   }
+    // };
+    // checkTutorial();
   }, []);
 
   useEffect(() => {
@@ -1529,6 +1529,14 @@ const MainScreen = ({
                   reloadUserProfile();
                 }
                 setShowModalCongrats(false);
+                if (userStory?.is_rating === null) {
+                  setScreenNumber(0);
+                  setRating(true);
+                  // handleSuccessRating();
+                } else {
+                  setScreenNumber(0);
+                  handleSuccessRating();
+                }
               }}
               onGotIt={async () => {
                 setShowModalCongrats(false);
