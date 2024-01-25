@@ -136,14 +136,15 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
               position: 'absolute',
               top:
                 isBottomBarVisible === 'Settings'
-                  ? -151
+                  ? -140
                   : isBottomBarVisible === 'Font' && Platform.OS === 'android'
                   ? -Dimensions.get('window').height / 2
                   : isBottomBarVisible === 'Font' && Platform.OS === 'ios'
                   ? -Dimensions.get('window').height /
-                    (!isIphoneXorAbove() ? 2.8 : 2)
+                    (!isIphoneXorAbove() ? 2.8 : 2.3)
                   : isBottomBarVisible === 'Library'
-                  ? -Dimensions.get('window').height / 2.7
+                  ? -Dimensions.get('window').height /
+                    (!isIphoneXorAbove() ? 4.6 : 3.2)
                   : 0,
               width: '100%',
               height: '100%',
@@ -163,7 +164,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     isBottomBarVisible === 'Settings'
                       ? 10
                       : isBottomBarVisible === 'Library'
-                      ? wp(20)
+                      ? wp(isIphoneXorAbove() ? 20 : -30)
                       : wp(130),
                   flex: 0,
                   width: '100%',
@@ -203,7 +204,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 10,
+              // marginTop: 10,
+              height: Dimensions.get('window').width < 376 ? 90 : 100,
               backgroundColor: 'white',
               paddingTop: 5,
               shadowColor: code_color.grey,
@@ -221,7 +223,10 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: 5,
+                    paddingHorizontal: 5,
+                    paddingTop: 10,
+                    paddingBottom: 30,
+                    bottom: -10,
                     borderTopLeftRadius: 20,
                     borderTopRightRadius: 20,
                     marginHorizontal: 10,
@@ -233,21 +238,21 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   {item.name === 'SAVE' &&
                   userProfile?.userStory?.is_collection === null ? (
                     <LoveOutline
-                      width={20}
-                      height={20}
+                      width={30}
+                      height={30}
                       fill={userProfile?.colorTheme}
                     />
                   ) : item.name === 'SAVE' &&
                     userProfile?.userStory?.is_collection !== null ? (
                     <LoveSvg
-                      width={20}
-                      height={20}
+                      width={30}
+                      height={30}
                       fill={userProfile?.colorTheme}
                     />
                   ) : (
                     <item.image
-                      width={20}
-                      height={20}
+                      width={item.name === 'TEXT' ? 40 : 30}
+                      height={item.name === 'TEXT' ? 40 : 30}
                       fill={
                         item.value === isBottomBarVisible
                           ? code_color.white
@@ -393,8 +398,9 @@ function MyTabs(props) {
           backgroundColor: '#f2f2f2',
         },
         tabBarStyle: {
-          height,
+          height: Dimensions.get('window').width < 376 ? 90 : 100,
           backgroundColor: 'white',
+          paddingTop: Dimensions.get('window').width < 376 ? '0%' : '5%',
           display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
         },
       }}>
@@ -470,14 +476,14 @@ function MyTabs(props) {
               ) : null} */}
               {props.userStory?.is_collection === null ? (
                 <LoveOutline
-                  width={wp(20)}
-                  height={hp(20)}
+                  width={wp(30)}
+                  height={hp(30)}
                   fill={props?.colorTheme}
                 />
               ) : (
                 <LoveSvg
-                  width={wp(20)}
-                  height={hp(20)}
+                  width={wp(30)}
+                  height={hp(30)}
                   fill={props?.colorTheme}
                 />
               )}
@@ -485,8 +491,9 @@ function MyTabs(props) {
                 allowFontScaling={false}
                 style={{
                   color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: fixedFontSize(11),
-                  marginTop: wp(2),
+                  fontSize: hp(9),
+                  fontWeight: '600',
+                  marginTop: wp(6),
                 }}>
                 {props.userStory?.is_collection === null ? 'SAVE' : 'SAVED'}
               </Text>
@@ -520,16 +527,17 @@ function MyTabs(props) {
                     display: 'flex',
                   }}>
                   <LibrarySvg
-                    width={wp(20)}
-                    height={hp(20)}
+                    width={wp(30)}
+                    height={hp(30)}
                     fill={props?.colorTheme}
                   />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: fixedFontSize(11),
-                      marginTop: wp(2),
+                      fontSize: hp(9),
+                      fontWeight: '600',
+                      marginTop: wp(6),
                     }}>
                     MY LIBRARY
                   </Text>
@@ -564,17 +572,19 @@ function MyTabs(props) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     display: 'flex',
+                    marginTop: wp(-6),
                   }}>
                   <FontSvg
-                    width={wp(20)}
-                    height={hp(20)}
+                    width={wp(40)}
+                    height={hp(40)}
                     fill={props?.colorTheme}
                   />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: fixedFontSize(11),
+                      fontSize: hp(9),
+                      fontWeight: '600',
                       marginTop: wp(2),
                     }}>
                     TEXT
@@ -611,16 +621,17 @@ function MyTabs(props) {
                     display: 'flex',
                   }}>
                   <SettingSvg
-                    width={wp(20)}
-                    height={wp(20)}
+                    width={wp(30)}
+                    height={wp(30)}
                     fill={props?.colorTheme}
                   />
                   <Text
                     allowFontScaling={false}
                     style={{
                       color: focused ? props?.colorTheme : props?.colorTheme,
-                      fontSize: fixedFontSize(11),
-                      marginTop: wp(2),
+                      fontSize: hp(9),
+                      fontWeight: '600',
+                      marginTop: wp(6),
                     }}>
                     SETTINGS
                   </Text>

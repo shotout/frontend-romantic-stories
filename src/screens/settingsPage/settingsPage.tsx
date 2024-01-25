@@ -365,7 +365,7 @@ const SettingsPage = ({
     <View
       style={{
         flex: 0,
-        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : 208)),
+        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : 240)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
