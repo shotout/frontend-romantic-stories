@@ -121,22 +121,22 @@ function ModalCongrats({
           source={imgGift1}
           resizeMode="contain"
           style={{
-            width: wp(100),
-            height: hp(100),
+            width: wp(90),
+            height: hp(90),
             position: 'absolute',
-            left: wp(50),
-            bottom: wp(70),
+            left: wp(70),
+            bottom: wp(80),
           }}
         />
         <Image
           source={imgGift2}
           resizeMode="contain"
           style={{
-            width: wp(80),
-            height: hp(80),
+            width: wp(75),
+            height: hp(75),
             position: 'absolute',
-            right: wp(70),
-            bottom: wp(80),
+            right: wp(73),
+            bottom: wp(85),
           }}
         />
         <View
