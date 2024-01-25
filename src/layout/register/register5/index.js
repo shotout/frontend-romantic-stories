@@ -40,9 +40,9 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-    }, 200);
+    }, 500);
   
-    }, [dataAvatar])
+    }, [])
   return (
     <>
       <View

@@ -35,7 +35,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
   setLoading(true)
   setTimeout(() => {
     setLoading(false)
-  }, 300);
+  }, 500);
 
   }, [])
   // const fetchCategory = async () => {

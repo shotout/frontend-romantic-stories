@@ -141,7 +141,7 @@ const SettingsPage = ({
         <BgSettings
           style={{position: 'absolute', top: 0}}
           bgTheme={bgTheme}
-          levelUrl={BACKEND_URL + levelingUser?.user_level?.level?.image?.url}
+          levelUrl={BACKEND_URL + (levelingUser === null ? userProfile?.data?.user_level?.level?.image?.url : levelingUser?.user_level?.level?.image?.url)}
           profileUrl={
             BACKEND_URL + getAvatarMale 
           }

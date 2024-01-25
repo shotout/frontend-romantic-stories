@@ -160,6 +160,15 @@ const LibraryScreen = ({
     ]).start();
   };
 
+  const startBounceAnimationDetail = () => {
+    Animated.sequence([
+      Animated.timing(translateX, {
+        toValue: -120, // Geser ke kiri
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
   const stopAnimation = () => {
     translateX.stopAnimation(value => {
       translateX.setValue(0); // Set the animation value to the current value
@@ -347,7 +356,7 @@ const LibraryScreen = ({
                 </View>
                 <TouchableOpacity
                   style={{marginHorizontal: 5}}
-                  onPress={() => startBounceAnimation()}>
+                  onPress={() => startBounceAnimationDetail()}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>

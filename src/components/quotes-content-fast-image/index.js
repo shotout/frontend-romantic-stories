@@ -30,8 +30,9 @@ import {handleNativePayment} from '../../helpers/paywall';
 import FastImage from 'react-native-fast-image';
 import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 import {reloadUserProfile} from '../../utils/user';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
+
 const loveAnimate = require('../../assets/lottie/love.json');
 
 export default function QuotesContent({
@@ -58,6 +59,7 @@ export default function QuotesContent({
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
+  const isFocused = useIsFocused();
   const [color, setSolor] = useState(code_color.blackDark);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -238,7 +240,7 @@ export default function QuotesContent({
 
   useEffect(() => {
     handleThemeAvatar(pageActive)
-  }, [pageActive]);
+  }, [pageActive, isFocused]);
 
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
