@@ -267,12 +267,16 @@ const LibraryScreen = ({
         <View>
           {detailCollection?.stories_count != 0 ? (
             <Animated.View
-              style={{
-                transform: [{translateX: translateX}],
-              }}>
+              style={
+                indexSweepLeft === item?.item?.id
+                  ? {
+                      transform: [{translateX: translateX}],
+                    }
+                  : undefined
+              }>
               <View
                 style={{
-                  paddingHorizontal: 10,
+                  paddingLeft: 10,
                   paddingBottom: 10,
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -281,7 +285,6 @@ const LibraryScreen = ({
                   borderTopWidth: 1,
                   borderBottomWidth: 1,
                   paddingVertical: 10,
-                  paddingRight: 15,
                 }}>
                 <ImageBackground
                   source={{
@@ -355,7 +358,11 @@ const LibraryScreen = ({
                   </View>
                 </View>
                 <TouchableOpacity
-                  style={{marginHorizontal: 5}}
+                  style={{
+                    paddingHorizontal: 10,
+                    height: '100%',
+                    justifyContent: 'center',
+                  }}
                   onPress={() => startBounceAnimationDetail()}>
                   <DotSvg />
                 </TouchableOpacity>
@@ -380,7 +387,7 @@ const LibraryScreen = ({
             }>
             <View
               style={{
-                paddingHorizontal: 10,
+                paddingLeft: 10,
                 paddingBottom: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -389,7 +396,6 @@ const LibraryScreen = ({
                 borderTopWidth: 1,
                 borderBottomWidth: 1,
                 paddingVertical: 10,
-                paddingRight: 15,
               }}>
               <ImageBackground
                 source={{
@@ -462,7 +468,11 @@ const LibraryScreen = ({
                 </View>
               </View>
               <TouchableOpacity
-                style={{marginHorizontal: 5}}
+                style={{
+                  paddingHorizontal: 10,
+                  height: '100%',
+                  justifyContent: 'center',
+                }}
                 onPress={async () => {
                   setIndexSweepLeft(item?.item?.id);
                   setTimeout(() => {
@@ -1330,7 +1340,7 @@ const LibraryScreen = ({
                     </TouchableOpacity>
                   </View>
                 )}
-                rightOpenValue={detail != null ? -120 : -180}
+                rightOpenValue={-120}
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}

@@ -480,7 +480,7 @@ export default function QuotesContent({
                             ? item?.title_id
                             : item?.title_en,
                       });
-                      eventTracking(QUOTE_SHARED);
+                      eventTracking(STORY_SHARED);
                     }
                   }}
                   value={themeUser?.language_id === '2' ? item : item}
