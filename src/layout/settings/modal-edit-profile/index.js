@@ -114,7 +114,7 @@ function ModalEditProfile({
         <GenderSvg
           width={24}
           height={24}
-          fill={backgroundColor === '#2C3439' ? 'white' : code_color.blackDark}
+          fill={code_color.blackDark}
         />
       ),
       value: userProfile.gender,
@@ -142,7 +142,7 @@ function ModalEditProfile({
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: backgroundColor,
+        backgroundColor: 'white',
       }}>
       {menuEditList.map((edit, i) => (
         <View key={i}>
@@ -152,10 +152,7 @@ function ModalEditProfile({
             {edit.icon}
             <Text
               style={{
-                color:
-                  backgroundColor === '#2C3439'
-                    ? 'white'
-                    : code_color.blackDark,
+                color: code_color.blackDark,
                 marginLeft: 10,
                 fontSize: 16,
                 fontWeight: '600',
@@ -231,7 +228,7 @@ function ModalEditProfile({
             ) : (
               <Text
                 style={{
-                  color: backgroundColor === '#2C3439' ? 'white' : '#2C3439',
+                  color: code_color.blackDark,
                   marginLeft: 'auto',
                   fontSize: 14,
                   fontWeight: '400',

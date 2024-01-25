@@ -129,7 +129,7 @@ function ModalEditCharacter({
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} />
+            <BackLeft width={20} height={20}  />
           </View>
         </Pressable>
         <Text
@@ -152,7 +152,7 @@ function ModalEditCharacter({
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: backgroundColor,
+        backgroundColor: 'white',
         width: Dimensions.get('window').width,
       }}>
       <View

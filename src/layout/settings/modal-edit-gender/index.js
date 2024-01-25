@@ -89,7 +89,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
         padding: 25,
         paddingTop: moderateScale(5),
         height: '100%',
-        backgroundColor: backgroundColor,
+        backgroundColor: 'white',
       }}>
       <Text
         style={{

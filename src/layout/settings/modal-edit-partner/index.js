@@ -162,7 +162,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: backgroundColor,
+        backgroundColor: 'white',
         width: Dimensions.get('window').width,
       }}>
       <View

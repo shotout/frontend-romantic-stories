@@ -88,7 +88,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: backgroundColor,
+        backgroundColor: 'white',
       }}>
       <Text
         style={{
@@ -108,7 +108,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
           fontWeight: '400',
           lineHeight: 22,
           marginTop: 30,
-          color: backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
+          color: code_color.blackDark,
         }}>
         Using your real name creates a
         <Text style={{color: code_color.splash, fontWeight: 700}}>
@@ -121,14 +121,14 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
         allowFontScaling={false}
         style={{
           borderColor: code_color.blueDark,
-         color: backgroundColor === '#2C3439' ? 'white' : code_color.blackDark,
+         color: code_color.blackDark,
           borderWidth: 2,
           borderRadius: 6,
           padding: 12,
           marginTop: 30,
           marginBottom: 40,
         }}
-        placeholderTextColor={backgroundColor === '#2C3439' ? 'white' : code_color.blackDark}
+        placeholderTextColor={code_color.blackDark}
         value={name}
         onChangeText={text => setName(text)}
         placeholder="Your name"

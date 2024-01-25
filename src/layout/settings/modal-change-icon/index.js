@@ -168,7 +168,7 @@ function ModalChangeIcon({
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: backgroundColor,
+            backgroundColor: 'white',
             width: 30,
             height: 30,
             borderRadius: 20,
@@ -182,7 +182,7 @@ function ModalChangeIcon({
         <Text
           allowFontScaling={false}
           style={{
-            color: backgroundColor,
+            color: 'white',
             marginLeft: 15,
             fontSize: 18,
             fontWeight: 'bold',
@@ -199,14 +199,11 @@ function ModalChangeIcon({
         padding: 25,
         paddingTop: 10,
         height: '100%',
-        backgroundColor: backgroundColor,
+        backgroundColor: 'white',
       }}>
       <Text
         style={{
-          color:
-            backgroundColor === code_color.blackDark
-              ? 'white'
-              : code_color.blackDark,
+          color: code_color.blackDark,
           fontSize: 17,
           marginTop: 10,
           lineHeight: 24,

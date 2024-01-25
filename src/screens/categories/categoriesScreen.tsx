@@ -134,7 +134,7 @@ const CategoriesScreen = ({
             style={{
               width: 35,
               height: 35,
-              backgroundColor: backgroundColor,
+              backgroundColor: 'white',
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
@@ -145,7 +145,7 @@ const CategoriesScreen = ({
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text
               allowFontScaling={false}
-              style={{fontSize: 18, fontWeight: '600', color: backgroundColor}}>
+              style={{fontSize: 18, fontWeight: '600', color: 'white'}}>
               Edit Categories
             </Text>
           </View>
@@ -157,7 +157,7 @@ const CategoriesScreen = ({
           />
         </View>
       </View>
-      <View style={{height: '100%', flex: 0, backgroundColor: backgroundColor}}>
+      <View style={{height: '100%', flex: 0, backgroundColor: 'white'}}>
         <Text
           allowFontScaling={false}
           style={{

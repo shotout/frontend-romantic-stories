@@ -108,7 +108,7 @@ const NotificationScreen = ({
             style={{
               width: wp(35),
               height: wp(35),
-              backgroundColor: backgroundColor,
+              backgroundColor: 'white',
               borderRadius: wp(20),
               alignItems: 'center',
               justifyContent: 'center',
@@ -117,7 +117,7 @@ const NotificationScreen = ({
             <BackRight fill={bgTheme} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={{fontSize: fixedFontSize(18), fontWeight: '600', color: backgroundColor}}>
+            <Text allowFontScaling={false} style={{fontSize: fixedFontSize(18), fontWeight: '600', color: 'white'}}>
               Notifications
             </Text>
           </View>
@@ -131,15 +131,15 @@ const NotificationScreen = ({
       </View>
       <ScrollView
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: 'white',
           height: '100%',
           padding: wp(20),
         }}>
-        <Text style={{fontSize: fixedFontSize(18), fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, marginBottom: wp(20)}}>
+        <Text style={{fontSize: fixedFontSize(18), fontWeight: '600', color:code_color.blackDark, marginBottom: wp(20)}}>
           Set your notifications
         </Text>
-        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
-        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,}}>
+        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
+        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: code_color.blackDark,}}>
           New Stories 
         </Text>
         <Switch
@@ -151,8 +151,8 @@ const NotificationScreen = ({
           value={newStories}
         />
         </View>
-        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor:  backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
-        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: backgroundColor === code_color.blackDark ? 'white' : code_color.blackDark,}}>
+        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
+        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: code_color.blackDark,}}>
           Promotions
         </Text>
         <Switch
