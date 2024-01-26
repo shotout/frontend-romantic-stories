@@ -734,6 +734,7 @@ const MainScreen = ({
         handleListen={() => handleListening()}
         type={type}
         isRippleAnimate={isRippleAnimate}
+        userProfile={userProfile}
       />
     </>
   );
