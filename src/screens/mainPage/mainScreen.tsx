@@ -329,10 +329,13 @@ const MainScreen = ({
   useEffect(() => {
     if (userStory) {
       setBook(userStory);
-      pagerRef.current?.setPage(0);
-      setScreenNumber(0);
     }
   }, [userStory]);
+
+  useEffect(() => {
+    pagerRef.current?.setPage(0);
+    setScreenNumber(0);
+  }, [dataBook?.title_en]);
 
   const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
