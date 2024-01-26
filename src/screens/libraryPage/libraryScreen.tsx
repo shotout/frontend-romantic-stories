@@ -110,6 +110,7 @@ const LibraryScreen = ({
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModal, setShowModal] = useState(false);
+  const [row, setRow] = useState(null);
   const [showModalNew, setShowModalNew] = useState(false);
   const [showModalSort, setShowModalSort] = useState(false);
   const [showModalShareStory, setShowModalShareStory] = useState(false);
@@ -262,13 +263,15 @@ const LibraryScreen = ({
     </View>
   );
 
-  const onRowPress = (rowMap, rowKey) => {
+  const onRowPress = (rowMap, rowKey, data) => {
     // console.log(rowMap)
+    setRow(rowKey)
     if (rowMap[rowKey]) {
-      rowMap[rowKey].manuallySwipeRow(-180);
+      rowMap[rowKey].manuallySwipeRow( data ? -120 : -180);
     }
   }
   const closeRow = (rowMap, rowKey) => {
+    setRow(null)
     if (rowMap[rowKey]) {
         rowMap[rowKey].closeRow();
     }
@@ -286,7 +289,8 @@ const LibraryScreen = ({
                     }
                   : undefined
               }>
-              <View
+              <TouchableOpacity
+               onPress={() => closeRow(rowMap, item.item.id)}
                 style={{
                   paddingLeft: 10,
                   paddingBottom: 10,
@@ -375,10 +379,16 @@ const LibraryScreen = ({
                     height: '100%',
                     justifyContent: 'center',
                   }}
-                  onPress={() => onRowPress(rowMap, data.item.key)}>
+                  onPress={() => {
+                    if(row){
+                      closeRow(rowMap, item.item.id)
+                    }else{
+                      onRowPress(rowMap, item.item.id, true)
+                    }
+                  }}>
                   <DotSvg />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             </Animated.View>
           ) : null}
           {/* <View
@@ -487,7 +497,14 @@ const LibraryScreen = ({
                   height: '100%',
                   justifyContent: 'center',
                 }}
-                onPress={() => onRowPress(rowMap, item.item.id)}>
+                onPress={() => {
+                  if(row){
+                    closeRow(rowMap, item.item.id)
+                  }else{
+                    onRowPress(rowMap, item.item.id, false)
+                  }
+                 
+                }}>
                 <DotSvg />
               </TouchableOpacity>
             </TouchableOpacity>
@@ -592,7 +609,9 @@ const LibraryScreen = ({
                 </View>
                 <TouchableOpacity
                   style={{marginHorizontal: 5}}
-                  onPress={() => startBounceAnimation()}>
+                  onPress={() => {
+
+                  }}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>
@@ -695,7 +714,9 @@ const LibraryScreen = ({
               </View>
               <TouchableOpacity
                 style={{marginHorizontal: 5}}
-                onPress={() => startBounceAnimation()}>
+                onPress={() => {
+
+                }}>
                 <DotSvg />
               </TouchableOpacity>
             </View>
@@ -1033,9 +1054,6 @@ const LibraryScreen = ({
       <SwipeListView
         data={data?.most_share}
         renderItem={item => renderContentSearch(item)}
-        swipeGestureEnded={(_data, _rowMap) => {
-          stopAnimation();
-        }}
         renderHiddenItem={(_data, _rowMap) => (
           <View style={styles.rowBack}>
             {detail != null ? null : (
@@ -1315,8 +1333,11 @@ const LibraryScreen = ({
             )}
             {detail != null ? (
               <SwipeListView
+              keyExtractor={(rowData, index) => {
+                return rowData?.id.toString();
+              }}
                 data={listLibraryDetail}
-                renderItem={item => renderContent(item)}
+                renderItem={(item, rowMap) => renderContent(item, rowMap)}
                 renderHiddenItem={(_data, _rowMap) => (
                   <View style={styles.rowBack}>
                     {detail != null ? null : (
@@ -1363,6 +1384,7 @@ const LibraryScreen = ({
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
+                onRowDidOpen={onRowDidOpen}
               />
             ) : (
               <SwipeListView
