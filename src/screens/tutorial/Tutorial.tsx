@@ -34,6 +34,7 @@ import {
   imgLoveLeft,
   imgLoveRight,
   imgQuote,
+  imgQuoteNew,
   imgSelect,
   tips_step1,
   tips_step3,
@@ -261,7 +262,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     } else {
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
-      eventTracking(ONBOARDING_COMPLETE)
+      eventTracking(ONBOARDING_COMPLETE);
       handlePayment('onboarding');
       navigate('Bottom');
     }
@@ -521,7 +522,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       case 5:
         return tips_step5;
       case 7:
-        return imgQuote;
+        return imgQuoteNew;
       case 8:
         return xpAndLevel;
       default:
