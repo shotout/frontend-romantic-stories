@@ -103,12 +103,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         setLoading(false);
       }
     };
-    if (stepsTutorial === 3) {
-    } else{
       fetchMedia();
-    }
-   
-  }, [userStory]); 
+  }, []); 
   
  
 
@@ -141,8 +137,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       TrackPlayer.seekTo(0)
       setLoading(false);
       console.log(position, duration)
-      
-      
       navigate('Main', {successListen: true});
     }
   }, [position, duration]);
