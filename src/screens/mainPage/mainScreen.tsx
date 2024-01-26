@@ -272,9 +272,12 @@ const MainScreen = ({
 
   const fecthNextStoryPremium = async (id: any) => {
     const resp = await getStoryDetail(id);
+    const data2 = await getExploreStory();
+    handleStoriesRelate(data2);
     handleNextStory(resp.data);
     setShowModal(true);
   };
+
   const handleFreeUserStory = async (id: any) => {
     const resp = await getStoryDetail(id);
     handleNextStory(resp.data);
@@ -1366,6 +1369,12 @@ const MainScreen = ({
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
             handleRead={() => {
               handleReadAds();
+            }}
+            handleReadOther={async (storyId: number) => {
+              setShowModal(false);
+              const resp = await getStoryDetail(storyId);
+              handleNextStory(resp.data);
+              setShowModalDay(true);
             }}
             handleLater={async () => {
               await addStory(nextStory.id);

@@ -1111,6 +1111,12 @@ const LibraryScreen = ({
           handleSetStory(resp.data);
           navigate('Main');
         }}
+        handleReadOther={async (storyId: number) => {
+          setShowUnlockedStory(false);
+          const resp = await getStoryDetail(storyId);
+          handleSetStory(resp.data);
+          navigate('Main');
+        }}
       />
       <ModalUnlockStory
         isLoading={loading}

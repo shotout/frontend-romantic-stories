@@ -38,6 +38,7 @@ function ModalUnlockStory({
   readLater,
   nextStory,
   handleRead,
+  handleReadOther,
   handleLater,
   relateStory,
 }) {
@@ -229,13 +230,14 @@ function ModalUnlockStory({
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {relateStory?.most_read?.slice(0, 3).map(itm => (
                   <Pressable
+                    onPress={() => handleReadOther(itm.id)}
                     style={{
                       flex: 1,
                       // alignItems: 'center',
                       // backgroundColor: 'red',
                       // justifyContent: 'center',
                       width: 110,
-                     marginRight: 5
+                      marginRight: 5,
                     }}>
                     <Image
                       source={cover1}

@@ -605,6 +605,12 @@ const DetailCategoryScreen = ({
           await addStory(nextStory?.id);
           setShowUnlockedStory(false);
         }}
+        handleReadOther={async (storyId: number) => {
+          setShowUnlockedStory(false);
+          const resp = await getStoryDetail(storyId);
+          handleSetStory(resp.data);
+          navigate('Main');
+        }}
       />
        <Loading loading={load} />
     </SafeAreaView>

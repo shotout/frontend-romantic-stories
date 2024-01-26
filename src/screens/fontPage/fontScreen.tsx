@@ -572,7 +572,7 @@ const FontScreen = ({
                 }}
                 style={{
                   backgroundColor:
-                    fontSelect.value === item.value
+                    fontSelect.name === item.name
                       ? code_color.white
                       : undefined,
                   borderColor: code_color.white,
@@ -590,14 +590,14 @@ const FontScreen = ({
                     paddingVertical: 0,
                     fontFamily: item.value,
                     color:
-                      fontSelect.value === item.value
+                      fontSelect.name === item.name
                         ? code_color.blackDark
                         : 'white',
                   }}>
                   {item.name}
                 </Text>
                 {userProfile?.data?.subscription?.plan?.id === 1 &&
-                fontSelect.value !== item.value ? (
+                fontSelect.name !== item.name ? (
                   <>
                     <View
                       style={{
