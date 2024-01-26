@@ -247,7 +247,6 @@ export default function QuotesContent({
   useEffect(() => {
 setSize(fontSize)
   }, [fontSize])
-console.log(fontSize)
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
     setLoading2(true);

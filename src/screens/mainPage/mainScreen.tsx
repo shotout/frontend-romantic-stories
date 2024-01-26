@@ -1141,7 +1141,7 @@ const MainScreen = ({
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 1.5;
     // Jika sentuhan terjadi di sebelah kanan
-    console.log(touchX > screenWidth)
+  
     if (touchX > screenWidth && !showModalCongrats) {
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
@@ -1183,6 +1183,8 @@ const MainScreen = ({
            
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
            
+          }else if(existingEntry && (isPremiumStory || isPremiumAudio)){
+            setShowModalCongrats(true);
           }
         }
       }, 700);

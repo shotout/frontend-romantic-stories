@@ -216,6 +216,7 @@ function ModalUnlockStory({
                 width: '100%',
                 borderRadius: moderateScale(24),
                 paddingBottom: 10,
+                marginHorizontal: 20
               }}>
               <Text
                 style={{
@@ -227,7 +228,7 @@ function ModalUnlockStory({
                 }}>
                 Other Stories you might like:
               </Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <ScrollView contentContainerStyle={{marginLeft: 7}} horizontal showsHorizontalScrollIndicator={false}>
                 {relateStory?.most_read?.slice(0, 3).map(itm => (
                   <Pressable
                     onPress={() => handleReadOther(itm.id)}
@@ -240,11 +241,13 @@ function ModalUnlockStory({
                       marginRight: 5,
                     }}>
                     <Image
-                      source={cover1}
+                      source={{
+                        uri: `${BACKEND_URL}${itm?.category.cover?.url}`,
+                      }}
                       resizeMode="contain"
                       style={{
-                        width: 130,
-                        height: 130,
+                        width: 125,
+                        height: 125,
                         marginBottom: moderateScale(10),
                       }}
                     />
@@ -284,7 +287,7 @@ function ModalUnlockStory({
                   paddingVertical: moderateScale(12),
                   alignItems: 'center',
                   borderRadius: 8,
-                  width: '85%',
+                  width: '88%',
                   marginHorizontal: moderateScale(20),
                   marginBottom: 10,
                   flexDirection: 'row',
