@@ -42,7 +42,6 @@ function ModalUnlockStory({
   handleLater,
   relateStory,
 }) {
- 
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
@@ -82,7 +81,9 @@ function ModalUnlockStory({
         <View
           style={{
             backgroundColor: code_color.blueDark,
-            width: '90%',
+            width: '100%',
+            height: '100%',
+            paddingTop: 50,
             borderRadius: moderateScale(24),
           }}>
           <Image
@@ -133,12 +134,13 @@ function ModalUnlockStory({
               alignItems: 'center',
               backgroundColor: code_color.white,
               borderRadius: moderateScale(24),
+              flex: 1,
             }}>
             <View
               style={{
                 width: '100%',
-                padding: moderateScale(14),
-                paddingHorizontal: moderateScale(20),
+                padding: moderateScale(20),
+                paddingHorizontal: moderateScale(30),
                 borderRadius: moderateScale(8),
               }}>
               <View style={{flexDirection: 'row'}}>
@@ -213,10 +215,8 @@ function ModalUnlockStory({
             <View
               style={{
                 backgroundColor: '#F0F2FF',
-                width: '100%',
                 borderRadius: moderateScale(24),
                 paddingBottom: 10,
-                marginHorizontal: 20
               }}>
               <Text
                 style={{
@@ -228,7 +228,10 @@ function ModalUnlockStory({
                 }}>
                 Other Stories you might like:
               </Text>
-              <ScrollView contentContainerStyle={{marginLeft: 7}} horizontal showsHorizontalScrollIndicator={false}>
+              <ScrollView
+                style={{maxHeight: 210}}
+                horizontal
+                showsHorizontalScrollIndicator={false}>
                 {relateStory?.most_read?.slice(0, 3).map(itm => (
                   <Pressable
                     onPress={() => handleReadOther(itm.id)}
@@ -246,8 +249,8 @@ function ModalUnlockStory({
                       }}
                       resizeMode="contain"
                       style={{
-                        width: 125,
-                        height: 125,
+                        width: 110,
+                        height: 110,
                         marginBottom: moderateScale(10),
                       }}
                     />
@@ -258,7 +261,7 @@ function ModalUnlockStory({
                         fontSize: moderateScale(10),
                         textAlign: 'left',
                         marginBottom: 5,
-                        marginLeft: 15
+                        marginLeft: 15,
                       }}>
                       {itm.category.name}
                     </Text>
@@ -267,7 +270,7 @@ function ModalUnlockStory({
                         color: code_color.black,
                         fontWeight: 500,
                         fontSize: moderateScale(12),
-                        marginLeft: 15
+                        marginLeft: 15,
                         // textAlign: 'center',
                       }}>
                       {itm.title_en}
@@ -283,12 +286,12 @@ function ModalUnlockStory({
                 }}
                 style={{
                   backgroundColor: code_color.yellow,
-                  marginTop: moderateScale(20),
                   paddingVertical: moderateScale(12),
                   alignItems: 'center',
                   borderRadius: 8,
-                  width: '88%',
-                  marginHorizontal: moderateScale(20),
+                  flex: 1,
+                  maxHeight: 50,
+                  marginHorizontal: moderateScale(15),
                   marginBottom: 10,
                   flexDirection: 'row',
                   justifyContent: 'center',
@@ -301,8 +304,8 @@ function ModalUnlockStory({
                 <Text
                   style={{
                     color: code_color.black,
-                    fontWeight: 500,
-                    fontSize: moderateScale(14),
+                    fontWeight: '600',
+                    fontSize: moderateScale(16),
                   }}>
                   Explore more Stories
                 </Text>
@@ -321,8 +324,8 @@ function ModalUnlockStory({
       onDismiss={handleClose}>
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         {isPremium ? (
-        renderPremium()
-         ) : (
+          renderPremium()
+        ) : (
           <View
             style={{
               alignItems: 'center',
@@ -370,7 +373,7 @@ function ModalUnlockStory({
                   }}>
                   <View style={{flexDirection: 'row'}}>
                     <Image
-                       source={{
+                      source={{
                         uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
                       }}
                       resizeMode="contain"
@@ -381,7 +384,7 @@ function ModalUnlockStory({
                       }}
                     />
                     <View style={{flex: 1}}>
-                    <Text
+                      <Text
                         style={{
                           color: '#3F58DD',
                           marginTop: 10,
