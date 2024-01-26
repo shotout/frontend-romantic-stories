@@ -376,14 +376,14 @@ const LibraryScreen = ({
       );
     } else {
       return (
-        <View>
+     
           <Animated.View
             style={
               indexSweepLeft === item?.item?.id
                 ? {
                     transform: [{translateX: translateX}],
                   }
-                : undefined
+                : null
             }>
             <View
               style={{
@@ -396,6 +396,7 @@ const LibraryScreen = ({
                 borderTopWidth: 1,
                 borderBottomWidth: 1,
                 paddingVertical: 10,
+                height: 120
               }}>
               <ImageBackground
                 source={{
@@ -483,7 +484,7 @@ const LibraryScreen = ({
               </TouchableOpacity>
             </View>
           </Animated.View>
-        </View>
+       
       );
     }
   };
