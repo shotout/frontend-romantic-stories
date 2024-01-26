@@ -168,6 +168,7 @@ const LibraryScreen = ({
         useNativeDriver: true,
       }),
     ]).start();
+    rowMap[rowKey].closeRow();
   };
   const stopAnimation = () => {
     translateX.stopAnimation(value => {
@@ -261,7 +262,18 @@ const LibraryScreen = ({
     </View>
   );
 
-  const renderContent = item => {
+  const onRowPress = (rowMap, rowKey) => {
+    // console.log(rowMap)
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].manuallySwipeRow(-180);
+    }
+  }
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+        rowMap[rowKey].closeRow();
+    }
+};
+  const renderContent = (item, rowMap) => {
     if (detail != null) {
       return (
         <View>
@@ -363,7 +375,7 @@ const LibraryScreen = ({
                     height: '100%',
                     justifyContent: 'center',
                   }}
-                  onPress={() => startBounceAnimationDetail()}>
+                  onPress={() => onRowPress(rowMap, data.item.key)}>
                   <DotSvg />
                 </TouchableOpacity>
               </View>
@@ -385,7 +397,8 @@ const LibraryScreen = ({
                   }
                 : null
             }>
-            <View
+            <TouchableOpacity
+              onPress={() => closeRow(rowMap, item.item.id)}
               style={{
                 paddingLeft: 10,
                 paddingBottom: 10,
@@ -474,15 +487,10 @@ const LibraryScreen = ({
                   height: '100%',
                   justifyContent: 'center',
                 }}
-                onPress={async () => {
-                  setIndexSweepLeft(item?.item?.id);
-                  setTimeout(() => {
-                    startBounceAnimation();
-                  }, 100);
-                }}>
+                onPress={() => onRowPress(rowMap, item.item.id)}>
                 <DotSvg />
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </Animated.View>
        
       );
@@ -1096,6 +1104,10 @@ const LibraryScreen = ({
       setShowModalNewStory(false);
     }
   };
+  const onRowDidOpen = rowKey => {
+    // alert(JSON.stringify(rowKey))
+      console.log('This row opened', rowKey);
+  };
   const rippleAnimate = require('../../assets/lottie/ripple.json');
   return (
     <View>
@@ -1354,8 +1366,12 @@ const LibraryScreen = ({
               />
             ) : (
               <SwipeListView
+              keyExtractor={(rowData, index) => {
+                return rowData?.id.toString();
+              }}
+              // useSectionList
                 data={listLibrary}
-                renderItem={item => renderContent(item)}
+                renderItem={(item, rowMap) => renderContent(item, rowMap)}
                 swipeGestureEnded={(_data, _rowMap) => {
                   stopAnimation();
                 }}
@@ -1404,6 +1420,7 @@ const LibraryScreen = ({
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
+                onRowDidOpen={onRowDidOpen}
               />
             )}
           </ScrollView>
