@@ -380,7 +380,7 @@ const ExploreLibraryScreen = ({
       </View>
       <ScrollView
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: 'white',
           height: '100%',
         }}>
         {data?.most_read?.length > 0 && (
