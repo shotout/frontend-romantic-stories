@@ -737,6 +737,7 @@ const MainScreen = ({
         handleListen={() => handleListening()}
         type={type}
         isRippleAnimate={isRippleAnimate}
+        userProfile={userProfile}
       />
     </>
   );
@@ -1249,7 +1250,7 @@ const MainScreen = ({
             backgroundColor: backgroundColor,
             flex: 1,
             // paddingHorizontal: wp(20),
-            marginTop: wp(20),
+            // marginTop: wp(20),
           }}>
           <StatusBar
             barStyle={'dark-content'}

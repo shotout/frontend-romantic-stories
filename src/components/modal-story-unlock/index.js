@@ -42,7 +42,7 @@ function ModalUnlockStory({
   handleLater,
   relateStory,
 }) {
-  // alert(JSON.stringify(nextStory))
+ 
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
@@ -367,7 +367,9 @@ function ModalUnlockStory({
                   }}>
                   <View style={{flexDirection: 'row'}}>
                     <Image
-                      source={cover1}
+                       source={{
+                        uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                      }}
                       resizeMode="contain"
                       style={{
                         width: 65,

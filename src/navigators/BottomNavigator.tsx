@@ -49,7 +49,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isIphoneXorAbove} from '../utils/devices';
 import {fixedFontSize, hp, wp} from '../utils/screen';
-import {ADD_STORY_TO_LIBRARY, STORY_LIKED, eventTracking} from '../helpers/eventTracking';
+import {
+  ADD_STORY_TO_LIBRARY,
+  STORY_LIKED,
+  eventTracking,
+} from '../helpers/eventTracking';
 import {useIsFocused} from '@react-navigation/native';
 
 import FastImage from 'react-native-fast-image';
@@ -57,13 +61,6 @@ const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const Home = () => {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  );
-};
 const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
   const isFocused = useIsFocused();
   const [menu, setMenu] = useState([
@@ -111,7 +108,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
 
   return (
     <View style={{flex: 1}}>
-      {isBottomBarVisible === 'Main' ? (
+      {/* {isBottomBarVisible === 'Main' ? (
         <View style={{flex: 1, top: -20}}>
           <MainScreen
             pressScreen={() => handleSomeAction('Main')}
@@ -119,87 +116,85 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
             colorText={userProfile?.colorText}
           />
         </View>
-      ) : (
-        // <FastImage source={imgSC}
-        // resizeMode={FastImage.resizeMode.contain}
-        // style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }} />
-        <View
+      ) : ( */}
+      <View
+        style={{
+          flex: 1,
+          position: 'absolute',
+          width: '100%',
+          bottom: 0,
+          flexDirection: 'column',
+        }}>
+        <SafeAreaView
           style={{
-            flex: 1,
             position: 'absolute',
+            top:
+              isBottomBarVisible === 'Settings'
+                ? -151
+                : isBottomBarVisible === 'Font' && Platform.OS === 'android'
+                ? -Dimensions.get('window').height / 2
+                : isBottomBarVisible === 'Font' && Platform.OS === 'ios'
+                ? -Dimensions.get('window').height /
+                  (!isIphoneXorAbove() ? 2.8 : 2)
+                : isBottomBarVisible === 'Library'
+                ? -Dimensions.get('window').height / 2.7
+                : 0,
             width: '100%',
-            bottom: 0,
-            flexDirection: 'column',
+            height: '100%',
+            flex: 0,
           }}>
-          <SafeAreaView
-            style={{
-              position: 'absolute',
-              top:
-                isBottomBarVisible === 'Settings'
-                  ? -151
-                  : isBottomBarVisible === 'Font' && Platform.OS === 'android'
-                  ? -Dimensions.get('window').height / 2
-                  : isBottomBarVisible === 'Font' && Platform.OS === 'ios'
-                  ? -Dimensions.get('window').height /
-                    (!isIphoneXorAbove() ? 2.8 : 2)
-                  : isBottomBarVisible === 'Library'
-                  ? -Dimensions.get('window').height / 2.7
-                  : 0,
-              width: '100%',
-              height: '100%',
-              flex: 0,
-            }}>
-            <MainScreen
+          {/* <MainScreen
               pressScreen={() => handleSomeAction('Main')}
               route={undefined}
               colorText={userProfile?.colorText}
-            />
-            {isBottomBarVisible != 'Main' ? (
+            /> */}
+          {isBottomBarVisible != 'Main' ? (
+            <TouchableOpacity
+              onPress={() => handleSomeAction('Main')}
+              style={{
+                position: 'absolute',
+                top:
+                  isBottomBarVisible === 'Settings'
+                    ? 10
+                    : isBottomBarVisible === 'Library'
+                    ? wp(20)
+                    : wp(130),
+                flex: 0,
+                width: '100%',
+                height: isBottomBarVisible === 'Library' ? wp(350) : wp(200),
+                alignItems: 'center',
+                backgroundColor:
+                  isBottomBarVisible === 'Library' ||
+                  isBottomBarVisible === 'Settings'
+                    ? 'rgba(0,0,0,0.5)'
+                    : null,
+              }}>
               <TouchableOpacity
                 onPress={() => handleSomeAction('Main')}
                 style={{
+                  backgroundColor: '#f1f1f1',
                   position: 'absolute',
-                  top:
-                    isBottomBarVisible === 'Settings'
-                      ? 10
-                      : isBottomBarVisible === 'Library'
-                      ? wp(20)
-                      : wp(130),
-                  flex: 0,
-                  width: '100%',
-                  height: isBottomBarVisible === 'Library' ? wp(350) : wp(200),
+                  top: isBottomBarVisible === 'Library' ? wp(120) : wp(70),
+                  left: '30%',
+                  paddingHorizontal: wp(20),
+                  paddingVertical: wp(5),
+                  borderRadius: wp(20),
                   alignItems: 'center',
-                  backgroundColor:
-                    isBottomBarVisible === 'Library' ||
-                    isBottomBarVisible === 'Settings'
-                      ? 'rgba(0,0,0,0.5)'
-                      : null,
                 }}>
-                <TouchableOpacity
-                  onPress={() => handleSomeAction('Main')}
+                <Text
+                  allowFontScaling={false}
                   style={{
-                    backgroundColor: '#f1f1f1',
-                    position: 'absolute',
-                    top: isBottomBarVisible === 'Library' ? wp(120) : wp(70),
-                    left: '30%',
-                    paddingHorizontal: wp(20),
-                    paddingVertical: wp(5),
-                    borderRadius: wp(20),
-                    alignItems: 'center',
+                    textAlign: 'center',
                   }}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      textAlign: 'center',
-                    }}>
-                    {'Tap here to get back\n to the Story'}
-                  </Text>
-                </TouchableOpacity>
+                  {'Tap here to get back\n to the Story'}
+                </Text>
               </TouchableOpacity>
-            ) : null}
-          </SafeAreaView>
-          <View
+            </TouchableOpacity>
+          ) : null}
+        </SafeAreaView>
+        <View
             style={{
+              // position: 'relative',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
@@ -210,7 +205,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
               shadowOffset: {width: 5, height: 5},
               shadowRadius: 5,
               shadowOpacity: 1,
-              elevation: 5,
+              // elevation: 5,
             }}>
             {menu.map((item, i) => {
               return (
@@ -277,18 +272,15 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
               );
             })}
           </View>
-          {
-            isBottomBarVisible === 'Library' && isFocused ? (
-              <LibraryScreen handleSomeAction={handleSomeAction} />
-            ) : isBottomBarVisible === 'Font' && isFocused ? (
-              <FontScreen />
-            ) : isBottomBarVisible === 'Settings' && isFocused ? (
-              <SettingsPage />
-            ) : null
-            // <LibraryScreen handleSomeAction={handleSomeAction} />
-          }
-        </View>
-      )}
+        {isBottomBarVisible === 'Library' && isFocused ? (
+          <LibraryScreen handleSomeAction={handleSomeAction} />
+        ) : isBottomBarVisible === 'Font' && isFocused ? (
+          <FontScreen />
+        ) : isBottomBarVisible === 'Settings' && isFocused ? (
+          <SettingsPage />
+        ) : null}
+      </View>
+      {/* )} */}
     </View>
   );
 };
@@ -376,88 +368,90 @@ function MyTabs(props) {
     }
   };
   const love = require('../assets/lottie/ripple.json');
-  // alert(props?.backgroundColor)
 
   return (
-    <Tab.Navigator
-      backBehavior="none"
-      initialRouteName="Main"
-      detachInactiveScreens
-      //initialRouteName={screenName.HOMEPAGE}
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'white',
-        headerShown: false,
-        headerStyle: {
-          backgroundColor: '#f2f2f2',
-        },
-        tabBarStyle: {
-          height,
-          backgroundColor: 'white',
-          display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
-        },
-      }}>
-      <Tab.Screen
-        name="Main"
-        component={MainScreen}
-        options={({route}) => ({
+    <>
+      <Tab.Navigator
+        backBehavior="none"
+        initialRouteName="Main"
+        detachInactiveScreens
+        //initialRouteName={screenName.HOMEPAGE}
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarActiveTintColor: 'white',
+          tabBarInactiveTintColor: 'white',
           headerShown: false,
-          tabBarIcon: ({color, focused}) => (
-            <TouchableOpacity
-              onPress={() => {
-                handleFetchSave();
-              }}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                // display: !onhideBottom ? 'flex' : 'none',
-              }}>
-              <Modal
-                visible={visibleModal}
-                animationType="fade"
-                transparent
-                onDismiss={() => setVisibleModal(false)}>
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+          headerStyle: {
+            backgroundColor: '#f2f2f2',
+          },
+          tabBarStyle: {
+            height,
+            backgroundColor: 'white',
+            display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
+           
+          
+          },
+        }}>
+        <Tab.Screen
+          name="Main"
+          component={MainScreen}
+          options={({route}) => ({
+            headerShown: false,
+            tabBarIcon: ({color, focused}) => (
+              <TouchableOpacity
+                onPress={() => {
+                  handleFetchSave();
+                }}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // display: !onhideBottom ? 'flex' : 'none',
+                }}>
+                <Modal
+                  visible={visibleModal}
+                  animationType="fade"
+                  transparent
+                  onDismiss={() => setVisibleModal(false)}>
                   <View
                     style={{
-                      backgroundColor: 'black',
-                      padding: wp(20),
-                      borderRadius: wp(20),
+                      flex: 1,
+                      backgroundColor: 'rgba(0,0,0,0.5)',
                       alignItems: 'center',
+                      justifyContent: 'center',
                     }}>
-                    <Animated.View
+                    <View
                       style={{
-                        transform: [
-                          {translateY: positionY},
-                          {translateX: positionX},
-                        ],
+                        backgroundColor: 'black',
+                        padding: wp(20),
+                        borderRadius: wp(20),
+                        alignItems: 'center',
                       }}>
-                      <Image
-                        source={imgHearts}
-                        resizeMode="contain"
-                        style={{width: wp(50), height: hp(50)}}
-                      />
-                    </Animated.View>
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        color: code_color.white,
-                        textAlign: 'center',
-                        fontSize: fixedFontSize(15),
-                      }}>
-                      {'Story saved &\nadded to library'}
-                    </Text>
+                      <Animated.View
+                        style={{
+                          transform: [
+                            {translateY: positionY},
+                            {translateX: positionX},
+                          ],
+                        }}>
+                        <Image
+                          source={imgHearts}
+                          resizeMode="contain"
+                          style={{width: wp(50), height: hp(50)}}
+                        />
+                      </Animated.View>
+                      <Text
+                        allowFontScaling={false}
+                        style={{
+                          color: code_color.white,
+                          textAlign: 'center',
+                          fontSize: fixedFontSize(15),
+                        }}>
+                        {'Story saved &\nadded to library'}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </Modal>
-              {/* {props?.stepsTutorial === 2 ? (
+                </Modal>
+                {/* {props?.stepsTutorial === 2 ? (
                 <View style={{position: 'absolute', bottom: wp(-20)}}>
                   <AnimatedLottieView
                     source={love}
@@ -468,52 +462,46 @@ function MyTabs(props) {
                   />
                 </View>
               ) : null} */}
-              {props.userStory?.is_collection === null ? (
-                <LoveOutline
-                  width={wp(20)}
-                  height={hp(20)}
-                  fill={props?.colorTheme}
-                />
-              ) : (
-                <LoveSvg
-                  width={wp(20)}
-                  height={hp(20)}
-                  fill={props?.colorTheme}
-                />
-              )}
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: focused ? props?.colorTheme : props?.colorTheme,
-                  fontSize: fixedFontSize(11),
-                  marginTop: wp(2),
-                }}>
-                {props.userStory?.is_collection === null ? 'SAVE' : 'SAVED'}
-              </Text>
-            </TouchableOpacity>
-          ),
-        })}
-        listeners={({route, navigation}) => ({
-          state: state => {
-            handleSomeAction(
-              state.data.state.routes[state.data.state.index].name,
-            );
-          },
-        })}
-      />
-      <Tab.Screen
-        name="Library"
-        children={() => (
-          <Library
-            userProfile={props}
-            stepsTutorial={props.stepsTutorial}
-            backgroundColor={props?.backgroundColor}
-          />
-        )}
-        options={({route}) => ({
-          tabBarIcon: ({color, focused}) => {
-            return (
-              <View
+                {props.userStory?.is_collection === null ? (
+                  <LoveOutline
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
+                ) : (
+                  <LoveSvg
+                    width={wp(20)}
+                    height={hp(20)}
+                    fill={props?.colorTheme}
+                  />
+                )}
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: focused ? props?.colorTheme : props?.colorTheme,
+                    fontSize: fixedFontSize(11),
+                    marginTop: wp(2),
+                  }}>
+                  {props.userStory?.is_collection === null ? 'SAVE' : 'SAVED'}
+                </Text>
+              </TouchableOpacity>
+            ),
+          })}
+          listeners={({route, navigation}) => ({
+            state: state => {
+              handleSomeAction(
+                state.data.state.routes[state.data.state.index].name,
+              );
+            },
+          })}
+        />
+        <Tab.Screen
+          name="Library"
+          component={MainScreen}
+          options={({route}) => ({
+            tabBarIcon: ({color, focused}) => {
+              return (
+                <View
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -534,30 +522,24 @@ function MyTabs(props) {
                     MY LIBRARY
                   </Text>
                 </View>
-            );
-          },
-        })}
-        listeners={({route, navigation}) => ({
-          state: state => {
-            handleSomeAction(
-              state.data.state.routes[state.data.state.index].name,
-            );
-          },
-        })}
-      />
+              );
+            },
+          })}
+          listeners={({route, navigation}) => ({
+            state: state => {
+              handleSomeAction(
+                state.data.state.routes[state.data.state.index].name,
+              );
+            },
+          })}
+        />
 
-      <Tab.Screen
-        name="Font"
-        children={() => (
-          <Library
-            userProfile={props}
-            stepsTutorial={undefined}
-            backgroundColor={props?.backgroundColor}
-          />
-        )}
-        options={({route}) => ({
-          headerShown: false,
-          tabBarIcon: ({color, focused}) => {
+        <Tab.Screen
+          name="Font"
+        component={MainScreen}
+          options={({route}) => ({
+            headerShown: false,
+            tabBarIcon: ({color, focused}) => {
               return (
                 <View
                   style={{
@@ -581,28 +563,22 @@ function MyTabs(props) {
                   </Text>
                 </View>
               );
-          },
-        })}
-        listeners={({route, navigation}) => ({
-          state: state => {
-            handleSomeAction(
-              state.data.state.routes[state.data.state.index].name,
-            );
-          },
-        })}
-      />
-      <Tab.Screen
-        name="Settings"
-        children={() => (
-          <Library
-            userProfile={props}
-            stepsTutorial={undefined}
-            backgroundColor={props?.backgroundColor}
-          />
-        )}
-        options={({route}) => ({
-          headerShown: false,
-          tabBarIcon: ({color, focused}) => {
+            },
+          })}
+          listeners={({route, navigation}) => ({
+            state: state => {
+              handleSomeAction(
+                state.data.state.routes[state.data.state.index].name,
+              );
+            },
+          })}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={MainScreen}
+          options={({route}) => ({
+            headerShown: false,
+            tabBarIcon: ({color, focused}) => {
               return (
                 <View
                   style={{
@@ -626,17 +602,25 @@ function MyTabs(props) {
                   </Text>
                 </View>
               );
-          },
-        })}
-        listeners={({route, navigation}) => ({
-          state: state => {
-            handleSomeAction(
-              state.data.state.routes[state.data.state.index].name,
-            );
-          },
-        })}
-      />
-    </Tab.Navigator>
+            },
+          })}
+          listeners={({route, navigation}) => ({
+            state: state => {
+              handleSomeAction(
+                state.data.state.routes[state.data.state.index].name,
+              );
+            },
+          })}
+        />
+      </Tab.Navigator>
+      {isBottomBarVisible != 'Main' ? (
+        <Library
+          userProfile={props}
+          stepsTutorial={undefined}
+          backgroundColor={props?.backgroundColor}
+        />
+      ) : null}
+    </>
   );
 }
 

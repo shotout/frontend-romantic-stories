@@ -107,10 +107,10 @@ const ExploreLibraryScreen = ({
     });
   };
 
-  const handlePremium = async () => {
+  const handlePremium = async (itm) => {
+    const resp = await getStoryDetail(itm?.id);
+    handleNextStory(resp.data);
     setTimeout(async () => {
-      const resp = await getStoryDetail(selectedStory?.id);
-      handleNextStory(resp.data);
       setShowUnlockedStory(true);
     }, 500);
   };
@@ -159,30 +159,7 @@ const ExploreLibraryScreen = ({
     handleRestart();
   }, [keyword, items]);
 
-  // const handleTouchStart = e => {
-  //   // Mendapatkan posisi sentuhan
-  //   const touchX = e.nativeEvent.locationX;
-  //   // Menghitung setengah lebar layar
-  //   const halfScreenWidth = Dimensions.get('window').width / 2;
-  //   // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-  //   if (touchX < halfScreenWidth) {
-  //     console.log('masuk kiri');
-  //     handleSetSteps(3);
-  //     goBack();
-  //     setIsSwipingLeft(true);
-  //   }
-  //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-  //   else {
-  //     handleSetSteps(4 + 1);
-  //     navigate('Main');
-  //     setIsSwipingRight(true);
-  //   }
-  // };
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
+ 
   useEffect(() => {
     handleRestart();
   }, [items]);
@@ -403,7 +380,7 @@ const ExploreLibraryScreen = ({
       </View>
       <ScrollView
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: 'white',
           height: '100%',
         }}>
         {data?.most_read?.length > 0 && (
@@ -433,7 +410,7 @@ const ExploreLibraryScreen = ({
                         setSelectedStory(itm);
                       } else {
                         setSelectedStory(itm);
-                        handlePremium();
+                        handlePremium(itm);
                       }
                     }}
                     style={{
@@ -589,7 +566,7 @@ const ExploreLibraryScreen = ({
                         setSelectedStory(itm);
                       } else {
                         setSelectedStory(itm);
-                        handlePremium();
+                        handlePremium(itm);
                       }
                     }}
                     style={{
@@ -665,10 +642,9 @@ const ExploreLibraryScreen = ({
         isVisible={showUnlockedStory}
         onClose={() => setShowUnlockedStory(false)}
         readLater={true}
-        data={selectedStory}
+        data={nextStory}
         handleRead={async () => {
           const resp = await getStoryDetail(selectedStory?.id);
-
           handleSetStory(resp.data);
           const response = await addStory(selectedStory?.id);
           navigate('Main');
