@@ -245,10 +245,12 @@ const LibraryScreen = ({
     if(detail){
       fetchDetail(detail)
     }
-  }, [keyword])
+  }, [keyword, items])
   const fetchDetail = async id => {
     let params = {
       search: keyword,
+      column: items?.column,
+      dir: items?.value,
     };
     const resp = await getDetailCollection(id, params);
     setDetailCollection(resp?.data?.collection);
