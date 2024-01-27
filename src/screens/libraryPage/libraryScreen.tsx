@@ -223,10 +223,11 @@ const LibraryScreen = ({
   };
 
   const handleReadDetail = async item => {
+   
     setSelectedStory(item);
     if (
       userProfile?.data?.subscription?.plan?.id != 1 ||
-      userStory?.id === item?.item?.id ||
+      userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
       new Date() > new Date(item?.item?.expire)
     ) {
       const resp = await getStoryDetail(item?.id);
@@ -240,32 +241,26 @@ const LibraryScreen = ({
       setDetail(null);
     }
   };
-
+  useEffect(() => {
+    if(detail){
+      fetchDetail(detail)
+    }
+  }, [keyword])
   const fetchDetail = async id => {
-    const resp = await getDetailCollection(id);
+    let params = {
+      search: keyword,
+    };
+    const resp = await getDetailCollection(id, params);
     setDetailCollection(resp?.data?.collection);
     if (resp?.data?.stories?.data.length > 0) {
       setListLibraryDetail(resp?.data?.stories?.data);
+    }else{
+      setListLibraryDetail([])
     }
   };
 
-  const renderCollect = item => (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: 20,
-      }}>
-      <LibrarySvg fill={code_color.white} width={20} height={20} />
-      <Text allowFontScaling={false} style={{marginLeft: 20, flex: 1}}>
-        {item.name}
-      </Text>
-      <BackRightSvg />
-    </View>
-  );
-
+ 
   const onRowPress = (rowMap, rowKey, data) => {
-    // console.log(rowMap)
     setRow(rowKey)
     if (rowMap[rowKey]) {
       rowMap[rowKey].manuallySwipeRow( data ? -120 : -180);
@@ -278,10 +273,11 @@ const LibraryScreen = ({
     }
 };
   const renderContent = (item, rowMap) => {
+
     if (detail != null) {
       return (
         <View>
-          {detailCollection?.stories_count != 0 ? (
+          { listLibraryDetail.length > 0  ? (
             <Animated.View
               style={
                 indexSweepLeft === item?.item?.id
@@ -315,12 +311,13 @@ const LibraryScreen = ({
                     paddingTop: 5,
                   }}
                   resizeMode="contain">
-                  {(userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3) ||
-                    userStory?.id != item?.item?.id ||
-                    (new Date() > new Date(item?.item?.expire) && (
-                      <LockFree height={16} width={55} />
-                    ))}
+                 {userProfile?.data?.subscription?.plan?.id != 2 &&
+                  userProfile?.data?.subscription?.plan?.id != 3 &&
+                  userStory?.id != item?.item?.story?.id &&
+                  item?.item?.expire === null &&
+                  new Date() > new Date(item?.item?.expire) && (
+                    <LockFree height={16} width={55} />
+                  )}
                 </ImageBackground>
                 <View
                   style={{
@@ -353,7 +350,7 @@ const LibraryScreen = ({
                     </View>
                     <TouchableOpacity
                       onPress={() => {
-                        handleReadDetail(item?.story);
+                        handleReadDetail(item?.item?.story);
                       }}
                       style={{
                         backgroundColor: '#00B781',
@@ -392,7 +389,7 @@ const LibraryScreen = ({
                 </TouchableOpacity>
               </TouchableOpacity>
             </Animated.View>
-          ) : null}
+          ) :  renderEmptySearch()} 
         </View>
       );
     } else {
@@ -728,6 +725,8 @@ const LibraryScreen = ({
       <View>
         <Pressable
           onPress={() => {
+            setDetailCollection(null)
+            setListLibraryDetail([])
             setDetail(item?.item?.id);
             fetchDetail(item?.item?.id);
           }}
@@ -765,7 +764,7 @@ const LibraryScreen = ({
       </View>
     );
   };
-  console.log(JSON.stringify(data?.most_share?.length))
+  
   const renderContentCollectionDetail = () => {
     return (
       <View>
@@ -1201,7 +1200,14 @@ const LibraryScreen = ({
               allowFontScaling={false}
               value={keyword}
               onChangeText={value => setKeyword(value)}
-              onSubmitEditing={() => handleRestart()}
+              onSubmitEditing={() => {
+                if(detail){
+                  fetchDetail(detail)
+                }else{
+                  handleRestart()
+                }
+               
+              }}
               style={{
                 marginLeft: 10,
                 fontSize: 14,
@@ -1218,7 +1224,8 @@ const LibraryScreen = ({
           <ScrollView>
             {detail != null ? (
               renderContentCollectionDetail()
-            ) : (
+            ) :
+             (
               <SwipeListView
                 data={listCollection}
                 renderItem={item => renderContentCollection(item)}
@@ -1379,12 +1386,14 @@ const LibraryScreen = ({
             )}
           </ScrollView>
         ) : listLibrary?.length === 0 &&
-          listCollection?.length === 0 &&
+          listCollection?.length === 0 
+          && detail === null &&
           keyword.length === 0 ? (
           renderEmpty()
         ) : listLibrary?.length === 0 &&
-          listCollection?.length === 0 &&
-          keyword.length > 0 ? (
+          listCollection?.length === 0  
+          && detail === null &&
+          keyword.length > 0 || detail != null && listLibraryDetail?.length === 0  ? (
           renderEmptySearch()
         ) : (
           renderEmpty()

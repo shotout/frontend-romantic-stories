@@ -347,10 +347,11 @@ export const resetBadge = (data = {}) =>
     data,
   });
 
-export const getDetailCollection = id =>
+export const getDetailCollection = (id, params) =>
   Wrap({
     url: `/collection/${id}`,
     method: 'GET',
+    params
   });
 export const deleteStoryCollection = (id, idStory) =>
   Wrap({
