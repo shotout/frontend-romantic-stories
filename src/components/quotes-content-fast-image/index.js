@@ -448,7 +448,7 @@ setSize(fontSize)
                     selectionStart,
                     selectionEnd,
                   }) => {
-                    if (eventType === 'Share') {
+                    
                       navigate('Share', {
                         selectedContent: content,
                         start:
@@ -471,7 +471,7 @@ setSize(fontSize)
                             : item?.title_en,
                       });
                       eventTracking(STORY_SHARED);
-                    }
+                    
                   }}
                   value={item}
                 />

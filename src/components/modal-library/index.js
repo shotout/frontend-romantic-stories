@@ -24,17 +24,34 @@ import Button from '../buttons/Button';
 import BackRightSvg from '../../assets/icons/backRight';
 import ChecklistSvg from '../../assets/icons/checklist';
 import {addToCollection} from '../../shared/request';
-import {libraryAdd} from '../../assets/images';
+import {imgSearchNull, libraryAdd} from '../../assets/images';
+import {sizing} from '../../shared/styling';
+import ModalSorting from '../modal-sorting';
+import ModalNewLibrary from '../modal-new-library';
 
-function ModalLibrary({isVisible, onClose, data, storyId, colorTheme}) {
+function ModalLibrary({
+  isVisible,
+  onClose,
+  data,
+  storyId,
+  colorTheme,
+  keyword,
+  setKeyword,
+  setItems,
+  handleRestart
+}) {
   const [listLibrary, setList] = useState(data);
   const [id, setId] = useState(storyId);
   const [select, setSelect] = useState(null);
+  const [showModalSort, setShowModalSort] = useState(false);
+  const [showModalNew, setShowModalNew] = useState(false);
   const handleClose = () => {
     // if (typeof onClose === 'function') {
     //   onClose();
     // }
   };
+
+  useEffect(() => {}, [keyword]);
   const header = () => (
     <View style={{backgroundColor: colorTheme}}>
       <View style={{flexDirection: 'row', alignItems: 'center', margin: 10}}>
@@ -69,11 +86,22 @@ function ModalLibrary({isVisible, onClose, data, storyId, colorTheme}) {
           alignItems: 'center',
           marginHorizontal: 10,
         }}>
-        <Image
-          source={libraryAdd}
-          style={{height: 30, width: 30}}
-          resizeMode="contain"
-        />
+         <Pressable
+            onPress={() => setShowModalNew(true)}
+            style={{
+              height: 30,
+              width: 30,
+              backgroundColor: code_color.white,
+              borderRadius: 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={libraryAdd}
+              resizeMode="contain"
+              style={{width: 20, height: 20}}
+            />
+          </Pressable>
         <View
           style={{
             backgroundColor: code_color.white,
@@ -87,51 +115,82 @@ function ModalLibrary({isVisible, onClose, data, storyId, colorTheme}) {
           }}>
           <SearchSvg />
           <TextInput
+            value={keyword}
+            onChangeText={text => setKeyword(text)}
             placeholder="Search"
+            placeholderTextColor={'black'}
             allowFontScaling={false}
             style={{marginLeft: 10, fontSize: 14}}
           />
         </View>
-        <DescendingSvg fill={code_color.white} />
+        <Pressable onPress={() => setShowModalSort(true)}>
+          <DescendingSvg fill={code_color.white} />
+        </Pressable>
       </View>
     </View>
   );
 
   const renderList = () => (
     <View>
-      {data?.map(item => (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            margin: 20,
-            borderBottomColor: code_color.blackDark,
-            paddingBottom: 10,
-            borderBottomWidth: 1,
-          }}>
-          <LibrarySvg fill={code_color.blackDark} width={20} height={20} />
-          <Text allowFontScaling={false} style={{marginLeft: 20, flex: 1}}>
-            {item.name}
-          </Text>
+      {data.length > 0 ? (
+        data?.map(item => (
           <Pressable
             onPress={() => setSelect(item)}
             style={{
-              borderWidth: 1,
-              borderColor: code_color.blackDark,
-              backgroundColor:
-                select?.name === item.name ? code_color.splash : null,
-              width: 30,
-              height: 30,
-              borderRadius: 20,
+              flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              margin: 20,
+              borderBottomColor: code_color.blackDark,
+              paddingBottom: 10,
+              borderBottomWidth: 1,
             }}>
-            {select?.name === item.name ? (
-              <ChecklistSvg fill={code_color.white} />
-            ) : null}
+            <LibrarySvg fill={code_color.blackDark} width={20} height={20} />
+            <Text allowFontScaling={false} style={{marginLeft: 20, flex: 1}}>
+              {item.name}
+            </Text>
+            <Pressable
+              onPress={() => setSelect(item)}
+              style={{
+                borderWidth: 1,
+                borderColor: code_color.blackDark,
+                backgroundColor:
+                  select?.name === item.name ? code_color.splash : null,
+                width: 30,
+                height: 30,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              {select?.name === item.name ? (
+                <ChecklistSvg fill={code_color.white} />
+              ) : null}
+            </Pressable>
           </Pressable>
+        ))
+      ) : (
+        <View style={{alignItems: 'center'}}>
+          <View style={{borderRadius: 30}}>
+            <Image
+              resizeMode="contain"
+              source={imgSearchNull}
+              style={{width: 100, height: 100}}
+            />
+          </View>
+
+          <Text
+            style={{
+              color: code_color.black,
+              fontSize: 16,
+              fontWeight: '400',
+              textAlign: 'center',
+              lineHeight: 21,
+              marginTop: 22,
+              width: sizing.getDimensionWidth(0.9),
+            }}>
+            {'We can’t find that title in your collection.'}
+          </Text>
         </View>
-      ))}
+      )}
     </View>
   );
 
@@ -176,6 +235,24 @@ function ModalLibrary({isVisible, onClose, data, storyId, colorTheme}) {
           />
         </View>
       </View>
+      <ModalSorting
+        isVisible={showModalSort}
+        onClose={() => setShowModalSort(false)}
+        items={(value: any) => {
+          setShowModalSort(false);
+          setItems(value);
+        }}
+      />
+      <ModalNewLibrary
+          isVisible={showModalNew}
+          onClose={() => setShowModalNew(false)}
+          restart={() => {
+            setShowModalNew(false)
+            handleRestart();
+          }}
+          edit={false}
+          data={id}
+        />
     </Modal>
   );
 }

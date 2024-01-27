@@ -90,6 +90,7 @@ import {TouchableOpacityBase} from 'react-native';
 import {hp, wp} from '../../utils/screen';
 import AnimatedLottieView from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 const LibraryScreen = ({
   colorTheme,
@@ -301,6 +302,7 @@ const LibraryScreen = ({
                   borderTopWidth: 1,
                   borderBottomWidth: 1,
                   paddingVertical: 10,
+                  height: 120
                 }}>
                 <ImageBackground
                   source={{
@@ -391,9 +393,6 @@ const LibraryScreen = ({
               </TouchableOpacity>
             </Animated.View>
           ) : null}
-          {/* <View
-        style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
-      /> */}
         </View>
       );
     } else {
@@ -513,116 +512,8 @@ const LibraryScreen = ({
       );
     }
   };
-  const renderContentSearch = item => {
+  const renderContentSearch = (item, rowMap) => {
     if (detail != null) {
-      return (
-        <View>
-          {detailCollection?.stories_count != 0 ? (
-            <Animated.View
-              style={{
-                transform: [{translateX: translateX}],
-              }}>
-              <View
-                style={{
-                  paddingHorizontal: 10,
-                  paddingBottom: 10,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  backgroundColor: bgTheme,
-                  borderColor: 'white',
-                  borderTopWidth: 1,
-                  borderBottomWidth: 1,
-                  paddingVertical: 10,
-                  paddingRight: 15,
-                }}>
-                <ImageBackground
-                  source={{
-                    uri: `${BACKEND_URL}${item?.category?.cover?.url}`,
-                  }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    alignItems: 'center',
-                    paddingTop: 5,
-                  }}
-                  resizeMode="contain">
-                  {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 &&
-                    userStory?.id != item?.item?.id &&
-                    item?.item?.expire === null &&
-                    new Date() > new Date(item?.item?.expire) && (
-                      <LockFree height={16} width={55} />
-                    )}
-                </ImageBackground>
-                <View
-                  style={{
-                    marginLeft: 0,
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                  }}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={{flex: 1, marginRight: 10}}>
-                      <Text
-                        allowFontScaling={false}
-                        style={{
-                          color: code_color.white,
-                          fontSize: 12,
-                          marginBottom: 5,
-                        }}>
-                        {item?.category?.name}
-                      </Text>
-                      <Text
-                        allowFontScaling={false}
-                        style={{
-                          color: code_color.white,
-                          fontSize: 14,
-                          fontWeight: 400,
-                          textAlign: 'left',
-                        }}>
-                        {item?.title_en}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleReadDetail(item?.story);
-                      }}
-                      style={{
-                        backgroundColor: '#00B781',
-                        paddingHorizontal: 15,
-                        paddingVertical: 10,
-                        alignItems: 'center',
-                        marginRight: 10,
-                        borderRadius: 30,
-                      }}>
-                      <Text
-                        allowFontScaling={false}
-                        style={{
-                          color: code_color.white,
-                          fontWeight: 'bold',
-                          fontSize: 12,
-                        }}>
-                        Read Story
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  style={{marginHorizontal: 5}}
-                  onPress={() => {
-
-                  }}>
-                  <DotSvg />
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-          ) : null}
-          {/* <View
-        style={{borderColor: '#778DFF', borderWidth: 1, paddingVertical: 10, backgroundColor: bgTheme}}
-      /> */}
-        </View>
-      );
-    } else {
       return (
         <View>
           <Animated.View
@@ -653,11 +544,10 @@ const LibraryScreen = ({
                   paddingTop: 5,
                 }}
                 resizeMode="contain">
-                {userProfile?.data?.subscription?.plan?.id != 2 &&
+                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
                   userStory?.id != item?.item?.id &&
-                  item?.item?.expire === null &&
-                  new Date() > new Date(item?.item?.expire) && (
+                    (
                     <LockFree height={16} width={55} />
                   )}
               </ImageBackground>
@@ -715,7 +605,115 @@ const LibraryScreen = ({
               <TouchableOpacity
                 style={{marginHorizontal: 5}}
                 onPress={() => {
-
+                  if(row){
+                    closeRow(rowMap, item.item.id)
+                  }else{
+                    onRowPress(rowMap, item.item.id, false)
+                  }
+                }}>
+                <DotSvg />
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Animated.View
+            style={{
+              transform: [{translateX: translateX}],
+            }}>
+            <View
+              style={{
+                paddingHorizontal: 10,
+                paddingBottom: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: bgTheme,
+                borderColor: 'white',
+                // borderTopWidth: 1,
+                borderBottomWidth: 1,
+                paddingVertical: 10,
+                paddingRight: 15,
+              }}>
+              <ImageBackground
+                source={{
+                  uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
+                }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  alignItems: 'center',
+                  paddingTop: 5,
+                }}
+                resizeMode="contain">
+                 {userProfile?.data?.subscription?.plan?.id != 2 &&
+                  userProfile?.data?.subscription?.plan?.id != 3 &&
+                  userStory?.id != item?.item?.id &&
+                   (
+                    <LockFree height={16} width={55} />
+                  )}
+              </ImageBackground>
+              <View
+                style={{
+                  marginLeft: 0,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{flex: 1, marginRight: 10}}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontSize: 12,
+                        marginBottom: 5,
+                      }}>
+                      {item?.item?.category?.name}
+                    </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontSize: 14,
+                        fontWeight: 400,
+                        textAlign: 'left',
+                      }}>
+                      {item?.item?.title_en}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => handleRead(item)}
+                    style={{
+                      backgroundColor: '#00B781',
+                      paddingHorizontal: 15,
+                      paddingVertical: 10,
+                      alignItems: 'center',
+                      marginRight: 10,
+                      borderRadius: 30,
+                    }}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontWeight: 'bold',
+                        fontSize: 12,
+                      }}>
+                      Read Story
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <TouchableOpacity
+                style={{marginHorizontal: 5}}
+                onPress={() => {
+                  if(row){
+                    closeRow(rowMap, item.item.id)
+                  }else{
+                    onRowPress(rowMap, item.item.id, false)
+                  }
                 }}>
                 <DotSvg />
               </TouchableOpacity>
@@ -767,6 +765,7 @@ const LibraryScreen = ({
       </View>
     );
   };
+  console.log(JSON.stringify(data?.most_share?.length))
   const renderContentCollectionDetail = () => {
     return (
       <View>
@@ -852,7 +851,7 @@ const LibraryScreen = ({
     async function fetchData() {
       try {
         let params = {
-          search: keyword,
+          search: '',
         };
         const res = await getExploreStory(params);
         setData(res);
@@ -878,97 +877,23 @@ const LibraryScreen = ({
       console.log(JSON.stringify(error));
     }
   };
-  // const handleTouchStart = e => {
-  //   // Mendapatkan posisi sentuhan
-  //   const touchX = e.nativeEvent.locationX;
-  //   // Menghitung setengah lebar layar
-  //   const halfScreenWidth = Dimensions.get('window').width / 2;
-  //   // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-  //   if (touchX < halfScreenWidth) {
-  //     console.log('masuk kiri');
-  //     handleSetSteps(3 - 1);
-  //     navigate('Main');
-  //     setIsSwipingLeft(true);
-  //   }
-  //   // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-  //   else {
-  //     console.log('masuk kanan');
-  //     handleSetSteps(3 + 1);
-  //     navigate('ExploreLibrary');
-  //     setIsSwipingRight(true);
-  //   }
-  // };
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 2.5;
-    if (touchX < screenWidth) {
-      navigate('Media');
-    } else {
-      handleSetSteps(3 + 1);
-      navigate('ExploreLibrary');
-    }
-    // setIsSwipingLeft(true);
-    // if (activeStep === 1) {
-    // } else {
-    //   setTutorial({
-    //     ...isTutorial,
-    //     step: isTutorial.step - 1,
-    //   });
-    //   setActiveStep(prevStep => prevStep - 1);
-    //   handleSetSteps(activeStep - 1);
-    // }
-    // } else if (touchX < halfScreenWidth){
-    //   alert('okeee kiri')
-    // }
-    // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    // else {
-    //   alert('okeee KANAN')
-    //   // handleNext();
-    //   // setIsSwipingRight(true);
-    // }
-  };
 
-  const renderProgress = () => <StepHeader currentStep={5} />;
-  const renderTutorial = () => {
-    if (stepsTutorial === 3) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height + 100,
-            top: wp(-70) - Dimensions.get('window').height / 3,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-          }}>
-          <View
-            style={{
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              opacity: 1,
-              marginTop: 5,
-            }}>
-            {renderProgress()}
-          </View>
-
-          <Step4
-            handleNext={() => {
-              handleSetSteps(stepsTutorial + 1);
-              navigate('ExploreLibrary');
-            }}
-          />
-        </SafeAreaView>
-      );
+  const searchKeyword = async(key) => {
+    setKeyword(key)
+    try {
+      let params = {
+        search: key,
+        column: items?.column,
+        dir: items?.value,
+      };
+      const res = await getMyCollection(params);
+      console.log('DATA INI' + JSON.stringify(res));
+      setListCollection(res.data);
+      setListLibrary(res.outsides);
+    } catch (error) {
+      console.log(JSON.stringify(error));
     }
-  };
+  }
   const handleUnlimited = async () => {
     //
     try {
@@ -1052,8 +977,11 @@ const LibraryScreen = ({
       </Text>
 
       <SwipeListView
+        keyExtractor={(rowData, index) => {
+          return rowData?.id.toString();
+        }}
         data={data?.most_share}
-        renderItem={item => renderContentSearch(item)}
+        renderItem={(item, rowMap) => renderContentSearch(item, rowMap)}
         renderHiddenItem={(_data, _rowMap) => (
           <View style={styles.rowBack}>
             {detail != null ? null : (
@@ -1188,6 +1116,10 @@ const LibraryScreen = ({
           }}
           data={listCollection}
           storyId={id}
+          keyword={keyword}
+          setKeyword={(value) => searchKeyword(value)}
+          setItems={(value) => setItems(value)}
+          handleRestart={() => handleRestart()}
         />
         <ModalNewLibrary
           isVisible={showModalNew}
@@ -1495,22 +1427,10 @@ const LibraryScreen = ({
               Explore more Stories
             </Text>
           </TouchableOpacity>
-          {/* {stepsTutorial === 3 ? (
-            <View style={{position: 'absolute', bottom: -30}}>
-              <AnimatedLottieView
-                source={rippleAnimate}
-                style={{
-                  width: wp(150),
-                }}
-                autoPlay
-                duration={3000}
-                loop={true}
-              />
-            </View>
-          ) : null} */}
+         
         </View>
       </View>
-      {/* {renderTutorial()} */}
+    
     </View>
   );
 };

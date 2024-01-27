@@ -90,6 +90,7 @@ import {loadRewarded} from '../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import PlayStore from '../../assets/icons/playStore';
 import AppStore from '../../assets/icons/appStore';
+import FastImage from 'react-native-fast-image';
 
 function ScreenShare({
   route,
@@ -571,189 +572,8 @@ function ScreenShare({
     );
   };
   const windowHeight = Dimensions.get('window').height;
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2.5;
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < halfScreenWidth) {
-      handleSetSteps(stepsTutorial - 1);
-      if (stepsTutorial === 6) {
-        navigate('Main');
-      }
-      setIsStatic(false);
-      setIsSwipingLeft(true);
-    }
-    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    else {
-      handleSetSteps(stepsTutorial + 1);
-      setIsStatic(false);
 
-      {
-        stepsTutorial == 7 ? setShowModalTwo(true) : null;
-      }
-      {
-        stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
-      }
-      {
-        stepsTutorial === 9 ? handleSetSteps(0) : null;
-      }
-      {
-        stepsTutorial === 9 ? goBack() : null;
-      }
-      setIsSwipingRight(true);
-    }
-  };
  
-  useEffect(() => {
-    if(stepsTutorial === 6){
-      setTimeout(() => {
-        setShowModal(true);
-      }, 3000);
-    }
-    if(showModal){
-      setTimeout(() => {
-        setShowModal(false);
-        handleSetSteps(6 + 1)
-      }, 4000);
-     
-    }
-    if(stepsTutorial === 7){
-      setTimeout(() => {
-        setShowModalTwo(true);
-      }, 2500);
-      setTimeout(() => {
-        setIsStatic(true);
-      }, 10000);
-    }
-  }, [stepsTutorial, showModal])
-
-  const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
-  const renderTutorial = () => {
-    if (stepsTutorial === 6 || stepsTutorial === 7) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
-
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            paddingTop: 40,
-          }}>
-          {renderProgress()}
-
-          <ImageBackground
-            source={imgQuote}
-            resizeMode="cover"
-            style={{
-              position: 'absolute',
-              top: '0',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
-              // backgroundColor: 'rgba(255,255,255,0.5)',
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }}>
-            <View style={{marginTop: 10}}>{renderProgress()}</View>
-
-            {stepsTutorial === 6 && showModal ? (
-              <Step6 />
-            ) : showModalTwo ? (
-              <Step7
-                handleNext={() => {
-                  setShowModalTwo(false);
-                  handleSetSteps(7 + 1);
-                }}
-              />
-            ) : null}
-          </ImageBackground>
-        </SafeAreaView>
-      );
-    }
-    // if (stepsTutorial === 7) {
-    //   return (
-    //     <SafeAreaView
-    //       onTouchStart={handleTouchStart}
-    //       // onTouchEnd={handleTouchEnd}
-    //       pointerEvents="box-only"
-    //       style={{
-    //         position: 'absolute',
-
-    //         width: Dimensions.get('window').width,
-    //         height: Dimensions.get('window').height,
-
-    //         backgroundColor: 'rgba(0,0,0,0.3)',
-    //         paddingTop: 40,
-    //       }}>
-    //       {stepsTutorial != 7 ? renderProgress() : null}
-
-    //       <ImageBackground
-    //         source={imgQuote2}
-    //         resizeMode="contain"
-    //         style={{
-    //           position: 'absolute',
-    //           top: '0',
-    //           width: Dimensions.get('window').width,
-    //           height: Dimensions.get('window').height,
-
-    //           backgroundColor: 'rgba(0,0,0,0.3)',
-    //         }}>
-    //         <View style={{marginTop: 10}}>{renderProgress()}</View>
-    //         {showModalTwo ? 
-    //         <Step7
-    //           handleNext={() => {
-    //             setShowModalTwo(false)
-    //             handleSetSteps(7 + 1);
-    //           }}
-    //         /> : null }
-    //       </ImageBackground>
-    //     </SafeAreaView>
-    //   );
-    else if (stepsTutorial === 8 || stepsTutorial === 9) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            paddingTop: 40,
-          }}>
-          <Image
-            source={xpAndLevel}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
-            }}
-          />
-          <View style={{marginTop: 20}}>{renderProgress()}</View>
-          <Step8
-            handleNext={() => {
-              handleSetSteps(stepsTutorial + 1);
-              setVisible(false);
-              if (stepsTutorial === 8) {
-                AsyncStorage.removeItem('isTutorial');
-                handleSetSteps(0);
-                goBack();
-                handlePayment('onboarding');
-              }
-            }}
-          />
-        </SafeAreaView>
-      );
-    }
-  };
 
   const renderLayout = () => {
     return (
@@ -778,7 +598,7 @@ function ScreenShare({
             format: 'png',
             quality: 1.0,
           }}>
-          <Image
+          <FastImage
             source={selectBg}
             style={{
               position: 'absolute',
