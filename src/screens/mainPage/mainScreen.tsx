@@ -741,6 +741,7 @@ const MainScreen = ({
         type={type}
         isRippleAnimate={isRippleAnimate}
         userProfile={userProfile}
+        fontColor={backgroundColor === code_color.blackDark ? code_color.white :  code_color.blackDark}
       />
     </>
   );
