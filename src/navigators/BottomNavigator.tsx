@@ -148,7 +148,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
               route={undefined}
               colorText={userProfile?.colorText}
             /> */}
-          {isBottomBarVisible != 'Main' ? (
+          {isBottomBarVisible != 'Main'  ? (
             <TouchableOpacity
               onPress={() => handleSomeAction('Main')}
               style={{
@@ -169,6 +169,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     ? 'rgba(0,0,0,0.5)'
                     : null,
               }}>
+              {isBottomBarVisible != 'Font' ?
               <TouchableOpacity
                 onPress={() => handleSomeAction('Main')}
                 style={{
@@ -188,7 +189,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   }}>
                   {'Tap here to get back\n to the Story'}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> : null }
             </TouchableOpacity>
           ) : null}
         </SafeAreaView>

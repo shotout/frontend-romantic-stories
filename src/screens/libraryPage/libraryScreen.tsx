@@ -251,6 +251,7 @@ const LibraryScreen = ({
       search: keyword,
       column: items?.column,
       dir: items?.value,
+      length: 50
     };
     const resp = await getDetailCollection(id, params);
     setDetailCollection(resp?.data?.collection);
