@@ -336,7 +336,7 @@ const MainScreen = ({
   useEffect(() => {
     pagerRef.current?.setPage(0);
     setScreenNumber(0);
-  }, [dataBook?.title_en, backgroundColor]);
+  }, [dataBook?.title_en]);
 
   const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
