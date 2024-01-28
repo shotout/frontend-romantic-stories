@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Animated,
   Image,
@@ -32,13 +32,15 @@ import ModalSuccessPurchaseAudio from '../modal-success-purchase-audio';
 import {reloadUserProfile} from '../../utils/user';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
-
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import states from './states';
+import dispatcher from './dispatcher';
 const loveAnimate = require('../../assets/lottie/love.json');
 
-export default function QuotesContent({
+function QuotesContent({
   item,
   themeUser,
-  source,
   isActive,
   isAnimationStart,
   fontSize,
@@ -47,22 +49,19 @@ export default function QuotesContent({
   fontFamily,
   totalStory,
   pageActive,
-  titleStory,
-  titleCategory,
-  colorText,
-  handleListen,
   show,
   setShow,
   type,
   isRippleAnimate,
   userProfile,
-  fontColor
+  fontColor,
+  colorText
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
   const isFocused = useIsFocused();
-  const [color, setSolor] = useState(code_color.blackDark);
+  const [color, setColor] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [title, setTitle] = useState('10/10 Audio Stories');
@@ -73,19 +72,19 @@ export default function QuotesContent({
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const activeStatus = useRef(false);
-  const [size, setSize] = useState(fontSize)
- 
+  const [size, setSize] = useState(fontSize);
   const manipulatedResponse = item.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
   useEffect(() => {
-    handleThemeAvatar(pageActive)
+    handleThemeAvatar(pageActive);
   }, [pageActive, userProfile]);
 
   useEffect(() => {
-setSize(fontSize)
-  }, [fontSize])
+    setSize(fontSize);
+  }, [fontSize]);
+
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
     setLoading2(true);
@@ -117,7 +116,6 @@ setSize(fontSize)
     }
   };
 
-  
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
@@ -164,14 +162,79 @@ setSize(fontSize)
   };
 
   const checkingColor = value => {
-   
     return value === code_color.blackDark
       ? code_color.white
-      : code_color.blackDark; 
+      : code_color.blackDark;
   };
 
-
-console.log(fontColor)
+  useEffect(() => {
+    setTimeout(() => {
+      setColor(true)
+      setTimeout(() => {
+        setColor(false)
+      }, 200);
+    }, 200);
+     
+  }, [pageActive, fontColor, isActive]);
+  const renderSelect = useCallback(() => {
+    if(color){
+      return(
+        <Text
+        style={[
+          styles.ctnQuotes,
+          {
+            // marginBottom: pageActive != 0 ? -100 : 0,
+            fontFamily: fontFamily,
+            fontSize: Number(size),
+            color: fontColor,
+          },
+        ]}>
+        {item}
+      </Text>
+      )
+    }else{
+      return (
+        <SelectableText
+          menuItems={['Share']}
+          onSelection={({eventType, content, selectionStart, selectionEnd}) => {
+            navigate('Share', {
+              selectedContent: content,
+              start:
+                themeUser?.language_id === '2'
+                  ? item?.substring(selectionStart - 50, selectionStart)
+                  : item?.substring(selectionStart - 50, selectionStart),
+              end:
+                themeUser?.content_en === '2'
+                  ? item?.substring(selectionEnd - 50, selectionEnd)
+                  : item?.substring(selectionEnd - 50, selectionEnd),
+              title:
+                themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+            });
+            eventTracking(STORY_SHARED);
+          }}
+          TextComponent={() => {
+            return (
+              <Text
+                style={[
+                  styles.ctnQuotes,
+                  {
+                    // marginBottom: pageActive != 0 ? -100 : 0,
+                    fontFamily: fontFamily,
+                    fontSize: Number(size),
+                    color: fontColor,
+                  },
+                ]}>
+                {item}
+              </Text>
+            );
+          }}
+          value={item}
+        />
+      );
+    }
+     
+    
+  }, [color, isActive, fontColor]);
   return (
     <SafeAreaView
       style={{
@@ -266,57 +329,9 @@ console.log(fontColor)
                   ]}>
                   {item}
                 </Text>
-              ) : (
-                <SelectableText
-                  
-                  menuItems={['Share']}
-                  onSelection={({
-                    eventType,
-                    content,
-                    selectionStart,
-                    selectionEnd,
-                  }) => {
-                    
-                      navigate('Share', {
-                        selectedContent: content,
-                        start:
-                          themeUser?.language_id === '2'
-                            ? item?.substring(
-                                selectionStart - 50,
-                                selectionStart,
-                              )
-                            : item?.substring(
-                                selectionStart - 50,
-                                selectionStart,
-                              ),
-                        end:
-                          themeUser?.content_en === '2'
-                            ? item?.substring(selectionEnd - 50, selectionEnd)
-                            : item?.substring(selectionEnd - 50, selectionEnd),
-                        title:
-                          themeUser?.content_en === '2'
-                            ? item?.title_id
-                            : item?.title_en,
-                      });
-                      eventTracking(STORY_SHARED);
-                    
-                  }}
-                  TextComponent={() => {
-                    return(
-                      <Text style={[
-                        styles.ctnQuotes,
-                        {
-                          // marginBottom: pageActive != 0 ? -100 : 0,
-                          fontFamily: fontFamily,
-                          fontSize: Number(size),
-                          color: fontColor,
-                        },
-                      ]}>{item}</Text>
-                    )
-                  }}
-                  value={item}
-                />
-              )}
+              ) : 
+                renderSelect()
+              }
             </View>
           </View>
           {(type === 'main' && pageActive === 0) ||
@@ -533,3 +548,12 @@ console.log(fontColor)
     </SafeAreaView>
   );
 }
+
+QuotesContent.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+QuotesContent.defaultProps = {};
+
+export default connect(states, dispatcher)(QuotesContent);

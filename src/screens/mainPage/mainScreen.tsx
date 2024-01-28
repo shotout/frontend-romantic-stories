@@ -148,6 +148,7 @@ const MainScreen = ({
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const [forceRender, setForceRender] = useState(0);
   const animationValue = useRef(new Animated.Value(0)).current;
   const [folded, setFolded] = useState(false);
   const initialIndexContent = 0;
@@ -335,7 +336,7 @@ const MainScreen = ({
   useEffect(() => {
     pagerRef.current?.setPage(0);
     setScreenNumber(0);
-  }, [dataBook?.title_en]);
+  }, [dataBook?.title_en, backgroundColor]);
 
   const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
@@ -724,7 +725,6 @@ const MainScreen = ({
         isActive={activeSlide === index}
         totalStory={textChunks?.length}
         pageActive={index}
-        colorText={colorText}
         isAnimationStart={isLoveAnimate}
         themeUser={userProfile?.data}
         fontSize={fontSize}
@@ -745,38 +745,44 @@ const MainScreen = ({
       />
     </>
   );
+  useEffect(() => {
+    setForceRender((prev) => prev + 1);
+  }, [colorText]);
 
-  const renderFlatList = (type: any) => (
-    <PagerView
-      style={{flex: 1}}
-      initialPage={0}
-      ref={pagerRef}
-      transitionStyle="curl"
-      overdrag={false}
-      onPageScroll={e => onScroll(e)}>
-      {textChunks?.map((dtb: any, index: number) => {
-        return (
-          <View
-            style={{
-              flex: 0,
-              alignItems: 'center',
-              backgroundColor: backgroundColor,
-              paddingTop: wp(20),
-              paddingHorizontal: wp(20),
-            }}>
-            {renderFactItem({
-              item: dtb,
-              index,
-              title: dataBook.title_en,
-              category: dataBook?.category?.name,
-              colorText: colorText,
-              type: type,
-            })}
-          </View>
-        );
-      })}
-    </PagerView>
-  );
+  const renderFlatList = useCallback((type) => {
+    return (
+      <PagerView
+        style={{ flex: 1 }}
+        initialPage={0}
+        ref={pagerRef}
+        transitionStyle="curl"
+        overdrag={false}
+        onPageScroll={(e) => onScroll(e)}>
+        {textChunks?.map((dtb: any, index: number) => {
+          return (
+            <View
+              key={index} // Add a unique key for each view in the array
+              style={{
+                flex: 0,
+                alignItems: 'center',
+                backgroundColor: backgroundColor,
+                paddingTop: wp(20),
+                paddingHorizontal: wp(20),
+              }}>
+              {renderFactItem({
+                item: dtb,
+                index,
+                title: dataBook.title_en,
+                category: dataBook?.category?.name,
+                colorText: colorText,
+                type: type,
+              })}
+            </View>
+          );
+        })}
+      </PagerView>
+    );
+  }, [textChunks, dataBook, backgroundColor, colorText, onScroll, isFocused, forceRender]); 
 
   useEffect(() => {
     async function fetchData() {

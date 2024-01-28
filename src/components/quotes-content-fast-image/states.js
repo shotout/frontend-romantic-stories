@@ -4,4 +4,5 @@ export default states => ({
   isPremium: states.defaultState.isPremium,
   nextStory: states.defaultState.nextStory,
   userStory: states.defaultState.userStory,
+  colorText: states.defaultState.colorText,
 });
