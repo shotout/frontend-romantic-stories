@@ -174,8 +174,8 @@ function QuotesContent({
         setColor(false)
       }, 200);
     }, 200);
-     
-  }, [pageActive, fontColor, isActive]);
+    setSize(fontSize);
+  }, [pageActive, fontColor, isActive, fontSize]);
   const renderSelect = useCallback(() => {
     if(color){
       return(
