@@ -104,7 +104,7 @@ function ScreenShare({
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
-  const [selectBg, setSelectBg] = useState(imgShare);
+  const [selectBg, setSelectBg] = useState(null);
   const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
@@ -239,8 +239,6 @@ function ScreenShare({
     base64CaptureImage.current = null;
     handleScreenshot();
   };
-
-
 
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -484,7 +482,24 @@ function ScreenShare({
                 console.log('Deleted');
               }
             }}>
-            <Text style={{fontSize: fontSizeDefault}}>{el}</Text>
+            <View
+              style={{
+                padding: 5,
+                paddingLeft: 0, paddingRight: 0,
+                borderRadius: 10,
+                minWidth: 10,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+              }}>
+              <Text
+                key={i}
+                style={{
+                  fontSize: fontSizeDefault,
+                  color: 'white',
+                  textAlign: 'center',
+                }}>
+                {el?.text}
+              </Text>
+            </View>
           </Gestures>
         ))}
       </View>
@@ -573,8 +588,6 @@ function ScreenShare({
   };
   const windowHeight = Dimensions.get('window').height;
 
- 
-
   const renderLayout = () => {
     return (
       <View
@@ -610,7 +623,16 @@ function ScreenShare({
           />
           {isVisibleFont ? (
             <TextInput
-              style={{padding: 10, marginTop: 30}}
+              style={{
+                padding: 10,
+                marginTop: 30,
+                color: 'white',
+                fontSize: fontSizeDefault,
+                textAlign: 'center',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                width: 'auto',
+                flex: 0
+              }}
               placeholder="Masukkan teks"
               value={userText}
               onChangeText={text => setUserText(text)}
@@ -625,11 +647,11 @@ function ScreenShare({
               fontSize: moderateScale(16),
               marginHorizontal: moderateScale(20),
             }}>
-            <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+            <Text style={[styles.blur, {fontSize: 16}]}>
               {route?.params?.start}
             </Text>{' '}
             {route?.params?.selectedContent}{' '}
-            <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
+            <Text style={[styles.blur, {fontSize: 16}]}>
               {route?.params?.end}
             </Text>
           </Text>
@@ -677,7 +699,8 @@ function ScreenShare({
               top: 5,
             }}
             onPress={() => {
-              setDraggableItems([...draggableItems, userText]);
+              const value = {text: userText};
+              setDraggableItems([...draggableItems, value]);
               setUserText('');
               setVisibleFont(false);
             }}>
@@ -782,7 +805,7 @@ function ScreenShare({
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView style={{flex: 1, width: '100%'}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
