@@ -20,7 +20,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import {cover2, imgNotif, imgStep4} from '../../assets/images';
+import {bg_notif, cover2, imgNotif, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
 import LockFree from '../../assets/icons/lockFree';
@@ -135,11 +135,11 @@ const NotificationScreen = ({
           height: '100%',
           padding: wp(20),
         }}>
-        <Text style={{fontSize: fixedFontSize(18), fontWeight: '600', color:code_color.blackDark, marginBottom: wp(20)}}>
+        <Text style={{fontSize: 14,  color: '#505962', marginBottom: wp(10)}}>
           Set your notifications
         </Text>
         <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
-        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: code_color.blackDark,}}>
+        <Text style={{fontSize: 16,  color: code_color.blackDark,}}>
           New Stories 
         </Text>
         <Switch
@@ -151,8 +151,8 @@ const NotificationScreen = ({
           value={newStories}
         />
         </View>
-        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
-        <Text style={{fontSize: fixedFontSize(16), fontWeight: '600', color: code_color.blackDark,}}>
+        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10), }}>
+        <Text style={{fontSize: 16,  color: code_color.blackDark,}}>
           Promotions
         </Text>
         <Switch
@@ -166,14 +166,35 @@ const NotificationScreen = ({
         </View>
        
         <>
+       
+          <View
+            style={{
+              position: 'relative',
+              overflow: 'hidden',
+              marginBottom: wp(-150),
+              bottom: -110,
+              width: wp(200),
+              height: hp(200),
+              left: '33%',
+              zIndex: 1,
+            }}>
+            <Image
+              source={{uri: `${BACKEND_URL}/${partner}`}}
+              resizeMode="cover"
+              style={{
+                width: wp(130),
+                height: hp(450),
+              }}
+            />
+          </View>
           <View
             style={{
               position: 'relative',
               overflow: 'hidden',
               marginBottom: wp(-100),
-              bottom: -50,
+              bottom: -58,
               width: wp(200),
-              height: hp(150),
+              height: wp(200),
               left: '5%',
               zIndex: 1,
             }}>
@@ -181,46 +202,26 @@ const NotificationScreen = ({
               source={{uri: `${BACKEND_URL}/${me}`}}
               resizeMode="cover"
               style={{
-                width: wp(140),
-                height: hp(500),
-              }}
-            />
-          </View>
-          <View
-            style={{
-              position: 'relative',
-              overflow: 'hidden',
-              marginBottom: wp(-100),
-              width: wp(200),
-              height: hp(150),
-              left: '30%',
-              zIndex: 1,
-            }}>
-            <Image
-              source={{uri: `${BACKEND_URL}/${partner}`}}
-              resizeMode="cover"
-              style={{
-                width: wp(140),
-                height: hp(500),
+                width: wp(me === '/assets/images/avatars/2/positive.png' ?  130 : 150),
+                height:  wp(me === '/assets/images/avatars/1/positive.png' ? 440 : 420),
               }}
             />
           </View>
 
-          <View>
-            <ImageBackground
-              source={{
-                uri: `${BACKEND_URL}${userProfile?.data?.category?.image?.url}`,
-              }}
-              resizeMode="contain"
+          <View >
+            <Image
+              source={bg_notif}
+              resizeMode="cover"
               style={{
                 width: '100%',
-                height: wp(100),
-              }}>
+                height: wp(150),
+                borderRadius: 20,
+              }} />
               <View
                 style={{
                   alignItems: 'center',
                   position: 'absolute',
-                  top: wp(-80),
+                  top: wp(-50),
                   right: 0,
                 }}>
                 <Image
@@ -229,7 +230,7 @@ const NotificationScreen = ({
                   style={{width: wp(100), height: hp(100)}}
                 />
               </View>
-            </ImageBackground>
+           
           </View>
         </>
       </ScrollView>

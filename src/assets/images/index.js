@@ -140,3 +140,4 @@ export const tips_step1 = require('./../images/Tips_Discover.jpeg');
 export const tips_step3 = require('./../images/Tips_MediaPlayer.png');
 export const tips_step4 = require('./../images/Tips_MyLibrary.png');
 export const tips_step5 = require('./../images/Tips_ExploreLibrary.png');
+export const bg_notif = require('./../images/bgNotif.png');
