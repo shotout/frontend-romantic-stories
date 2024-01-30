@@ -1144,7 +1144,7 @@ const MainScreen = ({
   };
 
   const handleReadAds = async () => {
-    pagerRef.current?.setPage(0);
+    pagerRef.current?.setPage(-1);
     setScreenNumber(0);
     setBook(nextStory);
     setTimeout(() => {
@@ -1402,6 +1402,7 @@ const MainScreen = ({
               handleReadAds();
             }}
             handleReadOther={async (storyId: number) => {
+              pagerRef.current?.setPage(-1);
               setShowModal(false);
               const resp = await getStoryDetail(storyId);
               handleNextStory(resp.data);
