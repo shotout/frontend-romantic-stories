@@ -366,7 +366,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(-100),
-                  height: hp(110),
+                  height: me ===  '/assets/images/avatars/2/think.png' ? hp(200) : hp(150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,

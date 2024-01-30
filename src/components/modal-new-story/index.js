@@ -292,7 +292,7 @@ function ModalNewStory({
                   ) : (
                     <>
                       <WatchIcon
-                        style={{position: 'absolute', top: '80%', left: '22%'}}
+                        style={{position: 'absolute', top: '70%', left: '22%'}}
                       />
                       <Text
                         style={{color: code_color.white, textAlign: 'center'}}>

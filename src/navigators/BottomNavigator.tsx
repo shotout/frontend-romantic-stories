@@ -343,6 +343,13 @@ function MyTabs(props) {
     if (props.userStory?.is_collection === null) {
       const response = await addStory(props.userStory?.id);
       if (response.status === 'success') {
+        setVisibleModal(true);
+        setTimeout(() => {
+          handleFetchSaveAnim();
+        }, 500);
+        setTimeout(() => {
+          setVisibleModal(false);
+        }, 1600);
         try {
           const resp = await getStoryDetail(props.userStory?.id);
           eventTracking(ADD_STORY_TO_LIBRARY);
@@ -350,13 +357,7 @@ function MyTabs(props) {
           store.dispatch(handleSetStory(resp.data));
         } catch (error) {}
       }
-      setVisibleModal(true);
-      setTimeout(() => {
-        handleFetchSaveAnim();
-      }, 500);
-      setTimeout(() => {
-        setVisibleModal(false);
-      }, 1600);
+     
     } else {
       const data = await deleteMyStory(props.userStory?.id);
       setTitle('save');

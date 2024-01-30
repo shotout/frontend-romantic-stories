@@ -250,7 +250,7 @@ const MainScreen = ({
       checkingRead(textChunks?.length + 1);
     } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      setShowModalCongrats(true);
+      setShowModalNewStory(true);
     }
   };
   useEffect(() => {
@@ -1188,13 +1188,13 @@ const MainScreen = ({
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
            console.log('INI DATAAAA' +screenNumber +"===="+ textChunks?.length)
             // if(screenNumber ===  textChunks?.length){
-              setShowModalCongrats(true);
+              setShowModalNewStory(true);
             // }
            
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
            
           }else if(existingEntry && (isPremiumStory || isPremiumAudio)){
-            setShowModalCongrats(true);
+            setShowModalNewStory(true);
           }
         }
       }, 700);

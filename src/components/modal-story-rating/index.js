@@ -217,6 +217,7 @@ how did you like your previous story?`}
                 marginBottom: moderateScale(20),
               }}>
               <TouchableOpacity
+              disabled={rating === 0 ? true : false}
                 onPress={() => handleSubmit()}
                 style={{
                   backgroundColor: code_color.yellow,
@@ -226,6 +227,7 @@ how did you like your previous story?`}
                   borderRadius: 8,
                   width: moderateScale(280),
                   flex: 0,
+                  opacity: rating === 0 ? 0.5 : 1
                 }}>
                 <Text
                   style={{
