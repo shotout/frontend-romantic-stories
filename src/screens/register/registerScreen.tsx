@@ -499,7 +499,7 @@ function RegisterScreen({
                   borderRadius: wp(12),
                   width: '100%',
                   marginTop: wp(10),
-                  marginBottom: wp(10),
+                  marginBottom: wp(20),
                 }}
                 onPress={() => {
                   stepRegister === 8
