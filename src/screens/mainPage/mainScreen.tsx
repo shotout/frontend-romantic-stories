@@ -1179,12 +1179,15 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    const userHasRead = readStory.some(
-      entry => entry.id === dataBook.id && entry.page === textChunks?.length,
-    );    
-    if (userHasRead) {
-      setShowModalNewStory(true);
+    if(!(isPremiumStory || isPremiumAudio)){
+      const userHasRead = readStory.some(
+        entry => entry.id === dataBook.id && entry.page === textChunks?.length,
+      );    
+      if (userHasRead) {
+        setShowModalNewStory(true);
+      }
     }
+    
   }, [dataBook, textChunks]);
 
   const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
@@ -1236,7 +1239,7 @@ const MainScreen = ({
 
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
           } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
-            setShowModalNewStory(true);
+            setShowModal(true);
           }
         }
       }, 700);
