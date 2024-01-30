@@ -23,10 +23,15 @@ import {
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
 import Reading from '../../assets/icons/reading.jsx';
-import {addNewCollection, updateMyCollection} from '../../shared/request';
+import {
+  addNewCollection,
+  getStoryDetail,
+  updateMyCollection,
+} from '../../shared/request';
 import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
 import {BACKEND_URL} from '../../shared/static';
+import ModalStoryPreview from '../modal-story-preview';
 
 function ModalUnlockStory({
   isVisible,
@@ -46,30 +51,10 @@ function ModalUnlockStory({
   const handleClose = () => {
     onClose();
   };
-  // alert(JSON.stringify(nextStory))
-  const AddCollection = async () => {
-    if (collect != '') {
-      if (edit) {
-        const payload = {
-          name: collect,
-          _method: 'PATCH',
-        };
-        try {
-          const res = await updateMyCollection(payload, data?.id);
-          restart();
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          const res = await addNewCollection({
-            name: collect,
-          });
-          restart();
-        } catch (error) {}
-      }
-    }
-  };
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [dataStory, setDataStory] = useState(null);
+
   const renderPremium = () => {
     return (
       <View
@@ -78,6 +63,13 @@ function ModalUnlockStory({
           justifyContent: 'center',
           flex: 1,
         }}>
+        <ModalStoryPreview
+          isVisible={showPreview}
+          onClose={() => setShowPreview(false)}
+          dataStory={dataStory}
+          handleRead={() => handleRead(dataStory)}
+          handleLater={() => handleLater(dataStory)}
+        />
         <View
           style={{
             backgroundColor: code_color.blueDark,
@@ -237,7 +229,11 @@ function ModalUnlockStory({
                   .slice(0, 3)
                   .map(itm => (
                     <Pressable
-                      onPress={() => handleReadOther(itm.id)}
+                      onPress={async () => {
+                        const resp = await getStoryDetail(itm.id);
+                        setDataStory(resp.data);
+                        setShowPreview(true);
+                      }}
                       style={{
                         flex: 1,
                         // alignItems: 'center',

@@ -1166,12 +1166,13 @@ const MainScreen = ({
     }, 200);
   };
 
-  const handleReadAds = async () => {
+  const handleReadAds = async (newStory?: any) => {
+    const story = newStory ? newStory : nextStory;
     pagerRef.current?.setPage(-1);
     setScreenNumber(0);
-    setBook(nextStory);
+    setBook(story);
     setTimeout(() => {
-      handleSetStory(nextStory);
+      handleSetStory(story);
       setShowModalDay(false);
       setShowModal(false);
       setShowPreview(false);

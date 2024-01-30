@@ -34,10 +34,13 @@ function ModalStoryPreview({
   nextStory,
   handleRead,
   handleLater,
+  dataStory,
 }) {
   const handleClose = () => {
     onClose();
   };
+
+  const story = dataStory ? dataStory : nextStory;
 
   return (
     <Modal
@@ -58,7 +61,9 @@ function ModalStoryPreview({
               width: '90%',
               borderRadius: moderateScale(24),
             }}>
-            <TouchableOpacity style={{marginLeft: 'auto', right: 14, top: 14}}>
+            <TouchableOpacity
+              style={{marginLeft: 'auto', right: 14, top: 14}}
+              onPress={handleClose}>
               <Close fill="#DDDEE3" height={18} width={18} />
             </TouchableOpacity>
             <View
@@ -77,7 +82,7 @@ function ModalStoryPreview({
                 <View style={{flexDirection: 'row'}}>
                   <Image
                     source={{
-                      uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                      uri: `${BACKEND_URL}${story?.category?.cover?.url}`,
                     }}
                     resizeMode="contain"
                     style={{
@@ -94,7 +99,7 @@ function ModalStoryPreview({
                         fontWeight: 400,
                         fontSize: 14,
                       }}>
-                      {nextStory?.category?.name}
+                      {story?.category?.name}
                     </Text>
                     <Text
                       style={{
@@ -103,7 +108,7 @@ function ModalStoryPreview({
                         fontWeight: 'bold',
                         fontSize: 16,
                       }}>
-                      {nextStory?.title_en}
+                      {story?.title_en}
                     </Text>
                   </View>
                 </View>
@@ -113,7 +118,7 @@ function ModalStoryPreview({
                     fontSize: 12,
                     marginTop: moderateScale(16),
                   }}>
-                  {nextStory?.content_en?.slice(0, 130)}...
+                  {story?.content_en?.slice(0, 130)}...
                 </Text>
               </View>
               <TouchableOpacity
@@ -137,7 +142,7 @@ function ModalStoryPreview({
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={handleLater ? handleLater : onClose}
+                onPress={handleLater}
                 style={{
                   backgroundColor: '#ED5267',
                   padding: moderateScale(4),
@@ -174,6 +179,7 @@ function ModalStoryPreview({
 ModalStoryPreview.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  dataStory: PropTypes.any,
 };
 
 ModalStoryPreview.defaultProps = {};
