@@ -223,7 +223,9 @@ const MainScreen = ({
             item?.id === dataBook.id && item?.page === textChunks?.length + 1,
         )
       : undefined;
-      const uniqueData = [...new Map(readStory.map((item: { id: any; }) => [item.id, item])).values()]
+    const uniqueData = [
+      ...new Map(readStory.map((item: {id: any}) => [item.id, item])).values(),
+    ];
     if (uniqueData?.length === 2) {
       eventTracking(FINISH_LISTEN_3);
     }
@@ -287,19 +289,22 @@ const MainScreen = ({
   const checkingRead = (pageNumber: number) => {
     const existingEntry = readStory
       ? readStory.find(
-        (          item: { id: any; page: any; }) => item?.id === dataBook.id && item?.page === pageNumber,
+          (item: {id: any; page: any}) =>
+            item?.id === dataBook.id && item?.page === pageNumber,
         )
       : undefined;
-      const uniqueData = [...new Map(readStory.map((item: { id: any; }) => [item.id, item])).values()]
-      if (uniqueData?.length === 2) {
-        eventTracking(FINISH_READ_3);
-      }
-      if (uniqueData?.length === 6) {
-        eventTracking(FINISH_READ_7);
-      }
-      if (uniqueData?.length === 9) {
-        eventTracking(FINISH_READ_10);
-      }
+    const uniqueData = [
+      ...new Map(readStory.map((item: {id: any}) => [item.id, item])).values(),
+    ];
+    if (uniqueData?.length === 2) {
+      eventTracking(FINISH_READ_3);
+    }
+    if (uniqueData?.length === 6) {
+      eventTracking(FINISH_READ_7);
+    }
+    if (uniqueData?.length === 9) {
+      eventTracking(FINISH_READ_10);
+    }
     if (!existingEntry) {
       const newData = {
         id: dataBook.id,
@@ -381,7 +386,7 @@ const MainScreen = ({
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
-    console.log(pageNumber + 'INI SCROLL')
+    console.log(pageNumber + 'INI SCROLL');
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -441,7 +446,7 @@ const MainScreen = ({
     }
   };
 
-  const handleTouchStart = (e: { nativeEvent: { locationX: any; }; }) => {
+  const handleTouchStart = (e: {nativeEvent: {locationX: any}}) => {
     // Mendapatkan posisi sentuhan
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
@@ -741,48 +746,63 @@ const MainScreen = ({
         type={type}
         isRippleAnimate={isRippleAnimate}
         userProfile={userProfile}
-        fontColor={backgroundColor === code_color.blackDark ? code_color.white :  code_color.blackDark}
+        fontColor={
+          backgroundColor === code_color.blackDark
+            ? code_color.white
+            : code_color.blackDark
+        }
       />
     </>
   );
   useEffect(() => {
-    setForceRender((prev) => prev + 1);
+    setForceRender(prev => prev + 1);
   }, [colorText]);
 
-  const renderFlatList = useCallback((type) => {
-    return (
-      <PagerView
-        style={{ flex: 1 }}
-        initialPage={0}
-        ref={pagerRef}
-        transitionStyle="curl"
-        overdrag={false}
-        onPageScroll={(e) => onScroll(e)}>
-        {textChunks?.map((dtb: any, index: number) => {
-          return (
-            <View
-              key={index} // Add a unique key for each view in the array
-              style={{
-                flex: 0,
-                alignItems: 'center',
-                backgroundColor: backgroundColor,
-                paddingTop: wp(20),
-                paddingHorizontal: wp(20),
-              }}>
-              {renderFactItem({
-                item: dtb,
-                index,
-                title: dataBook.title_en,
-                category: dataBook?.category?.name,
-                colorText: colorText,
-                type: type,
-              })}
-            </View>
-          );
-        })}
-      </PagerView>
-    );
-  }, [textChunks, dataBook, backgroundColor, colorText, onScroll, isFocused, forceRender]); 
+  const renderFlatList = useCallback(
+    type => {
+      return (
+        <PagerView
+          style={{flex: 1}}
+          initialPage={0}
+          ref={pagerRef}
+          transitionStyle="curl"
+          overdrag={false}
+          onPageScroll={e => onScroll(e)}>
+          {textChunks?.map((dtb: any, index: number) => {
+            return (
+              <View
+                key={index} // Add a unique key for each view in the array
+                style={{
+                  flex: 0,
+                  alignItems: 'center',
+                  backgroundColor: backgroundColor,
+                  paddingTop: wp(20),
+                  paddingHorizontal: wp(20),
+                }}>
+                {renderFactItem({
+                  item: dtb,
+                  index,
+                  title: dataBook.title_en,
+                  category: dataBook?.category?.name,
+                  colorText: colorText,
+                  type: type,
+                })}
+              </View>
+            );
+          })}
+        </PagerView>
+      );
+    },
+    [
+      textChunks,
+      dataBook,
+      backgroundColor,
+      colorText,
+      onScroll,
+      isFocused,
+      forceRender,
+    ],
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -800,7 +820,7 @@ const MainScreen = ({
   }, [isFocused]);
 
   const renderList = useMemo(
-    (    type: any) => {
+    (type: any) => {
       {
         textChunks?.map((dtb: any, index: number) => {
           return (
@@ -850,13 +870,16 @@ const MainScreen = ({
   const showWatchAdsFree = async () => {
     setLoadingAds(true);
     const advert = await loadRewarded();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
-      setLoadingAds(false);
-      setShowStoryFree(false);
-      setTimeout(() => {
-        fetchStoryFree();
-      }, 200);
-    });
+    advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      (reward: any) => {
+        setLoadingAds(false);
+        setShowStoryFree(false);
+        setTimeout(() => {
+          fetchStoryFree();
+        }, 200);
+      },
+    );
   };
 
   const fetchStoryFree = async () => {
@@ -1146,12 +1169,21 @@ const MainScreen = ({
     }, 200);
   };
 
-  const touchEndStory = async (e: { nativeEvent: { locationX: any; }; }) => {
+  useEffect(() => {
+    const userHasRead = readStory.some(
+      entry => entry.id === dataBook.id && entry.page === textChunks?.length,
+    );    
+    if (userHasRead) {
+      setShowModalNewStory(true);
+    }
+  }, [dataBook, textChunks]);
+
+  const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 1.5;
     // Jika sentuhan terjadi di sebelah kanan
-  
+
     if (touchX > screenWidth && !showModalCongrats) {
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
@@ -1186,14 +1218,15 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-           console.log('INI DATAAAA' +screenNumber +"===="+ textChunks?.length)
+            console.log(
+              'INI DATAAAA' + screenNumber + '====' + textChunks?.length,
+            );
             // if(screenNumber ===  textChunks?.length){
-              setShowModalNewStory(true);
+            setShowModalNewStory(true);
             // }
-           
+
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
-           
-          }else if(existingEntry && (isPremiumStory || isPremiumAudio)){
+          } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
             setShowModalNewStory(true);
           }
         }
@@ -1215,7 +1248,7 @@ const MainScreen = ({
     if (isPremiumStory || isPremiumAudio) {
       const res = await getStoryDetail(userStory?.id);
       handleSetStory(res.data);
-      setBook(res.data)
+      setBook(res.data);
       const response = await getStoryList();
       handleNextStory(response.data);
       let params = {
@@ -1229,7 +1262,7 @@ const MainScreen = ({
     } else {
       const res = await getStoryDetail(userStory?.id);
       handleSetStory(res.data);
-      setBook(res.data)
+      setBook(res.data);
       setShowModalNewStory(true);
     }
   };
@@ -1287,7 +1320,7 @@ const MainScreen = ({
                 allowFontScaling={false}
                 style={{
                   textAlign: 'left',
-                  fontSize: fixedFontSize(Number(fontSize) -  2),
+                  fontSize: fixedFontSize(Number(fontSize) - 2),
                   fontFamily: fontFamily,
                   marginBottom: wp(5),
                   color:
@@ -1454,7 +1487,7 @@ const MainScreen = ({
                 allowFontScaling={false}
                 style={{
                   textAlign: 'left',
-                  fontSize: fixedFontSize(Number(fontSize) -  2),
+                  fontSize: fixedFontSize(Number(fontSize) - 2),
                   fontFamily: fontFamily,
                   marginBottom: wp(5),
                   color:
