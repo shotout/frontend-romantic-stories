@@ -90,6 +90,8 @@ import {
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
+import ModalStoryPreview from '../../components/modal-story-preview';
+import ModalStorySave from '../../components/modal-story-save';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -136,6 +138,8 @@ const MainScreen = ({
   const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [showModalSave, setShowModalSave] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalDay, setShowModalDay] = useState(false);
   const [showModalCongrats, setShowModalCongrats] = useState(false);
@@ -254,21 +258,25 @@ const MainScreen = ({
     }
   };
   useEffect(() => {
-    if (route?.params?.successListen) {
-      // pagerRef.current?.setPage(textChunks?.length - 1);
-      checkingRead(textChunks?.length + 1);
-      setScreenNumber(textChunks?.length + 1);
-      handleSuccessListen();
-    } else if (route?.params?.storyId) {
-      setReadLater(true);
-      if (isPremiumStory || isPremiumAudio) {
-        fecthNextStoryPremium(route?.params?.storyId);
-      } else {
-        handleFreeUserStory(route?.params?.storyId);
+    async function fetchFromParam() {
+      if (route?.params?.successListen) {
+        // pagerRef.current?.setPage(textChunks?.length - 1);
+        checkingRead(textChunks?.length + 1);
+        setScreenNumber(textChunks?.length + 1);
+        handleSuccessListen();
+      } else if (route?.params?.storyId) {
+        setReadLater(true);
+        if (isPremiumStory || isPremiumAudio) {
+          // fecthNextStoryPremium(route?.params?.storyId);
+          const resp = await getStoryDetail(route?.params?.storyId);
+          handleNextStory(resp.data);
+          setShowPreview(true);
+        } else {
+          handleFreeUserStory(route?.params?.storyId);
+        }
       }
-
-      // handleSuccessRating();
     }
+    fetchFromParam();
   }, [route?.params]);
 
   const fecthNextStoryPremium = async (id: any) => {
@@ -1143,6 +1151,7 @@ const MainScreen = ({
       handleSetStory(nextStory);
       setShowModalDay(false);
       setShowModal(false);
+      setShowPreview(false);
     }, 200);
   };
 
@@ -1236,6 +1245,7 @@ const MainScreen = ({
   const handleLater = async () => {
     const response = await addStory(nextStory.id);
     setShowModalDay(false);
+    handleShowModalSave();
   };
   const handleNative = async () => {
     setLoadingStory(true);
@@ -1253,6 +1263,14 @@ const MainScreen = ({
       setShowStoryFree(false);
     }
   };
+
+  const handleShowModalSave = () => {
+    setShowModalSave(true);
+    setTimeout(() => {
+      setShowModalSave(false);
+    }, 2000);
+  };
+
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -1393,6 +1411,7 @@ const MainScreen = ({
               await addStory(nextStory.id);
               setShowModal(false);
               setReadLater(false);
+              handleShowModalSave();
             }}
           />
           <ModalStoryRating
@@ -1441,6 +1460,17 @@ const MainScreen = ({
             }}
             onClose={() => setShowModalGetPremium(false)}
           />
+          <ModalStoryPreview
+            isVisible={showPreview}
+            onClose={() => setShowPreview(false)}
+            handleRead={handleReadAds}
+            handleLater={async () => {
+              await addStory(nextStory.id);
+              setShowPreview(false);
+              handleShowModalSave();
+            }}
+          />
+          <ModalStorySave isVisible={showModalSave} />
           <View
             style={{
               flexDirection: 'row',

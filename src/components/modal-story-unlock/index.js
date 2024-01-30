@@ -232,51 +232,54 @@ function ModalUnlockStory({
                 style={{maxHeight: 210}}
                 horizontal
                 showsHorizontalScrollIndicator={false}>
-                {relateStory?.most_read?.slice(0, 3).map(itm => (
-                  <Pressable
-                    onPress={() => handleReadOther(itm.id)}
-                    style={{
-                      flex: 1,
-                      // alignItems: 'center',
-                      // backgroundColor: 'red',
-                      // justifyContent: 'center',
-                      width: 110,
-                      marginRight: 5,
-                    }}>
-                    <Image
-                      source={{
-                        uri: `${BACKEND_URL}${itm?.category.cover?.url}`,
-                      }}
-                      resizeMode="contain"
+                {relateStory?.most_read
+                  ?.filter(itm => itm.id !== nextStory?.id)
+                  .slice(0, 3)
+                  .map(itm => (
+                    <Pressable
+                      onPress={() => handleReadOther(itm.id)}
                       style={{
+                        flex: 1,
+                        // alignItems: 'center',
+                        // backgroundColor: 'red',
+                        // justifyContent: 'center',
                         width: 110,
-                        height: 110,
-                        marginBottom: moderateScale(10),
-                      }}
-                    />
+                        marginRight: 5,
+                      }}>
+                      <Image
+                        source={{
+                          uri: `${BACKEND_URL}${itm?.category.cover?.url}`,
+                        }}
+                        resizeMode="contain"
+                        style={{
+                          width: 110,
+                          height: 110,
+                          marginBottom: moderateScale(10),
+                        }}
+                      />
 
-                    <Text
-                      style={{
-                        color: code_color.black,
-                        fontSize: moderateScale(10),
-                        textAlign: 'left',
-                        marginBottom: 5,
-                        marginLeft: 15,
-                      }}>
-                      {itm.category.name}
-                    </Text>
-                    <Text
-                      style={{
-                        color: code_color.black,
-                        fontWeight: 500,
-                        fontSize: moderateScale(12),
-                        marginLeft: 15,
-                        // textAlign: 'center',
-                      }}>
-                      {itm.title_en}
-                    </Text>
-                  </Pressable>
-                ))}
+                      <Text
+                        style={{
+                          color: code_color.black,
+                          fontSize: moderateScale(10),
+                          textAlign: 'left',
+                          marginBottom: 5,
+                          marginLeft: 15,
+                        }}>
+                        {itm.category.name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: code_color.black,
+                          fontWeight: 500,
+                          fontSize: moderateScale(12),
+                          marginLeft: 15,
+                          // textAlign: 'center',
+                        }}>
+                        {itm.title_en}
+                      </Text>
+                    </Pressable>
+                  ))}
               </ScrollView>
 
               <TouchableOpacity
