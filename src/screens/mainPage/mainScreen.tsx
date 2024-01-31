@@ -1180,15 +1180,15 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    if(!(isPremiumStory || isPremiumAudio)){
-      const userHasRead = readStory.some(
-        entry => entry.id === dataBook.id && entry.page === textChunks?.length,
-      );    
+    if (!(isPremiumStory || isPremiumAudio)) {
+      const userHasRead = readStory?.some(
+        (entry: any) =>
+          entry?.id === dataBook.id && entry?.page === textChunks?.length,
+      );
       if (userHasRead && textChunks?.length > 0) {
         setShowModalNewStory(true);
       }
     }
-    
   }, [dataBook, textChunks]);
 
   const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
