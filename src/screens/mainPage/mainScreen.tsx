@@ -1168,14 +1168,14 @@ const MainScreen = ({
 
   const handleReadAds = async (newStory?: any) => {
     const story = newStory ? newStory : nextStory;
-    pagerRef.current?.setPage(-1);
-    setScreenNumber(0);
     setBook(story);
     setTimeout(() => {
       handleSetStory(story);
       setShowModalDay(false);
       setShowModal(false);
       setShowPreview(false);
+      pagerRef.current?.setPage(0);
+      setScreenNumber(0);
     }, 200);
   };
 
@@ -1435,8 +1435,8 @@ const MainScreen = ({
             edit={undefined}
             readLater={readLater}
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
-            handleRead={() => {
-              handleReadAds();
+            handleRead={(data: any) => {
+              handleReadAds(data);
             }}
             handleReadOther={async (storyId: number) => {
               pagerRef.current?.setPage(-1);
