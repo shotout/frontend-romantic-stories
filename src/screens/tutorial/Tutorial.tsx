@@ -81,6 +81,7 @@ import * as Animatable from 'react-native-animatable';
 import AnimatedLottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import {handlePayment} from '../../helpers/paywall';
+import moment from 'moment';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -260,14 +261,26 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         setShowModal2Step7(false);
       }
     } else {
+      checkInstall()
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
       eventTracking(ONBOARDING_COMPLETE);
-      handlePayment('onboarding');
+        setTimeout(() => {
+            handlePayment('onboarding');
+        }, 200);
+      
+     
+      
       navigate('Bottom');
     }
   };
-
+  const checkInstall = async() => {
+    const getFirstInstall = await AsyncStorage.getItem('firstInstall');
+    const stringifyDate = Date.now().toString();
+    if (getFirstInstall === null) {
+      await AsyncStorage.setItem('firstInstall', stringifyDate);
+    };
+  };
   const renderTutorial = () => {
     if (isFinishTutorial) {
       if (activeStep === 0) {
