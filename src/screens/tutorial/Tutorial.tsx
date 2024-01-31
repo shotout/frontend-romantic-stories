@@ -175,7 +175,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         // Your logic here
         handleNext();
       },
-      stepsTutorial === 7 ? 18000 : 7000,
+      stepsTutorial === 7 ? 18000 : stepsTutorial === 6 ? 5500 : 7000,
     ); // Set a new timeout
   };
   const stopTimeout = () => {
