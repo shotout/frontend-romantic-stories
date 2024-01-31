@@ -1184,7 +1184,7 @@ const MainScreen = ({
       const userHasRead = readStory.some(
         entry => entry.id === dataBook.id && entry.page === textChunks?.length,
       );    
-      if (userHasRead) {
+      if (userHasRead && textChunks?.length > 0) {
         setShowModalNewStory(true);
       }
     }

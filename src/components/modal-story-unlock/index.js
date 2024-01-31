@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   View,
@@ -54,6 +54,13 @@ function ModalUnlockStory({
 
   const [showPreview, setShowPreview] = useState(false);
   const [dataStory, setDataStory] = useState(null);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setDataStory(null);
+      setShowPreview(false);
+    }
+  }, [isVisible]);
 
   const renderPremium = () => {
     return (
