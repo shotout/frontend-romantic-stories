@@ -8,29 +8,24 @@ import {handleSetPremium} from '../store/defaultState/actions';
 import * as IAP from 'react-native-iap';
 import {updateProfile} from '../shared/request';
 import {reloadUserProfile} from '../utils/user';
+import { checkDays, reformatDate } from '../utils/helper';
 
 export const handlePayment = async (vendorId, cb) =>
   new Promise(async (resolve, reject) => {
     try {
       eventTracking(SHOW_PAYWALL);
       let stringVendor = vendorId;
-      // const subscriptions = await Purchasely.userSubscriptions();
-      // console.log('Subscription status:', subscriptions);
-      // const purchaseId = await Purchasely.getAnonymousUserId();
-      // if (vendorId === STATIC_ONBOARD) {
-      //   // await setSubcription({
-      //   //   subscription_type: 1,
-      //   //   purchasely_id: purchaseId,
-      //   // });
-      // } else if (!stringVendor) {
-      //   const currentDate = moment().format("YYYY-MM-DD");
-      //   const getInstallDate = await AsyncStorage.getItem("firstInstall");
-      //   if (getInstallDate === currentDate) {
-      //     stringVendor = "offer_no_purchase_after_onboarding_paywall";
-      //   } else {
-      //     stringVendor = "offer_no_purchase_after_onboarding_paywall_2nd";
-      //   }
-      // }
+      const set10min = await AsyncStorage.getItem('firstInstall');
+      const main10 = reformatDate(parseFloat(set10min));
+      console.log('DATA DATE'+main10)
+      const data = checkDays(main10)
+      if(data === 'kurang'){
+        stringVendor = vendorId
+      }else if(data === 'antara'){
+        stringVendor = 'offer_50'
+      }else if(data === 'lebih'){
+        stringVendor = 'offer_75'
+      }
       console.log('OPEN Purchasely', stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({
         placementVendorId: stringVendor,

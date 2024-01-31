@@ -12,6 +12,7 @@ import {PaperProvider} from 'react-native-paper';
 import {handleNativePayment, handlePayment} from '../helpers/paywall';
 import {OPEN_OFFER_NOTIFICATION, eventTracking} from '../helpers/eventTracking';
 import {navigate} from '../shared/navigationRef';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 LogBox.ignoreAllLogs();
 
@@ -36,6 +37,7 @@ const App = () => {
 
   useEffect(() => {
     bootstrap();
+    
   }, []);
 
   useEffect(() => {
