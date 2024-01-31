@@ -156,15 +156,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const startStep7 = () => {
     clearTimeout(step7Ref.current); // Clears existing timeout
     step7Ref.current = setTimeout(() => {
-      setTimeout(() => {
-        setShowModal1Step7(true);
-      }, 3000);
+      setShowModal1Step7(true);
       clearTimeout(step7Ref.current);
       setTimeout(() => {
         setShowModal1Step7(false);
         startStep7_2();
-      }, 10000);
-    }, 2000);
+      }, 8500);
+    }, 1000);
   };
 
   const startTimeout = () => {
