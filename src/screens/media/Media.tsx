@@ -43,7 +43,11 @@ import {fixedFontSize, hp, wp} from '../../utils/screen';
 import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
 import {handleSetStory} from '../../store/defaultState/actions';
 import store from '../../store/configure-store';
-import { ADD_STORY_TO_LIBRARY, AUDIO_PLAYED, eventTracking } from '../../helpers/eventTracking';
+import {
+  ADD_STORY_TO_LIBRARY,
+  AUDIO_PLAYED,
+  eventTracking,
+} from '../../helpers/eventTracking';
 import ImageColors from 'react-native-image-colors';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
@@ -105,27 +109,27 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         setLoading(false);
       }
     };
-      fetchMedia();
+    fetchMedia();
   }, []);
 
   useEffect(() => {
     const url = `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`;
-
-    async function getColor() {
+    const getColor = async () => {
       const result: any = await ImageColors.getColors(url, {
-        fallback: '#E4B099',
-        cache: true,
+        fallback: '#ffffff',
+        cache: false,
         key: 'unique_key',
       });
-      setColors(result);
-    }
+      setColors(result?.primary);
+    };
+  
     getColor();
-  }, [userStory?.category?.cover_audio?.url]);
+  }, []);
 
   const playing = async () => {
     try {
       if (play) {
-        eventTracking(AUDIO_PLAYED)
+        eventTracking(AUDIO_PLAYED);
         await TrackPlayer.play();
       } else {
         await TrackPlayer.pause();
@@ -147,66 +151,15 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     if (position != 0) {
       setLoading(false);
     }
-    if(position != 0 && position === duration){
-      TrackPlayer.seekTo(0)
+    if (position != 0 && position === duration) {
+      TrackPlayer.seekTo(0);
       setLoading(false);
-      console.log(position, duration)
+      console.log(position, duration);
       navigate('Main', {successListen: true});
     }
   }, [position, duration]);
 
- 
 
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2.5;
-
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < halfScreenWidth) {
-      handlePrev();
-    }
-    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    else {
-      navigate('Library');
-    }
-  };
-  const handlePrev = () => {
-    handleSetSteps(2);
-    navigate('Main');
-  };
-
-  const renderProgress = () => <StepHeader currentStep={4} />;
-
-  const renderTutorial = () => {
-    if (stepsTutorial === 3) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            top: 0,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-          }}>
-          {renderProgress()}
-          <Step3
-            handleNext={() => {
-              navigate('Library');
-            }}
-            handlePrev={() => {
-              handleSetSteps(2);
-              navigate('Main');
-            }}
-          />
-        </SafeAreaView>
-      );
-    }
-  };
   const handleFetchSave = async () => {
     if (userStory?.is_collection === null) {
       const response = await addStory(userStory?.id);
@@ -214,7 +167,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         try {
           const resp = await getStoryDetail(userStory?.id);
           store.dispatch(handleSetStory(resp.data));
-          eventTracking(ADD_STORY_TO_LIBRARY)
+          eventTracking(ADD_STORY_TO_LIBRARY);
         } catch (error) {}
       }
       setVisibleModal(true);
@@ -235,16 +188,16 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   return (
     // <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
     <LinearGradient
-      colors={[colors?.secondary || '#E4B099', '#6B7C8C']}
+      colors={[colors || '#E4B099', '#6B7C8C']}
       style={styles.ctnContent}>
       <ModalShareStory
-          storyData={userStory}
-          isVisible={showModalShareStory}
-          onClose={() => {
-            setShowModalShareStory(false);
-            // setSharedStory(null);
-          }}
-        />
+        storyData={userStory}
+        isVisible={showModalShareStory}
+        onClose={() => {
+          setShowModalShareStory(false);
+          // setSharedStory(null);
+        }}
+      />
       <Modal
         visible={visibleModal}
         animationType="fade"
@@ -294,7 +247,9 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       </View>
       <View>
         <Image
-          source={{uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`}}
+          source={{
+            uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
+          }}
           resizeMode="cover"
           style={{
             width: 352,
@@ -366,13 +321,13 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           width: sizing.getDimensionWidth(0.9),
         }}>
         <TouchableOpacity onPress={() => handleFetchSave()}>
-        {userStory?.is_collection === null ? (
-          <LoveOutline width={wp(35)} height={hp(35)} />
-        ) : (
-          <LoveSvg width={wp(35)} height={hp(35)} fill={code_color.white} />
-        )}
+          {userStory?.is_collection === null ? (
+            <LoveOutline width={wp(35)} height={hp(35)} />
+          ) : (
+            <LoveSvg width={wp(35)} height={hp(35)} fill={code_color.white} />
+          )}
         </TouchableOpacity>
-       
+
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
           <Prev5 />
         </TouchableOpacity>
@@ -397,9 +352,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           <Next5 />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowModalShareStory(true)}>
-        <ShareSvg width={30} height={30} />
+          <ShareSvg width={30} height={30} />
         </TouchableOpacity>
-       
       </View>
       {/* {renderTutorial()} */}
       <Modal visible={loading} animationType="fade" transparent>
