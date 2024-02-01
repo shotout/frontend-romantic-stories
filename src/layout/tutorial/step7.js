@@ -34,6 +34,7 @@ const Step7 = ({handleNext}) => {
         <AnimatedLottieView
           source={shareAnimate}
           autoPlay={true}
+          delay={0}
           duration={2000}
           loop={false}
           style={{
@@ -45,7 +46,7 @@ const Step7 = ({handleNext}) => {
         />
       </View>
       <Animatable.Text
-        delay={500}
+        delay={0}
         duration={1000}
         animation={'fadeIn'}
         style={{
@@ -62,7 +63,7 @@ const Step7 = ({handleNext}) => {
         }
       </Animatable.Text>
       <Animatable.View
-        delay={2000}
+        delay={0}
         animation={'fadeIn'}
         duration={1000}
         style={{flexDirection: 'row'}}>
