@@ -92,6 +92,7 @@ import {hp, wp} from '../../utils/screen';
 import AnimatedLottieView from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import ModalGetPremium from '../../components/modal-get-premium';
 
 const LibraryScreen = ({
   colorTheme,
@@ -105,6 +106,7 @@ const LibraryScreen = ({
   nextStory,
   userStory,
 }) => {
+  const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const isFocused = useIsFocused();
@@ -249,110 +251,108 @@ const LibraryScreen = ({
       return (
         <View>
           {listLibraryDetail.length > 0 ? (
-           
-              <View
-                // onPress={() => closeRow(rowMap, item.item.id)}
+            <View
+              // onPress={() => closeRow(rowMap, item.item.id)}
+              style={{
+                paddingLeft: 10,
+                paddingBottom: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: bgTheme,
+                borderColor: 'white',
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
+                paddingVertical: 10,
+                height: 120,
+              }}>
+              <FastImage
+                source={{
+                  uri: `${BACKEND_URL}${item?.item?.story?.category?.cover?.url}`,
+                }}
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 10,
-                  flexDirection: 'row',
+                  width: 100,
+                  height: 100,
                   alignItems: 'center',
-                  backgroundColor: bgTheme,
-                  borderColor: 'white',
-                  borderTopWidth: 1,
-                  borderBottomWidth: 1,
-                  paddingVertical: 10,
-                  height: 120,
+                  paddingTop: 5,
+                }}
+                resizeMode="contain">
+                {userProfile?.data?.subscription?.plan?.id != 2 &&
+                  userProfile?.data?.subscription?.plan?.id != 3 &&
+                  userStory?.id != item?.item?.story?.id &&
+                  item?.item?.expire === null &&
+                  new Date() > new Date(item?.item?.expire) && (
+                    <LockFree height={16} width={55} />
+                  )}
+              </FastImage>
+              <View
+                style={{
+                  marginLeft: 0,
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignContent: 'center',
                 }}>
-                <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}${item?.item?.story?.category?.cover?.url}`,
-                  }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    alignItems: 'center',
-                    paddingTop: 5,
-                  }}
-                  resizeMode="contain">
-                  {userProfile?.data?.subscription?.plan?.id != 2 &&
-                    userProfile?.data?.subscription?.plan?.id != 3 &&
-                    userStory?.id != item?.item?.story?.id &&
-                    item?.item?.expire === null &&
-                    new Date() > new Date(item?.item?.expire) && (
-                      <LockFree height={16} width={55} />
-                    )}
-                </FastImage>
-                <View
-                  style={{
-                    marginLeft: 0,
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                  }}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={{flex: 1, marginRight: 10}}>
-                      <Text
-                        allowFontScaling={false}
-                        style={{
-                          color: code_color.white,
-                          fontSize: 12,
-                          marginBottom: 5,
-                        }}>
-                        {item?.item?.story?.category?.name}
-                      </Text>
-                      <Text
-                        allowFontScaling={false}
-                        style={{
-                          color: code_color.white,
-                          fontSize: 14,
-                          fontWeight: 400,
-                          textAlign: 'left',
-                        }}>
-                        {item?.item?.story?.title_en}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleReadDetail(item?.item?.story);
-                      }}
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{flex: 1, marginRight: 10}}>
+                    <Text
+                      allowFontScaling={false}
                       style={{
-                        backgroundColor: '#00B781',
-                        paddingHorizontal: 15,
-                        paddingVertical: 10,
-                        alignItems: 'center',
-                        marginRight: 10,
-                        borderRadius: 30,
+                        color: code_color.white,
+                        fontSize: 12,
+                        marginBottom: 5,
                       }}>
-                      <Text
-                        allowFontScaling={false}
-                        style={{
-                          color: code_color.white,
-                          fontWeight: 'bold',
-                          fontSize: 12,
-                        }}>
-                        Read Story
-                      </Text>
-                    </TouchableOpacity>
+                      {item?.item?.story?.category?.name}
+                    </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontSize: 14,
+                        fontWeight: 400,
+                        textAlign: 'left',
+                      }}>
+                      {item?.item?.story?.title_en}
+                    </Text>
                   </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleReadDetail(item?.item?.story);
+                    }}
+                    style={{
+                      backgroundColor: '#00B781',
+                      paddingHorizontal: 15,
+                      paddingVertical: 10,
+                      alignItems: 'center',
+                      marginRight: 10,
+                      borderRadius: 30,
+                    }}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        color: code_color.white,
+                        fontWeight: 'bold',
+                        fontSize: 12,
+                      }}>
+                      Read Story
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={{
-                    paddingHorizontal: 10,
-                    height: '100%',
-                    justifyContent: 'center',
-                  }}
-                  onPress={() => {
-                    if (row) {
-                      closeRow(rowMap, item.item.id);
-                    } else {
-                      onRowPress(rowMap, item.item.id, true);
-                    }
-                  }}>
-                  <DotSvg />
-                </TouchableOpacity>
               </View>
-          
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: 10,
+                  height: '100%',
+                  justifyContent: 'center',
+                }}
+                onPress={() => {
+                  if (row) {
+                    closeRow(rowMap, item.item.id);
+                  } else {
+                    onRowPress(rowMap, item.item.id, true);
+                  }
+                }}>
+                <DotSvg />
+              </TouchableOpacity>
+            </View>
           ) : (
             renderEmptySearch()
           )}
@@ -360,108 +360,106 @@ const LibraryScreen = ({
       );
     } else {
       return (
-        
-          <View
-            // onPress={() => closeRow(rowMap, item.item.id)}
+        <View
+          // onPress={() => closeRow(rowMap, item.item.id)}
+          style={{
+            paddingLeft: 10,
+            paddingBottom: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: bgTheme,
+            borderColor: 'white',
+            borderTopWidth: 1,
+            borderBottomWidth: 1,
+            paddingVertical: 10,
+            height: 120,
+          }}>
+          <FastImage
+            source={{
+              uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
+            }}
             style={{
-              paddingLeft: 10,
-              paddingBottom: 10,
-              flexDirection: 'row',
+              width: 100,
+              height: 100,
               alignItems: 'center',
-              backgroundColor: bgTheme,
-              borderColor: 'white',
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              paddingVertical: 10,
-              height: 120,
+              paddingTop: 5,
+            }}
+            resizeMode="contain">
+            {userProfile?.data?.subscription?.plan?.id != 2 &&
+              userProfile?.data?.subscription?.plan?.id != 3 &&
+              userStory?.id != item?.item?.id &&
+              item?.item?.expire === null &&
+              new Date() > new Date(item?.item?.expire) && (
+                <LockFree height={16} width={55} />
+              )}
+          </FastImage>
+          <View
+            style={{
+              marginLeft: 0,
+              flex: 1,
+              justifyContent: 'center',
+              alignContent: 'center',
             }}>
-            <FastImage
-              source={{
-                uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
-              }}
-              style={{
-                width: 100,
-                height: 100,
-                alignItems: 'center',
-                paddingTop: 5,
-              }}
-              resizeMode="contain">
-              {userProfile?.data?.subscription?.plan?.id != 2 &&
-                userProfile?.data?.subscription?.plan?.id != 3 &&
-                userStory?.id != item?.item?.id &&
-                item?.item?.expire === null &&
-                new Date() > new Date(item?.item?.expire) && (
-                  <LockFree height={16} width={55} />
-                )}
-            </FastImage>
-            <View
-              style={{
-                marginLeft: 0,
-                flex: 1,
-                justifyContent: 'center',
-                alignContent: 'center',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View style={{flex: 1, marginRight: 10}}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: code_color.white,
-                      fontSize: 12,
-                      marginBottom: 5,
-                    }}>
-                    {item?.item?.category?.name}
-                  </Text>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: code_color.white,
-                      fontSize: 14,
-                      fontWeight: 400,
-                      textAlign: 'left',
-                    }}>
-                    {item?.item?.title_en}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => handleRead(item)}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{flex: 1, marginRight: 10}}>
+                <Text
+                  allowFontScaling={false}
                   style={{
-                    backgroundColor: '#00B781',
-                    paddingHorizontal: 15,
-                    paddingVertical: 10,
-                    alignItems: 'center',
-                    marginRight: 10,
-                    borderRadius: 30,
+                    color: code_color.white,
+                    fontSize: 12,
+                    marginBottom: 5,
                   }}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      color: code_color.white,
-                      fontWeight: 'bold',
-                      fontSize: 12,
-                    }}>
-                    Read Story
-                  </Text>
-                </TouchableOpacity>
+                  {item?.item?.category?.name}
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: code_color.white,
+                    fontSize: 14,
+                    fontWeight: 400,
+                    textAlign: 'left',
+                  }}>
+                  {item?.item?.title_en}
+                </Text>
               </View>
+              <TouchableOpacity
+                onPress={() => handleRead(item)}
+                style={{
+                  backgroundColor: '#00B781',
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
+                  alignItems: 'center',
+                  marginRight: 10,
+                  borderRadius: 30,
+                }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    color: code_color.white,
+                    fontWeight: 'bold',
+                    fontSize: 12,
+                  }}>
+                  Read Story
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 10,
-                height: '100%',
-                justifyContent: 'center',
-              }}
-              onPress={() => {
-                if (row) {
-                  closeRow(rowMap, item.item.id);
-                } else {
-                  onRowPress(rowMap, item.item.id, false);
-                }
-              }}>
-              <DotSvg />
-            </TouchableOpacity>
           </View>
-      
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: 10,
+              height: '100%',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
+              if (row) {
+                closeRow(rowMap, item.item.id);
+              } else {
+                onRowPress(rowMap, item.item.id, false);
+              }
+            }}>
+            <DotSvg />
+          </TouchableOpacity>
+        </View>
       );
     }
   };
@@ -855,6 +853,7 @@ const LibraryScreen = ({
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowModalNewStory(false);
+        setShowModalGetPremium(true)
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -1012,6 +1011,13 @@ const LibraryScreen = ({
   const rippleAnimate = require('../../assets/lottie/ripple.json');
   return (
     <View>
+      <ModalGetPremium
+        isVisible={showModalGetPremium}
+        onGotIt={() => {
+          setShowModalGetPremium(false);
+        }}
+        onClose={() => setShowModalGetPremium(false)}
+      />
       <ModalUnlockedStory
         restart
         edit
@@ -1179,7 +1185,11 @@ const LibraryScreen = ({
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <ActivityIndicator color={'white'} />
-            <Text allowFontScaling={false} style={{color: 'white', marginTop: 5, fontSize: 12, }}>Loading ...</Text>
+            <Text
+              allowFontScaling={false}
+              style={{color: 'white', marginTop: 5, fontSize: 12}}>
+              Loading ...
+            </Text>
           </View>
         ) : (
           <>
@@ -1291,7 +1301,6 @@ const LibraryScreen = ({
                     previewRowKey={'0'}
                     previewOpenValue={-40}
                     previewOpenDelay={3000}
-                  
                   />
                 ) : (
                   <SwipeListView
@@ -1355,7 +1364,6 @@ const LibraryScreen = ({
                     previewRowKey={'0'}
                     previewOpenValue={-40}
                     previewOpenDelay={3000}
-                 
                   />
                 )}
               </ScrollView>

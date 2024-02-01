@@ -59,6 +59,7 @@ import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
+import ModalGetPremium from '../../components/modal-get-premium';
 
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
@@ -74,6 +75,7 @@ const ExploreLibraryScreen = ({
   userProfile,
   nextStory,
 }) => {
+  const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
@@ -121,6 +123,7 @@ const ExploreLibraryScreen = ({
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowUnlockedStory(false);
+        setShowModalGetPremium(true)
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -220,71 +223,16 @@ const ExploreLibraryScreen = ({
     }
   };
 
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 2.5;
-    if (touchX < screenWidth) {
-      handleSetSteps(4 - 1);
-      navigate('Library');
-    } else {
-      handleSetSteps(4 + 1);
-      navigate('Main');
-    }
-    // setIsSwipingLeft(true);
-    // if (activeStep === 1) {
-    // } else {
-    //   setTutorial({
-    //     ...isTutorial,
-    //     step: isTutorial.step - 1,
-    //   });
-    //   setActiveStep(prevStep => prevStep - 1);
-    //   handleSetSteps(activeStep - 1);
-    // }
-    // } else if (touchX < halfScreenWidth){
-    //   alert('okeee kiri')
-    // }
-    // // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    // else {
-    //   alert('okeee KANAN')
-    //   // handleNext();
-    //   // setIsSwipingRight(true);
-    // }
-  };
-  const renderTutorial = () => {
-    if (stepsTutorial === 4) {
-      return (
-        <SafeAreaView
-          onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          pointerEvents="box-only"
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            top: 30,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-          }}>
-          <View style={{marginTop: 15}}>{renderProgress()}</View>
 
-          <Step4_2
-            handleNext={() => {
-              handleSetSteps(4 + 1);
-              navigate('Main');
-            }}
-            handlePrev={() => {
-              handleSetSteps(4 - 1);
-              navigate('Library');
-            }}
-          />
-        </SafeAreaView>
-      );
-    }
-  };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
-    
+     <ModalGetPremium
+        isVisible={showModalGetPremium}
+        onGotIt={() => {
+          setShowModalGetPremium(false);
+        }}
+        onClose={() => setShowModalGetPremium(false)}
+      />
       <ModalSorting
         isVisible={showModalSort}
         onClose={() => setShowModalSort(false)}

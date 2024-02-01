@@ -11,17 +11,9 @@ import {moderateScale} from 'react-native-size-matters';
 import GetUnlimitIcon from '../../assets/icons/getUnlimit';
 import CheckIcon from '../../assets/icons/checklist';
 import Button from '../buttons/Button';
-
-function ModalGetPremium({isVisible, onClose, onGotIt}) {
-  const textList = [
-    'UNLIMITED Story to read again and again',
-    'Access to Thousands of Stories in Library',
-    'UNLIMITED Custom Themes, Fonts and more',
-    'Change your character and your partner character anytime',
-    'Change Story Genre any time',
-    'No ads, no watermarks',
-  ];
-
+import Close from '../../assets/icons/close.jsx';
+import ChecklistSvg from '../../assets/icons/checklist';
+function ModalGetPremium({isVisible, onClose, onGotIt, userProfile}) {
   return (
     <Modal
       visible={isVisible}
@@ -40,7 +32,7 @@ function ModalGetPremium({isVisible, onClose, onGotIt}) {
             backgroundColor: code_color.blueDark,
             borderBottomLeftRadius: moderateScale(100),
             borderBottomRightRadius: moderateScale(100),
-            height: moderateScale(350),
+            height: moderateScale(320),
             width: '100%',
             overflow: 'hidden',
             alignItems: 'center',
@@ -74,7 +66,7 @@ function ModalGetPremium({isVisible, onClose, onGotIt}) {
               fontWeight: 700,
               fontSize: 25,
             }}>
-            EroTales UNLIMITED!
+            {userProfile?.data?.subscription?.plan?.title}
           </Text>
           <GetUnlimitIcon
             style={{position: 'absolute', bottom: 0, width: '100%'}}
@@ -87,35 +79,41 @@ function ModalGetPremium({isVisible, onClose, onGotIt}) {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={{marginTop: moderateScale(30), width: '90%'}}>
-            {textList.map((txt, idx) => (
+          <View style={{marginTop: 30, width: '90%'}}>
+            {userProfile?.data?.subscription?.plan?.notes.map(item => (
               <View
                 style={{
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: moderateScale(16),
-                }}
-                key={idx}>
+                  marginVertical: 5,
+                  marginHorizontal: 10,
+                }}>
                 <View
                   style={{
-                    height: 22,
-                    width: 22,
-                    backgroundColor: '#00B781',
-                    borderRadius: 20,
+                    backgroundColor: item.check
+                      ? code_color.greenDark
+                      : code_color.red,
+                    borderRadius: 30,
+                    width: 20,
+                    height: 20,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginRight: moderateScale(10),
                   }}>
-                  <CheckIcon fill={code_color.white} height={16} width={16} />
+                  {item.check ? (
+                    <ChecklistSvg width={13} />
+                  ) : (
+                    <Close width={13} fill={code_color.white} />
+                  )}
                 </View>
-                <Text
-                  style={{
-                    fontWeight: 500,
-                    fontSize: moderateScale(14),
-                    flex: 1,
-                  }}>
-                  {txt}
-                </Text>
+
+                <View style={{marginLeft: 10}}>
+                  <Text
+                    style={{fontWeight: 'bold', fontSize: 15}}>
+                    {item?.title}
+                  </Text>
+                  <Text style={{fontSize: 12}}>
+                    {item?.description}
+                  </Text>
+                </View>
               </View>
             ))}
           </View>

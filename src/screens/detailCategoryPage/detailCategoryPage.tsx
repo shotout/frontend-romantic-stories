@@ -51,6 +51,7 @@ import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
 import {sizing} from '../../utils/styling';
 import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
+import ModalGetPremium from '../../components/modal-get-premium';
 
 const DetailCategoryScreen = ({
   route,
@@ -63,6 +64,7 @@ const DetailCategoryScreen = ({
   userProfile,
   nextStory,
 }) => {
+  const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const flatListRef = useRef(null);
@@ -120,6 +122,7 @@ const DetailCategoryScreen = ({
     try {
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
+        setShowModalGetPremium(true)
         setShowUnlockedStory(false);
       } else {
         setShowUnlockedStory(false);
@@ -317,6 +320,13 @@ const DetailCategoryScreen = ({
         isVisible={showModalSort}
         onClose={() => setShowModalSort(false)}
         items={(value: any) => setItems(value)}
+      />
+       <ModalGetPremium
+        isVisible={showModalGetPremium}
+        onGotIt={() => {
+          setShowModalGetPremium(false);
+        }}
+        onClose={() => setShowModalGetPremium(false)}
       />
       <ModalUnlockStory
         isLoading={loading}

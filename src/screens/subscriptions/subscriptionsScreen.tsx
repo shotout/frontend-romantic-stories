@@ -46,9 +46,11 @@ import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import * as Progress from 'react-native-progress';
 import ModalAudioUnlock from '../../components/modal-audio-unlock';
 import moment from 'moment';
+import ModalGetPremium from '../../components/modal-get-premium';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
+  const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [show, setShow] = useState(false);
@@ -156,6 +158,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
       const paymentResult = await handlePayment(value);
       if (paymentResult.success) {
         reloadUserProfile()
+        setShowModalGetPremium(true)
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -172,6 +175,14 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
+       <ModalGetPremium
+            isVisible={showModalGetPremium}
+            onGotIt={() => {
+              setShowModalGetPremium(false);
+             
+            }}
+            onClose={() => setShowModalGetPremium(false)}
+          />
       <View
         style={{
           flex: 0,
