@@ -15,9 +15,10 @@ const Step6 = ({}) => {
         backgroundColor: '#3F58DD',
         borderRadius: 20,
         padding: 10,
-        marginHorizontal: 40,
+        marginHorizontal: '17%',
         alignItems: 'center',
-        marginTop: '60%',
+        marginTop: '64%',
+        width: '66%',
         paddingTop: 50,
       }}>
       <View
@@ -48,7 +49,7 @@ const Step6 = ({}) => {
           fontSize: 18,
           fontWeight: 'bold',
           marginBottom: 20,
-          marginTop: 20,
+          marginTop: 10,
           lineHeight: 25,
         }}>
         {

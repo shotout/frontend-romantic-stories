@@ -15,10 +15,11 @@ const Step7 = ({handleNext}) => {
         backgroundColor: '#3F58DD',
         borderRadius: 20,
         padding: 10,
-        marginHorizontal: 40,
+        marginHorizontal: '17%',
         alignItems: 'center',
-        marginTop: '40%',
+        marginTop: '50%',
         paddingTop: 50,
+        width: '66%',
       }}>
       <View
         style={{
@@ -55,11 +56,11 @@ const Step7 = ({handleNext}) => {
           fontSize: 18,
           fontWeight: 'bold',
           marginBottom: 20,
-          marginTop: 20,
+          marginTop: 10,
           lineHeight: 25,
         }}>
         {
-          'Everything ready? Save\nyour Custom Quote or\nShare it with your Friends!'
+          'Everything ready?\nSave your Custom Quote\nor Share it with your\nFriends!'
         }
       </Animatable.Text>
       <Animatable.View
@@ -85,7 +86,8 @@ const Step7 = ({handleNext}) => {
             padding: 10,
             paddingHorizontal: 30,
             borderRadius: 20,
-            marginVertical: 10,
+            marginTop: 10,
+            marginBottom: 15,
           }}
           title={i18n.t('Next')}
           onPress={() => handleNext()}
