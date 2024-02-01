@@ -249,16 +249,9 @@ const LibraryScreen = ({
       return (
         <View>
           {listLibraryDetail.length > 0 ? (
-            <Animated.View
-              style={
-                indexSweepLeft === item?.item?.id
-                  ? {
-                      transform: [{translateX: translateX}],
-                    }
-                  : undefined
-              }>
-              <TouchableOpacity
-                onPress={() => closeRow(rowMap, item.item.id)}
+           
+              <View
+                // onPress={() => closeRow(rowMap, item.item.id)}
                 style={{
                   paddingLeft: 10,
                   paddingBottom: 10,
@@ -358,8 +351,8 @@ const LibraryScreen = ({
                   }}>
                   <DotSvg />
                 </TouchableOpacity>
-              </TouchableOpacity>
-            </Animated.View>
+              </View>
+          
           ) : (
             renderEmptySearch()
           )}
@@ -367,16 +360,9 @@ const LibraryScreen = ({
       );
     } else {
       return (
-        <Animated.View
-          style={
-            indexSweepLeft === item?.item?.id
-              ? {
-                  transform: [{translateX: translateX}],
-                }
-              : null
-          }>
-          <TouchableOpacity
-            onPress={() => closeRow(rowMap, item.item.id)}
+        
+          <View
+            // onPress={() => closeRow(rowMap, item.item.id)}
             style={{
               paddingLeft: 10,
               paddingBottom: 10,
@@ -474,8 +460,8 @@ const LibraryScreen = ({
               }}>
               <DotSvg />
             </TouchableOpacity>
-          </TouchableOpacity>
-        </Animated.View>
+          </View>
+      
       );
     }
   };
@@ -1305,7 +1291,7 @@ const LibraryScreen = ({
                     previewRowKey={'0'}
                     previewOpenValue={-40}
                     previewOpenDelay={3000}
-                    onRowDidOpen={onRowDidOpen}
+                  
                   />
                 ) : (
                   <SwipeListView
@@ -1369,7 +1355,7 @@ const LibraryScreen = ({
                     previewRowKey={'0'}
                     previewOpenValue={-40}
                     previewOpenDelay={3000}
-                    onRowDidOpen={onRowDidOpen}
+                 
                   />
                 )}
               </ScrollView>
