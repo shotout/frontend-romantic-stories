@@ -39,7 +39,7 @@ const Step6 = ({}) => {
         />
       </View>
       <Animatable.Text
-        delay={1500}
+        delay={0}
         duration={1000}
         animation={'fadeIn'}
         style={{
