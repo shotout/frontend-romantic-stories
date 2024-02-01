@@ -263,9 +263,9 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
       eventTracking(ONBOARDING_COMPLETE);
-        setTimeout(() => {
-            handlePayment('onboarding');
-        }, 200);
+        // setTimeout(() => {
+        //     handlePayment('onboarding');
+        // }, 200);
       
      
       
