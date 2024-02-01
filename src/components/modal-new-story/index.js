@@ -9,6 +9,7 @@ import {
   Dimensions,
   Platform,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -26,6 +27,7 @@ import * as IAP from 'react-native-iap';
 import {ActivityIndicator} from 'react-native-paper';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
 import {sizing} from '../../shared/styling';
+import Close from '../../assets/icons/close';
 function ModalNewStory({
   isVisible,
   onClose,
@@ -156,7 +158,11 @@ function ModalNewStory({
                 top: wp(140),
               }}
             />
-
+            <TouchableOpacity
+              style={{marginLeft: 'auto', right: 14, top: 50, position: 'absolute'}}
+              onPress={handleClose}>
+              <Close fill="white" height={18} width={18} />
+            </TouchableOpacity>
             <View
               style={{
                 backgroundColor: code_color.white,

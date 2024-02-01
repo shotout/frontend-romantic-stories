@@ -1469,7 +1469,11 @@ const MainScreen = ({
             loadingAds={loadingAds}
             isLoading={loading}
             isVisible={showModalNewStory}
-            onClose={() => setShowModalNewStory(false)}
+            onClose={() => 
+              {
+                pagerRef.current?.setPage(textChunks.length - 1);
+                setShowModalNewStory(false)
+              }}
             onWatchAds={() => {
               showWatchAds();
             }}
