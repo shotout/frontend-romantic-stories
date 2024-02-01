@@ -21,6 +21,7 @@ import {
   ScrollView,
   Dimensions,
   Easing,
+  ActivityIndicator,
 } from 'react-native';
 import {
   bg,
@@ -104,7 +105,6 @@ const LibraryScreen = ({
   nextStory,
   userStory,
 }) => {
-  // alert(JSON.stringify(userStory))
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
   const isFocused = useIsFocused();
@@ -141,37 +141,8 @@ const LibraryScreen = ({
   const [selectedStory, setSelectedStory] = useState(null);
   const [price, setPrice] = useState('');
   const activeStatus = useRef(false);
+  const [loadingList, setLoadingList] = useState(false);
 
-  const startBounceAnimation = () => {
-    Animated.sequence([
-      Animated.timing(translateX, {
-        toValue: -180, // Geser ke kiri
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      // Animated.timing(translateX, {
-      //   toValue: -100, // Naik ke atas sejauh 100
-      //   duration: 500,
-      //   useNativeDriver: true,
-      // }),
-      // Animated.timing(translateX, {
-      //   toValue: 0, // Turun kembali ke posisi semula
-      //   duration: 500,
-      //   useNativeDriver: true,
-      // }),
-    ]).start();
-  };
-
-  const startBounceAnimationDetail = () => {
-    Animated.sequence([
-      Animated.timing(translateX, {
-        toValue: -120, // Geser ke kiri
-        duration: 500,
-        useNativeDriver: true,
-      }),
-    ]).start();
-    rowMap[rowKey].closeRow();
-  };
   const stopAnimation = () => {
     translateX.stopAnimation(value => {
       translateX.setValue(0); // Set the animation value to the current value
@@ -223,7 +194,6 @@ const LibraryScreen = ({
   };
 
   const handleReadDetail = async item => {
-   
     setSelectedStory(item);
     if (
       userProfile?.data?.subscription?.plan?.id != 1 ||
@@ -242,10 +212,10 @@ const LibraryScreen = ({
     }
   };
   useEffect(() => {
-    if(detail){
-      fetchDetail(detail)
+    if (detail) {
+      fetchDetail(detail);
     }
-  }, [keyword, items])
+  }, [keyword, items]);
   const fetchDetail = async id => {
     let params = {
       search: keyword,
@@ -257,30 +227,28 @@ const LibraryScreen = ({
     setDetailCollection(resp?.data?.collection);
     if (resp?.data?.stories?.data.length > 0) {
       setListLibraryDetail(resp?.data?.stories?.data);
-    }else{
-      setListLibraryDetail([])
+    } else {
+      setListLibraryDetail([]);
     }
   };
 
- 
   const onRowPress = (rowMap, rowKey, data) => {
-    setRow(rowKey)
+    setRow(rowKey);
     if (rowMap[rowKey]) {
-      rowMap[rowKey].manuallySwipeRow( data ? -120 : -180);
+      rowMap[rowKey].manuallySwipeRow(data ? -120 : -180);
     }
-  }
+  };
   const closeRow = (rowMap, rowKey) => {
-    setRow(null)
+    setRow(null);
     if (rowMap[rowKey]) {
-        rowMap[rowKey].closeRow();
+      rowMap[rowKey].closeRow();
     }
-};
+  };
   const renderContent = (item, rowMap) => {
-
     if (detail != null) {
       return (
         <View>
-          { listLibraryDetail.length > 0  ? (
+          {listLibraryDetail.length > 0 ? (
             <Animated.View
               style={
                 indexSweepLeft === item?.item?.id
@@ -290,7 +258,7 @@ const LibraryScreen = ({
                   : undefined
               }>
               <TouchableOpacity
-               onPress={() => closeRow(rowMap, item.item.id)}
+                onPress={() => closeRow(rowMap, item.item.id)}
                 style={{
                   paddingLeft: 10,
                   paddingBottom: 10,
@@ -301,9 +269,9 @@ const LibraryScreen = ({
                   borderTopWidth: 1,
                   borderBottomWidth: 1,
                   paddingVertical: 10,
-                  height: 120
+                  height: 120,
                 }}>
-                <ImageBackground
+                <FastImage
                   source={{
                     uri: `${BACKEND_URL}${item?.item?.story?.category?.cover?.url}`,
                   }}
@@ -314,14 +282,14 @@ const LibraryScreen = ({
                     paddingTop: 5,
                   }}
                   resizeMode="contain">
-                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.story?.id &&
-                  item?.item?.expire === null &&
-                  new Date() > new Date(item?.item?.expire) && (
-                    <LockFree height={16} width={55} />
-                  )}
-                </ImageBackground>
+                  {userProfile?.data?.subscription?.plan?.id != 2 &&
+                    userProfile?.data?.subscription?.plan?.id != 3 &&
+                    userStory?.id != item?.item?.story?.id &&
+                    item?.item?.expire === null &&
+                    new Date() > new Date(item?.item?.expire) && (
+                      <LockFree height={16} width={55} />
+                    )}
+                </FastImage>
                 <View
                   style={{
                     marginLeft: 0,
@@ -382,133 +350,132 @@ const LibraryScreen = ({
                     justifyContent: 'center',
                   }}
                   onPress={() => {
-                    if(row){
-                      closeRow(rowMap, item.item.id)
-                    }else{
-                      onRowPress(rowMap, item.item.id, true)
+                    if (row) {
+                      closeRow(rowMap, item.item.id);
+                    } else {
+                      onRowPress(rowMap, item.item.id, true);
                     }
                   }}>
                   <DotSvg />
                 </TouchableOpacity>
               </TouchableOpacity>
             </Animated.View>
-          ) :  renderEmptySearch()} 
+          ) : (
+            renderEmptySearch()
+          )}
         </View>
       );
     } else {
       return (
-     
-          <Animated.View
-            style={
-              indexSweepLeft === item?.item?.id
-                ? {
-                    transform: [{translateX: translateX}],
-                  }
-                : null
-            }>
-            <TouchableOpacity
-              onPress={() => closeRow(rowMap, item.item.id)}
+        <Animated.View
+          style={
+            indexSweepLeft === item?.item?.id
+              ? {
+                  transform: [{translateX: translateX}],
+                }
+              : null
+          }>
+          <TouchableOpacity
+            onPress={() => closeRow(rowMap, item.item.id)}
+            style={{
+              paddingLeft: 10,
+              paddingBottom: 10,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: bgTheme,
+              borderColor: 'white',
+              borderTopWidth: 1,
+              borderBottomWidth: 1,
+              paddingVertical: 10,
+              height: 120,
+            }}>
+            <FastImage
+              source={{
+                uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
+              }}
               style={{
-                paddingLeft: 10,
-                paddingBottom: 10,
-                flexDirection: 'row',
+                width: 100,
+                height: 100,
                 alignItems: 'center',
-                backgroundColor: bgTheme,
-                borderColor: 'white',
-                borderTopWidth: 1,
-                borderBottomWidth: 1,
-                paddingVertical: 10,
-                height: 120
+                paddingTop: 5,
+              }}
+              resizeMode="contain">
+              {userProfile?.data?.subscription?.plan?.id != 2 &&
+                userProfile?.data?.subscription?.plan?.id != 3 &&
+                userStory?.id != item?.item?.id &&
+                item?.item?.expire === null &&
+                new Date() > new Date(item?.item?.expire) && (
+                  <LockFree height={16} width={55} />
+                )}
+            </FastImage>
+            <View
+              style={{
+                marginLeft: 0,
+                flex: 1,
+                justifyContent: 'center',
+                alignContent: 'center',
               }}>
-              <ImageBackground
-                source={{
-                  uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
-                }}
-                style={{
-                  width: 100,
-                  height: 100,
-                  alignItems: 'center',
-                  paddingTop: 5,
-                }}
-                resizeMode="contain">
-                {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id &&
-                  item?.item?.expire === null &&
-                  new Date() > new Date(item?.item?.expire) && (
-                    <LockFree height={16} width={55} />
-                  )}
-              </ImageBackground>
-              <View
-                style={{
-                  marginLeft: 0,
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <View style={{flex: 1, marginRight: 10}}>
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        color: code_color.white,
-                        fontSize: 12,
-                        marginBottom: 5,
-                      }}>
-                      {item?.item?.category?.name}
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        color: code_color.white,
-                        fontSize: 14,
-                        fontWeight: 400,
-                        textAlign: 'left',
-                      }}>
-                      {item?.item?.title_en}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => handleRead(item)}
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flex: 1, marginRight: 10}}>
+                  <Text
+                    allowFontScaling={false}
                     style={{
-                      backgroundColor: '#00B781',
-                      paddingHorizontal: 15,
-                      paddingVertical: 10,
-                      alignItems: 'center',
-                      marginRight: 10,
-                      borderRadius: 30,
+                      color: code_color.white,
+                      fontSize: 12,
+                      marginBottom: 5,
                     }}>
-                    <Text
-                      allowFontScaling={false}
-                      style={{
-                        color: code_color.white,
-                        fontWeight: 'bold',
-                        fontSize: 12,
-                      }}>
-                      Read Story
-                    </Text>
-                  </TouchableOpacity>
+                    {item?.item?.category?.name}
+                  </Text>
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: code_color.white,
+                      fontSize: 14,
+                      fontWeight: 400,
+                      textAlign: 'left',
+                    }}>
+                    {item?.item?.title_en}
+                  </Text>
                 </View>
+                <TouchableOpacity
+                  onPress={() => handleRead(item)}
+                  style={{
+                    backgroundColor: '#00B781',
+                    paddingHorizontal: 15,
+                    paddingVertical: 10,
+                    alignItems: 'center',
+                    marginRight: 10,
+                    borderRadius: 30,
+                  }}>
+                  <Text
+                    allowFontScaling={false}
+                    style={{
+                      color: code_color.white,
+                      fontWeight: 'bold',
+                      fontSize: 12,
+                    }}>
+                    Read Story
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={{
-                  paddingHorizontal: 10,
-                  height: '100%',
-                  justifyContent: 'center',
-                }}
-                onPress={() => {
-                  if(row){
-                    closeRow(rowMap, item.item.id)
-                  }else{
-                    onRowPress(rowMap, item.item.id, false)
-                  }
-                 
-                }}>
-                <DotSvg />
-              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: 10,
+                height: '100%',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                if (row) {
+                  closeRow(rowMap, item.item.id);
+                } else {
+                  onRowPress(rowMap, item.item.id, false);
+                }
+              }}>
+              <DotSvg />
             </TouchableOpacity>
-          </Animated.View>
-       
+          </TouchableOpacity>
+        </Animated.View>
       );
     }
   };
@@ -533,7 +500,7 @@ const LibraryScreen = ({
                 paddingVertical: 10,
                 paddingRight: 15,
               }}>
-              <ImageBackground
+              <FastImage
                 source={{
                   uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
                 }}
@@ -544,13 +511,12 @@ const LibraryScreen = ({
                   paddingTop: 5,
                 }}
                 resizeMode="contain">
-                 {userProfile?.data?.subscription?.plan?.id != 2 &&
+                {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id &&
-                    (
+                  userStory?.id != item?.item?.id && (
                     <LockFree height={16} width={55} />
                   )}
-              </ImageBackground>
+              </FastImage>
               <View
                 style={{
                   marginLeft: 0,
@@ -605,10 +571,10 @@ const LibraryScreen = ({
               <TouchableOpacity
                 style={{marginHorizontal: 5}}
                 onPress={() => {
-                  if(row){
-                    closeRow(rowMap, item.item.id)
-                  }else{
-                    onRowPress(rowMap, item.item.id, false)
+                  if (row) {
+                    closeRow(rowMap, item.item.id);
+                  } else {
+                    onRowPress(rowMap, item.item.id, false);
                   }
                 }}>
                 <DotSvg />
@@ -637,7 +603,7 @@ const LibraryScreen = ({
                 paddingVertical: 10,
                 paddingRight: 15,
               }}>
-              <ImageBackground
+              <FastImage
                 source={{
                   uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
                 }}
@@ -648,13 +614,12 @@ const LibraryScreen = ({
                   paddingTop: 5,
                 }}
                 resizeMode="contain">
-                 {userProfile?.data?.subscription?.plan?.id != 2 &&
+                {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id &&
-                   (
+                  userStory?.id != item?.item?.id && (
                     <LockFree height={16} width={55} />
                   )}
-              </ImageBackground>
+              </FastImage>
               <View
                 style={{
                   marginLeft: 0,
@@ -709,10 +674,10 @@ const LibraryScreen = ({
               <TouchableOpacity
                 style={{marginHorizontal: 5}}
                 onPress={() => {
-                  if(row){
-                    closeRow(rowMap, item.item.id)
-                  }else{
-                    onRowPress(rowMap, item.item.id, false)
+                  if (row) {
+                    closeRow(rowMap, item.item.id);
+                  } else {
+                    onRowPress(rowMap, item.item.id, false);
                   }
                 }}>
                 <DotSvg />
@@ -728,8 +693,8 @@ const LibraryScreen = ({
       <View>
         <Pressable
           onPress={() => {
-            setDetailCollection(null)
-            setListLibraryDetail([])
+            setDetailCollection(null);
+            setListLibraryDetail([]);
             setDetail(item?.item?.id);
             fetchDetail(item?.item?.id);
           }}
@@ -767,7 +732,7 @@ const LibraryScreen = ({
       </View>
     );
   };
-  
+
   const renderContentCollectionDetail = () => {
     return (
       <View>
@@ -865,6 +830,7 @@ const LibraryScreen = ({
   }, []);
   const handleRestart = async () => {
     setShowModalNew(false);
+    setLoadingList(true);
     try {
       let params = {
         search: keyword,
@@ -872,16 +838,17 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
-      console.log('DATA INI' + JSON.stringify(res));
       setListCollection(res.data);
       setListLibrary(res.outsides);
+      setLoadingList(false);
     } catch (error) {
+      setLoadingList(false);
       console.log(JSON.stringify(error));
     }
   };
 
-  const searchKeyword = async(key) => {
-    setKeyword(key)
+  const searchKeyword = async key => {
+    setKeyword(key);
     try {
       let params = {
         search: key,
@@ -895,7 +862,7 @@ const LibraryScreen = ({
     } catch (error) {
       console.log(JSON.stringify(error));
     }
-  }
+  };
   const handleUnlimited = async () => {
     //
     try {
@@ -1054,7 +1021,7 @@ const LibraryScreen = ({
   };
   const onRowDidOpen = rowKey => {
     // alert(JSON.stringify(rowKey))
-      console.log('This row opened', rowKey);
+    console.log('This row opened', rowKey);
   };
   const rippleAnimate = require('../../assets/lottie/ripple.json');
   return (
@@ -1119,8 +1086,8 @@ const LibraryScreen = ({
           data={listCollection}
           storyId={id}
           keyword={keyword}
-          setKeyword={(value) => searchKeyword(value)}
-          setItems={(value) => setItems(value)}
+          setKeyword={value => searchKeyword(value)}
+          setItems={value => setItems(value)}
           handleRestart={() => handleRestart()}
         />
         <ModalNewLibrary
@@ -1204,12 +1171,11 @@ const LibraryScreen = ({
               value={keyword}
               onChangeText={value => setKeyword(value)}
               onSubmitEditing={() => {
-                if(detail){
-                  fetchDetail(detail)
-                }else{
-                  handleRestart()
+                if (detail) {
+                  fetchDetail(detail);
+                } else {
+                  handleRestart();
                 }
-               
               }}
               style={{
                 marginLeft: 10,
@@ -1223,183 +1189,205 @@ const LibraryScreen = ({
             <DescendingSvg fill={code_color.white} />
           </Pressable>
         </View>
-        {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-          <ScrollView>
-            {detail != null ? (
-              renderContentCollectionDetail()
-            ) :
-             (
-              <SwipeListView
-                data={listCollection}
-                renderItem={item => renderContentCollection(item)}
-                renderHiddenItem={(_data, _rowMap) => (
-                  <View style={styles.rowBack}>
-                    <TouchableOpacity
-                      style={[
-                        styles.backLeftCollectBtn,
-                        styles.backLeftBtnCollect,
-                      ]}
-                      onPress={() => handleEditCollect(_data)}>
-                      <EditSvg />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[
-                        styles.backRightCollectBtn,
-                        styles.backRightBtnCollect,
-                      ]}
-                      onPress={() => {
-                        Alert.alert(
-                          'Are you sure you want to remove this collection?',
-                          '',
-                          [
-                            {
-                              text: 'Yes',
-                              onPress: () => {
-                                deleteRowCollection(_data);
-                                // handleDelete(item.id);
-                              },
-                            },
-                            {text: 'Cancel', onPress: () => {}},
-                          ],
-                        );
-                      }}>
-                      <DeleteSvg />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                rightOpenValue={-120}
-                previewRowKey={'0'}
-                previewOpenValue={-40}
-                previewOpenDelay={3000}
-              />
-            )}
-            {detail != null ? (
-              <SwipeListView
-              keyExtractor={(rowData, index) => {
-                return rowData?.id.toString();
-              }}
-                data={listLibraryDetail}
-                renderItem={(item, rowMap) => renderContent(item, rowMap)}
-                renderHiddenItem={(_data, _rowMap) => (
-                  <View style={styles.rowBack}>
-                    {detail != null ? null : (
-                      <TouchableOpacity
-                        style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                        onPress={() => {
-                          setId(_data?.item?.id);
-                          setShowModal(true);
-                        }}>
-                        <LibraryAddSvg />
-                      </TouchableOpacity>
-                    )}
-
-                    <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightCenter]}
-                      onPress={() => {
-                        setSharedStory(_data);
-                        setShowModalShareStory(true);
-                      }}>
-                      <ShareSvg />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightBtnRight]}
-                      onPress={() => {
-                        Alert.alert(
-                          'Are you sure you want to remove this story from your library?',
-                          '',
-                          [
-                            {
-                              text: 'Yes',
-                              onPress: () => {
-                                deleteRowStory(_data);
-                              },
-                            },
-                            {text: 'Cancel', onPress: () => {}},
-                          ],
-                        );
-                      }}>
-                      <DeleteSvg />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                rightOpenValue={-120}
-                previewRowKey={'0'}
-                previewOpenValue={-40}
-                previewOpenDelay={3000}
-                onRowDidOpen={onRowDidOpen}
-              />
-            ) : (
-              <SwipeListView
-              keyExtractor={(rowData, index) => {
-                return rowData?.id.toString();
-              }}
-              // useSectionList
-                data={listLibrary}
-                renderItem={(item, rowMap) => renderContent(item, rowMap)}
-                swipeGestureEnded={(_data, _rowMap) => {
-                  stopAnimation();
-                }}
-                renderHiddenItem={(_data, _rowMap) => (
-                  <View style={styles.rowBack}>
-                    {detail != null ? null : (
-                      <TouchableOpacity
-                        style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                        onPress={() => {
-                          setId(_data?.item?.id);
-                          setShowModal(true);
-                        }}>
-                        <LibraryAddSvg />
-                      </TouchableOpacity>
-                    )}
-                    <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightCenter]}
-                      onPress={() => {
-                        setSharedStory(_data);
-                        setShowModalShareStory(true);
-                      }}>
-                      <ShareSvg />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.backRightBtn, styles.backRightBtnRight]}
-                      onPress={() => {
-                        Alert.alert(
-                          'Are you sure you want to remove this story from your library?',
-                          '',
-                          [
-                            {
-                              text: 'Yes',
-                              onPress: () => {
-                                deleteRowStory(_data);
-                              },
-                            },
-                            {text: 'Cancel', onPress: () => {}},
-                          ],
-                        );
-                      }}>
-                      <DeleteSvg />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                rightOpenValue={-180}
-                previewRowKey={'0'}
-                previewOpenValue={-40}
-                previewOpenDelay={3000}
-                onRowDidOpen={onRowDidOpen}
-              />
-            )}
-          </ScrollView>
-        ) : listLibrary?.length === 0 &&
-          listCollection?.length === 0 
-          && detail === null &&
-          keyword.length === 0 ? (
-          renderEmpty()
-        ) : listLibrary?.length === 0 &&
-          listCollection?.length === 0  
-          && detail === null &&
-          keyword.length > 0 || detail != null && listLibraryDetail?.length === 0  ? (
-          renderEmptySearch()
+        {loadingList ? (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator color={'white'} />
+            <Text allowFontScaling={false} style={{color: 'white', marginTop: 5, fontSize: 12, }}>Loading ...</Text>
+          </View>
         ) : (
-          renderEmpty()
+          <>
+            {listLibrary?.length > 0 || listCollection?.length > 0 ? (
+              <ScrollView>
+                {detail != null ? (
+                  renderContentCollectionDetail()
+                ) : (
+                  <SwipeListView
+                    data={listCollection}
+                    renderItem={item => renderContentCollection(item)}
+                    renderHiddenItem={(_data, _rowMap) => (
+                      <View style={styles.rowBack}>
+                        <TouchableOpacity
+                          style={[
+                            styles.backLeftCollectBtn,
+                            styles.backLeftBtnCollect,
+                          ]}
+                          onPress={() => handleEditCollect(_data)}>
+                          <EditSvg />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[
+                            styles.backRightCollectBtn,
+                            styles.backRightBtnCollect,
+                          ]}
+                          onPress={() => {
+                            Alert.alert(
+                              'Are you sure you want to remove this collection?',
+                              '',
+                              [
+                                {
+                                  text: 'Yes',
+                                  onPress: () => {
+                                    deleteRowCollection(_data);
+                                    // handleDelete(item.id);
+                                  },
+                                },
+                                {text: 'Cancel', onPress: () => {}},
+                              ],
+                            );
+                          }}>
+                          <DeleteSvg />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    rightOpenValue={-120}
+                    previewRowKey={'0'}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
+                  />
+                )}
+                {detail != null ? (
+                  <SwipeListView
+                    keyExtractor={(rowData, index) => {
+                      return rowData?.id.toString();
+                    }}
+                    data={listLibraryDetail}
+                    renderItem={(item, rowMap) => renderContent(item, rowMap)}
+                    renderHiddenItem={(_data, _rowMap) => (
+                      <View style={styles.rowBack}>
+                        {detail != null ? null : (
+                          <TouchableOpacity
+                            style={[
+                              styles.backRightBtn,
+                              styles.backRightBtnLeft,
+                            ]}
+                            onPress={() => {
+                              setId(_data?.item?.id);
+                              setShowModal(true);
+                            }}>
+                            <LibraryAddSvg />
+                          </TouchableOpacity>
+                        )}
+
+                        <TouchableOpacity
+                          style={[styles.backRightBtn, styles.backRightCenter]}
+                          onPress={() => {
+                            setSharedStory(_data);
+                            setShowModalShareStory(true);
+                          }}>
+                          <ShareSvg />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[
+                            styles.backRightBtn,
+                            styles.backRightBtnRight,
+                          ]}
+                          onPress={() => {
+                            Alert.alert(
+                              'Are you sure you want to remove this story from your library?',
+                              '',
+                              [
+                                {
+                                  text: 'Yes',
+                                  onPress: () => {
+                                    deleteRowStory(_data);
+                                  },
+                                },
+                                {text: 'Cancel', onPress: () => {}},
+                              ],
+                            );
+                          }}>
+                          <DeleteSvg />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    rightOpenValue={-120}
+                    previewRowKey={'0'}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
+                    onRowDidOpen={onRowDidOpen}
+                  />
+                ) : (
+                  <SwipeListView
+                    keyExtractor={(rowData, index) => {
+                      return rowData?.id.toString();
+                    }}
+                    // useSectionList
+                    data={listLibrary}
+                    renderItem={(item, rowMap) => renderContent(item, rowMap)}
+                    swipeGestureEnded={(_data, _rowMap) => {
+                      stopAnimation();
+                    }}
+                    renderHiddenItem={(_data, _rowMap) => (
+                      <View style={styles.rowBack}>
+                        {detail != null ? null : (
+                          <TouchableOpacity
+                            style={[
+                              styles.backRightBtn,
+                              styles.backRightBtnLeft,
+                            ]}
+                            onPress={() => {
+                              setId(_data?.item?.id);
+                              setShowModal(true);
+                            }}>
+                            <LibraryAddSvg />
+                          </TouchableOpacity>
+                        )}
+                        <TouchableOpacity
+                          style={[styles.backRightBtn, styles.backRightCenter]}
+                          onPress={() => {
+                            setSharedStory(_data);
+                            setShowModalShareStory(true);
+                          }}>
+                          <ShareSvg />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[
+                            styles.backRightBtn,
+                            styles.backRightBtnRight,
+                          ]}
+                          onPress={() => {
+                            Alert.alert(
+                              'Are you sure you want to remove this story from your library?',
+                              '',
+                              [
+                                {
+                                  text: 'Yes',
+                                  onPress: () => {
+                                    deleteRowStory(_data);
+                                  },
+                                },
+                                {text: 'Cancel', onPress: () => {}},
+                              ],
+                            );
+                          }}>
+                          <DeleteSvg />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    rightOpenValue={-180}
+                    previewRowKey={'0'}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
+                    onRowDidOpen={onRowDidOpen}
+                  />
+                )}
+              </ScrollView>
+            ) : listLibrary?.length === 0 &&
+              listCollection?.length === 0 &&
+              detail === null &&
+              keyword.length === 0 ? (
+              renderEmpty()
+            ) : (listLibrary?.length === 0 &&
+                listCollection?.length === 0 &&
+                detail === null &&
+                keyword.length > 0) ||
+              (detail != null && listLibraryDetail?.length === 0) ? (
+              renderEmptySearch()
+            ) : (
+              renderEmpty()
+            )}
+          </>
         )}
         <View
           style={{
@@ -1439,10 +1427,8 @@ const LibraryScreen = ({
               Explore more Stories
             </Text>
           </TouchableOpacity>
-         
         </View>
       </View>
-    
     </View>
   );
 };
