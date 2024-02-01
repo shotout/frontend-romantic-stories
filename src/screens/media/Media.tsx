@@ -44,12 +44,14 @@ import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
 import {handleSetStory} from '../../store/defaultState/actions';
 import store from '../../store/configure-store';
 import { ADD_STORY_TO_LIBRARY, AUDIO_PLAYED, eventTracking } from '../../helpers/eventTracking';
+import ImageColors from 'react-native-image-colors';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [play, setPlay] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const {position, duration} = useProgress();
   const [loading, setLoading] = useState(false);
+  const [colors, setColors] = useState(null);
   const [info, setInfo] = useState({});
   const track1 = {
     url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
@@ -104,9 +106,21 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       }
     };
       fetchMedia();
-  }, []); 
-  
- 
+  }, []);
+
+  useEffect(() => {
+    const url = `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`;
+
+    async function getColor() {
+      const result: any = await ImageColors.getColors(url, {
+        fallback: '#E4B099',
+        cache: true,
+        key: 'unique_key',
+      });
+      setColors(result);
+    }
+    getColor();
+  }, [userStory?.category?.cover_audio?.url]);
 
   const playing = async () => {
     try {
@@ -219,7 +233,10 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   };
 
   return (
-    <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
+    // <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
+    <LinearGradient
+      colors={[colors?.secondary || '#E4B099', '#6B7C8C']}
+      style={styles.ctnContent}>
       <ModalShareStory
           storyData={userStory}
           isVisible={showModalShareStory}
