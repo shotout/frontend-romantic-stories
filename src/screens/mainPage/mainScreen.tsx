@@ -1167,7 +1167,7 @@ const MainScreen = ({
   };
 
   const handleReadAds = async (newStory?: any) => {
-    const story = newStory ? newStory : nextStory;
+    const story = newStory?.content_en ? newStory : nextStory;
     setBook(story);
     setTimeout(() => {
       handleSetStory(story);
