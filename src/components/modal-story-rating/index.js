@@ -156,7 +156,7 @@ how did you like your previous story?`}
               <View style={{flexDirection: 'row'}}>
                 <Image
                   source={{
-                    uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                    uri: `${BACKEND_URL}${nextStory?.category?.cover?.url}`,
                   }}
                   resizeMode="contain"
                   style={{

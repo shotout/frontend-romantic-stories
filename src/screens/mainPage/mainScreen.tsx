@@ -701,7 +701,7 @@ const MainScreen = ({
   };
 
   const splitTextIntoArray = (text: string, chunkLength: number) => {
-    const words = text.split(' ');
+    const words = text?.split(' ');
     const resultArray = [];
     let currentChunk = '';
 

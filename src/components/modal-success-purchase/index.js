@@ -89,7 +89,7 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
             <View style={{flexDirection: 'row'}}>
               <Image
                 source={{
-                  uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                  uri: `${BACKEND_URL}${nextStory?.category?.cover?.url}`,
                 }}
                 resizeMode="contain"
                 style={{

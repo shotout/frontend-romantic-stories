@@ -132,26 +132,7 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
     (progressBarWidth - spaceBetweenLevels);
 
   const infoCardRef = useRef(null);
-  // useEffect(() => {
-   
-   
-  //   let lastAchievedIndex = 0;
-
-  //   if (progress > 0 && levels && levels.length > 0) {
-  //     for (let i = 0; i < levels.length; i++) {
-  //       const currentLevel = levels[i];
-
-  //       if (progress >= currentLevel.value) {
-  //         lastAchievedIndex = i;
-  //       } else {
-  //         break;
-  //       }
-  //     }
-  //   }
-
-  //   setLastAchievedLevelIndex(lastAchievedIndex);
-  // }, [animatedScrollOffset, position, progress, levels]);
-
+  
   const calculateProgressPosition = (progress, levels) => {
     const totalWidth = (Dimensions.get('window').width * 1000) / 100;
     let position = 0;
@@ -211,16 +192,12 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
         }
       }
     }
-  
     setLastAchievedLevelIndex(lastAchievedIndex);
-  
-    // Scroll ke posisi baru
     scrollViewRef.current.scrollTo({ x: position, animated: true });
   
   }, [position, progress, levels]);
 
   const InfoCard = ({message}) => {
-    const positions = calculateProgressPosition(progress, levels);
     return (
       <Animated.View style={[styles.infoCardContainer]}>
         <View style={styles.infoCardBubble} />

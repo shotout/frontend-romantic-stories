@@ -145,7 +145,7 @@ function ModalUnlockStory({
               <View style={{flexDirection: 'row'}}>
                 <Image
                   source={{
-                    uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                    uri: `${BACKEND_URL}${nextStory?.category?.cover?.url}`,
                   }}
                   resizeMode="contain"
                   style={{
@@ -251,7 +251,7 @@ function ModalUnlockStory({
                       }}>
                       <Image
                         source={{
-                          uri: `${BACKEND_URL}${itm?.category.cover?.url}`,
+                          uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                         }}
                         resizeMode="contain"
                         style={{
@@ -380,7 +380,7 @@ function ModalUnlockStory({
                   <View style={{flexDirection: 'row'}}>
                     <Image
                       source={{
-                        uri: `${BACKEND_URL}${nextStory?.category.cover?.url}`,
+                        uri: `${BACKEND_URL}${nextStory?.category?.cover?.url}`,
                       }}
                       resizeMode="contain"
                       style={{
