@@ -46,8 +46,9 @@ function ModalEditCharacter({
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      
       const payload = {
-        avatar_male: avatar === null ? progressValue : avatar,
+        avatar_male: avatar === null ? progressValue + 1 : avatar,
         _method: 'PATCH',
       };
       await updateProfile(payload);
@@ -61,17 +62,6 @@ function ModalEditCharacter({
   };
 
   const fetchAva = async value => {
-    console.log(
-      userProfile.gender +
-        '====' +
-        userProfile.avatar_male +
-        '=====' +
-        userProfile.avatar_female,
-    );
-    // alert(userProfile.gender === 'Male'
-    // ? userProfile.avatar_male - 1
-    // :  userProfile.gender === null ? userProfile.avatar_male :  userProfile.avatar_female )
-
     try {
       if (!userProfile.gender) {
         const avaMale = await getListAvatar({gender: 'male'});
@@ -84,10 +74,11 @@ function ModalEditCharacter({
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+
         setProgress(
           userProfile.gender != "Male"
-            ? userProfile.avatar_male - 4
-            : (userProfile.avatar_male > 2 ? userProfile.avatar_male - 4 : userProfile.avatar_male - 1),
+            ? (userProfile.avatar_male > 3 ? userProfile.avatar_male - 4 : userProfile.avatar_male === 0 ? 1 :  userProfile.avatar_male  - 1)
+            : (userProfile.avatar_male > 3 ? userProfile.avatar_male - 4 : userProfile.avatar_male === 0 ? 1 : userProfile.avatar_male - 1),
         );
       }
     } catch (error) {

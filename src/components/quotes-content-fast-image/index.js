@@ -131,8 +131,15 @@ function QuotesContent({
     try {
       const data = await getListAvatarTheme(params);
       if (data?.data) {
-        setMe(data?.data?.me);
-        setPartner(data?.data?.partner);
+        if(userProfile?.data?.gender === 'Female'){
+          setMe(data?.data?.partner);
+          setPartner(data?.data?.me);
+        }else{
+          setMe(data?.data?.me);
+          setPartner(data?.data?.partner);
+        }
+       
+       
       }
     } catch (error) {}
   };
