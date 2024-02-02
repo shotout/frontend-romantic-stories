@@ -60,7 +60,7 @@ const CategoriesScreen = ({
   const [loadingAds, setLoadingAds] = useState(false);
   const [dataStory, setDataStory] = useState([]);
   const [selectCategory, setSelectCategory] = useState(
-    userProfile?.category?.id,
+    userProfile?.category_id,
   );
   const [nextCategory, setNextCategory] = useState();
   const [loading, setLoading] = useState(false);
@@ -114,7 +114,7 @@ const CategoriesScreen = ({
       },
     );
   };
-
+console.log(JSON.stringify(userProfile) + JSON.stringify(dataStory))
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <View
@@ -176,7 +176,9 @@ const CategoriesScreen = ({
             onPress={() => {
               if (isPremium) {
                 setSelectCategory(item.id);
-              } else {
+              } else if(selectCategory === item.id ) {
+                
+              }else{
                 setNextCategory(item?.id);
                 setShowModalUnlock(true);
               }
@@ -243,7 +245,7 @@ const CategoriesScreen = ({
                   <Watch fill={code_color.white} height={16} width={16} />
                   <Text
                     style={{
-                      color: backgroundColor,
+                      color: 'white',
                       fontSize: 10,
                       fontWeight: '700',
                       marginLeft: 2,

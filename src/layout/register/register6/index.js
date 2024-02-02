@@ -38,7 +38,28 @@ import { fixedFontSize, hp, wp } from '../../../utils/screen';
 export default function Register5({gender, setTheme, userStory, handleSetColorTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
 
-  const [colorsBg, setColorsBg] = useState([]);
+  const [colorsBg, setColorsBg] = useState([
+    {
+      id: 1,
+      code: '#3F58DD',
+    },
+    {
+      id: 2,
+      code: '#2C8272',
+    },
+    {
+      id: 3,
+      code: '#942AA7',
+    },
+    {
+      id: 4,
+      code: '#0D648B',
+    },
+    {
+      id: 5,
+      code: '#604A9E',
+    },
+  ]);
   const [menu, setMenu] = useState([
     {
       image: LoveSvg,
@@ -65,8 +86,8 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
 
   const fetchCategory = async () => {
     try {
-      const avatar = await getListTheme();
-      setColorsBg(avatar?.data);
+      // const avatar = await getListTheme();
+      // setColorsBg(avatar?.data);
       setBgThem(code ? code : selectedBgTheme.code);
       handleSetColorTheme(code_color.splash);
     } catch (error) {
@@ -245,11 +266,11 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               <TouchableOpacity
                 onPress={() => {
                   setTheme(item.id);
-                  setColorsDefault(item.theme_color);
-                  handleSetColorTheme(item.theme_color)
+                  setColorsDefault(item.code);
+                  handleSetColorTheme(item.code)
                 }}
                 style={{
-                  backgroundColor: item.theme_color,
+                  backgroundColor: item.code,
                   width: wp(30),
                   height: hp(30),
                   borderRadius: wp(20),
@@ -259,7 +280,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                {colorsDefault === item.theme_color ? <ChecklistSvg /> : null}
+                {colorsDefault === item.code ? <ChecklistSvg /> : null}
               </TouchableOpacity>
             );
           })}

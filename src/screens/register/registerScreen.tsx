@@ -85,7 +85,7 @@ function RegisterScreen({
       'YYYY-MM-DD HH:mm',
     ),
     fcm_token: '',
-    category_id: 0,
+    category_id: 1,
     avatar_male: 2,
     avatar_female: 5,
     theme_id: 1,
@@ -95,7 +95,6 @@ function RegisterScreen({
     notif_enable: 1,
     purchasely_id: '',
   });
-
   useEffect(() => {
     fetchDeviceId();
   }, []);
@@ -177,6 +176,7 @@ function RegisterScreen({
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();
+    console.log(JSON.stringify(values))
     try {
       const payload = {
         name: values?.name,

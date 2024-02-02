@@ -334,7 +334,7 @@ const FontScreen = ({
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => {
-                if (userProfile?.data?.subscription?.plan?.id === 1) {
+                if (userProfile?.data?.subscription?.plan?.id === 1 &&  bg_color != code_color.white) {
                   setModalUnlockBg(true);
                 } else {
                   setBg(code_color.white);
@@ -402,7 +402,7 @@ const FontScreen = ({
 
             <Pressable
               onPress={() => {
-                if (userProfile?.data?.subscription?.plan?.id === 1) {
+                if (userProfile?.data?.subscription?.plan?.id === 1 &&  bg_color != code_color.blackDark) {
                   setModalUnlockBg(true);
                 } else {
                   setBg(code_color.blackDark);
@@ -564,9 +564,11 @@ const FontScreen = ({
                 key={index}
                 onPress={() => {
                   setNextFont(item);
-                  if (userProfile?.data?.subscription?.plan?.id != 1) {
+                  if (userProfile?.data?.subscription?.plan?.id != 1 && fontSelect.name === item.name) {
                     handleSetFontFamily(item.value);
-                  } else {
+                  } else  if(userProfile?.data?.subscription?.plan?.id === 1 && fontSelect.name === item.name){
+                    
+                  }else{
                     setModalUnlockFont(true);
                   }
                 }}

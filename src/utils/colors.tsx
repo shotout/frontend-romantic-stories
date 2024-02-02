@@ -1,5 +1,5 @@
 export let code_color = {
-  splash: '#5873FF',
+  splash: '#3F58DD',
   yellow: '#FFD12F',
   headerBlack: '#1A1D30',
   white: '#FFFFFF',
