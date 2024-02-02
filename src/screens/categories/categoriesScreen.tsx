@@ -114,7 +114,7 @@ const CategoriesScreen = ({
       },
     );
   };
-console.log(JSON.stringify(userProfile) + JSON.stringify(dataStory))
+  
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <View
@@ -177,7 +177,7 @@ console.log(JSON.stringify(userProfile) + JSON.stringify(dataStory))
               if (isPremium) {
                 setSelectCategory(item.id);
               } else if(selectCategory === item.id ) {
-                
+
               }else{
                 setNextCategory(item?.id);
                 setShowModalUnlock(true);

@@ -18,7 +18,8 @@ LogBox.ignoreAllLogs();
 
 const App = () => {
   const [appState, setAppState] = useState(AppState.currentState);
-
+  const [paymentCounter, setPaymentCounter] = useState(0);
+  const [paymentInProgress, setPaymentInProgress] = useState(false);
   // KILLED APP
   async function bootstrap() {
     const detail = await notifee.getInitialNotification();
@@ -58,19 +59,24 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // BACKGROUND APP
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (appState.match(/background/) && nextAppState === 'active') {
-        notifee.onForegroundEvent(async ({type, detail}) => {
-          if (type === EventType.ACTION_PRESS || type === EventType.PRESS) {
+        notifee.onForegroundEvent(async ({ type, detail }) => {
+          if (
+            (type === EventType.ACTION_PRESS || type === EventType.PRESS) &&
+            !paymentInProgress // Check if payment is not already in progress
+          ) {
             if (detail.notification.data?.type === 'paywall') {
-              setTimeout(() => {
-                // handleNativePayment(detail.notification.data?.placement);
+              setPaymentCounter((prevCounter) => prevCounter + 1);
+              if (paymentCounter === 0) {
+                
+                setPaymentInProgress(true);
                 handlePayment(detail.notification.data?.placement);
-              }, 100);
-              eventTracking(OPEN_OFFER_NOTIFICATION);
+               
+                eventTracking(OPEN_OFFER_NOTIFICATION);
+              }
             } else if (detail.notification.data?.type === 'story') {
-              navigate('Main', {isFromNotif: true});
+              navigate('Main', { isFromNotif: true });
             }
           }
         });
@@ -79,9 +85,10 @@ const App = () => {
     });
 
     return () => {
+     
       subscription.remove();
     };
-  }, [appState]);
+  }, [appState, paymentInProgress, paymentCounter]);
 
   useEffect(() => {
     if (appState === 'active') {

@@ -33,7 +33,7 @@ export const handlePayment = async (vendorId, cb) =>
       });
       console.log('Purchasely result:', JSON.stringify(res));
       const user = store.getState().defaultState.userProfile;
-      console.log('Check user data purchase:', user);
+      // console.log('Check user data purchase:', user);
       switch (res.result) {
         case ProductResult.PRODUCT_RESULT_PURCHASED:
           // const payload = {
