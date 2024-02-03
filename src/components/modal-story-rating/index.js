@@ -22,7 +22,7 @@ import {
   imgRating,
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
-import Reading from '../../assets/icons/reading.jsx';
+import CloseIcon from '../../assets/icons/close';
 import {
   addNewCollection,
   submitRating,
@@ -36,9 +36,6 @@ import {Path, Svg} from 'react-native-svg';
 
 function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
   const [rating, setRating] = useState(0);
-  const handleClose = () => {
-    onClose();
-  };
 
   const handleSubmit = async () => {
     const data = {
@@ -51,10 +48,9 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
         setRating(0);
       }
     } catch (error) {
-      console.log('error rating', error)
+      console.log('error rating', error);
       setRating(0);
       handleSuccess();
-    
     }
   };
   const handleRating = rated => {
@@ -104,7 +100,7 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
 
     return <HeartFull fill={color} width={size} height={size} />;
   };
-  
+
   const renderPremium = () => {
     return (
       <View
@@ -119,6 +115,11 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
             width: '90%',
             borderRadius: moderateScale(24),
           }}>
+          <TouchableOpacity
+            onPress={handleSuccess}
+            style={{marginLeft: 'auto', paddingTop: 12, paddingRight: 12}}>
+            <CloseIcon height={18} width={18} fill={code_color.grey} />
+          </TouchableOpacity>
           <Image
             source={imgRating}
             style={{
@@ -220,7 +221,7 @@ how did you like your previous story?`}
                 marginBottom: moderateScale(20),
               }}>
               <TouchableOpacity
-              disabled={rating === 0 ? true : false}
+                disabled={rating === 0 ? true : false}
                 onPress={() => handleSubmit()}
                 style={{
                   backgroundColor: code_color.yellow,
@@ -230,7 +231,7 @@ how did you like your previous story?`}
                   borderRadius: 8,
                   width: moderateScale(280),
                   flex: 0,
-                  opacity: rating === 0 ? 0.5 : 1
+                  opacity: rating === 0 ? 0.5 : 1,
                 }}>
                 <Text
                   style={{
@@ -252,7 +253,7 @@ how did you like your previous story?`}
       visible={isVisible}
       animationType="fade"
       transparent
-      onDismiss={handleClose}>
+      onDismiss={onClose}>
       <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         {renderPremium()}
       </View>

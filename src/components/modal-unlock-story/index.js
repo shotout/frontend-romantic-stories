@@ -60,7 +60,7 @@ function ModalUnlockStory({
             }}>
             <Pressable
               onPress={() => handleClose()}
-              style={{alignItems: 'flex-end', marginTop: 20}}>
+              style={{alignItems: 'flex-end', paddingTop: 20}}>
               <CloseSvg width={15} height={15} fill={code_color.black} />
             </Pressable>
             <View style={{flexDirection: 'row'}}>

@@ -144,6 +144,7 @@ const LibraryScreen = ({
   const [price, setPrice] = useState('');
   const activeStatus = useRef(false);
   const [loadingList, setLoadingList] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
   const stopAnimation = () => {
     translateX.stopAnimation(value => {
@@ -249,7 +250,7 @@ const LibraryScreen = ({
   const renderContent = (item, rowMap) => {
     if (detail != null) {
       return (
-        <View>
+        <Pressable onPress={() => handleReadDetail(item?.item?.story)}>
           {listLibraryDetail.length > 0 ? (
             <View
               // onPress={() => closeRow(rowMap, item.item.id)}
@@ -356,12 +357,12 @@ const LibraryScreen = ({
           ) : (
             renderEmptySearch()
           )}
-        </View>
+        </Pressable>
       );
     } else {
       return (
-        <View
-          // onPress={() => closeRow(rowMap, item.item.id)}
+        <Pressable
+          onPress={() => handleRead(item)}
           style={{
             paddingLeft: 10,
             paddingBottom: 10,
@@ -459,14 +460,14 @@ const LibraryScreen = ({
             }}>
             <DotSvg />
           </TouchableOpacity>
-        </View>
+        </Pressable>
       );
     }
   };
   const renderContentSearch = (item, rowMap) => {
     if (detail != null) {
       return (
-        <View>
+        <Pressable onPress={() => handleRead(item)}>
           <Animated.View
             style={{
               transform: [{translateX: translateX}],
@@ -565,11 +566,11 @@ const LibraryScreen = ({
               </TouchableOpacity>
             </View>
           </Animated.View>
-        </View>
+        </Pressable>
       );
     } else {
       return (
-        <View>
+        <Pressable onPress={() => handleRead(item)}>
           <Animated.View
             style={{
               transform: [{translateX: translateX}],
@@ -668,7 +669,7 @@ const LibraryScreen = ({
               </TouchableOpacity>
             </View>
           </Animated.View>
-        </View>
+        </Pressable>
       );
     }
   };
@@ -890,7 +891,7 @@ const LibraryScreen = ({
     </View>
   );
   const renderEmptySearch = () => (
-    <ScrollView style={{flex: 1}}>
+    <ScrollView style={{flex: 1}} scrollEnabled={scrollEnabled}>
       <View style={{alignItems: 'center'}}>
         <Image
           source={imgSearchNull}
@@ -934,6 +935,8 @@ const LibraryScreen = ({
         keyExtractor={(rowData, index) => {
           return rowData?.id.toString();
         }}
+        onTouchStart={() => setScrollEnabled(false)}
+        onTouchEnd={() => setScrollEnabled(true)}
         data={data?.most_share}
         renderItem={(item, rowMap) => renderContentSearch(item, rowMap)}
         renderHiddenItem={(_data, _rowMap) => (
@@ -1194,11 +1197,13 @@ const LibraryScreen = ({
         ) : (
           <>
             {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-              <ScrollView>
+              <ScrollView scrollEnabled={scrollEnabled}>
                 {detail != null ? (
                   renderContentCollectionDetail()
                 ) : (
                   <SwipeListView
+                    onTouchStart={() => setScrollEnabled(false)}
+                    onTouchEnd={() => setScrollEnabled(true)}
                     data={listCollection}
                     renderItem={item => renderContentCollection(item)}
                     renderHiddenItem={(_data, _rowMap) => (
@@ -1247,6 +1252,8 @@ const LibraryScreen = ({
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
+                    onTouchStart={() => setScrollEnabled(false)}
+                    onTouchEnd={() => setScrollEnabled(true)}
                     data={listLibraryDetail}
                     renderItem={(item, rowMap) => renderContent(item, rowMap)}
                     renderHiddenItem={(_data, _rowMap) => (
@@ -1307,6 +1314,8 @@ const LibraryScreen = ({
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
+                    onTouchStart={() => setScrollEnabled(false)}
+                    onTouchEnd={() => setScrollEnabled(true)}
                     // useSectionList
                     data={listLibrary}
                     renderItem={(item, rowMap) => renderContent(item, rowMap)}

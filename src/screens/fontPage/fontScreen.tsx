@@ -573,10 +573,9 @@ const FontScreen = ({
                   }
                 }}
                 style={{
-                  backgroundColor:
-                    fontSelect.name === item.name
-                      ? code_color.white
-                      : undefined,
+                  backgroundColor: fontSelect.name?.includes(item.name)
+                    ? code_color.white
+                    : undefined,
                   borderColor: code_color.white,
                   borderWidth: 1,
                   alignItems: 'center',
@@ -591,15 +590,14 @@ const FontScreen = ({
                     paddingHorizontal: 20,
                     paddingVertical: 0,
                     fontFamily: item.value,
-                    color:
-                      fontSelect.name === item.name
-                        ? code_color.blackDark
-                        : 'white',
+                    color: fontSelect.name?.includes(item.name)
+                      ? code_color.blackDark
+                      : 'white',
                   }}>
                   {item.name}
                 </Text>
                 {userProfile?.data?.subscription?.plan?.id === 1 &&
-                fontSelect.name !== item.name ? (
+                !fontSelect.name?.includes(item.name) ? (
                   <>
                     <View
                       style={{
