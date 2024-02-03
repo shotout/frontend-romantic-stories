@@ -183,7 +183,6 @@ const MainScreen = ({
   const [textChunks, setTextChunks] = useState([]);
 
   useEffect(() => {
-    setRating(true);
     async function getDataStory() {
       const res = await getStoryList();
       handleNextStory(res.data);

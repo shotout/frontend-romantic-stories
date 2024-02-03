@@ -182,7 +182,7 @@ function QuotesContent({
       }, 200);
     }, 200);
     setSize(fontSize);
-  }, [pageActive, fontColor, isActive, fontSize]);
+  }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
   const renderSelect = useCallback(() => {
     if(color){
       return(

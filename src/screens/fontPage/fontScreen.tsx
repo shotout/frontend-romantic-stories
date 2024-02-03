@@ -54,7 +54,7 @@ import {
   loadRewardedFont,
 } from '../../helpers/loadReward';
 import LoadingFullScreen from '../../components/loading-fullscreen';
-import { wp } from '../../utils/screen';
+import {wp} from '../../utils/screen';
 const adUnitId = getRewardedFontThemeID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -117,6 +117,8 @@ const FontScreen = ({
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockTheme, setModalUnlockTheme] = useState(false);
   const [isFinishAds, setIsFinishAds] = useState(false);
+  const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
+  const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
 
   const setBg = value => {
     set_bgColor(value);
@@ -124,6 +126,14 @@ const FontScreen = ({
     handleSetColor(
       value === code_color.white ? code_color.blackDark : code_color.white,
     );
+  };
+
+  const isSameFont = (name: string) => {
+    console.log('okeoke', fontSelect.name?.toUpperCase(), name?.toUpperCase());
+    return fontSelect.name
+      ?.toUpperCase()
+      ?.replace(/ /g, '')
+      .includes(name?.toUpperCase()?.replace(/ /g, ''));
   };
 
   const handleFont = value => {
@@ -334,7 +344,10 @@ const FontScreen = ({
           <View style={{flexDirection: 'row', marginVertical: 5}}>
             <Pressable
               onPress={() => {
-                if (userProfile?.data?.subscription?.plan?.id === 1 &&  bg_color != code_color.white) {
+                if (
+                  userProfile?.data?.subscription?.plan?.id === 1 &&
+                  bg_color != code_color.white
+                ) {
                   setModalUnlockBg(true);
                 } else {
                   setBg(code_color.white);
@@ -402,7 +415,10 @@ const FontScreen = ({
 
             <Pressable
               onPress={() => {
-                if (userProfile?.data?.subscription?.plan?.id === 1 &&  bg_color != code_color.blackDark) {
+                if (
+                  userProfile?.data?.subscription?.plan?.id === 1 &&
+                  bg_color != code_color.blackDark
+                ) {
                   setModalUnlockBg(true);
                 } else {
                   setBg(code_color.blackDark);
@@ -564,16 +580,16 @@ const FontScreen = ({
                 key={index}
                 onPress={() => {
                   setNextFont(item);
-                  if (userProfile?.data?.subscription?.plan?.id != 1 && fontSelect.name === item.name) {
+                  if (isPremiumStory || isPremiumAudio) {
                     handleSetFontFamily(item.value);
-                  } else  if(userProfile?.data?.subscription?.plan?.id === 1 && fontSelect.name === item.name){
-                    
-                  }else{
+                    setSelectFont(item);
+                    handleSetFontFamily(item.value);
+                  } else if (!isSameFont(item.name)) {
                     setModalUnlockFont(true);
                   }
                 }}
                 style={{
-                  backgroundColor: fontSelect.name?.includes(item.name)
+                  backgroundColor: isSameFont(item.name)
                     ? code_color.white
                     : undefined,
                   borderColor: code_color.white,
@@ -590,14 +606,14 @@ const FontScreen = ({
                     paddingHorizontal: 20,
                     paddingVertical: 0,
                     fontFamily: item.value,
-                    color: fontSelect.name?.includes(item.name)
+                    color: isSameFont(item.name)
                       ? code_color.blackDark
                       : 'white',
                   }}>
                   {item.name}
                 </Text>
                 {userProfile?.data?.subscription?.plan?.id === 1 &&
-                !fontSelect.name?.includes(item.name) ? (
+                !isSameFont(item.name) ? (
                   <>
                     <View
                       style={{
