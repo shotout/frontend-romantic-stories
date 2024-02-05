@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "appcenterLogin": "appcenter login --token dffc8c461e1d9baa45cbd60964f19d7331745e11",
-    "codepush:ios": "`appcenter codepush release -a sendi-stebasia.com/romanticstory  -d Production --target-binary-version `1.2` --mandatory true`",
+    "codepush:ios": "`appcenter codepush release-react -a sendi-stebasia.com/romanticstory -d Production --target-binary-version 1.2 --mandatory true`",
     "ios": "react-native run-ios --simulator \"iPhone 15\"",
     "lint": "eslint .",
     "start": "react-native start --reset-cache",
