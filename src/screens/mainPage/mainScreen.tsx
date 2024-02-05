@@ -1318,7 +1318,7 @@ const MainScreen = ({
             backgroundColor: backgroundColor,
             flex: 1,
             // paddingHorizontal: wp(20),
-            // marginTop: wp(20),
+            marginTop: 20,
           }}>
           <StatusBar
             barStyle={'dark-content'}
@@ -1520,6 +1520,7 @@ const MainScreen = ({
               flex: 0,
               alignItems: 'center',
               marginHorizontal: 20,
+              marginTop: 20,
             }}>
             <View style={{flex: 1}}>
               <Text
