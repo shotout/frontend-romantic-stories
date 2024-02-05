@@ -290,6 +290,9 @@ function MyTabs(props) {
   const bottomBarContext = React.useContext(BottomBarContext);
   const {isBottomBarVisible, setBottomBarVisibility} = bottomBarContext;
   const [visibleModal, setVisibleModal] = React.useState(false);
+  const [isSaved, setIsSaved] = useState(
+    props.userStory?.is_collection ? true : false,
+  );
   const [title, setTitle] = React.useState('Save');
   const [titleBottom, setTitleBottom] = React.useState('SAVE');
   const [imgHeartsTranslateY] = useState(new Animated.Value(0));
@@ -341,6 +344,7 @@ function MyTabs(props) {
   };
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
+      setIsSaved(true);
       const response = await addStory(props.userStory?.id);
       if (response.status === 'success') {
         setVisibleModal(true);
@@ -357,8 +361,8 @@ function MyTabs(props) {
           store.dispatch(handleSetStory(resp.data));
         } catch (error) {}
       }
-     
     } else {
+      setIsSaved(false);
       const data = await deleteMyStory(props.userStory?.id);
       setTitle('save');
       if (data.status === 'success') {
@@ -390,8 +394,6 @@ function MyTabs(props) {
             height,
             backgroundColor: 'white',
             display: isBottomBarVisible === 'Main' ? 'flex' : 'none',
-           
-          
           },
         }}>
         <Tab.Screen
@@ -464,14 +466,14 @@ function MyTabs(props) {
                   />
                 </View>
               ) : null} */}
-                {props.userStory?.is_collection === null ? (
-                  <LoveOutline
+                {isSaved ? (
+                  <LoveSvg
                     width={wp(20)}
                     height={hp(20)}
                     fill={props?.colorTheme}
                   />
                 ) : (
-                  <LoveSvg
+                  <LoveOutline
                     width={wp(20)}
                     height={hp(20)}
                     fill={props?.colorTheme}
@@ -484,7 +486,7 @@ function MyTabs(props) {
                     fontSize: fixedFontSize(11),
                     marginTop: wp(2),
                   }}>
-                  {props.userStory?.is_collection === null ? 'SAVE' : 'SAVED'}
+                  {isSaved ? 'SAVED' : 'SAVE'}
                 </Text>
               </TouchableOpacity>
             ),
