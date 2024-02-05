@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CodePushDeploymentKey</key>
+	<string>344cN4pw5ua5vUL-oeoa4pQ1y6GOQaZR22Dlw</string>
 	<key>CFBundleDisplayName</key>
 	<string>Erotales</string>
 	<key>CFBundleExecutable</key>
