@@ -95,6 +95,7 @@ export const eventTracking = async (id, message) => {
       adjustEvent.setCallbackId(message);
     }
     Adjust.trackEvent(adjustEvent);
+    AppEventsLogger.logEvent(getScreenName(id))
     await analytics().logEvent(getScreenName(id), {
       id,
     });
