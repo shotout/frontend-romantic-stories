@@ -40,6 +40,7 @@ import { SENTRY_DSN } from './src/shared/static';
 import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
 import { handleSetStory } from './src/store/defaultState/actions';
 import store from './src/store/configure-store';
+import { Settings } from "react-native-fbsdk-next";
 import { AppOpenAd } from 'react-native-google-mobile-ads';
 import { getAppOpenID } from './src/shared/adsId';
 import { reloadUserProfile } from './src/utils/user';
@@ -73,7 +74,8 @@ function App({ userProfile }) {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
+  Settings.initializeSDK();
+  Settings.setAppID("657475116285203");
   useEffect(() => {
     const handleAppInstalled = async () => {
       const res = await AsyncStorage.getItem('isAppInstalled');

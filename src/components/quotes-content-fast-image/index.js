@@ -55,7 +55,7 @@ function QuotesContent({
   isRippleAnimate,
   userProfile,
   fontColor,
-  colorText
+  colorText,
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -131,15 +131,13 @@ function QuotesContent({
     try {
       const data = await getListAvatarTheme(params);
       if (data?.data) {
-        if(userProfile?.data?.gender === 'Female'){
+        if (userProfile?.data?.gender === 'Female') {
           setMe(data?.data?.partner);
           setPartner(data?.data?.me);
-        }else{
+        } else {
           setMe(data?.data?.me);
           setPartner(data?.data?.partner);
         }
-       
-       
       }
     } catch (error) {}
   };
@@ -176,30 +174,31 @@ function QuotesContent({
 
   useEffect(() => {
     setTimeout(() => {
-      setColor(true)
+      setColor(true);
       setTimeout(() => {
-        setColor(false)
+        setColor(false);
       }, 200);
     }, 200);
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
   const renderSelect = useCallback(() => {
-    if(color){
-      return(
+    if (color) {
+      return (
         <Text
-        style={[
-          styles.ctnQuotes,
-          {
-            // marginBottom: pageActive != 0 ? -100 : 0,
-            fontFamily: fontFamily,
-            fontSize: Number(size),
-            color: fontColor,
-          },
-        ]}>
-        {item}
-      </Text>
-      )
-    }else{
+          style={[
+            styles.ctnQuotes,
+            {
+              // marginBottom: pageActive != 0 ? -100 : 0,
+              fontFamily: fontFamily,
+              fontSize: Number(size),
+              color: fontColor,
+              marginTop: 1.5
+            },
+          ]}>
+          {item}
+        </Text>
+      );
+    } else {
       return (
         <SelectableText
           menuItems={['Share']}
@@ -239,8 +238,6 @@ function QuotesContent({
         />
       );
     }
-     
-    
   }, [color, isActive, fontColor]);
   return (
     <SafeAreaView
@@ -336,9 +333,9 @@ function QuotesContent({
                   ]}>
                   {item}
                 </Text>
-              ) : 
+              ) : (
                 renderSelect()
-              }
+              )}
             </View>
           </View>
           {(type === 'main' && pageActive === 0) ||
@@ -373,7 +370,10 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(-100),
-                  height: me ===  '/assets/images/avatars/2/think.png' ? hp(200) : hp(150),
+                  height:
+                    me === '/assets/images/avatars/2/think.png'
+                      ? hp(200)
+                      : hp(150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,

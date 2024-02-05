@@ -725,12 +725,13 @@ const MainScreen = ({
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
   useEffect(() => {
+    console.log('INI FONT'+fontSize)
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      Dimensions.get('window').height <= 667 ? 630 : 800,
+      Dimensions.get('window').height <= 667 ? (fontSize === 14 ? 750 : 630) :   (fontSize === 14 ? 1000 : 800),
     );
     setTextChunks(newChunks);
-  }, [dataBook, Dimensions.get('window').height]);
+  }, [dataBook, Dimensions.get('window').height, fontSize]);
   const renderFactItem = ({item, index, title, category, colorText, type}) => (
     <>
       <QuotesContent

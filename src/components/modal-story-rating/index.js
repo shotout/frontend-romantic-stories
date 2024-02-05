@@ -224,7 +224,7 @@ how did you like your previous story?`}
                 disabled={rating === 0 ? true : false}
                 onPress={() => handleSubmit()}
                 style={{
-                  backgroundColor: code_color.yellow,
+                  backgroundColor: rating === 0 ? code_color.grey : code_color.yellow,
                   marginTop: moderateScale(20),
                   padding: moderateScale(12),
                   alignItems: 'center',
@@ -235,7 +235,7 @@ how did you like your previous story?`}
                 }}>
                 <Text
                   style={{
-                    color: code_color.black,
+                    color: rating === 0 ? code_color.white : code_color.black,
                     fontWeight: 600,
                     fontSize: moderateScale(14),
                   }}>
