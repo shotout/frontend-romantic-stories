@@ -35,6 +35,7 @@ function ModalStoryPreview({
   handleRead,
   handleLater,
   dataStory,
+  readLater = true,
 }) {
   const handleClose = () => {
     onClose();
@@ -62,7 +63,11 @@ function ModalStoryPreview({
               borderRadius: moderateScale(24),
             }}>
             <TouchableOpacity
-              style={{marginLeft: 'auto', right: 14, top: 14}}
+              style={{
+                marginLeft: 'auto',
+                paddingHorizontal: 14,
+                paddingTop: 14,
+              }}
               onPress={handleClose}>
               <Close fill="#DDDEE3" height={18} width={18} />
             </TouchableOpacity>
@@ -73,7 +78,6 @@ function ModalStoryPreview({
               }}>
               <View
                 style={{
-                  marginTop: moderateScale(10),
                   width: '90%',
                   paddingBottom: moderateScale(12),
                   borderBottomColor: '#DDDEE3',
@@ -141,33 +145,35 @@ function ModalStoryPreview({
                   Start reading
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleLater}
-                style={{
-                  backgroundColor: '#ED5267',
-                  padding: moderateScale(4),
-                  alignItems: 'center',
-                  borderRadius: 8,
-                  width: '90%',
-                  marginBottom: moderateScale(20),
-                }}>
-                <Text
+              {readLater && (
+                <TouchableOpacity
+                  onPress={handleLater}
                   style={{
-                    color: code_color.white,
-                    fontWeight: 500,
-                    fontSize: moderateScale(14),
+                    backgroundColor: '#ED5267',
+                    padding: moderateScale(4),
+                    alignItems: 'center',
+                    borderRadius: 8,
+                    width: '90%',
+                    marginBottom: moderateScale(20),
                   }}>
-                  Read later
-                </Text>
-                <Text
-                  style={{
-                    color: code_color.white,
-                    fontWeight: 400,
-                    fontSize: moderateScale(12),
-                  }}>
-                  You can proceed reading your current story
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: code_color.white,
+                      fontWeight: 500,
+                      fontSize: moderateScale(14),
+                    }}>
+                    Read later
+                  </Text>
+                  <Text
+                    style={{
+                      color: code_color.white,
+                      fontWeight: 400,
+                      fontSize: moderateScale(12),
+                    }}>
+                    You can proceed reading your current story
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>

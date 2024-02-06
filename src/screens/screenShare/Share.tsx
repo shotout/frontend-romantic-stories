@@ -54,18 +54,6 @@ import {
   imgSticker4,
   imgSticker5,
   imgFont,
-  imgStep1,
-  imgBgXp,
-  imgStep6,
-  imgStep7,
-  imgStep8,
-  imgSelectGift2,
-  imgQuote,
-  imgQuote2,
-  imgShare,
-  logo,
-  xp,
-  xpAndLevel,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';

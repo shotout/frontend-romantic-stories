@@ -10,6 +10,7 @@ function SvgComponent(props) {
       height={height}
       viewBox="0 0 10 16"
       fill="none"
+      style={style}
       {...props}>
       <Path
         fillRule="evenodd"
