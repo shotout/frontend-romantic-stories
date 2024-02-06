@@ -932,11 +932,10 @@ const LibraryScreen = ({
       </Text>
 
       <SwipeListView
+        nestedScrollEnabled
         keyExtractor={(rowData, index) => {
           return rowData?.id.toString();
         }}
-        onTouchStart={() => setScrollEnabled(false)}
-        onTouchEnd={() => setScrollEnabled(true)}
         data={data?.most_share}
         renderItem={(item, rowMap) => renderContentSearch(item, rowMap)}
         renderHiddenItem={(_data, _rowMap) => (
@@ -1202,8 +1201,8 @@ const LibraryScreen = ({
                   renderContentCollectionDetail()
                 ) : (
                   <SwipeListView
-                    onTouchStart={() => setScrollEnabled(false)}
-                    onTouchEnd={() => setScrollEnabled(true)}
+                  nestedScrollEnabled
+                  
                     data={listCollection}
                     renderItem={item => renderContentCollection(item)}
                     renderHiddenItem={(_data, _rowMap) => (
@@ -1249,11 +1248,10 @@ const LibraryScreen = ({
                 )}
                 {detail != null ? (
                   <SwipeListView
+                  nestedScrollEnabled
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
-                    onTouchStart={() => setScrollEnabled(false)}
-                    onTouchEnd={() => setScrollEnabled(true)}
                     data={listLibraryDetail}
                     renderItem={(item, rowMap) => renderContent(item, rowMap)}
                     renderHiddenItem={(_data, _rowMap) => (
@@ -1314,8 +1312,7 @@ const LibraryScreen = ({
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
-                    onTouchStart={() => setScrollEnabled(false)}
-                    onTouchEnd={() => setScrollEnabled(true)}
+                    nestedScrollEnabled
                     // useSectionList
                     data={listLibrary}
                     renderItem={(item, rowMap) => renderContent(item, rowMap)}
