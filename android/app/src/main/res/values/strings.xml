@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Shortstory</string>
-     <string name="facebook_app_id">637815961525510</string>
+    <string name="facebook_app_id">637815961525510</string>
     <string name="facebook_client_token">7f9a55259a5d5e7521c2c9f63b997ae8</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">R2w3sa-iljnhbFpz7xFvuqBG-n9XD2qNKk9al</string>
 </resources>
