@@ -737,9 +737,8 @@ const LibraryScreen = ({
             borderBottomWidth: 1,
             paddingVertical: 10,
           }}>
-          <Image
-            source={backLeft}
-            style={{width: 10, height: 10, marginRight: 10}}
+          <BackRightSvg
+            style={{marginRight: 8, transform: [{rotate: '180deg'}]}}
           />
           <LibrarySvg fill={'white'} width={30} height={30} />
           <View

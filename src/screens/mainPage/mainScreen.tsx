@@ -281,6 +281,7 @@ const MainScreen = ({
     fetchFromParam();
   }, [route?.params]);
 
+  // fetch premiun
   const fecthNextStoryPremium = async (id: any) => {
     const resp = await getStoryDetail(id);
     const data2 = await getExploreStory();
@@ -1192,6 +1193,13 @@ const MainScreen = ({
     }
   }, [dataBook, textChunks]);
 
+  const userFinishedRead = readStory?.some(
+    (entry: any) =>
+      entry?.id === dataBook.id &&
+      (entry?.page === textChunks?.length - 1 ||
+        entry?.page > textChunks?.length - 1),
+  );
+
   const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
@@ -1434,7 +1442,7 @@ const MainScreen = ({
             data={undefined}
             restart={undefined}
             edit={undefined}
-            readLater={readLater}
+            readLater={!userFinishedRead}
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
             handleRead={(data: any) => {
               handleReadAds(data);
@@ -1507,6 +1515,7 @@ const MainScreen = ({
             isVisible={showPreview}
             onClose={() => setShowPreview(false)}
             handleRead={handleReadAds}
+            readLater={!userFinishedRead}
             handleLater={async () => {
               await addStory(nextStory.id);
               setShowPreview(false);
