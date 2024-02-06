@@ -37,7 +37,7 @@ const OnboardScreen = (props: any) => {
           {
             // Options
             updateDialog: true,  // Menampilkan dialog pembaruan
-            installMode: CodePush.InstallMode.ON_NEXT_RESUME,  // Mode instalasi
+            installMode: CodePush.InstallMode.IMMEDIATE,  // Mode instalasi
           },
           (status) => {
             switch (status) {
@@ -107,8 +107,7 @@ const OnboardScreen = (props: any) => {
       />
 
       <Button
-        // title={i18n.t('getStarted')}
-        title={'codepush new bgt'}
+        title={i18n.t('getStarted')}
         onPress={() => navigate('Register')}
       />
     </ImageBackground>

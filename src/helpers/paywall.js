@@ -46,7 +46,7 @@ export const handlePayment = async (vendorId, cb) =>
           //       : 1,
           // };
           // await updateProfile(payload);
-          reloadUserProfile();
+          reloadUserProfile('purchase');
           console.log('FINISH PURCHASED:', res.result);
           eventTracking(res?.plan?.vendorId === 'ErotalesUnlimitedStoriesandAudioAnnual' ? SUBSCRIPTION_STORIES_AUDIO : SUBSCRIPTION_STORIES_AUDIO)
           resolve({success: true, result: res});
