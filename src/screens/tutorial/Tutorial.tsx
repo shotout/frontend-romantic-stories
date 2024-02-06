@@ -27,17 +27,13 @@ import styles from './styles';
 import {code_color} from '../../utils/colors';
 import {
   audioScreen,
-  bgGetUnlimit,
   imgBgAvaTips,
   imgBgTips,
-  imgHearts,
   imgLoveLeft,
   imgLoveRight,
-  imgQuote,
   imgQuoteNew,
   imgSelect,
   tips_step1,
-  tips_step3,
   tips_step4,
   tips_step5,
   xpAndLevel,

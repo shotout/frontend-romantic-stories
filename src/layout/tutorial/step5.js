@@ -6,7 +6,6 @@ import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import quoteAnimate from '../../assets/lottie/quote.json';
-import { imgSelectGift } from '../../assets/images';
 
 const Step5 = ({handleNext, handlePrev}) => {
   // return <></>;
