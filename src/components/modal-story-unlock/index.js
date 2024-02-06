@@ -74,6 +74,7 @@ function ModalUnlockStory({
           isVisible={showPreview}
           onClose={() => setShowPreview(false)}
           dataStory={dataStory}
+          readLater={readLater}
           handleRead={() => handleRead(dataStory)}
           handleLater={() => handleLater(dataStory)}
         />
