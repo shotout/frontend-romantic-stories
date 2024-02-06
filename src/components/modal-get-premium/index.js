@@ -86,11 +86,12 @@ function ModalGetPremium({isVisible, onClose, onGotIt, userProfile}) {
                   flexDirection: 'row',
                   marginVertical: 5,
                   marginHorizontal: 10,
+                  alignItems: 'center'
                 }}>
                 <View
                   style={{
                     backgroundColor: item.check
-                      ? code_color.greenDark
+                      ? code_color.green
                       : code_color.red,
                     borderRadius: 30,
                     width: 20,
@@ -110,9 +111,10 @@ function ModalGetPremium({isVisible, onClose, onGotIt, userProfile}) {
                     style={{fontWeight: 'bold', fontSize: 15}}>
                     {item?.title}
                   </Text>
+                  {item?.description ? 
                   <Text style={{fontSize: 12}}>
                     {item?.description}
-                  </Text>
+                  </Text> : null }
                 </View>
               </View>
             ))}
