@@ -238,7 +238,7 @@ function QuotesContent({
         />
       );
     }
-  }, [color, isActive, fontColor]);
+  }, [color, isActive, fontColor, item]);
   return (
     <SafeAreaView
       style={{

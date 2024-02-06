@@ -81,7 +81,19 @@ function ModalNewStory({
     }
     getProductPrice();
   }, []);
+  const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
+    const touchX = e.nativeEvent.locationX;
+    
+    const screenWidth = Dimensions.get('window').width / 1.5;
+    const screenWidthLeft = Dimensions.get('window').width / 2;
+ 
 
+    if (touchX > screenWidth ) {
+      handleClose()
+    }else if(touchX < 30){
+     handleClose()
+    }
+  }
   return (
     <Modal
       visible={isVisible}
@@ -89,6 +101,8 @@ function ModalNewStory({
       transparent
       onDismiss={handleClose}>
       <View
+      //  onTouchStart={touchEndStory}
+      //  pointerEvents="box-only"
         style={{
           flex: 1,
           backgroundColor: 'rgba(0,0,0,0.5)',
@@ -101,6 +115,7 @@ function ModalNewStory({
             alignItems: 'center',
           }}>
           <ScrollView
+           onTouchStart={touchEndStory}
             style={{
               width: sizing.getDimensionWidth(1),
               flex: 1,
@@ -158,11 +173,11 @@ function ModalNewStory({
                 top: wp(140),
               }}
             />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{marginLeft: 'auto', right: 14, top: 50, position: 'absolute'}}
               onPress={handleClose}>
               <Close fill="white" height={18} width={18} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <View
               style={{
                 backgroundColor: code_color.white,
@@ -297,13 +312,19 @@ function ModalNewStory({
                     <ActivityIndicator color={code_color.blueDark} size={14} />
                   ) : (
                     <>
-                      <WatchIcon
-                        style={{position: 'absolute', top: '70%', left: '22%'}}
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <WatchIcon
+                        style={{position: 'absolute', top: -2, bottom:0, left: -100, right: 100}}
                       />
+                    </View>
+                     
+                      <View style={{alignItems: 'center', justifyContent: 'center'}}>
                       <Text
-                        style={{color: code_color.white, textAlign: 'center'}}>
+                        style={{color: code_color.white, textAlign: 'center', marginBottom: 0}}>
                         Watch 2 Ads
                       </Text>
+                      </View>
+                     
                     </>
                   )}
                 </Pressable>
@@ -314,7 +335,7 @@ function ModalNewStory({
                     style={{
                       backgroundColor: '#009A37',
                       width: '90%',
-                      height: hp(50),
+                      height: hp(45),
                       paddingVertical: wp(14),
                       borderRadius: wp(6),
                       marginTop: wp(30),
