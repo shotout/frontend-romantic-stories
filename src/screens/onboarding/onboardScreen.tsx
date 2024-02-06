@@ -23,8 +23,58 @@ import {getDefaultLanguange} from '../../utils/devices';
 import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
+import CodePush from 'react-native-code-push';
 
 const OnboardScreen = (props: any) => {
+
+  CodePush.checkForUpdate().then(update => {
+    if (update) {
+      console.log('Ada pembaruan CodePush:', update);
+  
+      // Unduh dan instal pembaruan secara manual
+      update.download().then(localPackage => {
+        return CodePush.sync(
+          {
+            // Options
+            updateDialog: true,  // Menampilkan dialog pembaruan
+            installMode: CodePush.InstallMode.ON_NEXT_RESUME,  // Mode instalasi
+          },
+          (status) => {
+            switch (status) {
+              case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+                console.log('Mengunduh pembaruan CodePush');
+                break;
+              case CodePush.SyncStatus.INSTALLING_UPDATE:
+                console.log('Menginstal pembaruan CodePush');
+                break;
+              case CodePush.SyncStatus.UPDATE_INSTALLED:
+                console.log('Pembaruan CodePush berhasil diinstal');
+                break;
+              case CodePush.SyncStatus.UP_TO_DATE:
+                console.log('Aplikasi sudah menggunakan versi terbaru');
+                break;
+              case CodePush.SyncStatus.UPDATE_IGNORED:
+                console.log('Pembaruan CodePush diabaikan');
+                break;
+              case CodePush.SyncStatus.UNKNOWN_ERROR:
+                console.error('Terjadi kesalahan tidak diketahui');
+                break;
+            }
+          },
+          // Progress callback (optional)
+          (progress) => {
+            console.log(`Progress: ${progress.receivedBytes} of ${progress.totalBytes} bytes received`);
+          }
+        );
+      }).catch(error => {
+        console.error('Gagal mengunduh atau menginstal pembaruan:', error);
+      });
+  
+    } else {
+      console.log('Tidak ada pembaruan CodePush');
+    }
+  });
+
   return (
     <ImageBackground
       source={bg}
@@ -57,7 +107,8 @@ const OnboardScreen = (props: any) => {
       />
 
       <Button
-        title={i18n.t('getStarted')}
+        // title={i18n.t('getStarted')}
+        title={'codepush new bgt'}
         onPress={() => navigate('Register')}
       />
     </ImageBackground>

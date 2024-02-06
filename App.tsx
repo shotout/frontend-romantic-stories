@@ -44,6 +44,7 @@ import { Settings } from "react-native-fbsdk-next";
 import { AppOpenAd } from 'react-native-google-mobile-ads';
 import { getAppOpenID } from './src/shared/adsId';
 import { reloadUserProfile } from './src/utils/user';
+
 import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
@@ -63,6 +64,7 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
   keywords: ["fashion", "clothing"],
 });
 appOpenAd.load();
+
 function App({ userProfile }) {
   TrackPlayer.setupPlayer()
   Sentry.init({
