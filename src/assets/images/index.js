@@ -136,8 +136,3 @@ export const tips_step3 = require('./../images/Tips_MediaPlayer.png');
 export const tips_step4 = require('./../images/Tips_MyLibrary.png');
 export const tips_step5 = require('./../images/Tips_ExploreLibrary.png');
 export const bg_notif = require('./../images/bgNotif.png');
-
-export const category1 = require('./../icons/category/category1.png');
-export const category2 = require('./../icons/category/category2.png');
-export const category3 = require('./../icons/category/category3.png');
-export const category4 = require('./../icons/category/category4.png');
