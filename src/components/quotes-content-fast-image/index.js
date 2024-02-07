@@ -57,6 +57,7 @@ function QuotesContent({
   fontColor,
   colorText,
 }) {
+  console.log(item)
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -192,7 +193,7 @@ function QuotesContent({
               fontFamily: fontFamily,
               fontSize: Number(size),
               color: fontColor,
-              marginTop: 3
+              marginTop: 1
             },
           ]}>
           {item}
@@ -369,15 +370,12 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(-100),
-                  height:
-                    me === '/assets/images/avatars/2/think.png'
-                      ? hp(150)
-                      : hp(150),
+                  marginBottom: wp(-200),
+                  height: hp(150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,
-                  bottom: -10,
+                  bottom: 100,
                 }}>
                 <FastImage
                   source={{
@@ -387,7 +385,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(350),
+                    height: hp(300),
                   }}
                 />
               </View>
