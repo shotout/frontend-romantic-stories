@@ -136,3 +136,22 @@ export const tips_step3 = require('./../images/Tips_MediaPlayer.png');
 export const tips_step4 = require('./../images/Tips_MyLibrary.png');
 export const tips_step5 = require('./../images/Tips_ExploreLibrary.png');
 export const bg_notif = require('./../images/bgNotif.png');
+
+
+export const avatar1 = require('./../images/avatar1.png');
+export const avatar2 = require('./../images/avatar2.png');
+export const avatar3 = require('./../images/avatar3.png');
+export const avatar4 = require('./../images/avatar4.png');
+export const avatar5 = require('./../images/avatar5.png');
+export const avatar6 = require('./../images/avatar6.png');
+
+export const level1 = require('./../images/level1.png');
+export const level2 = require('./../images/level2.png');
+export const level3 = require('./../images/level3.png');
+export const level4 = require('./../images/level4.png');
+export const level5 = require('./../images/level5.png');
+export const level6 = require('./../images/level6.png');
+export const level7 = require('./../images/level7.png');
+export const level8 = require('./../images/level8.png');
+export const level9 = require('./../images/level9.png');
+export const level10 = require('./../images/level10.png');

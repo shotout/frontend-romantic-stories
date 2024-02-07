@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, Platform } from 'react-native';
+import {ActivityIndicator, Dimensions, Platform, View} from 'react-native';
 import Svg, {
   Rect,
   Path,
@@ -9,7 +9,25 @@ import Svg, {
   Ellipse,
   Image,
 } from 'react-native-svg';
-import FastImage from 'react-native-fast-image'; 
+import FastImage from 'react-native-fast-image';
+import {
+  avatar1,
+  avatar2,
+  avatar3,
+  avatar4,
+  avatar5,
+  avatar6,
+  level1,
+  level10,
+  level2,
+  level3,
+  level4,
+  level5,
+  level6,
+  level7,
+  level8,
+  level9,
+} from '../images';
 function SvgComponent(props) {
   const {
     width = Dimensions.get('window').width,
@@ -19,7 +37,7 @@ function SvgComponent(props) {
     levelUrl = '',
     style,
   } = props;
-  
+  console.log(levelUrl);
   return (
     <Svg
       width={width}
@@ -41,19 +59,62 @@ function SvgComponent(props) {
         d="M0 82.2014C0 82.2014 117.09 62.1588 193.015 62.001C270.48 61.8399 390 82.2014 390 82.2014V264H0V82.2014Z"
         fill="white"
       />
-      <Ellipse cx="195" cy="81" rx="70" ry="10" fill="#EDEDED" />
+      {/* <Ellipse cx="195" cy="81" rx="70" ry="10" fill="#EDEDED" /> */}
       {/* <Rect x="192" y="25" width="56" height="56" rx="28" fill="#2C3439" /> */}
+
       <Image
-          href={{
-            uri: levelUrl,
-          }}
-          x={Platform.OS === 'android' ? '-27' : profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
-          y={Platform.OS === 'android' ? '15' : profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
-          width="56" height="56"
-          rx="28"
-          x="192" y="25"
-        />
-      
+        href={
+          levelUrl.includes('1')
+            ? level1
+            : levelUrl.includes('2')
+            ? level2
+            : levelUrl.includes('3')
+            ? level3
+            : levelUrl.includes('4')
+            ? level4
+            : levelUrl.includes('5')
+            ? level5
+            : levelUrl.includes('6')
+            ? level6
+            : levelUrl.includes('7')
+            ? level7
+            : levelUrl.includes('8')
+            ? level8
+            : levelUrl.includes('9')
+            ? level9
+            : levelUrl.includes('10')
+            ? level10
+            : level1
+        }
+        x={
+          Platform.OS === 'android'
+            ? '-27'
+            : profileUrl.includes('3')
+            ? '140'
+            : profileUrl.includes('2')
+            ? '142'
+            : profileUrl.includes('5')
+            ? '147'
+            : '138'
+        }
+        y={
+          Platform.OS === 'android'
+            ? '15'
+            : profileUrl.includes('3')
+            ? '-18'
+            : profileUrl.includes('2')
+            ? '-15'
+            : profileUrl.includes('4')
+            ? '-20'
+            : '-40'
+        }
+        width="56"
+        height="56"
+        rx="28"
+        x="192"
+        y="25"
+      />
+
       {/* <Path
         d="M220.046 69.4197C198.452 64.7918 194.55 44.2703 204.412 38.0245C213.173 32.4647 220.046 41.3866 220.046 41.3866C220.046 41.3866 226.92 32.4647 235.681 38.0245C245.543 44.2703 241.641 64.7918 220.046 69.4197Z"
         fill="#FF9F2F"
@@ -124,11 +185,41 @@ function SvgComponent(props) {
           style={{ width: '10%', height: '10%', borderRadius: 28 }} // Ganti width dan height menjadi '100%' dan tambahkan borderRadius
         /> */}
         <Image
-          href={{
-            uri: profileUrl,
-          }}
-          x={Platform.OS === 'android' ? '-27' : profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
-          y={Platform.OS === 'android' ? '15' : profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
+          href={
+            profileUrl.includes('1')
+              ? avatar1
+              : profileUrl.includes('2')
+              ? avatar2
+              : profileUrl.includes('3')
+              ? avatar3
+              : profileUrl.includes('4')
+              ? avatar4
+              : profileUrl.includes('5')
+              ? avatar5
+              : avatar6
+          }
+          x={
+            Platform.OS === 'android'
+              ? '-27'
+              : profileUrl.includes('3')
+              ? '140'
+              : profileUrl.includes('2')
+              ? '142'
+              : profileUrl.includes('5')
+              ? '147'
+              : '138'
+          }
+          y={
+            Platform.OS === 'android'
+              ? '15'
+              : profileUrl.includes('3')
+              ? '-18'
+              : profileUrl.includes('2')
+              ? '-15'
+              : profileUrl.includes('4')
+              ? '-20'
+              : '-40'
+          }
           width="100%"
           height="300"
           rx="28"
