@@ -36,13 +36,13 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
   const handleChange = index => {
     setAvatar(dataAva[index].id);
   };
-  useEffect(() => {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 500);
+  // useEffect(() => {
+  //   setLoading(true)
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 500);
   
-    }, [])
+  //   }, [])
   return (
     <>
       <View
