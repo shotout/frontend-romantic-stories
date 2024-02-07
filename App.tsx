@@ -36,7 +36,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
 import { Adjust, AdjustConfig } from 'react-native-adjust';
 import * as Sentry from '@sentry/react-native';
-import { SENTRY_DSN } from './src/shared/static';
+import { BACKEND_URL, SENTRY_DSN } from './src/shared/static';
 import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
 import { handleSetStory } from './src/store/defaultState/actions';
 import store from './src/store/configure-store';
@@ -50,6 +50,7 @@ import TrackPlayer, {
   Event,
   State,
 } from 'react-native-track-player';
+import FastImage from 'react-native-fast-image';
 Purchasely.startWithAPIKey(
   "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
   ["Google"],
@@ -87,6 +88,21 @@ function App({ userProfile }) {
     handleAppInstalled();
   }, []);
   useEffect(() => {
+    FastImage.preload([
+     
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
+      }
+    ]);
     askTrackingPermission();
     getDefaultLanguange();
   }, []);

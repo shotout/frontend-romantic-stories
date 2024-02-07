@@ -822,6 +822,7 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
+      console.log('DATA LIBRARY'+JSON.stringify(res))
       setListCollection(res.data);
       setListLibrary(res.outsides);
       setLoadingList(false);

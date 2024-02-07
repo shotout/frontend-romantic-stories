@@ -21,6 +21,7 @@ import LockFree from '../../assets/icons/lockFree';
 import CloseSvg from '../../assets/icons/close';
 import {BACKEND_URL} from '../../shared/static';
 import {ActivityIndicator} from 'react-native-paper';
+import FastImage from 'react-native-fast-image';
 
 function ModalUnlockStory({
   isVisible,
@@ -82,7 +83,7 @@ function ModalUnlockStory({
                     }}
                   />
                 )}
-                <Image
+                <FastImage
                   source={{
                     uri: `${BACKEND_URL}${data?.category?.cover?.url}`,
                   }}

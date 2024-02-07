@@ -193,6 +193,18 @@ function RegisterScreen({
       {
         uri: `${BACKEND_URL}${'/assets/images/avatars/1.png'}`,
       },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
+      }
     ]);
   }, []);
 
