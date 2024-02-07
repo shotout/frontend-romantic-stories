@@ -124,7 +124,8 @@ function RegisterScreen({
     if (!values.gender) {
       fetchAllAva();
     } else {
-      fetchAva1(values.gender === 'Male' ? 'male' : 'female');
+      console.log('INI VALUES='+values.gender)
+      fetchAva1(values.gender === 'Female' ? 'female' : 'male');
       fetchAva2(values.gender === 'Male' ? 'female' : 'male');
     }
   }, [values.gender]);
@@ -145,6 +146,7 @@ function RegisterScreen({
         gender: value,
       };
       const avatar = await getListAvatar(params);
+      console.log(JSON.stringify(value))
       setDataAva(avatar?.data);
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -194,17 +196,17 @@ function RegisterScreen({
         uri: `${BACKEND_URL}${'/assets/images/avatars/1.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
-      }
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`,
+      },
     ]);
   }, []);
 
@@ -331,26 +333,59 @@ function RegisterScreen({
         />
       );
     } else if (stepRegister === 4) {
-      return (
-        <Register4
-          gender={values.gender}
-          dataAvatar={dataAva}
-          setAvatar={text =>
-            handleChange(
-              'avatar_male',
-              values.gender === 'female' ? text + 3 : text,
-            )
-          }
-        />
-      );
+      if (values.gender === 'Female') {
+        return (
+          <Register5
+            gender={values.gender}
+            dataAvatar={dataAva2}
+            setAvatar={text => handleChange('avatar_male', text)}
+          />
+        );
+      }else{
+        return (
+          <Register4
+            gender={values.gender}
+            dataAvatar={dataAva}
+            setAvatar={text =>
+              handleChange(
+                'avatar_male',
+                values.gender === 'Female' ? text + 3 : text,
+              )
+            }
+          />
+        );
+      }
+      
     } else if (stepRegister === 5) {
-      return (
-        <Register5
-          gender={values.gender}
-          dataAvatar={dataAva2}
-          setAvatar={text => handleChange('avatar_female', text)}
-        />
-      );
+      if (values.gender === 'Female') {
+        return (
+          <Register4
+            gender={values.gender}
+            dataAvatar={dataAva}
+            setAvatar={text => handleChange('avatar_male', text)}
+          />
+        );
+      }else{
+        return (
+          <Register5
+            gender={values.gender}
+            dataAvatar={dataAva2}
+            setAvatar={text =>
+              handleChange(
+                'avatar_male',
+                values.gender === 'Female' ? text + 3 : text,
+              )
+            }
+          />
+        );
+      }
+      // return (
+      //   <Register5
+      //     gender={values.gender}
+      //     dataAvatar={dataAva2}
+      //     setAvatar={text => handleChange('avatar_female', text)}
+      //   />
+      // );
     } else if (stepRegister === 6) {
       return (
         <Register6
@@ -417,9 +452,9 @@ function RegisterScreen({
                 ? 'Be part of the story'
                 : stepRegister === 3
                 ? 'Select your favorite genre'
-                : stepRegister === 4
-                ? 'Select your look'
-                : stepRegister === 5
+                : stepRegister === 4 && values.gender === 'Female'
+                ? 'Select your partner' : stepRegister === 4 && values.gender != 'Female' ? 'Select your look'
+                : stepRegister === 5 && values.gender === 'Female' ? 'Select your look' : 'Select your partner'
                 ? 'Select your partner'
                 : stepRegister === 6
                 ? 'Customize your page'
