@@ -372,7 +372,7 @@ function QuotesContent({
                   marginBottom: wp(-100),
                   height:
                     me === '/assets/images/avatars/2/think.png'
-                      ? hp(200)
+                      ? hp(150)
                       : hp(150),
                   width: wp(100),
                   left: 20,
@@ -387,7 +387,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(400),
+                    height: hp(350),
                   }}
                 />
               </View>
@@ -397,7 +397,7 @@ function QuotesContent({
                   overflow: 'hidden',
                   marginBottom: wp(-100),
                   width: wp(100),
-                  height: Platform.OS === 'android' ? hp(110) : hp(110),
+                  height: hp(110),
                   left: '40%',
                   zIndex: 1,
                   bottom:
@@ -417,7 +417,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(300),
+                    height: hp(310),
                   }}
                 />
               </View>
