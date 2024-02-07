@@ -57,7 +57,6 @@ function QuotesContent({
   fontColor,
   colorText,
 }) {
-  console.log(item)
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
