@@ -158,7 +158,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       setTimeout(() => {
         setShowModal1Step7(false);
         startStep7_2();
-      }, 10600);
+      }, 11000);
     }, 1000);
   };
 

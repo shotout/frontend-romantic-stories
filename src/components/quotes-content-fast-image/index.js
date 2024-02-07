@@ -192,7 +192,8 @@ function QuotesContent({
               fontFamily: fontFamily,
               fontSize: Number(size),
               color: fontColor,
-              marginTop: 1
+              marginTop: 2,
+              lineHeight: 24,
             },
           ]}>
           {item}
@@ -228,6 +229,7 @@ function QuotesContent({
                     fontFamily: fontFamily,
                     fontSize: Number(size),
                     color: fontColor,
+                    lineHeight: 24,
                   },
                 ]}>
                 {item}

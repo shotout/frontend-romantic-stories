@@ -78,7 +78,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const captureRef = useRef();
   const captureRefPost = useRef();
   const base64CaptureImage = useRef(null);
-  const sharedMessageWa = `The *EroTales App* has the best Romantic Stories ever! I just found this once: *${storyData?.item?.title_en || storyData?.title_en}* Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
+  const sharedMessageWa = `The *EroTales App* has the best\nRomantic Stories ever! I just\nfound this once:\n*${storyData?.item?.title_en || storyData?.title_en}*\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
   const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en} Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
 
   const handleClose = () => {
@@ -147,7 +147,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShareInstagramDefault = async () => {
-    handleShare('post');
+    handleShare('story');
     Clipboard.setString(
       `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
@@ -196,7 +196,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShareFacebookDefault = async () => {
-    handleShare('post');
+    handleShare('story');
     Clipboard.setString(
       `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
