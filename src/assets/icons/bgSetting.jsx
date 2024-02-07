@@ -9,7 +9,7 @@ import Svg, {
   Ellipse,
   Image,
 } from 'react-native-svg';
-
+import FastImage from 'react-native-fast-image'; 
 function SvgComponent(props) {
   const {
     width = Dimensions.get('window').width,
@@ -47,12 +47,13 @@ function SvgComponent(props) {
           href={{
             uri: levelUrl,
           }}
-          // x={Platform.OS === 'android' ? '-27' : profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
-          // y={Platform.OS === 'android' ? '15' : profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
+          x={Platform.OS === 'android' ? '-27' : profileUrl.includes('3')? "140" : profileUrl.includes('2') ? "142":  profileUrl.includes('5') ? "147" : "138"}
+          y={Platform.OS === 'android' ? '15' : profileUrl.includes('3') ? "-18" : profileUrl.includes('2') ? "-15" : profileUrl.includes('4') ? "-20" :"-40"}
           width="56" height="56"
           rx="28"
           x="192" y="25"
         />
+      
       {/* <Path
         d="M220.046 69.4197C198.452 64.7918 194.55 44.2703 204.412 38.0245C213.173 32.4647 220.046 41.3866 220.046 41.3866C220.046 41.3866 226.92 32.4647 235.681 38.0245C245.543 44.2703 241.641 64.7918 220.046 69.4197Z"
         fill="#FF9F2F"
@@ -115,6 +116,13 @@ function SvgComponent(props) {
       /> */}
       <G clipPath="url(#clip0_2133_2044)">
         <Rect x="142" y="25" width="56" height="56" rx="28" fill="#FFD12F" />
+        {/* <FastImage // Mengganti Image dengan FastImage
+          source={{
+            uri: profileUrl,
+            priority: FastImage.priority.high, // Prioritas tinggi
+          }}
+          style={{ width: '10%', height: '10%', borderRadius: 28 }} // Ganti width dan height menjadi '100%' dan tambahkan borderRadius
+        /> */}
         <Image
           href={{
             uri: profileUrl,

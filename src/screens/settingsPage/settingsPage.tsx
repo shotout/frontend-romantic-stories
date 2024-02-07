@@ -53,6 +53,7 @@ import ProgressBar from '../../components/progress';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
+import FastImage from 'react-native-fast-image';
 
 const SettingsPage = ({
   colorTheme,
@@ -297,7 +298,7 @@ const SettingsPage = ({
                   alignItems: 'center',
                   right: -5,
                 }}>
-                <Image
+                <FastImage
                   source={{
                     uri:
                      BACKEND_URL + getAvatarMale
@@ -325,7 +326,7 @@ const SettingsPage = ({
                   alignItems: 'center',
                   marginRight: moderateScale(10),
                 }}>
-                <Image
+                <FastImage
                   source={{
                     uri: BACKEND_URL + getAvatarFemale
                   }}

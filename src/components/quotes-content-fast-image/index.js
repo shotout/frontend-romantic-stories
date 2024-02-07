@@ -192,7 +192,7 @@ function QuotesContent({
               fontFamily: fontFamily,
               fontSize: Number(size),
               color: fontColor,
-              marginTop: 1.5
+              marginTop: 3
             },
           ]}>
           {item}

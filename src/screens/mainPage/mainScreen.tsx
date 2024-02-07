@@ -1249,7 +1249,7 @@ const MainScreen = ({
 
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
           } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
-            setShowModal(true);
+            await fecthNextStory();
           }
         }
       }, 700);

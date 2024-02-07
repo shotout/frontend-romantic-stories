@@ -129,7 +129,6 @@ const FontScreen = ({
   };
 
   const isSameFont = (name: string) => {
-    console.log('okeoke', fontSelect.name?.toUpperCase(), name?.toUpperCase());
     return fontSelect.name
       ?.toUpperCase()
       ?.replace(/ /g, '')
