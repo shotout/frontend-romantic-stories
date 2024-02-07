@@ -43,8 +43,11 @@ const request = options => {
     baseURL: options.MAIN_URL || API_URL,
     headers: {...requestHeaders, ...tokenParam},
   });
-
-  const onSuccess = response => response.data;
+ 
+  const onSuccess = response => {
+    console.log(JSON.stringify(response.data))
+    return response.data
+  };
 
   const onError = error => {
     console.log(JSON.stringify(error))

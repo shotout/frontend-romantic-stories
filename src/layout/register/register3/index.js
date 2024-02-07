@@ -23,16 +23,90 @@ import { fixedFontSize, hp, wp } from '../../../utils/screen';
 import Loading from '../../../components/loading';
 import FastImage from 'react-native-fast-image';
 export default function Register3({setCategoryId, value, dataCategory}) {
-  const [dataStory, setDataStory] = useState(dataCategory);
+  const [dataStory, setDataStory] = useState([
+    {
+        "id": 1,
+        "name": "Relationship",
+        "status": 2,
+        "created_at": "2023-12-06T07:45:21.000000Z",
+        "updated_at": null,
+        "image": {
+            "id": 12,
+            "owner_id": 1,
+            "type": "category",
+            "name": "relationship.png",
+            "url": "/assets/images/categories/relationship.png",
+            "audio_en": null,
+            "audio_id": null,
+            "created_at": "2023-12-06T14:45:21.000000Z",
+            "updated_at": null
+        }
+    },
+    {
+        "id": 2,
+        "name": "I Miss You",
+        "status": 2,
+        "created_at": "2023-12-06T07:45:21.000000Z",
+        "updated_at": null,
+        "image": {
+            "id": 13,
+            "owner_id": 2,
+            "type": "category",
+            "name": "i_miss_u.png",
+            "url": "/assets/images/categories/i_miss_u.png",
+            "audio_en": null,
+            "audio_id": null,
+            "created_at": "2023-12-06T14:45:21.000000Z",
+            "updated_at": null
+        }
+    },
+    {
+        "id": 3,
+        "name": "Dirty Mind",
+        "status": 2,
+        "created_at": "2023-12-06T07:45:21.000000Z",
+        "updated_at": null,
+        "image": {
+            "id": 14,
+            "owner_id": 3,
+            "type": "category",
+            "name": "dirty_mind.png",
+            "url": "/assets/images/categories/dirty_mind.png",
+            "audio_en": null,
+            "audio_id": null,
+            "created_at": "2023-12-06T14:45:21.000000Z",
+            "updated_at": null
+        }
+    },
+    {
+        "id": 4,
+        "name": "Suprise Me",
+        "status": 2,
+        "created_at": "2023-12-06T07:45:21.000000Z",
+        "updated_at": null,
+        "image": {
+            "id": 15,
+            "owner_id": 4,
+            "type": "category",
+            "name": "suprise_me.png",
+            "url": "/assets/images/categories/suprise_me.png",
+            "audio_en": null,
+            "audio_id": null,
+            "created_at": "2023-12-06T14:45:21.000000Z",
+            "updated_at": null
+        }
+    }
+]);
   const [loading, setLoading] = useState(false);
   const [selectStory, setSelectStory] = useState(value);
-  useEffect(() => {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 200);
+  // alert(JSON.stringify(dataCategory))
+  // useEffect(() => {
+  //   setLoading(true)
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 200);
   
-    }, [dataCategory])
+  //   }, [dataCategory])
  
   return (
     <>

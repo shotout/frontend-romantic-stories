@@ -31,13 +31,13 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
     setProgress(1);
   }, []);
 
-  useEffect(() => {
-  setLoading(true)
-  setTimeout(() => {
-    setLoading(false)
-  }, 500);
+  // useEffect(() => {
+  // setLoading(true)
+  // setTimeout(() => {
+  //   setLoading(false)
+  // }, 500);
 
-  }, [])
+  // }, [])
   // const fetchCategory = async () => {
   //   try {
   //     const params = {

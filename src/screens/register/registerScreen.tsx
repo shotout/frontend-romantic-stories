@@ -54,6 +54,8 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import Purchasely from 'react-native-purchasely';
 import {SafeAreaView} from 'react-native';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
+import FastImage from 'react-native-fast-image';
+import {BACKEND_URL} from '../../shared/static';
 
 function RegisterScreen({
   handleSetProfile,
@@ -160,23 +162,55 @@ function RegisterScreen({
     }
   };
   useEffect(() => {
-    fetchCategory();
+    FastImage.preload([
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/relationship.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/i_miss_u.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/dirty_mind.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/suprise_me.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/4.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/5.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/6.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/3.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/2.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/1.png'}`,
+      },
+    ]);
   }, []);
 
-  const fetchCategory = async () => {
-    try {
-      const category = await getListCategory();
-      setDataStory(category?.data);
-    } catch (error) {
-      // alert(JSON.stringify(error));
-    }
-  };
+  // const fetchCategory = async () => {
+  //   try {
+  //     const category = await getListCategory();
+  //     alert(JSON.stringify(category))
+  //     setDataStory(category?.data);
+  //   } catch (error) {
+  //     alert(JSON.stringify(error));
+  //   }
+  // };
   const onSubmit = async () => {
     await notifee.requestPermission();
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();
-    console.log(JSON.stringify(values))
+    console.log(JSON.stringify(values));
     try {
       const payload = {
         name: values?.name,
@@ -316,7 +350,9 @@ function RegisterScreen({
             handleChange('language_id', 1);
           }}
           handleSetColorTheme={value => {
-            handleSetColorTheme(value === undefined ? code_color.splash : value)
+            handleSetColorTheme(
+              value === undefined ? code_color.splash : value,
+            );
           }}
         />
       );
@@ -453,10 +489,10 @@ function RegisterScreen({
             {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => {
-                  if(stepRegister === 1){
+                  if (stepRegister === 1) {
                     handleChange('gender', null);
                   }
-                 
+
                   setStepRegister(stepRegister + 1);
                 }}
                 style={{
@@ -492,7 +528,11 @@ function RegisterScreen({
             {stepRegister != 1 ? (
               <Button
                 style={{
-                  backgroundColor: stepRegister == 2 && values.name === '' ||  stepRegister == 3 && values.category_id === 0  ?  code_color.greyDefault :  code_color.yellow,
+                  backgroundColor:
+                    (stepRegister == 2 && values.name === '') ||
+                    (stepRegister == 3 && values.category_id === 0)
+                      ? code_color.greyDefault
+                      : code_color.yellow,
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: hp(45),
@@ -504,7 +544,10 @@ function RegisterScreen({
                 onPress={() => {
                   stepRegister === 8
                     ? onSubmit()
-                    : stepRegister == 2 && values.name === '' ||  stepRegister == 3 && values.category_id === 0 ? null : setStepRegister(
+                    : (stepRegister == 2 && values.name === '') ||
+                      (stepRegister == 3 && values.category_id === 0)
+                    ? null
+                    : setStepRegister(
                         stepRegister + (stepRegister === 6 ? 2 : 1),
                       );
                 }}
