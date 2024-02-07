@@ -147,7 +147,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     clearTimeout(step7_2Ref.current); // Clears existing timeout
     step7_2Ref.current = setTimeout(() => {
       setShowModal2Step7(true);
-    }, 600);
+    }, 2600);
   };
 
   const startStep7 = () => {
@@ -163,13 +163,19 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   };
 
   const startTimeout = () => {
-    clearTimeout(timeout7SecRef.current); // Clears existing timeout
+    clearTimeout(timeout7SecRef.current);
     timeout7SecRef.current = setTimeout(
       () => {
         // Your logic here
         handleNext();
       },
-      stepsTutorial === 7 ? 18500 : stepsTutorial === 6 ? 5500 : 7000,
+      stepsTutorial === 7
+        ? 18500
+        : stepsTutorial === 6
+        ? 5500
+        : stepsTutorial === 3 || stepsTutorial === 4
+        ? 7500
+        : 7000,
     ); // Set a new timeout
   };
   const stopTimeout = () => {
@@ -255,25 +261,23 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         setShowModal2Step7(false);
       }
     } else {
-      checkInstall()
+      checkInstall();
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
       eventTracking(ONBOARDING_COMPLETE);
-        // setTimeout(() => {
-        //     handlePayment('onboarding');
-        // }, 200);
-      
-     
-      
+      // setTimeout(() => {
+      //     handlePayment('onboarding');
+      // }, 200);
+
       navigate('Bottom');
     }
   };
-  const checkInstall = async() => {
+  const checkInstall = async () => {
     const getFirstInstall = await AsyncStorage.getItem('firstInstall');
     const stringifyDate = Date.now().toString();
     if (getFirstInstall === null) {
       await AsyncStorage.setItem('firstInstall', stringifyDate);
-    };
+    }
   };
   const renderTutorial = () => {
     if (isFinishTutorial) {

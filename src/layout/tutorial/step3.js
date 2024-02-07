@@ -63,7 +63,7 @@ const Step3 = ({handleNext, handlePrev}) => {
             lineHeight: 25,
           }}>
           {
-            'You can also enjoy any of\r\nthe Stories as Audio-\r\nbook. Relax while we\r\nread it out for you'
+            'You can also enjoy any of\r\nthe Stories as Audio-\r\nbook. Relax while we\r\nread it out for you.'
           }
         </Animatable.Text>
         <Animatable.View
