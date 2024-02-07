@@ -45,12 +45,10 @@ const request = options => {
   });
  
   const onSuccess = response => {
-    console.log(JSON.stringify(response.data))
     return response.data
   };
 
   const onError = error => {
-    console.log(JSON.stringify(error))
     if (error.response) {
       if (options.handles && error.response.status) {
         if (options.handles.includes(error.response.status)) {

@@ -395,7 +395,6 @@ const MainScreen = ({
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
-    console.log(pageNumber + 'INI SCROLL');
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -726,7 +725,6 @@ const MainScreen = ({
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
   useEffect(() => {
-    console.log('INI FONT'+fontSize)
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       Dimensions.get('window').height <= 667 ? (fontSize === 14 ? 750 : 630) :   (fontSize === 14 ? 1000 : 800),
@@ -1240,9 +1238,7 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-            console.log(
-              'INI DATAAAA' + screenNumber + '====' + textChunks?.length,
-            );
+          
             // if(screenNumber ===  textChunks?.length){
             setShowModalNewStory(true);
             // }

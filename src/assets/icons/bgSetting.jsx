@@ -37,7 +37,6 @@ function SvgComponent(props) {
     levelUrl = '',
     style,
   } = props;
-  console.log(levelUrl);
   return (
     <Svg
       width={width}

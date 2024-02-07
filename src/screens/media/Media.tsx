@@ -154,7 +154,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     if (position != 0 && position === duration) {
       TrackPlayer.seekTo(0);
       setLoading(false);
-      console.log(position, duration);
       navigate('Main', {successListen: true});
     }
   }, [position, duration]);

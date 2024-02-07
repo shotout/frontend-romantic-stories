@@ -3,7 +3,6 @@ import moment from "moment";
 export const checkDays = (start: any) => {
   let timeNow = new Date();
   let timeRemaining = (timeNow - start) / 1000; // Waktu dalam detik
-console.log(start)
   if (timeRemaining < 24 * 3600) {
     // Kurang dari 24 jam sejak proses dimulai.
     return 'kurang';
