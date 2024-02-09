@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Modal,
   View,
@@ -81,19 +81,22 @@ function ModalNewStory({
     }
     getProductPrice();
   }, []);
-  const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
-    const touchX = e.nativeEvent.locationX;
-    
-    const screenWidth = Dimensions.get('window').width / 1.5;
-    const screenWidthLeft = Dimensions.get('window').width / 2;
- 
-
-    if (touchX > screenWidth ) {
-      handleClose()
-    }else if(touchX < 30){
-     handleClose()
+  const touchStartXRef = useRef(null);
+  const touchStart = (e) => {
+    touchStartXRef.current = e.nativeEvent.pageX;
+  };
+  
+  const touchEnd = (e) => {
+    const touchEndX = e.nativeEvent.pageX;
+    const distanceX = touchEndX - touchStartXRef.current;
+    const minSwipeDistance = 50; // Misalnya, minimal 50 piksel untuk dianggap sebagai swipe
+  
+    if (Math.abs(distanceX) > minSwipeDistance) {
+      if (distanceX > 0) {
+        handleClose(); // Swipe ke kanan, menutup modal
+      }
     }
-  }
+  };
   return (
     <Modal
       visible={isVisible}
@@ -115,7 +118,8 @@ function ModalNewStory({
             alignItems: 'center',
           }}>
           <ScrollView
-           onTouchStart={touchEndStory}
+            onTouchStart={touchStart}
+            onTouchEnd={touchEnd}
             style={{
               width: sizing.getDimensionWidth(1),
               flex: 1,
