@@ -308,6 +308,10 @@ function MyTabs(props) {
   }
   const [visible, setVisible] = useState(false);
 
+  useEffect(() => {
+    setIsSaved(props.userStory?.is_collection ? true : false);
+  }, [props.userStory?.is_collection]);
+
   const handleSomeAction = value => {
     setVisible(true);
     // misalnya setelah mengklik suatu tombol

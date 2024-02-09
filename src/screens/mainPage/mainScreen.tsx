@@ -1439,7 +1439,7 @@ const MainScreen = ({
             data={undefined}
             restart={undefined}
             edit={undefined}
-            readLater={!userFinishedRead}
+            readLater={!userFinishedRead && screenNumber !== 0}
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
             handleRead={(data: any) => {
               handleReadAds(data);
