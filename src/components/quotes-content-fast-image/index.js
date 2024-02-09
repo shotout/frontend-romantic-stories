@@ -193,7 +193,7 @@ function QuotesContent({
               fontSize: Number(size),
               color: fontColor,
               marginTop: 2,
-              lineHeight: 24,
+              lineHeight: 27,
             },
           ]}>
           {item}
@@ -229,7 +229,7 @@ function QuotesContent({
                     fontFamily: fontFamily,
                     fontSize: Number(size),
                     color: fontColor,
-                    lineHeight: 24,
+                    lineHeight: 27,
                   },
                 ]}>
                 {item}
@@ -372,7 +372,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(-200),
-                  height: hp(150),
+                  height: hp(me === '/assets/images/avatars/2/positive.png' ? 100 : 150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,

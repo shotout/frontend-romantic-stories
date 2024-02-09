@@ -1423,7 +1423,7 @@ const MainScreen = ({
           <View
             style={{
               backgroundColor: backgroundColor,
-              paddingTop: isIphoneXorAbove() ? 40 : 25,
+              paddingTop: isIphoneXorAbove() ? 50 : 30,
             }}
           />
           <ModalStoryUnlockDay
