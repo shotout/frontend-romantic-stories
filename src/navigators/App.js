@@ -13,7 +13,7 @@ import {handleNativePayment, handlePayment} from '../helpers/paywall';
 import {OPEN_OFFER_NOTIFICATION, eventTracking} from '../helpers/eventTracking';
 import {navigate} from '../shared/navigationRef';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { Notifications } from "react-native-notifications";
 LogBox.ignoreAllLogs();
 
 const App = () => {
@@ -38,7 +38,7 @@ const App = () => {
 
   useEffect(() => {
     bootstrap();
-    
+    Notifications.removeAllDeliveredNotifications();
   }, []);
 
   useEffect(() => {
