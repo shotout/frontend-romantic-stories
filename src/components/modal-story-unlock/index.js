@@ -32,6 +32,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
 import {BACKEND_URL} from '../../shared/static';
 import ModalStoryPreview from '../modal-story-preview';
+import FastImage from 'react-native-fast-image';
 
 function ModalUnlockStory({
   isVisible,
@@ -144,7 +145,7 @@ function ModalUnlockStory({
                 borderRadius: moderateScale(8),
               }}>
               <View style={{flexDirection: 'row'}}>
-                <Image
+                <FastImage
                   source={{
                     uri: `${BACKEND_URL}${nextStory?.category?.cover?.url}`,
                   }}
@@ -250,7 +251,7 @@ function ModalUnlockStory({
                         width: 110,
                         marginRight: 5,
                       }}>
-                      <Image
+                      <FastImage
                         source={{
                           uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                         }}

@@ -27,6 +27,7 @@ import {addNewCollection, updateMyCollection} from '../../shared/request';
 import {moderateScale} from 'react-native-size-matters';
 import {navigate} from '../../shared/navigationRef';
 import {BACKEND_URL} from '../../shared/static';
+import FastImage from 'react-native-fast-image';
 
 function ModalStoryPreview({
   isVisible,
@@ -84,7 +85,7 @@ function ModalStoryPreview({
                   borderBottomWidth: 1,
                 }}>
                 <View style={{flexDirection: 'row'}}>
-                  <Image
+                  <FastImage
                     source={{
                       uri: `${BACKEND_URL}${story?.category?.cover?.url}`,
                     }}

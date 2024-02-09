@@ -352,6 +352,7 @@ const MainScreen = ({
     setScreenNumber(0);
   }, [dataBook?.title_en]);
 
+ 
   const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
     const stringifyDateNow = new Date();
