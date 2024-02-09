@@ -70,6 +70,7 @@ function RegisterScreen({
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
+  const [isReOnboard, setIsReOnboard] = useState(false);
   const [dataAva, setDataAva] = useState([]);
   const [dataAva2, setDataAva2] = useState([]);
   const [dataStory, setDataStory] = useState([]);
@@ -121,10 +122,10 @@ function RegisterScreen({
   };
 
   useEffect(() => {
-    if (!values.gender) {
+    if (!values.gender || isReOnboard) {
       fetchAllAva();
     } else {
-      fetchAva1(values.gender === 'Male' ? 'male' : 'female');
+      fetchAva1(values.gender === 'Female' ? 'female' : 'male');
       fetchAva2(values.gender === 'Male' ? 'female' : 'male');
     }
   }, [values.gender]);
@@ -194,18 +195,34 @@ function RegisterScreen({
         uri: `${BACKEND_URL}${'/assets/images/avatars/1.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
-      }
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`,
+      },
     ]);
+  }, []);
+
+  const checkReOnboard = async () => {
+    const device = await DeviceInfo.getUniqueId();
+    try {
+      await checkDeviceRegister({
+        device_id: device,
+      });
+      setIsReOnboard(true);
+    } catch {
+      setIsReOnboard(false);
+    }
+  };
+
+  useEffect(() => {
+    checkReOnboard();
   }, []);
 
   // const fetchCategory = async () => {
@@ -263,7 +280,7 @@ function RegisterScreen({
       const res = await checkDeviceRegister({
         device_id: device,
       });
-      handleSetProfile(res);
+      handleSetProfile({...res, data: {...res?.data, name: values?.name}});
       const payload = {
         _method: 'PATCH',
         name: values?.name,
@@ -331,26 +348,59 @@ function RegisterScreen({
         />
       );
     } else if (stepRegister === 4) {
-      return (
-        <Register4
-          gender={values.gender}
-          dataAvatar={dataAva}
-          setAvatar={text =>
-            handleChange(
-              'avatar_male',
-              values.gender === 'female' ? text + 3 : text,
-            )
-          }
-        />
-      );
+      if (values.gender === 'Female') {
+        return (
+          <Register5
+            gender={values.gender}
+            dataAvatar={dataAva2}
+            setAvatar={text => handleChange('avatar_male', text)}
+          />
+        );
+      }else{
+        return (
+          <Register4
+            gender={values.gender}
+            dataAvatar={dataAva}
+            setAvatar={text =>
+              handleChange(
+                'avatar_male',
+                values.gender === 'Female' ? text + 3 : text,
+              )
+            }
+          />
+        );
+      }
+      
     } else if (stepRegister === 5) {
-      return (
-        <Register5
-          gender={values.gender}
-          dataAvatar={dataAva2}
-          setAvatar={text => handleChange('avatar_female', text)}
-        />
-      );
+      if (values.gender === 'Female') {
+        return (
+          <Register4
+            gender={values.gender}
+            dataAvatar={dataAva}
+            setAvatar={text => handleChange('avatar_male', text)}
+          />
+        );
+      }else{
+        return (
+          <Register5
+            gender={values.gender}
+            dataAvatar={dataAva2}
+            setAvatar={text =>
+              handleChange(
+                'avatar_male',
+                values.gender === 'Female' ? text + 3 : text,
+              )
+            }
+          />
+        );
+      }
+      // return (
+      //   <Register5
+      //     gender={values.gender}
+      //     dataAvatar={dataAva2}
+      //     setAvatar={text => handleChange('avatar_female', text)}
+      //   />
+      // );
     } else if (stepRegister === 6) {
       return (
         <Register6
@@ -398,6 +448,12 @@ function RegisterScreen({
             }}>
             {stepRegister > 1 ? (
               <TouchableOpacity
+                style={{
+                  height: 20,
+                  width: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
                 onPress={() => setStepRegister(stepRegister - 1)}>
                 <Image source={backLeft} />
               </TouchableOpacity>
@@ -417,9 +473,9 @@ function RegisterScreen({
                 ? 'Be part of the story'
                 : stepRegister === 3
                 ? 'Select your favorite genre'
-                : stepRegister === 4
-                ? 'Select your look'
-                : stepRegister === 5
+                : stepRegister === 4 && values.gender === 'Female'
+                ? 'Select your partner' : stepRegister === 4 && values.gender != 'Female' ? 'Select your look'
+                : stepRegister === 5 && values.gender === 'Female' ? 'Select your look' : 'Select your partner'
                 ? 'Select your partner'
                 : stepRegister === 6
                 ? 'Customize your page'
