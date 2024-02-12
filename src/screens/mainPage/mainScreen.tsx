@@ -739,7 +739,7 @@ const MainScreen = ({
       Dimensions.get('window').height <= 667
         ? fontSize === 14
           ? 750
-          : 630
+          : 550
         : fontSize === 14
         ? 1000
         : 800,
@@ -1253,14 +1253,17 @@ const MainScreen = ({
     }
   };
   useEffect(() => {
-    async function getPrice() {
-      const products = await IAP.getProducts({
-        skus: ['unlock_story_1_week_only'],
-      });
-      console.log('Products:', products);
-      setPrice(products[0].localizedPrice);
+    if(!__DEV__){
+      async function getPrice() {
+        const products = await IAP.getProducts({
+          skus: ['unlock_story_1_week_only'],
+        });
+        console.log('Products:', products);
+        setPrice(products[0].localizedPrice);
+      }
+      getPrice();
     }
-    getPrice();
+    
   }, []);
   const handleSuccessRating = async () => {
     setRating(false);

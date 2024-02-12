@@ -166,13 +166,16 @@ const DetailCategoryScreen = ({
   };
 
   useEffect(() => {
-    async function getPrice() {
-      const products = await IAP.getProducts({
-        skus: ['unlock_story_1_week_only'],
-      });
-      setPrice(products[0].localizedPrice);
+    if(!__DEV__){
+      async function getPrice() {
+        const products = await IAP.getProducts({
+          skus: ['unlock_story_1_week_only'],
+        });
+        setPrice(products[0].localizedPrice);
+      }
+      getPrice();
     }
-    getPrice();
+   
   }, []);
 
   const showInterStialCategory = async () => {

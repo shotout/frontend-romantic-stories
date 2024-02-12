@@ -166,12 +166,15 @@ const LibraryScreen = ({
   };
 
   const fecthProduct = async () => {
-    const products = await IAP.getProducts({
-      skus: ['unlock_story_1_week_only'],
-    });
-    if (products) {
-      setPrice(products[0].localizedPrice);
+    if(!__DEV__){
+      const products = await IAP.getProducts({
+        skus: ['unlock_story_1_week_only'],
+      });
+      if (products) {
+        setPrice(products[0].localizedPrice);
+      }
     }
+   
   };
   useEffect(() => {
     setDetail(null);

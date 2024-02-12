@@ -2,6 +2,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Animated,
+  Dimensions,
   Image,
   ImageBackground,
   Linking,
@@ -374,7 +375,7 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(-200),
+                  marginBottom: Dimensions.get('window').height <= 667 ?  wp(-210) : wp(-200),
                   height: hp(me === '/assets/images/avatars/2/positive.png' ? 100 : 150),
                   width: wp(100),
                   left: 20,
@@ -431,7 +432,7 @@ function QuotesContent({
                   style={{
                     borderRadius: wp(100),
                     height: hp(100),
-                    marginBottom: wp(15),
+                    marginBottom:   Dimensions.get('window').height <= 667 ? wp(0) : wp(15),
                     marginTop: wp(4),
                   }}>
                   <View

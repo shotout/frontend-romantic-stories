@@ -176,14 +176,17 @@ const ExploreLibraryScreen = ({
   };
 
   useEffect(() => {
-    async function getPrice() {
-      const products = await IAP.getProducts({
-        skus: ['unlock_story_1_week_only'],
-      });
-      console.log('Products:', products);
-      setPrice(products[0].localizedPrice);
+    if(!__DEV__){
+      async function getPrice() {
+        const products = await IAP.getProducts({
+          skus: ['unlock_story_1_week_only'],
+        });
+        console.log('Products:', products);
+        setPrice(products[0].localizedPrice);
+      }
+      getPrice();
     }
-    getPrice();
+    
   }, []);
   const renderProgress = () => <StepHeader currentStep={6} />;
   const showInterStialCategory = async () => {

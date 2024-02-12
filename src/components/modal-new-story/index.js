@@ -72,14 +72,17 @@ function ModalNewStory({
     onClose();
   };
   useEffect(() => {
-    async function getProductPrice() {
-      const products = await IAP.getProducts({
-        skus: ['unlock_story_1_week_only'],
-      });
-      console.log('Products:', products);
-      setPrice(products[0].localizedPrice);
+    if(!__DEV__){
+      async function getProductPrice() {
+        const products = await IAP.getProducts({
+          skus: ['unlock_story_1_week_only'],
+        });
+        console.log('Products:', products);
+        setPrice(products[0].localizedPrice);
+      }
+      getProductPrice();
     }
-    getProductPrice();
+   
   }, []);
   const touchStartXRef = useRef(null);
   const touchStart = (e) => {
