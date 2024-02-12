@@ -354,10 +354,10 @@ const MainScreen = ({
     setScreenNumber(0);
   }, [dataBook?.title_en]);
 
-  useEffect(() => {
-    pagerRef.current?.setPage(page);
-    setScreenNumber(page);
-  }, [page, isFocused]);
+  // useEffect(() => {
+  //   pagerRef.current?.setPage(page);
+  //   setScreenNumber(page);
+  // }, [page, isFocused]);
 
   const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
@@ -1402,11 +1402,8 @@ const MainScreen = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {/* {renderTutorial()} */}
-          {/* {renderFlatList('view')} */}
+        
           <View style={{flex: 1}}>
-            {/* {textChunks[].map((dtb: any, index: number) => { */}
-
             <View
               key={page} // Add a unique key for each view in the array
               style={{
@@ -1416,14 +1413,14 @@ const MainScreen = ({
                 paddingTop: wp(20),
                 paddingHorizontal: wp(20),
               }}>
-              {renderFactItem({
+              { textChunks.length > 0 ? renderFactItem({
                 item: textChunks[page],
                 page,
                 title: dataBook.title_en,
                 category: dataBook?.category?.name,
                 colorText: colorText,
                 type: 'view',
-              })}
+              }) : null}
             </View>
           </View>
         </Pressable>
