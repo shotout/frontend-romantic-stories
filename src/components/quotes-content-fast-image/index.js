@@ -78,6 +78,7 @@ function QuotesContent({
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
+
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive, userProfile]);
@@ -242,7 +243,7 @@ function QuotesContent({
       );
     }
   }, [color, isActive, fontColor, item]);
-  console.log(type)
+
   return (
     <SafeAreaView
       style={{
@@ -526,7 +527,7 @@ function QuotesContent({
                   resizeMode="contain"
                   style={{
                     width: '75%',
-                    height: hp(130),
+                    height: hp(110),
                     marginLeft: wp(20),
                     zIndex: -1,
                     backgroundColor: 'Transparent',
