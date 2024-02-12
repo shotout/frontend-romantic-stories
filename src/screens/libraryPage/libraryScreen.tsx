@@ -182,9 +182,8 @@ const LibraryScreen = ({
     setSelectedStory(item?.item);
     if (
       userProfile?.data?.subscription?.plan?.id != 1 ||
-      (userStory?.id != item?.item?.id &&
-        item?.item?.expire != null &&
-        new Date() < new Date(item?.item?.expire))
+      userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
+      new Date() > new Date(item?.item?.expire)
     ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
@@ -197,6 +196,7 @@ const LibraryScreen = ({
   };
 
   const handleReadDetail = async item => {
+   
     setSelectedStory(item);
     if (
       userProfile?.data?.subscription?.plan?.id != 1 ||
