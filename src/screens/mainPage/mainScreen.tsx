@@ -1403,7 +1403,34 @@ const MainScreen = ({
             </TouchableOpacity>
           </View>
           {/* {renderTutorial()} */}
-          {renderFlatList('view')}
+          {/* {renderFlatList('view')} */}
+        <View style={{flex: 1}}>
+        {/* {textChunks[].map((dtb: any, index: number) => { */}
+        
+     
+          <View
+            key={page} // Add a unique key for each view in the array
+            style={{
+              flex: 0,
+              alignItems: 'center',
+              backgroundColor: backgroundColor,
+              paddingTop: wp(20),
+              paddingHorizontal: wp(20),
+            }}>
+            {renderFactItem({
+              item: textChunks[page],
+              page,
+              title: dataBook.title_en,
+              category: dataBook?.category?.name,
+              colorText: colorText,
+              type: 'view',
+            })}
+          </View>
+       
+    
+          </View>  
+      
+   
         </Pressable>
       );
     } else {
