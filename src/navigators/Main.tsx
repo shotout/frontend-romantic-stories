@@ -23,7 +23,7 @@ import screenMedia from '../screens/media/index';
 import screenNotification from '../screens/notification/index';
 import screenCategories from '../screens/categories/index';
 import screenSubscriptions from '../screens/subscriptions/index';
-import screenTutorial from '../screens/tutorial/index'
+import screenTutorial from '../screens/tutorial/index';
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
   // presentation: 'transparentModal',
@@ -35,7 +35,13 @@ const screenOptionsDefault = {
 
 const Stack = createNativeStackNavigator();
 
-function Main({registerData, userProfile, props, handleSetStory}) {
+function Main({
+  registerData,
+  userProfile,
+  props,
+  handleSetStory,
+  handleSetPage,
+}) {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
     // checkDevice();
@@ -44,7 +50,9 @@ function Main({registerData, userProfile, props, handleSetStory}) {
     };
     checkFirebase();
   });
-
+  useEffect(() => {
+    handleSetPage(0);
+  }, []);
   const HandleDeepLinking = () => {
     // const {navigate} = useNavigation()
     const handleDynamicLinks = async (link: any) => {
@@ -58,7 +66,7 @@ function Main({registerData, userProfile, props, handleSetStory}) {
     };
     useEffect(() => {
       const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
-    
+
       return () => unsubscribe();
     }, []);
 
