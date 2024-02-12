@@ -30,7 +30,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './src/navigators/dispatcher';
 import states from './src/navigators/states';
 import {connect} from 'react-redux';
-import {getStoryList} from './src/shared/request';
+import {getStoryList, updateProfile} from './src/shared/request';
 import i18n from './src/i18n/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
@@ -107,9 +107,27 @@ function App({ userProfile }) {
     getDefaultLanguange();
   }, []);
   useEffect(() => {
+    resetBadge()
     getInitialRoute();
     configTracker()
   }, []);
+
+  const resetBadge = async() => {
+    if(userProfile?.token){
+      const payload = {
+        _method: 'PATCH',
+        notif_count: 0,
+      };
+      try {
+        const data  = await updateProfile(payload);
+       
+      } catch (error) {
+       
+      }
+    }
+    
+   
+  }
   const configTracker = () => {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
