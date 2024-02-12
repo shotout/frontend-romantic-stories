@@ -52,6 +52,7 @@ const INITIAL_STATE = {
   relateStory: null,
   levelingUser: null,
   colorText: '',
+  page: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -347,6 +348,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         colorText: action.payload,
+      };
+    case types.SET_PAGE:
+      return {
+        ...state,
+        page: action.payload,
       };
     default:
       return state;

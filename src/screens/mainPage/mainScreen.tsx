@@ -120,6 +120,8 @@ const MainScreen = ({
   colorText,
   listenStory,
   handleListenStory,
+  handleSetPage,
+  page,
 }) => {
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
@@ -157,7 +159,7 @@ const MainScreen = ({
   const [folded, setFolded] = useState(false);
   const initialIndexContent = 0;
   const [showModalSubscribe, setShowModalSubscribe] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(initialIndexContent);
+  const [activeSlide, setActiveSlide] = useState(page ? page : 0);
   const [isUserHasScroll, setUserScrollQuotes] = useState(false);
   // const [dataBook, setBook] = useState(userStory);
   const [me, setMe] = useState(null);
@@ -352,7 +354,11 @@ const MainScreen = ({
     setScreenNumber(0);
   }, [dataBook?.title_en]);
 
- 
+  useEffect(() => {
+    pagerRef.current?.setPage(page);
+    setScreenNumber(page);
+  }, [page, isFocused]);
+
   const fetchCheckingDay = async () => {
     const value = await AsyncStorage.getItem('setToday');
     const stringifyDateNow = new Date();
@@ -396,6 +402,7 @@ const MainScreen = ({
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
+    handleSetPage(pageNumber);
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -445,6 +452,7 @@ const MainScreen = ({
     // }
     if (pageNumber === textChunks?.length - 1) {
     }
+
     setActiveSlide(pageNumber - 1);
 
     startAnimation();
@@ -728,7 +736,13 @@ const MainScreen = ({
   useEffect(() => {
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      Dimensions.get('window').height <= 667 ? (fontSize === 14 ? 750 : 630) :   (fontSize === 14 ? 1000 : 800),
+      Dimensions.get('window').height <= 667
+        ? fontSize === 14
+          ? 750
+          : 630
+        : fontSize === 14
+        ? 1000
+        : 800,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
@@ -767,50 +781,37 @@ const MainScreen = ({
     setForceRender(prev => prev + 1);
   }, [colorText]);
 
-  const renderFlatList = useCallback(
-    type => {
-      return (
-        <PagerView
-          style={{flex: 1}}
-          initialPage={0}
-          ref={pagerRef}
-          transitionStyle="curl"
-          overdrag={false}
-          onPageScroll={e => onScroll(e)}>
-          {textChunks?.map((dtb: any, index: number) => {
-            return (
-              <View
-                key={index} // Add a unique key for each view in the array
-                style={{
-                  flex: 0,
-                  alignItems: 'center',
-                  backgroundColor: backgroundColor,
-                  paddingTop: wp(20),
-                  paddingHorizontal: wp(20),
-                }}>
-                {renderFactItem({
-                  item: dtb,
-                  index,
-                  title: dataBook.title_en,
-                  category: dataBook?.category?.name,
-                  colorText: colorText,
-                  type: type,
-                })}
-              </View>
-            );
-          })}
-        </PagerView>
-      );
-    },
-    [
-      textChunks,
-      dataBook,
-      backgroundColor,
-      colorText,
-      onScroll,
-      isFocused,
-      forceRender,
-    ],
+  const renderFlatList = type => (
+    <PagerView
+      style={{flex: 1}}
+      initialPage={page}
+      ref={pagerRef}
+      transitionStyle="curl"
+      overdrag={false}
+      onPageScroll={e => onScroll(e)}>
+      {textChunks?.map((dtb: any, index: number) => {
+        return (
+          <View
+            key={index} // Add a unique key for each view in the array
+            style={{
+              flex: 0,
+              alignItems: 'center',
+              backgroundColor: backgroundColor,
+              paddingTop: wp(20),
+              paddingHorizontal: wp(20),
+            }}>
+            {renderFactItem({
+              item: dtb,
+              index,
+              title: dataBook.title_en,
+              category: dataBook?.category?.name,
+              colorText: colorText,
+              type: type,
+            })}
+          </View>
+        );
+      })}
+    </PagerView>
   );
 
   useEffect(() => {
@@ -1239,7 +1240,6 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-          
             // if(screenNumber ===  textChunks?.length){
             setShowModalNewStory(true);
             // }
@@ -1475,11 +1475,10 @@ const MainScreen = ({
             loadingAds={loadingAds}
             isLoading={loading}
             isVisible={showModalNewStory}
-            onClose={() => 
-              {
-                pagerRef.current?.setPage(textChunks.length - 1);
-                setShowModalNewStory(false)
-              }}
+            onClose={() => {
+              pagerRef.current?.setPage(textChunks.length - 1);
+              setShowModalNewStory(false);
+            }}
             onWatchAds={() => {
               showWatchAds();
             }}

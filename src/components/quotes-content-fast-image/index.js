@@ -241,6 +241,7 @@ function QuotesContent({
       );
     }
   }, [color, isActive, fontColor, item]);
+  console.log(type)
   return (
     <SafeAreaView
       style={{
@@ -340,7 +341,8 @@ function QuotesContent({
               )}
             </View>
           </View>
-          {(type === 'main' && pageActive === 0) ||
+          { type != 'main' ? null :
+          pageActive === 0 ||
           pageActive === 3 ||
           pageActive === 6 ||
           pageActive === 9 ||
@@ -361,11 +363,12 @@ function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : (type === 'main' && pageActive === 1) ||
+          ) : 
+            pageActive === 1 ||
             pageActive === 4 ||
             pageActive === 7 ||
             pageActive === 10 ||
-            pageActive === 13 ? (
+            pageActive === 13  ? (
             <>
               <View
                 style={{

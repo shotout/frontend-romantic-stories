@@ -46,6 +46,11 @@ export const handleSetSteps = payload => ({
   payload,
 });
 
+export const handleSetPage = payload => ({
+  type: types.SET_PAGE,
+  payload,
+});
+
 export const handleSetBackground = payload => ({
   type: types.SET_BACKGROUND_COLOR,
   payload,
