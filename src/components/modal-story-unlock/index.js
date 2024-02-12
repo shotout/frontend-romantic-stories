@@ -184,7 +184,7 @@ function ModalUnlockStory({
                   fontSize: 12,
                   marginTop: moderateScale(16),
                 }}>
-                {nextStory?.content_en.substring(0, 100)}...
+                {nextStory?.content_en?.substring(0, 100)}...
               </Text>
               <TouchableOpacity
                 onPress={handleRead}

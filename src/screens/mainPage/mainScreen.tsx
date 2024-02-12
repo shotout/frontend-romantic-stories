@@ -929,192 +929,6 @@ const MainScreen = ({
     />
   );
 
-  const renderTutorial = () => {
-    if (isFinishTutorial) {
-      if (activeStep === 0) {
-        return (
-          <Modal
-            visible={visible}
-            animationType="fade"
-            transparent
-            onDismiss={() => setVisible(false)}>
-            <ImageBackground
-              source={imgBgTips}
-              resizeMode="cover"
-              style={{
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').height,
-                flex: 1,
-                alignItems: 'center',
-              }}>
-              <Animatable.Image
-                animation={{
-                  from: {
-                    bottom: '-50%',
-                  },
-                  to: {
-                    bottom: '0%',
-                  },
-                  easing: 'ease-out-back',
-                }}
-                delay={200}
-                duration={800}
-                source={imgBgAvaTips}
-                resizeMode="contain"
-                style={{width: '80%', height: '100%'}}
-              />
-              <Image
-                source={imgLoveLeft}
-                resizeMode="contain"
-                style={{
-                  width: '30%',
-                  height: '100%',
-                  position: 'absolute',
-                  top: -70,
-                  left: 0,
-                }}
-              />
-              <Image
-                source={imgLoveRight}
-                resizeMode="contain"
-                style={{
-                  width: '30%',
-                  height: '100%',
-                  position: 'absolute',
-                  top: -70,
-                  right: 0,
-                }}
-              />
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  position: 'absolute',
-                  bottom: 0,
-                  width: Dimensions.get('window').width,
-                  height: '58%',
-                  borderTopRightRadius: wp(60),
-                  borderTopLeftRadius: wp(60),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <View
-                  style={{
-                    width: Dimensions.get('window').width,
-                    height: wp(250),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  {isStartConfetti && (
-                    <AnimatedLottieView
-                      source={confettiAnimate}
-                      style={{
-                        width: '80%',
-                        // height: 500,
-                        // bottom: 20,
-                        // left: -40,
-                        top: '-8%',
-                        left: '7%',
-                        position: 'absolute',
-                        zIndex: 2,
-                      }}
-                      autoPlay
-                      duration={1000}
-                      loop={false}
-                    />
-                  )}
-                  <Animatable.Text
-                    delay={0}
-                    animation={'fadeInUp'}
-                    duration={1000}
-                    style={{
-                      color: '#5873FF',
-                      fontSize: 30,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      fontFamily: 'Comfortaa-SemiBold',
-                      marginBottom: wp(50),
-                    }}>
-                    {`Hey, ${
-                      userProfile?.data?.name === null
-                        ? ''
-                        : userProfile?.data?.name
-                    }\nYou’re all set!`}
-                  </Animatable.Text>
-                  <Animatable.Text
-                    delay={2000}
-                    animation={'fadeIn'}
-                    duration={800}
-                    style={{
-                      fontSize: fixedFontSize(24),
-                      textAlign: 'center',
-                      fontWeight: '100',
-                      marginTop: wp(10),
-                    }}>
-                    {"Let's show you how \nEroTales works..."}
-                  </Animatable.Text>
-                </View>
-              </View>
-            </ImageBackground>
-          </Modal>
-        );
-      } else if (activeStep <= 3 || activeStep <= 5 || stepsTutorial <= 5) {
-        const content = `Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in.
-      I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.`;
-        return (
-          <SafeAreaView
-            onTouchStart={handleTouchStart}
-            // onTouchEnd={handleTouchEnd}
-            pointerEvents="box-only"
-            style={{
-              position: 'absolute',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
-
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }}>
-            {activeStep != 5 && stepsTutorial != 5 && stepsTutorial != 3
-              ? renderProgress()
-              : null}
-            {activeStep === 1 ? (
-              <Step1 handleNext={handleNext} />
-            ) : activeStep === 5 || stepsTutorial == 5 ? (
-              <View style={{alignItems: 'center'}}>
-                <ImageBackground
-                  source={imgSelect}
-                  style={{
-                    width: Dimensions.get('window').width,
-                    height: Dimensions.get('window').height,
-                    marginTop: '-10%',
-                  }}>
-                  <View
-                    style={{
-                      backgroundColor: 'rgba(0,0,0,0.3)',
-                      opacity: 1,
-                      marginTop: wp(40),
-                    }}>
-                    {renderProgress()}
-                  </View>
-
-                  <Step5
-                    handleNext={() => handleNext()}
-                    handlePrev={handlePrev}
-                  />
-                </ImageBackground>
-              </View>
-            ) : (
-              <Step2
-                handleNext={() => handleNext()}
-                handlePrev={() => {
-                  setActiveStep(1);
-                  handleSetSteps(1);
-                }}
-              />
-            )}
-          </SafeAreaView>
-        );
-      }
-    }
-  };
 
   const reloadWatch = async () => {
     const advert = await loadRewarded2();
@@ -1319,13 +1133,14 @@ const MainScreen = ({
 
   const renderView = () => {
     if (route?.name != 'Main') {
+     
       return (
         <Pressable
           onPress={() => (route?.name != 'Main' ? pressScreen() : null)}
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
-            // paddingHorizontal: wp(20),
+            paddingTop: isIphoneXorAbove() ? 70 : 50,
             //marginTop: 20,
           }}>
           <StatusBar
@@ -1333,12 +1148,6 @@ const MainScreen = ({
             backgroundColor={backgroundStyle.backgroundColor}
           />
 
-          <View
-            style={{
-              backgroundColor: backgroundColor,
-              paddingTop: isIphoneXorAbove() ? 50 : 30,
-            }}
-          />
           <View
             style={{
               flexDirection: 'row',
@@ -1377,10 +1186,7 @@ const MainScreen = ({
               </Text>
             </View>
 
-            <TouchableOpacity
-              onPress={async () => {
-                handleListening();
-              }}
+            <View
               style={{
                 padding: wp(5),
                 paddingHorizontal: wp(10),
@@ -1403,29 +1209,28 @@ const MainScreen = ({
                 }}>
                 Listen
               </Text>
-            </TouchableOpacity>
-          </View>
-        
-          <View style={{flex: 1}}>
-            <View
-              key={page} // Add a unique key for each view in the array
-              style={{
-                flex: 0,
-                alignItems: 'center',
-                backgroundColor: backgroundColor,
-                paddingTop: wp(20),
-                paddingHorizontal: wp(20),
-              }}>
-              { textChunks.length > 0 ? renderFactItem({
-                item: textChunks[page],
-                page,
-                title: dataBook.title_en,
-                category: dataBook?.category?.name,
-                colorText: colorText,
-                type: 'view',
-              }) : null}
             </View>
           </View>
+        { textChunks.length > 0 ? 
+          <View
+       
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              backgroundColor: backgroundColor,
+              paddingTop: wp(20),
+              paddingHorizontal: wp(20),
+            }}>
+            {renderFactItem({
+              item: textChunks[page],
+              page,
+              title: dataBook.title_en,
+              category: dataBook?.category?.name,
+              colorText: colorText,
+              type: 'view',
+            })}
+          </View> : null }
+           
         </Pressable>
       );
     } else {
