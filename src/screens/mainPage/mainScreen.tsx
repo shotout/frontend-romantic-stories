@@ -1323,7 +1323,7 @@ const MainScreen = ({
             backgroundColor: backgroundColor,
             flex: 1,
             // paddingHorizontal: wp(20),
-            marginTop: 20,
+            //marginTop: 20,
           }}>
           <StatusBar
             barStyle={'dark-content'}
@@ -1333,7 +1333,7 @@ const MainScreen = ({
           <View
             style={{
               backgroundColor: backgroundColor,
-              paddingTop: isIphoneXorAbove() ? 40 : 25,
+              paddingTop: isIphoneXorAbove() ? 50 : 30,
             }}
           />
           <View
