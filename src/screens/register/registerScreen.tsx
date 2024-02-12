@@ -70,7 +70,7 @@ function RegisterScreen({
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
-  const [isReOnboard, setIsReOnboard] = useState(false);
+  // const [isReOnboard, setIsReOnboard] = useState(false);
   const [dataAva, setDataAva] = useState([]);
   const [dataAva2, setDataAva2] = useState([]);
   const [dataStory, setDataStory] = useState([]);
@@ -122,7 +122,7 @@ function RegisterScreen({
   };
 
   useEffect(() => {
-    if (!values.gender || isReOnboard) {
+    if (!values.gender) {
       fetchAllAva();
     } else {
       fetchAva1(values.gender === 'Female' ? 'female' : 'male');
@@ -209,21 +209,21 @@ function RegisterScreen({
     ]);
   }, []);
 
-  const checkReOnboard = async () => {
-    const device = await DeviceInfo.getUniqueId();
-    try {
-      await checkDeviceRegister({
-        device_id: device,
-      });
-      setIsReOnboard(true);
-    } catch {
-      setIsReOnboard(false);
-    }
-  };
+  // const checkReOnboard = async () => {
+  //   const device = await DeviceInfo.getUniqueId();
+  //   try {
+  //     await checkDeviceRegister({
+  //       device_id: device,
+  //     });
+  //     setIsReOnboard(true);
+  //   } catch {
+  //     setIsReOnboard(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    checkReOnboard();
-  }, []);
+  // useEffect(() => {
+  //   checkReOnboard();
+  // }, []);
 
   // const fetchCategory = async () => {
   //   try {
@@ -348,59 +348,31 @@ function RegisterScreen({
         />
       );
     } else if (stepRegister === 4) {
-      if (values.gender === 'Female') {
-        return (
-          <Register5
-            gender={values.gender}
-            dataAvatar={dataAva2}
-            setAvatar={text => handleChange('avatar_male', text)}
-          />
-        );
-      }else{
-        return (
-          <Register4
-            gender={values.gender}
-            dataAvatar={dataAva}
-            setAvatar={text =>
-              handleChange(
-                'avatar_male',
-                values.gender === 'Female' ? text + 3 : text,
-              )
-            }
-          />
-        );
-      }
-      
+      return (
+        <Register5
+          gender={values.gender}
+          dataAvatar={dataAva2}
+          setAvatar={text =>
+            handleChange(
+              values.gender === 'Female' ? 'avatar_male' : 'avatar_female',
+              text,
+            )
+          }
+        />
+      );
     } else if (stepRegister === 5) {
-      if (values.gender === 'Female') {
-        return (
-          <Register4
-            gender={values.gender}
-            dataAvatar={dataAva}
-            setAvatar={text => handleChange('avatar_male', text)}
-          />
-        );
-      }else{
-        return (
-          <Register5
-            gender={values.gender}
-            dataAvatar={dataAva2}
-            setAvatar={text =>
-              handleChange(
-                'avatar_male',
-                values.gender === 'Female' ? text + 3 : text,
-              )
-            }
-          />
-        );
-      }
-      // return (
-      //   <Register5
-      //     gender={values.gender}
-      //     dataAvatar={dataAva2}
-      //     setAvatar={text => handleChange('avatar_female', text)}
-      //   />
-      // );
+      return (
+        <Register4
+          gender={values.gender}
+          dataAvatar={dataAva}
+          setAvatar={text =>
+            handleChange(
+              values.gender === 'Female' ? 'avatar_female' : 'avatar_male',
+              text,
+            )
+          }
+        />
+      );
     } else if (stepRegister === 6) {
       return (
         <Register6
@@ -473,10 +445,10 @@ function RegisterScreen({
                 ? 'Be part of the story'
                 : stepRegister === 3
                 ? 'Select your favorite genre'
-                : stepRegister === 4 && values.gender === 'Female'
-                ? 'Select your partner' : stepRegister === 4 && values.gender != 'Female' ? 'Select your look'
-                : stepRegister === 5 && values.gender === 'Female' ? 'Select your look' : 'Select your partner'
+                : stepRegister === 4
                 ? 'Select your partner'
+                : stepRegister === 5
+                ? 'Select your look'
                 : stepRegister === 6
                 ? 'Customize your page'
                 : stepRegister === 7
