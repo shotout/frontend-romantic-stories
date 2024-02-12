@@ -931,7 +931,9 @@ const LibraryScreen = ({
       </Text>
 
       <SwipeListView
-        nestedScrollEnabled
+        style={{flex: 1}}
+        disableRightSwipe
+        showsVerticalScrollIndicator={false}
         keyExtractor={(rowData, index) => {
           return rowData?.id.toString();
         }}
@@ -1195,12 +1197,14 @@ const LibraryScreen = ({
         ) : (
           <>
             {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-              <ScrollView scrollEnabled={scrollEnabled}>
+              <ScrollView scrollEnabled={false}>
                 {detail != null ? (
                   renderContentCollectionDetail()
                 ) : (
                   <SwipeListView
-                  nestedScrollEnabled
+                  style={{flex: 1}}
+                  disableRightSwipe
+                  showsVerticalScrollIndicator={false}
                   
                     data={listCollection}
                     renderItem={item => renderContentCollection(item)}
@@ -1247,7 +1251,9 @@ const LibraryScreen = ({
                 )}
                 {detail != null ? (
                   <SwipeListView
-                  nestedScrollEnabled
+                  style={{flex: 1}}
+                  disableRightSwipe
+                  showsVerticalScrollIndicator={false}
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
@@ -1311,7 +1317,9 @@ const LibraryScreen = ({
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
-                    nestedScrollEnabled
+                    style={{flex: 1}}
+                    disableRightSwipe
+                    showsVerticalScrollIndicator={false}
                     // useSectionList
                     data={listLibrary}
                     renderItem={(item, rowMap) => renderContent(item, rowMap)}
