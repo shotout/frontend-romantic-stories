@@ -874,7 +874,11 @@ const MainScreen = ({
       setLoading(false);
       setShowModalSuccessPurchase(true);
     } else {
+      // setLoading(false);
+      setShowModalCongrats(false);
+      setShowModalNewStory(false);
       setLoading(false);
+      setShowModalSuccessPurchase(true);
       // setShowModalNewStory(false);
     }
   };
@@ -1002,9 +1006,12 @@ const MainScreen = ({
         (entry: any) =>
           entry?.id === dataBook.id && entry?.page === textChunks?.length,
       );
-      if (userHasRead && textChunks?.length > 0) {
-        setShowModalNewStory(true);
-      }
+     
+        if (userHasRead && textChunks?.length > 0) {
+          setShowModalNewStory(true);
+        }
+     
+     
     }
   }, [dataBook, textChunks]);
 
@@ -1323,9 +1330,7 @@ const MainScreen = ({
             isVisible={showModalSuccessPurchase}
             onClose={() => {
               setBook(nextStory);
-              addStory(nextStory.id);
-              pagerRef.current?.setPage(0);
-              setScreenNumber(0);
+              handleReadAds()
               setShowModalSuccessPurchase(false);
             }}
           />
