@@ -74,7 +74,7 @@ function QuotesContent({
   const counter = useRef(0);
   const activeStatus = useRef(false);
   const [size, setSize] = useState(fontSize);
-  const manipulatedResponse = item.replace(/<\/?p>/g, '');
+  const manipulatedResponse = item?.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
