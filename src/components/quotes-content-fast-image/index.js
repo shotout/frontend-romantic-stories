@@ -78,7 +78,6 @@ function QuotesContent({
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
-console.log(me)
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive, userProfile]);

@@ -866,7 +866,7 @@ const MainScreen = ({
       'unlock_story_1_week_only',
       res?.data?.id,
     );
-    
+
     if (data) {
       setShowModalCongrats(false);
       setShowModalNewStory(false);
@@ -930,7 +930,6 @@ const MainScreen = ({
     />
   );
 
-
   const reloadWatch = async () => {
     const advert = await loadRewarded2();
     setShowModalCongrats(false);
@@ -983,19 +982,18 @@ const MainScreen = ({
     }, 200);
   };
 
-    const handleReadAds = async (newStory?: any) => {
-      const story = newStory?.content_en ? newStory : nextStory;
-      setBook(story);
-      setTimeout(async () => {
-        setShowModalDay(false);
-        setShowModal(false);
-        setShowPreview(false);
-        handleSetStory(story);
-        pagerRef.current?.setPage(0);
-        setScreenNumber(0);
-      }, 200);
-    };
-
+  const handleReadAds = async (newStory?: any) => {
+    const story = newStory?.content_en ? newStory : nextStory;
+    setBook(story);
+    setTimeout(async () => {
+      setShowModalDay(false);
+      setShowModal(false);
+      setShowPreview(false);
+      handleSetStory(story);
+      pagerRef.current?.setPage(0);
+      setScreenNumber(0);
+    }, 200);
+  };
 
   useEffect(() => {
     if (!(isPremiumStory || isPremiumAudio)) {
@@ -1023,7 +1021,6 @@ const MainScreen = ({
     // Jika sentuhan terjadi di sebelah kanan
 
     if (touchX > screenWidth && !showModalCongrats) {
-     
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
           const existingEntry = readStory
@@ -1070,7 +1067,7 @@ const MainScreen = ({
     }
   };
   useEffect(() => {
-    if(!__DEV__){
+    if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
@@ -1080,7 +1077,6 @@ const MainScreen = ({
       }
       getPrice();
     }
-    
   }, []);
   const handleSuccessRating = async () => {
     setRating(false);
@@ -1213,26 +1209,25 @@ const MainScreen = ({
               </Text>
             </View>
           </View>
-        { textChunks.length > 0 ? 
-          <View
-       
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              backgroundColor: backgroundColor,
-              paddingTop: wp(20),
-              paddingHorizontal: wp(20),
-            }}>
-            {renderFactItem({
-              item: textChunks[page],
-              page,
-              title: dataBook.title_en,
-              category: dataBook?.category?.name,
-              colorText: colorText,
-              type: 'view',
-            })}
-          </View> : null }
-           
+          {textChunks.length > 0 ? (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                backgroundColor: backgroundColor,
+                paddingTop: wp(20),
+                paddingHorizontal: wp(20),
+              }}>
+              {renderFactItem({
+                item: textChunks[page],
+                page,
+                title: dataBook.title_en,
+                category: dataBook?.category?.name,
+                colorText: colorText,
+                type: 'view',
+              })}
+            </View>
+          ) : null}
         </Pressable>
       );
     } else {
@@ -1310,7 +1305,7 @@ const MainScreen = ({
             isVisible={showModalNewStory}
             onClose={() => {
               pagerRef.current?.setPage(textChunks.length - 1);
-              setScreenNumber(textChunks.length - 1)
+              setScreenNumber(textChunks.length - 1);
               setShowModalNewStory(false);
             }}
             onWatchAds={() => {
