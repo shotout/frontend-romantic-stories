@@ -734,11 +734,12 @@ const MainScreen = ({
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
   useEffect(() => {
+    
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       Dimensions.get('window').height <= 667
         ? fontSize === 14
-          ? 750
+          ? 655
           : 550
         : fontSize === 14
         ? 1000

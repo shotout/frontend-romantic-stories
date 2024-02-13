@@ -380,7 +380,7 @@ function QuotesContent({
                   width: wp(100),
                   left: 20,
                   zIndex: 1,
-                  bottom: 100,
+                  bottom: 90,
                 }}>
                 <FastImage
                   source={{
@@ -410,7 +410,7 @@ function QuotesContent({
                       : partner === '/assets/images/avatars/5/think.png' &&
                         Platform.OS === 'android'
                       ? 0
-                      : null,
+                      : -15,
                 }}>
                 <FastImage
                   source={{
@@ -462,7 +462,7 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(-150),
+                  marginBottom: wp(-190),
                   width: wp(100),
                   height: hp(180),
                   left: '10%',
@@ -485,7 +485,7 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(-130),
+                  marginBottom: wp(-100),
                   width: wp(100),
                   height: hp(100),
                   left: '35%',
@@ -526,7 +526,7 @@ function QuotesContent({
                   resizeMode="contain"
                   style={{
                     width: '75%',
-                    height: hp(110),
+                    height: hp(100),
                     marginLeft: wp(20),
                     zIndex: -1,
                     backgroundColor: 'Transparent',
