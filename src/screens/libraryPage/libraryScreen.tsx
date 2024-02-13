@@ -166,7 +166,7 @@ const LibraryScreen = ({
   };
 
   const fecthProduct = async () => {
-    if(!__DEV__){
+    if (!__DEV__) {
       const products = await IAP.getProducts({
         skus: ['unlock_story_1_week_only'],
       });
@@ -174,7 +174,6 @@ const LibraryScreen = ({
         setPrice(products[0].localizedPrice);
       }
     }
-   
   };
   useEffect(() => {
     setDetail(null);
@@ -199,7 +198,6 @@ const LibraryScreen = ({
   };
 
   const handleReadDetail = async item => {
-   
     setSelectedStory(item);
     if (
       userProfile?.data?.subscription?.plan?.id != 1 ||
@@ -688,7 +686,7 @@ const LibraryScreen = ({
           }}
           style={{
             paddingHorizontal: 10,
-            paddingBottom: 10,
+            // paddingBottom: 10,
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: bgTheme,
@@ -856,7 +854,7 @@ const LibraryScreen = ({
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowModalNewStory(false);
-        setShowModalGetPremium(true)
+        setShowModalGetPremium(true);
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -1016,7 +1014,7 @@ const LibraryScreen = ({
   };
   const rippleAnimate = require('../../assets/lottie/ripple.json');
   return (
-    <View>
+    <View style={{flex: 1}}>
       <ModalGetPremium
         isVisible={showModalGetPremium}
         onGotIt={() => {
@@ -1200,15 +1198,14 @@ const LibraryScreen = ({
         ) : (
           <>
             {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-              <ScrollView scrollEnabled={false}>
+              <View style={{flex: 1, }}>
                 {detail != null ? (
                   renderContentCollectionDetail()
                 ) : (
                   <SwipeListView
-                  style={{flex: 1}}
-                  disableRightSwipe
-                  showsVerticalScrollIndicator={false}
-                  
+                    style={{flex: 0}}
+                    disableRightSwipe
+                    showsVerticalScrollIndicator={false}
                     data={listCollection}
                     renderItem={item => renderContentCollection(item)}
                     renderHiddenItem={(_data, _rowMap) => (
@@ -1254,9 +1251,9 @@ const LibraryScreen = ({
                 )}
                 {detail != null ? (
                   <SwipeListView
-                  style={{flex: 1}}
-                  disableRightSwipe
-                  showsVerticalScrollIndicator={false}
+                    style={{flex: 0}}
+                    disableRightSwipe
+                    showsVerticalScrollIndicator={false}
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
@@ -1320,7 +1317,7 @@ const LibraryScreen = ({
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
-                    style={{flex: 1}}
+                    style={{flex: 0}}
                     disableRightSwipe
                     showsVerticalScrollIndicator={false}
                     // useSectionList
@@ -1382,7 +1379,7 @@ const LibraryScreen = ({
                     previewOpenDelay={3000}
                   />
                 )}
-              </ScrollView>
+              </View>
             ) : listLibrary?.length === 0 &&
               listCollection?.length === 0 &&
               detail === null &&
