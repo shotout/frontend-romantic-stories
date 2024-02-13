@@ -686,7 +686,7 @@ const LibraryScreen = ({
           }}
           style={{
             paddingHorizontal: 10,
-            // paddingBottom: 10,
+            paddingBottom: 10,
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: bgTheme,
@@ -1198,7 +1198,7 @@ const LibraryScreen = ({
         ) : (
           <>
             {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-              <View style={{flex: 1, }}>
+              <View style={{flex: 0, }}>
                 {detail != null ? (
                   renderContentCollectionDetail()
                 ) : (
@@ -1409,6 +1409,8 @@ const LibraryScreen = ({
             shadowOpacity: 0.25,
             shadowRadius: 4,
             elevation: 8,
+            position: 'absolute',
+            bottom: 0
           }}>
           <TouchableOpacity
             onPress={() => handleSomeAction('ExploreLibrary')}

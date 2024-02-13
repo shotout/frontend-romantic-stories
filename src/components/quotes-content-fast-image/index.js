@@ -377,7 +377,7 @@ console.log(me)
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: Dimensions.get('window').height <= 667 ?  wp(-210) : wp(-200),
-                  height: hp(me.includes('positive') || me.includes('think') ? 100 : 150),
+                  height: hp(me?.includes('positive') || me?.includes('think') ? 100 : 150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,
