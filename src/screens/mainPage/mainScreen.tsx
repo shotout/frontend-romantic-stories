@@ -983,10 +983,10 @@ const MainScreen = ({
   };
 
   const handleReadAds = async (newStory?: any) => {
-    const story = newStory?.content_en ? newStory : nextStory;
-    setBook(story);
     pagerRef.current?.setPage(-1);
     setScreenNumber(0);
+    const story = newStory?.content_en ? newStory : nextStory;
+    setBook(story);
     setTimeout(() => {
       handleSetStory(story);
       setShowModalDay(false);
