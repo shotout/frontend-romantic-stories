@@ -78,7 +78,7 @@ function QuotesContent({
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
 
-// console.log(me)
+console.log(me)
   useEffect(() => {
     handleThemeAvatar(pageActive);
   }, [pageActive, userProfile]);
@@ -377,7 +377,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: Dimensions.get('window').height <= 667 ?  wp(-210) : wp(-200),
-                  height: hp(me === '/assets/images/avatars/2/positive.png' ? 100 : me === '/assets/images/avatars/3/think.png' || me === '/assets/images/avatars/3/positive.png' ? 120 : 150),
+                  height: hp(me.includes('positive') || me.includes('think') ? 100 : 150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,
@@ -433,7 +433,7 @@ function QuotesContent({
                   style={{
                     borderRadius: wp(100),
                     height: hp(100),
-                    marginBottom:   Dimensions.get('window').height <= 667 ? wp(0) : wp(15),
+                    marginBottom:   Dimensions.get('window').height <= 667 ? wp(-10) : wp(15),
                     marginTop: wp(4),
                   }}>
                   <View

@@ -742,7 +742,7 @@ const MainScreen = ({
           : 550
         : fontSize === 14
         ? 1000
-        : 800,
+        : 780,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
@@ -866,6 +866,7 @@ const MainScreen = ({
       'unlock_story_1_week_only',
       res?.data?.id,
     );
+    
     if (data) {
       setShowModalCongrats(false);
       setShowModalNewStory(false);
@@ -982,19 +983,19 @@ const MainScreen = ({
     }, 200);
   };
 
-  const handleReadAds = async (newStory?: any) => {
-    pagerRef.current?.setPage(-1);
-    setScreenNumber(0);
-    const story = newStory?.content_en ? newStory : nextStory;
-    setBook(story);
-    setTimeout(() => {
-      handleSetStory(story);
-      setShowModalDay(false);
-      setShowModal(false);
-      setShowPreview(false);
-      pagerRef.current?.setPage(-1);
-    }, 200);
-  };
+    const handleReadAds = async (newStory?: any) => {
+      const story = newStory?.content_en ? newStory : nextStory;
+      setBook(story);
+      setTimeout(async () => {
+        setShowModalDay(false);
+        setShowModal(false);
+        setShowPreview(false);
+        handleSetStory(story);
+        pagerRef.current?.setPage(0);
+        setScreenNumber(0);
+      }, 200);
+    };
+
 
   useEffect(() => {
     if (!(isPremiumStory || isPremiumAudio)) {
@@ -1135,7 +1136,6 @@ const MainScreen = ({
 
   const renderView = () => {
     if (route?.name != 'Main') {
-     
       return (
         <Pressable
           onPress={() => (route?.name != 'Main' ? pressScreen() : null)}
@@ -1268,7 +1268,11 @@ const MainScreen = ({
             data={undefined}
             restart={undefined}
             edit={undefined}
-            readLater={!userFinishedRead && screenNumber !== 0}
+            readLater={
+              !userFinishedRead &&
+              screenNumber !== 0 &&
+              screenNumber !== textChunks?.length - 1
+            }
             isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
             handleRead={(data: any) => {
               handleReadAds(data);
