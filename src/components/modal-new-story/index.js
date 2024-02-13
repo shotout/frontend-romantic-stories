@@ -96,7 +96,7 @@ function ModalNewStory({
   
     if (Math.abs(distanceX) > minSwipeDistance) {
       if (distanceX > 0) {
-        handleClose(); // Swipe ke kanan, menutup modal
+        onClose(); // Swipe ke kanan, menutup modal
       }
     }
   };
