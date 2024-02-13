@@ -62,7 +62,6 @@ function ModalUnlockStory({
       setShowPreview(false);
     }
   }, [isVisible]);
-
   const renderPremium = () => {
     return (
       <View
