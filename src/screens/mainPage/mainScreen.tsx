@@ -874,11 +874,11 @@ const MainScreen = ({
       setLoading(false);
       setShowModalSuccessPurchase(true);
     } else {
-      // setLoading(false);
-      setShowModalCongrats(false);
-      setShowModalNewStory(false);
       setLoading(false);
-      setShowModalSuccessPurchase(true);
+      // setShowModalCongrats(false);
+      // setShowModalNewStory(false);
+      // setLoading(false);
+      // setShowModalSuccessPurchase(true);
       // setShowModalNewStory(false);
     }
   };
