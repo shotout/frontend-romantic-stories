@@ -992,6 +992,7 @@ const MainScreen = ({
       setShowModalDay(false);
       setShowModal(false);
       setShowPreview(false);
+      pagerRef.current?.setPage(-1);
     }, 200);
   };
 
