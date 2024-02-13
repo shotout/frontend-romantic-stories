@@ -76,7 +76,7 @@ function QuotesContent({
   const [size, setSize] = useState(fontSize);
   const manipulatedResponse = item?.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
-  const formattedText = manipulatedResponse.replace(/\r\n/g, ' ');
+  const formattedText = manipulatedResponse?.replace(/\r\n/g, ' ');
 
   useEffect(() => {
     handleThemeAvatar(pageActive);
