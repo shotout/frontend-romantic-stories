@@ -1021,6 +1021,7 @@ const MainScreen = ({
     // Jika sentuhan terjadi di sebelah kanan
 
     if (touchX > screenWidth && !showModalCongrats) {
+     
       setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
           const existingEntry = readStory
@@ -1304,6 +1305,7 @@ const MainScreen = ({
             isVisible={showModalNewStory}
             onClose={() => {
               pagerRef.current?.setPage(textChunks.length - 1);
+              setScreenNumber(textChunks.length - 1)
               setShowModalNewStory(false);
             }}
             onWatchAds={() => {
