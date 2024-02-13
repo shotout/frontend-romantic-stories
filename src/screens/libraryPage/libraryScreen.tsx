@@ -676,7 +676,7 @@ const LibraryScreen = ({
   };
   const renderContentCollection = item => {
     return (
-      <View>
+      
         <Pressable
           onPress={() => {
             setDetailCollection(null);
@@ -685,6 +685,7 @@ const LibraryScreen = ({
             fetchDetail(item?.item?.id);
           }}
           style={{
+            
             paddingHorizontal: 10,
             paddingBottom: 10,
             flexDirection: 'row',
@@ -715,7 +716,7 @@ const LibraryScreen = ({
 
           <BackRightSvg />
         </Pressable>
-      </View>
+     
     );
   };
 
@@ -841,7 +842,6 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
-      console.log('DATA INI' + JSON.stringify(res));
       setListCollection(res.data);
       setListLibrary(res.outsides);
     } catch (error) {
@@ -1198,12 +1198,12 @@ const LibraryScreen = ({
         ) : (
           <>
             {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-              <View style={{flex: 0, }}>
+              <View style={{flex: 1, paddingBottom: 100, justifyContent: 'flex-start', alignContent: 'flex-start' }}>
                 {detail != null ? (
                   renderContentCollectionDetail()
-                ) : (
+                ) : listCollection.length > 0 ? (
                   <SwipeListView
-                    style={{flex: 0}}
+                    style={{flex: 0, maxHeight: 68}}
                     disableRightSwipe
                     showsVerticalScrollIndicator={false}
                     data={listCollection}
@@ -1248,10 +1248,10 @@ const LibraryScreen = ({
                     previewOpenValue={-40}
                     previewOpenDelay={3000}
                   />
-                )}
+                ) : null}
                 {detail != null ? (
                   <SwipeListView
-                    style={{flex: 0}}
+                  style={{flex: 0, height: 'auto'}}
                     disableRightSwipe
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(rowData, index) => {
@@ -1317,10 +1317,9 @@ const LibraryScreen = ({
                     keyExtractor={(rowData, index) => {
                       return rowData?.id.toString();
                     }}
-                    style={{flex: 0}}
+                    style={{flex: 0, height: 'auto'}}
                     disableRightSwipe
                     showsVerticalScrollIndicator={false}
-                    // useSectionList
                     data={listLibrary}
                     renderItem={(item, rowMap) => renderContent(item, rowMap)}
                     swipeGestureEnded={(_data, _rowMap) => {
