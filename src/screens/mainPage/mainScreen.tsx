@@ -222,6 +222,12 @@ const MainScreen = ({
     handleOpenNotif();
   }, [route?.params]);
 
+  useEffect(() => {
+    if (!showModalCongrats && currentXp !== newXp) {
+      reloadUserProfile(null);
+    }
+  }, [showModalCongrats]);
+
   const handleSuccessListen = async () => {
     const existingEntry = readStory
       ? readStory.find(
@@ -1461,9 +1467,6 @@ const MainScreen = ({
               isVisible={showModalCongrats}
               onClose={async () => {
                 // pagerRef.current?.setPage(dataBook.content_en?.length - 1);
-                if (currentXp !== newXp) {
-                  reloadUserProfile();
-                }
                 setShowModalCongrats(false);
                 if (userStory?.is_rating === null) {
                   setScreenNumber(0);

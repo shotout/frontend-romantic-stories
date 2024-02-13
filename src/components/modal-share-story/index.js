@@ -35,7 +35,7 @@ import {isIphone} from '../../utils/devices';
 import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
 import {imgShare, logo} from '../../assets/images';
-import { STORY_SHARED, eventTracking } from '../../helpers/eventTracking';
+import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
 
 function ModalShareStory({isVisible, onClose, storyData}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
@@ -47,7 +47,9 @@ function ModalShareStory({isVisible, onClose, storyData}) {
     try {
       const link = await dynamicLinks().buildShortLink(
         {
-          link: `https://romanticstory.page.link/HNyL?storyId=${storyData?.item?.id || storyData?.id}`,
+          link: `https://romanticstory.page.link/HNyL?storyId=${
+            storyData?.item?.id || storyData?.id
+          }`,
           domainUriPrefix: 'https://romanticstory.page.link',
           android: {
             packageName: 'com.romanticstory',
@@ -78,8 +80,15 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const captureRef = useRef();
   const captureRefPost = useRef();
   const base64CaptureImage = useRef(null);
-  const sharedMessageWa = `The *EroTales App* has the best\nRomantic Stories ever! I just\nfound this once:\n*${storyData?.item?.title_en || storyData?.title_en}*\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
-  const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en} Check out the Story here: ${dinamicLink} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
+  const sharedMessageWa = `The *EroTales App* has the best\nRomantic Stories ever! I just\nfound this once:\n*${
+    storyData?.item?.title_en || storyData?.title_en
+  }*\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
+  const sharedMessageFB = `The EroTales App has the best Romantic\nStories ever! I just found this once:\n${
+    storyData?.item?.title_en || storyData?.title_en
+  }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on the AppStore\nor Google Play.`;
+  const sharedMessage = `The EroTales App has the best\nRomantic Stories ever! I just\nfound this once:\n${
+    storyData?.item?.title_en || storyData?.title_en
+  }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
 
   const handleClose = () => {
     onClose();
@@ -149,7 +158,9 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const handleShareInstagramDefault = async () => {
     handleShare('story');
     Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
+      `The EroTales App has the best Romantic Stories ever! I just found this once: ${
+        storyData?.item?.title_en || storyData?.title_en
+      }. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
     Alert.alert(
       '',
@@ -196,10 +207,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShareFacebookDefault = async () => {
-    handleShare('story');
-    Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en || storyData?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
-    );
+    Clipboard.setString(sharedMessageFB);
     Alert.alert(
       '',
       'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
@@ -208,16 +216,14 @@ function ModalShareStory({isVisible, onClose, storyData}) {
           text: 'OK',
           onPress: async () => {
             try {
-              const contentURL = isIphone
-                ? base64CaptureImage.current
-                : captureUri;
               await Share.shareSingle({
-                title: 'Share image to facebook',
-                url: contentURL,
+                message: sharedMessageFB,
                 social: Share.Social.FACEBOOK,
+                title: 'Share to Facebook',
+                url: 'https://EroTalesApp.com',
               });
             } catch (err) {
-              console.log('Err share default fb:', err);
+              console.log('Err share default facebook:', err);
             }
           },
         },
@@ -234,13 +240,10 @@ function ModalShareStory({isVisible, onClose, storyData}) {
         const nameToChange = uriArray[uriArray.length - 1];
         const renamedURI = uri.replace(
           nameToChange,
-          `EroTales - ${storyData?.item?.title_en?.substring(
-            0,
-            10,
-          ) || storyData?.title_en?.substring(
-            0,
-            10,
-          )} ${Date.now()}.png`,
+          `EroTales - ${
+            storyData?.item?.title_en?.substring(0, 10) ||
+            storyData?.title_en?.substring(0, 10)
+          } ${Date.now()}.png`,
         );
 
         RNFS.copyFile(uri, renamedURI)
@@ -497,7 +500,9 @@ function ModalShareStory({isVisible, onClose, storyData}) {
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
             best Romantic Stories ever! I just found this once:
-            <Text style={{fontWeight: '700'}}>{storyData?.item?.title_en || storyData?.title_en}</Text>
+            <Text style={{fontWeight: '700'}}>
+              {storyData?.item?.title_en || storyData?.title_en}
+            </Text>
           </Text>
 
           <View
