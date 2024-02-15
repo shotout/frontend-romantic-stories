@@ -37,6 +37,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import states from './states';
 import dispatcher from './dispatcher';
+import { TextInput } from 'react-native-paper';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 function QuotesContent({
@@ -77,6 +78,8 @@ function QuotesContent({
   const manipulatedResponse = item?.replace(/<\/?p>/g, '');
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse?.replace(/\r\n/g, ' ');
+  const [trimmedText, setTrimmedText] = useState('');
+  const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum felis at semper iaculis. Integer auctor justo in purus suscipit, et dapibus lectus maximus. Nam consectetur lectus in lectus vulputate, sit amet congue urna fermentum. Sed a eros et ex vestibulum sodales. Phasellus vulputate velit sed est vulputate, ut tempor elit eleifend. Sed commodo enim vel ex bibendum, quis euismod sapien vestibulum. Integer nec nisi nulla. Maecenas id volutpat risus. Fusce sed mi vitae arcu tristique sodales. Duis quis fermentum lectus. Sed sollicitudin odio eu felis vestibulum, at malesuada lectus cursus. Phasellus sit amet metus ac risus sodales tempus. Sed nec libero a ante convallis ullamcorper eu et nibh. Nulla facilisi. Mauris aliquet erat sit amet dui lobortis laoreet. lobortis laoreet lobortis laoreet`;
 
   useEffect(() => {
     handleThemeAvatar(pageActive);
@@ -172,6 +175,30 @@ function QuotesContent({
       ? code_color.white
       : code_color.blackDark;
   };
+  useEffect(() => {
+    const calculateTrimmedText = () => {
+      const maxWidth = Dimensions.get('window').width - 40; // Assuming 20 padding on each side
+      const fontSize = Dimensions.get('window').width * 0.04; // Adjust as needed
+      const maxLines = Math.floor((Dimensions.get('window').height * 0.8) / fontSize); // Adjust as needed
+
+      let lines = 0;
+      let textArray = [];
+
+      for (let charIndex = 0; charIndex < longText.length; charIndex++) {
+        if (longText[charIndex] === '\n') {
+          lines++;
+          if (lines >= maxLines) {
+            break;
+          }
+        }
+        textArray.push(longText[charIndex]);
+      }
+
+      setTrimmedText(textArray.join(''));
+    };
+
+    calculateTrimmedText();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -185,7 +212,9 @@ function QuotesContent({
   const renderSelect = useCallback(() => {
     if (color) {
       return (
+       
         <Text
+          
           style={[
             styles.ctnQuotes,
             {
@@ -193,8 +222,8 @@ function QuotesContent({
               fontFamily: fontFamily,
               fontSize: Number(size),
               color: fontColor,
-              marginTop: 2,
-              lineHeight: 27,
+              marginTop: '1%',
+              lineHeight: 25,
             },
           ]}>
           {item}
@@ -203,6 +232,7 @@ function QuotesContent({
     } else {
       return (
         <SelectableText
+        
           menuItems={['Share']}
           onSelection={({eventType, content, selectionStart, selectionEnd}) => {
             navigate('Share', {
@@ -230,7 +260,7 @@ function QuotesContent({
                     fontFamily: fontFamily,
                     fontSize: Number(size),
                     color: fontColor,
-                    lineHeight: 27,
+                    lineHeight: 25,
                   },
                 ]}>
                 {item}
@@ -375,8 +405,8 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: Dimensions.get('window').height <= 667 ?  wp(-210) : wp(-200),
-                  height: hp(me?.includes('positive') || me?.includes('think') ? 100 : 150),
+                  marginBottom: Dimensions.get('window').height <= 667 ?  wp(-210) : me === '/assets/images/avatars/2/think.png' ? wp(-180) :  me === '/assets/images/avatars/3/think.png'  ? wp(-180) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : wp(-195),
+                  height: hp(me?.includes('positive') || me === '/assets/images/avatars/2/think.png' ? 150 : me === '/assets/images/avatars/4/think.png' ? 110 : me != '/assets/images/avatars/2/think.png' && me?.includes('think') ? 100 : 150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,
@@ -390,7 +420,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(300),
+                    height: hp(me != '/assets/images/avatars/2/positive.png' ? 400 : me === '/assets/images/avatars/2/positive.png' ? 450 : 360),
                   }}
                 />
               </View>
@@ -398,9 +428,9 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(-100),
+                  marginBottom: wp(partner === '/assets/images/avatars/5/think.png' ? -90 : -85),
                   width: wp(100),
-                  height: hp(110),
+                  height: hp(partner === '/assets/images/avatars/5/think.png'? 90 : 100),
                   left: '40%',
                   zIndex: 1,
                   bottom:
@@ -420,7 +450,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(310),
+                    height: hp(350),
                   }}
                 />
               </View>
@@ -462,7 +492,7 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(-190),
+                  marginBottom: wp(me === '/assets/images/avatars/2/inlove.png' ? -160 : -190),
                   width: wp(100),
                   height: hp(180),
                   left: '10%',

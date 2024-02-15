@@ -740,7 +740,6 @@ const MainScreen = ({
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
   useEffect(() => {
-    
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       Dimensions.get('window').height <= 667
@@ -749,7 +748,7 @@ const MainScreen = ({
           : 550
         : fontSize === 14
         ? 1000
-        : 780,
+        : fontSize === 16 ? 860 : 780,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
@@ -1019,7 +1018,7 @@ const MainScreen = ({
      
      
     }
-  }, [dataBook, textChunks]);
+  }, [dataBook]);
 
   const userFinishedRead = readStory?.some(
     (entry: any) =>
@@ -1337,6 +1336,7 @@ const MainScreen = ({
             onClose={() => {
               setBook(nextStory);
               handleReadAds()
+              addStory(nextStory.id);
               setShowModalSuccessPurchase(false);
             }}
           />

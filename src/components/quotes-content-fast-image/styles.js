@@ -21,7 +21,7 @@ export default StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingTop: wp(20),
+    paddingTop: wp(10),
     
   },
   ctnQuotesIcon: {
@@ -35,9 +35,10 @@ export default StyleSheet.create({
     position:'relative',
   },
   ctnQuotes: {
-     textAlign: 'auto',
+    textAlign: 'left',
     // fontFamily: fonts.QuotesText,
-    lineHeight: 24,
+   
+    // letterSpacing: 0
   },
   ctnRowButton:{
     flexDirection: 'row',

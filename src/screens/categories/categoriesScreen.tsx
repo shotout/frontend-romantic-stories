@@ -230,6 +230,7 @@ const CategoriesScreen = ({
               </TouchableOpacity>
             ) : (
               <>
+              {selectCategory === item?.id ? null  :
                 <View
                   style={{
                     position: 'absolute',
@@ -252,7 +253,7 @@ const CategoriesScreen = ({
                     }}>
                     Free
                   </Text>
-                </View>
+                </View> }
                 <TouchableOpacity
                   style={{
                     backgroundColor:
