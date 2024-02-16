@@ -273,6 +273,7 @@ function QuotesContent({
     }
   }, [color, isActive, fontColor, item]);
 
+
   return (
     <SafeAreaView
       style={{
@@ -405,8 +406,8 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: Dimensions.get('window').height <= 667 ?  wp(-210) : me === '/assets/images/avatars/2/think.png' ? wp(-180) :  me === '/assets/images/avatars/3/think.png'  ? wp(-180) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : wp(-195),
-                  height: hp(me?.includes('positive') || me === '/assets/images/avatars/2/think.png' ? 150 : me === '/assets/images/avatars/4/think.png' ? 110 : me != '/assets/images/avatars/2/think.png' && me?.includes('think') ? 100 : 150),
+                  marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
+                  height:  Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ? hp(170) : hp(  Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? 180 : Dimensions.get('window').height === 812 &&  me === '/assets/images/avatars/2/think.png' ? 180 :me === '/assets/images/avatars/2/think.png' ? 150 :  me === '/assets/images/avatars/4/think.png' ? 110 : me === '/assets/images/avatars/3/think.png' && Dimensions.get('window').height <= 667 ? 130 : me === '/assets/images/avatars/3/think.png' ? 120 :  me != '/assets/images/avatars/2/think.png' && me?.includes('think') ? 100 : me === '/assets/images/avatars/2/positive.png' ? 150 : me?.includes('positive') ? 120 : 150),
                   width: wp(100),
                   left: 20,
                   zIndex: 1,
@@ -420,7 +421,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(me != '/assets/images/avatars/2/positive.png' ? 400 : me === '/assets/images/avatars/2/positive.png' ? 450 : 360),
+                    height: hp( me === '/assets/images/avatars/3/positive.png' || me === '/assets/images/avatars/1/positive.png' ? 350  : me === '/assets/images/avatars/2/positive.png'  ? 450  : me != '/assets/images/avatars/2/positive.png' ? 400 : 360),
                   }}
                 />
               </View>
@@ -450,7 +451,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(100),
-                    height: hp(350),
+                    height: hp( partner === '/assets/images/avatars/4/positive.png' || partner === '/assets/images/avatars/6/positive.png' ? 330 : 340),
                   }}
                 />
               </View>
@@ -462,7 +463,7 @@ function QuotesContent({
                   style={{
                     borderRadius: wp(100),
                     height: hp(100),
-                    marginBottom:   Dimensions.get('window').height <= 667 ? wp(-10) : wp(15),
+                    marginBottom:   Dimensions.get('window').height <= 667 ? wp(-10) : wp(5),
                     marginTop: wp(4),
                   }}>
                   <View

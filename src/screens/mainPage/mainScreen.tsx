@@ -748,7 +748,7 @@ const MainScreen = ({
           : 550
         : fontSize === 14
         ? 1000
-        : fontSize === 16 ? 860 : 780,
+        : fontSize === 16 ? 860 : 765,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
@@ -1213,7 +1213,7 @@ const MainScreen = ({
                 style={{
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: fixedFontSize(Number(fontSize)),
+                  fontSize: fixedFontSize(Number(14)),
                   fontFamily: fontFamily,
                   color: code_color.white,
                   marginLeft: wp(5),
@@ -1375,7 +1375,7 @@ const MainScreen = ({
                   textAlign: 'left',
                   fontSize: fixedFontSize(Number(fontSize) - 2),
                   fontFamily: fontFamily,
-                  marginBottom: wp(5),
+                  marginBottom: wp(2),
                   color:
                     backgroundColor === '#2C3439'
                       ? code_color.white
@@ -1418,7 +1418,7 @@ const MainScreen = ({
                 style={{
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: fixedFontSize(Number(fontSize)),
+                  fontSize: fixedFontSize(Number(14)),
                   fontFamily: fontFamily,
                   color: code_color.white,
                   marginLeft: wp(5),
