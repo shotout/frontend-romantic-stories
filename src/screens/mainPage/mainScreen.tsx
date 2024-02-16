@@ -715,44 +715,55 @@ const MainScreen = ({
     }
   };
 
-  const splitTextIntoArray = (text: string, chunkLength: number) => {
-    const words = text?.split(' ');
-    const resultArray = [];
-    let currentChunk = '';
+  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get('window').width;
+  const splitTextIntoPages = (
+    text: string,
+    fontSize: number,
+    lineHeight: number,
+  ) => {
+    const averageCharWidth = fontSize * 0.6; // This is a rough estimation
+    const charsPerLine = Math.floor(screenWidth / averageCharWidth);
+    const linesPerPage = Math.floor(screenHeight / lineHeight);
 
-    for (const word of words) {
-      if ((currentChunk + word).length <= chunkLength) {
-        currentChunk += word + ' ';
+    const words = text.split(' ');
+    const pages = [];
+    let currentLine = '';
+    let currentLines: any[] = [];
+
+    words.forEach(word => {
+      if ((currentLine + word).length < charsPerLine) {
+        currentLine += `${word} `;
       } else {
-        resultArray.push(currentChunk.trim());
-        currentChunk = word + ' ';
+        currentLines.push(currentLine.trim());
+        currentLine = `${word} `;
+        if (currentLines.length === linesPerPage) {
+          pages.push(currentLines.join(' '));
+          currentLines = [];
+        }
       }
+    });
+
+    if (currentLine.trim()) {
+      currentLines.push(currentLine.trim());
+    }
+    if (currentLines.length) {
+      pages.push(currentLines.join(' '));
     }
 
-    if (currentChunk.trim() !== '') {
-      resultArray.push(currentChunk.trim());
-    }
-
-    return resultArray;
+    return pages;
   };
-  // const textChunks = splitTextIntoArray(
-  //   dataBook?.content_en,
-  //   Dimensions.get('window').height <= 667 ? 630 : 800,
-  // );
+
   useEffect(() => {
-   
-    const newChunks = splitTextIntoArray(
+    const lineHeight = 1.5 * fontSize; // Adjust line height as needed
+    const newPages = splitTextIntoPages(
       dataBook?.content_en,
-      Dimensions.get('window').height <= 667
-        ? fontSize === '14'
-          ? 655
-          : 550
-        : fontSize === '14'
-        ? 1000
-        : fontSize === '16' && Dimensions.get('window').height === 844 ? 890 : fontSize === 18 && Dimensions.get('window').height === 812 ? 720 : 765,
+      fontSize,
+      lineHeight,
     );
-    setTextChunks(newChunks);
-  }, [dataBook, Dimensions.get('window').height, fontSize]);
+    setTextChunks(newPages);
+  }, [dataBook, Dimensions.get('window').width, Dimensions.get('window').height, fontSize]);  
+
   const renderFactItem = ({item, index, title, category, colorText, type}) => (
     <>
       <QuotesContent
