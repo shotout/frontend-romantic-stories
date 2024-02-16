@@ -740,15 +740,16 @@ const MainScreen = ({
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
   useEffect(() => {
+   
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       Dimensions.get('window').height <= 667
-        ? fontSize === 14
+        ? fontSize === '14'
           ? 655
           : 550
-        : fontSize === 14
+        : fontSize === '14'
         ? 1000
-        : fontSize === 16 ? 860 : 765,
+        : fontSize === '16' && Dimensions.get('window').height === 844 ? 890 : fontSize === 18 && Dimensions.get('window').height === 812 ? 720 : 765,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
@@ -804,7 +805,9 @@ const MainScreen = ({
               alignItems: 'center',
               backgroundColor: backgroundColor,
               paddingTop: wp(20),
-              paddingHorizontal: wp(20),
+              paddingLeft: wp(5),
+              paddingRight: 5
+              // paddingHorizontal: wp(20),
             }}>
             {renderFactItem({
               item: dtb,
