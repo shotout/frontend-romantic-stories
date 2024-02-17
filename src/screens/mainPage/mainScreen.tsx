@@ -1146,6 +1146,23 @@ const MainScreen = ({
     }, 2000);
   };
 
+  useEffect(() => {
+    // This code runs when `page` changes.
+    // You can perform additional logic here if needed.
+    console.log('Page changed to: ', page);
+  }, [page]);
+
+  function RenderFactItemView() {
+    return renderFactItem({
+      item: textChunks[page],
+      page,
+      title: dataBook.title_en,
+      category: dataBook?.category?.name,
+      colorText: colorText,
+      type: 'view',
+    });
+  }
+
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -1234,14 +1251,7 @@ const MainScreen = ({
                 paddingTop: wp(20),
                 paddingHorizontal: wp(20),
               }}>
-              {renderFactItem({
-                item: textChunks[page],
-                page,
-                title: dataBook.title_en,
-                category: dataBook?.category?.name,
-                colorText: colorText,
-                type: 'view',
-              })}
+              <RenderFactItemView />
             </View>
           ) : null}
         </Pressable>
