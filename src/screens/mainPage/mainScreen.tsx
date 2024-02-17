@@ -1176,7 +1176,7 @@ const MainScreen = ({
                   textAlign: 'left',
                   fontSize: fixedFontSize(Number(fontSize) - 2),
                   fontFamily: fontFamily,
-                  marginBottom: wp(5),
+                  marginBottom: wp(2),
                   color:
                     backgroundColor === '#2C3439'
                       ? code_color.white
