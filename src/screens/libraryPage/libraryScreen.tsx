@@ -188,9 +188,7 @@ const LibraryScreen = ({
       handleSetStory(resp.data);
       navigate('Main');
     } else if (
-      userProfile?.data?.subscription?.plan?.id != 1 &&
-      item?.item?.expire === null &&
-      new Date(item?.item?.expire) > new Date()
+      userProfile?.data?.subscription?.plan?.id != 1 
     ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
