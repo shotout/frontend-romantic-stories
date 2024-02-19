@@ -715,55 +715,44 @@ const MainScreen = ({
     }
   };
 
-  const screenHeight = Dimensions.get('window').height;
-  const screenWidth = Dimensions.get('window').width;
-  const splitTextIntoPages = (
-    text: string,
-    fontSize: number,
-    lineHeight: number,
-  ) => {
-    const averageCharWidth = fontSize * 0.6; // This is a rough estimation
-    const charsPerLine = Math.floor(screenWidth / averageCharWidth);
-    const linesPerPage = Math.floor(screenHeight / lineHeight);
+  const splitTextIntoArray = (text: string, chunkLength: number) => {
+    const words = text?.split(' ');
+    const resultArray = [];
+    let currentChunk = '';
 
-    const words = text.split(' ');
-    const pages = [];
-    let currentLine = '';
-    let currentLines: any[] = [];
-
-    words.forEach(word => {
-      if ((currentLine + word).length < charsPerLine) {
-        currentLine += `${word} `;
+    for (const word of words) {
+      if ((currentChunk + word).length <= chunkLength) {
+        currentChunk += word + ' ';
       } else {
-        currentLines.push(currentLine.trim());
-        currentLine = `${word} `;
-        if (currentLines.length === linesPerPage) {
-          pages.push(currentLines.join(' '));
-          currentLines = [];
-        }
+        resultArray.push(currentChunk.trim());
+        currentChunk = word + ' ';
       }
-    });
-
-    if (currentLine.trim()) {
-      currentLines.push(currentLine.trim());
-    }
-    if (currentLines.length) {
-      pages.push(currentLines.join(' '));
     }
 
-    return pages;
+    if (currentChunk.trim() !== '') {
+      resultArray.push(currentChunk.trim());
+    }
+
+    return resultArray;
   };
-
+  // const textChunks = splitTextIntoArray(
+  //   dataBook?.content_en,
+  //   Dimensions.get('window').height <= 667 ? 630 : 800,
+  // );
   useEffect(() => {
-    const lineHeight = 1.5 * fontSize; // Adjust line height as needed
-    const newPages = splitTextIntoPages(
+   
+    const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      fontSize,
-      lineHeight,
+      Dimensions.get('window').height <= 667
+        ? fontSize === '14'
+          ? 655
+          : 550
+        : fontSize === '14'
+        ? 1000
+        : fontSize === '16' && Dimensions.get('window').height === 844 ? 890 : fontSize === 18 && Dimensions.get('window').height === 812 ? 720 : 765,
     );
-    setTextChunks(newPages);
-  }, [dataBook, Dimensions.get('window').width, Dimensions.get('window').height, fontSize]);  
-
+    setTextChunks(newChunks);
+  }, [dataBook, Dimensions.get('window').height, fontSize]);
   const renderFactItem = ({item, index, title, category, colorText, type}) => (
     <>
       <QuotesContent
@@ -1157,6 +1146,23 @@ const MainScreen = ({
     }, 2000);
   };
 
+  useEffect(() => {
+    // This code runs when `page` changes.
+    // You can perform additional logic here if needed.
+    console.log('Page changed to: ', page);
+  }, [page]);
+
+  function RenderFactItemView() {
+    return renderFactItem({
+      item: textChunks[page],
+      page,
+      title: dataBook.title_en,
+      category: dataBook?.category?.name,
+      colorText: colorText,
+      type: 'view',
+    });
+  }
+
   const renderView = () => {
     if (route?.name != 'Main') {
       return (
@@ -1187,7 +1193,7 @@ const MainScreen = ({
                   textAlign: 'left',
                   fontSize: fixedFontSize(Number(fontSize) - 2),
                   fontFamily: fontFamily,
-                  marginBottom: wp(5),
+                  marginBottom: wp(2),
                   color:
                     backgroundColor === '#2C3439'
                       ? code_color.white
@@ -1245,14 +1251,7 @@ const MainScreen = ({
                 paddingTop: wp(20),
                 paddingHorizontal: wp(20),
               }}>
-              {renderFactItem({
-                item: textChunks[page],
-                page,
-                title: dataBook.title_en,
-                category: dataBook?.category?.name,
-                colorText: colorText,
-                type: 'view',
-              })}
+              <RenderFactItemView />
             </View>
           ) : null}
         </Pressable>
