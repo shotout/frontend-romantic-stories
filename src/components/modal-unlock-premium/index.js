@@ -100,7 +100,7 @@ function ModalUnlockPremium({
                 style={{
                   textAlign: 'center',
                   color: code_color.white,
-                  fontSize: 12,
+                  fontWeight: 'bold', fontSize: 14
                 }}>
                 {'GO\rUNLIMITED'}
               </Text>
@@ -141,7 +141,7 @@ function ModalUnlockPremium({
                     style={{
                       textAlign: 'center',
                       color: code_color.white,
-                      fontSize: 12,
+                      fontWeight: 'bold', fontSize: 14
                     }}>
                     {'WATCH\rVIDEO'}
                   </Text>

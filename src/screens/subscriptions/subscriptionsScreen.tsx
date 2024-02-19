@@ -435,7 +435,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               <BookLockIcon
                 style={{position: 'absolute', top: '70%', left: '12%'}}
               />
-              <Text style={{color: code_color.white, textAlign: 'center'}}>
+              <Text style={{color: code_color.white, textAlign: 'center', fontWeight: 'bold', fontSize: 15}}>
                 {userProfile?.data?.subscription?.plan?.id === 1
                   ? 'Get EroTales UNLIMITED'
                   : userProfile?.data?.subscription?.plan?.id === 2
