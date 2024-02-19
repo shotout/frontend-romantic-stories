@@ -212,6 +212,7 @@ function QuotesContent({
     }, 200);
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
+  console.log(me)
   const renderSelect = useCallback(() => {
     if (isActive) {
       return (
@@ -418,9 +419,10 @@ function QuotesContent({
                       marginBottom:
                         me === '/assets/images/avatars/1/think.png' ||
                         me === '/assets/images/avatars/3/think.png' ||
-                        me === '/assets/images/avatars/4/think.png'
+                        me === '/assets/images/avatars/4/think.png' 
+                        
                           ? -83
-                          : -85,
+                           : -85,
 
                       // marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
                       height:
@@ -450,7 +452,7 @@ function QuotesContent({
                                 ? 150
                                 : me?.includes('positive')
                                 ? 120
-                                : 150,
+                                :  me === '/assets/images/avatars/3/friendly.png' ? 110 : 150,
                             ),
                       width: wp(100),
                       left: 20,
