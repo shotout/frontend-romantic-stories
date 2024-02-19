@@ -139,6 +139,7 @@ function QuotesContent({
           setMe(data?.data?.partner);
           setPartner(data?.data?.me);
         } else {
+          console.log(data?.data?.me)
           setMe(data?.data?.me);
           setPartner(data?.data?.partner);
         }
