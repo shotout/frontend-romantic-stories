@@ -79,7 +79,8 @@ function QuotesContent({
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse?.replace(/\r\n/g, ' ');
   const [trimmedText, setTrimmedText] = useState('');
-  const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum felis at semper iaculis. Integer auctor justo in purus suscipit, et dapibus lectus maximus. Nam consectetur lectus in lectus vulputate, sit amet congue urna fermentum. Sed a eros et ex vestibulum sodales. Phasellus vulputate velit sed est vulputate, ut tempor elit eleifend. Sed commodo enim vel ex bibendum, quis euismod sapien vestibulum. Integer nec nisi nulla. Maecenas id volutpat risus. Fusce sed mi vitae arcu tristique sodales. Duis quis fermentum lectus. Sed sollicitudin odio eu felis vestibulum, at malesuada lectus cursus. Phasellus sit amet metus ac risus sodales tempus. Sed nec libero a ante convallis ullamcorper eu et nibh. Nulla facilisi. Mauris aliquet erat sit amet dui lobortis laoreet. lobortis laoreet lobortis laoreet`;
+  const longText =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum felis at semper iaculis. Integer auctor justo in purus suscipit, et dapibus lectus maximus. Nam consectetur lectus in lectus vulputate, sit amet congue urna fermentum. Sed a eros et ex vestibulum sodales. Phasellus vulputate velit sed est vulputate, ut tempor elit eleifend. Sed commodo enim vel ex bibendum, quis euismod sapien vestibulum. Integer nec nisi nulla. Maecenas id volutpat risus. Fusce sed mi vitae arcu tristique sodales. Duis quis fermentum lectus. Sed sollicitudin odio eu felis vestibulum, at malesuada lectus cursus. Phasellus sit amet metus ac risus sodales tempus. Sed nec libero a ante convallis ullamcorper eu et nibh. Nulla facilisi. Mauris aliquet erat sit amet dui lobortis laoreet. lobortis laoreet lobortis laoreet';
 
   useEffect(() => {
     handleThemeAvatar(pageActive);
@@ -124,13 +125,27 @@ function QuotesContent({
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
       flag:
-        pageActive === 0 ||  pageActive === 4 ||  pageActive === 8 ||  pageActive === 12
+        pageActive === 0 ||
+        pageActive === 4 ||
+        pageActive === 8 ||
+        pageActive === 12
           ? 'friendly'
-          : pageActive === 1 ||  pageActive === 5 ||  pageActive === 9 ||  pageActive === 13
+          : pageActive === 1 ||
+            pageActive === 5 ||
+            pageActive === 9 ||
+            pageActive === 13
           ? 'think'
-          : pageActive === 2 ||  pageActive === 6 ||  pageActive === 10 ||  pageActive === 14
+          : pageActive === 2 ||
+            pageActive === 6 ||
+            pageActive === 10 ||
+            pageActive === 14
           ? 'inlove'
-          : pageActive === 3 ||  pageActive === 7 ||  pageActive === 11 ||  pageActive === 15 ? 'positive' : 'positive',
+          : pageActive === 3 ||
+            pageActive === 7 ||
+            pageActive === 11 ||
+            pageActive === 15
+          ? 'positive'
+          : 'positive',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -139,7 +154,6 @@ function QuotesContent({
           setMe(data?.data?.partner);
           setPartner(data?.data?.me);
         } else {
-          console.log(data?.data?.me)
           setMe(data?.data?.me);
           setPartner(data?.data?.partner);
         }
@@ -212,7 +226,7 @@ function QuotesContent({
     }, 200);
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
-  console.log(me)
+
   const renderSelect = useCallback(() => {
     if (isActive) {
       return (
@@ -419,10 +433,9 @@ function QuotesContent({
                       marginBottom:
                         me === '/assets/images/avatars/1/think.png' ||
                         me === '/assets/images/avatars/3/think.png' ||
-                        me === '/assets/images/avatars/4/think.png' 
-                        
-                          ? -83
-                           : -85,
+                        me === '/assets/images/avatars/4/think.png'
+                          ? -83.3
+                          : -83.3,
 
                       // marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
                       height:
@@ -452,7 +465,9 @@ function QuotesContent({
                                 ? 150
                                 : me?.includes('positive')
                                 ? 120
-                                :  me === '/assets/images/avatars/3/friendly.png' ? 110 : 150,
+                                : me === '/assets/images/avatars/3/friendly.png'
+                                ? 110
+                                : 150,
                             ),
                       width: wp(100),
                       left: 20,
@@ -484,7 +499,10 @@ function QuotesContent({
                     style={{
                       position: 'absolute',
                       overflow: 'hidden',
-                      marginBottom: partner === '/assets/images/avatars/5/think.png' ? 10 : 20,
+                      marginBottom:
+                        partner === '/assets/images/avatars/5/think.png'
+                          ? 12
+                          : 21.7,
                       // marginBottom: wp(
                       //   partner === '/assets/images/avatars/5/think.png'
                       //     ? -90
@@ -494,7 +512,9 @@ function QuotesContent({
                       height: hp(
                         partner === '/assets/images/avatars/5/think.png'
                           ? 90
-                          : partner === '/assets/images/avatars/2/think.png' ? 135 : 100,
+                          : partner === '/assets/images/avatars/2/think.png'
+                          ? 135
+                          : 100,
                       ),
                       left: '40%',
                       zIndex: 1,

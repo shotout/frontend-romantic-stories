@@ -83,7 +83,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const sharedMessageWa = `The *EroTales App* has the best\nRomantic Stories ever! I just\nfound this once:\n*${
     storyData?.item?.title_en || storyData?.title_en
   }*\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
-  const sharedMessageFB = `The EroTales App has the best Romantic\nStories ever! I just found this once:\n${
+  const sharedMessageFB = `The EroTales App has the best Romantic\nStories ever! I just found this one:\n${
     storyData?.item?.title_en || storyData?.title_en
   }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on the AppStore\nor Google Play.`;
   const sharedMessage = `The EroTales App has the best\nRomantic Stories ever! I just\nfound this once:\n${
@@ -158,7 +158,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const handleShareInstagramDefault = async () => {
     handleShare('story');
     Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${
+      `The EroTales App has the best Romantic Stories ever! I just found this one: ${
         storyData?.item?.title_en || storyData?.title_en
       }. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
@@ -353,7 +353,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               fontWeight: '400',
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
-            best Romantic Stories ever! I just found this once:
+            best Romantic Stories ever! I just found this one:
           </Text>
           <Text
             style={{
@@ -499,7 +499,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               marginBottom: moderateScale(20),
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
-            best Romantic Stories ever! I just found this once:
+            best Romantic Stories ever! I just found this one:
             <Text style={{fontWeight: '700'}}>
               {storyData?.item?.title_en || storyData?.title_en}
             </Text>
