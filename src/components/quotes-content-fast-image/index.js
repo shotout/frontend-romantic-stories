@@ -37,7 +37,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import states from './states';
 import dispatcher from './dispatcher';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 function QuotesContent({
@@ -124,13 +124,13 @@ function QuotesContent({
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
       flag:
-        pageActive === 0
+        pageActive === 0 ||  pageActive === 4 ||  pageActive === 8 ||  pageActive === 12
           ? 'friendly'
-          : pageActive === 1
+          : pageActive === 1 ||  pageActive === 5 ||  pageActive === 9 ||  pageActive === 13
           ? 'think'
-          : pageActive === 2
+          : pageActive === 2 ||  pageActive === 6 ||  pageActive === 10 ||  pageActive === 14
           ? 'inlove'
-          : 'positive',
+          : pageActive === 3 ||  pageActive === 7 ||  pageActive === 11 ||  pageActive === 15 ? 'positive' : 'positive',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -179,7 +179,9 @@ function QuotesContent({
     const calculateTrimmedText = () => {
       const maxWidth = Dimensions.get('window').width - 40; // Assuming 20 padding on each side
       const fontSize = Dimensions.get('window').width * 0.04; // Adjust as needed
-      const maxLines = Math.floor((Dimensions.get('window').height * 0.8) / fontSize); // Adjust as needed
+      const maxLines = Math.floor(
+        (Dimensions.get('window').height * 0.8) / fontSize,
+      ); // Adjust as needed
 
       let lines = 0;
       let textArray = [];
@@ -210,11 +212,9 @@ function QuotesContent({
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
   const renderSelect = useCallback(() => {
-    if (color) {
+    if (isActive) {
       return (
-       
         <Text
-          
           style={[
             styles.ctnQuotes,
             {
@@ -232,7 +232,6 @@ function QuotesContent({
     } else {
       return (
         <SelectableText
-        
           menuItems={['Share']}
           onSelection={({eventType, content, selectionStart, selectionEnd}) => {
             navigate('Share', {
@@ -272,7 +271,6 @@ function QuotesContent({
       );
     }
   }, [color, isActive, fontColor, item]);
-
 
   return (
     <SafeAreaView
@@ -373,12 +371,11 @@ function QuotesContent({
               )}
             </View>
           </View>
-          { type != 'main' ? null :
-          pageActive === 0 ||
-          pageActive === 3 ||
-          pageActive === 6 ||
-          pageActive === 9 ||
-          pageActive === 12 ? (
+          {type != 'main' ? null : pageActive === 0 ||
+            pageActive === 3 ||
+            pageActive === 6 ||
+            pageActive === 9 ||
+            pageActive === 12 ? (
             <View style={{alignItems: 'center'}}>
               <View
                 style={{
@@ -395,68 +392,157 @@ function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : 
-            pageActive === 1 ||
+          ) : pageActive === 1 ||
             pageActive === 4 ||
             pageActive === 7 ||
             pageActive === 10 ||
-            pageActive === 13  ? (
+            pageActive === 13 ? (
             <>
-              <View
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
-                  height:  Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ? hp(170) : hp(  Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? 180 : Dimensions.get('window').height === 812 &&  me === '/assets/images/avatars/2/think.png' ? 180 :me === '/assets/images/avatars/2/think.png' ? 150 :  me === '/assets/images/avatars/4/think.png' ? 110 : me === '/assets/images/avatars/3/think.png' && Dimensions.get('window').height <= 667 ? 130 : me === '/assets/images/avatars/3/think.png' ? 120 :  me != '/assets/images/avatars/2/think.png' && me?.includes('think') ? 100 : me === '/assets/images/avatars/2/positive.png' ? 150 : me?.includes('positive') ? 120 : 150),
-                  width: wp(100),
-                  left: 20,
-                  zIndex: 1,
-                  bottom: 90,
-                }}>
-                <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}/${me}`,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
+              <View>
+                <ImageBackground
+                  source={getBackgroundStory(pageActive)}
+                  resizeMode="contain"
                   style={{
-                    width: wp(100),
-                    height: hp( me === '/assets/images/avatars/3/positive.png' || me === '/assets/images/avatars/1/positive.png' ? 350  : me === '/assets/images/avatars/2/positive.png'  ? 450  : me != '/assets/images/avatars/2/positive.png' ? 400 : 360),
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  marginBottom: wp(partner === '/assets/images/avatars/5/think.png' ? -90 : -85),
-                  width: wp(100),
-                  height: hp(partner === '/assets/images/avatars/5/think.png'? 90 : 100),
-                  left: '40%',
-                  zIndex: 1,
-                  bottom:
-                    partner === '/assets/images/avatars/5/think.png' &&
-                    Platform.OS === 'ios'
-                      ? -5
-                      : partner === '/assets/images/avatars/5/think.png' &&
-                        Platform.OS === 'android'
-                      ? 0
-                      : -15,
-                }}>
-                <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}/${partner}`,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  style={{
-                    width: wp(100),
-                    height: hp( partner === '/assets/images/avatars/4/positive.png' || partner === '/assets/images/avatars/6/positive.png' ? 330 : 340),
-                  }}
-                />
+                    borderRadius: wp(100),
+                    height: hp(100),
+                    marginBottom:
+                      Dimensions.get('window').height <= 667 ? wp(-10) : wp(5),
+                    marginTop: wp(4),
+                  }}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      // bottom: 0,
+                      overflow: 'hidden',
+                      marginBottom:
+                        me === '/assets/images/avatars/1/think.png' ||
+                        me === '/assets/images/avatars/3/think.png' ||
+                        me === '/assets/images/avatars/4/think.png'
+                          ? -83
+                          : -85,
+
+                      // marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
+                      height:
+                        Dimensions.get('window').height <= 667 &&
+                        me === '/assets/images/avatars/2/think.png'
+                          ? hp(170)
+                          : hp(
+                              Dimensions.get('window').height === 844 &&
+                                me === '/assets/images/avatars/2/think.png'
+                                ? 180
+                                : Dimensions.get('window').height === 812 &&
+                                  me === '/assets/images/avatars/2/think.png'
+                                ? 180
+                                : me === '/assets/images/avatars/2/think.png'
+                                ? 150
+                                : me === '/assets/images/avatars/4/think.png'
+                                ? 110
+                                : me === '/assets/images/avatars/3/think.png' &&
+                                  Dimensions.get('window').height <= 667
+                                ? 130
+                                : me === '/assets/images/avatars/3/think.png'
+                                ? 120
+                                : me != '/assets/images/avatars/2/think.png' &&
+                                  me?.includes('think')
+                                ? 100
+                                : me === '/assets/images/avatars/2/positive.png'
+                                ? 150
+                                : me?.includes('positive')
+                                ? 120
+                                : 150,
+                            ),
+                      width: wp(100),
+                      left: 20,
+                      zIndex: 1,
+                      bottom: 90,
+                    }}>
+                    <FastImage
+                      source={{
+                        uri: `${BACKEND_URL}/${me}`,
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                      style={{
+                        width: wp(100),
+                        height: hp(
+                          me === '/assets/images/avatars/3/positive.png' ||
+                            me === '/assets/images/avatars/1/positive.png'
+                            ? 350
+                            : me === '/assets/images/avatars/2/positive.png'
+                            ? 450
+                            : me != '/assets/images/avatars/2/positive.png'
+                            ? 400
+                            : 360,
+                        ),
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      overflow: 'hidden',
+                      marginBottom: partner === '/assets/images/avatars/5/think.png' ? 10 : 20,
+                      // marginBottom: wp(
+                      //   partner === '/assets/images/avatars/5/think.png'
+                      //     ? -90
+                      //     : -85,
+                      // ),
+                      width: wp(100),
+                      height: hp(
+                        partner === '/assets/images/avatars/5/think.png'
+                          ? 90
+                          : partner === '/assets/images/avatars/2/think.png' ? 135 : 100,
+                      ),
+                      left: '40%',
+                      zIndex: 1,
+                      bottom:
+                        partner === '/assets/images/avatars/5/think.png' &&
+                        Platform.OS === 'ios'
+                          ? -5
+                          : partner === '/assets/images/avatars/5/think.png' &&
+                            Platform.OS === 'android'
+                          ? 0
+                          : -15,
+                    }}>
+                    <FastImage
+                      source={{
+                        uri: `${BACKEND_URL}/${partner}`,
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                      style={{
+                        width: wp(100),
+                        height: hp(
+                          partner === '/assets/images/avatars/4/positive.png' ||
+                            partner === '/assets/images/avatars/6/positive.png'
+                            ? 330
+                            : 340,
+                        ),
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: code_color.white,
+                      flex: 0,
+                      alignItems: 'center',
+                      borderRadius: wp(20),
+                      padding: wp(5),
+                      paddingHorizontal: wp(12),
+                      marginBottom: wp(30),
+                      position: 'absolute',
+                      marginRight: wp(5),
+                      bottom: 0,
+                      right: 5,
+                    }}>
+                    <Text style={{color: bgTheme, fontWeight: 'bold'}}>
+                      Page {pageActive + 1} of {totalStory}
+                    </Text>
+                  </View>
+                </ImageBackground>
               </View>
 
-              <View>
+              {/* <View>
                 <ImageBackground
                   source={getBackgroundStory(pageActive)}
                   resizeMode="contain"
@@ -485,7 +571,7 @@ function QuotesContent({
                     </Text>
                   </View>
                 </ImageBackground>
-              </View>
+              </View> */}
             </>
           ) : type === 'main' ? (
             <>
@@ -493,7 +579,9 @@ function QuotesContent({
                 style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  marginBottom: wp(me === '/assets/images/avatars/2/inlove.png' ? -160 : -190),
+                  marginBottom: wp(
+                    me === '/assets/images/avatars/2/inlove.png' ? -160 : -190,
+                  ),
                   width: wp(100),
                   height: hp(180),
                   left: '10%',

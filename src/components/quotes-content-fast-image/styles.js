@@ -35,7 +35,7 @@ export default StyleSheet.create({
     position:'relative',
   },
   ctnQuotes: {
-    textAlign: 'left',
+    textAlign: 'justify',
     // fontFamily: fonts.QuotesText,
    
     // letterSpacing: 0

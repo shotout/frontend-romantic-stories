@@ -182,12 +182,24 @@ const LibraryScreen = ({
 
   const handleRead = async item => {
     setSelectedStory(item?.item);
-    if (
-      userProfile?.data?.subscription?.plan?.id != 1 ||
-      userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
-      (item?.item?.expire != null &&   new Date() > new Date(item?.item?.expire))
+
+    if (userStory?.id === (item?.item?.id ? item?.item?.id : item?.id)) {
+      const resp = await getStoryDetail(item?.item?.id);
+      handleSetStory(resp.data);
+      navigate('Main');
+    } else if (
+      userProfile?.data?.subscription?.plan?.id != 1 &&
+      item?.item?.expire === null &&
+      new Date(item?.item?.expire) > new Date()
     ) {
-      
+      const resp = await getStoryDetail(item?.item?.id);
+      handleSetStory(resp.data);
+      navigate('Main');
+    } else if (
+      userProfile?.data?.subscription?.plan?.id === 1 &&
+      item?.item?.expire != null &&
+      new Date(item?.item?.expire) > new Date()
+    ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
       navigate('Main');
@@ -196,6 +208,24 @@ const LibraryScreen = ({
       handleNextStory(resp.data);
       setShowModalUnlock(true);
     }
+    // if (
+    //   // userProfile?.data?.subscription?.plan?.id != 1 ||
+    //   // userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
+    //   // (item?.item?.expire != null &&   new Date() > new Date(item?.item?.expire))
+    //   userProfile?.data?.subscription?.plan?.id != 1 &&
+    //           userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) &&
+    //           item?.item?.expire === null &&
+    //           new Date() > new Date(item?.item?.expire)
+    // ) {
+
+    //   const resp = await getStoryDetail(item?.item?.id);
+    //   handleSetStory(resp.data);
+    //   navigate('Main');
+    // } else {
+    //   const resp = await getStoryDetail(item?.item?.id);
+    //   handleNextStory(resp.data);
+    //   setShowModalUnlock(true);
+    // }
   };
 
   const handleReadDetail = async item => {
@@ -677,47 +707,44 @@ const LibraryScreen = ({
   };
   const renderContentCollection = item => {
     return (
-      
-        <Pressable
-          onPress={() => {
-            setDetailCollection(null);
-            setListLibraryDetail([]);
-            setDetail(item?.item?.id);
-            fetchDetail(item?.item?.id);
-          }}
+      <Pressable
+        onPress={() => {
+          setDetailCollection(null);
+          setListLibraryDetail([]);
+          setDetail(item?.item?.id);
+          fetchDetail(item?.item?.id);
+        }}
+        style={{
+          paddingHorizontal: 10,
+          paddingBottom: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: bgTheme,
+          borderColor: 'white',
+          borderTopWidth: 1,
+          borderBottomWidth: 1,
+          paddingVertical: 10,
+        }}>
+        <LibrarySvg fill={'white'} width={30} height={30} />
+        <View
           style={{
-            
-            paddingHorizontal: 10,
-            paddingBottom: 10,
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: bgTheme,
-            borderColor: 'white',
-            borderTopWidth: 1,
-            borderBottomWidth: 1,
-            paddingVertical: 10,
+            marginLeft: 20,
+            flex: 1,
+            justifyContent: 'center',
+            alignContent: 'center',
           }}>
-          <LibrarySvg fill={'white'} width={30} height={30} />
-          <View
+          <Text
+            allowFontScaling={false}
             style={{
-              marginLeft: 20,
-              flex: 1,
-              justifyContent: 'center',
-              alignContent: 'center',
+              color: code_color.white,
+              paddingVertical: 15,
             }}>
-            <Text
-              allowFontScaling={false}
-              style={{
-                color: code_color.white,
-                paddingVertical: 15,
-              }}>
-              {item?.item?.name}
-            </Text>
-          </View>
+            {item?.item?.name}
+          </Text>
+        </View>
 
-          <BackRightSvg />
-        </Pressable>
-     
+        <BackRightSvg />
+      </Pressable>
     );
   };
 
@@ -872,7 +899,13 @@ const LibraryScreen = ({
   };
 
   const renderEmpty = () => (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View
+      style={{
+        flex: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 70,
+      }}>
       <EmptyLibrary />
       <Text
         style={{
@@ -1199,7 +1232,13 @@ const LibraryScreen = ({
         ) : (
           <>
             {listLibrary?.length > 0 || listCollection?.length > 0 ? (
-              <View style={{flex: 1, paddingBottom: 100, justifyContent: 'flex-start', alignContent: 'flex-start' }}>
+              <View
+                style={{
+                  flex: 1,
+                  paddingBottom: 100,
+                  justifyContent: 'flex-start',
+                  alignContent: 'flex-start',
+                }}>
                 {detail != null ? (
                   renderContentCollectionDetail()
                 ) : listCollection.length > 0 ? (
@@ -1252,7 +1291,7 @@ const LibraryScreen = ({
                 ) : null}
                 {detail != null ? (
                   <SwipeListView
-                  style={{flex: 0, height: 'auto'}}
+                    style={{flex: 0, height: 'auto'}}
                     disableRightSwipe
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(rowData, index) => {
@@ -1410,7 +1449,7 @@ const LibraryScreen = ({
             shadowRadius: 4,
             elevation: 8,
             position: 'absolute',
-            bottom: 0
+            bottom: 0,
           }}>
           <TouchableOpacity
             onPress={() => handleSomeAction('ExploreLibrary')}
