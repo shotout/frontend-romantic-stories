@@ -236,19 +236,22 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
       const {start, end} = selection;
       const selected = item?.slice(start, end);
       if (selected != '' && selected.length != 0) {
-        navigate('Share', {
-          selectedContent: selected,
-          start:
-            themeUser?.language_id === '2'
-              ? item?.substring(start - 50, start)
-              : item?.substring(start - 50, start),
-          end:
-            themeUser?.content_en === '2'
-              ? item?.substring(end - 50, end)
-              : item?.substring(end - 50, end),
-          title:
-            themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
-        });
+        setTimeout(() => {
+          navigate('Share', {
+            selectedContent: item?.slice(start, end),
+            start:
+              themeUser?.language_id === '2'
+                ? item?.substring(start - 50, start)
+                : item?.substring(start - 50, start),
+            end:
+              themeUser?.content_en === '2'
+                ? item?.substring(end - 50, end)
+                : item?.substring(end - 50, end),
+            title:
+              themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+          });
+        }, 200);
+     
         eventTracking(STORY_SHARED);
         setSelectedText(selected);
       }
