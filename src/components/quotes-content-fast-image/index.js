@@ -227,7 +227,7 @@ function QuotesContent({
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
   const [selectedText, setSelectedText] = useState('');
-
+console.log(item)
   const handleTextSelection = event => {
     const {selection} = event.nativeEvent;
 
