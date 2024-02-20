@@ -1146,12 +1146,6 @@ const MainScreen = ({
     }, 2000);
   };
 
-  useEffect(() => {
-    // This code runs when `page` changes.
-    // You can perform additional logic here if needed.
-    console.log('Page changed to: ', page);
-  }, [page]);
-
   function RenderFactItemView() {
     return renderFactItem({
       item: textChunks[page],

@@ -79,7 +79,8 @@ function QuotesContent({
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse?.replace(/\r\n/g, ' ');
   const [trimmedText, setTrimmedText] = useState('');
-  const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum felis at semper iaculis. Integer auctor justo in purus suscipit, et dapibus lectus maximus. Nam consectetur lectus in lectus vulputate, sit amet congue urna fermentum. Sed a eros et ex vestibulum sodales. Phasellus vulputate velit sed est vulputate, ut tempor elit eleifend. Sed commodo enim vel ex bibendum, quis euismod sapien vestibulum. Integer nec nisi nulla. Maecenas id volutpat risus. Fusce sed mi vitae arcu tristique sodales. Duis quis fermentum lectus. Sed sollicitudin odio eu felis vestibulum, at malesuada lectus cursus. Phasellus sit amet metus ac risus sodales tempus. Sed nec libero a ante convallis ullamcorper eu et nibh. Nulla facilisi. Mauris aliquet erat sit amet dui lobortis laoreet. lobortis laoreet lobortis laoreet`;
+  const longText =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum felis at semper iaculis. Integer auctor justo in purus suscipit, et dapibus lectus maximus. Nam consectetur lectus in lectus vulputate, sit amet congue urna fermentum. Sed a eros et ex vestibulum sodales. Phasellus vulputate velit sed est vulputate, ut tempor elit eleifend. Sed commodo enim vel ex bibendum, quis euismod sapien vestibulum. Integer nec nisi nulla. Maecenas id volutpat risus. Fusce sed mi vitae arcu tristique sodales. Duis quis fermentum lectus. Sed sollicitudin odio eu felis vestibulum, at malesuada lectus cursus. Phasellus sit amet metus ac risus sodales tempus. Sed nec libero a ante convallis ullamcorper eu et nibh. Nulla facilisi. Mauris aliquet erat sit amet dui lobortis laoreet. lobortis laoreet lobortis laoreet';
 
   useEffect(() => {
     handleThemeAvatar(pageActive);
@@ -153,7 +154,6 @@ function QuotesContent({
           setMe(data?.data?.partner);
           setPartner(data?.data?.me);
         } else {
-          console.log(data?.data?.me);
           setMe(data?.data?.me);
           setPartner(data?.data?.partner);
         }
@@ -501,8 +501,8 @@ console.log(item)
                         me === '/assets/images/avatars/1/think.png' ||
                         me === '/assets/images/avatars/3/think.png' ||
                         me === '/assets/images/avatars/4/think.png'
-                          ? -83
-                          : -85,
+                          ? -83.3
+                          : -83.3,
 
                       // marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
                       height:
@@ -568,8 +568,8 @@ console.log(item)
                       overflow: 'hidden',
                       marginBottom:
                         partner === '/assets/images/avatars/5/think.png'
-                          ? 10
-                          : 20,
+                          ? 12
+                          : 21.7,
                       // marginBottom: wp(
                       //   partner === '/assets/images/avatars/5/think.png'
                       //     ? -90
