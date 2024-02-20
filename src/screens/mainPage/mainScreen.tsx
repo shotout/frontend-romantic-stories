@@ -356,8 +356,13 @@ const MainScreen = ({
   }, [userStory]);
 
   useEffect(() => {
-    pagerRef.current?.setPage(0);
-    setScreenNumber(0);
+    async function setToFirstPage() {
+      setScreenNumber(0);
+      pagerRef.current?.setPage(0);
+    }
+    setTimeout(() => {
+      setToFirstPage();
+    }, 300);
   }, [dataBook?.title_en]);
 
   // useEffect(() => {
