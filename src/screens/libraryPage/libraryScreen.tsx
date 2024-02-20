@@ -908,7 +908,7 @@ const LibraryScreen = ({
       <Text
         style={{
           color:
-            backgroundColor === '#2C3439' ? code_color.black : code_color.white,
+           code_color.white,
           fontSize: 14,
           fontWeight: '400',
           textAlign: 'center',
