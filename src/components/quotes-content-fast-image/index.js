@@ -184,7 +184,7 @@ function QuotesContent({
         return bgStory1;
     }
   };
-
+const data = `I hated working for Greece Tours. I hated everything about it. \n I hated the way the tourists would always ask the same questions. \n I hated the way they would complain about everything and nothing at all. \n In brief words, I hated the tourists. I was the only guy in the world who \n could walk around Athens wearing a blue button-up polo shirt \n and a red one. I had to keep the job, though. It paid well,\n paid my rent, my groceries, and my expenses,\n and at the end of every summer when the season was coming to an end,\n it allowed me to travel solely and enjoy the world. That's why,\n I had to keep it, but I hated it. I hated having to wake up at\n four-thirty in the morning and be at the office by five. \n I hated having to sit at my desk for two hours while I waited for the`
   const checkingColor = value => {
     return value === code_color.blackDark
       ? code_color.white
@@ -227,14 +227,14 @@ function QuotesContent({
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
   const [selectedText, setSelectedText] = useState('');
-console.log(item)
+
   const handleTextSelection = event => {
     const {selection} = event.nativeEvent;
 
     if (selection) {
       const {start, end} = selection;
       const selected = item?.slice(start, end);
-      if(selected != '' && selected.length != 0){
+      if (selected != '' && selected.length != 0) {
         navigate('Share', {
           selectedContent: selected,
           start:
@@ -245,14 +245,15 @@ console.log(item)
             themeUser?.content_en === '2'
               ? item?.substring(end - 50, end)
               : item?.substring(end - 50, end),
-          title: themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+          title:
+            themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
         });
         eventTracking(STORY_SHARED);
         setSelectedText(selected);
       }
-      
     }
   };
+  console.log(item);
   const renderSelect = useCallback(() => {
     // if (isActive) {
     //   return (
@@ -285,73 +286,72 @@ console.log(item)
     //   />
     //   );
     // } else {
-      return (
-        <TextInput
-          multiline={true}
-          value={item}
-          editable={false}
-          onSelectionChange={e => handleTextSelection(e)}
-          underlineColorAndroid="transparent"
-          underlineColor="transparent"
-          // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
-          style={[
-            styles.ctnQuotes,
-            {
-              // marginBottom: pageActive != 0 ? -100 : 0,
-              fontFamily: fontFamily,
-              fontSize: Number(size),
-              borderColor: null,
-              backgroundColor: 'transparent',
-              borderBottomColor: bg,
-              borderColor: bg,
-              borderBottomWidth: 0,
-              padding: -5,
-              color:
-                bg === code_color.blackDark
-                  ? code_color.white
-                  : code_color.blackDark,
-            },
-          ]}
-        />
+    return (
+      <TextInput
+        multiline={true}
+        value={item}
+        editable={false}
+        onSelectionChange={e => handleTextSelection(e)}
+        underlineColorAndroid="transparent"
+        underlineColor="transparent"
+        backgroundColor="transparent"
+        contentStyle={{
+          fontFamily: fontFamily,
+          textAlign: 'justify',
+        }}
+        textColor={
+          bg === code_color.blackDark ? code_color.white : code_color.blackDark
+        }
+        // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
+        style={{
+          fontSize: Number(size),
+          fontWeight: 'normal',
+          backgroundColor: 'transparent',
+          // lineHeight: 22
+          // bg === code_color.blackDark
+          //   ? code_color.white
+          //   : code_color.blackDark,
+        }}
+      />
 
-        // <SelectableText
-        //   menuItems={['Share']}
-        //   onSelection={({eventType, content, selectionStart, selectionEnd}) => {
-        //     navigate('Share', {
-        //       selectedContent: content,
-        //       start:
-        //         themeUser?.language_id === '2'
-        //           ? item?.substring(selectionStart - 50, selectionStart)
-        //           : item?.substring(selectionStart - 50, selectionStart),
-        //       end:
-        //         themeUser?.content_en === '2'
-        //           ? item?.substring(selectionEnd - 50, selectionEnd)
-        //           : item?.substring(selectionEnd - 50, selectionEnd),
-        //       title:
-        //         themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
-        //     });
-        //     eventTracking(STORY_SHARED);
-        //   }}
-        //   TextComponent={() => {
-        //     return (
-        //       <Text
-        //         style={[
-        //           styles.ctnQuotes,
-        //           {
-        //             // marginBottom: pageActive != 0 ? -100 : 0,
-        //             fontFamily: fontFamily,
-        //             fontSize: Number(size),
-        //             color: fontColor,
-        //             lineHeight: 25,
-        //           },
-        //         ]}>
-        //         {item}
-        //       </Text>
-        //     );
-        //   }}
-        //   value={item}
-        // />
-      );
+      // <SelectableText
+      //   menuItems={['Share']}
+      //   onSelection={({eventType, content, selectionStart, selectionEnd}) => {
+      //     navigate('Share', {
+      //       selectedContent: content,
+      //       start:
+      //         themeUser?.language_id === '2'
+      //           ? item?.substring(selectionStart - 50, selectionStart)
+      //           : item?.substring(selectionStart - 50, selectionStart),
+      //       end:
+      //         themeUser?.content_en === '2'
+      //           ? item?.substring(selectionEnd - 50, selectionEnd)
+      //           : item?.substring(selectionEnd - 50, selectionEnd),
+      //       title:
+      //         themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+      //     });
+      //     eventTracking(STORY_SHARED);
+      //   }}
+      //   TextComponent={() => {
+      //     return (
+      //       <Text
+      //         style={[
+      //           styles.ctnQuotes,
+      //           {
+      //             // marginBottom: pageActive != 0 ? -100 : 0,
+      //             fontFamily: fontFamily,
+      //             fontSize: Number(size),
+      //             color: fontColor,
+      //             lineHeight: 25,
+      //           },
+      //         ]}>
+      //         {item}
+      //       </Text>
+      //     );
+      //   }}
+      //   value={item}
+      // />
+    );
     // }
   }, [color, isActive, fontColor, item]);
 
