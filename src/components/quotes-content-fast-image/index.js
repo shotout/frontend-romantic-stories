@@ -124,13 +124,27 @@ function QuotesContent({
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
       flag:
-        pageActive === 0 ||  pageActive === 4 ||  pageActive === 8 ||  pageActive === 12
+        pageActive === 0 ||
+        pageActive === 4 ||
+        pageActive === 8 ||
+        pageActive === 12
           ? 'friendly'
-          : pageActive === 1 ||  pageActive === 5 ||  pageActive === 9 ||  pageActive === 13
+          : pageActive === 1 ||
+            pageActive === 5 ||
+            pageActive === 9 ||
+            pageActive === 13
           ? 'think'
-          : pageActive === 2 ||  pageActive === 6 ||  pageActive === 10 ||  pageActive === 14
+          : pageActive === 2 ||
+            pageActive === 6 ||
+            pageActive === 10 ||
+            pageActive === 14
           ? 'inlove'
-          : pageActive === 3 ||  pageActive === 7 ||  pageActive === 11 ||  pageActive === 15 ? 'positive' : 'positive',
+          : pageActive === 3 ||
+            pageActive === 7 ||
+            pageActive === 11 ||
+            pageActive === 15
+          ? 'positive'
+          : 'positive',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -139,7 +153,7 @@ function QuotesContent({
           setMe(data?.data?.partner);
           setPartner(data?.data?.me);
         } else {
-          console.log(data?.data?.me)
+          console.log(data?.data?.me);
           setMe(data?.data?.me);
           setPartner(data?.data?.partner);
         }
@@ -212,66 +226,133 @@ function QuotesContent({
     }, 200);
     setSize(fontSize);
   }, [pageActive, fontColor, isActive, fontSize, fontFamily]);
-  console.log(me)
+  const [selectedText, setSelectedText] = useState('');
+
+  const handleTextSelection = event => {
+    const {selection} = event.nativeEvent;
+
+    if (selection) {
+      const {start, end} = selection;
+      const selected = item?.slice(start, end);
+      if(selected != '' && selected.length != 0){
+        navigate('Share', {
+          selectedContent: selected,
+          start:
+            themeUser?.language_id === '2'
+              ? item?.substring(start - 50, start)
+              : item?.substring(start - 50, start),
+          end:
+            themeUser?.content_en === '2'
+              ? item?.substring(end - 50, end)
+              : item?.substring(end - 50, end),
+          title: themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+        });
+        eventTracking(STORY_SHARED);
+        setSelectedText(selected);
+      }
+      
+    }
+  };
   const renderSelect = useCallback(() => {
-    if (isActive) {
+    // if (isActive) {
+    //   return (
+    //     <TextInput
+    //     multiline={true}
+    //     value={item}
+    //     editable={false}
+    //     onSelectionChange={e => handleTextSelection(e)}
+    //     underlineColorAndroid="transparent"
+    //     underlineColor="transparent"
+    //     // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
+    //     style={[
+    //       styles.ctnQuotes,
+    //       {
+    //         // marginBottom: pageActive != 0 ? -100 : 0,
+    //         fontFamily: fontFamily,
+    //         fontSize: Number(size),
+    //         borderColor: null,
+    //         backgroundColor: 'transparent',
+    //         borderBottomColor: bg,
+    //         borderColor: bg,
+    //         borderBottomWidth: 0,
+    //         padding: -5,
+    //         color:
+    //           bg === code_color.blackDark
+    //             ? code_color.white
+    //             : code_color.blackDark,
+    //       },
+    //     ]}
+    //   />
+    //   );
+    // } else {
       return (
-        <Text
+        <TextInput
+          multiline={true}
+          value={item}
+          editable={false}
+          onSelectionChange={e => handleTextSelection(e)}
+          underlineColorAndroid="transparent"
+          underlineColor="transparent"
+          // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
           style={[
             styles.ctnQuotes,
             {
               // marginBottom: pageActive != 0 ? -100 : 0,
               fontFamily: fontFamily,
               fontSize: Number(size),
-              color: fontColor,
-              marginTop: '1%',
-              lineHeight: 25,
+              borderColor: null,
+              backgroundColor: 'transparent',
+              borderBottomColor: bg,
+              borderColor: bg,
+              borderBottomWidth: 0,
+              padding: -5,
+              color:
+                bg === code_color.blackDark
+                  ? code_color.white
+                  : code_color.blackDark,
             },
-          ]}>
-          {item}
-        </Text>
-      );
-    } else {
-      return (
-        <SelectableText
-          menuItems={['Share']}
-          onSelection={({eventType, content, selectionStart, selectionEnd}) => {
-            navigate('Share', {
-              selectedContent: content,
-              start:
-                themeUser?.language_id === '2'
-                  ? item?.substring(selectionStart - 50, selectionStart)
-                  : item?.substring(selectionStart - 50, selectionStart),
-              end:
-                themeUser?.content_en === '2'
-                  ? item?.substring(selectionEnd - 50, selectionEnd)
-                  : item?.substring(selectionEnd - 50, selectionEnd),
-              title:
-                themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
-            });
-            eventTracking(STORY_SHARED);
-          }}
-          TextComponent={() => {
-            return (
-              <Text
-                style={[
-                  styles.ctnQuotes,
-                  {
-                    // marginBottom: pageActive != 0 ? -100 : 0,
-                    fontFamily: fontFamily,
-                    fontSize: Number(size),
-                    color: fontColor,
-                    lineHeight: 25,
-                  },
-                ]}>
-                {item}
-              </Text>
-            );
-          }}
-          value={item}
+          ]}
         />
+
+        // <SelectableText
+        //   menuItems={['Share']}
+        //   onSelection={({eventType, content, selectionStart, selectionEnd}) => {
+        //     navigate('Share', {
+        //       selectedContent: content,
+        //       start:
+        //         themeUser?.language_id === '2'
+        //           ? item?.substring(selectionStart - 50, selectionStart)
+        //           : item?.substring(selectionStart - 50, selectionStart),
+        //       end:
+        //         themeUser?.content_en === '2'
+        //           ? item?.substring(selectionEnd - 50, selectionEnd)
+        //           : item?.substring(selectionEnd - 50, selectionEnd),
+        //       title:
+        //         themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+        //     });
+        //     eventTracking(STORY_SHARED);
+        //   }}
+        //   TextComponent={() => {
+        //     return (
+        //       <Text
+        //         style={[
+        //           styles.ctnQuotes,
+        //           {
+        //             // marginBottom: pageActive != 0 ? -100 : 0,
+        //             fontFamily: fontFamily,
+        //             fontSize: Number(size),
+        //             color: fontColor,
+        //             lineHeight: 25,
+        //           },
+        //         ]}>
+        //         {item}
+        //       </Text>
+        //     );
+        //   }}
+        //   value={item}
+        // />
       );
-    }
+    // }
   }, [color, isActive, fontColor, item]);
 
   return (
@@ -419,10 +500,9 @@ function QuotesContent({
                       marginBottom:
                         me === '/assets/images/avatars/1/think.png' ||
                         me === '/assets/images/avatars/3/think.png' ||
-                        me === '/assets/images/avatars/4/think.png' 
-                        
+                        me === '/assets/images/avatars/4/think.png'
                           ? -83
-                           : -85,
+                          : -85,
 
                       // marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
                       height:
@@ -452,7 +532,9 @@ function QuotesContent({
                                 ? 150
                                 : me?.includes('positive')
                                 ? 120
-                                :  me === '/assets/images/avatars/3/friendly.png' ? 110 : 150,
+                                : me === '/assets/images/avatars/3/friendly.png'
+                                ? 110
+                                : 150,
                             ),
                       width: wp(100),
                       left: 20,
@@ -484,7 +566,10 @@ function QuotesContent({
                     style={{
                       position: 'absolute',
                       overflow: 'hidden',
-                      marginBottom: partner === '/assets/images/avatars/5/think.png' ? 10 : 20,
+                      marginBottom:
+                        partner === '/assets/images/avatars/5/think.png'
+                          ? 10
+                          : 20,
                       // marginBottom: wp(
                       //   partner === '/assets/images/avatars/5/think.png'
                       //     ? -90
@@ -494,7 +579,9 @@ function QuotesContent({
                       height: hp(
                         partner === '/assets/images/avatars/5/think.png'
                           ? 90
-                          : partner === '/assets/images/avatars/2/think.png' ? 135 : 100,
+                          : partner === '/assets/images/avatars/2/think.png'
+                          ? 135
+                          : 100,
                       ),
                       left: '40%',
                       zIndex: 1,
