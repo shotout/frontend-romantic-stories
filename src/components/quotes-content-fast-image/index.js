@@ -190,7 +190,6 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
       ? code_color.white
       : code_color.blackDark;
   };
-  console.log(item)
   useEffect(() => {
     const calculateTrimmedText = () => {
       const maxWidth = Dimensions.get('window').width - 40; // Assuming 20 padding on each side
@@ -236,9 +235,10 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
       const {start, end} = selection;
       const selected = item?.slice(start, end);
       if (selected != '' && selected.length != 0) {
+       
         setTimeout(() => {
           navigate('Share', {
-            selectedContent: item?.slice(start, end),
+            selectedContent: selected,
             start:
               themeUser?.language_id === '2'
                 ? item?.substring(start - 50, start)
@@ -250,16 +250,17 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
             title:
               themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
           });
+          setSelectedText('');
         }, 200);
      
         eventTracking(STORY_SHARED);
-        setSelectedText(selected);
+       
       }
     }
   };
-  console.log(item);
+  
   const renderSelect = useCallback(() => {
-    console.log(Number(size) === 14)
+   
     // if (isActive) {
     //   return (
     //     <TextInput
@@ -301,6 +302,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
         underlineColorAndroid="transparent"
         underlineColor="transparent"
         backgroundColor="transparent"
+        allowFontScaling={false}
         contentStyle={{
           fontFamily: fontFamily,
           textAlign: 'justify',
@@ -312,7 +314,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
         }
         // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
         style={{
-          fontSize: Number(size - 1),
+          fontSize: Number(size),
           fontWeight: 'normal',
           backgroundColor: 'transparent',
          

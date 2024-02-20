@@ -39,7 +39,7 @@ const request = options => {
       Authorization: `Bearer ${userCredential.token}`,
     };
   }
-  console.log(userCredential.token)
+  // console.log(userCredential.token)
   const client = axios.create({
     baseURL: options.MAIN_URL || API_URL,
     headers: {...requestHeaders, ...tokenParam},

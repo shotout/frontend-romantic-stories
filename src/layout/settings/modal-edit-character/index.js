@@ -157,6 +157,7 @@ function ModalEditCharacter({
         }}
       />
       <Text
+       allowFontScaling={false}
         style={{
           color: code_color.black,
           fontSize: moderateScale(28),

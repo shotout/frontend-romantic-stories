@@ -739,17 +739,27 @@ const MainScreen = ({
   //   dataBook?.content_en,
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
+  const height = Dimensions.get('window').height
   useEffect(() => {
-   
+    // height iphone 13 = 844
+    // iphone xr = 896
+  
+   const { height, fontScale } = Dimensions.get('window');
+    const size = Number(fontSize); 
+    const charactersPerLine = Math.floor(height / (size * fontScale)); 
+    const linesPerPage = Math.floor(height / size); 
+    const totalCharacters = (charactersPerLine * linesPerPage) / (Number(fontSize) === 14 ? 5 : 4); 
+   console.log(totalCharacters)
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      Dimensions.get('window').height <= 667
-        ? Number(fontSize) === 14
-          ? 655
-          : 550
-        : Number(fontSize) === 14
-        ? 1000
-        : Number(fontSize) === 16 && Dimensions.get('window').height === 844 ? 890 : Number(fontSize) === 18 && Dimensions.get('window').height >= 812 ? 600 : 765,
+      totalCharacters
+      // height <= 667
+      //   ? Number(fontSize) === 14
+      //     ? 655
+      //     : 550
+      //   : Number(fontSize) === 14
+      //   ? 1000
+      //   : Number(fontSize) === 16 && height > 844 ? height * 0.9   :  Number(fontSize) === 18 && height >= 812 ? 600 : 765,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);

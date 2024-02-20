@@ -149,6 +149,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         }}
       />
       <Text
+       allowFontScaling={false}
         style={{
           color: 'white',
           fontSize: moderateScale(30),
