@@ -744,12 +744,12 @@ const MainScreen = ({
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       Dimensions.get('window').height <= 667
-        ? fontSize === '14'
+        ? Number(fontSize) === 14
           ? 655
           : 550
-        : fontSize === '14'
+        : Number(fontSize) === 14
         ? 1000
-        : fontSize === '16' && Dimensions.get('window').height === 844 ? 890 : fontSize === 18 && Dimensions.get('window').height === 812 ? 720 : 765,
+        : Number(fontSize) === 16 && Dimensions.get('window').height === 844 ? 890 : Number(fontSize) === 18 && Dimensions.get('window').height >= 812 ? 600 : 765,
     );
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);

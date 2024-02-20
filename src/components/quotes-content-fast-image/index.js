@@ -190,6 +190,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
       ? code_color.white
       : code_color.blackDark;
   };
+  console.log(item)
   useEffect(() => {
     const calculateTrimmedText = () => {
       const maxWidth = Dimensions.get('window').width - 40; // Assuming 20 padding on each side
@@ -255,6 +256,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
   };
   console.log(item);
   const renderSelect = useCallback(() => {
+    console.log(Number(size) === 14)
     // if (isActive) {
     //   return (
     //     <TextInput
@@ -290,6 +292,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
       <TextInput
         multiline={true}
         value={item}
+        scrollEnabled={false}
         editable={false}
         onSelectionChange={e => handleTextSelection(e)}
         underlineColorAndroid="transparent"
@@ -298,15 +301,19 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
         contentStyle={{
           fontFamily: fontFamily,
           textAlign: 'justify',
+          lineHeight: 24,
+          margin: 0
         }}
         textColor={
           bg === code_color.blackDark ? code_color.white : code_color.blackDark
         }
         // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
         style={{
-          fontSize: Number(size),
+          fontSize: Number(size - 1),
           fontWeight: 'normal',
           backgroundColor: 'transparent',
+         
+          
           // lineHeight: 22
           // bg === code_color.blackDark
           //   ? code_color.white
@@ -354,7 +361,29 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
     );
     // }
   }, [color, isActive, fontColor, item]);
+ 
+  function customSplit(text, maxLength) {
+    const words = text.split(" ");
+    let result = "";
+    let count = 0;
 
+    for (let i = 0; i < words.length; i++) {
+        // Tambahkan spasi sebelum kata kecuali untuk kata pertama
+        if (i !== 0) {
+            result += " ";
+        }
+        const word = words[i];
+        // Jika panjang kata lebih dari sisa karakter yang diperbolehkan,
+        // tambahkan \n dan reset count
+        if (count + word.length > maxLength) {
+            result += "\n";
+            count = 0;
+        }
+        result += word;
+        count += word.length;
+    }
+    return result;
+}
   return (
     <SafeAreaView
       style={{
@@ -459,7 +488,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
             pageActive === 6 ||
             pageActive === 9 ||
             pageActive === 12 ? (
-            <View style={{alignItems: 'center'}}>
+            <View style={{alignItems: 'center',}}>
               <View
                 style={{
                   backgroundColor: bgTheme,
@@ -469,6 +498,8 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
                   borderRadius: wp(20),
                   padding: wp(5),
                   marginBottom: wp(25),
+                  position: 'absolute',
+                  bottom: 0
                 }}>
                 <Text style={{color: code_color.white, fontWeight: 'bold'}}>
                   Page {pageActive + 1} of {totalStory}
