@@ -615,7 +615,7 @@ const DetailCategoryScreen = ({
           navigate('Main');
         }}
         handleLater={async () => {
-          await addStory(nextStory?.id);
+          await addStory(`${nextStory?.id}?flag=read_later`);
           setShowUnlockedStory(false);
         }}
         handleReadOther={async (storyId: number) => {
