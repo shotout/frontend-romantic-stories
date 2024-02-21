@@ -43,30 +43,16 @@ function ModalAudioStory({
   userProfile,
   isLoading,
   isLoading2,
+  price,
+  price2
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
-  const [price, setPrice] = useState('');
-  const [price2, setPrice2] = useState('');
+  // const [price, setPrice] = useState('');
+  // const [price2, setPrice2] = useState('');
   const handleClose = () => {
     onClose();
   };
-  useEffect(() => {
-    if(!__DEV__){
-      async function getPrice() {
-        const products = await IAP.getProducts({
-          skus: ['unlock_10_audio_stories'],
-        });
-        const products1 = await IAP.getProducts({
-          skus: ['unlock_5_audio_stories'],
-        });
   
-        setPrice(products1[0].localizedPrice);
-        setPrice2(products[0].localizedPrice);
-      }
-      getPrice();
-    }
-   
-  }, []);
 
   const AddCollection = async () => {
     if (collect != '') {

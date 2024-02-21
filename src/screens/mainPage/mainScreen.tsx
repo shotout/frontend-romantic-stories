@@ -136,6 +136,8 @@ const MainScreen = ({
     step: stepsTutorial,
   });
   const [price, setPrice] = useState('');
+  const [priceAudio1, setPriceAudio1] = useState('');
+  const [priceAudio2, setPriceAudio2] = useState('');
   const [show, setShow] = useState(false);
   const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
@@ -183,7 +185,23 @@ const MainScreen = ({
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
-
+  useEffect(() => {
+    if(!__DEV__){
+      async function getPrice() {
+        const products = await IAP.getProducts({
+          skus: ['unlock_10_audio_stories'],
+        });
+        const products1 = await IAP.getProducts({
+          skus: ['unlock_5_audio_stories'],
+        });
+  
+        setPriceAudio1(products1[0].localizedPrice);
+        setPriceAudio2(products[0].localizedPrice);
+      }
+      getPrice();
+    }
+   
+  }, []);
   useEffect(() => {
     async function getDataStory() {
       const res = await getStoryList();
@@ -791,6 +809,8 @@ const MainScreen = ({
         type={type}
         isRippleAnimate={isRippleAnimate}
         userProfile={userProfile}
+        price={priceAudio1}
+        price2={priceAudio2}
         fontColor={
           backgroundColor === code_color.blackDark
             ? code_color.white

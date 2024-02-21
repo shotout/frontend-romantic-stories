@@ -58,6 +58,8 @@ function QuotesContent({
   userProfile,
   fontColor,
   colorText,
+  price,
+  price2
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -410,6 +412,8 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
         isVisible={show}
         isLoading={loading}
         isLoading2={loading2}
+        price={price}
+        price2={price2}
         onClose={() => setShow(false)}
         onGetAudio={() => handleAudio()}
         onGetAudio1={() => handleAudioOne()}
