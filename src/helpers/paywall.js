@@ -10,7 +10,7 @@ import {updateProfile} from '../shared/request';
 import {reloadUserProfile} from '../utils/user';
 import { checkDays, reformatDate } from '../utils/helper';
 
-export const handlePayment = async (vendorId, cb) =>
+export const handlePayment = async (vendorId, notif, cb,) =>
   new Promise(async (resolve, reject) => {
     try {
       eventTracking(SHOW_PAYWALL);
@@ -28,7 +28,7 @@ export const handlePayment = async (vendorId, cb) =>
       }
       console.log('OPEN Purchasely', stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({
-        placementVendorId: stringVendor,
+        placementVendorId: notif ? vendorId :  stringVendor,
         isFullscreen: true,
       });
       console.log('Purchasely result:', JSON.stringify(res));

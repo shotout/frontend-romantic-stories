@@ -27,7 +27,7 @@ const App = () => {
     if (detail) {
       if (detail?.notification?.data?.type === 'paywall') {
         setTimeout(() => {
-          handlePayment(detail?.notification?.data?.placement);
+          handlePayment(detail?.notification?.data?.placement, true);
         }, 100);
         eventTracking(OPEN_OFFER_NOTIFICATION);
       } else if (detail?.notification?.data?.type === 'story') {
@@ -46,7 +46,7 @@ const App = () => {
     const unsubscribeOnMessage = messaging().onMessage(async detail => {
       if (detail.data?.type === 'paywall') {
         setTimeout(() => {
-          handlePayment(detail.data?.placement);
+          handlePayment(detail.data?.placement, true);
         }, 100);
         eventTracking(OPEN_OFFER_NOTIFICATION);
       } else if (detail.data?.type === 'story') {
@@ -71,7 +71,7 @@ const App = () => {
               if (paymentCounter === 0) {
                 
                 setPaymentInProgress(true);
-                handlePayment(detail.notification.data?.placement);
+                handlePayment(detail.notification.data?.placement, true);
                
                 eventTracking(OPEN_OFFER_NOTIFICATION);
               }
