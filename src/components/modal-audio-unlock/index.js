@@ -51,7 +51,7 @@ function ModalAudioStory({
     onClose();
   };
   useEffect(() => {
-    // if(!__DEV__){
+    if(!__DEV__){
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_10_audio_stories'],
@@ -64,7 +64,7 @@ function ModalAudioStory({
         setPrice2(products[0].localizedPrice);
       }
       getPrice();
-    // }
+    }
    
   }, []);
 
