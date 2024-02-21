@@ -232,7 +232,7 @@ const MainScreen = ({
     const existingEntry = readStory
       ? readStory.find(
           (item: any) =>
-            item?.id === dataBook.id && item?.page === textChunks?.length + 1,
+            item?.id === dataBook.id && item?.page === textChunks?.length,
         )
       : undefined;
     const uniqueData = [
@@ -261,7 +261,7 @@ const MainScreen = ({
           setShowModalCongrats(true);
         }, 200);
       }
-      checkingRead(textChunks?.length + 1);
+      checkingRead(textChunks?.length);
     } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setShowModalNewStory(true);
