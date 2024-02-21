@@ -11,7 +11,6 @@ import React, {useEffect, Fragment, useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
-  ImageBackground,
   Text,
   Image,
   TouchableOpacity,
@@ -19,24 +18,13 @@ import {
   Alert,
   Pressable,
   ScrollView,
-  Dimensions,
-  Easing,
   ActivityIndicator,
 } from 'react-native';
 import {
-  bg,
-  cover1,
-  cover2,
   imgSearchNull,
-  imgStep2,
-  imgStep4,
   libraryAdd,
-  logo,
 } from '../../assets/images';
 import {code_color} from '../../utils/colors';
-import i18n from '../../i18n/index';
-import {getDefaultLanguange} from '../../utils/devices';
-import Button from '../../components/buttons/Button';
 import {goBack, navigate} from '../../shared/navigationRef';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
 import SearchSvg from '../../assets/icons/search.jsx';
@@ -67,29 +55,21 @@ import {
 } from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import StepHeader from '../../layout/step/stepHeader';
 import ModalShareStory from '../../components/modal-share-story';
 import ModalNewStory from '../../components/modal-new-story';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {sizing} from '../../shared/styling';
-import {Step4} from '../../layout/tutorial';
 import LockFree from '../../assets/icons/lockFree';
-import AddCollection from '../../assets/icons/addCollection';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
 import {
-  AdsConsentPrivacyOptionsRequirementStatus,
   RewardedAdEventType,
 } from 'react-native-google-mobile-ads';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import * as IAP from 'react-native-iap';
-import {backLeft} from '../../assets/icons';
 import {Animated} from 'react-native';
-import {TouchableOpacityBase} from 'react-native';
 import {hp, wp} from '../../utils/screen';
-import AnimatedLottieView from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
@@ -97,14 +77,12 @@ import ModalGetPremium from '../../components/modal-get-premium';
 const LibraryScreen = ({
   colorTheme,
   handleSomeAction,
-  stepsTutorial,
-  handleSetSteps,
-  backgroundColor,
   handleSetStory,
   userProfile,
   handleNextStory,
   nextStory,
   userStory,
+  handleSetPage
 }) => {
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
@@ -127,9 +105,6 @@ const LibraryScreen = ({
   const [detailCollection, setDetailCollection] = useState(null);
   const [listLibrary, setListLibrary] = useState([]);
   const [listLibraryDetail, setListLibraryDetail] = useState([]);
-  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
-  const [isSwipingRight, setIsSwipingRight] = useState(false);
-  const [indexSweepLeft, setIndexSweepLeft] = useState(null);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
   const [showModalSuccessPurchase, setShowModalSuccessPurchase] =
@@ -1038,13 +1013,15 @@ const LibraryScreen = ({
       setLoading(false);
       setShowModalUnlock(false);
       setShowModalNewStory(false);
+      const resp = await getStoryDetail(selectedStory?.id);
+      handleNextStory(resp.data);
+      setShowModalSuccessPurchaseNative(true);
+      // setLoading(false);
+      // setShowModalUnlock(false);
+      // setShowModalNewStory(false);
     }
   };
-  const onRowDidOpen = rowKey => {
-    // alert(JSON.stringify(rowKey))
-    console.log('This row opened', rowKey);
-  };
-  const rippleAnimate = require('../../assets/lottie/ripple.json');
+
   return (
     <View style={{flex: 1}}>
       <ModalGetPremium
@@ -1101,6 +1078,7 @@ const LibraryScreen = ({
         onClose={() => {
           setShowModalSuccessPurchaseNative(false);
           handleSetStory(nextStory);
+          handleSetPage(0)
           navigate('Main');
         }}
       />

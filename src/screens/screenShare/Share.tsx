@@ -63,7 +63,7 @@ import Share, {Social} from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
-import {goBack, navigate} from '../../shared/navigationRef';
+import {goBack, navigate, reset, resetParams} from '../../shared/navigationRef';
 import ModalStickers from '../../components/modal-stickers';
 import Gestures from '../../components/Gestures/gestures';
 import Slider from '@react-native-community/slider';
@@ -113,6 +113,7 @@ function ScreenShare({
   const [sticker, setSticker] = useState([]);
   const [userText, setUserText] = useState('');
   const [draggableItems, setDraggableItems] = useState([]);
+  const [selected, setSelected] = useState('');
   const [stickers, setStickers] = useState([
     {
       image: imgSticker1,
@@ -174,6 +175,10 @@ function ScreenShare({
       pan.setValue({x: 0, y: 0});
     },
   });
+
+  useEffect(() => {
+    setSelected(route?.params?.selectedContent)
+  }, [route?.params?.selectedContent])
   const showInterStialFont = async () => {
     setLoadingAds(true);
     const advert = await loadRewarded();
@@ -638,7 +643,7 @@ function ScreenShare({
             <Text style={[styles.blur, {fontSize: 16}]}>
               {route?.params?.start}
             </Text>{' '}
-            {route?.params?.selectedContent}{' '}
+            {selected}{' '}
             <Text style={[styles.blur, {fontSize: 16}]}>
               {route?.params?.end}
             </Text>
@@ -789,7 +794,10 @@ function ScreenShare({
       />
       <View style={styles.row}>
         <Text style={styles.textTitle}>Share Quote</Text>
-        <TouchableOpacity onPress={() => goBack()}>
+        <TouchableOpacity onPress={() => {
+          resetParams({ selectedContent: null }); 
+          goBack()
+        }}>
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>

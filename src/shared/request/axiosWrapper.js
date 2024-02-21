@@ -46,6 +46,7 @@ const request = options => {
   });
  
   const onSuccess = response => {
+    console.log(JSON.stringify(response))
     return response.data
   };
 

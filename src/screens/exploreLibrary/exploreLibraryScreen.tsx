@@ -601,7 +601,7 @@ const ExploreLibraryScreen = ({
           navigate('Main');
         }}
         handleLater={async () => {
-          await addStory(selectedStory?.id);
+          await addStory(`${nextStory?.id}?flag=read_later`);
           setShowUnlockedStory(false);
         }}
         handleReadOther={async (storyId: number) => {

@@ -5,7 +5,8 @@ import {
   handleSetFontFamily,
   handleSetFontSize,
   handleSetSteps,
-  handleNextStory
+  handleNextStory,
+  handleSetPage
 } from '../../store/defaultState/actions';
 
 export default dispatch => ({
@@ -16,4 +17,5 @@ export default dispatch => ({
   handleSetFontSize: (...args) => dispatch(handleSetFontSize(...args)),
   handleSetSteps: (...args) => dispatch(handleSetSteps(...args)),
   handleNextStory: (...args) => dispatch(handleNextStory(...args)),
+  handleSetPage: (...args) => dispatch(handleSetPage(...args)),
 });

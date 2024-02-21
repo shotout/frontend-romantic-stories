@@ -22,7 +22,7 @@ import {ava1, bgStory1, bgStory2, bgStory3, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
-import {navigate, navigationRef} from '../../shared/navigationRef';
+import {navigate, navigationRef, reset, resetParams} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme, updateProfile} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
@@ -238,7 +238,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
        
         setTimeout(() => {
           navigate('Share', {
-            selectedContent: selected,
+            selectedContent: item?.slice(start, end),
             start:
               themeUser?.language_id === '2'
                 ? item?.substring(start - 50, start)
@@ -251,7 +251,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
               themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
           });
           setSelectedText('');
-        }, 200);
+        }, 500);
      
         eventTracking(STORY_SHARED);
        
@@ -317,6 +317,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
           fontSize: Number(size),
           fontWeight: 'normal',
           backgroundColor: 'transparent',
+          margin: -15
          
           
           // lineHeight: 22

@@ -820,8 +820,8 @@ const MainScreen = ({
               alignItems: 'center',
               backgroundColor: backgroundColor,
               paddingTop: wp(20),
-              paddingLeft: wp(5),
-              paddingRight: 5
+              // paddingLeft: wp(5),
+              // paddingRight: 5
               // paddingHorizontal: wp(20),
             }}>
             {renderFactItem({
@@ -1133,7 +1133,7 @@ const MainScreen = ({
     }
   };
   const handleLater = async () => {
-    const response = await addStory(nextStory.id);
+    const response =  await addStory(`${nextStory?.id}?flag=read_later`);
     setShowModalDay(false);
     handleShowModalSave();
   };
@@ -1376,7 +1376,7 @@ const MainScreen = ({
             handleRead={handleReadAds}
             readLater={!userFinishedRead}
             handleLater={async () => {
-              await addStory(nextStory.id);
+              await addStory(`${nextStory?.id}?flag=read_later`);
               setShowPreview(false);
               handleShowModalSave();
             }}
