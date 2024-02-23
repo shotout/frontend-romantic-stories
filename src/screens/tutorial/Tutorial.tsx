@@ -169,7 +169,9 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         // Your logic here
         handleNext();
       },
-      stepsTutorial === 7
+      stepsTutorial === 8
+        ? 20000
+        : stepsTutorial === 7
         ? 18500
         : stepsTutorial === 6
         ? 5500
@@ -182,7 +184,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     clearTimeout(timeout7SecRef.current); // Stop the active timeout
   };
   useEffect(() => {
-    if (stepsTutorial < 8) {
+    if (stepsTutorial < 9) {
       startTimeout();
     }
   }, [stepsTutorial]);
