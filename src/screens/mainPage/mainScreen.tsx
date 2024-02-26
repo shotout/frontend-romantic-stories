@@ -1186,7 +1186,7 @@ const MainScreen = ({
 
   function RenderFactItemView() {
     
-      console.log(page, textChunks.length, textChunks[9])
+     
       const data = textChunks[page] === undefined ? textChunks[page - 1] : textChunks[page]
       return renderFactItem({
         item: data,
