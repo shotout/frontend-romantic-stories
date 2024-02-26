@@ -141,7 +141,7 @@ function QuotesContent({
         pageActive === 4 ||
         pageActive === 8 ||
         pageActive === 12
-          ? 'friendly'
+          ? 'positive'
           : pageActive === 1 ||
             pageActive === 5 ||
             pageActive === 9 ||
@@ -369,7 +369,12 @@ function QuotesContent({
               // backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
             <View
-              style={{backgroundColor: 'white', padding: 10, borderRadius: 10}}>
+              style={{backgroundColor: bg === code_color.blackDark
+                ? code_color.white
+                : code_color.blackDark,   shadowColor: code_color.grey,
+                shadowOffset: {width: 5, height: 5},
+                shadowRadius: 5,
+                shadowOpacity: 1, padding: 10, borderRadius: 10}}>
               <TouchableOpacity
                 onPress={() => {
                   setModalVisible(false)
@@ -390,7 +395,7 @@ function QuotesContent({
                   });
                   setSelectedText('');
                 }}>
-                <Text>Share</Text>
+                <Text allowFontScaling={false} style={{ color: bg }}>Share</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -420,10 +425,10 @@ function QuotesContent({
           width: sizing.getDimensionWidth(0.89),
           transform: [{translateY: translateX}],
         }}>
-        {(type === 'main' && pageActive === 0) ||
+        {type === 'main' && (pageActive === 0||
         pageActive === 3 ||
         pageActive === 6 ||
-        pageActive === 9 ? (
+        pageActive === 9 || pageActive == 12 )? (
           <View
             style={{
               alignItems: 'center',
@@ -489,11 +494,11 @@ function QuotesContent({
               )}
             </View>
           </View>
-          {type != 'main' ? null : pageActive === 0 ||
+          {type === 'main' && (pageActive === 0 ||
             pageActive === 3 ||
             pageActive === 6 ||
             pageActive === 9 ||
-            pageActive === 12 ? (
+            pageActive === 12) ? (
             <View style={{alignItems: 'center'}}>
               <View
                 style={{
@@ -512,11 +517,11 @@ function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : pageActive === 1 ||
+          ) : type === 'main' && (pageActive === 1 ||
             pageActive === 4 ||
             pageActive === 7 ||
             pageActive === 10 ||
-            pageActive === 13 ? (
+            pageActive === 13) ? (
             <>
               <View>
                 <ImageBackground
