@@ -209,6 +209,7 @@ const MainScreen = ({
     }
     async function handleOpenNotif() {
       if (route?.params?.isFromNotif) {
+        alert('masukkkk')
         const value = await AsyncStorage.getItem('setToday');
         const stringifyDateNow = new Date();
         let strTanggalSekarang = stringifyDateNow.getDate().toString();

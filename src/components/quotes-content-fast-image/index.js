@@ -13,6 +13,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Modal,
+  TextInput
 } from 'react-native';
 import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import AnimatedLottieView from 'lottie-react-native';
@@ -22,7 +24,12 @@ import {ava1, bgStory1, bgStory2, bgStory3, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
-import {navigate, navigationRef, reset, resetParams} from '../../shared/navigationRef';
+import {
+  navigate,
+  navigationRef,
+  reset,
+  resetParams,
+} from '../../shared/navigationRef';
 import Speaker from '../../assets/icons/speaker';
 import {getListAvatarTheme, updateProfile} from '../../shared/request';
 import ModalAudioUnlock from '../modal-audio-unlock';
@@ -37,7 +44,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import states from './states';
 import dispatcher from './dispatcher';
-import {TextInput} from 'react-native-paper';
+// import {TextInput} from 'react-native-paper';
 const loveAnimate = require('../../assets/lottie/love.json');
 
 function QuotesContent({
@@ -59,7 +66,7 @@ function QuotesContent({
   fontColor,
   colorText,
   price,
-  price2
+  price2,
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -81,6 +88,9 @@ function QuotesContent({
   // const manipulatedResponse = item.replace(/<\/?p>/g, '');
   const formattedText = manipulatedResponse?.replace(/\r\n/g, ' ');
   const [trimmedText, setTrimmedText] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
   const longText =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum felis at semper iaculis. Integer auctor justo in purus suscipit, et dapibus lectus maximus. Nam consectetur lectus in lectus vulputate, sit amet congue urna fermentum. Sed a eros et ex vestibulum sodales. Phasellus vulputate velit sed est vulputate, ut tempor elit eleifend. Sed commodo enim vel ex bibendum, quis euismod sapien vestibulum. Integer nec nisi nulla. Maecenas id volutpat risus. Fusce sed mi vitae arcu tristique sodales. Duis quis fermentum lectus. Sed sollicitudin odio eu felis vestibulum, at malesuada lectus cursus. Phasellus sit amet metus ac risus sodales tempus. Sed nec libero a ante convallis ullamcorper eu et nibh. Nulla facilisi. Mauris aliquet erat sit amet dui lobortis laoreet. lobortis laoreet lobortis laoreet';
 
@@ -186,12 +196,7 @@ function QuotesContent({
         return bgStory1;
     }
   };
-const data = `I hated working for Greece Tours. I hated everything about it. \n I hated the way the tourists would always ask the same questions. \n I hated the way they would complain about everything and nothing at all. \n In brief words, I hated the tourists. I was the only guy in the world who \n could walk around Athens wearing a blue button-up polo shirt \n and a red one. I had to keep the job, though. It paid well,\n paid my rent, my groceries, and my expenses,\n and at the end of every summer when the season was coming to an end,\n it allowed me to travel solely and enjoy the world. That's why,\n I had to keep it, but I hated it. I hated having to wake up at\n four-thirty in the morning and be at the office by five. \n I hated having to sit at my desk for two hours while I waited for the`
-  const checkingColor = value => {
-    return value === code_color.blackDark
-      ? code_color.white
-      : code_color.blackDark;
-  };
+
   useEffect(() => {
     const calculateTrimmedText = () => {
       const maxWidth = Dimensions.get('window').width - 40; // Assuming 20 padding on each side
@@ -237,32 +242,17 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
       const {start, end} = selection;
       const selected = item?.slice(start, end);
       if (selected != '' && selected.length != 0) {
-       
-        setTimeout(() => {
-          navigate('Share', {
-            selectedContent: item?.slice(start, end),
-            start:
-              themeUser?.language_id === '2'
-                ? item?.substring(start - 50, start)
-                : item?.substring(start - 50, start),
-            end:
-              themeUser?.content_en === '2'
-                ? item?.substring(end - 50, end)
-                : item?.substring(end - 50, end),
-            title:
-              themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
-          });
-          setSelectedText('');
-        }, 500);
-     
+        setEnd(end)
+        setStart(start)
+        setSelectedText(selected)
+        setModalVisible(true);
+
         eventTracking(STORY_SHARED);
-       
       }
     }
   };
-  
+
   const renderSelect = useCallback(() => {
-   
     // if (isActive) {
     //   return (
     //     <TextInput
@@ -300,28 +290,30 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
         value={item}
         scrollEnabled={false}
         editable={false}
+        contextMenuHidden={true}
         onSelectionChange={e => handleTextSelection(e)}
         underlineColorAndroid="transparent"
         underlineColor="transparent"
         backgroundColor="transparent"
         allowFontScaling={false}
-        contentStyle={{
-          fontFamily: fontFamily,
-          textAlign: 'justify',
-          lineHeight: 24,
-          margin: 0
-        }}
-        textColor={
-          bg === code_color.blackDark ? code_color.white : code_color.blackDark
-        }
+        // contentStyle={{
+        //   fontFamily: fontFamily,
+        //   textAlign: 'justify',
+        //   lineHeight: 24,
+        //   margin: 0,
+        // }}
+       
         // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
         style={{
           fontSize: Number(size),
           fontWeight: 'normal',
+          fontFamily: fontFamily,
+          textAlign: 'justify',
+          lineHeight: 24,
+          color: bg === code_color.blackDark ? code_color.white : code_color.blackDark,
           backgroundColor: 'transparent',
-          margin: -15
-         
-          
+          // margin: -15,
+
           // lineHeight: 22
           // bg === code_color.blackDark
           //   ? code_color.white
@@ -369,29 +361,29 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
     );
     // }
   }, [color, isActive, fontColor, item]);
- 
+
   function customSplit(text, maxLength) {
-    const words = text.split(" ");
-    let result = "";
+    const words = text.split(' ');
+    let result = '';
     let count = 0;
 
     for (let i = 0; i < words.length; i++) {
-        // Tambahkan spasi sebelum kata kecuali untuk kata pertama
-        if (i !== 0) {
-            result += " ";
-        }
-        const word = words[i];
-        // Jika panjang kata lebih dari sisa karakter yang diperbolehkan,
-        // tambahkan \n dan reset count
-        if (count + word.length > maxLength) {
-            result += "\n";
-            count = 0;
-        }
-        result += word;
-        count += word.length;
+      // Tambahkan spasi sebelum kata kecuali untuk kata pertama
+      if (i !== 0) {
+        result += ' ';
+      }
+      const word = words[i];
+      // Jika panjang kata lebih dari sisa karakter yang diperbolehkan,
+      // tambahkan \n dan reset count
+      if (count + word.length > maxLength) {
+        result += '\n';
+        count = 0;
+      }
+      result += word;
+      count += word.length;
     }
     return result;
-}
+  }
   return (
     <SafeAreaView
       style={{
@@ -400,6 +392,49 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
         paddingTop: wp(30),
         flex: 1,
       }}>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}>
+            <View
+              style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false)
+                  navigate('Share', {
+                    selectedContent: selectedText,
+                    start:
+                      themeUser?.language_id === '2'
+                        ? item?.substring(start - 50, start)
+                        : item?.substring(start - 50, start),
+                    end:
+                      themeUser?.content_en === '2'
+                        ? item?.substring(end - 50, end)
+                        : item?.substring(end - 50, end),
+                    title:
+                      themeUser?.content_en === '2'
+                        ? item?.title_id
+                        : item?.title_en,
+                  });
+                  setSelectedText('');
+                }}>
+                <Text>Share</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
       <ModalSuccessPurchaseAudio
         isVisible={showAudio}
         onClose={() => setShowAudio(false)}
@@ -498,7 +533,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
             pageActive === 6 ||
             pageActive === 9 ||
             pageActive === 12 ? (
-            <View style={{alignItems: 'center',}}>
+            <View style={{alignItems: 'center'}}>
               <View
                 style={{
                   backgroundColor: bgTheme,
@@ -509,7 +544,7 @@ const data = `I hated working for Greece Tours. I hated everything about it. \n 
                   padding: wp(5),
                   marginBottom: wp(25),
                   position: 'absolute',
-                  bottom: 0
+                  bottom: 0,
                 }}>
                 <Text style={{color: code_color.white, fontWeight: 'bold'}}>
                   Page {pageActive + 1} of {totalStory}
