@@ -140,22 +140,36 @@ function QuotesContent({
         pageActive === 0 ||
         pageActive === 4 ||
         pageActive === 8 ||
-        pageActive === 12
+        pageActive === 12 ||
+        pageActive === 16 ||
+        pageActive === 20 ||
+        pageActive === 24 ||
+        pageActive === 28
           ? 'positive'
           : pageActive === 1 ||
             pageActive === 5 ||
             pageActive === 9 ||
-            pageActive === 13
+            pageActive === 13 ||
+            pageActive === 17 ||
+            pageActive === 21 ||
+            pageActive === 25 ||
+            pageActive === 29
           ? 'think'
           : pageActive === 2 ||
             pageActive === 6 ||
             pageActive === 10 ||
-            pageActive === 14
+            pageActive === 14 ||
+            pageActive === 18 ||
+            pageActive === 22 ||
+            pageActive === 26 
           ? 'inlove'
           : pageActive === 3 ||
             pageActive === 7 ||
             pageActive === 11 ||
-            pageActive === 15
+            pageActive === 15 ||
+            pageActive === 19 ||
+            pageActive === 23 ||
+            pageActive === 27 
           ? 'positive'
           : 'positive',
     };
@@ -425,10 +439,17 @@ function QuotesContent({
           width: sizing.getDimensionWidth(0.89),
           transform: [{translateY: translateX}],
         }}>
-        {type === 'main' && (pageActive === 0||
+        {type === 'main' && (
+          pageActive === 0||
         pageActive === 3 ||
         pageActive === 6 ||
-        pageActive === 9 || pageActive == 12 )? (
+        pageActive === 9 || 
+        pageActive == 12 ||
+        pageActive == 15 ||
+        pageActive == 18 ||
+        pageActive == 21 ||
+        pageActive == 24 ||
+        pageActive == 27 )? (
           <View
             style={{
               alignItems: 'center',
@@ -494,11 +515,16 @@ function QuotesContent({
               )}
             </View>
           </View>
-          {type === 'main' && (pageActive === 0 ||
-            pageActive === 3 ||
-            pageActive === 6 ||
-            pageActive === 9 ||
-            pageActive === 12) ? (
+          {type === 'main' && (pageActive === 0||
+        pageActive === 3 ||
+        pageActive === 6 ||
+        pageActive === 9 || 
+        pageActive == 12 ||
+        pageActive == 15 ||
+        pageActive == 18 ||
+        pageActive == 21 ||
+        pageActive == 24 ||
+        pageActive == 27 ) ? (
             <View style={{alignItems: 'center'}}>
               <View
                 style={{
@@ -521,7 +547,12 @@ function QuotesContent({
             pageActive === 4 ||
             pageActive === 7 ||
             pageActive === 10 ||
-            pageActive === 13) ? (
+            pageActive === 13 ||
+            pageActive === 17 ||
+            pageActive === 20 ||
+            pageActive === 23 ||
+            pageActive === 26 ||
+            pageActive === 29) ? (
             <>
               <View>
                 <ImageBackground
