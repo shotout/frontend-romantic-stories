@@ -784,9 +784,11 @@ const MainScreen = ({
       //   ? 1000
       //   : Number(fontSize) === 16 && height > 844 ? height * 0.9   :  Number(fontSize) === 18 && height >= 812 ? 600 : 765,
     );
-    const pageNew =  ((newChunks.length - (Number(page))) +  (Number(page)))
-
-    handleSetPage(pageNew);
+    if(Number(page) > 0){
+      const pageNew =  ((newChunks.length - (Number(page))) +  (Number(page)))
+      handleSetPage(pageNew);
+    }
+    
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
   const renderFactItem = ({item, index, title, category, colorText, type}) => (
@@ -1185,11 +1187,9 @@ const MainScreen = ({
   };
 
   function RenderFactItemView() {
-    
-     
       const data = textChunks[page] === undefined ? textChunks[page - 1] : textChunks[page]
       return renderFactItem({
-        item: data,
+        item: textChunks[page],
         index: page,
         title: dataBook.title_en,
         category: dataBook?.category?.name,

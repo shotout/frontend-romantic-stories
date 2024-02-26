@@ -444,7 +444,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               </Text>
             </Pressable>
           )}
-          {userProfile?.data?.subscription?.is_audio != 0 && userProfile?.data?.subscription?.plan_id == 1 ? (
+          {userProfile?.data?.subscription?.is_audio != 0 ? (
             <View style={{marginBottom: 20}}>
               <Text
                 style={{
