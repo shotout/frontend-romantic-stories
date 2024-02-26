@@ -253,37 +253,6 @@ function QuotesContent({
   };
 
   const renderSelect = useCallback(() => {
-    // if (isActive) {
-    //   return (
-    //     <TextInput
-    //     multiline={true}
-    //     value={item}
-    //     editable={false}
-    //     onSelectionChange={e => handleTextSelection(e)}
-    //     underlineColorAndroid="transparent"
-    //     underlineColor="transparent"
-    //     // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
-    //     style={[
-    //       styles.ctnQuotes,
-    //       {
-    //         // marginBottom: pageActive != 0 ? -100 : 0,
-    //         fontFamily: fontFamily,
-    //         fontSize: Number(size),
-    //         borderColor: null,
-    //         backgroundColor: 'transparent',
-    //         borderBottomColor: bg,
-    //         borderColor: bg,
-    //         borderBottomWidth: 0,
-    //         padding: -5,
-    //         color:
-    //           bg === code_color.blackDark
-    //             ? code_color.white
-    //             : code_color.blackDark,
-    //       },
-    //     ]}
-    //   />
-    //   );
-    // } else {
     return (
       <TextInput
         multiline={true}
@@ -296,14 +265,6 @@ function QuotesContent({
         underlineColor="transparent"
         backgroundColor="transparent"
         allowFontScaling={false}
-        // contentStyle={{
-        //   fontFamily: fontFamily,
-        //   textAlign: 'justify',
-        //   lineHeight: 24,
-        //   margin: 0,
-        // }}
-       
-        // Gaya tambahan untuk membuatnya terlihat seperti teks biasa
         style={{
           fontSize: Number(size),
           fontWeight: 'normal',
@@ -311,7 +272,7 @@ function QuotesContent({
           textAlign: 'justify',
           lineHeight: 24,
           color: bg === code_color.blackDark ? code_color.white : code_color.blackDark,
-          backgroundColor: 'transparent',
+          // backgroundColor: 'transparent',
           // margin: -15,
 
           // lineHeight: 22
