@@ -209,7 +209,6 @@ const MainScreen = ({
     }
     async function handleOpenNotif() {
       if (route?.params?.isFromNotif) {
-        alert('masukkkk')
         const value = await AsyncStorage.getItem('setToday');
         const stringifyDateNow = new Date();
         let strTanggalSekarang = stringifyDateNow.getDate().toString();
@@ -784,11 +783,13 @@ const MainScreen = ({
       //   ? 1000
       //   : Number(fontSize) === 16 && height > 844 ? height * 0.9   :  Number(fontSize) === 18 && height >= 812 ? 600 : 765,
     );
-    if(Number(page) > 0){
-      const pageNew =  ((newChunks.length - (Number(page))) +  (Number(page)))
-      handleSetPage(pageNew);
-    }
-    
+    // if(Number(page) > 0){
+    //   const pageNew =  ((newChunks.length - (Number(page))) +  (Number(page)))
+    //   console.log(pageNew)
+      
+    // }
+    handleSetPage(page);
+   
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
   const renderFactItem = ({item, index, title, category, colorText, type}) => (
@@ -878,34 +879,6 @@ const MainScreen = ({
     setBook(userStory);
   }, [isFocused]);
 
-  const renderList = useMemo(
-    (type: any) => {
-      {
-        textChunks?.map((dtb: any, index: number) => {
-          return (
-            <View
-              style={{
-                flex: 0,
-                alignItems: 'center',
-                backgroundColor: backgroundColor,
-                paddingTop: wp(20),
-                paddingHorizontal: wp(20),
-              }}>
-              {renderFactItem({
-                item: dtb,
-                index,
-                title: dataBook.title_en,
-                category: dataBook?.category?.name,
-                colorText: colorText,
-                type: type,
-              })}
-            </View>
-          );
-        });
-      }
-    },
-    [textChunks, userStory],
-  );
 
   const handleUnlock = async () => {
     setLoading(true);
@@ -1038,10 +1011,10 @@ const MainScreen = ({
   const handleReadAds = async (newStory?: any) => {
     const story = newStory?.content_en ? newStory : nextStory;
     setBook(story);
+    setShowModalDay(false);
+    setShowModal(false);
+    setShowPreview(false);
     setTimeout(async () => {
-      setShowModalDay(false);
-      setShowModal(false);
-      setShowPreview(false);
       handleSetStory(story);
       pagerRef.current?.setPage(0);
       setScreenNumber(0);
