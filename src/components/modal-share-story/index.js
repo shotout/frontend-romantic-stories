@@ -80,13 +80,13 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   const captureRef = useRef();
   const captureRefPost = useRef();
   const base64CaptureImage = useRef(null);
-  const sharedMessageWa = `The *EroTales App* has the best\nRomantic Stories ever! I just\nfound this once:\n*${
+  const sharedMessageWa = `The *EroTales App* has the best\nRomantic Stories ever! I just\nfound this once: *${
     storyData?.item?.title_en || storyData?.title_en
   }*\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
-  const sharedMessageFB = `The EroTales App has the best Romantic\nStories ever! I just found this one:\n${
+  const sharedMessageFB = `The EroTales App has the best Romantic\nStories ever! I just found this once:\n${
     storyData?.item?.title_en || storyData?.title_en
   }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on the AppStore\nor Google Play.`;
-  const sharedMessage = `The EroTales App has the best\nRomantic Stories ever! I just\nfound this once:\n${
+  const sharedMessage = `The EroTales App has the best\nRomantic Stories ever! I just\nfound this once: ${
     storyData?.item?.title_en || storyData?.title_en
   }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
 

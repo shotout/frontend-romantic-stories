@@ -209,7 +209,6 @@ const MainScreen = ({
     }
     async function handleOpenNotif() {
       if (route?.params?.isFromNotif) {
-        alert('masukkkk')
         const value = await AsyncStorage.getItem('setToday');
         const stringifyDateNow = new Date();
         let strTanggalSekarang = stringifyDateNow.getDate().toString();
@@ -1036,10 +1035,10 @@ const MainScreen = ({
   const handleReadAds = async (newStory?: any) => {
     const story = newStory?.content_en ? newStory : nextStory;
     setBook(story);
+    setShowModalDay(false);
+    setShowModal(false);
+    setShowPreview(false);
     setTimeout(async () => {
-      setShowModalDay(false);
-      setShowModal(false);
-      setShowPreview(false);
       handleSetStory(story);
       pagerRef.current?.setPage(0);
       setScreenNumber(0);
