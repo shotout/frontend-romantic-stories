@@ -408,7 +408,7 @@ function QuotesContent({
               // backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
             <View
-              style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
+              style={{backgroundColor: 'white', padding: 10, borderRadius: 10}}>
               <TouchableOpacity
                 onPress={() => {
                   setModalVisible(false)
