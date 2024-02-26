@@ -88,7 +88,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on the AppStore\nor Google Play.`;
   const sharedMessage = `The EroTales App has the best\nRomantic Stories ever! I just\nfound this once: ${
     storyData?.item?.title_en || storyData?.title_en
-  }\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
+  }\n\nCheck out the Story here: ${dinamicLink}\n\nCheck the EroTales App out now\non https://EroTalesApp.com\nor Download the App directly on\nthe AppStore or Google Play.`;
 
   const handleClose = () => {
     onClose();

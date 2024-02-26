@@ -536,7 +536,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               </Pressable>
             </View>
           ) : null}
-          {userProfile?.data?.subscription?.audio_take != 0 && userProfile?.data?.subscription?.plan_id != 1 ? (
+          {userProfile?.data?.subscription?.audio_take != 0 && Number(Number(userProfile?.data?.subscription?.audio_limit) - Number(userProfile?.data?.subscription?.audio_take)) === 0 ? (
             <View>
               <View
                 style={{
