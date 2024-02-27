@@ -447,7 +447,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     : null}
                 </Text>
               </Pressable>
-              <Pressable onPress={() => openPaymentSettings()}>
+              <Pressable onPress={() => handleInapp('unsubscribe_placement')}>
                 <Text
                   allowFontScaling={false}
                   style={{
