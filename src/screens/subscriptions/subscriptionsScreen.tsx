@@ -63,7 +63,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   const [promotions, setPromotions] = useState(
     userProfile?.data?.notif_ads_enable === 0 ? false : true,
   );
-  console.log(JSON.stringify(userProfile))
+  console.log(JSON.stringify(userProfile));
   const subscriptionStartDate = moment(userProfile?.data?.subscription.started);
   // Mendapatkan tanggal berakhir langganan (1 tahun setelah tanggal mulai)
   const subscriptionEndDate = subscriptionStartDate.add(1, 'year');
@@ -125,65 +125,63 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
 
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
-    setLoading2(true)
+    setLoading2(true);
     const data = await handleNativePayment('unlock_5_audio_stories');
     if (data) {
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
-        setLoading2(false)
+        setLoading2(false);
       }, 100);
     } else {
       setShow(false);
-      setLoading2(false)
+      setLoading2(false);
     }
   };
   const handleAudioOne = async () => {
-    setLoading(true)
+    setLoading(true);
     setTitle('10/10 Audio Stories');
     const data = await handleNativePayment('unlock_10_audio_stories');
     if (data) {
-      setLoading(false)
+      setLoading(false);
       setShow(false);
       setTimeout(async () => {
         setShowAudio(true);
       }, 100);
     } else {
-      setLoading(false)
+      setLoading(false);
       setShow(false);
     }
   };
-  const handleInapp = async (value) => {
+  const handleInapp = async value => {
     //
     try {
       const paymentResult = await handlePayment(value);
       if (paymentResult.success) {
-        reloadUserProfile()
-        setShowModalGetPremium(true)
+        reloadUserProfile();
+        setShowModalGetPremium(true);
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
-        
         console.log('Pembayaran gagal:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran gagal
       }
     } catch (error) {
-      
       console.error('Terjadi kesalahan:', error);
       // Tangani kesalahan yang mungkin terjadi
     }
     // setShowModalGetPremium(true);
   };
+
   return (
     <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
-       <ModalGetPremium
-            isVisible={showModalGetPremium}
-            onGotIt={() => {
-              setShowModalGetPremium(false);
-             
-            }}
-            onClose={() => setShowModalGetPremium(false)}
-          />
+      <ModalGetPremium
+        isVisible={showModalGetPremium}
+        onGotIt={() => {
+          setShowModalGetPremium(false);
+        }}
+        onClose={() => setShowModalGetPremium(false)}
+      />
       <View
         style={{
           flex: 0,
@@ -212,7 +210,11 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text
               allowFontScaling={false}
-              style={{fontSize: 18, fontWeight: '600', color: code_color.white}}>
+              style={{
+                fontSize: 18,
+                fontWeight: '600',
+                color: code_color.white,
+              }}>
               Subscription
             </Text>
           </View>
@@ -226,7 +228,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
       </View>
       <ScrollView
         style={{
-          backgroundColor: '#D8DEFD',
+          backgroundColor: '#f1f1f1',
           opacity: 1,
           height: '100%',
           flex: 1,
@@ -257,6 +259,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
             // elevation:1,
             padding: 10,
             borderRadius: 10,
+            marginBottom: 30
           }}>
           <View
             style={{
@@ -316,7 +319,15 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               </View>
             </View>
           ))}
-          <View style={{ borderStyle: 'dashed', marginHorizontal: 0, borderWidth: 1, marginVertical: 10, borderColor: code_color.greyDefault}} />
+          <View
+            style={{
+              borderStyle: 'dashed',
+              marginHorizontal: 0,
+              borderWidth: 1,
+              marginVertical: 10,
+              borderColor: code_color.greyDefault,
+            }}
+          />
           {userProfile?.data?.subscription?.plan?.id != 1 ? (
             <View>
               <View style={{flexDirection: 'row', marginVertical: 10}}>
@@ -325,7 +336,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     style={{
                       fontSize: moderateScale(14),
                       color: code_color.grey,
-                      fontWeight: 'bold',
+
                       textAlign: 'center',
                     }}>
                     Start
@@ -347,7 +358,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     style={{
                       fontSize: moderateScale(14),
                       color: code_color.grey,
-                      fontWeight: 'bold',
+
                       textAlign: 'center',
                     }}>
                     End
@@ -376,7 +387,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                   style={{
                     fontSize: moderateScale(14),
                     color: code_color.grey,
-                    fontWeight: 'bold',
+
                     textAlign: 'center',
                   }}>
                   {remainingDays} Days
@@ -385,20 +396,71 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
             </View>
           ) : null}
 
-          {userProfile?.data?.subscription?.plan?.id != 1 ? (
-            <Pressable onPress={() => openPaymentSettings()}>
-              <Text
+          {userProfile?.data?.subscription?.plan?.id != 1 &&
+          userProfile?.data?.subscription?.plan?.id != 3 ? (
+            <View>
+              <Pressable
+                onPress={() => {
+                  userProfile?.data?.subscription?.plan?.id === 1
+                    ? handleInapp('in_app')
+                    : userProfile?.data?.subscription?.plan?.id === 2
+                    ? setShow(true)
+                    : null;
+                }}
                 style={{
-                  fontSize: moderateScale(16),
-                  color: code_color.grey,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  marginVertical: 20,
+                  backgroundColor: '#009A37',
+                  width: '100%',
+                  marginTop: moderateScale(40),
+                  paddingVertical: moderateScale(14),
+                  borderRadius: moderateScale(6),
                 }}>
-                Cancel Plan
-              </Text>
-            </Pressable>
-          ) : (
+                <View
+                  style={{
+                    position: 'absolute',
+                    marginHorizontal: 'auto',
+                    backgroundColor: '#FFD12F',
+                    alignSelf: 'center',
+                    paddingVertical: moderateScale(0),
+                    paddingHorizontal: moderateScale(24),
+                    borderRadius: moderateScale(10),
+                    zIndex: 1,
+                    top: -moderateScale(8),
+                  }}>
+                  <Text style={{color: code_color.black, fontWeight: 600}}>
+                    {userProfile?.data?.subscription?.plan?.id === 1
+                      ? 'UNLOCK EVERYTHING'
+                      : 'UPGRADE YOUR PACKAGE'}
+                  </Text>
+                </View>
+
+                <Text
+                  style={{
+                    color: code_color.white,
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                  }}>
+                  {userProfile?.data?.subscription?.plan?.id === 1
+                    ? 'Get EroTales UNLIMITED'
+                    : userProfile?.data?.subscription?.plan?.id === 2
+                    ? 'Get EroTales UNLIMITED + Audio'
+                    : null}
+                </Text>
+              </Pressable>
+              <Pressable onPress={() => openPaymentSettings()}>
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    fontSize: 16,
+                    color: code_color.grey,
+                    textAlign: 'center',
+                    marginVertical: 20,
+                  }}>
+                  Cancel Plan
+                </Text>
+              </Pressable>
+            </View>
+          ) : userProfile?.data?.subscription?.plan?.id === 1 ? (
             <Pressable
               onPress={() => {
                 userProfile?.data?.subscription?.plan?.id === 1
@@ -435,7 +497,13 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               <BookLockIcon
                 style={{position: 'absolute', top: '70%', left: '12%'}}
               />
-              <Text style={{color: code_color.white, textAlign: 'center', fontWeight: 'bold', fontSize: 15}}>
+              <Text
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                }}>
                 {userProfile?.data?.subscription?.plan?.id === 1
                   ? 'Get EroTales UNLIMITED'
                   : userProfile?.data?.subscription?.plan?.id === 2
@@ -443,9 +511,11 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                   : null}
               </Text>
             </Pressable>
-          )}
-          {userProfile?.data?.subscription?.is_audio != 0 ? (
-            <View style={{marginBottom: 20}}>
+          ) : null}
+        </View>
+        <View>
+          {userProfile?.data?.subscription?.is_audio != 0 && userProfile?.data?.subscription?.plan?.id != 3 ? (
+            <View style={{paddingBottom: 50}}>
               <Text
                 style={{
                   fontSize: moderateScale(16),
@@ -464,7 +534,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                   width: '100%',
                   marginTop: moderateScale(10),
                   paddingVertical: moderateScale(14),
-                  borderRadius: moderateScale(6),
+                  borderRadius: moderateScale(10),
                 }}>
                 <View
                   style={{
@@ -472,9 +542,9 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     marginHorizontal: 'auto',
                     backgroundColor: code_color.blueDark,
                     alignSelf: 'center',
-                    paddingVertical: moderateScale(0),
+                    paddingVertical: moderateScale(5),
                     paddingHorizontal: moderateScale(24),
-                    borderRadius: moderateScale(10),
+                    borderRadius: moderateScale(15),
                     zIndex: 1,
                     top: -moderateScale(8),
                   }}>
@@ -490,17 +560,24 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     size={60}
                     thickness={5}
                     borderWidth={2}
-                    progress={userProfile?.data?.subscription?.audio_take / userProfile?.data?.subscription?.audio_limit}
+                    progress={
+                      1 -
+                      userProfile?.data?.subscription?.audio_take /
+                        userProfile?.data?.subscription?.audio_limit
+                    }
                     showsText
                     formatText={() =>
                       `${Math.round(
-                        ((userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take) * 100) /
+                        ((userProfile?.data?.subscription?.audio_limit -
+                          userProfile?.data?.subscription?.audio_take) *
+                          100) /
                           100,
                       )} / ${Math.round(
                         (userProfile?.data?.subscription?.audio_limit * 100) /
                           100,
                       )}`
                     }
+                    color="#5873FF"
                     textStyle={{fontSize: 12, fontWeight: 'bold'}}
                   />
 
@@ -508,24 +585,29 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     <Text
                       style={{
                         color: '#5873FF',
-                        textAlign: 'center',
+                        textAlign: 'left',
                         fontWeight: 'bold',
+                        marginLeft: 20,
+                        marginTop: 5,
                       }}>
-                      {userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take} Audio
-                      Stories remaining
+                      {userProfile?.data?.subscription?.audio_limit -
+                        userProfile?.data?.subscription?.audio_take}{' '}
+                      Audio Stories remaining
                     </Text>
                     <Text
                       style={{
                         color: code_color.blackDark,
                         marginVertical: 5,
                         marginLeft: 20,
-                        width: 200,
-                        textAlign: 'center',
+                        width: 250,
+                        textAlign: 'left',
                       }}>
-                      You can still listen to{' '}
-                      {(userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take)}/
-                      {userProfile?.data?.subscription?.audio_limit} Audio
-                      Stories in your package.
+                      {`You can still listen to ${
+                        userProfile?.data?.subscription?.audio_limit -
+                        userProfile?.data?.subscription?.audio_take
+                      }/${
+                        userProfile?.data?.subscription?.audio_limit
+                      } Audio \nStories in your package.`}
                     </Text>
                   </View>
                 </View>
@@ -536,7 +618,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               </Pressable>
             </View>
           ) : null}
-          {userProfile?.data?.subscription?.audio_take != 0 && Number(Number(userProfile?.data?.subscription?.audio_limit) - Number(userProfile?.data?.subscription?.audio_take)) === 0 ? (
+          {userProfile?.data?.subscription?.plan?.id === 3 ? (
             <View>
               <View
                 style={{
@@ -624,12 +706,16 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                       thickness={5}
                       borderWidth={2}
                       progress={
-                        userProfile?.data?.subscription?.audio_take / userProfile?.data?.subscription?.audio_limit
+                        1 -
+                        userProfile?.data?.subscription?.audio_take /
+                          userProfile?.data?.subscription?.audio_limit
                       }
                       showsText
                       formatText={() =>
                         `${Math.round(
-                          ((userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take) * 100) /
+                          ((userProfile?.data?.subscription?.audio_limit -
+                            userProfile?.data?.subscription?.audio_take) *
+                            100) /
                             100,
                         )} / ${Math.round(
                           (userProfile?.data?.subscription?.audio_limit * 100) /
@@ -653,8 +739,9 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                           textAlign: 'center',
                           fontWeight: 'bold',
                         }}>
-                        {userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take} Audio
-                        Stories remaining
+                        {userProfile?.data?.subscription?.audio_limit -
+                          userProfile?.data?.subscription?.audio_take}{' '}
+                        Audio Stories remaining
                       </Text>
                       <Text
                         style={{
@@ -665,8 +752,9 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                           textAlign: 'center',
                         }}>
                         You can still listen to{' '}
-                        { userProfile?.data?.subscription?.audio_limit - userProfile?.data?.subscription?.audio_take}/
-                        {userProfile?.data?.subscription?.audio_limit} Audio
+                        {userProfile?.data?.subscription?.audio_limit -
+                          userProfile?.data?.subscription?.audio_take}
+                        /{userProfile?.data?.subscription?.audio_limit} Audio
                         Stories in your package.
                       </Text>
                     </View>

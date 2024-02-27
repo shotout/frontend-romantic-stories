@@ -478,8 +478,7 @@ function ModalAudioStory({
                 style={{position: 'absolute', top: '70%', left: '5%'}}
               />
               <Text style={{color: code_color.white, textAlign: 'center'}}>
-                {userProfile?.data?.subscription?.plan?.id === 1 ||
-                userProfile?.data?.subscription?.plan?.id === 2
+                {userProfile?.data?.subscription?.plan?.id === 1
                   ? 'Get EroTales UNLIMITED'
                   : 'Get EroTales UNLIMITED + Audio'}
               </Text>

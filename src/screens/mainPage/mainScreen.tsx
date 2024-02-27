@@ -1083,13 +1083,17 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+           
             // if(screenNumber ===  textChunks?.length){
             setShowModalNewStory(true);
             // }
 
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
           } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
-            await fecthNextStory();
+            setTimeout(() => {
+              setShowModalCongrats(true);
+            }, 200);
+            // await fecthNextStory();
           }
         }
       }, 700);
