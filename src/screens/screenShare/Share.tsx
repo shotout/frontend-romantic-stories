@@ -681,13 +681,21 @@ function ScreenShare({
           }}>
           <FastImage
             source={selectBg}
-            resizeMode='cover'
+            resizeMode="cover"
             style={{
               position: 'absolute',
               width: '100%',
               height: '100%',
               borderRadius: 24,
-             
+            }}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              borderRadius: moderateScale(24),
             }}
           />
           {isVisibleFont ? (
@@ -716,7 +724,8 @@ function ScreenShare({
               fontFamily: fontSelect.value,
               fontSize: moderateScale(16),
               marginHorizontal: moderateScale(20),
-              color: selectBg === story2 || selectBg === bg || selectBg === bgShare3 ? 'white' : 'black'
+              // color: selectBg === story2 || selectBg === bg || selectBg === bgShare3 ? 'white' : 'black'
+              color: code_color.white,
             }}>
             <Text style={[styles.blur, {fontSize: 16, }]}>
               {route?.params?.start}
@@ -728,7 +737,7 @@ function ScreenShare({
           </Text>
           <Text
             style={{
-              color: code_color.black,
+              color: code_color.white,
               fontSize: moderateScale(18),
               fontWeight: '600',
               textAlign: 'center',
