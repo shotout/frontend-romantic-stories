@@ -139,7 +139,7 @@ function ScreenShare({
   const captureRef = useRef();
   const base64CaptureImage = useRef(null);
   const [viewShotLayout, setViewShotLayout] = useState(null);
-  const backgroundList = [bg, story2, bgShare1, bgShare2, bgShare3, bgShare4];
+  const backgroundList = [bg, story2, bgShare2, bgShare3, bgShare4];
   const downloadText = 'I found this fact on the ShortStory App';
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -558,6 +558,7 @@ function ScreenShare({
     }
     // setFontSize(fontSizeDefault)
   };
+
   const renderFont = () => {
     return (
       <Slider
@@ -606,12 +607,13 @@ function ScreenShare({
           }}>
           <FastImage
             source={selectBg}
+            resizeMode='cover'
             style={{
               position: 'absolute',
               width: '100%',
               height: '100%',
               borderRadius: 24,
-              resizeMode: 'cover',
+             
             }}
           />
           {isVisibleFont ? (
@@ -626,7 +628,8 @@ function ScreenShare({
                 width: 'auto',
                 flex: 0
               }}
-              placeholder="Masukkan teks"
+              autoFocus={true}
+              placeholder=""
               value={userText}
               onChangeText={text => setUserText(text)}
             />
@@ -639,8 +642,9 @@ function ScreenShare({
               fontFamily: fontSelect.value,
               fontSize: moderateScale(16),
               marginHorizontal: moderateScale(20),
+              color: selectBg === story2 || selectBg === bg || selectBg === bgShare3 ? 'white' : 'black'
             }}>
-            <Text style={[styles.blur, {fontSize: 16}]}>
+            <Text style={[styles.blur, {fontSize: 16, }]}>
               {route?.params?.start}
             </Text>{' '}
             {selected}{' '}
@@ -692,10 +696,15 @@ function ScreenShare({
               top: 5,
             }}
             onPress={() => {
-              const value = {text: userText};
-              setDraggableItems([...draggableItems, value]);
-              setUserText('');
-              setVisibleFont(false);
+              if(userText != ''){
+                const value = {text: userText};
+                setDraggableItems([...draggableItems, value]);
+                setUserText('');
+                setVisibleFont(false);
+              }else{
+                setVisibleFont(false);
+              }
+             
             }}>
             <Text
               allowFontScaling={false}
@@ -802,7 +811,7 @@ function ScreenShare({
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{flex: 1, width: '100%'}}>
+      <ScrollView style={{flex: 1, width: '100%', marginBottom: 50}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
             style={{
@@ -971,7 +980,7 @@ function ScreenShare({
           <Text style={{...styles.title, textAlign: 'center'}}>
             Choose Background
           </Text>
-          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20}}>
+          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20,}}>
             <ScrollView horizontal style={styles.horizontalScroll}>
               {backgroundList.map((bgl, idx) => (
                 <TouchableOpacity

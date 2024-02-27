@@ -29,9 +29,9 @@ export default StyleSheet.create({
   blur: {
     fontSize: moderateScale(18),
     color: 'grey',
-    textShadowColor: 'rgba(3, 5, 2, 10)',
+    textShadowColor: 'rgba(0, 0, 1, 20)',
     textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 4,
+    textShadowRadius: 10,
   },
   hr: {
     width: '90%',
