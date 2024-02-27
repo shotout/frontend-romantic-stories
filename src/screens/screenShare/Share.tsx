@@ -26,12 +26,14 @@ import InstagramStory from '../../assets/icons/instagramStory';
 import Instagram from '../../assets/icons/instagram';
 import FBStory from '../../assets/icons/facebookStory';
 import FB from '../../assets/icons/facebook';
+import Save from '../../assets/icons/save';
 import UpChevron from '../../assets/icons/upChevron';
 import Lock from './../../assets/icons/lock';
 import Watch from './../../assets/icons/watch';
 import LockFree from './../../assets/icons/lockFree';
 import UnlockFontIcon from './../../assets/icons/unlockFont';
 import UnlockBgShareIcon from './../../assets/icons/unlockBgShare';
+import IconChecklistColor from './../../assets/icons/iconChecklistTosca';
 
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -105,11 +107,7 @@ function ScreenShare({
     name: '',
     value: '',
   });
-  const [showModal, setShowModal] = useState(false);
-  const [showModalTwo, setShowModalTwo] = useState(false);
-  const [isStatic, setIsStatic] = useState(false);
-  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
-  const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [showModalSave, setShowModalSave] = useState(false);
   const [sticker, setSticker] = useState([]);
   const [userText, setUserText] = useState('');
   const [draggableItems, setDraggableItems] = useState([]);
@@ -245,19 +243,44 @@ function ScreenShare({
     return status === 'granted';
   };
 
-  const handleSaveImage = async () => {
-    try {
+  const [isSaveImage, setIsSaveImage] = useState(false);
+  useEffect(() => {
+    async function saveImage() {
+      const contentURL = isIphone ? base64CaptureImage.current : captureUri;
       if (Platform.OS === 'android' && Platform.Version?.toString() < 30) {
         if (await hasAndroidPermission()) {
-          await CameraRoll.save(captureUri);
+          await CameraRoll.save(contentURL);
+          setShowModalSave(true);
+          setTimeout(() => {
+            setShowModalSave(false);
+          }, 1000);
         } else {
           return;
         }
       } else {
-        await CameraRoll.save(captureUri);
+        await CameraRoll.save(contentURL);
+        setShowModalSave(true);
+        setTimeout(() => {
+          setShowModalSave(false);
+        }, 1000);
       }
+      setIsSaveImage(false);
+    }
+
+    if (isSaveImage) {
+      saveImage();
+    }
+  }, [isSaveImage]);
+
+  const handleSaveImage = async () => {
+    try {
+      await handleShare();
+      setTimeout(() => {
+        setIsSaveImage(true);
+      }, 500);
     } catch (err) {
       console.log('Err save:', err);
+      setIsSaveImage(false);
     }
   };
 
@@ -434,6 +457,11 @@ function ScreenShare({
             icon={<FB width="100%" height="100%" />}
             onPress={handleShareFBDefault}
           />
+          <Card
+            label="Save Image"
+            icon={<Save width="100%" height="100%" />}
+            onPress={handleSaveImage}
+          />
         </ScrollView>
       </View>
     );
@@ -580,6 +608,52 @@ function ScreenShare({
       />
     );
   };
+
+  function renderModalSave() {
+    if (showModalSave === true) {
+      return (
+        <Modal
+          visible={showModalSave}
+          animationType="fade"
+          transparent
+          onDismiss={() => {
+            setShowModalSave(false);
+          }}>
+          <View
+            style={{flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
+            <View
+              style={{
+                backgroundColor: '#000000',
+                paddingHorizontal: moderateScale(40),
+                borderRadius: moderateScale(20 / 2),
+                paddingVertical: moderateScale(10),
+              }}>
+              <View
+                style={{
+                  width: moderateScale(30),
+                  height: moderateScale(30),
+                  // resizeMode: 'contain',
+                  alignSelf: 'center',
+                }}>
+                <IconChecklistColor width="100%" height="100%" />
+              </View>
+              <Text
+                style={{
+                  fontSize: moderateScale(10),
+                  color: '#ffffff',
+                  textAlign: 'center',
+                  marginTop: 8,
+                }}>
+                Image Saved
+              </Text>
+            </View>
+          </View>
+        </Modal>
+      );
+    }
+    return null;
+  }
+
   const windowHeight = Dimensions.get('window').height;
 
   const renderLayout = () => {
@@ -664,6 +738,7 @@ function ScreenShare({
           </Text>
         </ViewShot>
         {renderHeaderScreenShot()}
+        {renderModalSave()}
         {/* <View style={styles.overlay} /> */}
       </View>
     );
