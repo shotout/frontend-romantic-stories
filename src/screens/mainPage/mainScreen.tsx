@@ -768,8 +768,9 @@ const MainScreen = ({
     // iphone xr = 896
   
    const { height, fontScale } = Dimensions.get('window');
+   
     const size = (Number(fontSize) -1); 
-    const charactersPerLine = Math.floor(height / (size * fontScale)); 
+    const charactersPerLine = Math.floor(height / (size * (fontScale + (height > 850 ? -0.10 : 0)))); 
     const linesPerPage = Math.floor(height / size); 
     const totalCharacters = (charactersPerLine * linesPerPage) / (Number(fontSize) === 14 ? 5 : 4); 
     const newChunks = splitTextIntoArray(
