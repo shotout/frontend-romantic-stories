@@ -47,6 +47,7 @@ import * as Progress from 'react-native-progress';
 import ModalAudioUnlock from '../../components/modal-audio-unlock';
 import moment from 'moment';
 import ModalGetPremium from '../../components/modal-get-premium';
+import * as IAP from 'react-native-iap';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
@@ -63,7 +64,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   const [promotions, setPromotions] = useState(
     userProfile?.data?.notif_ads_enable === 0 ? false : true,
   );
-  console.log(JSON.stringify(userProfile));
+
   const subscriptionStartDate = moment(userProfile?.data?.subscription.started);
   // Mendapatkan tanggal berakhir langganan (1 tahun setelah tanggal mulai)
   const subscriptionEndDate = subscriptionStartDate.add(1, 'year');
@@ -73,10 +74,27 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
 
   // Menghitung sisa hari
   const remainingDays = subscriptionEndDate.diff(currentDate, 'days');
-
+  const [priceAudio1, setPriceAudio1] = useState('');
+  const [priceAudio2, setPriceAudio2] = useState('');
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
-
+  useEffect(() => {
+    if(!__DEV__){
+      async function getPrice() {
+        const products = await IAP.getProducts({
+          skus: ['unlock_10_audio_stories'],
+        });
+        const products1 = await IAP.getProducts({
+          skus: ['unlock_5_audio_stories'],
+        });
+  
+        setPriceAudio1(products1[0].localizedPrice);
+        setPriceAudio2(products[0].localizedPrice);
+      }
+      getPrice();
+    }
+   
+  }, []);
   useEffect(() => {
     handleThemeAvatar();
   }, []);
@@ -404,7 +422,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                   userProfile?.data?.subscription?.plan?.id === 1
                     ? handleInapp('in_app')
                     : userProfile?.data?.subscription?.plan?.id === 2
-                    ? setShow(true)
+                    ?  handleInapp('upgrade_to_unlimited_audio_story')
                     : null;
                 }}
                 style={{
@@ -607,7 +625,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                         userProfile?.data?.subscription?.audio_take
                       }/${
                         userProfile?.data?.subscription?.audio_limit
-                      } Audio \nStories in your package.`}
+                      } Audio \nStories in your package.`} <Text onPress={() => {setShow(true)}} style={{ textDecorationLine: 'underline',  color: '#5873FF', }}>Get more</Text>
                     </Text>
                   </View>
                 </View>
@@ -755,7 +773,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                         {userProfile?.data?.subscription?.audio_limit -
                           userProfile?.data?.subscription?.audio_take}
                         /{userProfile?.data?.subscription?.audio_limit} Audio
-                        Stories in your package.
+                        Stories in your package.<Text onPress={() => {}} style={{ textDecorationLine: 'underline', }}>Get more</Text>
                       </Text>
                     </View>
                   </View>
@@ -776,6 +794,8 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
         onClose={() => setShow(false)}
         onGetAudio={() => handleAudio()}
         onGetAudio1={() => handleAudioOne()}
+        price={priceAudio1}
+        price2={priceAudio2}
       />
     </SafeAreaView>
   );

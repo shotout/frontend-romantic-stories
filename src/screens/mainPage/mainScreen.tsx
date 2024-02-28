@@ -768,11 +768,11 @@ const MainScreen = ({
     // iphone xr = 896
   
    const { height, fontScale } = Dimensions.get('window');
-   
+ 
     const size = (Number(fontSize) -1); 
-    const charactersPerLine = Math.floor(height / (size * (fontScale + (height > 850 ? -0.10 : 0)))); 
+    const charactersPerLine = Math.floor(height / (size * (fontScale + (height > 840 ? -0.147 : 0)))); 
     const linesPerPage = Math.floor(height / size); 
-    const totalCharacters = (charactersPerLine * linesPerPage) / (Number(fontSize) === 14 ? 5 : 4); 
+    const totalCharacters = (charactersPerLine * linesPerPage) / (Number(fontSize) === 14 ? 4.5 : (height >= 890 && Number(fontSize) === 18) ? 3.5 : 4); 
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       totalCharacters
@@ -790,7 +790,7 @@ const MainScreen = ({
       
     // }
     handleSetPage(page);
-   
+    
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
   const renderFactItem = ({item, index, title, category, colorText, type}) => (

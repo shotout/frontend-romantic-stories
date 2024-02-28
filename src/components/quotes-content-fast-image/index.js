@@ -140,14 +140,12 @@ function QuotesContent({
         pageActive === 0 ||
         pageActive === 4 ||
         pageActive === 8 ||
-        pageActive === 12 ||
         pageActive === 16 ||
         pageActive === 20 ||
         pageActive === 24 ||
         pageActive === 28
           ? 'positive'
           : pageActive === 1 ||
-            pageActive === 5 ||
             pageActive === 9 ||
             pageActive === 13 ||
             pageActive === 17 ||
@@ -156,20 +154,19 @@ function QuotesContent({
             pageActive === 29
           ? 'think'
           : pageActive === 2 ||
-            pageActive === 6 ||
-            pageActive === 10 ||
-            pageActive === 14 ||
-            pageActive === 18 ||
-            pageActive === 22 ||
-            pageActive === 26 
+            pageActive === 5 ||
+            pageActive === 12 ||
+            pageActive === 15 ||
+            pageActive === 28 ||
+            pageActive === 21 
           ? 'inlove'
           : pageActive === 3 ||
-            pageActive === 7 ||
+            pageActive === 6 ||
+            pageActive === 9 ||
             pageActive === 11 ||
-            pageActive === 15 ||
-            pageActive === 19 ||
-            pageActive === 23 ||
-            pageActive === 27 
+            pageActive === 14 ||
+            pageActive === 17 ||
+            pageActive === 20 
           ? 'positive'
           : 'positive',
     };
