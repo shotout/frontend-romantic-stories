@@ -172,13 +172,13 @@ const LibraryScreen = ({
     if (userStory?.id === (item?.item?.id ? item?.item?.id : item?.id)) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
-      navigate('Main');
+      navigate('Main', {isFromLibrary: true});
     } else if (
       userProfile?.data?.subscription?.plan?.id != 1 
     ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
-      navigate('Main');
+      navigate('Main', {isFromLibrary: true});
     } else if (
       userProfile?.data?.subscription?.plan?.id === 1 &&
       item?.item?.expire != null &&
@@ -186,7 +186,7 @@ const LibraryScreen = ({
     ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
-      navigate('Main');
+      navigate('Main', {isFromLibrary: true});
     } else {
       const resp = await getStoryDetail(item?.item?.id);
       handleNextStory(resp.data);
@@ -236,7 +236,7 @@ const LibraryScreen = ({
     ) {
       const resp = await getStoryDetail(item?.id);
       handleSetStory(resp.data);
-      navigate('Main');
+      navigate('Main', {isFromLibrary: true});
       setDetail(null);
     } else {
       const resp = await getStoryDetail(item?.id);
@@ -1088,13 +1088,13 @@ const LibraryScreen = ({
           setShowUnlockedStory(false);
           const resp = await getStoryDetail(selectedStory?.id);
           handleSetStory(resp.data);
-          navigate('Main');
+          navigate('Main', {isFromLibrary: true});
         }}
         handleReadOther={async (storyId: number) => {
           setShowUnlockedStory(false);
           const resp = await getStoryDetail(storyId);
           handleSetStory(resp.data);
-          navigate('Main');
+          navigate('Main', {isFromLibrary: true});
         }}
       />
       <ModalUnlockStory
@@ -1116,7 +1116,7 @@ const LibraryScreen = ({
         onClose={() => {
           setShowModalSuccessPurchase(false);
           handleSetStory(nextStory);
-          navigate('Main');
+          navigate('Main', {isFromLibrary: true});
         }}
       />
       <ModalSuccessPurchase
@@ -1124,8 +1124,8 @@ const LibraryScreen = ({
         onClose={() => {
           setShowModalSuccessPurchaseNative(false);
           handleSetStory(nextStory);
-          handleSetPage(0)
-          navigate('Main');
+          handleSetPage(0);
+          navigate('Main', {isFromLibrary: true});
         }}
       />
       <View style={{flex: 0, height: wp(480), backgroundColor: bgTheme}}>

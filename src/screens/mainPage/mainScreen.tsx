@@ -1036,12 +1036,14 @@ const MainScreen = ({
         (entry: any) =>
           entry?.id === dataBook.id && entry?.page === textChunks?.length,
       );
-     
-        if (userHasRead && textChunks?.length > 0) {
-          setShowModalNewStory(true);
-        }
-     
-     
+
+      if (
+        !route?.params?.isFromLibrary &&
+        userHasRead &&
+        textChunks?.length > 0
+      ) {
+        setShowModalNewStory(true);
+      }
     }
   }, [dataBook]);
 
