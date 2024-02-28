@@ -1056,15 +1056,15 @@ const LibraryScreen = ({
       handleNextStory(resp.data);
       setShowModalSuccessPurchaseNative(true);
     } else {
-      setLoading(false);
-      setShowModalUnlock(false);
-      setShowModalNewStory(false);
-      const resp = await getStoryDetail(selectedStory?.id);
-      handleNextStory(resp.data);
-      setShowModalSuccessPurchaseNative(true);
       // setLoading(false);
       // setShowModalUnlock(false);
       // setShowModalNewStory(false);
+      // const resp = await getStoryDetail(selectedStory?.id);
+      // handleNextStory(resp.data);
+      // setShowModalSuccessPurchaseNative(true);
+      setLoading(false);
+      setShowModalUnlock(false);
+      setShowModalNewStory(false);
     }
   };
 
