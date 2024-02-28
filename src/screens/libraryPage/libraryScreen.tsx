@@ -36,6 +36,7 @@ import DeleteSvg from '../../assets/icons/delete';
 import EditSvg from '../../assets/icons/edit';
 import DotSvg from '../../assets/icons/dot.jsx';
 import EmptyLibrary from '../../assets/icons/emptyLibrary';
+import UnlockedTime from '../../assets/icons/unlockedTime';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
@@ -211,6 +212,21 @@ const LibraryScreen = ({
     // }
   };
 
+  const calculateRemainingTime = (targetDateTime: string) => {
+    const targetDate = new Date(targetDateTime);
+    const now = new Date();
+    const difference = targetDate.getTime() - now.getTime();
+
+    if (difference < 0) {
+      return null;
+    }
+
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+
+    return {day: days, hour: hours};
+  };
+
   const handleReadDetail = async item => {
     setSelectedStory(item);
     if (
@@ -293,12 +309,21 @@ const LibraryScreen = ({
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
-                  userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.story?.id &&
-                  item?.item?.expire === null &&
-                  new Date() > new Date(item?.item?.expire) && (
-                    <LockFree height={16} width={55} />
-                  )}
+                userProfile?.data?.subscription?.plan?.id != 3 &&
+                userStory?.id != item?.item?.story?.id &&
+                item?.item?.expire === null &&
+                new Date() > new Date(item?.item?.expire) ? (
+                  <LockFree height={16} width={55} />
+                ) : (
+                  new Date() < new Date(item?.item?.expire) && (
+                    <UnlockedTime
+                      width={100}
+                      height={27}
+                      day={calculateRemainingTime(item?.item?.expire)?.day}
+                      hour={calculateRemainingTime(item?.item?.expire)?.hour}
+                    />
+                  )
+                )}
               </FastImage>
               <View
                 style={{
@@ -398,16 +423,25 @@ const LibraryScreen = ({
               width: 100,
               height: 100,
               alignItems: 'center',
-              paddingTop: 5,
+              // paddingTop: 5,
             }}
             resizeMode="contain">
             {userProfile?.data?.subscription?.plan?.id != 2 &&
-              userProfile?.data?.subscription?.plan?.id != 3 &&
-              userStory?.id != item?.item?.id &&
-              item?.item?.expire === null &&
-              new Date() > new Date(item?.item?.expire) && (
-                <LockFree height={16} width={55} />
-              )}
+            userProfile?.data?.subscription?.plan?.id != 3 &&
+            userStory?.id != item?.item?.id &&
+            item?.item?.expire === null &&
+            new Date() > new Date(item?.item?.expire) ? (
+              <LockFree height={16} width={55} style={{marginTop: 5}} />
+            ) : (
+              new Date() < new Date(item?.item?.expire) && (
+                <UnlockedTime
+                  width={100}
+                  height={27}
+                  day={calculateRemainingTime(item?.item?.expire)?.day}
+                  hour={calculateRemainingTime(item?.item?.expire)?.hour}
+                />
+              )
+            )}
           </FastImage>
           <View
             style={{
