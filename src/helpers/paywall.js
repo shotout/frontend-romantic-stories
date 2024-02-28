@@ -17,9 +17,8 @@ export const handlePayment = async (vendorId, notif, cb,) =>
       let stringVendor = vendorId;
       const set10min = await AsyncStorage.getItem('firstInstall');
       const main10 = reformatDate(parseFloat(set10min));
-      console.log('DATA DATE'+main10)
       const data = checkDays(main10)
-      if(data === 'kurang'){
+      if(data === 'kurang' || vendorId === 'unsubscribe_placement'){
         stringVendor = vendorId
       }else if(data === 'antara'){
         stringVendor = 'offer_50'
