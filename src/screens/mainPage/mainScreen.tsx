@@ -922,6 +922,14 @@ const MainScreen = ({
 
   const fetchStoryFree = async () => {
     const resp = await getStoryDetail(route?.params?.storyId);
+    const payloadStory = {
+      _method: 'PATCH',
+      story_id: route?.params?.storyId,
+      expire: 1,
+    };
+  
+    await updateProfile(payloadStory);
+    reloadUserProfile();
     handleNextStory(resp.data);
     setTimeout(() => {
       setShowModal(true);

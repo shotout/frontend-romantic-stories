@@ -97,6 +97,14 @@ const DetailCategoryScreen = ({
       setShowModalUnlock(false);
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
+        const payloadStory = {
+          _method: 'PATCH',
+          story_id: selectedStory?.id,
+          expire: 1,
+        };
+      
+        await updateProfile(payloadStory);
+        reloadUserProfile();
         handleNextStory(resp.data);
         setShowUnlockedStory(true);
       }, 500);

@@ -397,8 +397,8 @@ function QuotesContent({
                         : item?.substring(start - 50, start),
                     end:
                       themeUser?.content_en === '2'
-                        ? item?.substring(end - 50, end)
-                        : item?.substring(end - 50, end),
+                        ? item?.substring(end + 50, end)
+                        : item?.substring(end + 50, end),
                     title:
                       themeUser?.content_en === '2'
                         ? item?.title_id

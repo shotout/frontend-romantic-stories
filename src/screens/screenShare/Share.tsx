@@ -694,7 +694,7 @@ function ScreenShare({
               position: 'absolute',
               height: '100%',
               width: '100%',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              // backgroundColor: 'rgba(0, 0, 0, 0.5)',
               borderRadius: moderateScale(24),
             }}
           />
@@ -724,8 +724,8 @@ function ScreenShare({
               fontFamily: fontSelect.value,
               fontSize: moderateScale(16),
               marginHorizontal: moderateScale(20),
-              // color: selectBg === story2 || selectBg === bg || selectBg === bgShare3 ? 'white' : 'black'
-              color: code_color.white,
+              color: selectBg === story2 || selectBg === bg || selectBg === bgShare3 ? 'white' : 'black'
+              // color: code_color.white,
             }}>
             <Text style={[styles.blur, {fontSize: 16, }]}>
               {route?.params?.start}

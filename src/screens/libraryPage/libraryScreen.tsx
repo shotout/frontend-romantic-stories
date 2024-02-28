@@ -52,6 +52,7 @@ import {
   getExploreStory,
   getMyCollection,
   getStoryDetail,
+  updateProfile,
 } from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
@@ -73,6 +74,7 @@ import {hp, wp} from '../../utils/screen';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
+import { reloadUserProfile } from '../../utils/user';
 
 const LibraryScreen = ({
   colorTheme,
@@ -134,6 +136,14 @@ const LibraryScreen = ({
       setLoadingOne(false);
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
+        const payloadStory = {
+          _method: 'PATCH',
+          story_id: selectedStory?.id,
+          expire: 1,
+        };
+      
+        await updateProfile(payloadStory);
+        reloadUserProfile();
         handleNextStory(resp.data);
         setShowModalSuccessPurchase(true);
       }, 500);
@@ -825,6 +835,8 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
+
+      console.log(res)
       setListCollection(res.data);
       setListLibrary(res.outsides);
       setLoadingList(false);
