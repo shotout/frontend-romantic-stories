@@ -53,7 +53,7 @@ function ModalUnlockPremium({
             // alignItems: 'center',
           }}>
           <TouchableOpacity
-          onPress={handleClose}
+          onPress={() => handleClose()}
             style={{alignItems: 'flex-end', marginRight: -10, marginTop: -10}}>
             <CloseIcon width={15} height={15} />
           </TouchableOpacity>
