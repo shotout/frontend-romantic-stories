@@ -182,7 +182,7 @@ const LibraryScreen = ({
     } else if (
       userProfile?.data?.subscription?.plan?.id === 1 &&
       item?.item?.expire != null &&
-      new Date(item?.item?.expire) > new Date()
+      new Date(item?.item?.expire) > new Date() || item?.item?.is_read_later === 1 
     ) {
       const resp = await getStoryDetail(item?.item?.id);
       handleSetStory(resp.data);
@@ -230,9 +230,11 @@ const LibraryScreen = ({
   const handleReadDetail = async item => {
     setSelectedStory(item);
     if (
+      item?.item?.is_read_later === 1 ||
       userProfile?.data?.subscription?.plan?.id != 1 ||
       userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
-      new Date() > new Date(item?.item?.expire)
+      new Date() > new Date(item?.item?.expire) 
+      
     ) {
       const resp = await getStoryDetail(item?.id);
       handleSetStory(resp.data);
@@ -311,7 +313,8 @@ const LibraryScreen = ({
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                 userProfile?.data?.subscription?.plan?.id != 3 &&
                 userStory?.id != item?.item?.story?.id &&
-                item?.item?.expire === null &&
+                item?.item?.expire === null && 
+                item?.item?.is_read_later != 1 &&
                 new Date() > new Date(item?.item?.expire) ? (
                   <LockFree height={16} width={55} />
                 ) : (
@@ -430,6 +433,7 @@ const LibraryScreen = ({
             userProfile?.data?.subscription?.plan?.id != 3 &&
             userStory?.id != item?.item?.id &&
             item?.item?.expire === null &&
+            item?.item?.is_read_later != 1 &&
             new Date() > new Date(item?.item?.expire) ? (
               <LockFree height={16} width={55} style={{marginTop: 5}} />
             ) : (
@@ -547,7 +551,7 @@ const LibraryScreen = ({
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id && (
+                  userStory?.id != item?.item?.id &&  item?.item?.is_read_later != 1 && (
                     <LockFree height={16} width={55} />
                   )}
               </FastImage>
@@ -650,7 +654,7 @@ const LibraryScreen = ({
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id && (
+                  userStory?.id != item?.item?.id &&  item?.item?.is_read_later != 1 && (
                     <LockFree height={16} width={55} />
                   )}
               </FastImage>
@@ -870,7 +874,7 @@ const LibraryScreen = ({
       };
       const res = await getMyCollection(params);
 
-      console.log(res)
+    
       setListCollection(res.data);
       setListLibrary(res.outsides);
       setLoadingList(false);

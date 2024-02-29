@@ -724,7 +724,7 @@ function ScreenShare({
               fontFamily: fontSelect.value,
               fontSize: moderateScale(16),
               marginHorizontal: moderateScale(20),
-              color: selectBg === story2 || selectBg === bg || selectBg === bgShare3 || selectBg === bgShare4 ? 'white' : 'black'
+              color: selectBg === story2 || selectBg === bg || selectBg === bgShare2 || selectBg === bgShare3 || selectBg === bgShare4 ? 'white' : 'black'
               // color: code_color.white,
             }}>
             <Text style={[styles.blur, {fontSize: 16, }]}>
