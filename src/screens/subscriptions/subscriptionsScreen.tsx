@@ -580,8 +580,8 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     borderWidth={2}
                     progress={
                       1 -
-                      userProfile?.data?.subscription?.audio_take ? userProfile?.data?.subscription?.audio_take : 0 /
-                        userProfile?.data?.subscription?.audio_limit ? userProfile?.data?.subscription?.audio_limit : 0
+                      (userProfile?.data?.subscription?.audio_take ? userProfile?.data?.subscription?.audio_take : 0) /
+                        (userProfile?.data?.subscription?.audio_limit ? userProfile?.data?.subscription?.audio_limit : 0)
                     }
                     showsText
                     formatText={() =>
@@ -725,8 +725,9 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                       borderWidth={2}
                       progress={
                         1 -
-                        userProfile?.data?.subscription?.audio_take ? userProfile?.data?.subscription?.audio_take : 0 /
-                          userProfile?.data?.subscription?.audio_limit ? userProfile?.data?.subscription?.audio_limit : 0
+                        (userProfile?.data?.subscription?.audio_take ? userProfile?.data?.subscription?.audio_take : 0) /
+                        (userProfile?.data?.subscription?.audio_limit ? userProfile?.data?.subscription?.audio_limit : 0)
+                    
                       }
                       showsText
                       formatText={() =>
