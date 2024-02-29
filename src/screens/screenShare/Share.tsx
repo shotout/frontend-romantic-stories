@@ -81,6 +81,7 @@ import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import PlayStore from '../../assets/icons/playStore';
 import AppStore from '../../assets/icons/appStore';
 import FastImage from 'react-native-fast-image';
+import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
 function ScreenShare({
   route,
@@ -728,11 +729,11 @@ function ScreenShare({
               // color: code_color.white,
             }}>
             <Text style={[styles.blur, {fontSize: 16, }]}>
-              {route?.params?.start}
+              ...{route?.params?.start}
             </Text>{' '}
             {selected}{' '}
             <Text style={[styles.blur, {fontSize: 16}]}>
-              {route?.params?.end}
+              {route?.params?.end}...
             </Text>
           </Text>
           <Text
@@ -743,7 +744,7 @@ function ScreenShare({
               textAlign: 'center',
               bottom: moderateScale(20),
             }}>
-            @EroTales
+            @EroTalesApp
           </Text>
         </ViewShot>
         {renderHeaderScreenShot()}
@@ -1008,6 +1009,7 @@ function ScreenShare({
                   style={{
                     paddingHorizontal: 20,
                     paddingVertical: 0,
+                    fontFamily: item?.value,
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark
