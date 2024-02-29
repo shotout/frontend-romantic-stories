@@ -625,7 +625,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                         userProfile?.data?.subscription?.audio_take
                       }/${
                         userProfile?.data?.subscription?.audio_limit
-                      } Audio \nStories in your package.`} <Text onPress={() => {setShow(true)}} style={{ textDecorationLine: 'underline',  color: '#5873FF', }}>Get more</Text>
+                      } Audio \nStories in your package.`} {userProfile?.data?.subscription?.plan?.id === 2 ? <Text onPress={() => {setShow(true)}} style={{ textDecorationLine: 'underline',  color: '#5873FF', }}>Get more</Text> : null }
                     </Text>
                   </View>
                 </View>
@@ -636,7 +636,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
               </Pressable>
             </View>
           ) : null}
-          {userProfile?.data?.subscription?.plan?.id === 3 ? (
+          {userProfile?.data?.subscription?.plan?.id === 3  ? (
             <View>
               <View
                 style={{
@@ -797,6 +797,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
         onGetAudio1={() => handleAudioOne()}
         price={priceAudio1}
         price2={priceAudio2}
+        subs={true}
       />
     </SafeAreaView>
   );

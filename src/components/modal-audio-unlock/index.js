@@ -44,7 +44,8 @@ function ModalAudioStory({
   isLoading,
   isLoading2,
   price,
-  price2
+  price2,
+  subs
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   // const [price, setPrice] = useState('');
@@ -441,10 +442,10 @@ function ModalAudioStory({
               onPress={() => {
                 onClose();
                 handlePayment(
-                  userProfile?.data?.subscription?.plan?.id === 1 ||
-                    userProfile?.data?.subscription?.plan?.id === 2
+                  userProfile?.data?.subscription?.plan?.id === 1 
                     ? 'in_app'
                     : 'upgrade_to_unlimited_audio_story',
+                    subs
                 );
               }}
               style={{
