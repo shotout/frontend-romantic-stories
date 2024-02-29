@@ -468,8 +468,7 @@ function ModalAudioStory({
                   top: -moderateScale(8),
                 }}>
                 <Text style={{color: code_color.black, fontWeight: 600}}>
-                  {userProfile?.data?.subscription?.plan?.id === 1 ||
-                  userProfile?.data?.subscription?.plan?.id === 2
+                  {userProfile?.data?.subscription?.plan?.id === 1 
                     ? 'UNLOCK EVERYTHING'
                     : 'UPGRADE YOUR PACKAGE'}
                 </Text>
