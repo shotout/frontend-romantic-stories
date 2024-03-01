@@ -1030,13 +1030,14 @@ const MainScreen = ({
     setShowModalDay(false);
     setShowModal(false);
     setShowPreview(false);
-    setTimeout(async () => {
-      handleSetStory(story);
-      setScreenNumber(0);
-      await pagerRef.current?.setPage(0);
-    }, 200);
+    reset(story)
   };
 
+  const reset = async (story: any) => {
+    handleSetStory(story);
+    setScreenNumber(0);
+    await pagerRef.current?.setPage(0);
+  }
   useEffect(() => {
     if (!(isPremiumStory || isPremiumAudio)) {
       const userHasRead = readStory?.some(
