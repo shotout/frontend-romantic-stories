@@ -58,6 +58,7 @@ import {
   imgFont,
   logo,
   icon,
+  iconBlack,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -83,7 +84,7 @@ import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import PlayStore from '../../assets/icons/playStore';
 import AppStore from '../../assets/icons/appStore';
 import FastImage from 'react-native-fast-image';
-import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
 function ScreenShare({
   route,
@@ -178,8 +179,8 @@ function ScreenShare({
   });
 
   useEffect(() => {
-    setSelected(route?.params?.selectedContent)
-  }, [route?.params?.selectedContent])
+    setSelected(route?.params?.selectedContent);
+  }, [route?.params?.selectedContent]);
   const showInterStialFont = async () => {
     setLoadingAds(true);
     const advert = await loadRewarded();
@@ -509,7 +510,8 @@ function ScreenShare({
             <View
               style={{
                 padding: 5,
-                paddingLeft: 0, paddingRight: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
                 borderRadius: 10,
                 minWidth: 10,
                 backgroundColor: 'rgba(0,0,0,0.5)',
@@ -711,7 +713,7 @@ function ScreenShare({
                 textAlign: 'center',
                 backgroundColor: 'rgba(0,0,0,0.5)',
                 width: 'auto',
-                flex: 0
+                flex: 0,
               }}
               autoFocus={true}
               placeholder=""
@@ -727,10 +729,16 @@ function ScreenShare({
               fontFamily: fontSelect.value,
               fontSize: moderateScale(16),
               marginHorizontal: moderateScale(20),
-              color: selectBg === story2 || selectBg === bg || selectBg === bgShare2 || selectBg === bgShare3 || selectBg === bgShare4 ? 'white' : 'black'
-              // color: code_color.white,
+              color:
+                selectBg === story2 ||
+                selectBg === bg ||
+                selectBg === bgShare2 ||
+                selectBg === bgShare3 ||
+                selectBg === bgShare4
+                  ? 'white'
+                  : 'black',
             }}>
-            <Text style={[styles.blur, {fontSize: 16, }]}>
+            <Text style={[styles.blur, {fontSize: 16}]}>
               ...{route?.params?.start}
             </Text>{' '}
             {selected}{' '}
@@ -738,31 +746,48 @@ function ScreenShare({
               {route?.params?.end}...
             </Text>
           </Text>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text
+          <View
             style={{
-              color: code_color.white,
-              fontSize: moderateScale(16),
-              fontWeight: '600',
-              textAlign: 'center',
-              bottom: moderateScale(20),
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-            @EroTalesApp
-          </Text>
-          <Image
-            source={icon}
-             resizeMode='contain'
-            style={{
-             
-              width: 30,
-              height: 30,
-              marginLeft: 10,
-              bottom: moderateScale(20),
-            
-            }}
-          />
+            <Text
+              style={{
+                color:
+                  selectBg === story2 ||
+                  selectBg === bg ||
+                  selectBg === bgShare2 ||
+                  selectBg === bgShare3 ||
+                  selectBg === bgShare4
+                    ? 'white'
+                    : 'black',
+                fontSize: moderateScale(16),
+                fontWeight: '600',
+                textAlign: 'center',
+                bottom: moderateScale(20),
+              }}>
+              @EroTalesApp
+            </Text>
+            <Image
+              source={
+                selectBg === story2 ||
+                selectBg === bg ||
+                selectBg === bgShare2 ||
+                selectBg === bgShare3 ||
+                selectBg === bgShare4
+                  ? icon
+                  : iconBlack
+              }
+              resizeMode="contain"
+              style={{
+                width: 30,
+                height: 30,
+                marginLeft: 10,
+                bottom: moderateScale(20),
+              }}
+            />
           </View>
-         
         </ViewShot>
         {renderHeaderScreenShot()}
         {renderModalSave()}
@@ -798,15 +823,14 @@ function ScreenShare({
               top: 5,
             }}
             onPress={() => {
-              if(userText != ''){
+              if (userText != '') {
                 const value = {text: userText};
                 setDraggableItems([...draggableItems, value]);
                 setUserText('');
                 setVisibleFont(false);
-              }else{
+              } else {
                 setVisibleFont(false);
               }
-             
             }}>
             <Text
               allowFontScaling={false}
@@ -905,10 +929,11 @@ function ScreenShare({
       />
       <View style={styles.row}>
         <Text style={styles.textTitle}>Share Quote</Text>
-        <TouchableOpacity onPress={() => {
-          resetParams({ selectedContent: null }); 
-          goBack()
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            resetParams({selectedContent: null});
+            goBack();
+          }}>
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
@@ -1083,7 +1108,7 @@ function ScreenShare({
           <Text style={{...styles.title, textAlign: 'center'}}>
             Choose Background
           </Text>
-          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20,}}>
+          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20}}>
             <ScrollView horizontal style={styles.horizontalScroll}>
               {backgroundList.map((bgl, idx) => (
                 <TouchableOpacity

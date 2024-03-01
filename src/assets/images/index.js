@@ -1,5 +1,6 @@
 export const logo = require('./logo3.png');
 export const icon = require('./icon.png');
+export const iconBlack = require('./iconBlack.png');
 export const bg = require('./bg.png');
 export const bg_splash = require('./bg_splash.png');
 export const story1 = require('./story1.png');
@@ -137,7 +138,6 @@ export const tips_step3 = require('./../images/Tips_MediaPlayer.png');
 export const tips_step4 = require('./../images/Tips_MyLibrary.png');
 export const tips_step5 = require('./../images/Tips_ExploreLibrary.png');
 export const bg_notif = require('./../images/bgNotif.png');
-
 
 export const avatar1 = require('./../images/avatar1.png');
 export const avatar2 = require('./../images/avatar2.png');
