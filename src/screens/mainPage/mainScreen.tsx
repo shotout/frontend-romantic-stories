@@ -63,6 +63,7 @@ import ModalCongrats from '../../components/modal-congrats';
 import ModalNewStory from '../../components/modal-new-story';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import ModalGetPremium from '../../components/modal-get-premium';
+import ModalAppRating from '../../components/modal-app-rating';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import StepHeader from '../../layout/step/stepHeader';
 import {useIsFocused} from '@react-navigation/native';
@@ -143,6 +144,7 @@ const MainScreen = ({
   const [show, setShow] = useState(false);
   const [color, setColor] = useState('');
   const [showRating, setRating] = useState(false);
+  const [showRatingApp, setRatingApp] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [showModalSave, setShowModalSave] = useState(false);
@@ -1354,6 +1356,15 @@ const MainScreen = ({
               handleShowModalSave();
             }}
           />
+          <ModalAppRating  
+            isVisible={showRatingApp}
+            onClose={() => {
+              setRatingApp(false);
+            }}
+            handleSuccess={() => {
+              setRatingApp(false);
+             
+            }}/>
           <ModalStoryRating
             isVisible={showRating}
             onClose={() => {

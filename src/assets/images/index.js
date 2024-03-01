@@ -1,5 +1,6 @@
 export const logo = require('./logo3.png');
 export const icon = require('./icon.png');
+export const iconRating = require('./iconRating.png');
 export const iconBlack = require('./iconBlack.png');
 export const bg = require('./bg.png');
 export const bg_splash = require('./bg_splash.png');
