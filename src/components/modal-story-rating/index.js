@@ -43,6 +43,7 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
     };
     try {
       const resp = await submitRating(nextStory?.id, data);
+      console.log('suksess rating',resp)
       if (resp) {
         handleSuccess();
         setRating(0);

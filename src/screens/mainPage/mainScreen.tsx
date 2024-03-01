@@ -92,6 +92,7 @@ import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
 import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
+import {err} from 'react-native-svg/lib/typescript/xml';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -186,7 +187,7 @@ const MainScreen = ({
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
   useEffect(() => {
-    if(!__DEV__){
+    if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_10_audio_stories'],
@@ -194,13 +195,12 @@ const MainScreen = ({
         const products1 = await IAP.getProducts({
           skus: ['unlock_5_audio_stories'],
         });
-  
+
         setPriceAudio1(products1[0].localizedPrice);
         setPriceAudio2(products[0].localizedPrice);
       }
       getPrice();
     }
-   
   }, []);
   useEffect(() => {
     async function getDataStory() {
@@ -762,20 +762,28 @@ const MainScreen = ({
   //   dataBook?.content_en,
   //   Dimensions.get('window').height <= 667 ? 630 : 800,
   // );
-  const height = Dimensions.get('window').height
+  const height = Dimensions.get('window').height;
   useEffect(() => {
     // height iphone 13 = 844
     // iphone xr = 896
-  
-   const { height, fontScale } = Dimensions.get('window');
- 
-    const size = (Number(fontSize) -1); 
-    const charactersPerLine = Math.floor(height / (size * (fontScale + (height > 840 ? -0.147 : 0)))); 
-    const linesPerPage = Math.floor(height / size); 
-    const totalCharacters = (charactersPerLine * linesPerPage) / (Number(fontSize) === 14 ? 4.5 : (height >= 890 && Number(fontSize) === 18) ? 3.5 : 4); 
+
+    const {height, fontScale} = Dimensions.get('window');
+
+    const size = Number(fontSize) - 1;
+    const charactersPerLine = Math.floor(
+      height / (size * (fontScale + (height > 840 ? -0.147 : 0))),
+    );
+    const linesPerPage = Math.floor(height / size);
+    const totalCharacters =
+      (charactersPerLine * linesPerPage) /
+      (Number(fontSize) === 14
+        ? 4.5
+        : height >= 890 && Number(fontSize) === 18
+        ? 3.5
+        : 4);
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      totalCharacters
+      totalCharacters,
       // height <= 667
       //   ? Number(fontSize) === 14
       //     ? 655
@@ -787,10 +795,10 @@ const MainScreen = ({
     // if(Number(page) > 0){
     //   const pageNew =  ((newChunks.length - (Number(page))) +  (Number(page)))
     //   console.log(pageNew)
-      
+
     // }
     handleSetPage(page);
-    
+
     setTextChunks(newChunks);
   }, [dataBook, Dimensions.get('window').height, fontSize]);
   const renderFactItem = ({item, index, title, category, colorText, type}) => (
@@ -880,7 +888,6 @@ const MainScreen = ({
     setBook(userStory);
   }, [isFocused]);
 
-
   const handleUnlock = async () => {
     setLoading(true);
     const res = await getStoryList();
@@ -927,7 +934,7 @@ const MainScreen = ({
       story_id: route?.params?.storyId,
       expire: 1,
     };
-  
+
     await updateProfile(payloadStory);
     reloadUserProfile();
     handleNextStory(resp.data);
@@ -1025,8 +1032,8 @@ const MainScreen = ({
     setShowPreview(false);
     setTimeout(async () => {
       handleSetStory(story);
-      pagerRef.current?.setPage(0);
       setScreenNumber(0);
+      await pagerRef.current?.setPage(0);
     }, 200);
   };
 
@@ -1094,7 +1101,6 @@ const MainScreen = ({
             }
             checkingRead(screenNumber + 1);
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-           
             // if(screenNumber ===  textChunks?.length){
             setShowModalNewStory(true);
             // }
@@ -1139,14 +1145,22 @@ const MainScreen = ({
       handleStoriesRelate(resp);
       setShowModal(true);
     } else {
-      const res = await getStoryDetail(userStory?.id);
-      handleSetStory(res.data);
-      setBook(res.data);
-      setShowModalNewStory(true);
+      try {
+        const res = await getStoryDetail(userStory?.id);
+        handleSetStory(res.data);
+        setBook(res.data);
+        setShowModalNewStory(true);
+      } catch (error) {
+        console.log(error);
+        const res = await getStoryDetail(userStory?.id);
+        handleSetStory(res.data);
+        setBook(res.data);
+        setShowModalNewStory(true);
+      }
     }
   };
   const handleLater = async () => {
-    const response =  await addStory(`${nextStory?.id}?flag=read_later`);
+    const response = await addStory(`${nextStory?.id}?flag=read_later`);
     setShowModalDay(false);
     handleShowModalSave();
   };
@@ -1175,16 +1189,16 @@ const MainScreen = ({
   };
 
   function RenderFactItemView() {
-      const data = textChunks[page] === undefined ? textChunks[page - 1] : textChunks[page]
-      return renderFactItem({
-        item: textChunks[page],
-        index: page,
-        title: dataBook.title_en,
-        category: dataBook?.category?.name,
-        colorText: colorText,
-        type: 'view',
-      });
-   
+    const data =
+      textChunks[page] === undefined ? textChunks[page - 1] : textChunks[page];
+    return renderFactItem({
+      item: textChunks[page],
+      index: page,
+      title: dataBook.title_en,
+      category: dataBook?.category?.name,
+      colorText: colorText,
+      type: 'view',
+    });
   }
 
   const renderView = () => {
@@ -1372,7 +1386,7 @@ const MainScreen = ({
             isVisible={showModalSuccessPurchase}
             onClose={() => {
               setBook(nextStory);
-              handleReadAds()
+              handleReadAds();
               addStory(nextStory.id);
               setShowModalSuccessPurchase(false);
             }}
