@@ -56,6 +56,8 @@ import {
   imgSticker4,
   imgSticker5,
   imgFont,
+  logo,
+  icon,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -736,16 +738,31 @@ function ScreenShare({
               {route?.params?.end}...
             </Text>
           </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <Text
             style={{
               color: code_color.white,
-              fontSize: moderateScale(18),
+              fontSize: moderateScale(16),
               fontWeight: '600',
               textAlign: 'center',
               bottom: moderateScale(20),
             }}>
             @EroTalesApp
           </Text>
+          <Image
+            source={icon}
+             resizeMode='contain'
+            style={{
+             
+              width: 30,
+              height: 30,
+              marginLeft: 10,
+              bottom: moderateScale(20),
+            
+            }}
+          />
+          </View>
+         
         </ViewShot>
         {renderHeaderScreenShot()}
         {renderModalSave()}

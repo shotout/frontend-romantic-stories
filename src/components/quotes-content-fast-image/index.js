@@ -262,7 +262,7 @@ function QuotesContent({
       }
     }
   };
-
+console.log(fontFamily)
   const renderSelect = useCallback(() => {
     return (
       <TextInput

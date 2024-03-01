@@ -93,6 +93,7 @@ import * as IAP from 'react-native-iap';
 import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
 import {err} from 'react-native-svg/lib/typescript/xml';
+import { book } from '../../assets/icons';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -776,11 +777,12 @@ const MainScreen = ({
     const linesPerPage = Math.floor(height / size);
     const totalCharacters =
       (charactersPerLine * linesPerPage) /
-      (Number(fontSize) === 14
+      (fontFamily === 'Poppins-Regular' && Number(fontSize) === 14 && height >= 890  ? 5.3 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 16 ?  4.8 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 18 ? 4.5 :
+      Number(fontSize) === 14
         ? 4.5
         : height >= 890 && Number(fontSize) === 18
         ? 3.5
-        : 4);
+        :  4);
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       totalCharacters,
@@ -1032,28 +1034,29 @@ const MainScreen = ({
     setShowPreview(false);
     reset(story)
   };
-
   const reset = async (story: any) => {
     handleSetStory(story);
     setScreenNumber(0);
     await pagerRef.current?.setPage(0);
   }
   useEffect(() => {
+   
     if (!(isPremiumStory || isPremiumAudio)) {
       const userHasRead = readStory?.some(
         (entry: any) =>
           entry?.id === dataBook.id && entry?.page === textChunks?.length,
       );
-
+      
       if (
         !route?.params?.isFromLibrary &&
         userHasRead &&
         textChunks?.length > 0
       ) {
+        
         setShowModalNewStory(true);
       }
     }
-  }, [dataBook]);
+  }, [dataBook, route, textChunks]);
 
   const userFinishedRead = readStory?.some(
     (entry: any) =>
