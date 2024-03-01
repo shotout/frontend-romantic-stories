@@ -1058,6 +1058,31 @@ const MainScreen = ({
     }
   }, [dataBook, route, textChunks]);
 
+  useEffect(() => {
+    const userHasRead = readStory?.some(
+      (entry: any) =>
+        entry?.id === dataBook.id && entry?.page === textChunks?.length,
+    );
+    const lastRead = readStory
+      ?.filter((itm: any) => itm?.id === dataBook?.id)
+      .reduce(
+        (maxItem: any, item: any) =>
+          item?.page > maxItem?.page ? item : maxItem,
+        {
+          page: -1,
+        },
+      );
+
+    function setLastPage() {
+      if (!userHasRead) {
+        setTimeout(async () => {
+          await pagerRef?.current?.setPage(lastRead?.page);
+        }, 500);
+      }
+    }
+    setLastPage();
+  }, [dataBook, textChunks]);
+
   const userFinishedRead = readStory?.some(
     (entry: any) =>
       entry?.id === dataBook.id &&
