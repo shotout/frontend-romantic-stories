@@ -7,6 +7,8 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  Platform,
+  Linking,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -26,6 +28,7 @@ import LibrarySvg from '../../assets/icons/libraryAdd';
 import CloseIcon from '../../assets/icons/close';
 import {
   addNewCollection,
+  postRating,
   submitRating,
   updateMyCollection,
 } from '../../shared/request';
@@ -43,23 +46,26 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
       value: rating,
     };
     try {
-      const resp = await submitRating(nextStory?.id, data);
-      console.log('suksess rating',resp)
+      const resp = await postRating(data);
       if (resp) {
+        const link = 'itms-apps://apps.apple.com/us/app/erotales-romantic-stories/id6463850368'
+        if (Platform.OS === 'ios'){
+          Linking.canOpenURL(link).then(
+            (supported) => {
+              supported && Linking.openURL(link);
+            },
+            (err) => console.log(err)
+          );
         handleSuccess();
         setRating(0);
       }
+    }
     } catch (error) {
-      console.log('error rating', error);
       setRating(0);
       handleSuccess();
     }
   };
-  const handleRating = rated => {
-    // Kustom logika yang ingin Anda terapkan saat peringkat berubah
-    console.log(`Rated: ${rated}`);
-    setRating(rated);
-  };
+ 
   const HeartEmpty = props => (
     <Svg
       width="44"

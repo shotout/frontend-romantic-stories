@@ -227,6 +227,12 @@ export const submitRating = (id, data) =>
     data,
   });
 
+  export const postRating = ( data) =>
+  Wrap({
+    url: `/rating`,
+    method: 'POST',
+    data,
+  });
 export const getListPastQuotes = (params = {}) =>
   Wrap({
     url: '/past-quote',

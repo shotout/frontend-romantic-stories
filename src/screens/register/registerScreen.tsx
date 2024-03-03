@@ -98,9 +98,19 @@ function RegisterScreen({
     notif_enable: 1,
     purchasely_id: '',
   });
+
   useEffect(() => {
     fetchDeviceId();
   }, []);
+
+  useEffect(() => {
+    async function setRegister() {
+      await onSubmit();
+    }
+    if (stepRegister === 8) {
+      setRegister();
+    }
+  }, [stepRegister]);
 
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
@@ -235,7 +245,6 @@ function RegisterScreen({
   //   }
   // };
   const onSubmit = async () => {
-    await notifee.requestPermission();
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();
@@ -268,8 +277,6 @@ function RegisterScreen({
       eventTracking(ONBOARDING_COMPLETE);
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      navigate('Tutorial');
-      handleSetSteps(0);
     } catch (error) {
       checkDevice();
     }
@@ -307,8 +314,6 @@ function RegisterScreen({
       await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      navigate('Tutorial');
-      handleSetSteps(0);
     } catch (error) {}
   };
 
@@ -395,7 +400,17 @@ function RegisterScreen({
         <Register7 languange={text => handleChange('language_id', text)} />
       );
     } else if (stepRegister === 8) {
-      return <Register8 activeNotif={() => onSubmit()} />;
+      return (
+        <Register8
+          activeNotif={async () => {
+            try {
+              await notifee.requestPermission();
+              navigate('Tutorial');
+              handleSetSteps(0);
+            } catch {}
+          }}
+        />
+      );
     }
   };
   return (
@@ -581,15 +596,22 @@ function RegisterScreen({
                   marginTop: wp(10),
                   marginBottom: wp(20),
                 }}
-                onPress={() => {
-                  stepRegister === 8
-                    ? onSubmit()
-                    : (stepRegister == 2 && values.name === '') ||
-                      (stepRegister == 3 && values.category_id === 0)
-                    ? null
-                    : setStepRegister(
-                        stepRegister + (stepRegister === 6 ? 2 : 1),
-                      );
+                onPress={async () => {
+                  if (stepRegister === 8) {
+                    try {
+                      await notifee.requestPermission();
+                      navigate('Tutorial');
+                      handleSetSteps(0);
+                    } catch {}
+                  } else if (
+                    (stepRegister == 2 && values.name === '') ||
+                    (stepRegister == 3 && values.category_id === 0)
+                  ) {
+                  } else {
+                    setStepRegister(
+                      stepRegister + (stepRegister === 6 ? 2 : 1),
+                    );
+                  }
                 }}
                 title={
                   stepRegister === 8
@@ -601,7 +623,10 @@ function RegisterScreen({
 
             {stepRegister === 8 ? (
               <TouchableOpacity
-                onPress={() => onSubmit()}
+                onPress={async () => {
+                  navigate('Tutorial');
+                  handleSetSteps(0);
+                }}
                 style={{
                   alignItems: 'center',
                   alignContent: 'center',
