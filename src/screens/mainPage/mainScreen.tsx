@@ -190,7 +190,7 @@ const MainScreen = ({
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
   useEffect(() => {
-    if (!__DEV__) {
+    // if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_10_audio_stories'],
@@ -203,7 +203,7 @@ const MainScreen = ({
         setPriceAudio2(products[0].localizedPrice);
       }
       getPrice();
-    }
+    // }
   }, []);
   useEffect(() => {
     async function getDataStory() {

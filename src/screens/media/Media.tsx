@@ -9,6 +9,7 @@ import {
   PanResponder,
   Modal,
   ActivityIndicator,
+  AppState,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -17,6 +18,9 @@ import TrackPlayer, {
   useTrackPlayerEvents,
   Event,
   State,
+  AppKilledPlaybackBehavior,
+  Capability,
+  IOSCategoryOptions,
 } from 'react-native-track-player';
 import ModalShareStory from '../../components/modal-share-story';
 import PropTypes from 'prop-types';
@@ -76,18 +80,69 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       remainingSeconds,
     ).padStart(2, '0')}`;
   }
+  
+  
+  useEffect(() => {
+    const remoteDuckListener = TrackPlayer.addEventListener(Event.RemotePause, () => {
+      TrackPlayer.pause();
+    }
+    );
+  
+    const remotePlayListener = TrackPlayer.addEventListener(
+      Event.RemotePlay,
+      () => {
+        TrackPlayer.play();
+      }
+    );
+  
+    return () => {
+      remoteDuckListener.remove();
+      remotePlayListener.remove();
+    };
+  }, []);
   useEffect(() => {
     const fetchMedia = async () => {
       try {
         setLoading(true);
         // Dapatkan URL MP3 terbaru
         const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-
+     
         // Hentikan pemutaran sebelumnya dan reset pemutaran
         await TrackPlayer.stop();
         await TrackPlayer.reset();
-
+       
         // Tambahkan dan konfigurasi lagu baru
+        
+        await TrackPlayer.updateOptions({
+        
+          capabilities: [
+            Capability.Play,
+            Capability.Pause,
+            Capability.SeekTo,
+            Capability.Stop,
+          ],
+          notificationCapabilities: [
+            Capability.Play,
+            Capability.Pause,
+            Capability.SeekTo,
+            Capability.Stop,
+          ],
+          compactCapabilities: [
+            Capability.Play,
+            Capability.Pause,
+            Capability.SeekTo,
+            Capability.Stop,
+          ],
+          ios: {
+            category: 'Playback',
+            audioSessionCategory: 'Playback',
+          },
+          android: {
+            // This is the default behavior
+            appKilledPlaybackBehavior:
+              AppKilledPlaybackBehavior.ContinuePlayback,
+          },
+        });
         await TrackPlayer.add({
           id: 'track1',
           url: newMp3Url,
@@ -96,10 +151,10 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           album: 'While(1<2)',
           genre: 'Progressive House, Electro House',
           date: '2014-05-20T07:00:00+00:00',
-          artwork: 'http://example.com/cover.png',
+          artwork:  `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
           duration: 10,
         });
-
+      
         // Jalankan pemutaran baru
         setLoading(false);
         await TrackPlayer.play();
@@ -122,7 +177,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       });
       setColors(result?.primary);
     };
-  
+
     getColor();
   }, []);
 
@@ -157,7 +212,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       navigate('Main', {successListen: true});
     }
   }, [position, duration]);
-
 
   const handleFetchSave = async () => {
     if (userStory?.is_collection === null) {
