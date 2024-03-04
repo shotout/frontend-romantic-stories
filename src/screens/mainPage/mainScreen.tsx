@@ -1094,7 +1094,7 @@ const MainScreen = ({
     function setLastPage() {
       if (!userHasRead) {
         setTimeout(async () => {
-          await pagerRef?.current?.setPage(lastRead?.page);
+          await pagerRef?.current?.setPage(lastRead?.page ? lastRead?.page : 0);
         }, 500);
       }
     }
