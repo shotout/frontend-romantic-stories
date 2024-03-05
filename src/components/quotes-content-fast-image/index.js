@@ -264,72 +264,84 @@ function QuotesContent({
   };
 
   const renderSelect = useCallback(() => {
+    if (Platform.OS === 'ios') {
+      return (
+        <TextInput
+          multiline={true}
+          value={item}
+          scrollEnabled={false}
+          editable={false}
+          contextMenuHidden={true}
+          onSelectionChange={e => handleTextSelection(e)}
+          underlineColorAndroid="transparent"
+          underlineColor="transparent"
+          backgroundColor="transparent"
+          allowFontScaling={false}
+          style={{
+            fontSize: Number(size),
+            fontWeight: 'normal',
+            fontFamily: fontFamily,
+            textAlign: 'justify',
+            lineHeight: 24,
+            color:
+              bg === code_color.blackDark
+                ? code_color.white
+                : code_color.blackDark,
+            // backgroundColor: 'transparent',
+            // margin: -15,
+
+            // lineHeight: 22
+            // bg === code_color.blackDark
+            //   ? code_color.white
+            //   : code_color.blackDark,
+          }}
+        />
+      );
+    }
+
     return (
-      <TextInput
-        multiline={true}
-        value={item}
-        scrollEnabled={false}
-        editable={false}
-        contextMenuHidden={true}
-        onSelectionChange={e => handleTextSelection(e)}
-        underlineColorAndroid="transparent"
-        underlineColor="transparent"
-        backgroundColor="transparent"
-        allowFontScaling={false}
-        style={{
-          fontSize: Number(size),
-          fontWeight: 'normal',
-          fontFamily: fontFamily,
-          textAlign: 'justify',
-          lineHeight: 24,
-          color: bg === code_color.blackDark ? code_color.white : code_color.blackDark,
-          // backgroundColor: 'transparent',
-          // margin: -15,
-
-          // lineHeight: 22
-          // bg === code_color.blackDark
-          //   ? code_color.white
-          //   : code_color.blackDark,
+      <SelectableText
+        menuItems={['Share']}
+        onSelection={({eventType, content, selectionStart, selectionEnd}) => {
+          navigate('Share', {
+            selectedContent: content,
+            start:
+              themeUser?.language_id === '2'
+                ? item?.substring(selectionStart - 50, selectionStart)
+                : item?.substring(selectionStart - 50, selectionStart),
+            end:
+              themeUser?.content_en === '2'
+                ? item?.substring(selectionEnd - 50, selectionEnd)
+                : item?.substring(selectionEnd - 50, selectionEnd),
+            title:
+              themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+          });
+          eventTracking(STORY_SHARED);
         }}
+        TextComponent={() => {
+          return (
+            <Text
+              style={[
+                styles.ctnQuotes,
+                {
+                  // marginBottom: pageActive != 0 ? -100 : 0,
+                  fontSize: Number(size),
+                  fontWeight: 'normal',
+                  fontFamily: fontFamily,
+                  textAlign: 'justify',
+                  lineHeight: 24,
+                  color:
+                    bg === code_color.blackDark
+                      ? code_color.white
+                      : code_color.blackDark,
+                },
+              ]}>
+              {item}
+            </Text>
+          );
+        }}
+        value={item}
       />
-
-      // <SelectableText
-      //   menuItems={['Share']}
-      //   onSelection={({eventType, content, selectionStart, selectionEnd}) => {
-      //     navigate('Share', {
-      //       selectedContent: content,
-      //       start:
-      //         themeUser?.language_id === '2'
-      //           ? item?.substring(selectionStart - 50, selectionStart)
-      //           : item?.substring(selectionStart - 50, selectionStart),
-      //       end:
-      //         themeUser?.content_en === '2'
-      //           ? item?.substring(selectionEnd - 50, selectionEnd)
-      //           : item?.substring(selectionEnd - 50, selectionEnd),
-      //       title:
-      //         themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
-      //     });
-      //     eventTracking(STORY_SHARED);
-      //   }}
-      //   TextComponent={() => {
-      //     return (
-      //       <Text
-      //         style={[
-      //           styles.ctnQuotes,
-      //           {
-      //             // marginBottom: pageActive != 0 ? -100 : 0,
-      //             fontFamily: fontFamily,
-      //             fontSize: Number(size),
-      //             color: fontColor,
-      //             lineHeight: 25,
-      //           },
-      //         ]}>
-      //         {item}
-      //       </Text>
-      //     );
-      //   }}
-      //   value={item}
-      // />
     );
     // }
   }, [color, isActive, fontColor, item]);
