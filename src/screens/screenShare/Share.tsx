@@ -661,29 +661,135 @@ function ScreenShare({
 
   const windowHeight = Dimensions.get('window').height;
 
+  const renderImage = () => (
+    <View
+      style={{
+        position: 'absolute',
+        width: sizing.getDimensionWidth(0.75),
+        height: 'auto',
+        marginHorizontal: 'auto',
+        top: -sizing.getDimensionHeight(1),
+      }}>
+      <ViewShot
+        style={{
+          ...styles.conQuote,
+          width: '100%',
+          borderRadius: 0,
+          backgroundColor: 'red',
+        }}
+        onLayout={(event: any) => {
+          setViewShotLayout(event.nativeEvent.layout);
+        }}
+        ref={captureRef}
+        options={{
+          fileName: `Shortstory${Date.now()}`,
+          format: 'png',
+          quality: 1.0,
+        }}>
+        <FastImage
+          source={selectBg}
+          resizeMode="cover"
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+          }}
+        />
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            backgroundColor:
+              selectBg != null ? 'rgba(0, 0, 0, 0.3)' : undefined,
+          }}
+        />
+        <TextFontComponent />
+        <StickerComponent />
+        <Text
+          style={{
+            ...styles.textQuote,
+            fontFamily: fontSelect.value,
+            fontSize: moderateScale(16),
+            marginHorizontal: moderateScale(20),
+            color:
+              selectBg === story2 ||
+              selectBg === bg ||
+              selectBg === bgShare2 ||
+              selectBg === bgShare3 ||
+              selectBg === bgShare4
+                ? 'white'
+                : 'black',
+          }}>
+          <Text style={[styles.blur, {fontSize: 16}]}>
+            ...{route?.params?.start}
+          </Text>{' '}
+          {selected}{' '}
+          <Text style={[styles.blur, {fontSize: 16}]}>
+            {route?.params?.end}...
+          </Text>
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              color:
+                selectBg === story2 ||
+                selectBg === bg ||
+                selectBg === bgShare2 ||
+                selectBg === bgShare3 ||
+                selectBg === bgShare4
+                  ? 'white'
+                  : 'black',
+              fontSize: moderateScale(16),
+              fontWeight: '600',
+              textAlign: 'center',
+              bottom: moderateScale(20),
+            }}>
+            @EroTalesApp
+          </Text>
+          <Image
+            source={
+              selectBg === story2 ||
+              selectBg === bg ||
+              selectBg === bgShare2 ||
+              selectBg === bgShare3 ||
+              selectBg === bgShare4
+                ? icon
+                : iconBlack
+            }
+            resizeMode="contain"
+            style={{
+              width: 30,
+              height: 30,
+              marginLeft: 10,
+              bottom: moderateScale(20),
+            }}
+          />
+        </View>
+      </ViewShot>
+    </View>
+  );
+
   const renderLayout = () => {
     return (
       <View
         style={{
           position: 'relative',
+          overflow: 'hidden',
           backgroundColor: code_color.white,
           borderRadius: moderateScale(24),
-          width: '90%',
+          width: '94%',
           height: 'auto',
+          marginHorizontal: 'auto',
           // marginBottom: 20
           // paddingTop: 40
         }}>
-        <ViewShot
-          style={styles.conQuote}
-          onLayout={event => {
-            setViewShotLayout(event.nativeEvent.layout);
-          }}
-          ref={captureRef}
-          options={{
-            fileName: `Shortstory${Date.now()}`,
-            format: 'png',
-            quality: 1.0,
-          }}>
+        <View style={styles.conQuote}>
           <FastImage
             source={selectBg}
             resizeMode="cover"
@@ -788,7 +894,7 @@ function ScreenShare({
               }}
             />
           </View>
-        </ViewShot>
+        </View>
         {renderHeaderScreenShot()}
         {renderModalSave()}
         {/* <View style={styles.overlay} /> */}
@@ -1002,6 +1108,7 @@ function ScreenShare({
             ) : null}
             {/* {renderScreenShot()} */}
             {renderLayout()}
+            {renderImage()}
           </View>
 
           <View style={styles.conFont}>
@@ -1120,7 +1227,8 @@ function ScreenShare({
                   }}
                   onPress={() => {
                     setSelectedBg(bgl);
-                    if (userProfile?.data?.subscription?.plan_id != 1) {
+                    // if (userProfile?.data?.subscription?.plan_id != 1) {
+                    if (userProfile?.data?.subscription?.plan_id === 1) {
                       setSelectBg(bgl);
                       setSelectedBg(null);
                     } else {
