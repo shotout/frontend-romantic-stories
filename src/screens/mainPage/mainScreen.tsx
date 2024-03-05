@@ -1134,19 +1134,32 @@ const MainScreen = ({
             screenNumber === textChunks?.length - 1
           ) {
             // jika nanti pertama kali melakukan update data terakhir
-
-            await addPastStory(dataBook.id);
+            try {
+              const res = await addPastStory(dataBook.id);
+              console.log(JSON.stringify(res))
+              try {
+                 
             const data = {
               value: textChunks?.length,
             };
-            const resp = await addPastLevel(data);
-            if (resp?.data) {
-              handleLeveling(resp?.data);
-              setTimeout(() => {
-                setShowModalCongrats(true);
-              }, 200);
+                const resp = await addPastLevel(data);
+                console.log(JSON.stringify(resp))
+              if (resp?.data) {
+                handleLeveling(resp?.data);
+                setTimeout(() => {
+                  setShowModalCongrats(true);
+                }, 200);
+              }
+              checkingRead(screenNumber + 1);
+              } catch (error) {
+                console.log('ERROR PAS LEVEL', JSON.stringify(error))
+              }
+              
+            } catch (error) {
+              console.log('ERROR PAS STORY', JSON.stringify(error))
             }
-            checkingRead(screenNumber + 1);
+         
+           
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
             // if(screenNumber ===  textChunks?.length){
             setShowModalNewStory(true);

@@ -159,7 +159,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Our application needs permission to share images.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -387,9 +387,16 @@
 		<string>Raleway-Regular.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+    	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
+
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>fetch</string>
+		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
