@@ -787,7 +787,7 @@ const MainScreen = ({
         :  4);
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      totalCharacters,
+      totalCharacters  ? totalCharacters : 700,
       // height <= 667
       //   ? Number(fontSize) === 14
       //     ? 655

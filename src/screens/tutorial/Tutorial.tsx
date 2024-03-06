@@ -63,8 +63,8 @@ import {
   Step8,
 } from '../../layout/tutorial';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
-import {addStory, deleteMyStory, getStoryDetail} from '../../shared/request';
-import {handleSetStory} from '../../store/defaultState/actions';
+import {addStory, deleteMyStory, getStoryDetail, getStoryList} from '../../shared/request';
+import {handleNextStory, handleSetStory} from '../../store/defaultState/actions';
 import store from '../../store/configure-store';
 import {
   ADD_STORY_TO_LIBRARY,
@@ -270,7 +270,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       // setTimeout(() => {
       //     handlePayment('onboarding');
       // }, 200);
-
+      async function getDataStory() {
+        const res = await getStoryList();
+        handleSetStory(res.data);
+      }
+      getDataStory()
       navigate('Bottom');
     }
   };
