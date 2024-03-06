@@ -1227,8 +1227,7 @@ function ScreenShare({
                   }}
                   onPress={() => {
                     setSelectedBg(bgl);
-                    // if (userProfile?.data?.subscription?.plan_id != 1) {
-                    if (userProfile?.data?.subscription?.plan_id === 1) {
+                    if (userProfile?.data?.subscription?.plan_id != 1) {
                       setSelectBg(bgl);
                       setSelectedBg(null);
                     } else {
