@@ -675,7 +675,6 @@ function ScreenShare({
           ...styles.conQuote,
           width: '100%',
           borderRadius: 0,
-          backgroundColor: 'red',
         }}
         onLayout={(event: any) => {
           setViewShotLayout(event.nativeEvent.layout);
