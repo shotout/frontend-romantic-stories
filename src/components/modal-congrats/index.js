@@ -114,7 +114,6 @@ function ModalCongrats({
   }, [isVisible]);
 
   const renderIconTopCard = () => {
-    console.log(getAvatarMale);
     return (
       <>
         <Image

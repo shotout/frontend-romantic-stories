@@ -14,6 +14,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const GojekProgressBar = ({levelingUser, bgTheme}) => {
   const [scrollOffset, setScrollOffset] = useState(0);
+  const [value, setValue] = useState(0);
   const animatedScrollOffset = new Animated.Value(scrollOffset);
   const [infoCardPosition, setInfoCardPosition] = useState(0);
   const animatedPosition = useRef(new Animated.Value(0)).current;
@@ -173,12 +174,7 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
     ));
   };
   useEffect(() => {
-    Animated.timing(animatedScrollOffset, {
-      toValue: position,
-      duration: 100,
-      useNativeDriver: false,
-    }).start();
-  
+    
     let lastAchievedIndex = 0;
   
     if (progress > 0 && levels && levels.length > 0) {
@@ -194,8 +190,19 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
     }
     setLastAchievedLevelIndex(lastAchievedIndex);
     scrollViewRef.current.scrollTo({ x: position, animated: true });
-  
+    setTimeout(() => {
+    setValue(position)
+  }, 300);
   }, [position, progress, levels]);
+
+  useEffect(() => {
+      Animated.timing(animatedScrollOffset, {
+        toValue: value, // Ganti dengan nilai konstan atau nilai yang disimpan di luar useEffect
+        duration: 100,
+        useNativeDriver: false,
+      }).start();
+   
+  }, [value])
 
   const InfoCard = ({message}) => {
     return (
