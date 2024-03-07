@@ -132,7 +132,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   }, []);
   const openPaymentSettings = () => {
     Linking.openURL('app-settings:');
-    // const packageName = 'com.romanticstory'; // Package name for Google Play Store
+    // const packageName = 'app.erotales'; // Package name for Google Play Store
 
     // Linking.openURL(`market://details?id=${packageName}`)
     //   .catch(() => {

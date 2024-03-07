@@ -1177,7 +1177,7 @@ const MainScreen = ({
     }
   };
   useEffect(() => {
-    if (!__DEV__) {
+    // if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
@@ -1186,7 +1186,7 @@ const MainScreen = ({
         setPrice(products[0].localizedPrice);
       }
       getPrice();
-    }
+    // }
   }, []);
   const handleSuccessRating = async () => {
     setRating(false);

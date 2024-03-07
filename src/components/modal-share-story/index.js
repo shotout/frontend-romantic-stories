@@ -52,7 +52,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
           }`,
           domainUriPrefix: 'https://romanticstory.page.link',
           android: {
-            packageName: 'com.romanticstory',
+            packageName: 'app.erotales',
           },
           ios: {
             appStoreId: '6463850368',
