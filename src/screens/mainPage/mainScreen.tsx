@@ -858,7 +858,7 @@ const MainScreen = ({
               flex: 0,
               alignItems: 'center',
               backgroundColor: backgroundColor,
-              paddingTop: wp(20),
+              paddingTop: Platform.OS === 'ios' ? wp(20) : 0,
               // paddingLeft: wp(5),
               // paddingRight: 5
               // paddingHorizontal: wp(20),

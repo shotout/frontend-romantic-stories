@@ -373,7 +373,7 @@ function QuotesContent({
       style={{
         position: 'relative',
         paddingHorizontal: wp(2),
-        paddingTop: wp(30),
+        paddingTop: Platform.OS === 'ios' ? wp(30) : wp(16),
         flex: 1,
       }}>
       <Modal
