@@ -65,6 +65,7 @@ function ModalCongrats({
   const newImgLvl = levelingUser?.user_level?.level?.image?.url;
   const [imgPopup, setImgPopup] = useState(currentImgLvl);
   const [lottieStart, setLottieStart] = useState(false);
+  console.log(currentXp, newXp)
   const handleClose = () => {
     onClose();
   };
@@ -670,6 +671,7 @@ function ModalCongrats({
                   <ProgressBar
                     levelingUser={levelingUser}
                     bgTheme={colorTheme}
+                    currentXp={currentXp}
                   />
                 </View>
                 <ScrollView style={{flex: 0, paddingBottom: 300}}>

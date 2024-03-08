@@ -12,8 +12,8 @@ import {hp, wp} from '../../utils/screen';
 import {code_color} from '../../utils/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const GojekProgressBar = ({levelingUser, bgTheme}) => {
-  const [scrollOffset, setScrollOffset] = useState(0);
+const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
+  const [scrollOffset, setScrollOffset] = useState(currentXp ? currentXp : 0);
   const [value, setValue] = useState(0);
   const animatedScrollOffset = new Animated.Value(scrollOffset);
   const [infoCardPosition, setInfoCardPosition] = useState(0);
@@ -191,6 +191,7 @@ const GojekProgressBar = ({levelingUser, bgTheme}) => {
     setLastAchievedLevelIndex(lastAchievedIndex);
     scrollViewRef.current.scrollTo({ x: position, animated: true });
     setTimeout(() => {
+      console.log(position)
     setValue(position)
   }, 300);
   }, [position, progress, levels]);

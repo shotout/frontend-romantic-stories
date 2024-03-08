@@ -79,7 +79,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import {Step6, Step7, Step8} from '../../layout/tutorial';
 import {handlePayment} from '../../helpers/paywall';
-import {loadRewarded} from '../../helpers/loadReward';
+import {loadRewarded, loadRewardedImage} from '../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import PlayStore from '../../assets/icons/playStore';
 import AppStore from '../../assets/icons/appStore';
@@ -206,7 +206,7 @@ function ScreenShare({
 
   const showInterStialBg = async () => {
     setLoadingAds(true);
-    const advert = await loadRewarded();
+    const advert = await loadRewardedImage();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
