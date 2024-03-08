@@ -248,7 +248,6 @@ function RegisterScreen({
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();
-    console.log(JSON.stringify(values));
     try {
       const payload = {
         name: values?.name,

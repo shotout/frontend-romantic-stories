@@ -67,7 +67,7 @@ appOpenAd.load();
 function App({ userProfile }) {
   TrackPlayer.setupPlayer()
   Sentry.init({
-    environment: 'development',
+    environment: 'production',
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
   });
@@ -131,8 +131,8 @@ function App({ userProfile }) {
   const configTracker = () => {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
-      AdjustConfig.EnvironmentSandbox,
-       //AdjustConfig.EnvironmentProduction,
+      // AdjustConfig.EnvironmentSandbox,
+       AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
