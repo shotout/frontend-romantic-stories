@@ -16,6 +16,7 @@ import {
   ImageBackground,
   Alert,
   Clipboard,
+  TouchableNativeFeedback,
 } from 'react-native';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
@@ -473,6 +474,7 @@ function ScreenShare({
 
   function TextFontComponent(props: any) {
     const fontsRef = useRef(draggableItems);
+    console.log(draggableItems)
     return (
       <View style={{zIndex: 1}}>
         {fontsRef.current.map((el: any, i: any) => (
@@ -507,25 +509,34 @@ function ScreenShare({
                 console.log('Deleted');
               }
             }}>
-            <View
-              style={{
-                padding: 5,
-                paddingLeft: 0,
-                paddingRight: 0,
-                borderRadius: 10,
-                minWidth: 10,
-                backgroundColor: 'rgba(0,0,0,0.5)',
+            <TouchableNativeFeedback
+              onLongPress={() => {
+                setVisibleFont(true);
+                setUserText(el?.text);
+                const updatedItems = draggableItems.filter((item, idx) => idx !== i);
+                setDraggableItems(updatedItems);
+               
               }}>
-              <Text
-                key={i}
+              <View
                 style={{
-                  fontSize: fontSizeDefault,
-                  color: 'white',
-                  textAlign: 'center',
+                  padding: 5,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  borderRadius: 10,
+                  minWidth: 10,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
                 }}>
-                {el?.text}
-              </Text>
-            </View>
+                <Text
+                  key={i}
+                  style={{
+                    fontSize: fontSizeDefault,
+                    color: 'white',
+                    textAlign: 'center',
+                  }}>
+                  {el?.text}
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
           </Gestures>
         ))}
       </View>
