@@ -98,7 +98,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
     // misalnya setelah mengklik suatu tombol
     setBottomBarVisibility(value);
     if (value == 'Main') {
-      navigate('Main');
+      navigate('Main', {isFromBottomBar: true});
     }
     if (value == 'ExploreLibrary') {
       navigate('ExploreLibrary');

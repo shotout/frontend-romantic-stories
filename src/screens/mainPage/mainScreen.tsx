@@ -1056,25 +1056,25 @@ const MainScreen = ({
     handleSetStory(story);
     setScreenNumber(0);
     await pagerRef.current?.setPage(0);
-  }
+  };
+
   useEffect(() => {
-   
     if (!(isPremiumStory || isPremiumAudio)) {
       const userHasRead = readStory?.some(
         (entry: any) =>
           entry?.id === dataBook.id && entry?.page === textChunks?.length,
       );
-      
+
       if (
         !route?.params?.isFromLibrary &&
+        !route?.params?.isFromBottomBar &&
         userHasRead &&
         textChunks?.length > 0
       ) {
-        
         setShowModalNewStory(true);
       }
     }
-  }, [dataBook, route, textChunks]);
+  }, [dataBook, route?.params, textChunks]);
 
   useEffect(() => {
     const userHasRead = readStory?.some(
