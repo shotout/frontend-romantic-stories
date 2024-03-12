@@ -132,9 +132,9 @@ function RegisterScreen({
   };
 
   useEffect(() => {
-    if (!values.gender) {
+    if (values.gender === '') {
       fetchAllAva();
-    } else {
+    } else if(values.gender != '' && values.gender != null) {
       fetchAva1(values.gender === 'Female' ? 'female' : 'male');
       fetchAva2(values.gender === 'Male' ? 'female' : 'male');
     }
@@ -544,7 +544,7 @@ function RegisterScreen({
               <TouchableOpacity
                 onPress={() => {
                   if (stepRegister === 1) {
-                    handleChange('gender', null);
+                    handleChange('gender', '');
                   }
 
                   setStepRegister(stepRegister + 1);
