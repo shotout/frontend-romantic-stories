@@ -174,9 +174,7 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
     ));
   };
   useEffect(() => {
-    
     let lastAchievedIndex = 0;
-  
     if (progress > 0 && levels && levels.length > 0) {
       for (let i = 0; i < levels.length; i++) {
         const currentLevel = levels[i];
@@ -191,18 +189,18 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
     setLastAchievedLevelIndex(lastAchievedIndex);
     scrollViewRef.current.scrollTo({ x: position, animated: true });
     setTimeout(() => {
-      console.log(position)
     setValue(position)
   }, 300);
   }, [position, progress, levels]);
 
   useEffect(() => {
+    if(value > 0){
       Animated.timing(animatedScrollOffset, {
         toValue: value, // Ganti dengan nilai konstan atau nilai yang disimpan di luar useEffect
         duration: 100,
         useNativeDriver: false,
       }).start();
-   
+    }
   }, [value])
 
   const InfoCard = ({message}) => {

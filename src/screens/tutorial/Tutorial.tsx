@@ -10,6 +10,7 @@ import {
   Modal,
   ActivityIndicator,
   ImageBackground,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -63,8 +64,16 @@ import {
   Step8,
 } from '../../layout/tutorial';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
-import {addStory, deleteMyStory, getStoryDetail, getStoryList} from '../../shared/request';
-import {handleNextStory, handleSetStory} from '../../store/defaultState/actions';
+import {
+  addStory,
+  deleteMyStory,
+  getStoryDetail,
+  getStoryList,
+} from '../../shared/request';
+import {
+  handleNextStory,
+  handleSetStory,
+} from '../../store/defaultState/actions';
 import store from '../../store/configure-store';
 import {
   ADD_STORY_TO_LIBRARY,
@@ -274,7 +283,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         const res = await getStoryList();
         handleSetStory(res.data);
       }
-      getDataStory()
+      getDataStory();
       navigate('Bottom');
     }
   };
@@ -425,13 +434,20 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                 <Step1 handleNext={() => {}} />
               </>
             ) : activeStep === 6 || stepsTutorial == 6 ? (
-              <View style={{alignItems: 'center'}}>
+              <View
+                style={{
+                  marginTop: Platform.OS === 'ios' ? 0 : '-2%',
+                  alignItems: 'center',
+                  backgroundColor: code_color.white,
+                }}>
                 <ImageBackground
                   source={imgSelect}
                   style={{
-                    width: Dimensions.get('window').width,
+                    width:
+                      Dimensions.get('window').width -
+                      (Platform.OS === 'ios' ? 0 : 20),
                     height: Dimensions.get('window').height,
-                    marginTop: '-13%',
+                    marginTop: Platform.OS === 'ios' ? '-13%' : '-5%',
                   }}>
                   <View style={{top: wp(50)}}>
                     <Step5 handleNext={() => {}} handlePrev={handlePrev} />
@@ -472,13 +488,20 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         );
       } else if (stepsTutorial === 3) {
         return (
-          <View style={{alignItems: 'center'}}>
+          <View
+            style={{
+              marginTop: Platform.OS === 'ios' ? 0 : '-2%',
+              alignItems: 'center',
+              backgroundColor: code_color.white,
+            }}>
             <ImageBackground
               source={audioScreen}
               style={{
-                width: Dimensions.get('window').width,
+                width:
+                  Dimensions.get('window').width -
+                  (Platform.OS === 'ios' ? 0 : 20),
                 height: Dimensions.get('window').height,
-                marginTop: '-13%',
+                marginTop: Platform.OS === 'ios' ? '-13%' : '-5%',
               }}>
               <Step3 handleNext={handleNext} handlePrev={handlePrev} />
             </ImageBackground>
