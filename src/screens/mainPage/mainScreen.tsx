@@ -771,7 +771,6 @@ const MainScreen = ({
     // iphone xr = 896
 
     const {height, fontScale} = Dimensions.get('window');
-
     const size = Number(fontSize) - 1;
     const charactersPerLine = Math.floor(
       height / (size * (fontScale + (height > 840 ? -0.147 : 0))),
@@ -782,9 +781,10 @@ const MainScreen = ({
       (fontFamily === 'Poppins-Regular' && Number(fontSize) === 14 && height >= 890  ? 5.3 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 16 ?  4.8 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 18 ? 4.5 :
       Number(fontSize) === 14
         ? 4.5
-        : height >= 890 && Number(fontSize) === 18
+        : height >= 890  && Number(fontSize) === 18
         ? 3.5
-        :  4);
+        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 16 ? 3.5 
+        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 20 ? 3 : 4);
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       totalCharacters  ? totalCharacters : 700,

@@ -649,8 +649,8 @@ function QuotesContent({
                       position: 'absolute',
                       overflow: 'hidden',
                       marginBottom:
-                        partner === '/assets/images/avatars/5/think.png'
-                          ? 12
+                      Platform.OS === 'android' && Dimensions.get('window').height < 840 && partner === '/assets/images/avatars/5/think.png'
+                          ? 8 :  partner === '/assets/images/avatars/5/think.png' ? 12 
                           : 21.7,
                       // marginBottom: wp(
                       //   partner === '/assets/images/avatars/5/think.png'

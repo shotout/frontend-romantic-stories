@@ -282,6 +282,7 @@ const FontScreen = ({
       interstialListenerAds();
     };
   }, []);
+  
   return (
     <View style={{flex: 0, height: wp(375), backgroundColor: bgTheme}}>
       <ModalUnlockPremium
@@ -524,7 +525,7 @@ const FontScreen = ({
             value={
               Number(fontSizeDefault) === 16
                 ? 1
-                : Number(fontSizeDefault) === 14
+                : Number(fontSizeDefault) === 14 ||  Number(fontSizeDefault) === 12
                 ? 0
                 : 2
             }
