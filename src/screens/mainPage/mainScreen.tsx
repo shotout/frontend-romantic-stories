@@ -1073,8 +1073,9 @@ const MainScreen = ({
         userHasRead &&
         textChunks?.length > 0
       ) {
+        setShowModalNewStory(true);
         setTimeout(() => {
-          setShowModalNewStory(true);
+          pagerRef?.current?.setPage(textChunks.length - 1);
         }, 200);
       }
     }
