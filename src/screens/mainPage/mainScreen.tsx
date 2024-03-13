@@ -285,7 +285,9 @@ const MainScreen = ({
       checkingRead(textChunks?.length);
     } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
-      setShowModalNewStory(true);
+      setTimeout(() => {
+        setShowModalNewStory(true);
+      }, 200);
     }
   };
   useEffect(() => {
@@ -1071,7 +1073,9 @@ const MainScreen = ({
         userHasRead &&
         textChunks?.length > 0
       ) {
-        setShowModalNewStory(true);
+        setTimeout(() => {
+          setShowModalNewStory(true);
+        }, 200);
       }
     }
   }, [dataBook, route?.params, textChunks]);
@@ -1161,9 +1165,9 @@ const MainScreen = ({
          
            
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-            // if(screenNumber ===  textChunks?.length){
-            setShowModalNewStory(true);
-            // }
+            setTimeout(() => {
+              setShowModalNewStory(true);
+            }, 200);
 
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
           } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
@@ -1176,6 +1180,7 @@ const MainScreen = ({
       }, 700);
     }
   };
+
   useEffect(() => {
     // if (!__DEV__) {
       async function getPrice() {
@@ -1209,13 +1214,17 @@ const MainScreen = ({
         const res = await getStoryDetail(userStory?.id);
         handleSetStory(res.data);
         setBook(res.data);
-        setShowModalNewStory(true);
+        setTimeout(() => {
+          setShowModalNewStory(true);
+        }, 200);
       } catch (error) {
         console.log(error);
         const res = await getStoryDetail(userStory?.id);
         handleSetStory(res.data);
         setBook(res.data);
-        setShowModalNewStory(true);
+        setTimeout(() => {
+          setShowModalNewStory(true);
+        }, 200);
       }
     }
   };
