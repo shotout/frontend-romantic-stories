@@ -106,7 +106,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         setLoading(true);
         // Dapatkan URL MP3 terbaru
         const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-     
+        TrackPlayer.setupPlayer()
         // Hentikan pemutaran sebelumnya dan reset pemutaran
         await TrackPlayer.stop();
         await TrackPlayer.reset();

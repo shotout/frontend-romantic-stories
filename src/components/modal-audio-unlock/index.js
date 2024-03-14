@@ -66,7 +66,9 @@ function ModalAudioStory({
           const res = await updateMyCollection(payload, data?.id);
           restart();
         } catch (error) {
+          if(__DEV__){
           console.log(error);
+          }
         }
       } else {
         try {

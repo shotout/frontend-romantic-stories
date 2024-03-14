@@ -20,28 +20,12 @@ import {
   Animated,
   Dimensions,
   Pressable,
-  Modal,
-  SafeAreaView,
-  Alert,
   Platform,
   TouchableOpacity,
   AppState,
 } from 'react-native';
-import {
-  imgBgAvaTips,
-  imgBgTips,
-  imgLoveLeft,
-  imgLoveRight,
-  imgSelect,
-} from '../../assets/images';
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {State} from 'react-native-gesture-handler';
-import messaging from '@react-native-firebase/messaging';
-import * as Animatable from 'react-native-animatable';
-import AnimatedLottieView from 'lottie-react-native';
-import notifee, {EventType} from '@notifee/react-native';
-import {sizing} from '../../utils/styling';
 import QuotesContent from '../../components/quotes-content-fast-image';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -71,8 +55,6 @@ import PagerView, {PagerViewOnPageSelectedEvent} from 'react-native-pager-view';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
-import {Step1, Step2, Step3, Step5} from '../../layout/tutorial';
-import store from '../../store/configure-store';
 import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
 import {fixedFontSize, wp} from '../../utils/screen';
@@ -93,13 +75,6 @@ import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
 import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
-import {err} from 'react-native-svg/lib/typescript/xml';
-import { book } from '../../assets/icons';
-
-const confettiAnimate = require('../../assets/lottie/confetti.json');
-const rippleAnimate = require('../../assets/lottie/ripple.json');
-
-const {width, height} = Dimensions.get('window');
 
 const MainScreen = ({
   userProfile,
@@ -190,7 +165,7 @@ const MainScreen = ({
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
   useEffect(() => {
-    if (!__DEV__) {
+    // if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_10_audio_stories'],
@@ -203,7 +178,7 @@ const MainScreen = ({
         setPriceAudio2(products[0].localizedPrice);
       }
       getPrice();
-    }
+    // }
   }, []);
   useEffect(() => {
     async function getDataStory() {
@@ -280,14 +255,14 @@ const MainScreen = ({
         handleLeveling(resp?.data);
         setTimeout(() => {
           setShowModalCongrats(true);
-        }, 200);
+        }, 100);
       }
       checkingRead(textChunks?.length);
     } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setTimeout(() => {
         setShowModalNewStory(true);
-      }, 200);
+      }, 50);
     }
   };
   useEffect(() => {
@@ -1120,7 +1095,7 @@ const MainScreen = ({
     // Jika sentuhan terjadi di sebelah kanan
 
     if (touchX > screenWidth && !showModalCongrats) {
-      setTimeout(async () => {
+      // setTimeout(async () => {
         if (screenNumber === textChunks?.length - 1) {
           const existingEntry = readStory
             ? readStory.find(
@@ -1141,19 +1116,19 @@ const MainScreen = ({
             // jika nanti pertama kali melakukan update data terakhir
             try {
               const res = await addPastStory(dataBook.id);
-              console.log(JSON.stringify(res))
+              // console.log(JSON.stringify(res))
               try {
                  
             const data = {
               value: textChunks?.length,
             };
                 const resp = await addPastLevel(data);
-                console.log(JSON.stringify(resp))
+                // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
                 setTimeout(() => {
                   setShowModalCongrats(true);
-                }, 200);
+                }, 50);
               }
               checkingRead(screenNumber + 1);
               } catch (error) {
@@ -1168,31 +1143,30 @@ const MainScreen = ({
           } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
             setTimeout(() => {
               setShowModalNewStory(true);
-            }, 200);
+            }, 50);
 
             //jika tidak premium maka akan terus menampilan modal setiap terakhir
           } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
             setTimeout(() => {
               setShowModalCongrats(true);
-            }, 200);
+            }, 50);
             // await fecthNextStory();
           }
         }
-      }, 700);
+
     }
   };
 
   useEffect(() => {
-    // if (!__DEV__) {
+    if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
         });
-        console.log('Products:', products);
         setPrice(products[0].localizedPrice);
       }
       getPrice();
-    // }
+    }
   }, []);
   const handleSuccessRating = async () => {
     setRating(false);
@@ -1217,15 +1191,14 @@ const MainScreen = ({
         setBook(res.data);
         setTimeout(() => {
           setShowModalNewStory(true);
-        }, 200);
+        }, 50);
       } catch (error) {
-        console.log(error);
         const res = await getStoryDetail(userStory?.id);
         handleSetStory(res.data);
         setBook(res.data);
         setTimeout(() => {
           setShowModalNewStory(true);
-        }, 200);
+        }, 50);
       }
     }
   };

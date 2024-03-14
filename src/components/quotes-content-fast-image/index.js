@@ -851,8 +851,7 @@ function QuotesContent({
 }
 
 QuotesContent.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  
 };
 
 QuotesContent.defaultProps = {};

@@ -20,7 +20,7 @@ const reloadUserProfile = async (type) => {
           res.data.subscription.purchasely_data
         );
         if (objPurchase) {
-          console.log(objPurchase)
+          // console.log(objPurchase)
           revenueTracking(
             objPurchase.plan_price_in_customer_currency,
             objPurchase.customer_currency
@@ -31,7 +31,7 @@ const reloadUserProfile = async (type) => {
     
    
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 

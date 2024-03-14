@@ -47,7 +47,9 @@ function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
           );
           restart()
         } catch (error) {
+          if(__DEV__){
           console.log(error)
+          }
         }
       }else{
         try {

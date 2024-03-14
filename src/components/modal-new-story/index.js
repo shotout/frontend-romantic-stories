@@ -77,7 +77,7 @@ function ModalNewStory({
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
         });
-        console.log('Products:', products);
+       
         setPrice(products[0].localizedPrice);
       }
       getProductPrice();

@@ -474,7 +474,7 @@ function ScreenShare({
 
   function TextFontComponent(props: any) {
     const fontsRef = useRef(draggableItems);
-    console.log(draggableItems)
+
     return (
       <View style={{zIndex: 1}}>
         {fontsRef.current.map((el: any, i: any) => (
