@@ -190,7 +190,7 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
     scrollViewRef.current.scrollTo({ x: position, animated: true });
     setTimeout(() => {
     setValue(position)
-  }, 300);
+  }, 100);
   }, [position, progress, levels]);
 
   useEffect(() => {
