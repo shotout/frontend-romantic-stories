@@ -43,6 +43,7 @@
 		52A6EAEF5B434533A338D876 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 111C45F3869040E6914DC11F /* Lato-Regular.ttf */; };
 		575FD6B6611F4CCBB5477FA6 /* Comfortaa-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CBDFFC3A15942679B55B0FA /* Comfortaa-SemiBold.ttf */; };
 		630C2ADA1BAF42B58A3A0A0F /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A14E7F96FEE7483EBA385B76 /* PlayfairDisplay-Regular.ttf */; };
+		73E5E495065F486C8419F46C /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 743138E7233148618097C958 /* Comfortaa-Bold.ttf */; };
 		7C0445F931256932F47F6D76 /* libPods-Shortstory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF894184A503BA0D4FD57C6C /* libPods-Shortstory.a */; };
 		8056BD1B2B0F010D00E97FB6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8056BD1A2B0F010D00E97FB6 /* StoreKit.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -115,6 +116,7 @@
 		36D12C83B9EB495CBB8EBB75 /* EBGaramond-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "EBGaramond-Regular.ttf"; path = "../src/assets/fonts/EBGaramond-Regular.ttf"; sourceTree = "<group>"; };
 		5373F7039CE844A98071B22E /* Arialn.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Arialn.ttf; path = ../src/assets/fonts/Arialn.ttf; sourceTree = "<group>"; };
 		6FBA2F5EFE826AA2F89587D9 /* Pods-Shortstory-ShortstoryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shortstory-ShortstoryTests.debug.xcconfig"; path = "Target Support Files/Pods-Shortstory-ShortstoryTests/Pods-Shortstory-ShortstoryTests.debug.xcconfig"; sourceTree = "<group>"; };
+		743138E7233148618097C958 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Bold.ttf"; path = "../src/assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		8056BD1A2B0F010D00E97FB6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8056BD222B0F160800E97FB6 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = first.png; path = "../../../../../Downloads/ios 2/first.png"; sourceTree = "<group>"; };
 		8056BD302B0F20EB00E97FB6 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = second.png; path = "../../../../../Downloads/AppIcons(4)/Assets.xcassets/AppIcon.appiconset/second.png"; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				268292DC5ADC480B891733F1 /* Quicksand-Regular.ttf */,
 				1FC88FB9946E4908BB4EC662 /* Raleway-Regular.ttf */,
 				2B7366CE2F97496FAB71A111 /* Roboto-Regular.ttf */,
+				743138E7233148618097C958 /* Comfortaa-Bold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				95F1786C8F1C42FCA5040B76 /* Quicksand-Regular.ttf in Resources */,
 				CA91F08467614C52A02F4870 /* Raleway-Regular.ttf in Resources */,
 				00F2581EFF844C5389449B7F /* Roboto-Regular.ttf in Resources */,
+				73E5E495065F486C8419F46C /* Comfortaa-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,7 +735,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 152;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -763,7 +767,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Shortstory/Shortstory.entitlements;
-				CURRENT_PROJECT_VERSION = 157;
+				CURRENT_PROJECT_VERSION = 152;
 				DEVELOPMENT_TEAM = PQ7KYCJA35;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				INFOPLIST_FILE = Shortstory/Info.plist;

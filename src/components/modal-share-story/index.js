@@ -34,7 +34,7 @@ import AppStore from '../../assets/icons/appStore';
 import {isIphone} from '../../utils/devices';
 import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
-import {imgShare, logo} from '../../assets/images';
+import {imageShareIgPost, imgShare, logo} from '../../assets/images';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
 
 function ModalShareStory({isVisible, onClose, storyData}) {
@@ -156,11 +156,11 @@ function ModalShareStory({isVisible, onClose, storyData}) {
   };
 
   const handleShareInstagramDefault = async () => {
-    handleShare('story');
+    handleShare('post');
     Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this one: ${
+      `The EroTales App has the best Romantic Stories ever! I just found this once: ${
         storyData?.item?.title_en || storyData?.title_en
-      }. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
+      }.\r\n\r\nCheck the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
     Alert.alert(
       '',
@@ -353,7 +353,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               fontWeight: '400',
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
-            best Romantic Stories ever! I just found this one:
+            best Romantic Stories ever! I just found this once:
           </Text>
           <Text
             style={{
@@ -428,7 +428,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
           quality: 1.0,
         }}>
         <Image
-          source={imgShare}
+          source={imageShareIgPost}
           style={{
             position: 'absolute',
             width: '100%',
@@ -490,19 +490,16 @@ function ModalShareStory({isVisible, onClose, storyData}) {
           <Text
             style={{
               color: code_color.white,
-              marginTop: moderateScale(50),
-              marginHorizontal: '10%',
+              marginTop: moderateScale(60),
+              marginHorizontal: '6%',
               fontSize: moderateScale(20),
               textAlign: 'center',
               lineHeight: moderateScale(35),
               fontWeight: '400',
-              marginBottom: moderateScale(20),
+              fontFamily: 'Comfortaa-Bold',
+              marginBottom: moderateScale(40),
             }}>
-            The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
-            best Romantic Stories ever! I just found this one:
-            <Text style={{fontWeight: '700'}}>
-              {storyData?.item?.title_en || storyData?.title_en}
-            </Text>
+            {'Romantic Stories for your\reveryday Fantasy'}
           </Text>
 
           <View
@@ -520,6 +517,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
                 color: code_color.white,
                 fontSize: 14,
                 fontWeight: '400',
+                fontFamily: 'Comfortaa-Bold',
                 letterSpacing: 0.28,
               }}>
               https://EroTalesApp.com

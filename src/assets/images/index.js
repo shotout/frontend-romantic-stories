@@ -72,6 +72,7 @@ export const imgSearchNull = require('./searchNull.png');
 export const imgQuoteNew = require('./share.gif');
 export const imgSelect = require('./select.gif');
 export const imgShare = require('./imageShare.png');
+export const imageShareIgPost = require('./imageShareIgPost.png');
 export const xpAndLevel = require('./xpAndLevel.gif');
 export const audioScreen = require('./Audio-screen.gif');
 export const xp = require('./xp.png');
