@@ -48,7 +48,7 @@ import {Step4_2} from '../../layout/tutorial';
 import ModalSorting from '../../components/modal-sorting';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
-import {loadRewarded, loadRewardedCategory} from '../../helpers/loadReward';
+import {loadRewarded, loadRewardedCategory, loadRewardedWatch} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {reloadUserProfile} from '../../utils/user';
@@ -97,7 +97,7 @@ const ExploreLibraryScreen = ({
 
   const showWatchAds = async () => {
     setLoadingAds(true);
-    const advert = await loadRewarded();
+    const advert = await loadRewardedWatch();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
       setShowModalUnlock(false);
       setLoadingAds(false);

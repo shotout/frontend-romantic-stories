@@ -1005,7 +1005,6 @@ const MainScreen = ({
     const advert = await loadRewarded();
     advert.addAdEventListener(AdEventType.CLOSED, () => {
       reloadWatch();
-
       // setLoadingAds(false);
     });
   };

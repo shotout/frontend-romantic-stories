@@ -1,4 +1,4 @@
-import {InterstitialAd, RewardedAd} from 'react-native-google-mobile-ads';
+import {InterstitialAd, RewardedAd, RewardedInterstitialAd} from 'react-native-google-mobile-ads';
 import {
   getRewardedColorThemeID,
   getRewardedBgColorID,
@@ -13,6 +13,49 @@ export const loadRewarded = async (handleOpen, onFailed) =>
     // const ADUNITID = Platform.OS === 'android' ? AD_APP_ID_ANDROID : AD_APP_ID_IOS
     const advert = RewardedAd.createForAdRequest(
       getRewardedInsterstialStoryID(),
+      {
+        requestNonPersonalizedAdsOnly: true,
+        keywords: ['fashion', 'clothing'],
+      },
+    );
+  
+    let adLoadCount = 0;
+    try {
+      advert.load();
+      if (advert.loaded) {
+        advert.show();
+        resolve(advert);
+      } else {
+        const myInterval = setInterval(async () => {
+          if (advert.loaded) {
+            adLoadCount = 0;
+            clearInterval(myInterval);
+            advert.show();
+            resolve(advert);
+          }
+          adLoadCount++;
+          if (adLoadCount >= 7) {
+            if (onFailed && typeof onFailed === 'function') {
+              onFailed();
+            }
+            console.log('ADLOAD FAILED');
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject('failed-ad');
+          }
+        }, 1000);
+      }
+    } catch (e) {
+      if (handleOpen && typeof handleOpen === 'function') {
+        handleOpen();
+      }
+      console.log('failed load ad', e);
+    }
+  });
+  export const loadRewardedWatch = async (handleOpen, onFailed) =>
+  new Promise((resolve, reject) => {
+    // const ADUNITID = Platform.OS === 'android' ? AD_APP_ID_ANDROID : AD_APP_ID_IOS
+    const advert = RewardedAd.createForAdRequest(
+      getRewardedInsterstial12HID(),
       {
         requestNonPersonalizedAdsOnly: true,
         keywords: ['fashion', 'clothing'],
