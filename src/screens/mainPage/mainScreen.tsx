@@ -1035,24 +1035,34 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    if (!(isPremiumStory || isPremiumAudio)) {
-      const userHasRead = readStory?.some(
-        (entry: any) =>
-          entry?.id === dataBook.id && entry?.page === textChunks?.length,
-      );
-
-      if (
-        !route?.params?.isFromLibrary &&
-        !route?.params?.isFromBottomBar &&
-        userHasRead &&
-        textChunks?.length > 0
-      ) {
-        setShowModalNewStory(true);
-        setTimeout(() => {
-          pagerRef?.current?.setPage(textChunks.length - 1);
-        }, 200);
+     async function fetchModal () {
+      if (!(isPremiumStory || isPremiumAudio)) {
+        const userHasRead = readStory?.some(
+          (entry: any) =>
+            entry?.id === dataBook.id && entry?.page === textChunks?.length,
+        );
+  
+        if (
+          !route?.params?.isFromLibrary &&
+          !route?.params?.isFromBottomBar &&
+          userHasRead &&
+          textChunks?.length > 0
+        ) {
+          const value = await AsyncStorage.getItem('setToday');
+          const stringifyDateNow = new Date();
+          let strTanggalSekarang = stringifyDateNow.getDate().toString();
+          if (value != null) {
+            if (value === strTanggalSekarang) {
+          setShowModalNewStory(true);
+          setTimeout(() => {
+            pagerRef?.current?.setPage(textChunks.length - 1);
+          }, 200);
+        }}
+        }
       }
     }
+   
+    fetchModal()
   }, [dataBook, route?.params, textChunks]);
 
   useEffect(() => {
