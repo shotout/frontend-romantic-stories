@@ -119,7 +119,7 @@ const FontScreen = ({
   const [isFinishAds, setIsFinishAds] = useState(false);
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
-
+console.log(fontSizeDefault)
   const setBg = value => {
     set_bgColor(value);
     handleSetBackground(value);
@@ -137,8 +137,8 @@ const FontScreen = ({
 
   const handleFont = value => {
     if (value === 0) {
-      setFontSize(Number(fontSizeDefault) - 2);
-      handleSetFontSize(Number(fontSizeDefault) - 2);
+      setFontSize(14);
+      handleSetFontSize(14);
     } else if (value === 1) {
       // setFontSize(12);
       // handleSetFontSize(12);
@@ -525,7 +525,7 @@ const FontScreen = ({
             value={
               Number(fontSizeDefault) === 16
                 ? 1
-                : Number(fontSizeDefault) === 14 ||  Number(fontSizeDefault) === 12
+                : Number(fontSizeDefault) === 14 
                 ? 0
                 : 2
             }

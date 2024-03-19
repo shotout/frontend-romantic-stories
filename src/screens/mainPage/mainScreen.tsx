@@ -23,6 +23,7 @@ import {
   Platform,
   TouchableOpacity,
   AppState,
+  BackHandler,
 } from 'react-native';
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -819,6 +820,20 @@ const MainScreen = ({
     setForceRender(prev => prev + 1);
   }, [colorText]);
 
+  useEffect(() => {
+
+    const backAction = () => {
+       BackHandler.exitApp() 
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
   const renderFlatList = type => (
     <PagerView
       style={{flex: 1}}
