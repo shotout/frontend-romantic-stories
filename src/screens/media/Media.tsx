@@ -10,6 +10,7 @@ import {
   Modal,
   ActivityIndicator,
   AppState,
+  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -237,10 +238,13 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       }
     }
   };
+  const width = Dimensions.get('window').width
+  const height = Dimensions.get('window').height
 
   return (
     // <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
-    <LinearGradient
+
+<LinearGradient
       colors={[colors || '#E4B099', '#6B7C8C']}
       style={styles.ctnContent}>
       <ModalShareStory
@@ -305,8 +309,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           }}
           resizeMode="cover"
           style={{
-            width: 352,
-            height: 350,
+            width: width === 375 && height === 667 ? 200 : 352,
+            height: width === 375 && height === 667 ? 200 :  350,
             borderRadius: 8,
           }}
         />
@@ -432,6 +436,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         </View>
       </Modal>
     </LinearGradient>
+  
+    
   );
 }
 

@@ -399,14 +399,14 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
-    if (Platform.OS === 'android') {
+    // if (Platform.OS === 'android') {
       const payload = {
         _method: 'PATCH',
         is_member: 3,
       };
       updateProfile(payload);
       reloadUserProfile();
-    }
+    // }
     fetchCheckingDay();
   }, []);
 
