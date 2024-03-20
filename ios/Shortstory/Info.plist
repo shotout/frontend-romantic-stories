@@ -418,11 +418,15 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPrivacyAccessedAPITypes</key>
-	<array>
-	<dict>
-		<key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
-		<string>This application uses the timestamp file to sort the images to be saved so as not to save images with the same appearance</string>
-	</dict>
-	</array>
+    <array>
+        <dict>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>CA92.1</string>
+            </array>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+        </dict>
+    </array>
 </dict>
 </plist>
