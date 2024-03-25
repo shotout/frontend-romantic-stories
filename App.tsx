@@ -72,6 +72,7 @@ function App({ userProfile }) {
   Settings.initializeSDK();
   Settings.setAppID("657475116285203");
   useEffect(() => {
+   
     const handleAppInstalled = async () => {
       const res = await AsyncStorage.getItem('isAppInstalled');
       if (!res) {
