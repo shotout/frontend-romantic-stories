@@ -235,13 +235,14 @@ const MainScreen = ({
     const uniqueData = [
       ...new Map(readStory.map((item: {id: any}) => [item.id, item])).values(),
     ];
-    if (uniqueData?.length === 2) {
+
+    if (uniqueData?.length === 3) {
       eventTracking(FINISH_LISTEN_3);
     }
-    if (uniqueData?.length === 6) {
+    if (uniqueData?.length === 7) {
       eventTracking(FINISH_LISTEN_7);
     }
-    if (uniqueData?.length === 9) {
+    if (uniqueData?.length === 10) {
       eventTracking(FINISH_LISTEN_10);
     }
     if (typeof existingEntry === 'undefined') {
@@ -302,7 +303,7 @@ const MainScreen = ({
     handleNextStory(resp.data);
     setShowStoryFree(true);
   };
-  const checkingRead = (pageNumber: number) => {
+  const checkingRead = async (pageNumber: number) => {
     const existingEntry = readStory
       ? readStory.find(
           (item: {id: any; page: any}) =>
@@ -312,14 +313,31 @@ const MainScreen = ({
     const uniqueData = [
       ...new Map(readStory.map((item: {id: any}) => [item.id, item])).values(),
     ];
-    if (uniqueData?.length === 2) {
-      eventTracking(FINISH_READ_3);
+    const value = await AsyncStorage.getItem('FINISH_READ_3');
+    const value2 = await AsyncStorage.getItem('FINISH_READ_7');
+    const value3 = await AsyncStorage.getItem('FINISH_READ_10');
+
+    AsyncStorage.removeItem('FINISH_READ_10')
+    if(value != 'true'){
+      if (uniqueData?.length === 3) {
+        eventTracking(FINISH_READ_3);
+        AsyncStorage.setItem('FINISH_READ_3', 'true');
+      }
+      
     }
-    if (uniqueData?.length === 6) {
-      eventTracking(FINISH_READ_7);
+    if(value2 != 'true'){
+      if (uniqueData?.length === 7) {
+        eventTracking(FINISH_READ_7);
+        AsyncStorage.setItem('FINISH_READ_7', 'true');
+      }
+     
     }
-    if (uniqueData?.length === 9) {
-      eventTracking(FINISH_READ_10);
+    if(value3 != 'true'){
+      if (uniqueData?.length === 10) {
+        eventTracking(FINISH_READ_10);
+        AsyncStorage.setItem('FINISH_READ_10', 'true');
+      }
+      
     }
     if (!existingEntry) {
       const newData = {
