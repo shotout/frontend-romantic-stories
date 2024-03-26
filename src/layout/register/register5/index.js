@@ -53,8 +53,8 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: wp(50),
-          borderBottomLeftRadius: wp(50),
+          borderBottomRightRadius: hp(50),
+          borderBottomLeftRadius: hp(50),
         }}>
         <Text
           allowFontScaling={false}
@@ -63,7 +63,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
             fontSize: fixedFontSize(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: wp(20),
+            marginTop: hp(20),
           }}>{`What should your \npartner look like?`}</Text>
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel

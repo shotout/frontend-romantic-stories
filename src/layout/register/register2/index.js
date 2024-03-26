@@ -13,7 +13,7 @@ import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
 import {moderateScale, scale} from 'react-native-size-matters';
-import { fixedFontSize, wp } from '../../../utils/screen';
+import {fixedFontSize, hp, wp} from '../../../utils/screen';
 
 export default function Register2({currentStep, name, changeText}) {
   return (
@@ -65,8 +65,10 @@ export default function Register2({currentStep, name, changeText}) {
             borderWidth: wp(1),
             borderRadius: wp(5),
             padding: wp(10),
+            fontSize: hp(14),
             marginVertical: wp(30),
-            width: wp(Dimensions.get('window').width - 60),
+            // width: wp(Dimensions.get('window').width - 60),
+            width: Dimensions.get('window').width - 60,
           }}
           placeholderTextColor={code_color.greyDefault}
           value={name}

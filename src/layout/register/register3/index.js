@@ -123,11 +123,11 @@ export default function Register3({setCategoryId, value, dataCategory}) {
               }}
               style={{
                 alignItems: 'center',
-                marginVertical: wp(2),
+                marginVertical: hp(2),
                 backgroundColor:
                   selectStory === item.id ? code_color.splash : 'white',
-                padding: wp(5),
-                borderRadius: wp(10),
+                padding: hp(5),
+                borderRadius: hp(10),
                 justifyContent: 'center',
               }}>
                 <FastImage
@@ -138,9 +138,9 @@ export default function Register3({setCategoryId, value, dataCategory}) {
                   }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
-                    width: wp(320),
+                    width: hp(320),
                     height: hp(80),
-                    borderRadius: wp(10),
+                    borderRadius: hp(6),
                   }}
                 />
               <Text
@@ -161,11 +161,11 @@ export default function Register3({setCategoryId, value, dataCategory}) {
                   backgroundColor:
                     selectStory === item.id ? code_color.splash : 'white',
                   borderRadius: wp(30),
-                  width: wp(25),
+                  width: hp(25),
                   height: hp(25),
                   position: 'absolute',
-                  top: wp(35),
-                  left: wp(25),
+                  top: hp(35),
+                  left: hp(25),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>

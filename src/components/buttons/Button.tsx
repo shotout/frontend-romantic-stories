@@ -1,13 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import {female, male} from '../../../assets/icons';
 import {code_color} from '../../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
-import { hp, wp } from '../../utils/screen';
+import {moderateScale} from 'react-native-size-matters';
+import {hp, wp} from '../../utils/screen';
 
-export default function Button({style, onPress, title, colorsText, image}) {
+export default function Button({
+  style,
+  onPress,
+  title,
+  colorsText,
+  image,
+}) {
   return (
     <>
       <TouchableOpacity
@@ -24,18 +28,22 @@ export default function Button({style, onPress, title, colorsText, image}) {
                 borderRadius: wp(12),
                 position: 'absolute',
                 bottom: wp(20),
-                width: wp(320),
+                width: hp(320),
               }
         }>
-          <View>
+        <View>
           {image}
-        <Text
-          allowFontScaling={false}
-          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: moderateScale(14), color: !!colorsText ? colorsText : code_color.black}}>
-          {title}
-        </Text>
-          </View>
-         
+          <Text
+            allowFontScaling={false}
+            style={{
+              fontFamily: 'Robotto',
+              fontWeight: 'bold',
+              fontSize: moderateScale(14),
+              color: !!colorsText ? colorsText : code_color.black,
+            }}>
+            {title}
+          </Text>
+        </View>
       </TouchableOpacity>
     </>
   );

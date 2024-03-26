@@ -1272,7 +1272,7 @@ const MainScreen = ({
     if (route?.name != 'Main') {
       return (
         <Pressable
-          onPress={() => (route?.name != 'Main' ? pressScreen() : null)}
+          onPress={() => (route?.name != 'Main' ? navigate('Main') : null)}
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
@@ -1353,7 +1353,7 @@ const MainScreen = ({
                 flex: 1,
                 alignItems: 'center',
                 backgroundColor: backgroundColor,
-                paddingTop: wp(20),
+                paddingTop: Platform.OS === 'ios' ? wp(20) : wp(0),
                 paddingHorizontal: wp(20),
               }}>
               <RenderFactItemView />

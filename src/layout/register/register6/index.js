@@ -126,8 +126,8 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
 
         <View
           style={{
-            margin: wp(15),
-            marginHorizontal: wp(100),
+            margin: hp(15),
+            marginHorizontal: hp(100),
             borderWidth: 0.5,
             borderColor: '#D9D9D9',
             // padding: 10,
@@ -150,7 +150,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
                 style={{
                   fontSize: fixedFontSize(7),
                   paddingHorizontal: wp(10),
-                  paddingTop: wp(5),
+                  paddingTop: hp(5),
                 }}>
                 Jealous Portuguese Teacher
               </Text>
@@ -159,8 +159,8 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               <TouchableOpacity
                 style={{
                   padding: 1,
-                  paddingHorizontal: wp(7),
-                  borderRadius: wp(20),
+                  paddingHorizontal: hp(7),
+                  borderRadius: hp(20),
                   backgroundColor: colorsDefault,
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -186,7 +186,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
             style={{
               borderWidth: 0.5,
               borderColor: colorsDefault,
-              marginVertical: wp(10),
+              marginVertical: hp(10),
               marginHorizontal: wp(10)
             }}
           />
@@ -197,7 +197,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               textAlign: 'justify',
               paddingHorizontal: wp(10),
               lineHeight: 13,
-              fontFamily: 'Robotto'
+              fontFamily: 'Roboto'
             }}>
             {' '}
             {text}
@@ -241,8 +241,8 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
                     justifyContent: 'center',
                   }}>
                   <item.image
-                    width={wp(13)}
-                    height={wp(13)}
+                    width={hp(13)}
+                    height={hp(13)}
                     fill={colorsDefault}
                   />
                   <Text
@@ -271,12 +271,12 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
                 }}
                 style={{
                   backgroundColor: item.code,
-                  width: wp(30),
+                  width: hp(30),
                   height: hp(30),
-                  borderRadius: wp(20),
+                  borderRadius: hp(20),
                   borderWidth: 1,
                   borderColor: code_color.grey,
-                  marginHorizontal: wp(10),
+                  marginHorizontal: hp(10),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>

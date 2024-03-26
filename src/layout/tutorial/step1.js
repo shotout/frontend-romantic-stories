@@ -6,6 +6,8 @@ import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import bookAnimate from '../../assets/lottie/book.json';
+import {hp} from '../../utils/screen';
+import {moderateScale} from 'react-native-size-matters';
 
 const Step1 = ({handleNext}) => {
   // return <></>;
@@ -15,21 +17,21 @@ const Step1 = ({handleNext}) => {
         backgroundColor: '#3F58DD',
         borderRadius: 20,
         padding: 10,
-        marginHorizontal: 40,
+        marginHorizontal: hp(40),
         alignItems: 'center',
         marginTop: '40%',
-        paddingTop: 50,
+        paddingTop: hp(50),
       }}>
       <View
         style={{
-          width: 80,
-          height: 80,
+          width: hp(80),
+          height: hp(80),
           position: 'absolute',
-          top: -40,
+          top: hp(-40),
           backgroundColor: code_color.white,
-          borderRadius: 50,
+          borderRadius: hp(50),
           borderColor: '#3F58DD',
-          borderWidth: 4,
+          borderWidth: hp(4),
         }}>
         <AnimatedLottieView
           source={bookAnimate}
@@ -45,9 +47,9 @@ const Step1 = ({handleNext}) => {
         style={{
           color: code_color.white,
           textAlign: 'center',
-          fontSize: 18,
+          fontSize: moderateScale(17),
           fontWeight: 'bold',
-          marginBottom: 20,
+          marginBottom: hp(20),
         }}>
         {'Discover a brand new\nEroTales Story every day.'}
       </Animatable.Text>
@@ -58,9 +60,9 @@ const Step1 = ({handleNext}) => {
         style={{
           color: code_color.white,
           textAlign: 'center',
-          fontSize: 18,
+          fontSize: moderateScale(17),
           fontWeight: 'bold',
-          marginBottom: 20,
+          marginBottom: hp(20),
         }}>
         {'Hungry for more?\nUnlock additional Stories\nanytime!'}
       </Animatable.Text>
@@ -84,7 +86,7 @@ const Step1 = ({handleNext}) => {
         <Button
           style={{
             backgroundColor: code_color.yellow,
-            padding: 10,
+            padding: hp(10),
             paddingHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,

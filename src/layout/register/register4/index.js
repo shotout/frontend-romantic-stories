@@ -75,7 +75,7 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
             fontSize: fixedFontSize(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: wp(20),
+            marginTop: hp(20),
           }}>
           {`What should your \ncharacter look like?`}
         </Text>

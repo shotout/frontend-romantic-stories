@@ -7,6 +7,8 @@ import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import listenAnimate from '../../assets/lottie/listen.json';
+import {hp} from '../../utils/screen';
+import {moderateScale} from 'react-native-size-matters';
 
 const Step3 = ({handleNext, handlePrev}) => {
   return (
@@ -19,29 +21,29 @@ const Step3 = ({handleNext, handlePrev}) => {
           backgroundColor: '#3F58DD',
           borderRadius: 20,
           padding: 10,
-          marginHorizontal: 40,
+          marginHorizontal: hp(40),
           alignItems: 'center',
           marginTop: '40%',
-          paddingTop: 50,
+          paddingTop: hp(50),
         }}>
         <View
           style={{
-            width: 80,
-            height: 80,
-            position: 'relative',
+            width: hp(80),
+            height: hp(80),
+            position: 'absolute',
+            top: hp(-40),
             overflow: 'hidden',
-            marginTop: -90,
             backgroundColor: code_color.white,
-            borderRadius: 50,
+            borderRadius: hp(50),
             borderColor: '#3F58DD',
-            borderWidth: 4,
+            borderWidth: hp(4),
           }}>
           <AnimatedLottieView
             style={{
-              height: 90,
-              width: 90,
-              left: -3,
-              top: -3,
+              height: hp(90),
+              width: hp(90),
+              left: hp(-3),
+              top: hp(-3),
             }}
             source={listenAnimate}
             autoPlay={true}
@@ -56,11 +58,11 @@ const Step3 = ({handleNext, handlePrev}) => {
           style={{
             color: code_color.white,
             textAlign: 'center',
-            fontSize: 18,
+            fontSize: moderateScale(17),
             fontWeight: 'bold',
-            marginBottom: 20,
-            marginTop: 20,
-            lineHeight: 25,
+            marginBottom: hp(20),
+            marginTop: hp(20),
+            lineHeight: hp(25),
           }}>
           {
             'You can also enjoy any of\r\nthe Stories as Audio-\r\nbook. Relax while we\r\nread it out for you.'
@@ -86,10 +88,10 @@ const Step3 = ({handleNext, handlePrev}) => {
           <Button
             style={{
               backgroundColor: code_color.yellow,
-              padding: 10,
+              padding: hp(10),
               paddingHorizontal: 30,
               borderRadius: 20,
-              marginVertical: 10,
+              marginVertical: hp(10),
             }}
             title={i18n.t('Next')}
             onPress={handleNext}

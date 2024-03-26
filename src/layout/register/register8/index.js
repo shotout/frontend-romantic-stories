@@ -56,7 +56,7 @@ export default function Register8({activeNotif}) {
             fontSize: fixedFontSize(14),
             marginHorizontal: wp(10),
             textAlign: 'center',
-            marginVertical: wp(10),
+            marginVertical: hp(10),
           }}>
           {'Be the first to get new Stories'}
         </Text>
@@ -67,7 +67,7 @@ export default function Register8({activeNotif}) {
             fontSize: fixedFontSize(32),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: wp(20),
+            marginTop: hp(20),
           }}>
           {'Activate \n notifications for \n new Stories'}
         </Text>
@@ -77,10 +77,10 @@ export default function Register8({activeNotif}) {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 0,
-            marginTop: wp(80),
+            marginTop: hp(80),
           }}>
           <TouchableOpacity onPress={() => activeNotif()}>
-            <Image source={illustration_notif}  style={{ width: wp(200), height: hp(200)}}/>
+            <Image source={illustration_notif}  style={{ width: hp(200), height: hp(200)}}/>
           </TouchableOpacity>
         </View>
       </View>

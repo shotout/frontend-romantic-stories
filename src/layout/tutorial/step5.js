@@ -6,6 +6,8 @@ import i18n from '../../i18n/index';
 import Button from '../../components/buttons/Button';
 import AnimatedLottieView from 'lottie-react-native';
 import quoteAnimate from '../../assets/lottie/quote.json';
+import {hp} from '../../utils/screen';
+import {moderateScale} from 'react-native-size-matters';
 
 const Step5 = ({handleNext, handlePrev}) => {
   // return <></>;
@@ -15,21 +17,21 @@ const Step5 = ({handleNext, handlePrev}) => {
         backgroundColor: '#3F58DD',
         borderRadius: 20,
         padding: 10,
-        marginHorizontal: 40,
+        marginHorizontal: hp(40),
         alignItems: 'center',
         marginTop: '20%',
-        paddingTop: 50,
+        paddingTop: hp(50),
       }}>
       <View
         style={{
-          width: 80,
-          height: 80,
+          width: hp(80),
+          height: hp(80),
           position: 'absolute',
-          top: -40,
+          top: hp(-40),
           backgroundColor: code_color.white,
-          borderRadius: 50,
+          borderRadius: hp(50),
           borderColor: '#3F58DD',
-          borderWidth: 4,
+          borderWidth: hp(4),
         }}>
         <AnimatedLottieView
           source={quoteAnimate}
@@ -37,10 +39,10 @@ const Step5 = ({handleNext, handlePrev}) => {
           duration={2000}
           loop={false}
           style={{
-            height: 92,
-            width: 92,
-            left: -3.6,
-            top: -3.6,
+            height: hp(92),
+            width: hp(92),
+            left: hp(-3.6),
+            top: hp(-3.6),
           }}
         />
       </View>
@@ -51,11 +53,11 @@ const Step5 = ({handleNext, handlePrev}) => {
         style={{
           color: code_color.white,
           textAlign: 'center',
-          fontSize: 18,
+          fontSize: moderateScale(17),
           fontWeight: 'bold',
-          marginBottom: 20,
-          marginTop: 20,
-          lineHeight: 25,
+          marginBottom: hp(20),
+          marginTop: hp(20),
+          lineHeight: moderateScale(24),
         }}>
         {
           'Save & transform parts of the\nStory into a Custom\nQuote by selecting it.'
@@ -81,7 +83,7 @@ const Step5 = ({handleNext, handlePrev}) => {
         <Button
           style={{
             backgroundColor: code_color.yellow,
-            padding: 10,
+            padding: hp(10),
             paddingHorizontal: 30,
             borderRadius: 20,
             marginVertical: 10,
@@ -90,7 +92,6 @@ const Step5 = ({handleNext, handlePrev}) => {
           onPress={() => handleNext()}
         />
       </Animatable.View>
-
     </View>
   );
 };

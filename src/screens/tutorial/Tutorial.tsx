@@ -194,7 +194,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   };
   useEffect(() => {
     if (stepsTutorial < 9) {
-      startTimeout();
+      // startTimeout();
     }
   }, [stepsTutorial]);
 
@@ -516,13 +516,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
               animation={'fadeIn'}
               style={{
                 position: 'absolute',
-                bottom: -wp(100),
+                bottom: -hp(100),
                 left: '10%',
               }}>
               <AnimatedLottieView
                 source={rippleAnimate}
                 style={{
-                  width: wp(300),
+                  width: hp(300),
                 }}
                 autoPlay
                 duration={3000}
