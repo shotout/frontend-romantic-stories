@@ -417,6 +417,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseAppDelegateProxyEnabled</key> 
+	<true />
 	<key>NSPrivacyAccessedAPITypes</key>
 <array>
     <dict>
