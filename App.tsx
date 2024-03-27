@@ -11,6 +11,7 @@ import type {PropsWithChildren} from 'react';
 import {
   Image,
   ImageBackground,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -45,6 +46,7 @@ import { AppOpenAd } from 'react-native-google-mobile-ads';
 import { getAppOpenID } from './src/shared/adsId';
 import { reloadUserProfile } from './src/utils/user';
 import FastImage from 'react-native-fast-image';
+import messaging from '@react-native-firebase/messaging';
 Purchasely.startWithAPIKey(
   "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
   ["Google"],
@@ -101,7 +103,23 @@ function App({ userProfile }) {
     askTrackingPermission();
     getDefaultLanguange();
   }, []);
+  const getToken = async () => {
+    if (Platform.OS === "ios") {
+      console.log('GET APNS');  // I can see this log
+      const apnsToken = await messaging().getAPNSToken(); 
+      console.log("==> APNS token", apnsToken); // THIS NEVER GETS CALLED
+      if(apnsToken) {
+        return await messaging().getToken();
+      } else {
+        await messaging().setAPNSToken('randomAPNStoken', 'sandbox').then(async () => {
+         const data = await messaging().getToken();
+         console.log("==> token", data);
+        })
+      };
+    }
+  };
   useEffect(() => {
+    getToken()
     resetBadge()
     getInitialRoute();
     configTracker()
