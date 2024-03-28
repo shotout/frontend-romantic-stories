@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Animated, ScrollView } from 'react-native';
 import { code_color } from '../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
+import { hp } from '../utils/screen';
 
 const ProgressBar = ({  bgTheme, levelingUser }) => {
 
@@ -322,10 +323,10 @@ const styles = StyleSheet.create({
   },
   dot: {
     position: 'absolute',
-    width: 20,
-    height: 20,
+    width: hp(20),
+    height: hp(20),
     backgroundColor: code_color.yellow,
-    borderRadius: 20,
+    borderRadius: hp(20),
     borderWidth: 3,
     top: '10%',
     transform: [{ translateY: -5 }],

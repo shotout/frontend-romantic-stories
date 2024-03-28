@@ -33,15 +33,19 @@ import BackRight from '../../assets/icons/backRight';
 import {goBack, navigate} from '../../shared/navigationRef';
 import AnimatedLottieView from 'lottie-react-native';
 import {moderateScale} from 'react-native-size-matters';
-import {getExploreStory, getListAvatarTheme, updateProfile} from '../../shared/request';
+import {
+  getExploreStory,
+  getListAvatarTheme,
+  updateProfile,
+} from '../../shared/request';
 import {BACKEND_URL} from '../../shared/static';
 import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
-import { Switch } from 'react-native-gesture-handler';
-import { reloadUserProfile } from '../../utils/user';
-import { fixedFontSize, hp, wp } from '../../utils/screen';
+import {Switch} from 'react-native-gesture-handler';
+import {reloadUserProfile} from '../../utils/user';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const NotificationScreen = ({
@@ -50,12 +54,15 @@ const NotificationScreen = ({
   handleSetSteps,
   stepsTutorial,
   userProfile,
-  backgroundColor
+  backgroundColor,
 }) => {
-  
   const [bgTheme, setBgTheme] = useState(colorTheme);
-  const [newStories, setNewStories] = useState(userProfile?.data?.notif_enable === 0 ? false : true);
-  const [promotions, setPromotions] = useState(userProfile?.data?.notif_ads_enable === 0 ? false : true);
+  const [newStories, setNewStories] = useState(
+    userProfile?.data?.notif_enable === 0 ? false : true,
+  );
+  const [promotions, setPromotions] = useState(
+    userProfile?.data?.notif_ads_enable === 0 ? false : true,
+  );
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
 
@@ -86,8 +93,8 @@ const NotificationScreen = ({
   };
 
   useEffect(() => {
-      fetchUpdate()
-  }, [newStories, promotions])
+    fetchUpdate();
+  }, [newStories, promotions]);
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -100,31 +107,37 @@ const NotificationScreen = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: wp(10),
-            marginVertical: wp(10),
+            marginHorizontal: hp(10),
+            marginVertical: hp(10),
           }}>
           <Pressable
             onPress={() => goBack()}
             style={{
-              width: wp(35),
-              height: wp(35),
+              width: hp(35),
+              height: hp(35),
               backgroundColor: 'white',
-              borderRadius: wp(20),
+              borderRadius: hp(20),
               alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(180deg)',
             }}>
-            <BackRight fill={bgTheme} />
+            <BackRight fill={bgTheme} width={hp(18)} height={hp(18)} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text allowFontScaling={false} style={{fontSize: fixedFontSize(18), fontWeight: '600', color: 'white'}}>
+            <Text
+              allowFontScaling={false}
+              style={{
+                fontSize: moderateScale(18),
+                fontWeight: '600',
+                color: 'white',
+              }}>
               Notifications
             </Text>
           </View>
           <View
             style={{
-              width: wp(35),
-              height: wp(35),
+              width: hp(35),
+              height: hp(35),
             }}
           />
         </View>
@@ -133,47 +146,71 @@ const NotificationScreen = ({
         style={{
           backgroundColor: 'white',
           height: '100%',
-          padding: wp(20),
+          padding: hp(20),
         }}>
-        <Text style={{fontSize: 14,  color: '#505962', marginBottom: wp(10)}}>
+        <Text
+          style={{
+            fontSize: moderateScale(14),
+            color: '#505962',
+            marginBottom: hp(10),
+          }}>
           Set your notifications
         </Text>
-        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10)}}>
-        <Text style={{fontSize: 16,  color: code_color.blackDark,}}>
-          New Stories 
-        </Text>
-        <Switch
-          style={{marginLeft: 'auto'}}
-          trackColor={{false: '#767577', true: '#00B781'}}
-          thumbColor={newStories ? '#fff' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={() => setNewStories(!newStories)}
-          value={newStories}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginVertical: hp(20),
+            borderBottomColor: code_color.blackDark,
+            borderBottomWidth: 1,
+            paddingBottom: hp(10),
+          }}>
+          <Text
+            style={{fontSize: moderateScale(16), color: code_color.blackDark}}>
+            New Stories
+          </Text>
+          <Switch
+            style={{marginLeft: 'auto'}}
+            trackColor={{false: '#767577', true: '#00B781'}}
+            thumbColor={newStories ? '#fff' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => setNewStories(!newStories)}
+            value={newStories}
+          />
         </View>
-        <View style={{flexDirection: 'row', marginVertical: wp(20), borderBottomColor: code_color.blackDark, borderBottomWidth: 1, paddingBottom: wp(10), }}>
-        <Text style={{fontSize: 16,  color: code_color.blackDark,}}>
-          Promotions
-        </Text>
-        <Switch
-          style={{marginLeft: 'auto'}}
-          trackColor={{false: '#767577', true: '#00B781'}}
-          thumbColor={promotions ? '#fff' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={() => setPromotions(!promotions)}
-          value={promotions}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginVertical: hp(20),
+            borderBottomColor: code_color.blackDark,
+            borderBottomWidth: 1,
+            paddingBottom: hp(10),
+          }}>
+          <Text
+            style={{fontSize: moderateScale(16), color: code_color.blackDark}}>
+            Promotions
+          </Text>
+          <Switch
+            style={{marginLeft: 'auto'}}
+            trackColor={{false: '#767577', true: '#00B781'}}
+            thumbColor={promotions ? '#fff' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => setPromotions(!promotions)}
+            value={promotions}
+          />
         </View>
-       
-        <>
-       
+
+        <View
+          style={{
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
           <View
             style={{
               position: 'relative',
               overflow: 'hidden',
-              marginBottom: wp(-150),
-              bottom: -110,
-              width: wp(200),
+              marginBottom: hp(-150),
+              bottom: hp(-110),
+              width: hp(200),
               height: hp(200),
               left: '33%',
               zIndex: 1,
@@ -182,7 +219,7 @@ const NotificationScreen = ({
               source={{uri: `${BACKEND_URL}/${partner}`}}
               resizeMode="cover"
               style={{
-                width: wp(130),
+                width: hp(130),
                 height: hp(450),
               }}
             />
@@ -191,10 +228,10 @@ const NotificationScreen = ({
             style={{
               position: 'relative',
               overflow: 'hidden',
-              marginBottom: wp(-100),
-              bottom: -58,
-              width: wp(200),
-              height: wp(200),
+              marginBottom: hp(-100),
+              bottom: hp(-58),
+              width: hp(200),
+              height: hp(200),
               left: '5%',
               zIndex: 1,
             }}>
@@ -202,37 +239,41 @@ const NotificationScreen = ({
               source={{uri: `${BACKEND_URL}/${me}`}}
               resizeMode="cover"
               style={{
-                width: wp(me === '/assets/images/avatars/2/positive.png' ?  130 : 150),
-                height:  wp(me === '/assets/images/avatars/1/positive.png' ? 440 : 420),
+                width: hp(
+                  me === '/assets/images/avatars/2/positive.png' ? 130 : 150,
+                ),
+                height: hp(
+                  me === '/assets/images/avatars/1/positive.png' ? 440 : 420,
+                ),
               }}
             />
           </View>
 
-          <View >
+          <View>
             <Image
               source={bg_notif}
               resizeMode="cover"
               style={{
                 width: '100%',
-                height: wp(150),
-                borderRadius: 20,
-              }} />
-              <View
-                style={{
-                  alignItems: 'center',
-                  position: 'absolute',
-                  top: wp(-50),
-                  right: 0,
-                }}>
-                <Image
-                  source={imgNotif}
-                  resizeMode="contain"
-                  style={{width: wp(100), height: hp(100)}}
-                />
-              </View>
-           
+                height: hp(150),
+                borderRadius: hp(20),
+              }}
+            />
+            <View
+              style={{
+                alignItems: 'center',
+                position: 'absolute',
+                top: hp(-50),
+                right: 0,
+              }}>
+              <Image
+                source={imgNotif}
+                resizeMode="contain"
+                style={{width: hp(100), height: hp(100)}}
+              />
+            </View>
           </View>
-        </>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

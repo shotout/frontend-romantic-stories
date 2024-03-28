@@ -57,6 +57,7 @@ import {
 import {useIsFocused} from '@react-navigation/native';
 
 import FastImage from 'react-native-fast-image';
+import { moderateScale } from 'react-native-size-matters';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -175,7 +176,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                 style={{
                   backgroundColor: '#f1f1f1',
                   position: 'absolute',
-                  top: isBottomBarVisible === 'Library' ? wp(120) : wp(70),
+                  top: isBottomBarVisible === 'Library' ? hp(120) : hp(70),
                   left: '27%',
                   paddingHorizontal: hp(25),
                   paddingVertical: hp(5),
@@ -186,6 +187,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   allowFontScaling={false}
                   style={{
                     textAlign: 'center',
+                    fontSize: moderateScale(13)
                   }}>
                   {'Tap here to get back\n to the Story'}
                 </Text>

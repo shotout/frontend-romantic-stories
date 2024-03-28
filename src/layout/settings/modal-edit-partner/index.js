@@ -17,6 +17,7 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
+import { hp } from '../../../utils/screen';
 
 function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [progressValue, setProgress] = useState(0);
@@ -98,21 +99,21 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
             backgroundColor: 'white',
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20}  />
+            <BackLeft width={hp(20)} height={hp(20)} />
           </View>
         </Pressable>
         <Text
@@ -120,7 +121,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           style={{
             color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Select partner character
@@ -132,8 +133,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
         backgroundColor: 'white',
         width: Dimensions.get('window').width,
@@ -144,8 +145,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           backgroundColor: code_color.splash,
           height: '72%',
           width: Dimensions.get('window').width,
-          borderBottomLeftRadius: 60,
-          borderBottomRightRadius: 60,
+          borderBottomLeftRadius: hp(60),
+          borderBottomRightRadius: hp(60),
         }}
       />
       <Text
@@ -156,7 +157,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
           marginTop: moderateScale(10),
-          lineHeight: 50,
+          lineHeight: hp(50),
         }}>
         What should your partner look like?
       </Text>
@@ -217,8 +218,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           backgroundColor: code_color.yellow,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 52,
-          borderRadius: 10,
+          height: hp(52),
+          borderRadius: hp(10),
           width: '100%',
           marginTop: moderateScale(50),
           marginBottom: moderateScale(10),

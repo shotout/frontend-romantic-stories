@@ -13,6 +13,7 @@ import {updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import { hp } from '../../../utils/screen';
 
 function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundColor}) {
   const [name, setName] = useState(userProfile.name);
@@ -51,21 +52,21 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
             backgroundColor: backgroundColor === '#2C3439' ? 'white' : 'white',
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={hp(20)} height={hp(20)} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -73,7 +74,7 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
           style={{
             color: backgroundColor === '#2C3439' ? 'white' : 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Edit name
@@ -85,18 +86,18 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
         backgroundColor: 'white',
       }}>
       <Text
         style={{
           color: code_color.blueDark,
-          fontSize: 36,
+          fontSize: moderateScale(36),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
-          marginTop: 40,
+          marginTop: hp(40),
           lineHeight: 50,
         }}>
         What’s your name?
@@ -104,10 +105,10 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
       <Text
         style={{
           textAlign: 'center',
-          fontSize: 16,
+          fontSize: moderateScale(16),
           fontWeight: '400',
           lineHeight: 22,
-          marginTop: 30,
+          marginTop: hp(30),
           color: code_color.blackDark,
         }}>
         Using your real name creates a
@@ -121,12 +122,13 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
         allowFontScaling={false}
         style={{
           borderColor: code_color.blueDark,
-         color: code_color.blackDark,
-          borderWidth: 2,
-          borderRadius: 6,
-          padding: 12,
-          marginTop: 30,
-          marginBottom: 40,
+          color: code_color.blackDark,
+          borderWidth: hp(2),
+          borderRadius: hp(6),
+          padding: hp(12),
+          marginTop: hp(30),
+          marginBottom: hp(40),
+          fontSize: moderateScale(14)
         }}
         placeholderTextColor={code_color.blackDark}
         value={name}
@@ -138,11 +140,11 @@ function ModalEditName({isVisible, onClose, userProfile, colorTheme, backgroundC
           backgroundColor: code_color.yellow,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 52,
-          borderRadius: 10,
+          height: hp(52),
+          borderRadius: hp(10),
           width: '100%',
-          marginTop: 10,
-          marginBottom: 10,
+          marginTop: hp(10),
+          marginBottom: hp(10),
           opacity: loading ? 0.5 : 1,
         }}
         onPress={handleSubmit}

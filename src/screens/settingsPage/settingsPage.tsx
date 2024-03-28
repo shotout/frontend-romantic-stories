@@ -77,17 +77,17 @@ const SettingsPage = ({
   const [menu, setlistMenu] = useState([
     {
       name: 'Edit Profile',
-      icon: <UserSvg />,
+      icon: <UserSvg width={hp(20)} height={hp(20)} />,
       action: 'editProfile',
     },
     {
       name: 'My Library',
-      icon: <LibrarySvg fill={code_color.white} width={20} height={20} />,
+      icon: <LibrarySvg fill={code_color.white} width={hp(20)} height={hp(20)} />,
       action: 'myLibrary',
     },
     {
       name: 'Subscription',
-      icon: <LockSvg />,
+      icon: <LockSvg width={hp(20)} height={hp(20)} />,
       action: 'subscription',
     },
   ]);
@@ -96,7 +96,7 @@ const SettingsPage = ({
   const [menuTwo, setlistMenuTwo] = useState([
     {
       name: 'App Icon',
-      icon: <AppiconSvg fill={bgTheme} />,
+      icon: <AppiconSvg fill={bgTheme} width={hp(20)} height={hp(20)} />,
       action: 'appIcon',
     },
     {
@@ -106,12 +106,12 @@ const SettingsPage = ({
     },
     {
       name: 'Text Settings',
-      icon: <FontSvg fill={code_color.white} />,
+      icon: <FontSvg fill={code_color.white} width={hp(20)} height={hp(20)} />,
       action: 'subscription',
     },
     {
       name: 'Change Categories',
-      icon: <CategoriesSvg />,
+      icon: <CategoriesSvg width={hp(20)} height={hp(20)} />,
       action: 'subscription',
     },
   ]);
@@ -152,9 +152,9 @@ const SettingsPage = ({
         />
         <View
           style={{
-            marginTop: Dimensions.get('window').height === 667 ? wp(90) : wp(80),
+            marginTop: Dimensions.get('window').height === 667 ? hp(90) : hp(80),
           }}>
-          <View style={{marginTop: wp(20)}}>
+          <View style={{marginTop: hp(20)}}>
             <Text
               allowFontScaling={false}
               style={{
@@ -167,7 +167,7 @@ const SettingsPage = ({
               {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginTop: wp(30)}}>
+          <View style={{marginTop: hp(30)}}>
             <ProgressBar levelingUser={levelingUser} bgTheme={bgTheme} currentXp={levelingUser?.user_level?.point}/>
             {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
@@ -273,11 +273,11 @@ const SettingsPage = ({
         <TouchableOpacity
           key={i}
           onPress={() => handleOpenModal(item.name)}
-          style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>
+          style={{flexDirection: 'row', margin: hp(10), alignItems: 'center'}}>
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: moderateScale(10), color: code_color.white, flex: 1}}>
+            style={{marginLeft: hp(10), color: code_color.white, flex: 1, fontSize: moderateScale(14)}}>
             {item.name}
           </Text>
           {item.name === 'Edit Profile' ? (
@@ -289,15 +289,15 @@ const SettingsPage = ({
               }}>
               <View
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
+                  width: hp(40),
+                  height: hp(40),
+                  borderRadius: hp(20),
                   marginLeft: 'auto',
                   backgroundColor: code_color.yellow,
                   position: 'relative',
                   overflow: 'hidden',
                   alignItems: 'center',
-                  right: -5,
+                  right: hp(-5),
                 }}>
                 <FastImage
                   source={{
@@ -305,21 +305,21 @@ const SettingsPage = ({
                      BACKEND_URL + getAvatarMale
                   }}
                   style={{
-                    width: 40,
-                    height: 160,
+                    width: hp(40),
+                    height: hp(160),
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
-                    top: 3,
-                    right: getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0,
+                    top: hp(3),
+                    right: hp(getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0),
                   }}
                 />
               </View>
               <View
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: scale(20),
+                  width: hp(40),
+                  height: hp(40),
+                  borderRadius: hp(20),
                   marginLeft: 'auto',
                   backgroundColor: code_color.yellow,
                   position: 'relative',
@@ -332,13 +332,13 @@ const SettingsPage = ({
                     uri: BACKEND_URL + getAvatarFemale
                   }}
                   style={{
-                    width: 40,
-                    height: 160,
+                    width: hp(40),
+                    height: hp(160),
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
-                    top:3,
-                    right: getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0,
+                    top: hp(3),
+                    right: hp(getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0),
                   }}
                 />
               </View>
@@ -357,7 +357,7 @@ const SettingsPage = ({
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: moderateScale(10), color: code_color.white}}>
+            style={{marginLeft: moderateScale(10), color: code_color.white, fontSize: moderateScale(14)}}>
             {item.name}
           </Text>
         </Pressable>
@@ -369,7 +369,7 @@ const SettingsPage = ({
     <View
       style={{
         flex: 0,
-        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : Platform.OS == 'android' && Dimensions.get('window').height > 1000 ? 320 : 208)),
+        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 228 : Platform.OS == 'android' && Dimensions.get('window').height > 1000 ? 360 : 208)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
@@ -463,6 +463,7 @@ const SettingsPage = ({
                   marginLeft: moderateScale(10),
                   marginBottom: moderateScale(20),
                   color: code_color.white,
+                  fontSize: moderateScale(14),
                 }}>
                 Privacy Policy
               </Text>
@@ -472,7 +473,7 @@ const SettingsPage = ({
               onPress={() => Linking.openURL('https://erotalesapp.com/terms')}>
               <Text
                 allowFontScaling={false}
-                style={{marginLeft: moderateScale(10), color: code_color.white}}>
+                style={{marginLeft: moderateScale(10), color: code_color.white, fontSize: moderateScale(14)}}>
                 Terms & Conditions
               </Text>
             </TouchableOpacity>

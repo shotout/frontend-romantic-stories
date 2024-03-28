@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
 import {loadRewardedAppIcon} from '../../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import { hp } from '../../../utils/screen';
 
 function ModalChangeIcon({
   isVisible,
@@ -169,14 +170,14 @@ function ModalChangeIcon({
           onPress={() => onClose()}
           style={{
             backgroundColor: 'white',
-            width: 30,
-            height: 30,
+            width: hp(30),
+            height: hp(30),
             borderRadius: 20,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={hp(20)} height={hp(20)} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
@@ -184,7 +185,7 @@ function ModalChangeIcon({
           style={{
             color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Change App Icon
@@ -196,19 +197,19 @@ function ModalChangeIcon({
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
         backgroundColor: 'white',
       }}>
       <Text
         style={{
           color: code_color.blackDark,
-          fontSize: 17,
-          marginTop: 10,
+          fontSize: moderateScale(17),
+          marginTop: hp(10),
           lineHeight: 24,
           fontWeight: '500',
-          marginBottom: 10,
+          marginBottom: hp(10),
         }}>
         Select your favorite App Icon for your Home Screen.
       </Text>
@@ -257,9 +258,9 @@ function ModalChangeIcon({
             />
             {!isPremium && selectIcon !== icon.name ? (
               <LockFree
-                width={60}
-                height={20}
-                style={{position: 'absolute', alignSelf: 'center', top: 8}}
+                width={hp(60)}
+                height={hp(20)}
+                style={{position: 'absolute', alignSelf: 'center', top: hp(8)}}
               />
             ) : null}
             {selectIcon === icon.name && (
@@ -270,12 +271,12 @@ function ModalChangeIcon({
                   left: 0,
                   height: '100%',
                   width: '100%',
-                  borderWidth: 2,
+                  borderWidth: hp(2),
                   borderColor: code_color.splash,
-                  borderRadius: 15,
+                  borderRadius: hp(15),
                 }}>
                 <Checklist
-                  height={18}
+                  height={hp(18)}
                   style={{position: 'absolute', top: 7, left: -2}}
                 />
               </View>

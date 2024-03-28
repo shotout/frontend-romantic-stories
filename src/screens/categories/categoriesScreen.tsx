@@ -46,6 +46,7 @@ import {loadRewardedCategory} from '../../helpers/loadReward';
 import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
+import {hp} from '../../utils/screen';
 
 const CategoriesScreen = ({
   colorTheme,
@@ -69,18 +70,17 @@ const CategoriesScreen = ({
     userProfile?.subscription?.plan?.id === 3;
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetchCategory();
   }, []);
- 
 
   const fetchCategory = async () => {
     try {
       const category = await getListCategory();
       setDataStory(category?.data);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       // alert(JSON.stringify(error));
     }
   };
@@ -114,7 +114,7 @@ const CategoriesScreen = ({
       },
     );
   };
-  
+
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <View
@@ -126,33 +126,37 @@ const CategoriesScreen = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 10,
-            marginVertical: 10,
+            marginHorizontal: hp(10),
+            marginVertical: hp(10),
           }}>
           <Pressable
             onPress={() => goBack()}
             style={{
-              width: 35,
-              height: 35,
+              width: hp(35),
+              height: hp(35),
               backgroundColor: 'white',
-              borderRadius: 20,
+              borderRadius: hp(20),
               alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(180deg)',
             }}>
-            <BackRight fill={bgTheme} />
+            <BackRight fill={bgTheme} height={18} width={18} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text
               allowFontScaling={false}
-              style={{fontSize: 18, fontWeight: '600', color: 'white'}}>
+              style={{
+                fontSize: moderateScale(18),
+                fontWeight: '600',
+                color: 'white',
+              }}>
               Edit Categories
             </Text>
           </View>
           <View
             style={{
-              width: 35,
-              height: 35,
+              width: hp(35),
+              height: hp(35),
             }}
           />
         </View>
@@ -165,8 +169,8 @@ const CategoriesScreen = ({
             fontSize: moderateScale(20),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: moderateScale(30),
-            marginBottom: moderateScale(20),
+            marginTop: hp(30),
+            marginBottom: hp(20),
           }}>
           {'Select the Topics \n of your Stories'}
         </Text>
@@ -176,27 +180,29 @@ const CategoriesScreen = ({
             onPress={() => {
               if (isPremium) {
                 setSelectCategory(item.id);
-              } else if(selectCategory === item.id ) {
-
-              }else{
+              } else if (selectCategory === item.id) {
+              } else {
                 setNextCategory(item?.id);
                 setShowModalUnlock(true);
               }
             }}
             style={{
               alignItems: 'center',
-              marginVertical: 2,
-              padding: 2,
+              marginVertical: hp(2),
+              padding: hp(2),
               justifyContent: 'center',
             }}>
             <FastImage
-              source={{uri: `${BACKEND_URL}${item.image?.url}`,  priority: FastImage.priority.high,}}
+              source={{
+                uri: `${BACKEND_URL}${item.image?.url}`,
+                priority: FastImage.priority.high,
+              }}
               resizeMode={FastImage.resizeMode.cover}
               style={{
-                width: moderateScale(Dimensions.get('window').width - 50),
-                height: moderateScale(90),
-                borderWidth: 5,
-                borderRadius: 10,
+                width: Dimensions.get('window').width - 50,
+                height: hp(90),
+                borderWidth: hp(5),
+                borderRadius: hp(10),
                 borderColor: selectCategory === item.id ? bgTheme : 'white',
               }}
             />
@@ -206,7 +212,7 @@ const CategoriesScreen = ({
                 position: 'absolute',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 16,
+                fontSize: moderateScale(16),
                 fontWeight: 'bold',
                 color: code_color.white,
               }}>
@@ -217,50 +223,55 @@ const CategoriesScreen = ({
                 style={{
                   backgroundColor:
                     selectCategory === item.id ? bgTheme : 'white',
-                  borderRadius: 30,
-                  width: 25,
-                  height: 25,
+                  borderRadius: hp(30),
+                  width: hp(25),
+                  height: hp(25),
                   position: 'absolute',
-                  top: 35,
+                  top: hp(35),
                   left: moderateScale(45),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <ChecklistSvg />
+                <ChecklistSvg height={hp(16)} width={hp(16)} />
               </TouchableOpacity>
             ) : (
               <>
-              {selectCategory === item?.id ? null  :
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 16,
-                    right: 30,
-                    backgroundColor: code_color.pink,
-                    borderRadius: 8,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 5,
-                    paddingVertical: 2,
-                  }}>
-                  <Watch fill={code_color.white} height={16} width={16} />
-                  <Text
+                {selectCategory === item?.id ? null : (
+                  <View
                     style={{
-                      color: 'white',
-                      fontSize: 10,
-                      fontWeight: '700',
-                      marginLeft: 2,
+                      position: 'absolute',
+                      top: 16,
+                      right: 30,
+                      backgroundColor: code_color.pink,
+                      borderRadius: 8,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingHorizontal: hp(5),
+                      paddingVertical: hp(2),
                     }}>
-                    Free
-                  </Text>
-                </View> }
+                    <Watch
+                      fill={code_color.white}
+                      height={hp(16)}
+                      width={hp(16)}
+                    />
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: moderateScale(10),
+                        fontWeight: '700',
+                        marginLeft: 2,
+                      }}>
+                      Free
+                    </Text>
+                  </View>
+                )}
                 <TouchableOpacity
                   style={{
                     backgroundColor:
                       selectCategory === item.id ? bgTheme : code_color.black,
-                    borderRadius: 30,
-                    width: 25,
-                    height: 25,
+                    borderRadius: hp(30),
+                    width: hp(25),
+                    height: hp(25),
                     position: 'absolute',
                     top: 35,
                     left: moderateScale(45),
@@ -270,7 +281,7 @@ const CategoriesScreen = ({
                   {selectCategory === item.id ? (
                     <ChecklistSvg />
                   ) : (
-                    <LockIcon height={14} width={14} />
+                    <LockIcon height={hp(14)} width={hp(14)} />
                   )}
                 </TouchableOpacity>
               </>
@@ -283,10 +294,10 @@ const CategoriesScreen = ({
             backgroundColor: code_color.yellow,
             alignItems: 'center',
             justifyContent: 'center',
-            height: 52,
-            borderRadius: 12,
-            marginTop: 30,
-            marginHorizontal: 20,
+            height: hp(52),
+            borderRadius: hp(12),
+            marginTop: hp(30),
+            marginHorizontal: hp(20),
             // width: '100%',
           }}
           onPress={() => {
@@ -297,7 +308,7 @@ const CategoriesScreen = ({
               position: 'absolute',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 16,
+              fontSize: moderateScale(16),
               fontWeight: 'bold',
               color: code_color.black,
             }}>

@@ -14,6 +14,7 @@ import {updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import { hp } from '../../../utils/screen';
 
 function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [gender, setGender] = useState(userProfile.gender);
@@ -52,21 +53,21 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
             backgroundColor: 'white',
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20}  />
+            <BackLeft width={hp(20)} height={hp(20)}  />
           </View>
         </Pressable>
         <Text
@@ -74,7 +75,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
           style={{
             color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Select Gender
@@ -86,7 +87,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
   const form = () => (
     <View
       style={{
-        padding: 25,
+        padding: hp(25),
         paddingTop: moderateScale(5),
         height: '100%',
         backgroundColor: 'white',

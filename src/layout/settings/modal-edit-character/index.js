@@ -17,6 +17,7 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
+import { hp } from '../../../utils/screen';
 
 function ModalEditCharacter({
   isVisible,
@@ -106,21 +107,21 @@ function ModalEditCharacter({
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
             backgroundColor: 'white',
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20}  />
+            <BackLeft width={hp(20)} height={hp(20)} />
           </View>
         </Pressable>
         <Text
@@ -128,7 +129,7 @@ function ModalEditCharacter({
           style={{
             color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Select your character
@@ -140,8 +141,8 @@ function ModalEditCharacter({
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
         backgroundColor: 'white',
         width: Dimensions.get('window').width,
@@ -152,8 +153,8 @@ function ModalEditCharacter({
           backgroundColor: code_color.yellow,
           height: '72%',
           width: Dimensions.get('window').width,
-          borderBottomLeftRadius: 60,
-          borderBottomRightRadius: 60,
+          borderBottomLeftRadius: hp(60),
+          borderBottomRightRadius: hp(60),
         }}
       />
       <Text
@@ -164,7 +165,7 @@ function ModalEditCharacter({
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
           marginTop: moderateScale(20),
-          lineHeight: 50,
+          lineHeight: moderateScale(50),
         }}>
         What should your character look like?
       </Text>
@@ -225,11 +226,11 @@ function ModalEditCharacter({
           backgroundColor: code_color.yellow,
           alignItems: 'center',
           justifyContent: 'center',
-          height: moderateScale(50),
+          height: hp(50),
           borderRadius: 10,
           width: '100%',
-          marginTop: moderateScale(40),
-          marginBottom: 10,
+          marginTop: hp(40),
+          marginBottom: hp(10),
           display: dataAva ? undefined : 'none',
         }}
         onPress={handleSubmit}
