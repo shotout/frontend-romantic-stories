@@ -1294,7 +1294,7 @@ const MainScreen = ({
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
-            paddingTop: isIphoneXorAbove() ? 70 : 50,
+            paddingTop: isIphoneXorAbove() ? 70 : Platform.OS == 'android' ? 30 : 50,
             //marginTop: 20,
           }}>
           <StatusBar
@@ -1511,7 +1511,7 @@ const MainScreen = ({
               flex: 0,
               alignItems: 'center',
               marginHorizontal: 20,
-              marginTop: 20,
+              marginTop: Platform.OS === 'android' ?  0 : 20,
             }}>
             <View style={{flex: 1}}>
               <Text
