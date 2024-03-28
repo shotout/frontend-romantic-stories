@@ -40,7 +40,7 @@ function SvgComponent(props) {
   return (
     <Svg
       width={width}
-      height={height}
+      height={Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : height}
       viewBox="0 0 390 264"
       fill="none"
       style={style}

@@ -18,6 +18,7 @@ import {
   Pressable,
   Linking,
   Clipboard,
+  Platform,
 } from 'react-native';
 import {bgSettings} from '../../assets/images';
 import BgSettings from '../../assets/icons/bgSetting';
@@ -368,7 +369,7 @@ const SettingsPage = ({
     <View
       style={{
         flex: 0,
-        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : 208)),
+        height: wp( Dimensions.get('window').height - wp(Dimensions.get('window').height === 896 ? 228 : Platform.OS == 'android' && Dimensions.get('window').height > 1000 ? 320 : 208)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
