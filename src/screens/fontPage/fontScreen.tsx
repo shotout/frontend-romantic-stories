@@ -54,7 +54,8 @@ import {
   loadRewardedFont,
 } from '../../helpers/loadReward';
 import LoadingFullScreen from '../../components/loading-fullscreen';
-import {wp} from '../../utils/screen';
+import {hp, wp} from '../../utils/screen';
+import { moderateScale } from 'react-native-size-matters';
 const adUnitId = getRewardedFontThemeID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -119,7 +120,7 @@ const FontScreen = ({
   const [isFinishAds, setIsFinishAds] = useState(false);
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
-console.log(fontSizeDefault)
+
   const setBg = value => {
     set_bgColor(value);
     handleSetBackground(value);
@@ -335,13 +336,13 @@ console.log(fontSizeDefault)
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          margin: 20,
+          margin: hp(20),
         }}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>
+          <Text allowFontScaling={false} style={{color: code_color.white, fontSize: moderateScale(14)}}>
             BACKGROUND
           </Text>
-          <View style={{flexDirection: 'row', marginVertical: 5}}>
+          <View style={{flexDirection: 'row', marginVertical: hp(5)}}>
             <Pressable
               onPress={() => {
                 if (
@@ -357,16 +358,16 @@ console.log(fontSizeDefault)
                 borderColor:
                   bg_color === code_color.white ? code_color.yellow : undefined,
                 borderWidth: bg_color === code_color.white ? 3 : 0,
-                borderRadius: 40,
-                padding: 3,
-                marginRight: 10,
+                borderRadius: hp(40),
+                padding: hp(3),
+                marginRight: hp(10),
               }}>
               <View
                 style={{
-                  width: 50,
-                  height: 50,
+                  width: hp(50),
+                  height: hp(50),
                   backgroundColor: code_color.white,
-                  borderRadius: 30,
+                  borderRadius: hp(30),
                 }}
               />
               {userProfile?.data?.subscription?.plan?.id === 1 &&
@@ -375,34 +376,34 @@ console.log(fontSizeDefault)
                   <View
                     style={{
                       position: 'absolute',
-                      top: 2,
-                      right: 2,
+                      top: hp(2),
+                      right: hp(2),
                       backgroundColor: code_color.black,
-                      height: 18,
-                      width: 18,
-                      borderRadius: 10,
+                      height: hp(18),
+                      width: hp(18),
+                      borderRadius: hp(10),
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Lock width={9} />
+                    <Lock width={hp(9)} />
                   </View>
                   <View
                     style={{
                       position: 'absolute',
-                      bottom: 4,
+                      bottom: hp(4),
                       backgroundColor: code_color.pink,
-                      borderRadius: 8,
+                      borderRadius: hp(8),
                       flexDirection: 'row',
                       alignItems: 'center',
-                      paddingHorizontal: 5,
-                      paddingVertical: 2,
+                      paddingHorizontal: hp(5),
+                      paddingVertical: hp(2),
                       alignSelf: 'center',
                     }}>
-                    <Watch fill={code_color.white} height={12} width={12} />
+                    <Watch fill={code_color.white} height={hp(12)} width={hp(12)} />
                     <Text
                       style={{
                         color: code_color.white,
-                        fontSize: 8,
+                        fontSize: moderateScale(8),
                         fontWeight: '700',
                         marginLeft: 2,
                       }}>
@@ -430,16 +431,16 @@ console.log(fontSizeDefault)
                     ? code_color.yellow
                     : undefined,
                 borderWidth: bg_color === code_color.blackDark ? 3 : 0,
-                borderRadius: 40,
-                padding: 3,
-                marginLeft: 10,
+                borderRadius: hp(40),
+                padding: hp(3),
+                marginLeft: hp(10),
               }}>
               <View
                 style={{
-                  width: 50,
-                  height: 50,
+                  width: hp(50),
+                  height: hp(50),
                   backgroundColor: code_color.blackDark,
-                  borderRadius: 30,
+                  borderRadius: hp(30),
                 }}
               />
               {userProfile?.data?.subscription?.plan?.id === 1 &&
@@ -448,34 +449,34 @@ console.log(fontSizeDefault)
                   <View
                     style={{
                       position: 'absolute',
-                      top: 4,
-                      right: 4,
+                      top: hp(4),
+                      right: hp(4),
                       backgroundColor: code_color.black,
-                      height: 18,
-                      width: 18,
-                      borderRadius: 10,
+                      height: hp(18),
+                      width: hp(18),
+                      borderRadius: hp(10),
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Lock width={9} />
+                    <Lock width={hp(9)} />
                   </View>
                   <View
                     style={{
                       position: 'absolute',
-                      bottom: 4,
+                      bottom: hp(4),
                       backgroundColor: code_color.pink,
-                      borderRadius: 8,
+                      borderRadius: hp(8),
                       flexDirection: 'row',
                       alignItems: 'center',
-                      paddingHorizontal: 5,
-                      paddingVertical: 2,
+                      paddingHorizontal: hp(5),
+                      paddingVertical: hp(2),
                       alignSelf: 'center',
                     }}>
-                    <Watch fill={code_color.white} height={12} width={12} />
+                    <Watch fill={code_color.white} height={hp(12)} width={hp(12)} />
                     <Text
                       style={{
                         color: code_color.white,
-                        fontSize: 8,
+                        fontSize: moderateScale(8),
                         fontWeight: '700',
                         marginLeft: 2,
                       }}>
@@ -491,19 +492,19 @@ console.log(fontSizeDefault)
           style={{
             borderWidth: 1,
             borderColor: code_color.grey,
-            height: 50,
-            marginHorizontal: 10,
+            height: hp(50),
+            marginHorizontal: hp(10),
           }}
         />
-        <View style={{flex: 1}}>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>
+        <View style={{flex: 1, marginBottom: 'auto'}}>
+          <Text allowFontScaling={false} style={{color: code_color.white, fontSize: moderateScale(14)}}>
             TEXT SIZE
           </Text>
           <View
-            style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
+            style={{flexDirection: 'row', alignItems: 'center', marginTop: hp(5)}}>
             <Text
               allowFontScaling={false}
-              style={{flex: 1, color: code_color.white}}>
+              style={{flex: 1, color: code_color.white, fontSize: moderateScale(18)}}>
               A-
             </Text>
             <Text
@@ -512,7 +513,7 @@ console.log(fontSizeDefault)
                 flex: 1,
                 textAlign: 'right',
                 color: code_color.white,
-                fontSize: 18,
+                fontSize: moderateScale(18),
               }}>
               A+
             </Text>
@@ -548,10 +549,10 @@ console.log(fontSizeDefault)
           }}>
           <Text
             allowFontScaling={false}
-            style={{flex: 1, color: code_color.white, textAlign: 'left'}}>
+            style={{flex: 1, color: code_color.white, textAlign: 'left',fontSize: moderateScale(14)}}>
             CHANGE FONT
           </Text>
-          <Text allowFontScaling={false} style={{color: code_color.white}}>
+          <Text allowFontScaling={false} style={{color: code_color.white, fontSize: moderateScale(13)}}>
             {fontSelect.name}
           </Text>
           <Pressable
@@ -596,16 +597,17 @@ console.log(fontSizeDefault)
                   borderWidth: 1,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: 10,
-                  margin: 10,
-                  height: 40,
+                  borderRadius: hp(10),
+                  margin: hp(10),
+                  height: hp(40),
                 }}>
                 <Text
                   allowFontScaling={false}
                   style={{
-                    paddingHorizontal: 20,
+                    paddingHorizontal: hp(20),
                     paddingVertical: 0,
                     fontFamily: item.value,
+                    fontSize: moderateScale(13),
                     color: isSameFont(item.name)
                       ? code_color.blackDark
                       : 'white',
@@ -618,34 +620,34 @@ console.log(fontSizeDefault)
                     <View
                       style={{
                         position: 'absolute',
-                        top: -2,
-                        left: -1,
+                        top: hp(-2),
+                        left: hp(-1),
                         backgroundColor: code_color.black,
-                        height: 18,
-                        width: 18,
-                        borderRadius: 10,
+                        height: hp(18),
+                        width: hp(18),
+                        borderRadius: hp(10),
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <Lock width={9} />
+                      <Lock width={hp(9)} />
                     </View>
                     <View
                       style={{
                         position: 'absolute',
-                        bottom: -6,
-                        right: -8,
+                        bottom: hp(-6),
+                        right: hp(-8),
                         backgroundColor: code_color.pink,
-                        borderRadius: 8,
+                        borderRadius: hp(8),
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingHorizontal: 5,
-                        paddingVertical: 2,
+                        paddingHorizontal: hp(5),
+                        paddingVertical: hp(2),
                       }}>
-                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Watch fill={code_color.white} height={hp(12)} width={hp(12)} />
                       <Text
                         style={{
                           color: code_color.white,
-                          fontSize: 8,
+                          fontSize: moderateScale(8),
                           fontWeight: '700',
                           marginLeft: 2,
                         }}>
@@ -666,7 +668,7 @@ console.log(fontSizeDefault)
       <View style={{flex: 1, marginHorizontal: 20}}>
         <Text
           allowFontScaling={false}
-          style={{color: code_color.white, textAlign: 'left'}}>
+          style={{color: code_color.white, textAlign: 'left', fontSize: moderateScale(14)}}>
           CHANGE THEME COLOR
         </Text>
         <View
@@ -674,11 +676,11 @@ console.log(fontSizeDefault)
             backgroundColor: code_color.white,
             flexDirection: 'row',
             flex: 0,
-            marginTop: 10,
-            borderRadius: 30,
+            marginTop: hp(10),
+            borderRadius: hp(30),
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 10,
+            padding: hp(10),
           }}>
           {colorsBg.map((item, i) => {
             return (
@@ -694,16 +696,16 @@ console.log(fontSizeDefault)
                 key={i}
                 style={{
                   backgroundColor: item.code,
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
+                  width: hp(40),
+                  height: hp(40),
+                  borderRadius: hp(20),
                   borderWidth: 1,
                   borderColor: code_color.grey,
-                  marginHorizontal: 10,
+                  marginHorizontal: hp(10),
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                {bgTheme === item.code ? <ChecklistSvg /> : null}
+                {bgTheme === item.code ? <ChecklistSvg width={hp(20)} height={hp(20)} /> : null}
                 {userProfile?.data?.subscription?.plan?.id === 1 &&
                 bgTheme !== item.code ? (
                   <>
@@ -713,30 +715,30 @@ console.log(fontSizeDefault)
                         top: 0,
                         right: 0,
                         backgroundColor: code_color.black,
-                        height: 15,
-                        width: 15,
-                        borderRadius: 12,
+                        height: hp(15),
+                        width: hp(15),
+                        borderRadius: hp(12),
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <Lock width={8} />
+                      <Lock width={hp(8)} />
                     </View>
                     <View
                       style={{
                         position: 'absolute',
-                        bottom: -4,
+                        bottom: hp(-4),
                         backgroundColor: code_color.pink,
-                        borderRadius: 8,
+                        borderRadius: hp(8),
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingHorizontal: 5,
-                        paddingVertical: 2,
+                        paddingHorizontal: hp(5),
+                        paddingVertical: hp(2),
                       }}>
-                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Watch fill={code_color.white} height={hp(12)} width={hp(12)} />
                       <Text
                         style={{
                           color: code_color.white,
-                          fontSize: 8,
+                          fontSize: moderateScale(8),
                           fontWeight: '700',
                           marginLeft: 2,
                         }}>

@@ -157,8 +157,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   isBottomBarVisible === 'Settings'
                     ? 10
                     : isBottomBarVisible === 'Library'
-                    ? wp(20)
-                    : wp(130),
+                    ? hp(20)
+                    : hp(130),
                 flex: 0,
                 width: '100%',
                 height: isBottomBarVisible === 'Library' ? wp(350) : wp(200),
@@ -177,9 +177,9 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   position: 'absolute',
                   top: isBottomBarVisible === 'Library' ? wp(120) : wp(70),
                   left: '27%',
-                  paddingHorizontal: wp(25),
-                  paddingVertical: wp(5),
-                  borderRadius: wp(20),
+                  paddingHorizontal: hp(25),
+                  paddingVertical: hp(5),
+                  borderRadius: hp(20),
                   alignItems: 'center',
                 }}>
                 <Text
@@ -220,7 +220,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                     padding: 5,
                     borderTopLeftRadius: 20,
                     borderTopRightRadius: 20,
-                    marginHorizontal: 10,
+                    // marginHorizontal: hp(10),
                     backgroundColor:
                       item.value === isBottomBarVisible
                         ? userProfile?.colorTheme
@@ -229,21 +229,21 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   {item.name === 'SAVE' &&
                   userProfile?.userStory?.is_collection === null ? (
                     <LoveOutline
-                      width={20}
-                      height={20}
+                      width={hp(20)}
+                      height={hp(20)}
                       fill={userProfile?.colorTheme}
                     />
                   ) : item.name === 'SAVE' &&
                     userProfile?.userStory?.is_collection !== null ? (
                     <LoveSvg
-                      width={20}
-                      height={20}
+                      width={hp(20)}
+                      height={hp(20)}
                       fill={userProfile?.colorTheme}
                     />
                   ) : (
                     <item.image
-                      width={20}
-                      height={20}
+                      width={hp(20)}
+                      height={hp(20)}
                       fill={
                         item.value === isBottomBarVisible
                           ? code_color.white
@@ -255,7 +255,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   <Text
                     allowFontScaling={false}
                     style={{
-                      fontSize: 10,
+                      fontSize: fixedFontSize(10),
                       color:
                         item.value === isBottomBarVisible
                           ? code_color.white

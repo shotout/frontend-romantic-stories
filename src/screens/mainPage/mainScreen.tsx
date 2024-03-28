@@ -58,7 +58,7 @@ import {loadRewarded, loadRewarded2} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {reloadUserProfile} from '../../utils/user';
 import ModalStoryRating from '../../components/modal-story-rating';
-import {fixedFontSize, wp} from '../../utils/screen';
+import {hp, wp} from '../../utils/screen';
 import Speaker from '../../assets/icons/speaker';
 import {code_color} from '../../utils/colors';
 import {isIphoneXorAbove} from '../../utils/devices';
@@ -76,6 +76,7 @@ import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
 import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
+import { moderateScale } from 'react-native-size-matters';
 
 const MainScreen = ({
   userProfile,
@@ -1314,7 +1315,7 @@ const MainScreen = ({
                 allowFontScaling={false}
                 style={{
                   textAlign: 'left',
-                  fontSize: fixedFontSize(Number(fontSize) - 2),
+                  fontSize: moderateScale(Number(fontSize) - 2),
                   fontFamily: fontFamily,
                   marginBottom: wp(2),
                   color:
@@ -1329,7 +1330,7 @@ const MainScreen = ({
                 style={{
                   textAlign: 'left',
                   fontWeight: 'bold',
-                  fontSize: fixedFontSize(Number(fontSize) + 2),
+                  fontSize: moderateScale(Number(fontSize) + 2),
                   fontFamily: fontFamily,
                   color:
                     backgroundColor === '#2C3439'
@@ -1342,9 +1343,9 @@ const MainScreen = ({
 
             <View
               style={{
-                padding: wp(5),
-                paddingHorizontal: wp(10),
-                borderRadius: wp(20),
+                padding: hp(5),
+                paddingHorizontal: hp(10),
+                borderRadius: hp(20),
                 backgroundColor: colorTheme,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -1356,7 +1357,7 @@ const MainScreen = ({
                 style={{
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: fixedFontSize(Number(14)),
+                  fontSize: moderateScale(Number(14)),
                   fontFamily: fontFamily,
                   color: code_color.white,
                   marginLeft: wp(5),
@@ -1518,9 +1519,9 @@ const MainScreen = ({
                 allowFontScaling={false}
                 style={{
                   textAlign: 'left',
-                  fontSize: fixedFontSize(Number(fontSize) - 2),
+                  fontSize: moderateScale(Number(fontSize) - 2),
                   fontFamily: fontFamily,
-                  marginBottom: wp(2),
+                  marginBottom: hp(2),
                   color:
                     backgroundColor === '#2C3439'
                       ? code_color.white
@@ -1533,7 +1534,7 @@ const MainScreen = ({
                 style={{
                   textAlign: 'left',
                   fontWeight: 'bold',
-                  fontSize: fixedFontSize(Number(fontSize) + 2),
+                  fontSize: moderateScale(Number(fontSize) + 2),
                   fontFamily: fontFamily,
                   color:
                     backgroundColor === '#2C3439'
@@ -1549,9 +1550,9 @@ const MainScreen = ({
                 handleListening();
               }}
               style={{
-                padding: wp(5),
-                paddingHorizontal: wp(10),
-                borderRadius: wp(20),
+                padding: hp(5),
+                paddingHorizontal: hp(10),
+                borderRadius: hp(20),
                 backgroundColor: colorTheme,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -1563,7 +1564,7 @@ const MainScreen = ({
                 style={{
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: fixedFontSize(Number(14)),
+                  fontSize: moderateScale(Number(14)),
                   fontFamily: fontFamily,
                   color: code_color.white,
                   marginLeft: wp(5),

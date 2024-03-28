@@ -194,7 +194,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   };
   useEffect(() => {
     if (stepsTutorial < 9) {
-      // startTimeout();
+      startTimeout();
     }
   }, [stepsTutorial]);
 
