@@ -369,7 +369,7 @@ function QuotesContent({
     return result;
   }
   const height = Dimensions.get('window').height
-  console.log()
+
   return (
     <SafeAreaView
       style={{
@@ -635,7 +635,9 @@ function QuotesContent({
                         width: wp(100),
                         height: hp(
                           me === '/assets/images/avatars/3/positive.png' ||
-                            me === '/assets/images/avatars/1/positive.png'
+                            me === '/assets/images/avatars/1/positive.png'  && Platform.OS === 'android' && height > 1000 
+                            ? 400 :
+                            me === '/assets/images/avatars/1/positive.png' 
                             ? 350
                             : me === '/assets/images/avatars/2/positive.png' && Platform.OS === 'android' && height > 1000 
                             ? 480 
@@ -756,7 +758,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(
-                    me === '/assets/images/avatars/2/inlove.png' ? -160 : -190,
+                    me === '/assets/images/avatars/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/2/inlove.png' && height > 900  ? -150 : -190,
                   ),
                   width: wp(100),
                   height: hp(180),
