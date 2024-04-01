@@ -15,6 +15,8 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  Dimensions,
+  Platform,
 } from 'react-native';
 import {code_color} from '../../utils/colors';
 import DownChevron from '../../assets/icons/downChevron';
@@ -283,9 +285,9 @@ const FontScreen = ({
       interstialListenerAds();
     };
   }, []);
-  
+   const height = Dimensions.get('window').height
   return (
-    <View style={{flex: 0, height: wp(375), backgroundColor: bgTheme}}>
+    <View style={{flex: 0, height: Platform.OS ==='android' && height > 1000 ? wp(300) : wp(375), backgroundColor: bgTheme}}>
       <ModalUnlockPremium
         isVisible={modalUnlockBg}
         onClose={() => setModalUnlockBg(false)}
