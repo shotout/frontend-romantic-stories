@@ -138,18 +138,20 @@ const FontScreen = ({
       .includes(name?.toUpperCase()?.replace(/ /g, ''));
   };
 
+
   const handleFont = value => {
+   
     if (value === 0) {
-      setFontSize(14);
-      handleSetFontSize(14);
+      setFontSize( height > 1000 && Platform.OS === 'android' ? 17 : 14);
+      handleSetFontSize(height > 1000 && Platform.OS === 'android' ? 17 : 14);
     } else if (value === 1) {
       // setFontSize(12);
       // handleSetFontSize(12);
-      setFontSize(16);
-      handleSetFontSize(16);
+      setFontSize(height > 1000 && Platform.OS === 'android' ? 18 : 16);
+      handleSetFontSize(height > 1000 && Platform.OS === 'android' ? 18 : 16);
     } else {
-      setFontSize(Number(fontSizeDefault) + 2);
-      handleSetFontSize(Number(fontSizeDefault) + 2);
+      setFontSize(height > 1000 && Platform.OS === 'android'  ? 20 : 18);
+      handleSetFontSize(height > 1000 && Platform.OS === 'android'  ? 20 : 18);
     }
     // setFontSize(fontSizeDefault)
   };
@@ -526,9 +528,9 @@ const FontScreen = ({
             minimumValue={0}
             maximumValue={2}
             value={
-              Number(fontSizeDefault) === 16
+              Number(fontSizeDefault) === 16 ||  Number(fontSizeDefault) === 18
                 ? 1
-                : Number(fontSizeDefault) === 14 
+                : Number(fontSizeDefault) === 14  ||  Number(fontSizeDefault) === 17
                 ? 0
                 : 2
             }
