@@ -140,7 +140,7 @@ const CategoriesScreen = ({
               justifyContent: 'center',
               transform: 'rotate(180deg)',
             }}>
-            <BackRight fill={bgTheme} height={18} width={18} />
+            <BackRight fill={bgTheme} height={hp(18)} width={hp(18)} />
           </Pressable>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text
@@ -172,7 +172,7 @@ const CategoriesScreen = ({
             marginTop: hp(30),
             marginBottom: hp(20),
           }}>
-          {'Select the Topics \n of your Stories'}
+          {'Select the Topics\r\nof your Stories'}
         </Text>
 
         {dataStory.map(item => (
@@ -240,10 +240,10 @@ const CategoriesScreen = ({
                   <View
                     style={{
                       position: 'absolute',
-                      top: 16,
-                      right: 30,
+                      top: '40%',
+                      right: hp(30),
                       backgroundColor: code_color.pink,
-                      borderRadius: 8,
+                      borderRadius: hp(8),
                       flexDirection: 'row',
                       alignItems: 'center',
                       paddingHorizontal: hp(5),
@@ -273,13 +273,13 @@ const CategoriesScreen = ({
                     width: hp(25),
                     height: hp(25),
                     position: 'absolute',
-                    top: 35,
+                    top: hp(35),
                     left: moderateScale(45),
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
                   {selectCategory === item.id ? (
-                    <ChecklistSvg />
+                    <ChecklistSvg height={hp(14)} width={hp(14)} />
                   ) : (
                     <LockIcon height={hp(14)} width={hp(14)} />
                   )}

@@ -48,7 +48,11 @@ import {Step4_2} from '../../layout/tutorial';
 import ModalSorting from '../../components/modal-sorting';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
-import {loadRewarded, loadRewardedCategory, loadRewardedWatch} from '../../helpers/loadReward';
+import {
+  loadRewarded,
+  loadRewardedCategory,
+  loadRewardedWatch,
+} from '../../helpers/loadReward';
 import {AdEventType, RewardedAdEventType} from 'react-native-google-mobile-ads';
 import {handleNativePayment, handlePayment} from '../../helpers/paywall';
 import {reloadUserProfile} from '../../utils/user';
@@ -60,6 +64,7 @@ import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
+import {hp} from '../../utils/screen';
 
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
@@ -108,7 +113,7 @@ const ExploreLibraryScreen = ({
           story_id: selectedStory?.id,
           expire: 1,
         };
-      
+
         await updateProfile(payloadStory);
         reloadUserProfile();
         handleNextStory(resp.data);
@@ -117,7 +122,7 @@ const ExploreLibraryScreen = ({
     });
   };
 
-  const handlePremium = async (itm) => {
+  const handlePremium = async itm => {
     const resp = await getStoryDetail(itm?.id);
     handleNextStory(resp.data);
     setTimeout(async () => {
@@ -131,7 +136,7 @@ const ExploreLibraryScreen = ({
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
         setShowUnlockedStory(false);
-        setShowModalGetPremium(true)
+        setShowModalGetPremium(true);
         console.log('Pembayaran berhasil:', paymentResult.result);
         // Lakukan tindakan setelah pembayaran berhasil
       } else {
@@ -170,7 +175,6 @@ const ExploreLibraryScreen = ({
     handleRestart();
   }, [keyword, items]);
 
- 
   useEffect(() => {
     handleRestart();
   }, [items]);
@@ -184,7 +188,7 @@ const ExploreLibraryScreen = ({
   };
 
   useEffect(() => {
-    if(!__DEV__){
+    if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
@@ -194,7 +198,6 @@ const ExploreLibraryScreen = ({
       }
       getPrice();
     }
-    
   }, []);
   const renderProgress = () => <StepHeader currentStep={6} />;
   const showInterStialCategory = async () => {
@@ -234,10 +237,9 @@ const ExploreLibraryScreen = ({
     }
   };
 
-
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
-     <ModalGetPremium
+      <ModalGetPremium
         isVisible={showModalGetPremium}
         onGotIt={() => {
           setShowModalGetPremium(false);
@@ -290,33 +292,33 @@ const ExploreLibraryScreen = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 10,
+            marginHorizontal: hp(10),
           }}>
           <Pressable
             onPress={() => navigate('Library')}
             style={{
-              width: 35,
-              height: 35,
+              width: hp(35),
+              height: hp(35),
               backgroundColor: code_color.white,
-              borderRadius: 20,
+              borderRadius: hp(20),
               alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(180deg)',
             }}>
-            <BackRight fill={bgTheme} />
+            <BackRight fill={bgTheme} height={hp(20)} width={hp(20)} />
           </Pressable>
           <View
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.6)',
               flex: 1,
-              borderRadius: 20,
-              margin: 10,
+              borderRadius: hp(20),
+              margin: hp(10),
               flexDirection: 'row',
               alignItems: 'center',
-              paddingLeft: 10,
-              height: 40,
+              paddingLeft: hp(10),
+              height: hp(40),
             }}>
-            <SearchSvg />
+            <SearchSvg height={hp(20)} width={hp(20)} />
             <TextInput
               placeholder="Search"
               allowFontScaling={false}
@@ -324,8 +326,8 @@ const ExploreLibraryScreen = ({
               onChangeText={value => setKeyword(value)}
               placeholderTextColor={code_color.black}
               style={{
-                marginLeft: 10,
-                fontSize: 14,
+                marginLeft: hp(10),
+                fontSize: moderateScale(14),
                 color: code_color.black,
                 flex: 1,
                 height: '100%',
@@ -333,7 +335,11 @@ const ExploreLibraryScreen = ({
             />
           </View>
           <Pressable onPress={() => setShowModalSort(true)}>
-            <DescendingSvg fill={code_color.white} />
+            <DescendingSvg
+              fill={code_color.white}
+              height={hp(30)}
+              width={hp(30)}
+            />
           </Pressable>
         </View>
       </View>
@@ -347,14 +353,20 @@ const ExploreLibraryScreen = ({
             <View
               style={{
                 backgroundColor: '#F0F2FF',
-                marginTop: 11,
-                marginHorizontal: 13,
+                marginTop: hp(11),
+                marginHorizontal: hp(13),
                 // height: 250,
-                minWidth: Dimensions.get('screen').width - 26,
-                borderRadius: 8,
-                padding: 16,
+                minWidth: Dimensions.get('screen').width - hp(26),
+                borderRadius: hp(8),
+                padding: hp(16),
               }}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  fontWeight: '600',
+                  marginBottom: 16,
+                  color: code_color.black,
+                }}>
                 🔥 Most Read
               </Text>
               <ScrollView horizontal>
@@ -373,7 +385,7 @@ const ExploreLibraryScreen = ({
                       }
                     }}
                     style={{
-                      width: 95,
+                      width: hp(95),
                       marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
                     }}
                     key={idx}>
@@ -381,36 +393,46 @@ const ExploreLibraryScreen = ({
                       userProfile?.data?.subscription?.plan_id != 3 &&
                       itm?.is_collection === null && (
                         <LockFree
-                          height={16}
-                          width={55}
+                          height={hp(16)}
+                          width={hp(55)}
                           style={{
-                            marginBottom: -20,
-                            marginTop: 4,
-                            marginLeft: 4,
+                            marginBottom: hp(-20),
+                            marginTop: hp(4),
+                            marginLeft: hp(4),
                             zIndex: 1,
                           }}
                         />
                       )}
-                      <FastImage
+                    <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                         priority: FastImage.priority.high,
                       }}
                       resizeMode={FastImage.resizeMode.cover}
-                      style={{height: 130, width: 95, borderRadius: 6}}
+                      style={{
+                        height: hp(130),
+                        width: hp(95),
+                        borderRadius: hp(6),
+                      }}
                     />
                     <Text
                       style={{
-                        fontSize: 9,
+                        fontSize: moderateScale(9),
                         fontWeight: '400',
                         marginTop: 6,
                         opacity: 0.8,
+                        color: code_color.black,
                       }}>
                       {itm.category.name}
                     </Text>
                     <Text
                       allowFontScaling={false}
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      style={{
+                        fontSize: moderateScale(10),
+                        fontWeight: '600',
+                        marginTop: 6,
+                        color: code_color.black,
+                      }}>
                       {itm.title_en}
                     </Text>
                   </Pressable>
@@ -421,18 +443,24 @@ const ExploreLibraryScreen = ({
         )}
 
         {data?.category?.length > 0 && (
-          <View style={{flex: 0, height: 250}}>
+          <View style={{flex: 0, height: hp(250)}}>
             <View
               style={{
                 backgroundColor: '#F0F2FF',
-                marginTop: 13,
-                marginHorizontal: 13,
-                height: 230,
-                minWidth: Dimensions.get('screen').width - 26,
-                borderRadius: 8,
-                padding: 16,
+                marginTop: hp(13),
+                marginHorizontal: hp(13),
+                height: hp(230),
+                minWidth: Dimensions.get('screen').width - hp(26),
+                borderRadius: hp(8),
+                padding: hp(16),
               }}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  fontWeight: '600',
+                  color: code_color.black,
+                  marginBottom: hp(16),
+                }}>
                 📚 Try a different category
               </Text>
               <ScrollView horizontal>
@@ -442,8 +470,9 @@ const ExploreLibraryScreen = ({
                       navigate('CategoryDetail', {categoryId: itm.id})
                     }
                     style={{
-                      width: 95,
-                      marginRight: idx + 1 === data?.category?.length ? 0 : 16,
+                      width: hp(95),
+                      marginRight:
+                        idx + 1 === data?.category?.length ? 0 : hp(16),
                     }}
                     key={idx}>
                     {/* <View
@@ -484,11 +513,16 @@ const ExploreLibraryScreen = ({
                         priority: FastImage.priority.high,
                       }}
                       resizeMode={FastImage.resizeMode.cover}
-                      style={{height: 130, width: 95, borderRadius: 6}}
+                      style={{height: hp(130), width: hp(95), borderRadius: 6}}
                     />
 
                     <Text
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      style={{
+                        fontSize: moderateScale(10),
+                        fontWeight: '600',
+                        marginTop: hp(6),
+                        color: code_color.black,
+                      }}>
                       {itm.name}
                     </Text>
                   </Pressable>
@@ -499,18 +533,24 @@ const ExploreLibraryScreen = ({
         )}
 
         {data?.most_share?.length > 0 && (
-          <View style={{flex: 0, height: 270, marginBottom: 50}}>
+          <View style={{flex: 0, height: hp(270), marginBottom: hp(50)}}>
             <View
               style={{
                 backgroundColor: '#F0F2FF',
-                marginTop: 11,
-                marginHorizontal: 13,
-                height: 250,
-                minWidth: Dimensions.get('screen').width - 26,
-                borderRadius: 8,
-                padding: 16,
+                marginTop: hp(11),
+                marginHorizontal: hp(13),
+                height: hp(250),
+                minWidth: Dimensions.get('screen').width - hp(26),
+                borderRadius: hp(8),
+                padding: hp(16),
               }}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  fontWeight: '600',
+                  marginBottom: hp(16),
+                  color: code_color.black,
+                }}>
                 ❤️ You might also like
               </Text>
               <ScrollView horizontal>
@@ -529,44 +569,54 @@ const ExploreLibraryScreen = ({
                       }
                     }}
                     style={{
-                      width: 95,
+                      width: hp(95),
                       marginRight:
-                        idx + 1 === data?.most_share?.length ? 0 : 16,
+                        idx + 1 === data?.most_share?.length ? 0 : hp(16),
                     }}
                     key={idx}>
                     {userProfile?.data?.subscription?.plan_id != 2 &&
                       userProfile?.data?.subscription?.plan_id != 3 &&
                       itm?.is_collection === null && (
                         <LockFree
-                          height={16}
-                          width={55}
+                          height={hp(16)}
+                          width={hp(55)}
                           style={{
-                            marginBottom: -20,
-                            marginTop: 4,
-                            marginLeft: 4,
+                            marginBottom: hp(-20),
+                            marginTop: hp(4),
+                            marginLeft: hp(4),
                             zIndex: 1,
                           }}
                         />
                       )}
-                      <FastImage
+                    <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                         priority: FastImage.priority.high,
                       }}
                       resizeMode={FastImage.resizeMode.cover}
-                      style={{height: 130, width: 95, borderRadius: 6}}
+                      style={{
+                        height: hp(130),
+                        width: hp(95),
+                        borderRadius: hp(6),
+                      }}
                     />
                     <Text
                       style={{
-                        fontSize: 9,
+                        fontSize: moderateScale(9),
                         fontWeight: '400',
-                        marginTop: 6,
+                        marginTop: hp(6),
                         opacity: 0.8,
+                        color: code_color.black,
                       }}>
                       {itm?.category?.name}
                     </Text>
                     <Text
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      style={{
+                        fontSize: moderateScale(10),
+                        fontWeight: '600',
+                        marginTop: hp(6),
+                        color: code_color.black,
+                      }}>
                       {itm.title_en}
                     </Text>
                   </Pressable>
@@ -619,7 +669,7 @@ const ExploreLibraryScreen = ({
           navigate('Main');
         }}
       />
-        <Loading loading={load} />
+      <Loading loading={load} />
     </SafeAreaView>
   );
 };

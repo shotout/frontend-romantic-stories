@@ -288,24 +288,24 @@ const LibraryScreen = ({
             <View
               // onPress={() => closeRow(rowMap, item.item.id)}
               style={{
-                paddingLeft: 10,
-                paddingBottom: 10,
+                paddingLeft: hp(10),
+                paddingBottom: hp(10),
                 flexDirection: 'row',
                 alignItems: 'center',
                 backgroundColor: bgTheme,
                 borderColor: 'white',
                 borderTopWidth: 1,
                 borderBottomWidth: 1,
-                paddingVertical: 10,
-                height: 120,
+                paddingVertical: hp(10),
+                height: hp(120),
               }}>
               <FastImage
                 source={{
                   uri: `${BACKEND_URL}${item?.item?.story?.category?.cover?.url}`,
                 }}
                 style={{
-                  width: 100,
-                  height: 100,
+                  width: hp(100),
+                  height: hp(100),
                   alignItems: 'center',
                   paddingTop: 5,
                 }}
@@ -316,12 +316,12 @@ const LibraryScreen = ({
                 item?.item?.expire === null && 
                 item?.item?.is_read_later != 1 &&
                 new Date() > new Date(item?.item?.expire) ? (
-                  <LockFree height={16} width={55} />
+                  <LockFree height={hp(16)} width={hp(55)} />
                 ) : (
                   new Date() < new Date(item?.item?.expire) && (
                     <UnlockedTime
-                      width={100}
-                      height={27}
+                      width={hp(100)}
+                      height={hp(27)}
                       day={calculateRemainingTime(item?.item?.expire)?.day}
                       hour={calculateRemainingTime(item?.item?.expire)?.hour}
                     />
@@ -341,7 +341,7 @@ const LibraryScreen = ({
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         marginBottom: 5,
                       }}>
                       {item?.item?.story?.category?.name}
@@ -350,8 +350,8 @@ const LibraryScreen = ({
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
-                        fontSize: 14,
-                        fontWeight: 400,
+                        fontSize: moderateScale(14),
+                        fontWeight: '400',
                         textAlign: 'left',
                       }}>
                       {item?.item?.story?.title_en}
@@ -363,18 +363,18 @@ const LibraryScreen = ({
                     }}
                     style={{
                       backgroundColor: '#00B781',
-                      paddingHorizontal: 15,
-                      paddingVertical: 10,
+                      paddingHorizontal: hp(15),
+                      paddingVertical: hp(10),
                       alignItems: 'center',
-                      marginRight: 10,
-                      borderRadius: 30,
+                      marginRight: hp(10),
+                      borderRadius: hp(30),
                     }}>
                     <Text
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
                         fontWeight: 'bold',
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                       }}>
                       Read Story
                     </Text>
@@ -527,32 +527,32 @@ const LibraryScreen = ({
             }}>
             <View
               style={{
-                paddingHorizontal: 10,
-                paddingBottom: 10,
+                paddingHorizontal: hp(10),
+                paddingBottom: hp(10),
                 flexDirection: 'row',
                 alignItems: 'center',
                 backgroundColor: bgTheme,
                 borderColor: 'white',
                 // borderTopWidth: 1,
                 borderBottomWidth: 1,
-                paddingVertical: 10,
-                paddingRight: 15,
+                paddingVertical: hp(10),
+                paddingRight: hp(15),
               }}>
               <FastImage
                 source={{
                   uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
                 }}
                 style={{
-                  width: 100,
-                  height: 100,
+                  width: hp(100),
+                  height: hp(100),
                   alignItems: 'center',
-                  paddingTop: 5,
+                  paddingTop: hp(5),
                 }}
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
                   userStory?.id != item?.item?.id &&  item?.item?.is_read_later != 1 && (
-                    <LockFree height={16} width={55} />
+                    <LockFree height={hp(16)} width={hp(55)} />
                   )}
               </FastImage>
               <View
@@ -568,7 +568,7 @@ const LibraryScreen = ({
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         marginBottom: 5,
                       }}>
                       {item?.item?.category?.name}
@@ -577,8 +577,8 @@ const LibraryScreen = ({
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
-                        fontSize: 14,
-                        fontWeight: 400,
+                        fontSize: moderateScale(14),
+                        fontWeight: '400',
                         textAlign: 'left',
                       }}>
                       {item?.item?.title_en}
@@ -588,18 +588,18 @@ const LibraryScreen = ({
                     onPress={() => handleRead(item)}
                     style={{
                       backgroundColor: '#00B781',
-                      paddingHorizontal: 15,
-                      paddingVertical: 10,
+                      paddingHorizontal: hp(15),
+                      paddingVertical: hp(10),
                       alignItems: 'center',
-                      marginRight: 10,
-                      borderRadius: 30,
+                      marginRight: hp(10),
+                      borderRadius: hp(30),
                     }}>
                     <Text
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
                         fontWeight: 'bold',
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                       }}>
                       Read Story
                     </Text>
@@ -630,24 +630,24 @@ const LibraryScreen = ({
             }}>
             <View
               style={{
-                paddingHorizontal: 10,
-                paddingBottom: 10,
+                paddingHorizontal: hp(10),
+                paddingBottom: hp(10),
                 flexDirection: 'row',
                 alignItems: 'center',
                 backgroundColor: bgTheme,
                 borderColor: 'white',
                 // borderTopWidth: 1,
                 borderBottomWidth: 1,
-                paddingVertical: 10,
-                paddingRight: 15,
+                paddingVertical: hp(10),
+                paddingRight: hp(15),
               }}>
               <FastImage
                 source={{
                   uri: `${BACKEND_URL}${item?.item?.category?.cover?.url}`,
                 }}
                 style={{
-                  width: 100,
-                  height: 100,
+                  width: hp(100),
+                  height: hp(100),
                   alignItems: 'center',
                   paddingTop: 5,
                 }}
@@ -655,7 +655,7 @@ const LibraryScreen = ({
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
                   userStory?.id != item?.item?.id &&  item?.item?.is_read_later != 1 && (
-                    <LockFree height={16} width={55} />
+                    <LockFree height={hp(16)} width={hp(55)} />
                   )}
               </FastImage>
               <View
@@ -671,7 +671,7 @@ const LibraryScreen = ({
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         marginBottom: 5,
                       }}>
                       {item?.item?.category?.name}
@@ -680,8 +680,8 @@ const LibraryScreen = ({
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
-                        fontSize: 14,
-                        fontWeight: 400,
+                        fontSize: moderateScale(14),
+                        fontWeight: '400',
                         textAlign: 'left',
                       }}>
                       {item?.item?.title_en}
@@ -691,18 +691,18 @@ const LibraryScreen = ({
                     onPress={() => handleRead(item)}
                     style={{
                       backgroundColor: '#00B781',
-                      paddingHorizontal: 15,
-                      paddingVertical: 10,
+                      paddingHorizontal: hp(15),
+                      paddingVertical: hp(10),
                       alignItems: 'center',
-                      marginRight: 10,
-                      borderRadius: 30,
+                      marginRight: hp(10),
+                      borderRadius: hp(30),
                     }}>
                     <Text
                       allowFontScaling={false}
                       style={{
                         color: code_color.white,
                         fontWeight: 'bold',
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                       }}>
                       Read Story
                     </Text>
@@ -736,20 +736,20 @@ const LibraryScreen = ({
           fetchDetail(item?.item?.id);
         }}
         style={{
-          paddingHorizontal: 10,
-          paddingBottom: 10,
+          paddingHorizontal: hp(10),
+          paddingBottom: hp(10),
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: bgTheme,
           borderColor: 'white',
           borderTopWidth: 1,
           borderBottomWidth: 1,
-          paddingVertical: 10,
+          paddingVertical: hp(10),
         }}>
-        <LibrarySvg fill={'white'} width={30} height={30} />
+        <LibrarySvg fill={'white'} width={hp(30)} height={hp(30)} />
         <View
           style={{
-            marginLeft: 20,
+            marginLeft: hp(20),
             flex: 1,
             justifyContent: 'center',
             alignContent: 'center',
@@ -778,23 +778,25 @@ const LibraryScreen = ({
             handleRestart();
           }}
           style={{
-            paddingHorizontal: 10,
-            paddingBottom: 10,
+            paddingHorizontal: hp(10),
+            paddingBottom: hp(10),
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: bgTheme,
             borderColor: 'white',
             borderTopWidth: 1,
             borderBottomWidth: 1,
-            paddingVertical: 10,
+            paddingVertical: hp(10),
           }}>
           <BackRightSvg
+            height={hp(20)}
+            width={hp(20)}
             style={{marginRight: 8, transform: [{rotate: '180deg'}]}}
           />
-          <LibrarySvg fill={'white'} width={30} height={30} />
+          <LibrarySvg fill={'white'} width={hp(30)} height={hp(30)} />
           <View
             style={{
-              marginLeft: 20,
+              marginLeft: hp(20),
               flex: 1,
               justifyContent: 'center',
               alignContent: 'center',
@@ -803,6 +805,7 @@ const LibraryScreen = ({
               allowFontScaling={false}
               style={{
                 color: code_color.white,
+                fontSize: moderateScale(14),
               }}>
               {detailCollection?.name}
             </Text>
@@ -810,6 +813,7 @@ const LibraryScreen = ({
               allowFontScaling={false}
               style={{
                 color: code_color.white,
+                fontSize: moderateScale(14),
               }}>
               {detailCollection?.stories_count}{' '}
               {detailCollection?.stories_count > 1 ? 'Stories' : 'Story'}
@@ -952,15 +956,15 @@ const LibraryScreen = ({
       <View style={{alignItems: 'center'}}>
         <Image
           source={imgSearchNull}
-          style={{width: 100, height: 100, marginTop: 20}}
+          style={{width: hp(100), height: hp(100), marginTop: hp(20)}}
         />
         <Text
           style={{
             color: code_color.white,
-            fontSize: 16,
+            fontSize: moderateScale(16),
             fontWeight: '400',
             textAlign: 'center',
-            lineHeight: 21,
+            lineHeight: moderateScale(21),
             marginTop: 22,
             width: sizing.getDimensionWidth(0.9),
           }}>
@@ -973,14 +977,14 @@ const LibraryScreen = ({
           borderColor: code_color.greyDefault,
           borderWidth: 1,
           borderStyle: 'solid',
-          marginVertical: 20,
-          marginHorizontal: 20,
+          marginVertical: hp(20),
+          marginHorizontal: hp(20),
         }}
       />
       <Text
         style={{
           color: code_color.white,
-          fontSize: 18,
+          fontSize: moderateScale(18),
           fontWeight: '500',
           textAlign: 'center',
           marginVertical: 10,
@@ -1132,7 +1136,7 @@ const LibraryScreen = ({
           navigate('Main', {isFromLibrary: true});
         }}
       />
-      <View style={{flex: 0, height: wp(480), backgroundColor: bgTheme}}>
+      <View style={{flex: 0, height: hp(480), backgroundColor: bgTheme}}>
         <ModalLibrary
           isVisible={showModal}
           onClose={() => {
@@ -1188,22 +1192,22 @@ const LibraryScreen = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 10,
+            marginHorizontal: hp(10),
           }}>
           <Pressable
             onPress={() => setShowModalNew(true)}
             style={{
-              height: 30,
-              width: 30,
+              height: hp(30),
+              width: hp(30),
               backgroundColor: code_color.white,
-              borderRadius: 15,
+              borderRadius: hp(15),
               justifyContent: 'center',
               alignItems: 'center',
             }}>
             <Image
               source={libraryAdd}
               resizeMode="contain"
-              style={{width: 20, height: 20}}
+              style={{width: hp(20), height: hp(20)}}
             />
           </Pressable>
 
@@ -1212,14 +1216,14 @@ const LibraryScreen = ({
               backgroundColor: 'rgba(255, 255, 255, 0.6)',
               flex: 1,
               // padding: 10,
-              borderRadius: 10,
-              margin: 10,
+              borderRadius: hp(10),
+              margin: hp(10),
               flexDirection: 'row',
               alignItems: 'center',
-              paddingLeft: 10,
-              height: 40,
+              paddingLeft: hp(10),
+              height: hp(40),
             }}>
-            <SearchSvg />
+            <SearchSvg height={hp(22)} width={hp(22)} />
             <TextInput
               placeholder="Search"
               placeholderTextColor={code_color.black}
@@ -1234,24 +1238,32 @@ const LibraryScreen = ({
                 }
               }}
               style={{
-                marginLeft: 10,
-                fontSize: 14,
-                height: 40,
+                marginLeft: hp(10),
+                fontSize: moderateScale(14),
+                height: hp(40),
                 flex: 1,
               }}
             />
           </Pressable>
           <Pressable onPress={() => setShowModalSort(true)}>
-            <DescendingSvg fill={code_color.white} />
+            <DescendingSvg
+              fill={code_color.white}
+              height={hp(30)}
+              width={hp(30)}
+            />
           </Pressable>
         </View>
         {loadingList ? (
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <ActivityIndicator color={'white'} />
+            <ActivityIndicator color={'white'} size={hp(40)} />
             <Text
               allowFontScaling={false}
-              style={{color: 'white', marginTop: 5, fontSize: 12}}>
+              style={{
+                color: 'white',
+                marginTop: hp(5),
+                fontSize: moderateScale(12),
+              }}>
               Loading ...
             </Text>
           </View>
@@ -1261,7 +1273,7 @@ const LibraryScreen = ({
               <View
                 style={{
                   flex: 1,
-                  paddingBottom: 100,
+                  paddingBottom: hp(100),
                   justifyContent: 'flex-start',
                   alignContent: 'flex-start',
                 }}>
@@ -1269,7 +1281,7 @@ const LibraryScreen = ({
                   renderContentCollectionDetail()
                 ) : listCollection.length > 0 ? (
                   <SwipeListView
-                    style={{flex: 0, maxHeight: 68}}
+                    style={{flex: 0, maxHeight: hp(68)}}
                     disableRightSwipe
                     showsVerticalScrollIndicator={false}
                     data={listCollection}

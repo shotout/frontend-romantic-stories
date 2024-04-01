@@ -25,43 +25,39 @@ import CloseSvg from '../../assets/icons/close';
 import ChecklistSvg from '../../assets/icons/checklist';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {addNewCollection, updateMyCollection} from '../../shared/request';
+import {hp} from '../../utils/screen';
+import {moderateScale} from 'react-native-size-matters';
 
 function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
- 
-  const [collect, setCollect] = useState(!data?.name ?  '' : data?.name);
+  const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
     onClose();
   };
 
   const AddCollection = async () => {
-    if(collect != ''){
-      if(edit){
+    if (collect != '') {
+      if (edit) {
         const payload = {
           name: collect,
-          _method: 'PATCH'
-        }
+          _method: 'PATCH',
+        };
         try {
-          const res = await updateMyCollection(
-            payload,
-            data?.id,
-          );
-          restart()
+          const res = await updateMyCollection(payload, data?.id);
+          restart();
         } catch (error) {
-          if(__DEV__){
-          console.log(error)
+          if (__DEV__) {
+            console.log(error);
           }
         }
-      }else{
+      } else {
         try {
           const res = await addNewCollection({
             name: collect,
           });
-          restart()
+          restart();
         } catch (error) {}
       }
-      
     }
-    
   };
 
   return (
@@ -96,42 +92,48 @@ function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
                 shadowOpacity: 0.22,
                 shadowRadius: 2.22,
                 elevation: 3,
-                borderRadius: 10,
-                padding: 10,
+                borderRadius: hp(10),
+                padding: hp(10),
               }}>
               <Pressable
                 onPress={() => handleClose()}
                 style={{alignItems: 'flex-end'}}>
-                <CloseSvg width={15} height={15} />
+                <CloseSvg width={hp(15)} height={hp(15)} />
               </Pressable>
               <View style={{alignItems: 'center', flex: 1}}>
-                <LibrarySvg fill={code_color.splash} width={60} height={60} />
+                <LibrarySvg
+                  fill={code_color.splash}
+                  width={hp(60)}
+                  height={hp(60)}
+                />
                 <Text
                   style={{
                     color: code_color.blackDark,
-                    marginTop: 10,
+                    marginTop: hp(10),
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: moderateScale(16),
                   }}>
                   New Collection
                 </Text>
                 <Text
                   style={{
                     color: code_color.blackDark,
-                    marginTop: 10,
+                    marginTop: hp(10),
                     textAlign: 'center',
-                    marginHorizontal: 40,
+                    marginHorizontal: hp(40),
                   }}>
-                  {edit ? 'Edit a name for your new collection. You can edit it later.' : 'Add a name for your new collection. You can edit it later.'}
+                  {edit
+                    ? 'Edit a name for your new collection. You can edit it later.'
+                    : 'Add a name for your new collection. You can edit it later.'}
                 </Text>
                 <TextInput
                   style={{
-                    padding: 10,
+                    padding: hp(10),
                     borderColor: code_color.splash,
                     borderWidth: 1,
-                    borderRadius: 10,
+                    borderRadius: hp(10),
                     width: '90%',
-                    marginVertical: 20,
+                    marginVertical: hp(20),
                   }}
                   value={collect}
                   placeholder="Collection name"
@@ -141,14 +143,13 @@ function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
                   title={edit ? 'Edit collection' : 'Add collection'}
                   style={{
                     backgroundColor: !collect
-                      ?
-                      code_color.greyDefault :
-                      code_color.yellow,
+                      ? code_color.greyDefault
+                      : code_color.yellow,
                     alignItems: 'center',
                     justifyContent: 'center',
                     // height: 52,
-                    padding: 10,
-                    borderRadius: 12,
+                    padding: hp(10),
+                    borderRadius: hp(12),
                     width: '90%',
                   }}
                   onPress={() => AddCollection()}
