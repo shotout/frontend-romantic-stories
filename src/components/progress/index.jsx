@@ -133,7 +133,7 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
     (progressBarWidth - spaceBetweenLevels);
 
   const infoCardRef = useRef(null);
-  
+
   const calculateProgressPosition = (progress, levels) => {
     const totalWidth = (Dimensions.get('window').width * 1000) / 100;
     let position = 0;
@@ -178,7 +178,7 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
     if (progress > 0 && levels && levels.length > 0) {
       for (let i = 0; i < levels.length; i++) {
         const currentLevel = levels[i];
-  
+
         if (progress >= currentLevel.value) {
           lastAchievedIndex = i;
         } else {
@@ -187,21 +187,21 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
       }
     }
     setLastAchievedLevelIndex(lastAchievedIndex);
-    scrollViewRef.current.scrollTo({ x: position, animated: true });
+    scrollViewRef.current.scrollTo({x: position, animated: true});
     setTimeout(() => {
-    setValue(position)
-  }, 100);
+      setValue(position);
+    }, 100);
   }, [position, progress, levels]);
 
   useEffect(() => {
-    if(value > 0){
+    if (value > 0) {
       Animated.timing(animatedScrollOffset, {
         toValue: value, // Ganti dengan nilai konstan atau nilai yang disimpan di luar useEffect
         duration: 100,
         useNativeDriver: false,
       }).start();
     }
-  }, [value])
+  }, [value]);
 
   const InfoCard = ({message}) => {
     return (
@@ -217,17 +217,17 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
   };
   return (
     <ScrollView
-    ref={scrollViewRef}
-    horizontal
-    showsHorizontalScrollIndicator={false}
-    // onScroll={(event) => setScrollOffset(event.nativeEvent.contentOffset.x)}
-    scrollEventThrottle={16}>
+      ref={scrollViewRef}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      // onScroll={(event) => setScrollOffset(event.nativeEvent.contentOffset.x)}
+      scrollEventThrottle={16}>
       <View style={styles.container}>
         <Animated.View
           style={[
             styles.progressBar,
             {
-              width: wp(950),
+              width: hp(950),
               backgroundColor: code_color.greyDefault,
             },
           ]}
@@ -280,7 +280,8 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',
     marginRight: 30,
-    left: Dimensions.get('screen').width > 380 ? -wp(20) : -wp(30),
+    fontSize: moderateScale(13),
+    left: Dimensions.get('screen').width > 380 ? -hp(20) : -hp(30),
   },
   point: {
     width: hp(28),
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
     backgroundColor: code_color.yellow,
     borderRadius: hp(20),
     borderWidth: hp(5),
-    right:  Dimensions.get('window').height === 667 ? '80%':'70%',
+    right: Dimensions.get('window').height === 667 ? '80%' : '70%',
     transform: [{translateY: -5}],
     position: 'absolute',
     top: Dimensions.get('window').height === 667 ? -35 : -40,

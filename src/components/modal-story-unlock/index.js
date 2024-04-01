@@ -33,6 +33,8 @@ import {navigate} from '../../shared/navigationRef';
 import {BACKEND_URL} from '../../shared/static';
 import ModalStoryPreview from '../modal-story-preview';
 import FastImage from 'react-native-fast-image';
+import {hp, wp} from '../../utils/screen';
+import {sizing} from '../../shared/styling';
 
 function ModalUnlockStory({
   isVisible,
@@ -89,7 +91,7 @@ function ModalUnlockStory({
           <Image
             source={imgUnlockPremium}
             style={{
-              height: 120,
+              height: hp(100),
               aspectRatio: '1.7/1',
               alignSelf: 'center',
               marginTop: moderateScale(20),
@@ -110,11 +112,11 @@ function ModalUnlockStory({
             source={imgLoveLeft}
             resizeMode="contain"
             style={{
-              width: 100,
-              height: 150,
+              width: hp(100),
+              height: hp(150),
               position: 'absolute',
               left: 0,
-              top: 150,
+              top: hp(150),
             }}
           />
 
@@ -122,11 +124,11 @@ function ModalUnlockStory({
             source={imgLoveRight}
             resizeMode="contain"
             style={{
-              width: 100,
-              height: 150,
+              width: hp(100),
+              height: hp(150),
               position: 'absolute',
               right: 0,
-              top: 150,
+              top: hp(150),
             }}
           />
           <View
@@ -150,8 +152,8 @@ function ModalUnlockStory({
                   }}
                   resizeMode="contain"
                   style={{
-                    width: 65,
-                    height: 87,
+                    width: hp(60),
+                    height: hp(82),
                     marginRight: moderateScale(10),
                   }}
                 />
@@ -161,7 +163,7 @@ function ModalUnlockStory({
                       color: '#3F58DD',
                       marginTop: 10,
                       fontWeight: 400,
-                      fontSize: 14,
+                      fontSize: moderateScale(14),
                     }}>
                     {nextStory?.category.name}
                   </Text>
@@ -170,7 +172,7 @@ function ModalUnlockStory({
                       color: code_color.blueDark,
                       marginTop: 10,
                       fontWeight: 'bold',
-                      fontSize: 16,
+                      fontSize: moderateScale(16),
                     }}>
                     {nextStory?.title_en}
                   </Text>
@@ -180,7 +182,7 @@ function ModalUnlockStory({
               <Text
                 style={{
                   color: code_color.blackDark,
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   marginTop: moderateScale(16),
                 }}>
                 {nextStory?.content_en?.substring(0, 100)}...
@@ -201,6 +203,8 @@ function ModalUnlockStory({
                     left: '16%',
                     top: '40%',
                   }}
+                  height={hp(25)}
+                  width={hp(25)}
                 />
                 <Text
                   style={{
@@ -217,6 +221,9 @@ function ModalUnlockStory({
                 backgroundColor: '#F0F2FF',
                 borderRadius: moderateScale(24),
                 paddingBottom: 10,
+                width: sizing.getDimensionWidth(1) - hp(30),
+                borderWidth: 1,
+                borderColor: 'red',
               }}>
               <Text
                 style={{
@@ -229,7 +236,7 @@ function ModalUnlockStory({
                 Other Stories you might like:
               </Text>
               <ScrollView
-                style={{maxHeight: 210}}
+                style={{maxHeight: hp(220)}}
                 horizontal
                 showsHorizontalScrollIndicator={false}>
                 {relateStory?.most_read
@@ -247,8 +254,8 @@ function ModalUnlockStory({
                         // alignItems: 'center',
                         // backgroundColor: 'red',
                         // justifyContent: 'center',
-                        width: 110,
-                        marginRight: 5,
+                        width: hp(110),
+                        marginRight: hp(5),
                       }}>
                       <FastImage
                         source={{
@@ -256,8 +263,8 @@ function ModalUnlockStory({
                         }}
                         resizeMode="contain"
                         style={{
-                          width: 110,
-                          height: 110,
+                          width: hp(110),
+                          height: hp(110),
                           marginBottom: moderateScale(10),
                         }}
                       />
@@ -296,16 +303,17 @@ function ModalUnlockStory({
                   paddingVertical: moderateScale(12),
                   alignItems: 'center',
                   borderRadius: 8,
-                  flex: 1,
-                  maxHeight: 50,
+                  marginTop: 20,
                   marginHorizontal: moderateScale(15),
                   marginBottom: 10,
                   flexDirection: 'row',
                   justifyContent: 'center',
+                  borderWidth: 1,
+                  borderColor: 'red',
                 }}>
                 <LibrarySvg
                   fill={code_color.black}
-                  height={26}
+                  height={hp(26)}
                   style={{position: 'absolute', left: '10%'}}
                 />
                 <Text
@@ -348,7 +356,7 @@ function ModalUnlockStory({
               <Image
                 source={imgUnlockPremium}
                 style={{
-                  height: 150,
+                  height: hp(150),
                   aspectRatio: '1.7/1',
                   alignSelf: 'center',
                 }}
@@ -385,8 +393,8 @@ function ModalUnlockStory({
                       }}
                       resizeMode="contain"
                       style={{
-                        width: 65,
-                        height: 87,
+                        width: hp(60),
+                        height: hp(82),
                         marginRight: moderateScale(10),
                       }}
                     />
@@ -396,7 +404,7 @@ function ModalUnlockStory({
                           color: '#3F58DD',
                           marginTop: 10,
                           fontWeight: 400,
-                          fontSize: 14,
+                          fontSize: moderateScale(14),
                         }}>
                         {nextStory?.category?.name}
                       </Text>
@@ -405,7 +413,7 @@ function ModalUnlockStory({
                           color: code_color.blueDark,
                           marginTop: 10,
                           fontWeight: 'bold',
-                          fontSize: 16,
+                          fontSize: moderateScale(16),
                         }}>
                         {nextStory?.title_en}
                       </Text>
@@ -414,7 +422,7 @@ function ModalUnlockStory({
                   <Text
                     style={{
                       color: code_color.blackDark,
-                      fontSize: 12,
+                      fontSize: moderateScale(12),
                       marginTop: moderateScale(16),
                     }}>
                     {nextStory?.content_en?.slice(0, 130)}...

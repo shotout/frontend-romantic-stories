@@ -33,6 +33,7 @@ import {navigate} from '../../shared/navigationRef';
 import {BACKEND_URL} from '../../shared/static';
 import StarRating, {StarIconProps} from 'react-native-star-rating-widget';
 import {Path, Svg} from 'react-native-svg';
+import {hp} from '../../utils/screen';
 
 function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
   const [rating, setRating] = useState(0);
@@ -43,7 +44,7 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
     };
     try {
       const resp = await submitRating(nextStory?.id, data);
-      console.log('suksess rating',resp)
+      console.log('suksess rating', resp);
       if (resp) {
         handleSuccess();
         setRating(0);
@@ -118,8 +119,12 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
           }}>
           <TouchableOpacity
             onPress={handleSuccess}
-            style={{marginLeft: 'auto', paddingTop: 12, paddingRight: 12}}>
-            <CloseIcon height={18} width={18} fill={code_color.grey} />
+            style={{
+              marginLeft: 'auto',
+              paddingTop: hp(12),
+              paddingRight: hp(12),
+            }}>
+            <CloseIcon height={hp(18)} width={hp(18)} fill={code_color.grey} />
           </TouchableOpacity>
           <Image
             source={imgRating}
@@ -140,8 +145,9 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
               marginTop: moderateScale(25),
               marginBottom: moderateScale(20),
             }}>
-            {`We want to improve our content,
-how did you like your previous story?`}
+            {
+              'We want to improve our content,\r\nhow did you like your previous story?'
+            }
           </Text>
 
           <View
@@ -165,8 +171,8 @@ how did you like your previous story?`}
                   }}
                   resizeMode="contain"
                   style={{
-                    width: 65,
-                    height: 87,
+                    width: hp(60),
+                    height: hp(82),
                     marginRight: moderateScale(10),
                   }}
                 />
@@ -176,7 +182,7 @@ how did you like your previous story?`}
                       color: '#3F58DD',
                       marginTop: 10,
                       fontWeight: 400,
-                      fontSize: 14,
+                      fontSize: moderateScale(14),
                     }}>
                     {nextStory?.category?.name}
                   </Text>
@@ -185,7 +191,7 @@ how did you like your previous story?`}
                       color: code_color.blueDark,
                       marginTop: 10,
                       fontWeight: 'bold',
-                      fontSize: 16,
+                      fontSize: moderateScale(16),
                     }}>
                     {nextStory?.title_en}
                   </Text>
@@ -195,7 +201,7 @@ how did you like your previous story?`}
               <Text
                 style={{
                   color: code_color.blackDark,
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   marginTop: moderateScale(16),
                 }}>
                 {nextStory?.content_en?.substring(0, 100)}...
@@ -213,7 +219,7 @@ how did you like your previous story?`}
                 onChange={setRating}
                 StarIconComponent={HeartIcon}
                 color="tomato"
-                starSize={40}
+                starSize={hp(40)}
               />
             </View>
 
@@ -225,12 +231,13 @@ how did you like your previous story?`}
                 disabled={rating === 0 ? true : false}
                 onPress={() => handleSubmit()}
                 style={{
-                  backgroundColor: rating === 0 ? code_color.grey : code_color.yellow,
+                  backgroundColor:
+                    rating === 0 ? code_color.grey : code_color.yellow,
                   marginTop: moderateScale(20),
                   padding: moderateScale(12),
                   alignItems: 'center',
                   borderRadius: 8,
-                  width: moderateScale(280),
+                  width: hp(280),
                   flex: 0,
                   opacity: rating === 0 ? 0.5 : 1,
                 }}>

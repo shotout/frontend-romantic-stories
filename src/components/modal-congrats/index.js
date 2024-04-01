@@ -121,35 +121,35 @@ function ModalCongrats({
           source={imgGift1}
           resizeMode="contain"
           style={{
-            width: wp(90),
+            width: hp(90),
             height: hp(90),
             position: 'absolute',
-            left: wp(70),
-            bottom: wp(80),
+            left: hp(70),
+            bottom: hp(80),
           }}
         />
         <Image
           source={imgGift2}
           resizeMode="contain"
           style={{
-            width: wp(75),
+            width: hp(75),
             height: hp(75),
             position: 'absolute',
-            right: wp(73),
-            bottom: wp(85),
+            right: hp(73),
+            bottom: hp(85),
           }}
         />
         <View
           style={{
             backgroundColor: code_color.blueDark,
-            padding: wp(10),
+            padding: hp(10),
             position: 'absolute',
             top: -15,
-            left: sizing.getDimensionWidth(0.45) - wp(100),
+            left: sizing.getDimensionWidth(0.45) - hp(100),
             justifyContent: 'center',
             alignItems: 'center',
-            width: wp(200),
-            borderRadius: wp(15),
+            width: hp(200),
+            borderRadius: hp(15),
           }}>
           <Text
             style={{
@@ -162,39 +162,47 @@ function ModalCongrats({
         </View>
         <View
           style={{
-            width: wp(80),
+            width: hp(80),
             height: hp(80),
-            borderRadius: wp(100),
+            borderRadius: hp(100),
             // marginLeft: '20',
             backgroundColor: code_color.yellow,
             position: 'absolute',
             overflow: 'hidden',
             alignItems: 'center',
             right: '43%',
-            bottom: wp(90),
-            borderRadius: wp(100),
+            bottom: hp(90),
             borderColor: code_color.blueDark,
-            borderWidth: wp(5),
+            borderWidth: hp(5),
           }}>
           <Image
             source={{
               uri: BACKEND_URL + getAvatarMale,
             }}
             style={{
-              width: wp(80),
-              height:
+              width: hp(80),
+              height: hp(
                 getAvatarMale === '/assets/images/avatars/2.png'
                   ? 350
                   : getAvatarMale === '/assets/images/avatars/3.png' ||
                     getAvatarMale === '/assets/images/avatars/4.png'
-                  ? 350 :
-                  getAvatarMale === '/assets/images/avatars/1.png' ?
-                  280 
+                  ? 350
+                  : getAvatarMale === '/assets/images/avatars/1.png'
+                  ? 280
                   : 250,
+              ),
               alignItems: 'center',
               justifyContent: 'center',
               position: 'absolute',
-              top: getAvatarMale === '/assets/images/avatars/1.png' ? 5 : getAvatarMale === '/assets/images/avatars/6.png'? 5: getAvatarMale === '/assets/images/avatars/4.png' ? 5 : 0,
+              top: hp(
+                getAvatarMale === '/assets/images/avatars/1.png'
+                  ? 5
+                  : getAvatarMale === '/assets/images/avatars/6.png'
+                  ? 5
+                  : getAvatarMale === '/assets/images/avatars/4.png'
+                  ? 5
+                  : 0,
+              ),
               right:
                 getAvatarMale === '/assets/images/avatars/5.png'
                   ? -15 :
@@ -347,7 +355,7 @@ function ModalCongrats({
                     <Text
                       style={{
                         textAlign: 'center',
-                        fontSize: fixedFontSize(18),
+                        fontSize: moderateScale(18),
                         fontWeight: '700',
                       }}>
                       {itm?.desc?.replace(' ', '\r\n')}
@@ -361,16 +369,16 @@ function ModalCongrats({
         onPress={() => setShowPopup(false)}
         style={{
           backgroundColor: '#DDDEE3',
-          marginTop: wp(150),
-          width: wp(sizing.getWindowWidth(0.8)),
+          marginTop: hp(150),
+          width: sizing.getWindowWidth(0.8),
           justifyContent: 'center',
           alignItems: 'center',
           height: hp(40),
-          borderRadius: wp(6),
+          borderRadius: hp(6),
         }}>
         <Text
           style={{
-            fontSize: fixedFontSize(16),
+            fontSize: moderateScale(16),
             color: code_color.black,
             fontWeight: '600',
           }}>
@@ -455,7 +463,7 @@ function ModalCongrats({
                     <AnimatedLottieView
                       source={badgeAnimate}
                       style={{
-                        width: wp(130),
+                        width: hp(130),
                         height: hp(130),
                       }}
                       autoPlay={true}
@@ -465,7 +473,8 @@ function ModalCongrats({
                     <AnimatedLottieView
                       source={starAnimate}
                       style={{
-                        width: wp(200),
+                        width: hp(200),
+                        height: hp(200),
                         position: 'absolute',
                       }}
                       autoPlay={true}
@@ -476,8 +485,9 @@ function ModalCongrats({
                       style={{
                         position: 'relative',
                         overflow: 'hidden',
-                        marginTop: wp(-60),
-                        marginBottom: wp(40),
+                        marginTop:
+                          Platform.OS === 'android' ? hp(-63) : hp(-60),
+                        marginBottom: hp(40),
                       }}>
                       <Animatable.Text
                         delay={1000}
@@ -485,7 +495,7 @@ function ModalCongrats({
                         animation="slideInUp"
                         style={{
                           fontWeight: 'bold',
-                          fontSize: fixedFontSize(18),
+                          fontSize: moderateScale(18),
                           color: code_color.white,
                           textAlign: 'center',
                         }}>
@@ -497,22 +507,22 @@ function ModalCongrats({
                     source={imgLoveLeft}
                     resizeMode="contain"
                     style={{
-                      width: Platform.OS === 'android' ? wp(157) : wp(150),
+                      width: Platform.OS === 'android' ? hp(157) : hp(150),
                       height: hp(150),
                       position: 'absolute',
-                      left: -20,
-                      bottom: Platform.OS === 'android' ? wp(-90) : wp(-100),
+                      left: hp(-20),
+                      bottom: Platform.OS === 'android' ? hp(-110) : hp(-100),
                     }}
                   />
                   <Image
                     source={imgLoveRight}
                     resizeMode="contain"
                     style={{
-                      width: Platform.OS === 'android' ? wp(145) : wp(150),
+                      width: Platform.OS === 'android' ? hp(145) : hp(150),
                       height: hp(150),
                       position: 'absolute',
-                      right: -20,
-                      bottom: Platform.OS === 'android' ? wp(-90) : wp(-100),
+                      right: hp(-20),
+                      bottom: Platform.OS === 'android' ? hp(-110) : hp(-100),
                     }}
                   />
                 </View>
@@ -521,8 +531,8 @@ function ModalCongrats({
             <View
               style={{
                 backgroundColor: code_color.white,
-                borderTopLeftRadius: wp(70),
-                borderTopRightRadius: wp(70),
+                borderTopLeftRadius: hp(70),
+                borderTopRightRadius: hp(70),
                 position: 'absolute',
                 top: Platform.OS === 'android' ? '32%' : '37%',
                 left: 0,
@@ -531,7 +541,7 @@ function ModalCongrats({
                 height: '100%',
                 alignItems: 'center',
               }}>
-              <View style={{marginTop: wp(100)}}>
+              <View style={{marginTop: hp(100)}}>
                 <View
                   style={{
                     backgroundColor: '#FFD12F',
@@ -562,7 +572,7 @@ function ModalCongrats({
                       source={imgStar}
                       resizeMode="contain"
                       style={{
-                        width: wp(26),
+                        width: hp(26),
                         height: hp(26),
                       }}
                     />
@@ -586,7 +596,7 @@ function ModalCongrats({
                           style={{
                             fontWeight: 'bold',
                             fontSize:
-                              itm > 999 ? fixedFontSize(26) : fixedFontSize(30),
+                              itm > 999 ? moderateScale(26) : moderateScale(30),
                             height: hp(36),
                             textAlignVertical: 'center',
                             textAlign: 'center',
@@ -601,7 +611,7 @@ function ModalCongrats({
                       style={{
                         flex: 1,
                         fontWeight: 'bold',
-                        fontSize: fixedFontSize(18),
+                        fontSize: moderateScale(18),
                         left:
                           newXp > 999
                             ? -14
@@ -616,7 +626,7 @@ function ModalCongrats({
                     </Text>
                   </View>
                   <ScrollView
-                    scrollEnabled={false}
+                    scrollEnabled={!false}
                     ref={scrollViewRefRight}
                     style={{
                       flex: 1,
@@ -646,17 +656,17 @@ function ModalCongrats({
                               }}
                               resizeMode="contain"
                               style={{
-                                width: wp(30),
+                                width: hp(30),
                                 height: hp(30),
-                                marginRight: wp(10),
+                                marginRight: hp(10),
                               }}
                             />
                             <View
-                              style={{width: wp(100), alignItems: 'center'}}>
+                              style={{width: hp(100), alignItems: 'center'}}>
                               <Text
                                 style={{
                                   fontWeight: 'bold',
-                                  fontSize: fixedFontSize(15),
+                                  fontSize: moderateScale(15),
                                   textAlign: 'center',
                                 }}>
                                 {itm.desc}
@@ -678,10 +688,10 @@ function ModalCongrats({
                   <Text
                     style={{
                       color: code_color.grey,
-                      marginTop: wp(10),
-                      fontSize: fixedFontSize(14),
-                      marginHorizontal: wp(25),
-                      lineHeight: 24,
+                      marginTop: hp(10),
+                      fontSize: moderateScale(14),
+                      marginHorizontal: hp(25),
+                      lineHeight: moderateScale(22),
                       textAlign: 'center',
                     }}>
                     Earn more XP by reading stories and to level up. The higher
@@ -701,7 +711,7 @@ function ModalCongrats({
                       borderRadius: wp(8),
                       // width: '90%',
                       marginTop: wp(20),
-                      marginHorizontal: wp(20),
+                      marginHorizontal: hp(20),
                       marginBottom: wp(300),
                     }}
                     onPress={() => onGotIt()}

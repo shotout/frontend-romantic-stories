@@ -72,28 +72,27 @@ function ModalNewStory({
     onClose();
   };
   useEffect(() => {
-    if(!__DEV__){
+    if (!__DEV__) {
       async function getProductPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
         });
-       
+
         setPrice(products[0].localizedPrice);
       }
       getProductPrice();
     }
-   
   }, []);
   const touchStartXRef = useRef(null);
-  const touchStart = (e) => {
+  const touchStart = e => {
     touchStartXRef.current = e.nativeEvent.pageX;
   };
-  
-  const touchEnd = (e) => {
+
+  const touchEnd = e => {
     const touchEndX = e.nativeEvent.pageX;
     const distanceX = touchEndX - touchStartXRef.current;
     const minSwipeDistance = 50; // Misalnya, minimal 50 piksel untuk dianggap sebagai swipe
-  
+
     if (Math.abs(distanceX) > minSwipeDistance) {
       if (distanceX > 0) {
         onClose(); // Swipe ke kanan, menutup modal
@@ -107,8 +106,8 @@ function ModalNewStory({
       transparent
       onDismiss={handleClose}>
       <View
-      //  onTouchStart={touchEndStory}
-      //  pointerEvents="box-only"
+        //  onTouchStart={touchEndStory}
+        //  pointerEvents="box-only"
         style={{
           flex: 1,
           backgroundColor: 'rgba(0,0,0,0.5)',
@@ -140,7 +139,7 @@ function ModalNewStory({
             <View
               style={{
                 width: Dimensions.get('screen').width,
-                height: wp(
+                height: hp(
                   Dimensions.get('screen').width > 380
                     ? sizing.getDimensionHeight(0.9)
                     : sizing.getDimensionHeight(1.25),
@@ -151,7 +150,7 @@ function ModalNewStory({
                 resizeMode="contain"
                 style={{
                   width: '100%',
-                  top: wp(-150),
+                  top: hp(-150),
                   maxHeight: sizing.getDimensionHeight(1),
                   // position: 'absolute',
                 }}
@@ -161,11 +160,11 @@ function ModalNewStory({
               source={imgLoveLeft}
               resizeMode="contain"
               style={{
-                width: wp(150),
+                width: hp(150),
                 height: hp(150),
                 position: 'absolute',
-                left: -16,
-                top: wp(140),
+                left: hp(-16),
+                top: hp(140),
               }}
             />
 
@@ -173,11 +172,11 @@ function ModalNewStory({
               source={imgLoveRight}
               resizeMode="contain"
               style={{
-                width: wp(150),
+                width: hp(150),
                 height: hp(150),
                 position: 'absolute',
-                right: -24,
-                top: wp(140),
+                right: hp(-24),
+                top: hp(140),
               }}
             />
             {/* <TouchableOpacity
@@ -188,10 +187,10 @@ function ModalNewStory({
             <View
               style={{
                 backgroundColor: code_color.white,
-                borderTopLeftRadius: wp(70),
-                borderTopRightRadius: wp(70),
+                borderTopLeftRadius: hp(70),
+                borderTopRightRadius: hp(70),
                 position: 'absolute',
-                top: wp(200),
+                top: hp(200),
                 left: 0,
                 width: sizing.getDimensionWidth(1),
                 flex: 1,
@@ -200,7 +199,7 @@ function ModalNewStory({
               }}>
               <View
                 style={{
-                  marginTop: wp(30),
+                  marginTop: hp(30),
                   flex: 1,
                   width: '100%',
                   alignItems: 'center',
@@ -208,10 +207,10 @@ function ModalNewStory({
                 <View
                   style={{
                     backgroundColor: '#FFD12F',
-                    paddingHorizontal: wp(30),
-                    paddingVertical: wp(20),
+                    paddingHorizontal: hp(30),
+                    paddingVertical: hp(20),
                     width: '80%',
-                    borderRadius: wp(10),
+                    borderRadius: hp(10),
                     shadowColor: '#000',
                     shadowOffset: {
                       width: 0,
@@ -224,42 +223,48 @@ function ModalNewStory({
                   <View
                     style={{
                       backgroundColor: code_color.blueDark,
-                      padding: wp(10),
-                      top: wp(-35),
+                      padding: hp(10),
+                      top: hp(-35),
                       alignItems: 'center',
-                      borderRadius: wp(15),
+                      borderRadius: hp(15),
                     }}>
-                    <Text style={{color: code_color.white}}>
+                    <Text
+                      style={{
+                        color: code_color.white,
+                        fontSize: moderateScale(12),
+                      }}>
                       New Story in...
                     </Text>
                   </View>
-                  <View style={{flexDirection: 'row', marginTop: wp(-30)}}>
+                  <View style={{flexDirection: 'row', marginTop: hp(-30)}}>
                     <Image
                       source={book}
                       style={{
                         height: hp(59),
-                        width: wp(45),
+                        width: hp(45),
                         position: 'absolute',
-                        left: -48,
-                        top: -10,
+                        left: hp(-48),
+                        top: hp(-10),
                       }}
                     />
                     <Text
                       style={{
-                        fontSize: fixedFontSize(40),
+                        fontSize: moderateScale(40),
                         fontWeight: '700',
                         marginBottom: 0,
-                        marginLeft: wp(30),
+                        color: code_color.black,
+                        marginLeft: hp(30),
                       }}>
                       {`${timeLeft.hour}h ${timeLeft.minutes}m`}
                     </Text>
                     <Text
                       style={{
-                        fontSize: fixedFontSize(20),
+                        fontSize: moderateScale(20),
                         fontWeight: '700',
                         marginTop: 'auto',
-                        marginBottom: wp(5),
-                        marginLeft: wp(10),
+                        color: code_color.black,
+                        marginBottom: hp(5),
+                        marginLeft: hp(10),
                       }}>
                       {`${timeLeft.second}s`}
                     </Text>
@@ -268,18 +273,20 @@ function ModalNewStory({
                 <Text
                   style={{
                     fontWeight: '700',
-                    fontSize: fixedFontSize(19),
-                    marginVertical: wp(15),
+                    fontSize: moderateScale(19),
+                    marginVertical: hp(15),
+                    color: code_color.black,
                   }}>
                   UNLOCK MORE STORIES NOW
                 </Text>
                 <Text
                   style={{
                     fontWeight: '400',
-                    fontSize: fixedFontSize(16),
+                    fontSize: moderateScale(16),
                     lineHeight: moderateScale(24),
                     textAlign: 'center',
                     maxWidth: '80%',
+                    color: code_color.black,
                     opacity: 0.8,
                   }}>
                   Don’t stop there. Watch 2 short Videos to read another Story
@@ -293,10 +300,10 @@ function ModalNewStory({
                   style={{
                     backgroundColor: '#ED5267',
                     width: '90%',
-                    height: 50,
-                    paddingVertical: wp(14),
-                    borderRadius: wp(6),
-                    marginTop: wp(30),
+                    height: hp(50),
+                    paddingVertical: hp(14),
+                    borderRadius: hp(6),
+                    marginTop: hp(30),
                     alignItems: 'center',
                   }}>
                   <View
@@ -305,33 +312,62 @@ function ModalNewStory({
                       marginHorizontal: 'auto',
                       backgroundColor: '#FFD12F',
                       alignSelf: 'center',
-                      paddingVertical: wp(0),
-                      paddingHorizontal: wp(20),
-                      borderRadius: wp(10),
+                      paddingVertical: hp(0),
+                      paddingHorizontal: hp(20),
+                      borderRadius: hp(10),
                       zIndex: 1,
-                      top: wp(-8),
+                      top: hp(-8),
                     }}>
-                    <Text style={{color: code_color.black, fontWeight: 600}}>
+                    <Text
+                      style={{
+                        color: code_color.black,
+                        fontWeight: 600,
+                        fontSize: moderateScale(12),
+                      }}>
                       FREE
                     </Text>
                   </View>
                   {loadingAds ? (
-                    <ActivityIndicator color={code_color.blueDark} size={14} />
+                    <ActivityIndicator
+                      color={code_color.blueDark}
+                      size={hp(16)}
+                    />
                   ) : (
                     <>
-                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <WatchIcon
-                        style={{position: 'absolute', top: -2, bottom:0, left: -100, right: 100}}
-                      />
-                    </View>
-                     
-                      <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                      <Text
-                        style={{color: code_color.white, textAlign: 'center', marginBottom: 0}}>
-                        Watch 2 Ads
-                      </Text>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <WatchIcon
+                          style={{
+                            position: 'absolute',
+                            top: -2,
+                            bottom: 0,
+                            left: -100,
+                            right: 100,
+                          }}
+                          height={hp(25)}
+                          width={hp(25)}
+                        />
                       </View>
-                     
+
+                      <View
+                        style={{
+                          flex: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: code_color.white,
+                            textAlign: 'center',
+                            marginBottom: 0,
+                            fontSize: moderateScale(14),
+                          }}>
+                          Watch 2 Ads
+                        </Text>
+                      </View>
                     </>
                   )}
                 </Pressable>
@@ -343,9 +379,9 @@ function ModalNewStory({
                       backgroundColor: '#009A37',
                       width: '90%',
                       height: hp(45),
-                      paddingVertical: wp(14),
-                      borderRadius: wp(6),
-                      marginTop: wp(30),
+                      paddingVertical: hp(14),
+                      borderRadius: hp(6),
+                      marginTop: hp(30),
                     }}>
                     <View
                       style={{
@@ -353,24 +389,33 @@ function ModalNewStory({
                         marginHorizontal: 'auto',
                         backgroundColor: '#FFD12F',
                         alignSelf: 'center',
-                        paddingVertical: wp(0),
-                        paddingHorizontal: wp(24),
-                        borderRadius: wp(10),
+                        paddingVertical: hp(0),
+                        paddingHorizontal: hp(24),
+                        borderRadius: hp(10),
                         zIndex: 1,
-                        top: -wp(8),
+                        top: -hp(8),
                       }}>
-                      <Text style={{color: code_color.black, fontWeight: 600}}>
+                      <Text
+                        style={{
+                          color: code_color.black,
+                          fontWeight: 600,
+                          fontSize: moderateScale(12),
+                        }}>
                         MOST SELECTED
                       </Text>
                     </View>
                     {isLoading ? (
                       <ActivityIndicator
                         color={code_color.blueDark}
-                        size={14}
+                        size={hp(16)}
                       />
                     ) : (
                       <Text
-                        style={{color: code_color.white, textAlign: 'center'}}>
+                        style={{
+                          color: code_color.white,
+                          textAlign: 'center',
+                          fontSize: moderateScale(14),
+                        }}>
                         Unlock 1 more Story directly for {price}
                       </Text>
                     )}
@@ -381,7 +426,7 @@ function ModalNewStory({
                     flexDirection: 'row',
                     width: '90%',
                     alignItems: 'center',
-                    marginVertical: wp(30),
+                    marginVertical: hp(30),
                     opacity: 0.2,
                   }}>
                   <View
@@ -391,7 +436,14 @@ function ModalNewStory({
                       height: 1,
                     }}
                   />
-                  <Text style={{marginHorizontal: wp(8)}}>OR</Text>
+                  <Text
+                    style={{
+                      marginHorizontal: wp(8),
+                      fontSize: moderateScale(14),
+                      color: code_color.black,
+                    }}>
+                    OR
+                  </Text>
                   <View
                     style={{
                       backgroundColor: code_color.black,
@@ -405,8 +457,8 @@ function ModalNewStory({
                   style={{
                     backgroundColor: '#ADC3D2',
                     width: '90%',
-                    paddingVertical: wp(14),
-                    borderRadius: wp(6),
+                    paddingVertical: hp(14),
+                    borderRadius: hp(6),
                   }}>
                   <View
                     style={{
@@ -414,20 +466,32 @@ function ModalNewStory({
                       marginHorizontal: 'auto',
                       backgroundColor: '#FFD12F',
                       alignSelf: 'center',
-                      paddingVertical: wp(0),
-                      paddingHorizontal: wp(24),
-                      borderRadius: wp(10),
+                      paddingVertical: hp(0),
+                      paddingHorizontal: hp(24),
+                      borderRadius: hp(10),
                       zIndex: 1,
-                      top: -wp(8),
+                      top: -hp(8),
                     }}>
-                    <Text style={{color: code_color.black, fontWeight: 600}}>
+                    <Text
+                      style={{
+                        color: code_color.black,
+                        fontWeight: 600,
+                        fontSize: moderateScale(12),
+                      }}>
                       UNLOCK EVERYTHING
                     </Text>
                   </View>
                   <BookLockIcon
                     style={{position: 'absolute', top: '70%', left: '12%'}}
+                    height={hp(25)}
+                    width={hp(25)}
                   />
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
+                  <Text
+                    style={{
+                      color: code_color.white,
+                      textAlign: 'center',
+                      fontSize: moderateScale(14),
+                    }}>
                     Get EroTales UNLIMITED
                   </Text>
                 </Pressable>
