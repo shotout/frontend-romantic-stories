@@ -368,6 +368,8 @@ function QuotesContent({
     }
     return result;
   }
+  const height = Dimensions.get('window').height
+
   return (
     <SafeAreaView
       style={{
@@ -633,10 +635,14 @@ function QuotesContent({
                         width: wp(100),
                         height: hp(
                           me === '/assets/images/avatars/3/positive.png' ||
-                            me === '/assets/images/avatars/1/positive.png'
+                            me === '/assets/images/avatars/1/positive.png'  && Platform.OS === 'android' && height > 1000 
+                            ? 400 :
+                            me === '/assets/images/avatars/1/positive.png' 
                             ? 350
-                            : me === '/assets/images/avatars/2/positive.png'
-                            ? 450
+                            : me === '/assets/images/avatars/2/positive.png' && Platform.OS === 'android' && height > 1000 
+                            ? 480 
+                            : me === '/assets/images/avatars/2/positive.png' 
+                            ? 450 
                             : me != '/assets/images/avatars/2/positive.png'
                             ? 400
                             : 360,
@@ -673,7 +679,7 @@ function QuotesContent({
                           ? -5
                           : partner === '/assets/images/avatars/5/think.png' &&
                             Platform.OS === 'android'
-                          ? 0
+                          ? -5
                           : -15,
                     }}>
                     <FastImage
@@ -752,7 +758,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(
-                    me === '/assets/images/avatars/2/inlove.png' ? -160 : -190,
+                    me === '/assets/images/avatars/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/2/inlove.png' && height > 900  ? -150 : -190,
                   ),
                   width: wp(100),
                   height: hp(180),
@@ -766,8 +772,10 @@ function QuotesContent({
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
+
+                   
                     width: wp(100),
-                    height: hp(300),
+                    height: Platform.OS === 'android' && height > 1000 ? hp(200) : hp(300),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -779,7 +787,7 @@ function QuotesContent({
                   marginBottom: wp(-100),
                   width: wp(100),
                   height: hp(100),
-                  left: '35%',
+                  left:  Platform.OS === 'android' && height > 1000 ? '30%' : '35%',
                   zIndex: -1,
                 }}>
                 <FastImage

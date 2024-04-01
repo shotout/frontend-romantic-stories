@@ -86,7 +86,7 @@ function SvgComponent(props) {
             : level1
         }
         x={
-          Platform.OS === 'android'
+          Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
             ? '-27'
             : profileUrl.includes('3')
             ? '140'
@@ -198,7 +198,9 @@ function SvgComponent(props) {
               : avatar6
           }
           x={
-            Platform.OS === 'android'
+            Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
+              ? '-32'
+              : Platform.OS === 'android' 
               ? '-27'
               : profileUrl.includes('3')
               ? '140'
@@ -209,7 +211,9 @@ function SvgComponent(props) {
               : '138'
           }
           y={
-            Platform.OS === 'android'
+            Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
+              ? '20'
+              : Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '15'
               : profileUrl.includes('3')
               ? '-18'

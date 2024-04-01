@@ -154,7 +154,7 @@ const SettingsPage = ({
           style={{
             marginTop: Dimensions.get('window').height === 667 ? hp(90) : hp(80),
           }}>
-          <View style={{marginTop: hp(20)}}>
+          <View style={{marginTop: hp(Platform.OS === 'android' && Dimensions.get('window').height >= 1005 ? 60 : 20)}}>
             <Text
               allowFontScaling={false}
               style={{

@@ -62,8 +62,8 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
 appOpenAd.load();
 function App({ userProfile }) {
   Sentry.init({
-    environment: 'production',
-    // environment: 'development',
+    // environment: 'production',
+    environment: 'development',
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
   });
