@@ -750,7 +750,7 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
                       }}
                     />
 
-                    <View >
+                    <View style={{flex: 1, alignItems: 'center'}}>
                       <Text
                         style={{
                           color: '#93989F',
@@ -764,9 +764,11 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
                       <Text
                         style={{
                           color: '#93989F',
-                          marginVertical: 5,
-                          marginLeft: 20,
+                          // marginVertical: 5,
+                          // marginLeft: 20,
+                          flex: 1,
                           width: 200,
+                          alignItems: 'center',
                           textAlign: 'center',
                         }}>
                         You can still listen to{' '}
