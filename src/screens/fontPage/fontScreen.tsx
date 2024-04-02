@@ -556,7 +556,7 @@ const FontScreen = ({
             style={{flex: 1, color: code_color.white, textAlign: 'left',fontSize: moderateScale(14)}}>
             CHANGE FONT
           </Text>
-          <Text allowFontScaling={false} style={{color: code_color.white, fontSize: moderateScale(13)}}>
+          <Text allowFontScaling={false} style={{color: code_color.white, fontFamily: fontSelect.name,  fontSize: moderateScale(13)}}>
             {fontSelect.name}
           </Text>
           <Pressable

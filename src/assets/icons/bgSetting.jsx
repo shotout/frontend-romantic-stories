@@ -212,7 +212,7 @@ function SvgComponent(props) {
           }
           y={
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
-              ? '20'
+              ? '30'
               : Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '15'
               : profileUrl.includes('3')
@@ -224,7 +224,7 @@ function SvgComponent(props) {
               : '-40'
           }
           width="100%"
-          height="300"
+          height={Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 ? "200" : "300"}
           rx="28"
         />
       </G>

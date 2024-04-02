@@ -191,6 +191,10 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     // setShowModalGetPremium(true);
   };
 
+  const audioTake = userProfile?.data?.subscription?.audio_take || 0;
+const audioLimit = userProfile?.data?.subscription?.audio_limit || 0;
+
+const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
   return (
     <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
       <ModalGetPremium
@@ -579,9 +583,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                     thickness={5}
                     borderWidth={2}
                     progress={
-                      1 -
-                      (userProfile?.data?.subscription?.audio_take ? userProfile?.data?.subscription?.audio_take : 0) /
-                        (userProfile?.data?.subscription?.audio_limit ? userProfile?.data?.subscription?.audio_limit : 0)
+                      result
                     }
                     showsText
                     formatText={() =>
@@ -724,10 +726,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                       thickness={5}
                       borderWidth={2}
                       progress={
-                        1 -
-                        (userProfile?.data?.subscription?.audio_take ? userProfile?.data?.subscription?.audio_take : 0) /
-                        (userProfile?.data?.subscription?.audio_limit ? userProfile?.data?.subscription?.audio_limit : 0)
-                    
+                        result
                       }
                       showsText
                       formatText={() =>
@@ -751,7 +750,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
                       }}
                     />
 
-                    <View>
+                    <View >
                       <Text
                         style={{
                           color: '#93989F',

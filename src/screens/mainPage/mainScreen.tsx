@@ -1343,6 +1343,7 @@ const MainScreen = ({
 
             <View
               style={{
+                marginLeft: 5,
                 padding: hp(5),
                 paddingHorizontal: hp(10),
                 borderRadius: hp(20),
@@ -1550,6 +1551,7 @@ const MainScreen = ({
                 handleListening();
               }}
               style={{
+                marginLeft: 5,
                 padding: hp(5),
                 paddingHorizontal: hp(10),
                 borderRadius: hp(20),
