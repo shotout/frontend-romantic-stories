@@ -37,15 +37,16 @@ function SvgComponent(props) {
     levelUrl = '',
     style,
   } = props;
+
   return (
     <Svg
       width={width}
-      height={Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : height}
+      height={Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&   Dimensions.get('window').height < 950 ? height + 20 :  height}
       viewBox="0 0 390 264"
       fill="none"
       style={style}
       xmlns="http://www.w3.org/2000/svg">
-      <Rect width={width} height={height} fill={bgTheme} />
+      {/* <Rect width={width} height={height} fill={bgTheme} /> */}
       <Path
         d="M41.1005 62.7675C40.598 44.8135 36.3687 33.6527 20.2369 24.7631C2.4548 14.9641 -18.7251 19.2005 -26.9472 34.1161C-41.8952 61.2329 -24.607 106.114 -7.38695 150.728C39.7139 141.558 86.7054 132.132 101.667 104.99C109.889 90.0744 102.34 70.0066 84.5579 60.2076C68.4261 51.3181 56.7298 53.7031 41.1005 62.7675Z"
         fill="#FFD12F"
@@ -200,6 +201,8 @@ function SvgComponent(props) {
           x={
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '-32'
+              : Platform.OS === 'android' &&  Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 950
+              ? '-25'
               : Platform.OS === 'android' 
               ? '-27'
               : profileUrl.includes('3')
@@ -213,7 +216,9 @@ function SvgComponent(props) {
           y={
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '30'
-              : Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
+              : Platform.OS === 'android' &&  Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 950
+              ? '25'
+              : Platform.OS === 'android' 
               ? '15'
               : profileUrl.includes('3')
               ? '-18'
