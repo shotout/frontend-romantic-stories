@@ -54,6 +54,7 @@ import {
   eventTracking,
 } from '../../helpers/eventTracking';
 import ImageColors from 'react-native-image-colors';
+import { moderateScale } from 'react-native-size-matters';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   const [play, setPlay] = useState(false);
@@ -309,9 +310,9 @@ console.log(userStory?.audio)
           }}
           resizeMode="cover"
           style={{
-            width: width === 375 && height === 667 ? 200 : 352,
-            height: width === 375 && height === 667 ? 200 :  350,
-            borderRadius: 8,
+            width: hp(width === 375 && height === 667 ? 200 : 352),
+            height: hp(width === 375 && height === 667 ? 200 : 350),
+            borderRadius: hp(8),
           }}
         />
         <Text
@@ -320,7 +321,7 @@ console.log(userStory?.audio)
             color: code_color.white,
             marginBottom: 10,
             marginTop: 40,
-            fontSize: 14,
+            fontSize: moderateScale(14),
           }}>
           {userStory?.category?.name}
         </Text>
@@ -329,7 +330,7 @@ console.log(userStory?.audio)
           style={{
             color: code_color.white,
             marginBottom: 40,
-            fontSize: 16,
+            fontSize: moderateScale(16),
             fontWeight: 'bold',
           }}>
           {userStory?.title_id}
@@ -352,7 +353,7 @@ console.log(userStory?.audio)
             style={{
               color: code_color.white,
               marginBottom: 40,
-              fontSize: 14,
+              fontSize: moderateScale(14),
               flex: 1,
             }}>
             {formatTime(position)}
@@ -362,7 +363,7 @@ console.log(userStory?.audio)
             style={{
               color: code_color.white,
               marginBottom: 40,
-              fontSize: 14,
+              fontSize: moderateScale(14),
               flex: 1,
               textAlign: 'right',
             }}>
@@ -379,37 +380,37 @@ console.log(userStory?.audio)
         }}>
         <TouchableOpacity onPress={() => handleFetchSave()}>
           {userStory?.is_collection === null ? (
-            <LoveOutline width={wp(35)} height={hp(35)} />
+            <LoveOutline width={hp(35)} height={hp(35)} />
           ) : (
-            <LoveSvg width={wp(35)} height={hp(35)} fill={code_color.white} />
+            <LoveSvg width={hp(35)} height={hp(35)} fill={code_color.white} />
           )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position - 5)}>
-          <Prev5 />
+          <Prev5 width={hp(35)} height={hp(35)} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setPlay(prev => !prev)}>
           {play ? (
-            <Pause />
+            <Pause width={hp(55)} height={hp(55)} />
           ) : (
             <View
               style={{
-                width: 55,
-                height: 55,
+                width: hp(55),
+                height: hp(55),
                 borderRadius: 50,
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: 'white',
               }}>
-              <Play fill={'#6B7C8C'} width={35} height={35} />
+              <Play fill={'#6B7C8C'} width={hp(35)} height={hp(35)} />
             </View>
           )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => TrackPlayer.seekTo(position + 5)}>
-          <Next5 />
+          <Next5 width={hp(35)} height={hp(35)} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowModalShareStory(true)}>
-          <ShareSvg width={30} height={30} />
+          <ShareSvg width={hp(30)} height={hp(30)} />
         </TouchableOpacity>
       </View>
       {/* {renderTutorial()} */}
