@@ -22,6 +22,7 @@ import CloseSvg from '../../assets/icons/close';
 import {BACKEND_URL} from '../../shared/static';
 import {ActivityIndicator} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import {hp} from '../../utils/screen';
 
 function ModalUnlockStory({
   isVisible,
@@ -67,18 +68,18 @@ function ModalUnlockStory({
             <View style={{flexDirection: 'row'}}>
               <View
                 style={{
-                  width: 80,
-                  marginRight: 16,
+                  width: hp(80),
+                  marginRight: hp(16),
                   marginLeft: moderateScale(10),
                 }}>
                 {data?.is_free === 0 && (
                   <LockFree
-                    height={20}
-                    width={60}
+                    height={hp(20)}
+                    width={hp(60)}
                     style={{
-                      marginBottom: -24,
-                      marginTop: 8,
-                      marginLeft: 4,
+                      marginBottom: hp(-24),
+                      marginTop: hp(8),
+                      marginLeft: hp(4),
                       zIndex: 1,
                     }}
                   />
@@ -88,18 +89,18 @@ function ModalUnlockStory({
                     uri: `${BACKEND_URL}${data?.category?.cover?.url}`,
                   }}
                   resizeMode="cover"
-                  style={{height: 130, width: 95, borderRadius: 6}}
+                  style={{height: hp(130), width: hp(95), borderRadius: hp(6)}}
                 />
               </View>
               <View
                 style={{
                   marginLeft: moderateScale(10),
-                  width: 200,
+                  width: hp(200),
                   // justifyContent: 'center',
                 }}>
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: moderateScale(16),
                     fontWeight: '400',
                     color: '#3F58DD',
                     marginTop: moderateScale(28),
@@ -108,7 +109,11 @@ function ModalUnlockStory({
                   {data?.category?.name}
                 </Text>
                 <Text
-                  style={{fontSize: 18, fontWeight: '700', color: '#5873FF'}}>
+                  style={{
+                    fontSize: moderateScale(18),
+                    fontWeight: '700',
+                    color: '#5873FF',
+                  }}>
                   {data?.title_en}
                 </Text>
               </View>
@@ -164,14 +169,27 @@ function ModalUnlockStory({
                     zIndex: 1,
                     top: -moderateScale(8),
                   }}>
-                  <Text style={{color: code_color.black, fontWeight: 600}}>
+                  <Text
+                    style={{
+                      color: code_color.black,
+                      fontWeight: '600',
+                      fontSize: moderateScale(12),
+                    }}>
                     MOST SELECTED
                   </Text>
                 </View>
                 {isLoading ? (
-                  <ActivityIndicator color={code_color.blueDark} size={13} />
+                  <ActivityIndicator
+                    color={code_color.blueDark}
+                    size={hp(13)}
+                  />
                 ) : (
-                  <Text style={{color: code_color.white, textAlign: 'center'}}>
+                  <Text
+                    style={{
+                      color: code_color.white,
+                      textAlign: 'center',
+                      fontSize: moderateScale(14),
+                    }}>
                     {price} for 1 week access
                   </Text>
                 )}
@@ -200,14 +218,24 @@ function ModalUnlockStory({
                   zIndex: 1,
                   top: -moderateScale(8),
                 }}>
-                <Text style={{color: code_color.black, fontWeight: 600}}>
+                <Text
+                  style={{
+                    color: code_color.black,
+                    fontWeight: '600',
+                    fontSize: moderateScale(12),
+                  }}>
                   FREE
                 </Text>
               </View>
               {loadingOne ? (
-                <ActivityIndicator color={code_color.blueDark} size={13} />
+                <ActivityIndicator color={code_color.blueDark} size={hp(13)} />
               ) : (
-                <Text style={{color: code_color.white, textAlign: 'center'}}>
+                <Text
+                  style={{
+                    color: code_color.white,
+                    textAlign: 'center',
+                    fontSize: moderateScale(14),
+                  }}>
                   Watch Ad for 12 hours Access
                 </Text>
               )}
@@ -227,7 +255,14 @@ function ModalUnlockStory({
                   height: 1,
                 }}
               />
-              <Text style={{marginHorizontal: moderateScale(8)}}>OR</Text>
+              <Text
+                style={{
+                  marginHorizontal: moderateScale(8),
+                  color: code_color.black,
+                  fontSize: moderateScale(14),
+                }}>
+                OR
+              </Text>
               <View
                 style={{
                   backgroundColor: code_color.black,
@@ -258,14 +293,26 @@ function ModalUnlockStory({
                   zIndex: 1,
                   top: -moderateScale(8),
                 }}>
-                <Text style={{color: code_color.black, fontWeight: 600}}>
+                <Text
+                  style={{
+                    color: code_color.black,
+                    fontWeight: '600',
+                    fontSize: moderateScale(12),
+                  }}>
                   UNLOCK EVERYTHING
                 </Text>
               </View>
               <BookLockIcon
+                height={hp(24)}
+                width={hp(24)}
                 style={{position: 'absolute', top: '70%', left: '12%'}}
               />
-              <Text style={{color: code_color.white, textAlign: 'center'}}>
+              <Text
+                style={{
+                  color: code_color.white,
+                  textAlign: 'center',
+                  fontSize: moderateScale(14),
+                }}>
                 Get EroTales UNLIMITED
               </Text>
             </Pressable>

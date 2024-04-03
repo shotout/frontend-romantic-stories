@@ -7,12 +7,12 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {code_color} from '../../utils/colors';
-import {cover1, imgLoveLeft, imgLoveRight} from '../../assets/images';
+import {imgLoveLeft, imgLoveRight} from '../../assets/images';
 import {moderateScale} from 'react-native-size-matters';
 import {successPurchase} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
-import LoveIcon from '../../assets/icons/loveOutline';
-import { BACKEND_URL } from '../../shared/static';
+import {BACKEND_URL} from '../../shared/static';
+import {hp} from '../../utils/screen';
 
 function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
   const handleClose = () => {
@@ -40,7 +40,7 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
           <Image
             source={successPurchase}
             style={{
-              height: 150,
+              height: hp(140),
               aspectRatio: '1.15/1',
               alignSelf: 'center',
             }}
@@ -49,7 +49,7 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
             style={{
               fontSize: moderateScale(18),
               color: code_color.white,
-              fontWeight: 700,
+              fontWeight: '700',
               textAlign: 'center',
               marginTop: moderateScale(10),
               marginBottom: moderateScale(20),
@@ -60,11 +60,11 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
             source={imgLoveLeft}
             resizeMode="contain"
             style={{
-              width: 100,
-              height: 150,
+              width: hp(100),
+              height: hp(150),
               position: 'absolute',
               left: 0,
-              top: 150,
+              top: hp(140),
             }}
           />
 
@@ -72,11 +72,11 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
             source={imgLoveRight}
             resizeMode="contain"
             style={{
-              width: 100,
-              height: 150,
+              width: hp(100),
+              height: hp(150),
               position: 'absolute',
               right: 0,
-              top: 150,
+              top: hp(140),
             }}
           />
           <View
@@ -93,31 +93,30 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
                 }}
                 resizeMode="contain"
                 style={{
-                  width: 65,
-                  height: 87,
+                  width: hp(65),
+                  height: hp(87),
                   marginRight: moderateScale(10),
                 }}
               />
               <View style={{flex: 1}}>
-              <Text
+                <Text
                   style={{
                     color: '#3F58DD',
                     marginTop: 10,
-                    fontWeight: 400,
-                    fontSize: 14,
+                    fontWeight: '400',
+                    fontSize: moderateScale(14),
                   }}>
-  {nextStory?.category.name}
+                  {nextStory?.category.name}
                 </Text>
                 <Text
                   style={{
                     color: code_color.blueDark,
                     marginTop: 10,
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: moderateScale(16),
                   }}>
-                    {nextStory?.title_en}
+                  {nextStory?.title_en}
                 </Text>
-               
               </View>
             </View>
             <View
@@ -132,15 +131,17 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
             <Text
               style={{
                 color: '#1A1D30',
-                fontSize: 16,
-                fontWeight: 400,
+                fontSize: moderateScale(15),
+                fontWeight: '400',
                 lineHeight: moderateScale(20),
                 width: '100%',
               }}>
               You have{' '}
-              <Text style={{color: '#00B781', fontWeight: 700}}>
+              <Text style={{color: '#00B781', fontWeight: '700'}}>
                 {' '}
-                {type ? 'unlocked this story for 12 hour access free' : 'unlocked this story for 7 days'}
+                {type
+                  ? 'unlocked this story for 12 hour access free'
+                  : 'unlocked this story for 7 days'}
               </Text>
               . You can start reading it now or save it in the library to read
               it later.
@@ -152,16 +153,18 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
                 marginTop: moderateScale(20),
                 padding: moderateScale(12),
                 alignItems: 'center',
-                borderRadius: 8,
+                borderRadius: hp(8),
                 width: '100%',
               }}>
               <ReadingIcon
+                height={hp(25)}
+                width={hp(25)}
                 style={{position: 'absolute', left: '15%', top: '40%'}}
               />
               <Text
                 style={{
                   color: code_color.white,
-                  fontWeight: 500,
+                  fontWeight: '500',
                   fontSize: moderateScale(14),
                 }}>
                 Start reading

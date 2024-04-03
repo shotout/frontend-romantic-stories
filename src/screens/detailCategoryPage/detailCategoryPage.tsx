@@ -11,14 +11,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
-  Image,
   TextInput,
   Pressable,
   ScrollView,
   SafeAreaView,
   Dimensions,
   Alert,
-  FlatList,
   PanResponder,
 } from 'react-native';
 import {code_color} from '../../utils/colors';
@@ -48,10 +46,11 @@ import {reloadUserProfile} from '../../utils/user';
 import * as IAP from 'react-native-iap';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
 import UnlockCategoryIcon from '../../assets/icons/unlockCategory';
-import {sizing} from '../../utils/styling';
 import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
+import {hp} from '../../utils/screen';
+import {moderateScale} from 'react-native-size-matters';
 
 const DetailCategoryScreen = ({
   route,
@@ -67,7 +66,6 @@ const DetailCategoryScreen = ({
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const flatListRef = useRef(null);
   const [selectedAlphabet, setSelectedAlphabet] = useState(null);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
@@ -90,10 +88,10 @@ const DetailCategoryScreen = ({
     : data?.data;
 
   const showWatchAds = async () => {
-    setLoading2(true)
+    setLoading2(true);
     const advert = await loadRewarded();
     advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
-      setLoading2(false)
+      setLoading2(false);
       setShowModalUnlock(false);
       setTimeout(async () => {
         const resp = await getStoryDetail(selectedStory?.id);
@@ -102,7 +100,7 @@ const DetailCategoryScreen = ({
           story_id: selectedStory?.id,
           expire: 1,
         };
-      
+
         await updateProfile(payloadStory);
         reloadUserProfile();
         handleNextStory(resp.data);
@@ -130,7 +128,7 @@ const DetailCategoryScreen = ({
     try {
       const paymentResult = await handlePayment('in_app');
       if (paymentResult.success) {
-        setShowModalGetPremium(true)
+        setShowModalGetPremium(true);
         setShowUnlockedStory(false);
       } else {
         setShowUnlockedStory(false);
@@ -151,13 +149,13 @@ const DetailCategoryScreen = ({
         };
         const res = await getCategoryDetail(route?.params?.categoryId, params);
         setData(res);
-        setLoad(false)
+        setLoad(false);
       } catch (error) {
         setData(null);
-        setLoad(false)
+        setLoad(false);
       }
     }
-    setLoad(true)
+    setLoad(true);
     fetchData();
   };
   useEffect(() => {
@@ -174,7 +172,7 @@ const DetailCategoryScreen = ({
   };
 
   useEffect(() => {
-    if(!__DEV__){
+    if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
           skus: ['unlock_story_1_week_only'],
@@ -183,7 +181,6 @@ const DetailCategoryScreen = ({
       }
       getPrice();
     }
-   
   }, []);
 
   const showInterStialCategory = async () => {
@@ -300,30 +297,25 @@ const DetailCategoryScreen = ({
     const currentAlphabet = alphabets[alphabetIndex];
   };
 
-  
   useEffect(() => {
     const fetchData = async () => {
       if (selectedStory) {
         try {
           const resp = await getStoryDetail(selectedStory?.id);
-        handleSetStory(resp.data);
-        handleNextStory(resp.data)
-        if(userProfile?.data?.subscription?.plan_id === 1){
-          setTimeout(() => {
-            setShowModalUnlock(true)
-          }, 200);
-         
-        }else{
-          setShowUnlockedStory(true)
-        }
-        } catch (error) {
-          
-        }
-        
+          handleSetStory(resp.data);
+          handleNextStory(resp.data);
+          if (userProfile?.data?.subscription?.plan_id === 1) {
+            setTimeout(() => {
+              setShowModalUnlock(true);
+            }, 200);
+          } else {
+            setShowUnlockedStory(true);
+          }
+        } catch (error) {}
       }
     };
     fetchData();
-  }, [selectedStory]); 
+  }, [selectedStory]);
 
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
@@ -332,7 +324,7 @@ const DetailCategoryScreen = ({
         onClose={() => setShowModalSort(false)}
         items={(value: any) => setItems(value)}
       />
-       <ModalGetPremium
+      <ModalGetPremium
         isVisible={showModalGetPremium}
         onGotIt={() => {
           setShowModalGetPremium(false);
@@ -372,33 +364,33 @@ const DetailCategoryScreen = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 10,
+            marginHorizontal: hp(10),
           }}>
           <Pressable
             onPress={() => goBack()}
             style={{
-              width: 35,
-              height: 35,
+              width: hp(35),
+              height: hp(35),
               backgroundColor: code_color.white,
-              borderRadius: 20,
+              borderRadius: hp(20),
               alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(180deg)',
             }}>
-            <BackRight fill={bgTheme} />
+            <BackRight fill={bgTheme} height={hp(20)} width={hp(20)} />
           </Pressable>
           <View
             style={{
               backgroundColor: 'rgba(255, 255, 255, 0.6)',
               flex: 1,
-              borderRadius: 20,
-              margin: 10,
+              borderRadius: hp(20),
+              margin: hp(10),
               flexDirection: 'row',
               alignItems: 'center',
-              paddingLeft: 10,
-              height: 40,
+              paddingLeft: hp(10),
+              height: hp(40),
             }}>
-            <SearchSvg />
+            <SearchSvg height={hp(20)} width={hp(20)} />
             <TextInput
               placeholder="Search"
               allowFontScaling={false}
@@ -406,8 +398,8 @@ const DetailCategoryScreen = ({
               onChangeText={value => setKeyword(value)}
               placeholderTextColor={code_color.black}
               style={{
-                marginLeft: 10,
-                fontSize: 14,
+                marginLeft: hp(10),
+                fontSize: moderateScale(14),
                 color: code_color.black,
                 flex: 1,
                 height: '100%',
@@ -415,7 +407,11 @@ const DetailCategoryScreen = ({
             />
           </View>
           <Pressable onPress={() => setShowModalSort(true)}>
-            <DescendingSvg fill={code_color.white} />
+            <DescendingSvg
+              fill={code_color.white}
+              height={hp(30)}
+              width={hp(30)}
+            />
           </Pressable>
         </View>
       </View>
@@ -427,10 +423,11 @@ const DetailCategoryScreen = ({
         {data?.category?.name && (
           <Text
             style={{
-              fontSize: 16,
+              fontSize: moderateScale(16),
               fontWeight: '600',
-              marginTop: 10,
-              marginLeft: 13,
+              marginTop: hp(10),
+              marginLeft: hp(13),
+              color: code_color.black,
             }}>
             Category: {data?.category?.name}
           </Text>
@@ -440,13 +437,19 @@ const DetailCategoryScreen = ({
             <View
               style={{
                 backgroundColor: '#F0F2FF',
-                marginTop: 11,
-                marginHorizontal: 13,
-                minWidth: Dimensions.get('screen').width - 26,
-                borderRadius: 8,
-                padding: 16,
+                marginTop: hp(11),
+                marginHorizontal: hp(13),
+                minWidth: Dimensions.get('screen').width - hp(26),
+                borderRadius: hp(8),
+                padding: hp(16),
               }}>
-              <Text style={{fontSize: 16, fontWeight: '600', marginBottom: 16}}>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  fontWeight: '600',
+                  marginBottom: hp(16),
+                  color: code_color.black,
+                }}>
                 🔥 Most liked Stories in this Category
               </Text>
               <ScrollView horizontal style={{flex: 0}}>
@@ -456,43 +459,55 @@ const DetailCategoryScreen = ({
                       setSelectedStory(itm);
                     }}
                     style={{
-                      width: 95,
-                      marginRight: idx + 1 === data?.most_read?.length ? 0 : 16,
+                      width: hp(95),
+                      marginRight: hp(
+                        idx + 1 === data?.most_read?.length ? 0 : 16,
+                      ),
                     }}
                     key={idx}>
                     {userProfile?.data?.subscription?.plan_id != 2 &&
                       userProfile?.data?.subscription?.plan_id != 3 && (
                         <LockFree
-                          height={16}
-                          width={55}
+                          height={hp(16)}
+                          width={hp(55)}
                           style={{
-                            marginBottom: -20,
-                            marginTop: 4,
-                            marginLeft: 4,
+                            marginBottom: hp(-20),
+                            marginTop: hp(4),
+                            marginLeft: hp(4),
                             zIndex: 1,
                           }}
                         />
                       )}
-                       <FastImage
+                    <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
                         priority: FastImage.priority.high,
                       }}
                       resizeMode={FastImage.resizeMode.cover}
-                      style={{height: 130, width: 95, borderRadius: 6}}
+                      style={{
+                        height: hp(130),
+                        width: hp(95),
+                        borderRadius: hp(6),
+                      }}
                     />
                     <Text
                       style={{
-                        fontSize: 9,
+                        fontSize: moderateScale(9),
                         fontWeight: '400',
                         marginTop: 6,
                         opacity: 0.8,
+                        color: code_color.black,
                       }}>
                       {itm?.category?.name}
                     </Text>
                     <Text
                       allowFontScaling={false}
-                      style={{fontSize: 10, fontWeight: '600', marginTop: 6}}>
+                      style={{
+                        fontSize: moderateScale(10),
+                        fontWeight: '600',
+                        marginTop: 6,
+                        color: code_color.black,
+                      }}>
                       {itm.title_en}
                     </Text>
                   </Pressable>
@@ -510,58 +525,58 @@ const DetailCategoryScreen = ({
           }}>
           {selectedAlphabet}
         </Text> */}
-        <View style={{flexDirection: 'row', flex: 1, paddingBottom: 150}}>
+        <View style={{flexDirection: 'row', flex: 1, paddingBottom: hp(150)}}>
           <ScrollView
             onScroll={handleScroll}
             showsVerticalScrollIndicator={false}
             style={{
-              marginTop: 20,
+              marginTop: hp(20),
               flex: 1,
             }}>
             {combinedData &&
               combinedData.map((itm: any, idx: number) => (
                 <Pressable
-                onPress={() => {
-                   setSelectedStory(itm);
-                }}
+                  onPress={() => {
+                    setSelectedStory(itm);
+                  }}
                   key={idx}
                   style={{
                     height: 'auto',
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginHorizontal: 13,
+                    marginHorizontal: hp(13),
                     borderBottomColor: '#F0F2FF',
                     borderBottomWidth: 1,
                   }}>
-                     <FastImage
-                      source={{
-                        uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
-                        priority: FastImage.priority.high,
-                      }}
-                      resizeMode={FastImage.resizeMode.cover}
-                      style={{
-                        height: 50,
-                        width: 36.5,
-                        borderRadius: 5,
-                        marginVertical: 10,
-                      }}
-                    />
-                  
-                  <View style={{marginLeft: 10, justifyContent: 'center'}}>
+                  <FastImage
+                    source={{
+                      uri: `${BACKEND_URL}${itm?.category?.cover?.url}`,
+                      priority: FastImage.priority.high,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    style={{
+                      height: hp(50),
+                      width: hp(36.5),
+                      borderRadius: hp(5),
+                      marginVertical: hp(10),
+                    }}
+                  />
+
+                  <View style={{marginLeft: hp(10), justifyContent: 'center'}}>
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         fontWeight: '400',
                         color: code_color.black,
                         opacity: 0.5,
-                        marginBottom: 4,
+                        marginBottom: hp(4),
                       }}>
                       {itm?.category?.name}
                     </Text>
                     <Text
                       style={{
-                        fontSize: 15,
+                        fontSize: moderateScale(15),
                         fontWeight: '700',
                         color: code_color.black,
                       }}>
@@ -571,8 +586,8 @@ const DetailCategoryScreen = ({
                   {userProfile?.data?.subscription?.plan_id != 2 &&
                     userProfile?.data?.subscription?.plan_id != 3 && (
                       <LockFree
-                        height={16}
-                        width={55}
+                        height={hp(16)}
+                        width={hp(55)}
                         style={{
                           marginLeft: 'auto',
                           zIndex: 1,
@@ -633,7 +648,7 @@ const DetailCategoryScreen = ({
           navigate('Main');
         }}
       />
-       <Loading loading={load} />
+      <Loading loading={load} />
     </SafeAreaView>
   );
 };
