@@ -86,6 +86,7 @@ import PlayStore from '../../assets/icons/playStore';
 import AppStore from '../../assets/icons/appStore';
 import FastImage from 'react-native-fast-image';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import { hp } from '../../utils/screen';
 
 function ScreenShare({
   route,
@@ -439,32 +440,32 @@ function ScreenShare({
         <ScrollView horizontal>
           <Card
             label="WhatsApp"
-            icon={<Whatsapp width="100%" height="100%" />}
+            icon={<Whatsapp width={hp(29)} height={hp(29)} />}
             onPress={handleWAShare}
           />
           <Card
             label="Instagram Stories"
-            icon={<InstagramStory width="100%" height="100%" />}
+            icon={<InstagramStory width={hp(29)} height={hp(29)} />}
             onPress={handleIGStoryShare}
           />
           <Card
             label="Instagram"
-            icon={<Instagram width="100%" height="100%" />}
+            icon={<Instagram width={hp(29)} height={hp(29)} />}
             onPress={handleShareInstagramDefault}
           />
           <Card
             label="Facebook Stories"
-            icon={<FBStory width="100%" height="100%" />}
+            icon={<FBStory width={hp(29)} height={hp(29)} />}
             onPress={handleSharetoFBStory}
           />
           <Card
             label="Facebook"
-            icon={<FB width="100%" height="100%" />}
+            icon={<FB width={hp(29)} height={hp(29)} />}
             onPress={handleShareFBDefault}
           />
           <Card
             label="Save Image"
-            icon={<Save width="100%" height="100%" />}
+            icon={<Save width={hp(29)} height={hp(29)} />}
             onPress={handleSaveImage}
           />
         </ScrollView>
@@ -1129,9 +1130,9 @@ function ScreenShare({
               </Text>
               <Pressable onPress={() => setShow(!show)} style={styles.dropDown}>
                 {show ? (
-                  <UpChevron height={10} width={10} />
+                  <UpChevron height={hp(10)} width={hp(10)} />
                 ) : (
-                  <DownChevron height={10} width={10} />
+                  <DownChevron height={hp(10)} width={hp(10)} />
                 )}
               </Pressable>
             </View>
@@ -1166,9 +1167,10 @@ function ScreenShare({
                 <Text
                   allowFontScaling={false}
                   style={{
-                    paddingHorizontal: 20,
+                    paddingHorizontal: hp(20),
                     paddingVertical: 0,
                     fontFamily: item?.value,
+                    fontSize: moderateScale(14),
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark
@@ -1182,34 +1184,34 @@ function ScreenShare({
                     <View
                       style={{
                         position: 'absolute',
-                        top: -2,
-                        left: -1,
+                        top: hp(-2),
+                        left: hp(-1),
                         backgroundColor: code_color.black,
-                        height: 18,
-                        width: 18,
-                        borderRadius: 10,
+                        height: hp(18),
+                        width: hp(18),
+                        borderRadius: hp(10),
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <Lock width={9} />
+                      <Lock width={hp(9)} />
                     </View>
                     <View
                       style={{
                         position: 'absolute',
-                        bottom: -6,
-                        right: -8,
+                        bottom: hp(-6),
+                        right: hp(-8),
                         backgroundColor: code_color.pink,
-                        borderRadius: 8,
+                        borderRadius: hp(8),
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingHorizontal: 5,
-                        paddingVertical: 2,
+                        paddingHorizontal: hp(5),
+                        paddingVertical: hp(2),
                       }}>
-                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Watch fill={code_color.white} height={hp(12)} width={hp(12)} />
                       <Text
                         style={{
                           color: code_color.white,
-                          fontSize: 8,
+                          fontSize: moderateScale(8),
                           fontWeight: '700',
                           marginLeft: 2,
                         }}>
@@ -1225,15 +1227,15 @@ function ScreenShare({
           <Text style={{...styles.title, textAlign: 'center'}}>
             Choose Background
           </Text>
-          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20}}>
+          <SafeAreaView style={{width: '100%', height: hp(80), marginTop: 20}}>
             <ScrollView horizontal style={styles.horizontalScroll}>
               {backgroundList.map((bgl, idx) => (
                 <TouchableOpacity
                   key={idx}
                   style={{
-                    height: 75,
-                    width: 75,
-                    marginRight: 12,
+                    height: hp(75),
+                    width: hp(75),
+                    marginRight: hp(12),
                   }}
                   onPress={() => {
                     setSelectedBg(bgl);
@@ -1250,7 +1252,7 @@ function ScreenShare({
                       height: '100%',
                       width: '100%',
                       objectFit: 'cover',
-                      borderRadius: 8,
+                      borderRadius: hp(8),
                       borderColor: code_color.yellow,
                       borderWidth: bgl === selectBg ? 2 : 0,
                     }}
@@ -1263,6 +1265,8 @@ function ScreenShare({
                         alignSelf: 'center',
                         top: 4,
                       }}
+                      height={hp(20)}
+                      width={hp(70)}
                     />
                   ) : null}
                 </TouchableOpacity>
