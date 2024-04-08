@@ -842,7 +842,7 @@ const MainScreen = ({
   useEffect(() => {
 
     const backAction = () => {
-       BackHandler.exitApp() 
+      //  BackHandler.exitApp() 
       return true;
     };
 

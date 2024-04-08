@@ -99,6 +99,7 @@ function ModalChangeIcon({
 
   const handleChangeIcon = async icon => {
     const iconName = icon?.name ? icon.name : selectedIcon;
+    console.log(iconName)
     changeIcon(iconName)
       .then(async () => {
         setSelectIcon(iconName);

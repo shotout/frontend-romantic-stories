@@ -187,7 +187,8 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                   allowFontScaling={false}
                   style={{
                     textAlign: 'center',
-                    fontSize: moderateScale(13)
+                    fontSize: moderateScale(13),
+                    color:  code_color.grey
                   }}>
                   {'Tap here to get back\n to the Story'}
                 </Text>

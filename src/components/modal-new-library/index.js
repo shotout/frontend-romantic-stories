@@ -134,6 +134,7 @@ function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
                     borderRadius: hp(10),
                     width: '90%',
                     marginVertical: hp(20),
+                    color: code_color.grey
                   }}
                   value={collect}
                   placeholder="Collection name"

@@ -74,7 +74,7 @@ const SettingsPage = ({
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
   const [bgTheme, setBgTheme] = useState(colorTheme);
-  const [menu, setlistMenu] = useState([
+  const [menu, setlistMenu] = useState( Platform.OS != 'android' ? [
     {
       name: 'Edit Profile',
       icon: <UserSvg width={hp(20)} height={hp(20)} />,
@@ -85,10 +85,22 @@ const SettingsPage = ({
       icon: <LibrarySvg fill={code_color.white} width={hp(20)} height={hp(20)} />,
       action: 'myLibrary',
     },
+    
     {
       name: 'Subscription',
       icon: <LockSvg width={hp(20)} height={hp(20)} />,
       action: 'subscription',
+    },
+  ] : [
+    {
+      name: 'Edit Profile',
+      icon: <UserSvg width={hp(20)} height={hp(20)} />,
+      action: 'editProfile',
+    },
+    {
+      name: 'My Library',
+      icon: <LibrarySvg fill={code_color.white} width={hp(20)} height={hp(20)} />,
+      action: 'myLibrary',
     },
   ]);
 
