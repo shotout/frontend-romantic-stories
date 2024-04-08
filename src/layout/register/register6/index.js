@@ -197,7 +197,8 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               textAlign: 'justify',
               paddingHorizontal: wp(10),
               lineHeight: 13,
-              fontFamily: 'Roboto'
+              fontFamily: 'Roboto',
+              color: code_color.grey,
             }}>
             {' '}
             {text}
@@ -247,7 +248,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
                   />
                   <Text
                     allowFontScaling={false}
-                    style={{fontSize: fixedFontSize(6)}}>
+                    style={{fontSize: fixedFontSize(6),  color: code_color.grey,}}>
                     {item.name}
                   </Text>
                 </View>
