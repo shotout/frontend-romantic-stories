@@ -222,8 +222,6 @@ function ModalUnlockStory({
                 borderRadius: moderateScale(24),
                 paddingBottom: 10,
                 width: sizing.getDimensionWidth(1) - hp(30),
-                borderWidth: 1,
-                borderColor: 'red',
               }}>
               <Text
                 style={{
@@ -308,8 +306,6 @@ function ModalUnlockStory({
                   marginBottom: 10,
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  borderWidth: 1,
-                  borderColor: 'red',
                 }}>
                 <LibrarySvg
                   fill={code_color.black}

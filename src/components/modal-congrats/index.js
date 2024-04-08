@@ -50,7 +50,7 @@ function ModalCongrats({
   levelingUser,
   colorTheme,
   getAvatarMale,
-  pastLevel
+  pastLevel,
 }) {
   const [leveling, setLeveling] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -65,7 +65,7 @@ function ModalCongrats({
   const newImgLvl = levelingUser?.user_level?.level?.image?.url;
   const [imgPopup, setImgPopup] = useState(currentImgLvl);
   const [lottieStart, setLottieStart] = useState(false);
-  
+
   const handleClose = () => {
     onClose();
   };
@@ -205,15 +205,15 @@ function ModalCongrats({
               ),
               right:
                 getAvatarMale === '/assets/images/avatars/5.png'
-                  ? -15 :
-                  getAvatarMale === '/assets/images/avatars/3.png' ?
-                  -3 
+                  ? -15
+                  : getAvatarMale === '/assets/images/avatars/3.png'
+                  ? -3
                   : getAvatarMale === '/assets/images/avatars/1.png'
                   ? 2
                   : getAvatarMale === '/assets/images/avatars/2.png'
-                  ? -5 :
-                  getAvatarMale === '/assets/images/avatars/6.png' ?
-                  -4
+                  ? -5
+                  : getAvatarMale === '/assets/images/avatars/6.png'
+                  ? -4
                   : 0,
             }}
           />
@@ -357,6 +357,7 @@ function ModalCongrats({
                         textAlign: 'center',
                         fontSize: moderateScale(18),
                         fontWeight: '700',
+                        color: code_color.black,
                       }}>
                       {itm?.desc?.replace(' ', '\r\n')}
                     </Text>
@@ -602,6 +603,7 @@ function ModalCongrats({
                             textAlign: 'center',
                             width: 'auto',
                             bottom: itm > 999 ? -3 : 0,
+                            color: code_color.black,
                           }}>
                           {itm}
                         </Text>
@@ -612,6 +614,7 @@ function ModalCongrats({
                         flex: 1,
                         fontWeight: 'bold',
                         fontSize: moderateScale(18),
+                        color: code_color.black,
                         left:
                           newXp > 999
                             ? -14
@@ -626,7 +629,7 @@ function ModalCongrats({
                     </Text>
                   </View>
                   <ScrollView
-                    scrollEnabled={!false}
+                    scrollEnabled={false}
                     ref={scrollViewRefRight}
                     style={{
                       flex: 1,
@@ -646,9 +649,9 @@ function ModalCongrats({
                             key={idx}
                             style={{
                               flexDirection: 'row',
-                              flex: 1,
                               alignItems: 'center',
                               height: hp(38),
+                              width: '100%',
                             }}>
                             <Image
                               source={{
@@ -668,6 +671,7 @@ function ModalCongrats({
                                   fontWeight: 'bold',
                                   fontSize: moderateScale(15),
                                   textAlign: 'center',
+                                  color: code_color.black,
                                 }}>
                                 {itm.desc}
                               </Text>
