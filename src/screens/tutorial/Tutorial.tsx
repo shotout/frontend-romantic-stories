@@ -192,11 +192,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const stopTimeout = () => {
     clearTimeout(timeout7SecRef.current); // Stop the active timeout
   };
-  useEffect(() => {
-    if (stepsTutorial < 9) {
-      startTimeout();
-    }
-  }, [stepsTutorial]);
+  // useEffect(() => {
+  //   if (stepsTutorial < 9) {
+  //     startTimeout();
+  //   }
+  // }, [stepsTutorial]);
 
   useEffect(() => {
     // handleSetSteps(0);
@@ -461,13 +461,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   animation={'fadeOut'}
                   style={{
                     position: 'absolute',
-                    bottom: -wp(24),
-                    left: -wp(15),
+                    bottom: Platform.OS === 'ios' ? -hp(20) : -hp(3),
+                    left: Platform.OS === 'ios' ? -hp(15) : -hp(12),
                   }}>
                   <AnimatedLottieView
                     source={rippleAnimate}
                     style={{
-                      width: wp(150),
+                      width: hp(150),
                     }}
                     autoPlay
                     duration={4000}
