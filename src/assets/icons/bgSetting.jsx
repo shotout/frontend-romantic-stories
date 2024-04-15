@@ -37,11 +37,10 @@ function SvgComponent(props) {
     levelUrl = '',
     style,
   } = props;
-
   return (
     <Svg
       width={width}
-      height={Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&   Dimensions.get('window').height < 950 ? height + 20 :  height}
+      height={Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&   Dimensions.get('window').height < 960 ? height + 20 :  height}
       viewBox="0 0 390 264"
       fill="none"
       style={style}
