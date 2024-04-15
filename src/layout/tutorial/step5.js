@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Dimensions, Image, Platform, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
@@ -8,6 +8,7 @@ import AnimatedLottieView from 'lottie-react-native';
 import quoteAnimate from '../../assets/lottie/quote.json';
 import {hp} from '../../utils/screen';
 import {moderateScale} from 'react-native-size-matters';
+import { step5 } from '../../assets/icons';
 
 const Step5 = ({handleNext, handlePrev}) => {
   // return <></>;
@@ -33,6 +34,7 @@ const Step5 = ({handleNext, handlePrev}) => {
           borderColor: '#3F58DD',
           borderWidth: hp(4),
         }}>
+          {Platform.OS === 'ios'  ?
         <AnimatedLottieView
           source={quoteAnimate}
           autoPlay={true}
@@ -43,8 +45,10 @@ const Step5 = ({handleNext, handlePrev}) => {
             width: hp(92),
             left: hp(-3.6),
             top: hp(-3.6),
+            zIndex: 1
           }}
-        />
+        /> : 
+        <Image source={step5}  style={{ height: hp(72), width: hp(72)}}/> }
       </View>
       <Animatable.Text
         delay={1500}

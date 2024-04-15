@@ -79,6 +79,7 @@ import {
   ADD_STORY_TO_LIBRARY,
   AUDIO_PLAYED,
   ONBOARDING_COMPLETE,
+  TUTORIAL_FINISH,
   eventTracking,
 } from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -275,7 +276,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       checkInstall();
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
-      eventTracking(ONBOARDING_COMPLETE);
+      eventTracking(TUTORIAL_FINISH);
       // setTimeout(() => {
       //     handlePayment('onboarding');
       // }, 200);

@@ -33,6 +33,7 @@ export const FINISH_LISTEN_7 = '34ukg9';
 export const FINISH_READ_10 = 'vbg4j1';
 export const FINISH_READ_7 = '3pjz0y';
 export const FINISH_READ_3 = 'h2zuqx';
+export const TUTORIAL_FINISH = 'ji0xf4'
 
 const setAdsConversion = async () => {
   await updatePostbackConversionValue(0);
@@ -82,7 +83,8 @@ const getScreenName = id => {
       return 'FINISH_READ_7';
     case FINISH_READ_3:
       return 'FINISH_READ_3';
-
+      case TUTORIAL_FINISH:
+        return 'TUTORIAL_FINISH';
     default:
       return id;
   }
