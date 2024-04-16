@@ -193,11 +193,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const stopTimeout = () => {
     clearTimeout(timeout7SecRef.current); // Stop the active timeout
   };
-  // useEffect(() => {
-  //   if (stepsTutorial < 9) {
-  //     startTimeout();
-  //   }
-  // }, [stepsTutorial]);
+  useEffect(() => {
+    if (stepsTutorial < 9) {
+      startTimeout();
+    }
+  }, [stepsTutorial]);
 
   useEffect(() => {
     // handleSetSteps(0);

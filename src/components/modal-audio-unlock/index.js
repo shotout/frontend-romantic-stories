@@ -443,12 +443,15 @@ function ModalAudioStory({
             <Pressable
               onPress={() => {
                 onClose();
-                handlePayment(
-                  userProfile?.data?.subscription?.plan?.id === 1 
-                    ? 'in_app'
-                    : 'upgrade_to_unlimited_audio_story',
-                    subs
-                );
+                setTimeout(() => {
+                  handlePayment(
+                    userProfile?.data?.subscription?.plan?.id === 1 
+                      ? 'in_app'
+                      : 'upgrade_to_unlimited_audio_story',
+                      subs
+                  );
+                }, 200);
+                
               }}
               style={{
                 backgroundColor: '#ADC3D2',
