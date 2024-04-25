@@ -47,9 +47,9 @@ const request = options => {
   });
  
   const onSuccess = response => {
-    // if(__DEV__){
-    //   console.log(JSON.stringify(response))
-    // }
+    if(__DEV__){
+      console.log(JSON.stringify(response))
+    }
     return response.data
   };
 

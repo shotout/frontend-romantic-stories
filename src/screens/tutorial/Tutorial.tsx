@@ -6,22 +6,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
-  PanResponder,
   Modal,
-  ActivityIndicator,
   ImageBackground,
   Platform,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import Slider from '@react-native-community/slider';
-import TrackPlayer, {
-  useProgress,
-  useTrackPlayerEvents,
-  Event,
-  State,
-} from 'react-native-track-player';
-import ModalShareStory from '../../components/modal-share-story';
-import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import styles from './styles';
@@ -40,17 +28,7 @@ import {
   xpAndLevel,
 } from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
-import LoveSvg from '../../assets/icons/bottom/love.jsx';
-import CloseIcon from '../../assets/icons/close';
-import LoveOutline from '../../assets/icons/loveOutline';
-import Prev5 from '../../assets/icons/prev5';
-import Pause from '../../assets/icons/pause';
-import Play from '../../assets/icons/play';
-import Next5 from '../../assets/icons/next5';
-import ShareSvg from '../../assets/icons/share';
 import {connect} from 'react-redux';
-import {sizing} from '../../shared/styling';
-import {BACKEND_URL} from '../../shared/static';
 import StepHeader from '../../layout/step/stepHeader';
 import {
   Step1,
@@ -253,7 +231,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
 
-  const handleNext = () => {
+  const handleNext = async() => {
     if (stepsTutorial < 8) {
       setActiveStep((prevStep: number) => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
       handleSetSteps(stepsTutorial + 1);
@@ -276,7 +254,12 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       checkInstall();
       AsyncStorage.removeItem('isTutorial');
       handleSetSteps(0);
-      eventTracking(TUTORIAL_FINISH);
+      const finish = await AsyncStorage.getItem('finish');
+      if(finish != 'yes'){
+        eventTracking(TUTORIAL_FINISH);
+        AsyncStorage.setItem('finish', 'yes');
+      }
+     
       // setTimeout(() => {
       //     handlePayment('onboarding');
       // }, 200);
@@ -441,7 +424,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   alignItems: 'center',
                   backgroundColor: code_color.white,
                 }}>
-                <ImageBackground
+                <FastImage
                   source={imgSelect}
                   style={{
                     width:
@@ -453,7 +436,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   <View style={{top: wp(50)}}>
                     <Step5 handleNext={() => {}} handlePrev={handlePrev} />
                   </View>
-                </ImageBackground>
+                </FastImage>
               </View>
             ) : (
               <>
@@ -495,17 +478,17 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
               alignItems: 'center',
               backgroundColor: code_color.white,
             }}>
-            <ImageBackground
+            <FastImage
               source={audioScreen}
               style={{
                 width:
                   Dimensions.get('window').width -
-                  (Platform.OS === 'ios' ? 0 : 20),
+                  (Platform.OS === 'ios' ? 0 : 0),
                 height: Dimensions.get('window').height,
                 marginTop: Platform.OS === 'ios' ? '-13%' : '-5%',
               }}>
               <Step3 handleNext={handleNext} handlePrev={handlePrev} />
-            </ImageBackground>
+            </FastImage>
           </View>
         );
       } else if (stepsTutorial === 4) {
@@ -573,11 +556,15 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
 
   return (
     <>
+    {Platform.OS === 'ios' ? 
       <FastImage
         source={imageSource}
         style={{width: '100%', height: '100%'}}
         resizeMode={FastImage.resizeMode.contain}
-      />
+      /> :  
+      <FastImage
+      source={imageSource}
+      style={{width: '100%', height: '100%'}} />  }
       <SafeAreaView
         onTouchStart={handleTouchStart}
         pointerEvents="box-only"

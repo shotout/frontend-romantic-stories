@@ -103,6 +103,7 @@ const MainScreen = ({
   handleSetPage,
   page,
 }) => {
+
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
@@ -780,8 +781,8 @@ const MainScreen = ({
         ? 4.5
         : height >= 890  && Number(fontSize) === 18
         ? 3.5
-        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 16 ? 3.5 
-        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 20 ? 3 : 4);
+        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 16 ? 3.7 
+        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 20 ? 3.2 : 4);
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
       totalCharacters  ? totalCharacters : 700,
@@ -1300,7 +1301,7 @@ const MainScreen = ({
           }}>
           <StatusBar
             barStyle={'dark-content'}
-            backgroundColor={backgroundStyle.backgroundColor}
+            backgroundColor={backgroundColor}
           />
 
           <View
@@ -1393,7 +1394,7 @@ const MainScreen = ({
           }}>
           <StatusBar
             barStyle={'dark-content'}
-            backgroundColor={backgroundStyle.backgroundColor}
+            backgroundColor={backgroundColor}
           />
 
           <View

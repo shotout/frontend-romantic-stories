@@ -9,6 +9,7 @@
 import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   Platform,
@@ -38,7 +39,10 @@ import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpe
 import { Adjust, AdjustConfig } from 'react-native-adjust';
 import * as Sentry from '@sentry/react-native';
 import { BACKEND_URL, SENTRY_DSN } from './src/shared/static';
-import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
+import Purchasely, {
+  LogLevels,
+  RunningMode,
+} from 'react-native-purchasely';
 import { handleSetStory } from './src/store/defaultState/actions';
 import store from './src/store/configure-store';
 import { Settings } from "react-native-fbsdk-next";
@@ -185,6 +189,7 @@ function App({ userProfile }) {
    
   return (
     <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
+       {Platform.OS === 'android' ? <StatusBar hidden /> : null } 
       <View
         style={{
           // backgroundColor: code_color.splash,

@@ -363,6 +363,7 @@ const SettingsPage = ({
   const listMenuTwo = () => (
     <View>
       {menuTwo.map((item, i) => (
+       Platform.OS === 'android' && item.name === 'App Icon' ? null :
         <Pressable
           onPress={() => handleOpenModal(item.name)}
           style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>

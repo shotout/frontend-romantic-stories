@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   AppState,
   ScrollView,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -73,7 +74,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     artwork: 'http://example.com/cover.png',
     duration: 10,
   };
-console.log(userStory?.audio)
+
   const [showModalShareStory, setShowModalShareStory] = useState(false);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -103,12 +104,19 @@ console.log(userStory?.audio)
     };
   }, []);
   useEffect(() => {
+    const init = async () => {
+      Platform.OS === 'android' ?  await TrackPlayer.setupPlayer() : null
+    }
+    
+    let isPlayerInitialized = false;
     const fetchMedia = async () => {
+     
       try {
         setLoading(true);
         // Dapatkan URL MP3 terbaru
+       
         const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-        TrackPlayer.setupPlayer()
+        Platform.OS === 'ios' ? await TrackPlayer.setupPlayer() : null
         // Hentikan pemutaran sebelumnya dan reset pemutaran
         await TrackPlayer.stop();
         await TrackPlayer.reset();
@@ -135,15 +143,15 @@ console.log(userStory?.audio)
             Capability.SeekTo,
             Capability.Stop,
           ],
-          ios: {
-            category: 'Playback',
-            audioSessionCategory: 'Playback',
-          },
-          android: {
-            // This is the default behavior
-            appKilledPlaybackBehavior:
-              AppKilledPlaybackBehavior.ContinuePlayback,
-          },
+          // ios: {
+          //   category: 'Playback',
+          //   audioSessionCategory: 'Playback',
+          // },
+          // android: {
+          //   // This is the default behavior
+          //   appKilledPlaybackBehavior:
+          //     AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+          // },
         });
         await TrackPlayer.add({
           id: 'track1',
@@ -159,13 +167,18 @@ console.log(userStory?.audio)
       
         // Jalankan pemutaran baru
         setLoading(false);
+      
         await TrackPlayer.play();
+        isPlayerInitialized = true;
+        setPlay(true)
       } catch (error) {
         console.error('Error setting up media player:', error);
+        init()
       } finally {
         setLoading(false);
       }
     };
+    init()
     fetchMedia();
   }, []);
 
@@ -179,7 +192,6 @@ console.log(userStory?.audio)
       });
       setColors(result?.primary);
     };
-
     getColor();
   }, []);
 
@@ -193,17 +205,20 @@ console.log(userStory?.audio)
       }
     } catch (error) {
       console.error('Error handling playback:', error);
+      const init = async () => {
+        Platform.OS === 'android' ?  await TrackPlayer.setupPlayer() : null
+      }
     }
   };
+
   useEffect(() => {
-    if (stepsTutorial === 3) {
-    } else {
-      setPlay(true);
-    }
-  }, []);
-  useEffect(() => {
+    // Platform.OS === 'android' ? 
+    // await TrackPlayer.setupPlayer()
+    //  : null
+    //  Platform.OS === 'android' ?  setPlay(true) : null ;
     playing();
   }, [play]);
+
   useEffect(() => {
     if (position != 0) {
       setLoading(false);
@@ -211,6 +226,7 @@ console.log(userStory?.audio)
     if (position != 0 && position === duration) {
       TrackPlayer.seekTo(0);
       setLoading(false);
+      TrackPlayer.reset();
       navigate('Main', {successListen: true});
     }
   }, [position, duration]);
@@ -299,6 +315,7 @@ console.log(userStory?.audio)
           onPress={() => {
             goBack();
             TrackPlayer.stop();
+            Platform.OS === 'android' ?   TrackPlayer.reset() : null
           }}>
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>

@@ -248,6 +248,7 @@ function RegisterScreen({
     const data = await DeviceInfo.getUniqueId();
 
     const id = await Purchasely.getAnonymousUserId();
+    // eventTracking(ONBOARDING_COMPLETE);
     try {
       const payload = {
         name: values?.name,

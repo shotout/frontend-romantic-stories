@@ -288,6 +288,7 @@ const FontScreen = ({
     };
   }, []);
    const height = Dimensions.get('window').height
+
   return (
     <View style={{flex: 0, height: Platform.OS ==='android' && height > 1000 ? wp(300) : wp(375), backgroundColor: bgTheme}}>
       <ModalUnlockPremium
@@ -528,7 +529,7 @@ const FontScreen = ({
             minimumValue={0}
             maximumValue={2}
             value={
-              Number(fontSizeDefault) === 16 ||  Number(fontSizeDefault) === 18
+              Number(fontSizeDefault) === 16 
                 ? 1
                 : Number(fontSizeDefault) === 14  ||  Number(fontSizeDefault) === 17
                 ? 0
