@@ -213,7 +213,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           />
         </View>
       )}
-      <Button
+      {/* <Button
         style={{
           backgroundColor: code_color.yellow,
           alignItems: 'center',
@@ -227,7 +227,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         }}
         onPress={() => handleSubmit()}
         title={loading ? 'Loading...' : 'Save'}
-      />
+      /> */}
     </View>
   );
 
@@ -248,6 +248,24 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           {header()}
           {form()}
         </View>
+        <Button
+        style={{
+          backgroundColor: code_color.yellow,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(50),
+          borderRadius: 10,
+          width: '95%',
+          marginTop: hp(40),
+          marginBottom: hp(10),
+          position: 'absolute',
+          bottom: 20,
+          left: 10,
+          display: dataAva ? undefined : 'none',
+        }}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
+      />
       </View>
     </Modal>
   );

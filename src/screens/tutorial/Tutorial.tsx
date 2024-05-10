@@ -232,44 +232,47 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
 
   const handleNext = async() => {
-    if (stepsTutorial < 8) {
-      setActiveStep((prevStep: number) => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
-      handleSetSteps(stepsTutorial + 1);
-      if (stepsTutorial === 6) {
-        clearTimeout(step7Ref.current);
-        clearTimeout(step7_2Ref.current);
-        setShowModal1Step7(false);
-        setShowModal2Step7(false);
-        startStep7();
-      } else {
-        if (stepsTutorial === 4) {
-          setImage(tips_step1);
+    setTimeout(async() => {
+      if (stepsTutorial < 8) {
+        handleSetSteps(stepsTutorial + 1);
+        setActiveStep((prevStep: number) => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
+        if (stepsTutorial === 6) {
+          clearTimeout(step7Ref.current);
+          clearTimeout(step7_2Ref.current);
+          setShowModal1Step7(false);
+          setShowModal2Step7(false);
+          startStep7();
+        } else {
+          if (stepsTutorial === 4) {
+            setImage(tips_step1);
+          }
+          clearTimeout(step7Ref.current);
+          clearTimeout(step7_2Ref.current);
+          setShowModal1Step7(false);
+          setShowModal2Step7(false);
         }
-        clearTimeout(step7Ref.current);
-        clearTimeout(step7_2Ref.current);
-        setShowModal1Step7(false);
-        setShowModal2Step7(false);
+      } else {
+        checkInstall();
+        AsyncStorage.removeItem('isTutorial');
+        handleSetSteps(0);
+        const finish = await AsyncStorage.getItem('finish');
+        if(finish != 'yes'){
+          eventTracking(TUTORIAL_FINISH);
+          AsyncStorage.setItem('finish', 'yes');
+        }
+       
+        // setTimeout(() => {
+        //     handlePayment('onboarding');
+        // }, 200);
+        async function getDataStory() {
+          const res = await getStoryList();
+          handleSetStory(res.data);
+        }
+        getDataStory();
+        navigate('Bottom');
       }
-    } else {
-      checkInstall();
-      AsyncStorage.removeItem('isTutorial');
-      handleSetSteps(0);
-      const finish = await AsyncStorage.getItem('finish');
-      if(finish != 'yes'){
-        eventTracking(TUTORIAL_FINISH);
-        AsyncStorage.setItem('finish', 'yes');
-      }
-     
-      // setTimeout(() => {
-      //     handlePayment('onboarding');
-      // }, 200);
-      async function getDataStory() {
-        const res = await getStoryList();
-        handleSetStory(res.data);
-      }
-      getDataStory();
-      navigate('Bottom');
-    }
+    }, 20);
+   
   };
   const checkInstall = async () => {
     const getFirstInstall = await AsyncStorage.getItem('firstInstall');

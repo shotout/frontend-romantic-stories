@@ -90,7 +90,6 @@ function App({ userProfile }) {
   }, []);
   useEffect(() => {
     FastImage.preload([
-     
       {
         uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`
       },
@@ -109,9 +108,9 @@ function App({ userProfile }) {
   }, []);
   const getToken = async () => {
     if (Platform.OS === "ios") {
-      console.log('GET APNS');  // I can see this log
+      // console.log('GET APNS');  // I can see this log
       const apnsToken = await messaging().getAPNSToken(); 
-      console.log("==> APNS token", apnsToken); // THIS NEVER GETS CALLED
+      // console.log("==> APNS token", apnsToken); // THIS NEVER GETS CALLED
       if(apnsToken) {
         return await messaging().getToken();
       } else {
@@ -186,7 +185,7 @@ function App({ userProfile }) {
       }, 500);
     }
   }
-   
+  //alert(Dimensions.get('window').width +"==="+ Dimensions.get('window').height)
   return (
     <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
        {Platform.OS === 'android' ? <StatusBar hidden /> : null } 

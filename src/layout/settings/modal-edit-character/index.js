@@ -169,6 +169,7 @@ function ModalEditCharacter({
         }}>
         What should your character look like?
       </Text>
+      <View style={{flex: 1}}>
       {dataAva && (
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
@@ -205,37 +206,16 @@ function ModalEditCharacter({
                     opacity: progressValue != index ? 0.7 : null,
                   }}
                 />
-                {/* <Image
-                  source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
-                  resizeMode="contain"
-                  style={[
-                    {
-                      height: '100%',
-                      width: '10000%',
-                      opacity: progressValue !== index ? 0.5 : 1,
-                    },
-                  ]}
-                /> */}
               </Pressable>
             )}
           />
         </View>
       )}
-      <Button
-        style={{
-          backgroundColor: code_color.yellow,
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: hp(50),
-          borderRadius: 10,
-          width: '100%',
-          marginTop: hp(40),
-          marginBottom: hp(10),
-          display: dataAva ? undefined : 'none',
-        }}
-        onPress={handleSubmit}
-        title={loading ? 'Loading...' : 'Save'}
-      />
+     
+      </View>
+    
+    
+      
     </View>
   );
 
@@ -256,6 +236,24 @@ function ModalEditCharacter({
           {header()}
           {form()}
         </View>
+        <Button
+        style={{
+          backgroundColor: code_color.yellow,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(50),
+          borderRadius: 10,
+          width: '95%',
+          marginTop: hp(40),
+          marginBottom: hp(10),
+          position: 'absolute',
+          bottom: 20,
+          left: 10,
+          display: dataAva ? undefined : 'none',
+        }}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
+      />
       </View>
     </Modal>
   );

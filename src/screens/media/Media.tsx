@@ -174,6 +174,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       } catch (error) {
         console.error('Error setting up media player:', error);
         init()
+        fetchMedia()
       } finally {
         setLoading(false);
       }
@@ -196,6 +197,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   }, []);
 
   const playing = async () => {
+   
     try {
       if (play) {
         eventTracking(AUDIO_PLAYED);
@@ -204,18 +206,14 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         await TrackPlayer.pause();
       }
     } catch (error) {
-      console.error('Error handling playback:', error);
-      const init = async () => {
-        Platform.OS === 'android' ?  await TrackPlayer.setupPlayer() : null
-      }
+      // console.error('Error handling playback:', error);
+    
+      //   Platform.OS === 'android' ?  await TrackPlayer.setupPlayer() : null
+     
     }
   };
 
   useEffect(() => {
-    // Platform.OS === 'android' ? 
-    // await TrackPlayer.setupPlayer()
-    //  : null
-    //  Platform.OS === 'android' ?  setPlay(true) : null ;
     playing();
   }, [play]);
 

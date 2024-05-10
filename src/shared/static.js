@@ -3,8 +3,8 @@
 
 // export const BACKEND_URL = 'https://prod-api.erotalesapp.com';
 // export const API_URL = 'https://prod-api.erotalesapp.com/api/v1';
-  export const BACKEND_URL = 'https://staging-api.erotalesapp.com';
-  export const API_URL = 'https://staging-api.erotalesapp.com/api/v1';
+export const BACKEND_URL = 'https://staging-api.erotalesapp.com';
+export const API_URL = 'https://staging-api.erotalesapp.com/api/v1';
 export const STATIC_ONBOARD = 'onboarding';
 
 // dev version

@@ -145,7 +145,7 @@ function ModalLibrary({
             />
             <Text
               allowFontScaling={false}
-              style={{marginLeft: hp(20), flex: 1}}>
+              style={{marginLeft: hp(20), flex: 1, color: code_color.blackDark,}}>
               {item.name}
             </Text>
             <Pressable

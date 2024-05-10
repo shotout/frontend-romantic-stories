@@ -15,9 +15,9 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
-  Clipboard,
   TouchableNativeFeedback,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
 import CloseIcon from '../../assets/icons/close';
@@ -86,7 +86,9 @@ import PlayStore from '../../assets/icons/playStore';
 import AppStore from '../../assets/icons/appStore';
 import FastImage from 'react-native-fast-image';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
-import { hp } from '../../utils/screen';
+import {hp} from '../../utils/screen';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { STORY_SHARED, eventTracking } from '../../helpers/eventTracking';
 
 function ScreenShare({
   route,
@@ -94,6 +96,8 @@ function ScreenShare({
   handleSetSteps,
   isPremium,
   userProfile,
+  id,
+  title
 }) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
@@ -139,12 +143,14 @@ function ScreenShare({
 
   // Konfigurasi Animated
   const pan = useRef(new Animated.ValueXY()).current;
-
+  const [dinamicLink, setDinamicLink] = useState('');
   const captureRef = useRef();
   const base64CaptureImage = useRef(null);
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const backgroundList = [bg, story2, bgShare2, bgShare3, bgShare4];
-  const downloadText = 'I found this fact on the ShortStory App';
+  const downloadText = `The *EroTales App* has the best free Romantic Stories ever! I just found this one:\n*${route?.params?.title}*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly *for free* on the AppStore or Google Play.`;
+  const downloadTextFb = `The EroTales App has the best free Romantic Stories ever! I just found this one:\n*${route?.params?.title}*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly for free on the AppStore or Google Play.`;
+  // const downloadText = `The EroTales App has the best Romantic Stories ever! I just found this one:${route?.params?.title} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
@@ -233,6 +239,7 @@ function ScreenShare({
     );
   };
   const handleShare = async () => {
+    eventTracking(STORY_SHARED);
     base64CaptureImage.current = null;
     handleScreenshot();
   };
@@ -320,12 +327,48 @@ function ScreenShare({
         console.log('Capture Error:', err.message);
       });
   };
+
+  const generateLink = async () => {
+    try {
+      const link = await dynamicLinks().buildShortLink(
+        {
+          link: `https://erotalesapp.page.link/Tbeh?storyId=${id}`,
+          domainUriPrefix: 'https://erotalesapp.page.link',
+          android: {
+            packageName: 'app.erotales',
+          },
+          ios: {
+            appStoreId: '6463850368',
+            bundleId: 'apps.romanticstory',
+            fallbackUrl: 'https://apps.apple.com/app/id6463850368?efr=1',
+          },
+          navigation: {
+            forcedRedirectEnabled: true
+          },
+          suffix: {
+            option: 'SHORT',
+          },
+        },
+        dynamicLinks.ShortLinkType.DEFAULT,
+      );
+      return link;
+    } catch (error) {
+      console.error('Error generating link:', error);
+      return ''; // return a default or error value
+    }
+  };
+  useEffect(() => {
+    async function setLinks() {
+      setDinamicLink(await generateLink());
+    }
+    setLinks();
+  }, []);
   const handleWAShare = async () => {
     await handleShare();
     Clipboard.setString(downloadText);
     Alert.alert(
       '',
-      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
       [
         {
           text: 'OK',
@@ -362,10 +405,10 @@ function ScreenShare({
   };
   const handleShareInstagramDefault = async () => {
     await handleShare();
-    Clipboard.setString(downloadText);
+    Clipboard.setString(downloadTextFb);
     Alert.alert(
       '',
-      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
       [
         {
           text: 'OK',
@@ -408,10 +451,10 @@ function ScreenShare({
 
   const handleShareFBDefault = async () => {
     await handleShare();
-    Clipboard.setString(downloadText);
+    Clipboard.setString(downloadTextFb);
     Alert.alert(
       '',
-      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
       [
         {
           text: 'OK',
@@ -514,9 +557,10 @@ function ScreenShare({
               onLongPress={() => {
                 setVisibleFont(true);
                 setUserText(el?.text);
-                const updatedItems = draggableItems.filter((item, idx) => idx !== i);
+                const updatedItems = draggableItems.filter(
+                  (item, idx) => idx !== i,
+                );
                 setDraggableItems(updatedItems);
-               
               }}>
               <View
                 style={{
@@ -1207,7 +1251,11 @@ function ScreenShare({
                         paddingHorizontal: hp(5),
                         paddingVertical: hp(2),
                       }}>
-                      <Watch fill={code_color.white} height={hp(12)} width={hp(12)} />
+                      <Watch
+                        fill={code_color.white}
+                        height={hp(12)}
+                        width={hp(12)}
+                      />
                       <Text
                         style={{
                           color: code_color.white,

@@ -67,6 +67,8 @@ function QuotesContent({
   colorText,
   price,
   price2,
+  id,
+  titleStory
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -258,7 +260,7 @@ function QuotesContent({
         setSelectedText(selected)
         setModalVisible(true);
 
-        eventTracking(STORY_SHARED);
+        // eventTracking(STORY_SHARED);
       }
     }
   };
@@ -313,10 +315,10 @@ function QuotesContent({
               themeUser?.content_en === '2'
                 ? item?.substring(selectionEnd - 50, selectionEnd)
                 : item?.substring(selectionEnd - 50, selectionEnd),
-            title:
-              themeUser?.content_en === '2' ? item?.title_id : item?.title_en,
+              title: titleStory,
+              id: id
           });
-          eventTracking(STORY_SHARED);
+          // eventTracking(STORY_SHARED);
         }}
         TextComponent={() => {
           return (
@@ -413,10 +415,8 @@ function QuotesContent({
                       themeUser?.content_en === '2'
                         ? item?.substring(end + 50, end)
                         : item?.substring(end + 50, end),
-                    title:
-                      themeUser?.content_en === '2'
-                        ? item?.title_id
-                        : item?.title_en,
+                    title: titleStory,
+                    id: id
                   });
                   setSelectedText('');
                 }}>
@@ -761,7 +761,7 @@ function QuotesContent({
                     me === '/assets/images/avatars/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/2/inlove.png' && height > 900  ? -150 : -190,
                   ),
                   width: wp(100),
-                  height: hp(180),
+                  height: hp(170),
                   left: '10%',
                   zIndex: -1,
                 }}>

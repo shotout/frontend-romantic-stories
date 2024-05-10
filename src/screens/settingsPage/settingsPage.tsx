@@ -17,9 +17,9 @@ import {
   Dimensions,
   Pressable,
   Linking,
-  Clipboard,
   Platform,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {bgSettings} from '../../assets/images';
 import BgSettings from '../../assets/icons/bgSetting';
 import {code_color} from '../../utils/colors';

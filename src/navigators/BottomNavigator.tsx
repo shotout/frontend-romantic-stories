@@ -131,14 +131,14 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
             position: 'absolute',
             top:
               isBottomBarVisible === 'Settings'
-                ? -151
+                ?  Platform.OS === 'android' && Dimensions.get('window').height > 908 || Dimensions.get('window').height < 909 ? -200 : -151
                 : isBottomBarVisible === 'Font' && Platform.OS === 'android'
                 ? -Dimensions.get('window').height / 2
                 : isBottomBarVisible === 'Font' && Platform.OS === 'ios'
                 ? -Dimensions.get('window').height /
                   (!isIphoneXorAbove() ? 2.8 : 2)
                 : isBottomBarVisible === 'Library'
-                ? -Dimensions.get('window').height / 2.7
+                ? -Dimensions.get('window').height / (Platform.OS === 'android' ? 2.6 : 2.7)
                 : 0,
             width: '100%',
             height: '100%',
@@ -176,7 +176,7 @@ const Library = ({userProfile, stepsTutorial, backgroundColor}) => {
                 style={{
                   backgroundColor: '#f1f1f1',
                   position: 'absolute',
-                  top: isBottomBarVisible === 'Library' ? hp(120) : hp(70),
+                  top: isBottomBarVisible === 'Library' ? hp(110) : hp(70),
                   left: '27%',
                   paddingHorizontal: hp(25),
                   paddingVertical: hp(5),

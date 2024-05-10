@@ -76,7 +76,8 @@ import ModalMedia from '../../components/modal-media';
 import * as IAP from 'react-native-iap';
 import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
+import TrackPlayer from 'react-native-track-player';
 
 const MainScreen = ({
   userProfile,
@@ -103,7 +104,6 @@ const MainScreen = ({
   handleSetPage,
   page,
 }) => {
-
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
@@ -169,18 +169,18 @@ const MainScreen = ({
   const [textChunks, setTextChunks] = useState([]);
   useEffect(() => {
     // if (!__DEV__) {
-      async function getPrice() {
-        const products = await IAP.getProducts({
-          skus: ['unlock_10_audio_stories'],
-        });
-        const products1 = await IAP.getProducts({
-          skus: ['unlock_5_audio_stories'],
-        });
+    async function getPrice() {
+      const products = await IAP.getProducts({
+        skus: ['unlock_10_audio_stories'],
+      });
+      const products1 = await IAP.getProducts({
+        skus: ['unlock_5_audio_stories'],
+      });
 
-        setPriceAudio1(products1[0].localizedPrice);
-        setPriceAudio2(products[0].localizedPrice);
-      }
-      getPrice();
+      setPriceAudio1(products1[0].localizedPrice);
+      setPriceAudio2(products[0].localizedPrice);
+    }
+    getPrice();
     // }
   }, []);
   useEffect(() => {
@@ -237,16 +237,27 @@ const MainScreen = ({
     const uniqueData = [
       ...new Map(readStory.map((item: {id: any}) => [item.id, item])).values(),
     ];
-
-    if (uniqueData?.length === 3) {
-      eventTracking(FINISH_LISTEN_3);
+    const value = await AsyncStorage.getItem('FINISH_LISTEN_3');
+    const value1 = await AsyncStorage.getItem('FINISH_LISTEN_7');
+    const value2 = await AsyncStorage.getItem('FINISH_LISTEN_10');
+    if(value != 'true'){
+      if (uniqueData?.length === 3) {
+        eventTracking(FINISH_LISTEN_3);
+        AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
+      }
     }
+    if(value1 != 'true'){
     if (uniqueData?.length === 7) {
       eventTracking(FINISH_LISTEN_7);
+      AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
     }
+  }
+  if(value2 != 'true'){
     if (uniqueData?.length === 10) {
       eventTracking(FINISH_LISTEN_10);
+      AsyncStorage.setItem('FINISH_LISTEN_10', 'true');
     }
+  }
     if (typeof existingEntry === 'undefined') {
       // jika nanti pertama kali melakukan update data terakhir
 
@@ -319,27 +330,23 @@ const MainScreen = ({
     const value2 = await AsyncStorage.getItem('FINISH_READ_7');
     const value3 = await AsyncStorage.getItem('FINISH_READ_10');
 
-    AsyncStorage.removeItem('FINISH_READ_10')
-    if(value != 'true'){
+    if (value != 'true') {
       if (uniqueData?.length === 3) {
         eventTracking(FINISH_READ_3);
         AsyncStorage.setItem('FINISH_READ_3', 'true');
       }
-      
     }
-    if(value2 != 'true'){
+    if (value2 != 'true') {
       if (uniqueData?.length === 7) {
         eventTracking(FINISH_READ_7);
         AsyncStorage.setItem('FINISH_READ_7', 'true');
       }
-     
     }
-    if(value3 != 'true'){
+    if (value3 != 'true') {
       if (uniqueData?.length === 10) {
         eventTracking(FINISH_READ_10);
         AsyncStorage.setItem('FINISH_READ_10', 'true');
       }
-      
     }
     if (!existingEntry) {
       const newData = {
@@ -653,6 +660,9 @@ const MainScreen = ({
         };
         await updateProfile(payload);
         reloadUserProfile();
+
+        Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
+
         navigate('Media');
       } else if (
         userProfile?.data?.subscription?.plan?.id === 1 &&
@@ -664,6 +674,7 @@ const MainScreen = ({
         };
         await updateProfile(payload);
         reloadUserProfile();
+        Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
         navigate('Media');
       } else {
         setShow(true);
@@ -695,6 +706,7 @@ const MainScreen = ({
           };
           await updateProfile(payload);
           reloadUserProfile();
+          Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else if (
           userProfile?.data?.subscription?.plan?.id === 1 &&
@@ -706,6 +718,7 @@ const MainScreen = ({
           };
           await updateProfile(payload);
           reloadUserProfile();
+          Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
           setShow(true);
@@ -715,11 +728,13 @@ const MainScreen = ({
           userProfile?.data?.subscription?.plan?.id === 2 &&
           userProfile?.data?.subscription?.audio_limit != 0
         ) {
+          Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else if (
           userProfile?.data?.subscription?.plan?.id === 1 &&
           userProfile?.data?.subscription?.audio_limit != 0
         ) {
+          Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
           setShow(true);
@@ -774,18 +789,77 @@ const MainScreen = ({
       height / (size * (fontScale + (height > 840 ? -0.147 : 0))),
     );
     const linesPerPage = Math.floor(height / size);
+    // console.log(fontFamily === 'Montserrat-Regular' &&  Number(fontSize) === 16 ? 4.7 : fontFamily === 'Montserrat-Regular' &&  Number(fontSize) === 18 ? 4.7 : fontFamily === 'Montserrat-Regular' &&  Number(fontSize) === 14 ? 5.3 : fontFamily === 'Merriweather-Regular' &&  Number(fontSize) === 14 ? 5.3 : fontFamily === 'Merriweather-Regular' &&  Number(fontSize) === 16 ? 4.7 :
+    // fontFamily === 'Poppins-Regular' && Number(fontSize) === 14 && height >= 844 && height < 850
+    // ? 5.8 :fontFamily === 'Poppins-Regular' && Number(fontSize) === 14 && height >= 850  ? 5.3 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 16  && height >= 844 && height < 850  ? 4.9 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 16  && height >=  850  ? 5.1 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 18  && height >= 844 && height < 850 ? 4.5 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 18 && height >= 850  ? 4.9 :
+    // Number(fontSize) === 14
+    //   ? 4.8
+    //   : height >= 890 && Number(fontSize) === 18
+    //   ? 3.5
+    //   : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 16 ? 3.5
+    //   : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 20 ? 3 : 4.1)
     const totalCharacters =
       (charactersPerLine * linesPerPage) /
-      (fontFamily === 'Poppins-Regular' && Number(fontSize) === 14 && height >= 890  ? 5.3 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 16 ?  4.8 : fontFamily === 'Poppins-Regular' && Number(fontSize) === 18 ? 4.5 :
-      Number(fontSize) === 14
+      (fontFamily === 'Montserrat-Regular' && Number(fontSize) === 16
+        ? 4.7
+        : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 18
+        ? 4.7
+        : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 14
+        ? 5.3
+        : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 14
+        ? 5.3
+        : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16
+        ? 4.7
+        : fontFamily === 'Poppins-Regular' &&
+          Number(fontSize) === 14 &&
+          height >= 844 &&
+          height < 850
+        ? 5.8
+        : fontFamily === 'Poppins-Regular' &&
+          Number(fontSize) === 14 &&
+          height >= 850
+        ? 5.3
+        : fontFamily === 'Poppins-Regular' &&
+          Number(fontSize) === 16 &&
+          height >= 844 &&
+          height < 850
+        ? 5.2
+        : fontFamily === 'Poppins-Regular' &&
+          Number(fontSize) === 16 &&
+          height >= 850
+        ? 5.1
+        : fontFamily === 'Poppins-Regular' &&
+          Number(fontSize) === 18 &&
+          height >= 844 &&
+          height < 850
         ? 4.5
-        : height >= 890  && Number(fontSize) === 18
+        : fontFamily === 'Poppins-Regular' &&
+          Number(fontSize) === 18 &&
+          height >= 850
+        ? 4.9
+        : Number(fontSize) === 14
+        ? 4.8
+        : height >= 890 && Number(fontSize) === 18
         ? 3.5
-        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 16 ? 3.7 
-        : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 20 ? 3.2 : 4);
+        : (Platform.OS === 'android' && height >= 840) ||
+          (Platform.OS === 'android' && height < 840 && Number(fontSize) === 16)
+        ? 3.5
+        : (Platform.OS === 'android' && height >= 840) ||
+          (Platform.OS === 'android' && height < 840 && Number(fontSize) === 20)
+        ? 3
+        : 4.1);
+    // const totalCharacters =
+    //   (charactersPerLine * linesPerPage) /
+    //   (Number(fontSize) === 14 && fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && height === 844 ? 4.5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 890 ? 5.3 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 840 ? 5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 812 ? 5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16 && Platform.OS === 'ios' ?  5.1 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Number(fontSize) === 18 ? 5 :
+    //   Number(fontSize) === 14
+    //     ? 4.5
+    //     : height >= 890  && Number(fontSize) === 18
+    //     ? 3.5
+    //     : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 16 ? Platform.OS === 'android' ? 3.7 : 3.5
+    //     : Platform.OS === 'android' && height >= 840 || Platform.OS === 'android' && height < 840 && Number(fontSize) === 20 ? Platform.OS === 'android' ? 3.2 : 3 : height >= 840 &&  Number(fontSize) === 14 && Platform.OS === 'ios' && fontFamily != 'Poppins-Regular' ? 3.6 : height >= 840 &&  Number(fontSize) === 18 && Platform.OS === 'ios' ? 3.8 : height >= 840 &&  Number(fontSize) === 16 && Platform.OS === 'ios' ? 4.1 : 3.6);
     const newChunks = splitTextIntoArray(
       dataBook?.content_en,
-      totalCharacters  ? totalCharacters : 700,
+      totalCharacters ? totalCharacters : 700,
       // height <= 667
       //   ? Number(fontSize) === 14
       //     ? 655
@@ -800,12 +874,22 @@ const MainScreen = ({
 
     // }
     handleSetPage(page);
-
+    // console.log(JSON.stringify(height), Number(fontSize), fontFamily )
+    // console.log(JSON.stringify(newChunks))
     setTextChunks(newChunks);
-  }, [dataBook, Dimensions.get('window').height, fontSize]);
-  const renderFactItem = ({item, index, title, category, colorText, type}) => (
+  }, [dataBook, Dimensions.get('window').height, fontSize, fontFamily]);
+  const renderFactItem = ({
+    item,
+    index,
+    title,
+    category,
+    colorText,
+    type,
+    id,
+  }) => (
     <>
       <QuotesContent
+        id={id}
         item={item}
         isActive={activeSlide === index}
         totalStory={textChunks?.length}
@@ -841,9 +925,8 @@ const MainScreen = ({
   }, [colorText]);
 
   useEffect(() => {
-
     const backAction = () => {
-      //  BackHandler.exitApp() 
+      //  BackHandler.exitApp()
       return true;
     };
 
@@ -882,6 +965,7 @@ const MainScreen = ({
               category: dataBook?.category?.name,
               colorText: colorText,
               type: type,
+              id: dataBook.id,
             })}
           </View>
         );
@@ -943,22 +1027,24 @@ const MainScreen = ({
     );
   };
   useEffect(() => {
-    async function  checkingRating(){
-      const uniqueIds = Object.values(readStory?.reduce((acc, { id }) => {
-        acc[id] = { id }; // Use an object as a map to remove duplicates
-        return acc;
-      }, {}));
-      if(uniqueIds.length === 4){
+    async function checkingRating() {
+      const uniqueIds = Object.values(
+        readStory?.reduce((acc, {id}) => {
+          acc[id] = {id}; // Use an object as a map to remove duplicates
+          return acc;
+        }, {}),
+      );
+      if (uniqueIds.length === 4) {
         const data = await AsyncStorage.getItem('isRating');
-        if(data != 'yes'){
-          setRatingApp(true)
+        if (data != 'yes') {
+          setRatingApp(true);
           AsyncStorage.setItem('isRating', 'yes');
         }
       }
     }
-   
-    checkingRating()
-  }, [dataBook?.title_en, page])
+
+    checkingRating();
+  }, [dataBook?.title_en, page]);
   const fetchStoryFree = async () => {
     const resp = await getStoryDetail(route?.params?.storyId);
     const payloadStory = {
@@ -1061,7 +1147,7 @@ const MainScreen = ({
     setShowModalDay(false);
     setShowModal(false);
     setShowPreview(false);
-    reset(story)
+    reset(story);
   };
   const reset = async (story: any) => {
     handleSetStory(story);
@@ -1070,13 +1156,13 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-     async function fetchModal () {
+    async function fetchModal() {
       if (!(isPremiumStory || isPremiumAudio)) {
         const userHasRead = readStory?.some(
           (entry: any) =>
             entry?.id === dataBook.id && entry?.page === textChunks?.length,
         );
-  
+
         if (
           !route?.params?.isFromLibrary &&
           !route?.params?.isFromBottomBar &&
@@ -1088,16 +1174,17 @@ const MainScreen = ({
           let strTanggalSekarang = stringifyDateNow.getDate().toString();
           if (value != null) {
             if (value === strTanggalSekarang) {
-          setShowModalNewStory(true);
-          setTimeout(() => {
-            pagerRef?.current?.setPage(textChunks.length - 1);
-          }, 200);
-        }}
+              setShowModalNewStory(true);
+              setTimeout(() => {
+                pagerRef?.current?.setPage(textChunks.length - 1);
+              }, 200);
+            }
+          }
         }
       }
     }
-   
-    fetchModal()
+
+    fetchModal();
   }, [dataBook, route?.params, textChunks]);
 
   useEffect(() => {
@@ -1140,34 +1227,48 @@ const MainScreen = ({
 
     if (touchX > screenWidth && !showModalCongrats) {
       // setTimeout(async () => {
-        if (screenNumber === textChunks?.length - 1) {
-          const existingEntry = readStory
-            ? readStory.find(
-                (item: any) =>
-                  item?.id === dataBook.id && item?.page === screenNumber + 1,
-              )
-            : undefined;
+      if (screenNumber === textChunks?.length - 1) {
+        const existingEntry = readStory
+          ? readStory.find(
+              (item: any) =>
+                item?.id === dataBook.id && item?.page === screenNumber + 1,
+            )
+          : undefined;
+        const value = await AsyncStorage.getItem('FINISH_LISTEN_3');
+        const value1 = await AsyncStorage.getItem('FINISH_LISTEN_7');
+        const value2 = await AsyncStorage.getItem('FINISH_LISTEN_10');
+        if (value != 'true') {
           if (readStory?.length === 2) {
             eventTracking(FINISH_LISTEN_3);
+            AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
           }
+        }
+        if (value1 != 'true') {
+          if (readStory?.length === 6) {
+            eventTracking(FINISH_LISTEN_7);
+            AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
+          }
+        }
+        if (value2 != 'true') {
           if (readStory?.length === 9) {
             eventTracking(FINISH_LISTEN_10);
+            AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
           }
-          if (
-            typeof existingEntry === 'undefined' &&
-            screenNumber === textChunks?.length - 1
-          ) {
-            // jika nanti pertama kali melakukan update data terakhir
+        }
+        if (
+          typeof existingEntry === 'undefined' &&
+          screenNumber === textChunks?.length - 1
+        ) {
+          // jika nanti pertama kali melakukan update data terakhir
+          try {
+            const res = await addPastStory(dataBook.id);
+            // console.log(JSON.stringify(res))
             try {
-              const res = await addPastStory(dataBook.id);
-              // console.log(JSON.stringify(res))
-              try {
-                 
-            const data = {
-              value: textChunks?.length,
-            };
-                const resp = await addPastLevel(data);
-                // console.log(JSON.stringify(resp))
+              const data = {
+                value: textChunks?.length,
+              };
+              const resp = await addPastLevel(data);
+              // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
                 setTimeout(() => {
@@ -1175,29 +1276,25 @@ const MainScreen = ({
                 }, 50);
               }
               checkingRead(screenNumber + 1);
-              } catch (error) {
-                console.log('ERROR PAS LEVEL', JSON.stringify(error))
-              }
-              
             } catch (error) {
-              console.log('ERROR PAS STORY', JSON.stringify(error))
+              console.log('ERROR PAS LEVEL', JSON.stringify(error));
             }
-         
-           
-          } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
-            setTimeout(() => {
-              setShowModalNewStory(true);
-            }, 50);
-
-            //jika tidak premium maka akan terus menampilan modal setiap terakhir
-          } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
-            setTimeout(() => {
-              setShowModalCongrats(true);
-            }, 50);
-            // await fecthNextStory();
+          } catch (error) {
+            console.log('ERROR PAS STORY', JSON.stringify(error));
           }
-        }
+        } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+          setTimeout(() => {
+            setShowModalNewStory(true);
+          }, 50);
 
+          //jika tidak premium maka akan terus menampilan modal setiap terakhir
+        } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
+          setTimeout(() => {
+            setShowModalCongrats(true);
+          }, 50);
+          // await fecthNextStory();
+        }
+      }
     }
   };
 
@@ -1231,12 +1328,14 @@ const MainScreen = ({
     } else {
       try {
         const res = await getStoryDetail(userStory?.id);
+        console.log('SUKSES GET DETAIL' + JSON.stringify(res));
         handleSetStory(res.data);
         setBook(res.data);
-        setTimeout(() => {
+        if (res.data) {
           setShowModalNewStory(true);
-        }, 50);
+        }
       } catch (error) {
+        console.log('ERROR GET DETAIL' + JSON.stringify(error));
         const res = await getStoryDetail(userStory?.id);
         handleSetStory(res.data);
         setBook(res.data);
@@ -1285,6 +1384,7 @@ const MainScreen = ({
       category: dataBook?.category?.name,
       colorText: colorText,
       type: 'view',
+      id: dataBook.id,
     });
   }
 
@@ -1296,7 +1396,11 @@ const MainScreen = ({
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
-            paddingTop: isIphoneXorAbove() ? 70 : Platform.OS == 'android' ? 30 : 50,
+            paddingTop: isIphoneXorAbove()
+              ? 70
+              : Platform.OS == 'android'
+              ? 30
+              : 50,
             //marginTop: 20,
           }}>
           <StatusBar
@@ -1438,15 +1542,15 @@ const MainScreen = ({
               handleShowModalSave();
             }}
           />
-          <ModalAppRating  
+          <ModalAppRating
             isVisible={showRatingApp}
             onClose={() => {
               setRatingApp(false);
             }}
             handleSuccess={() => {
               setRatingApp(false);
-              
-            }}/>
+            }}
+          />
           <ModalStoryRating
             isVisible={showRating}
             onClose={() => {
@@ -1514,7 +1618,7 @@ const MainScreen = ({
               flex: 0,
               alignItems: 'center',
               marginHorizontal: 20,
-              marginTop: Platform.OS === 'android' ?  0 : 20,
+              marginTop: Platform.OS === 'android' ? 0 : 20,
             }}>
             <View style={{flex: 1}}>
               <Text

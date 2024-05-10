@@ -48,7 +48,7 @@ const request = options => {
  
   const onSuccess = response => {
     if(__DEV__){
-      console.log(JSON.stringify(response))
+      // console.log(JSON.stringify(response))
     }
     return response.data
   };
@@ -69,7 +69,7 @@ const request = options => {
     } else {
       // Something else happened while setting up the request
       // triggered the error
-      console.log('Error Message:', error);
+      // console.log('Error Message:', error);
     }
 
     return Promise.reject(error.response || error.message);
