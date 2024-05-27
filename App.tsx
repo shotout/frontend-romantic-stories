@@ -41,7 +41,10 @@ import * as Sentry from '@sentry/react-native';
 import { BACKEND_URL, SENTRY_DSN } from './src/shared/static';
 import Purchasely, {
   LogLevels,
+  Attributes,
+  ProductResult,
   RunningMode,
+  PLYPaywallAction,
 } from 'react-native-purchasely';
 import { handleSetStory } from './src/store/defaultState/actions';
 import store from './src/store/configure-store';
@@ -51,13 +54,15 @@ import { getAppOpenID } from './src/shared/adsId';
 import { reloadUserProfile } from './src/utils/user';
 import FastImage from 'react-native-fast-image';
 import messaging from '@react-native-firebase/messaging';
-Purchasely.startWithAPIKey(
-  "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
-  ["Google"],
-  null,
-  LogLevels.DEBUG,
-  RunningMode.FULL
-);
+
+Purchasely.start({
+  apiKey: "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
+  androidStores: ["Google"],
+  storeKit1: false,
+  userId: null,
+  logLevel: LogLevels.DEBUG,
+  runningMode: RunningMode.FULL,
+});
 const adUnitId = getAppOpenID();
 const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,

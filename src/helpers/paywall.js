@@ -23,11 +23,11 @@ export const handlePayment = async (vendorId, notif, cb,) =>
       if(vendorId === 'unsubscribe_placement' || notif){
         stringVendor = vendorId
       }else if(data === 'kurang' ){
-        stringVendor = 'offer_50'
-      }else if(data === 'antara'){
-        stringVendor = 'offer_75'
+        stringVendor = 'in_app'
+      // }else if(data === 'antara'){
+      //   stringVendor = 'offer_75'
       }else if(data === 'lebih'){
-        stringVendor = 'offer_75'
+        stringVendor = 'offer_50'
       }
       console.log('OPEN Purchasely', stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({

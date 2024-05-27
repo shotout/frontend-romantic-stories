@@ -283,7 +283,14 @@ function ModalCongrats({
           position: 'relative',
           overflow: 'hidden',
         }}>
-        <Animatable.Image
+          <View style={{ borderRadius: 200,
+         
+                       width: sizing.getDimensionWidth(0.36),
+                       height: sizing.getDimensionWidth(0.36),
+                       alignItems: 'center',
+                       justifyContent: 'center',
+           backgroundColor: code_color.blackDark,}}>
+          <Animatable.Image
           duration={0}
           delay={0}
           animation="fadeInUpBig"
@@ -292,11 +299,14 @@ function ModalCongrats({
           }}
           resizeMode="contain"
           style={{
+           
             width: sizing.getDimensionWidth(0.3),
             height: sizing.getDimensionWidth(0.3),
             marginVertical: moderateScale(50),
           }}
         />
+          </View>
+        
         <Animatable.View
           duration={200}
           animation="fadeOut"
@@ -652,18 +662,24 @@ function ModalCongrats({
                               alignItems: 'center',
                               height: hp(38),
                               width: '100%',
+                              
                             }}>
-                            <Image
+                              <View style={{ backgroundColor: code_color.blackDark, width: hp(35), height: hp(35), borderRadius: 100, alignItems: 'center', justifyContent: 'center'}}>
+                              <Image
                               source={{
                                 uri: `${BACKEND_URL}${itm.image?.url}`,
                               }}
                               resizeMode="contain"
                               style={{
+                               
                                 width: hp(30),
                                 height: hp(30),
-                                marginRight: hp(10),
+                               
+                               
                               }}
                             />
+                              </View>
+                            
                             <View
                               style={{width: hp(100), alignItems: 'center'}}>
                               <Text

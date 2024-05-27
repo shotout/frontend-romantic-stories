@@ -368,7 +368,7 @@ function ScreenShare({
     Clipboard.setString(downloadText);
     Alert.alert(
       '',
-      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',
@@ -408,7 +408,7 @@ function ScreenShare({
     Clipboard.setString(downloadTextFb);
     Alert.alert(
       '',
-      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',
@@ -454,7 +454,7 @@ function ScreenShare({
     Clipboard.setString(downloadTextFb);
     Alert.alert(
       '',
-      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',

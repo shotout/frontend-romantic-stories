@@ -19,6 +19,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import {
   imgSearchNull,
@@ -1136,7 +1137,7 @@ const LibraryScreen = ({
           navigate('Main', {isFromLibrary: true});
         }}
       />
-      <View style={{flex: 0, height: hp(480), backgroundColor: bgTheme}}>
+      <View style={{flex: 0, height: hp( Dimensions.get('window').height === 667 ? 400 : 480), backgroundColor: bgTheme}}>
         <ModalLibrary
           isVisible={showModal}
           onClose={() => {

@@ -448,8 +448,8 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   animation={'fadeOut'}
                   style={{
                     position: 'absolute',
-                    bottom: Platform.OS === 'ios' ? -hp(20) : -hp(3),
-                    left: Platform.OS === 'ios' ? -hp(15) : -hp(12),
+                    bottom: Platform.OS === 'ios' ? -hp(20) : -hp(20),
+                    left: Platform.OS === 'ios' ? hp(40) : hp(40),
                   }}>
                   <AnimatedLottieView
                     source={rippleAnimate}

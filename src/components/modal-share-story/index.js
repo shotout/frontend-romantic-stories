@@ -36,7 +36,7 @@ import styles from './styles';
 import {imageShareIgPost, imgShare, logo} from '../../assets/images';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
 
-function ModalShareStory({isVisible, onClose, storyData}) {
+function ModalShareStory({isVisible, onClose, storyData, main}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
   const [dinamicLink, setDinamicLink] = useState('');
@@ -171,7 +171,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
     );
     Alert.alert(
       '',
-      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',
@@ -217,7 +217,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
     Clipboard.setString(sharedMessageFB);
     Alert.alert(
       '',
-      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTales.App',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',
@@ -598,7 +598,7 @@ function ModalShareStory({isVisible, onClose, storyData}) {
               fontWeight: '400',
               marginBottom: moderateScale(20),
             }}>
-            Share via
+            {'Share this Story via '}
           </Text>
           <TouchableOpacity
             onPress={onClose}

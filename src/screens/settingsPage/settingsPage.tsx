@@ -382,7 +382,7 @@ const SettingsPage = ({
     <View
       style={{
         flex: 0,
-        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 228 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : 208)),
+        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 260 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : Dimensions.get('window').height === 844 ? 260 :  208)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

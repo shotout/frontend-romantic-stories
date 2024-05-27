@@ -382,13 +382,16 @@ const MainScreen = ({
   }, [userStory]);
 
   useEffect(() => {
-    async function setToFirstPage() {
-      setScreenNumber(0);
-      pagerRef.current?.setPage(0);
+    if(page === 0){
+
+      async function setToFirstPage() {
+        setScreenNumber(0);
+        pagerRef.current?.setPage(0);
+      }
+      setTimeout(() => {
+        setToFirstPage();
+      }, 300);
     }
-    setTimeout(() => {
-      setToFirstPage();
-    }, 300);
   }, [dataBook?.title_en]);
 
   // useEffect(() => {
@@ -1201,7 +1204,7 @@ const MainScreen = ({
           page: -1,
         },
       );
-
+        
     function setLastPage() {
       if (!userHasRead) {
         setTimeout(async () => {

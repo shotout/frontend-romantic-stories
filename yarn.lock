@@ -7379,10 +7379,10 @@ react-native-progress@^5.0.1:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-purchasely@^2.7.0:
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/react-native-purchasely/-/react-native-purchasely-2.7.4.tgz#9518951f2539ba4f74b523bcd092a199097a6fd5"
-  integrity sha512-INsrz6rNfPOA01LaHQCwsDrbRhimWvqkw3z/Iev+gIhm/IOTDSyNm7Jxy5hbYGYlv3LibKNdyZT5w11xBmT/tA==
+react-native-purchasely@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-purchasely/-/react-native-purchasely-4.3.3.tgz#15fb2defd77fdb17ee6f95c511f929d4032a6e95"
+  integrity sha512-P+I6ERsi1iQfJNkwa8ueI/YeWtBHHamg6jy4NBJp5mBIo8gu+DcWjdPGXdWSPZAgGCN8t36uWl4mzfa6GW3Dpw==
 
 react-native-reanimated-carousel@^3.5.1:
   version "3.5.1"

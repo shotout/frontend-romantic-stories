@@ -41,6 +41,7 @@ function Main({
   props,
   handleSetStory,
   handleSetPage,
+  page
 }) {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
@@ -51,8 +52,8 @@ function Main({
     checkFirebase();
   });
   useEffect(() => {
-    handleSetPage(0);
-  }, []);
+    handleSetPage(page);
+  }, [page]);
   const HandleDeepLinking = () => {
     // const {navigate} = useNavigation()
     const handleDynamicLinks = async (link: any) => {

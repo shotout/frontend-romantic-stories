@@ -6,4 +6,5 @@ export default states => ({
   userStory: states.defaultState.userStory,
   backgroundColor: states.defaultState.backgroundColor,
   colorText: states.defaultState.colorText,
+  page: states.defaultState.page,
 });
