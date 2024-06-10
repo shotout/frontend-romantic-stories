@@ -11,18 +11,19 @@ import {navigate, navigationRef} from '../shared/navigationRef';
 import MyTabsComponent from './BottomNavigator';
 import {BottomBarProvider} from './BottomBarContex';
 import messaging from '@react-native-firebase/messaging';
-import {checkDeviceRegister} from '../shared/request';
+import {checkDeviceRegister, getStoryDetail} from '../shared/request';
 import DeviceInfo from 'react-native-device-info';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import ExploreLibraryScreen from '../screens/exploreLibrary/index';
+import DetailCategoryScreen from '../screens/detailCategoryPage/detailCategoryPage';
 import modalShare from '../screens/screenShare/index';
 import screenMedia from '../screens/media/index';
 import screenNotification from '../screens/notification/index';
 import screenCategories from '../screens/categories/index';
 import screenSubscriptions from '../screens/subscriptions/index';
-
+import screenTutorial from '../screens/tutorial/index';
 const screenOptionsDefault = {
   cardOverlayEnabled: false,
   // presentation: 'transparentModal',
@@ -34,25 +35,39 @@ const screenOptionsDefault = {
 
 const Stack = createNativeStackNavigator();
 
-function Main({registerData, userProfile, props}) {
+function Main({
+  registerData,
+  userProfile,
+  props,
+  handleSetStory,
+  handleSetPage,
+  page
+}) {
   const [isBottomBarVisible, setBottomBarVisibility] = useState(true);
   useEffect(() => {
-    checkDevice();
+    // checkDevice();
     const checkFirebase = async () => {
       const fcmToken = await messaging().getToken();
     };
     checkFirebase();
   });
-
+  useEffect(() => {
+    handleSetPage(page);
+  }, [page]);
   const HandleDeepLinking = () => {
     // const {navigate} = useNavigation()
     const handleDynamicLinks = async (link: any) => {
       let storyId = link.url.split('=').pop();
-      navigate('Library');
-      Alert.alert(storyId);
+      // navigate('Library');
+      // Alert.alert(storyId);
+      // const resp = await getStoryDetail(storyId);
+      // // handleSetStory(resp.data);
+      // alert(link)
+      navigate('Main', {storyId: storyId});
     };
     useEffect(() => {
       const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
+
       return () => unsubscribe();
     }, []);
 
@@ -84,11 +99,19 @@ function Main({registerData, userProfile, props}) {
             name={'ExploreLibrary'}
             component={ExploreLibraryScreen}
           />
+          <Stack.Screen
+            name={'CategoryDetail'}
+            component={DetailCategoryScreen}
+          />
+          <Stack.Screen name={'Tutorial'} component={screenTutorial} />
           <Stack.Screen name={'Share'} component={modalShare} />
           <Stack.Screen name={'Media'} component={screenMedia} />
           <Stack.Screen name={'Notification'} component={screenNotification} />
           <Stack.Screen name={'Categories'} component={screenCategories} />
-          <Stack.Screen name={'Subscriptions'} component={screenSubscriptions} />
+          <Stack.Screen
+            name={'Subscriptions'}
+            component={screenSubscriptions}
+          />
           <Stack.Screen name="Bottom" component={MyTabsComponent} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -22,7 +22,8 @@ import ProfileSvg from '../../../assets/icons/profile';
 import PartnerSvg from '../../../assets/icons/partner';
 import FlagSvg from '../../../assets/icons/flag';
 import {BACKEND_URL} from '../../../shared/static';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
+import {hp} from '../../../utils/screen';
 
 function ModalEditProfile({
   isVisible,
@@ -32,8 +33,7 @@ function ModalEditProfile({
   getAvatarFemale,
   getAvatarMale,
   colorTheme,
-  handleSetPremium,
-  isPremium,
+  backgroundColor,
 }) {
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -51,48 +51,48 @@ function ModalEditProfile({
     <View
       style={{
         backgroundColor: colorTheme,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: hp(20),
+        borderTopRightRadius: hp(20),
       }}>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
             backgroundColor: code_color.white,
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={hp(20)} height={hp(20)} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: backgroundColor === '#2C3439' ? 'white' : 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Edit Profile
         </Text>
-        <Switch
+        {/* <Switch
           style={{marginLeft: 'auto'}}
           trackColor={{false: '#767577', true: '#81b0ff'}}
           thumbColor={isPremium ? '#f5dd4b' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={() => handleSetPremium(!isPremium)}
           value={isPremium}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -100,38 +100,44 @@ function ModalEditProfile({
   const menuEditList = [
     {
       title: 'Edit Name',
-      icon: <IdCardSvg width={24} height={24} />,
+      icon: (
+        <IdCardSvg
+          width={hp(24)}
+          height={hp(24)}
+          fill={backgroundColor === '#2C3439' ? 'white' : 'white'}
+        />
+      ),
       value: userProfile.name,
     },
     {
       title: 'Gender',
-      icon: <GenderSvg width={24} height={24} fill={code_color.black} />,
+      icon: <GenderSvg width={hp(24)} height={hp(24)} fill={code_color.blackDark} />,
       value: userProfile.gender,
     },
     {
       title: 'Select your character',
-      icon: <ProfileSvg width={22} height={22} />,
-      value: userProfile.gender === 'Male' ? getAvatarMale : getAvatarFemale,
+      icon: <ProfileSvg width={hp(22)} height={hp(22)} />,
+      value: getAvatarMale,
     },
     {
       title: 'Select partner character',
-      icon: <PartnerSvg width={20} height={20} />,
-      value: userProfile.gender === 'Male' ? getAvatarFemale : getAvatarMale,
+      icon: <PartnerSvg width={hp(20)} height={hp(20)} />,
+      value: getAvatarFemale,
     },
-    {
-      title: 'Select language',
-      icon: <FlagSvg width={24} height={24} />,
-      value: userProfile?.language?.name,
-    },
+    // {
+    //   title: 'Select language',
+    //   icon: <FlagSvg width={24} height={24} />,
+    //   value: userProfile?.language?.name,
+    // },
   ];
 
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: 'white',
       }}>
       {menuEditList.map((edit, i) => (
         <View key={i}>
@@ -141,40 +147,89 @@ function ModalEditProfile({
             {edit.icon}
             <Text
               style={{
-                color: code_color.black,
+                color: code_color.blackDark,
                 marginLeft: 10,
-                fontSize: 16,
+                fontSize: moderateScale(16),
                 fontWeight: '600',
               }}>
               {edit.title}
             </Text>
-            {edit.title.includes('character') ? (
+            {edit.title.includes('your') ? (
               <View
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
+                  width: hp(40),
+                  height: hp(40),
+                  borderRadius: hp(20),
                   marginLeft: 'auto',
                   backgroundColor: code_color.yellow,
                   position: 'relative',
                   overflow: 'hidden',
+                  alignItems: 'center',
                 }}>
                 <Image
                   source={{uri: `${BACKEND_URL}${edit.value}`}}
                   style={{
-                    width: 40,
-                    height: 150,
+                    width: hp(40),
+                    height: hp(
+                      edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
+                    ),
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     position: 'absolute',
-                    top: 0,
+                    top: hp(3),
+                    right: hp(
+                      edit.value === '/assets/images/avatars/5.png'
+                        ? -7
+                        : edit.value === '/assets/images/avatars/1.png'
+                        ? 3.5
+                        : edit.value === '/assets/images/avatars/4.png'
+                        ? 2
+                        : 0,
+                    ),
+                  }}
+                />
+              </View>
+            ) : edit.title.includes('partner') ? (
+              <View
+                style={{
+                  width: hp(40),
+                  height: hp(40),
+                  borderRadius: hp(20),
+                  marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  source={{uri: `${BACKEND_URL}${edit.value}`}}
+                  style={{
+                    width: hp(40),
+                    height: hp(
+                      edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
+                    ),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: hp(3),
+                    right: hp(
+                      edit.value === '/assets/images/avatars/5.png'
+                        ? -7
+                        : edit.value === '/assets/images/avatars/1.png'
+                        ? 3.5
+                        : edit.value === '/assets/images/avatars/4.png'
+                        ? 2
+                        : 0,
+                    ),
                   }}
                 />
               </View>
             ) : (
               <Text
                 style={{
-                  color: code_color.black,
+                  color: code_color.blackDark,
                   marginLeft: 'auto',
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: '400',
                 }}>
                 {edit.value}
@@ -200,7 +255,9 @@ function ModalEditProfile({
       animationType="fade"
       transparent
       onDismiss={handleClose}>
-      <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <TouchableOpacity
+        onPress={handleClose}
+        style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
         <View
           style={{
             height: moderateScale('60%'),
@@ -211,7 +268,7 @@ function ModalEditProfile({
           {header()}
           {form()}
         </View>
-      </View>
+      </TouchableOpacity>
     </Modal>
   );
 }

@@ -2,21 +2,22 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 import {colors, fonts} from '../../shared/styling';
+import { hp } from '../../utils/screen';
 
-const screenWidth = Math.round(Dimensions.get('window').width) / 4 - 33;
+const screenWidth = Math.round(Dimensions.get('window').width) / 4 - hp(33);
 
 export default StyleSheet.create({
   ctnRowSection: {
     alignItems: 'center',
     alignContent: 'center',
     flexWrap: 'wrap',
-    marginHorizontal: moderateScale(4),
+    marginHorizontal: hp(4),
   },
   ctnIcon: {
-    width: moderateScale(28),
-    height: moderateScale(28),
+    width: hp(28),
+    height: hp(28),
     resizeMode: 'contain',
-    marginBottom: moderateScale(5),
+    marginBottom: hp(5),
   },
   ctnLabel: {
     color: colors.white,

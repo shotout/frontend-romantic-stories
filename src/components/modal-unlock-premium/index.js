@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Modal, View, Text, TouchableOpacity} from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -10,14 +16,17 @@ import {code_color} from '../../utils/colors';
 import {moderateScale} from 'react-native-size-matters';
 import BookUnlockIcon from '../../assets/icons/bookUnlock';
 import PlayIcon from '../../assets/icons/play';
-
+import CloseIcon from '../../assets/icons/close';
+import {handlePayment} from '../../helpers/paywall';
+import {hp} from '../../utils/screen';
 function ModalUnlockPremium({
+  isLoadingAds,
   isVisible,
-  onClose,
-  Icon,
-  title,
-  desc,
   onSuccess,
+  onClose,
+  title,
+  Icon,
+  desc,
 }) {
   const handleClose = () => {
     onClose();
@@ -41,15 +50,27 @@ function ModalUnlockPremium({
             width: '90%',
             backgroundColor: code_color.white,
             borderRadius: moderateScale(24),
-            padding: 30,
-            alignItems: 'center',
+            padding: hp(30),
+            // alignItems: 'center',
           }}>
-          <Icon />
+          <TouchableOpacity
+            onPress={() => handleClose()}
+            style={{
+              alignItems: 'flex-end',
+              marginRight: hp(-10),
+              marginTop: hp(-10),
+            }}>
+            <CloseIcon width={hp(15)} height={hp(15)} />
+          </TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+            <Icon />
+          </View>
+
           <Text
             style={{
               color: code_color.black,
               fontWeight: '700',
-              fontSize: 18,
+              fontSize: moderateScale(18),
               textAlign: 'center',
             }}>
             {title}
@@ -58,69 +79,87 @@ function ModalUnlockPremium({
             style={{
               color: code_color.black,
               fontWeight: '400',
-              fontSize: 16,
+              fontSize: moderateScale(16),
               textAlign: 'center',
-              marginTop: moderateScale(10),
+              marginTop: hp(10),
             }}>
             {desc}
           </Text>
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 20}}>
+          <View style={{flexDirection: 'row', gap: hp(10), marginTop: hp(20)}}>
             <TouchableOpacity
+              onPress={() => handlePayment('in_app')}
               style={{
                 backgroundColor: '#009A37',
                 flex: 1,
-                borderRadius: 8,
-                paddingVertical: 6,
+                borderRadius: hp(8),
+                paddingVertical: hp(6),
               }}>
               <BookUnlockIcon
                 style={{
                   position: 'absolute',
-                  top: 9,
-                  left: 6,
+                  top: '40%',
+                  left: hp(4),
                 }}
+                height={hp(23)}
+                width={hp(23)}
               />
               <Text
                 style={{
                   textAlign: 'center',
                   color: code_color.white,
-                  fontSize: 12,
+                  fontWeight: 'bold',
+                  fontSize: moderateScale(14),
                 }}>
-                {'GO\rUNLIMITED'}
+                {'GO\r\nUNLIMITED'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              disabled={isLoadingAds}
+              onPress={onSuccess}
               style={{
                 backgroundColor: '#ED5267',
                 flex: 1,
-                borderRadius: 8,
-                paddingVertical: 6,
+                borderRadius: hp(8),
+                paddingVertical: hp(6),
                 position: 'relative',
                 overflow: 'hidden',
+                justifyContent: 'center',
+                opacity: isLoadingAds ? 0.6 : 1,
               }}>
-              <PlayIcon style={{position: 'absolute', top: 8, left: 8}} />
-              <Text
-                style={{
-                  backgroundColor: '#FFD12F',
-                  position: 'absolute',
-                  width: 100,
-                  fontSize: 12,
-                  fontWeight: '600',
-                  textAlign: 'center',
-                  right: -35,
-                  top: 8,
-                  transform: 'rotate(45deg)',
-                }}>
-                FREE
-              </Text>
-              <Text
-                onPress={onSuccess}
-                style={{
-                  textAlign: 'center',
-                  color: code_color.white,
-                  fontSize: 12,
-                }}>
-                {'WATCH\rVIDEO'}
-              </Text>
+              {isLoadingAds ? (
+                <ActivityIndicator color={code_color.white} size={hp(25)} />
+              ) : (
+                <>
+                  <PlayIcon
+                    style={{position: 'absolute', top: '30%', left: hp(8)}}
+                    height={hp(23)}
+                    width={hp(23)}
+                  />
+                  <Text
+                    style={{
+                      backgroundColor: '#FFD12F',
+                      position: 'absolute',
+                      width: 100,
+                      fontSize: moderateScale(12),
+                      fontWeight: '600',
+                      textAlign: 'center',
+                      right: -35,
+                      top: 8,
+                      transform: 'rotate(45deg)',
+                    }}>
+                    FREE
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: code_color.white,
+                      fontWeight: 'bold',
+                      fontSize: moderateScale(14),
+                    }}>
+                    {'WATCH\r\nVIDEO'}
+                  </Text>
+                </>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -133,6 +172,7 @@ ModalUnlockPremium.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   Icon: PropTypes.func.isRequired,
+  isLoadingAds: PropTypes.bool,
 };
 
 ModalUnlockPremium.defaultProps = {};

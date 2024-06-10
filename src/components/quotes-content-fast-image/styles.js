@@ -3,82 +3,81 @@ import {StyleSheet} from 'react-native';
 import { sizing } from '../../utils/styling';
 import { isIphoneXorAbove } from '../../utils/devices';
 import { code_color } from '../../utils/colors';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
 
 
 export default StyleSheet.create({
   ctnBackgroundImage: {
     resizeMode: 'cover',
-    width: sizing.getWindowWidth(1),
-    height: sizing.getDimensionHeight(0.9),
+    width: wp(sizing.getWindowWidth(1)),
+    height: hp(sizing.getDimensionHeight(0.9)),
   },
   ctnIcon: {
     flex: 1,
     // backgroundColor: 'red',
-    marginBottom: isIphoneXorAbove() ? 0 : 0
+    marginBottom: 0
   },
   quotesWrapper: {
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingTop: 20
+    paddingTop: wp(10),
     
   },
   ctnQuotesIcon: {
-    width: 80,
-    height: 80,
+    width: wp(80),
+    height: hp(80),
     alignSelf: 'center',
-    marginBottom: 30
+    marginBottom: wp(30)
   },
   txtQuotesWrapper: {
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     position:'relative',
- 
   },
   ctnQuotes: {
-    // textAlign: 'justify',
+    textAlign: 'justify',
     // fontFamily: fonts.QuotesText,
-    lineHeight: 24,
-    
-    
+   
+    // letterSpacing: 0
   },
   ctnRowButton:{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     // marginBottom: isIphoneXorAbove() ? 80) : 40),
-    marginBottom: 15,
-    marginTop: 40
+    marginBottom: wp(15),
+    marginTop: wp(40)
   },
   ctnRowButton2:{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     // marginBottom: isIphoneXorAbove() ? 80) : 40),
-    marginBottom: 15,
-    marginTop: 20
+    marginBottom: wp(15),
+    marginTop: wp(20)
   },
   ctnBtn:{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    height: 44,
-    borderRadius: 44,
+    paddingHorizontal: wp(12),
+    height: hp(44),
+    borderRadius: wp(44),
     backgroundColor: 'rgba(0,0,0,0.8)',
-    width: 130
+    width: wp(130)
   },
   imgBtn: {
-    width: 22,
-    height: 22,
+    width: wp(22),
+    height: hp(22),
     resizeMode: 'contain',
-    marginRight: 8
+    marginRight: wp(8)
   },
   txtButton:{
     color: code_color.white,
     // fontFamily: fonts.InterMedium,
   },
   mgLeft:{
-    marginLeft: 16
+    marginLeft: wp(16)
   },
   ctnAbsolute:{
     position: 'absolute'
@@ -92,8 +91,8 @@ export default StyleSheet.create({
     color: code_color.grey
   },
   traceBg:{
-    width: 50,
-    height: 50,
+    width: wp(50),
+    height: hp(50),
     resizeMode: 'contain',
   },
   ctnBgWatermark:{
@@ -122,7 +121,7 @@ export default StyleSheet.create({
   txtWatermark: {
     // fontFamily: fonts.InterMedium,
     color: code_color.splash,
-    fontSize: 16,
+    fontSize: fixedFontSize(16),
   },
   subBottomWrapper: {
     flexDirection: 'row',
@@ -130,12 +129,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   ctnRounded: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    padding: 12,
-    marginHorizontal: 12,
-    marginBottom: 20,
+    width: wp(50),
+    height: hp(50),
+    borderRadius: wp(50 / 2),
+    padding: wp(12),
+    marginHorizontal:wp(12),
+    marginBottom: wp(20),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -144,7 +143,7 @@ export default StyleSheet.create({
     bottom: -65,
     right: -63,
     aspectRatio: 249 / 93,
-    width: 170,
+    width: wp(170),
     overflow: 'visible'
   },
   ctnUnion:{

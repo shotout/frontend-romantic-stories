@@ -6,4 +6,9 @@ export default states => ({
   fontFamily: states.defaultState.fontFamily,
   fontSize: states.defaultState.fontSize,
   colorTheme: states.defaultState.colorTheme,
+  getAvatarFemale:
+    states.defaultState.userProfile?.data?.get_avatar_female?.image?.url,
+  getAvatarMale:
+    states.defaultState.userProfile?.data?.get_avatar_male?.image?.url,
+  levelingUser: states.defaultState.levelingUser,
 });

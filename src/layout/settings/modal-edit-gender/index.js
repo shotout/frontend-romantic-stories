@@ -14,8 +14,9 @@ import {updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import { hp } from '../../../utils/screen';
 
-function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
+function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [gender, setGender] = useState(userProfile.gender);
   const [loading, setLoading] = useState(false);
 
@@ -52,29 +53,29 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            backgroundColor: 'white',
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={hp(20)} height={hp(20)}  />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Select Gender
@@ -86,10 +87,10 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
   const form = () => (
     <View
       style={{
-        padding: 25,
+        padding: hp(25),
         paddingTop: moderateScale(5),
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: 'white',
       }}>
       <Text
         style={{
@@ -111,10 +112,11 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile}) {
       <TouchableOpacity onPress={() => setGender(null)}>
         <Text
           style={{
-            color: code_color.grey,
+            color: backgroundColor != '#2C3439' && gender === null ?  '#5873FF' : backgroundColor != '#2C3439' && gender != null ?  code_color.blackDark :  backgroundColor === '#2C3439' && gender != null ?  'white' :  backgroundColor === '#2C3439' && gender === null ?  '#5873FF' : code_color.blackDark,
             fontWeight: '400',
             fontSize: moderateScale(17),
             textAlign: 'center',
+            textDecorationLine: gender === null ? 'underline' : null,
             marginVertical: 20,
           }}>
           Prefer not to say

@@ -22,6 +22,7 @@ import i18n from '../../i18n/index';
 import {getDefaultLanguange} from '../../utils/devices';
 import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
+import { fixedFontSize, hp, wp } from '../../utils/screen';
 
 const OnboardScreen = (props: any) => {
   return (
@@ -38,20 +39,20 @@ const OnboardScreen = (props: any) => {
       allowFontScaling={false}
         style={{
           color: 'white',
-          fontSize: 28,
+          fontSize: fixedFontSize(28),
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
         }}>
-        {'Romantic Story \n for your everyday fantasy'}
+        {'Exciting Stories \n for your everyday fantasy'}
       </Text>
       <Image
         source={logo}
         style={{
           resizeMode: 'contain',
-          width: '50%',
-          height: '30%',
+          width: wp(200),
+          height: hp(140),
           // marginVertical: 100,
-          marginBottom: 160
+          marginBottom: wp(160)
         }}
       />
 

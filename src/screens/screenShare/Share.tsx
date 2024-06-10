@@ -15,7 +15,9 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
+  TouchableNativeFeedback,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {connect} from 'react-redux';
 import RNFS from 'react-native-fs';
 import CloseIcon from '../../assets/icons/close';
@@ -25,12 +27,14 @@ import InstagramStory from '../../assets/icons/instagramStory';
 import Instagram from '../../assets/icons/instagram';
 import FBStory from '../../assets/icons/facebookStory';
 import FB from '../../assets/icons/facebook';
+import Save from '../../assets/icons/save';
 import UpChevron from '../../assets/icons/upChevron';
 import Lock from './../../assets/icons/lock';
 import Watch from './../../assets/icons/watch';
 import LockFree from './../../assets/icons/lockFree';
 import UnlockFontIcon from './../../assets/icons/unlockFont';
 import UnlockBgShareIcon from './../../assets/icons/unlockBgShare';
+import IconChecklistColor from './../../assets/icons/iconChecklistTosca';
 
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -53,11 +57,9 @@ import {
   imgSticker4,
   imgSticker5,
   imgFont,
-  imgStep1,
-  imgBgXp,
-  imgStep6,
-  imgStep7,
-  imgStep8,
+  logo,
+  icon,
+  iconBlack,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -67,7 +69,7 @@ import Share, {Social} from 'react-native-share';
 import {moderateScale} from 'react-native-size-matters';
 import {sizing} from '../../shared/styling';
 import {isIphone} from '../../utils/devices';
-import {goBack, navigate} from '../../shared/navigationRef';
+import {goBack, navigate, reset, resetParams} from '../../shared/navigationRef';
 import ModalStickers from '../../components/modal-stickers';
 import Gestures from '../../components/Gestures/gestures';
 import Slider from '@react-native-community/slider';
@@ -76,27 +78,50 @@ import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../components/modal-unlock-premium';
+import {Step6, Step7, Step8} from '../../layout/tutorial';
+import {handlePayment} from '../../helpers/paywall';
+import {loadRewarded, loadRewardedImage} from '../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import PlayStore from '../../assets/icons/playStore';
+import AppStore from '../../assets/icons/appStore';
+import FastImage from 'react-native-fast-image';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {hp} from '../../utils/screen';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { STORY_SHARED, eventTracking } from '../../helpers/eventTracking';
 
-function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
+function ScreenShare({
+  route,
+  stepsTutorial,
+  handleSetSteps,
+  isPremium,
+  userProfile,
+  id,
+  title
+}) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
   const [selectBg, setSelectBg] = useState(null);
   const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
   const [fontSelect, setSelectFont] = useState({
-    name: 'Georgia',
-    value: 'GeorgiaEstate-w15Mn',
+    name: 'Roboto',
+    value: 'Roboto-Regular',
   });
-  const [selectedFont, setSelectedFont] = useState<any>(null);
-  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
-  const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [selectedFont, setSelectedFont] = useState({
+    name: '',
+    value: '',
+  });
+  const [showModalSave, setShowModalSave] = useState(false);
   const [sticker, setSticker] = useState([]);
   const [userText, setUserText] = useState('');
   const [draggableItems, setDraggableItems] = useState([]);
+  const [selected, setSelected] = useState('');
   const [stickers, setStickers] = useState([
     {
       image: imgSticker1,
@@ -118,12 +143,14 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
 
   // Konfigurasi Animated
   const pan = useRef(new Animated.ValueXY()).current;
-
+  const [dinamicLink, setDinamicLink] = useState('');
   const captureRef = useRef();
   const base64CaptureImage = useRef(null);
   const [viewShotLayout, setViewShotLayout] = useState(null);
-  const backgroundList = [bg, story2, bgShare1, bgShare2, bgShare3, bgShare4];
-  const downloadText = 'I found this fact on the ShortStory App';
+  const backgroundList = [bg, story2, bgShare2, bgShare3, bgShare4];
+  const downloadText = `The *EroTales App* has the best free Romantic Stories ever! I just found this one:\n*${route?.params?.title}*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly *for free* on the AppStore or Google Play.`;
+  const downloadTextFb = `The EroTales App has the best free Romantic Stories ever! I just found this one:\n*${route?.params?.title}*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly for free on the AppStore or Google Play.`;
+  // const downloadText = `The EroTales App has the best Romantic Stories ever! I just found this one:${route?.params?.title} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
@@ -159,7 +186,60 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     },
   });
 
+  useEffect(() => {
+    setSelected(route?.params?.selectedContent);
+  }, [route?.params?.selectedContent]);
+  const showInterStialFont = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewarded();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                setSelectFont(selectedFont);
+                setModalUnlockFont(false);
+              },
+            },
+          ]);
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
+
+  const showInterStialBg = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewardedImage();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          Alert.alert(
+            'Congrats! You have unlocked the selected Background.',
+            '',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  setSelectBg(selectedBg);
+                  setModalUnlockBg(false);
+                },
+              },
+            ],
+          );
+        }
+        setLoadingAds(false);
+      },
+    );
+  };
   const handleShare = async () => {
+    eventTracking(STORY_SHARED);
     base64CaptureImage.current = null;
     handleScreenshot();
   };
@@ -176,19 +256,44 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     return status === 'granted';
   };
 
-  const handleSaveImage = async () => {
-    try {
+  const [isSaveImage, setIsSaveImage] = useState(false);
+  useEffect(() => {
+    async function saveImage() {
+      const contentURL = isIphone ? base64CaptureImage.current : captureUri;
       if (Platform.OS === 'android' && Platform.Version?.toString() < 30) {
         if (await hasAndroidPermission()) {
-          await CameraRoll.save(captureUri);
+          await CameraRoll.save(contentURL);
+          setShowModalSave(true);
+          setTimeout(() => {
+            setShowModalSave(false);
+          }, 1000);
         } else {
           return;
         }
       } else {
-        await CameraRoll.save(captureUri);
+        await CameraRoll.save(contentURL);
+        setShowModalSave(true);
+        setTimeout(() => {
+          setShowModalSave(false);
+        }, 1000);
       }
+      setIsSaveImage(false);
+    }
+
+    if (isSaveImage) {
+      saveImage();
+    }
+  }, [isSaveImage]);
+
+  const handleSaveImage = async () => {
+    try {
+      await handleShare();
+      setTimeout(() => {
+        setIsSaveImage(true);
+      }, 500);
     } catch (err) {
       console.log('Err save:', err);
+      setIsSaveImage(false);
     }
   };
 
@@ -223,27 +328,73 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       });
   };
 
+  const generateLink = async () => {
+    try {
+      const link = await dynamicLinks().buildShortLink(
+        {
+          link: `https://erotalesapp.page.link/Tbeh?storyId=${id}`,
+          domainUriPrefix: 'https://erotalesapp.page.link',
+          android: {
+            packageName: 'app.erotales',
+          },
+          ios: {
+            appStoreId: '6463850368',
+            bundleId: 'apps.romanticstory',
+            fallbackUrl: 'https://apps.apple.com/app/id6463850368?efr=1',
+          },
+          navigation: {
+            forcedRedirectEnabled: true
+          },
+          suffix: {
+            option: 'SHORT',
+          },
+        },
+        dynamicLinks.ShortLinkType.DEFAULT,
+      );
+      return link;
+    } catch (error) {
+      console.error('Error generating link:', error);
+      return ''; // return a default or error value
+    }
+  };
+  useEffect(() => {
+    async function setLinks() {
+      setDinamicLink(await generateLink());
+    }
+    setLinks();
+  }, []);
   const handleWAShare = async () => {
     await handleShare();
-    setTimeout(async () => {
-      try {
-        await Share.open({
-          url: base64CaptureImage.current!,
-          title: 'Shared-Short-Story',
-        });
-      } catch (err) {
-        console.log('Error share whatsapp:', err);
-      }
-    }, 200);
+    Clipboard.setString(downloadText);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              await Share.open({
+                url: base64CaptureImage.current!,
+                title: 'Shared-Short-Story',
+              });
+            } catch (err) {
+              console.log('Error share whatsapp:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   const handleIGStoryShare = async () => {
-    handleShare();
+    await handleShare();
     setTimeout(async () => {
       try {
         const contentURL = isIphone ? base64CaptureImage.current : captureUri;
         await Share.shareSingle({
-          backgroundImage: contentURL, // url or an base64 string
+          backgroundImage: contentURL!, // url or an base64 string
           social: Share.Social.INSTAGRAM_STORIES,
           appId: '637815961525510', // facebook appId
         });
@@ -252,26 +403,38 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       }
     }, 200);
   };
-
   const handleShareInstagramDefault = async () => {
-    handleShare();
-    setTimeout(async () => {
-      try {
-        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.shareSingle({
-          title: 'Share image to instagram',
-          type: 'image/jpeg',
-          url: contentURL,
-          social: Share.Social.INSTAGRAM,
-        });
-      } catch (err) {
-        console.log('Err share default ig:', err);
-      }
-    }, 200);
+    await handleShare();
+    Clipboard.setString(downloadTextFb);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const contentURL = isIphone
+                ? base64CaptureImage.current
+                : captureUri;
+              await Share.shareSingle({
+                title: 'Share image to instagram',
+                type: 'image/jpeg',
+                url: contentURL,
+                social: Share.Social.INSTAGRAM,
+              });
+            } catch (err) {
+              console.log('Err share default ig:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   const handleSharetoFBStory = async () => {
-    handleShare();
+    await handleShare();
     setTimeout(async () => {
       try {
         const contentURL = isIphone ? base64CaptureImage.current : captureUri;
@@ -287,24 +450,31 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
   };
 
   const handleShareFBDefault = async () => {
-    handleShare();
-    setTimeout(async () => {
-      try {
-        const contentURL = isIphone ? base64CaptureImage.current : captureUri;
-        await Share.shareSingle({
-          url: contentURL!,
-          // title: 'Share file',
-          // message: 'Simple share with message',
-          // appId: '637815961525510', // facebook appId
-          // backgroundBottomColor: '#fff',
-          // backgroundTopColor: '#fff',
-          // type: 'image/*',
-          social: Social.Facebook,
-        });
-      } catch (err) {
-        console.log('Err fb default:', err);
-      }
-    }, 200);
+    await handleShare();
+    Clipboard.setString(downloadTextFb);
+    Alert.alert(
+      '',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const contentURL = isIphone
+                ? base64CaptureImage.current
+                : captureUri;
+              await Share.shareSingle({
+                url: contentURL!,
+                social: Social.Facebook,
+              });
+            } catch (err) {
+              console.log('Err fb default:', err);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   function renderCard() {
@@ -313,28 +483,33 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         <ScrollView horizontal>
           <Card
             label="WhatsApp"
-            icon={<Whatsapp width="100%" height="100%" />}
+            icon={<Whatsapp width={hp(29)} height={hp(29)} />}
             onPress={handleWAShare}
           />
           <Card
             label="Instagram Stories"
-            icon={<InstagramStory width="100%" height="100%" />}
+            icon={<InstagramStory width={hp(29)} height={hp(29)} />}
             onPress={handleIGStoryShare}
           />
           <Card
             label="Instagram"
-            icon={<Instagram width="100%" height="100%" />}
+            icon={<Instagram width={hp(29)} height={hp(29)} />}
             onPress={handleShareInstagramDefault}
           />
           <Card
             label="Facebook Stories"
-            icon={<FBStory width="100%" height="100%" />}
+            icon={<FBStory width={hp(29)} height={hp(29)} />}
             onPress={handleSharetoFBStory}
           />
           <Card
             label="Facebook"
-            icon={<FB width="100%" height="100%" />}
+            icon={<FB width={hp(29)} height={hp(29)} />}
             onPress={handleShareFBDefault}
+          />
+          <Card
+            label="Save Image"
+            icon={<Save width={hp(29)} height={hp(29)} />}
+            onPress={handleSaveImage}
           />
         </ScrollView>
       </View>
@@ -343,6 +518,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
 
   function TextFontComponent(props: any) {
     const fontsRef = useRef(draggableItems);
+
     return (
       <View style={{zIndex: 1}}>
         {fontsRef.current.map((el: any, i: any) => (
@@ -377,7 +553,35 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 console.log('Deleted');
               }
             }}>
-            <Text style={{fontSize: fontSizeDefault}}>{el}</Text>
+            <TouchableNativeFeedback
+              onLongPress={() => {
+                setVisibleFont(true);
+                setUserText(el?.text);
+                const updatedItems = draggableItems.filter(
+                  (item, idx) => idx !== i,
+                );
+                setDraggableItems(updatedItems);
+              }}>
+              <View
+                style={{
+                  padding: 5,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  borderRadius: 10,
+                  minWidth: 10,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                }}>
+                <Text
+                  key={i}
+                  style={{
+                    fontSize: fontSizeDefault,
+                    color: 'white',
+                    textAlign: 'center',
+                  }}>
+                  {el?.text}
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
           </Gestures>
         ))}
       </View>
@@ -424,44 +628,14 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               style={{
                 alignContent: 'center',
                 justifyContent: 'center',
-                width: 150,
-                height: 150,
+                width: 50,
+                height: 50,
               }}
             />
           </Gestures>
         ))}
       </View>
     );
-    // Gunakan x dan y untuk mengatur posisi gambar/stiker
-    // return (
-    //   // Asumsi Sticker adalah gambar
-    //   <Animated.View
-    //     style={{
-    //       transform: [
-    //         {translateX: pan.x},
-    //         {translateY: pan.y},
-    //         {scaleX: size.width / 100}, // asumsi ukuran awal sticker 100x100
-    //         {scaleY: size.height / 100},
-    //       ],
-    //       width: 100,
-    //       height: 100,
-    //       position: 'absolute',
-    //     }}
-    //     {...panResponder.panHandlers}>
-    //     <Image source={imgGift1} style={{flex: 1}} resizeMode="cover" />
-    //     <View
-    //       style={{
-    //         position: 'absolute',
-    //         right: 0,
-    //         bottom: 0,
-    //         width: 30,
-    //         height: 30,
-    //         backgroundColor: 'blue',
-    //       }}
-    //       {...resizePanResponder.panHandlers}
-    //     />
-    //   </Animated.View>
-    // );
   }
   const handleFont = value => {
     if (value === 0) {
@@ -473,6 +647,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
     }
     // setFontSize(fontSizeDefault)
   };
+
   const renderFont = () => {
     return (
       <Slider
@@ -494,199 +669,70 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
       />
     );
   };
-  const windowHeight = Dimensions.get('window').height;
-  const handleTouchStart = e => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const halfScreenWidth = Dimensions.get('window').width / 2;
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < halfScreenWidth) {
-      handleSetSteps(stepsTutorial - 1);
-      if (stepsTutorial === 6) {
-        navigate('Main');
-      }
 
-      setIsSwipingLeft(true);
-    }
-    // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
-    else {
-      handleSetSteps(stepsTutorial + 1);
-      {
-        stepsTutorial === 9 ? AsyncStorage.removeItem('isTutorial') : null;
-      }
-      {
-        stepsTutorial === 9 ? handleSetSteps(0) : null;
-      }
-      {
-        stepsTutorial === 9 ? goBack() : null;
-      }
-      setIsSwipingRight(true);
-    }
-  };
-  const handleTouchEnd = () => {
-    // Reset status swipe saat sentuhan selesai
-    setIsSwipingLeft(false);
-    setIsSwipingRight(false);
-  };
-  const renderProgress = () => <StepHeader currentStep={stepsTutorial} />;
-  const renderTutorial = () => {
-    if (stepsTutorial === 6 || stepsTutorial === 7) {
+  function renderModalSave() {
+    if (showModalSave === true) {
       return (
-        <SafeAreaView
-          // onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          style={{
-            position: 'absolute',
-
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            paddingTop: 40,
+        <Modal
+          visible={showModalSave}
+          animationType="fade"
+          transparent
+          onDismiss={() => {
+            setShowModalSave(false);
           }}>
-          {renderProgress()}
           <View
-            style={{
-              backgroundColor: '#3F58DD',
-              borderRadius: 20,
-              padding: 10,
-              marginHorizontal: 40,
-              alignItems: 'center',
-              marginTop: '40%',
-              paddingTop: 50,
-            }}>
-            <Image
-              source={stepsTutorial === 6 ? imgStep6 : imgStep7}
-              resizeMode="contain"
-              style={{width: 100, height: 200, position: 'absolute', top: -100}}
-            />
-            <Text
-              style={{
-                color: code_color.white,
-                textAlign: 'center',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginVertical: 20,
-              }}>
-              {stepsTutorial === 6
-                ? 'Customize your selected\ntext, change the font and\nadd a background.'
-                : 'Everything ready? Save\nyour Custom Quote or\nShare it with your Friends!'}
-            </Text>
-
-            <Button
-              style={{
-                backgroundColor: code_color.yellow,
-                padding: 10,
-                paddingHorizontal: 40,
-                borderRadius: 20,
-                marginVertical: 10,
-              }}
-              title={i18n.t('Next')}
-              onPress={() => {
-                handleSetSteps(stepsTutorial + 1);
-                setVisible(false);
-              }}
-            />
-          </View>
-        </SafeAreaView>
-      );
-    } else if (stepsTutorial === 8 || stepsTutorial === 9) {
-      return (
-        <SafeAreaView
-          // onTouchStart={handleTouchStart}
-          // onTouchEnd={handleTouchEnd}
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            paddingTop: 40,
-          }}>
-          <ImageBackground
-            source={imgBgXp}
-            resizeMode="contain"
-            style={{
-              position: 'absolute',
-              top: '-5%',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
-
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              paddingTop: 40,
-            }}>
-            {renderProgress()}
+            style={{flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
             <View
               style={{
-                backgroundColor: '#3F58DD',
-                borderRadius: 20,
-                padding: 10,
-                marginHorizontal: 40,
-                alignItems: 'center',
-                marginTop: '45%',
-                paddingTop: 50,
+                backgroundColor: '#000000',
+                paddingHorizontal: moderateScale(40),
+                borderRadius: moderateScale(20 / 2),
+                paddingVertical: moderateScale(10),
               }}>
-              <Image
-                source={imgStep8}
-                resizeMode="contain"
+              <View
                 style={{
-                  width: 100,
-                  height: 200,
-                  position: 'absolute',
-                  top: -100,
-                }}
-              />
+                  width: moderateScale(30),
+                  height: moderateScale(30),
+                  // resizeMode: 'contain',
+                  alignSelf: 'center',
+                }}>
+                <IconChecklistColor width="100%" height="100%" />
+              </View>
               <Text
                 style={{
-                  color: code_color.white,
+                  fontSize: moderateScale(10),
+                  color: '#ffffff',
                   textAlign: 'center',
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginVertical: 20,
+                  marginTop: 8,
                 }}>
-                {
-                  'Gather Experience by finishing Stories, Level Up and become a Master of Romance!'
-                }
+                Image Saved
               </Text>
-
-              <Button
-                style={{
-                  backgroundColor: code_color.yellow,
-                  padding: 10,
-                  paddingHorizontal: 40,
-                  borderRadius: 20,
-                  marginVertical: 10,
-                }}
-                title={stepsTutorial === 8 ? i18n.t('Next') : i18n.t('Finish')}
-                onPress={() => {
-                 
-                  handleSetSteps(stepsTutorial + 1);
-                  setVisible(false);
-                  {
-                    stepsTutorial === 9
-                      ? AsyncStorage.removeItem('isTutorial')
-                      : null;
-                  }
-                  {
-                    stepsTutorial === 9 ? handleSetSteps(0) : null;
-                  }
-                  {
-                    stepsTutorial === 9 ? goBack() : null;
-                  }
-                }}
-              />
             </View>
-          </ImageBackground>
-        </SafeAreaView>
+          </View>
+        </Modal>
       );
     }
-  };
+    return null;
+  }
 
-  const renderScreenShot = () => {
-    return (
+  const windowHeight = Dimensions.get('window').height;
+
+  const renderImage = () => (
+    <View
+      style={{
+        position: 'absolute',
+        width: sizing.getDimensionWidth(0.75),
+        height: 'auto',
+        marginHorizontal: 'auto',
+        top: -sizing.getDimensionHeight(1),
+      }}>
       <ViewShot
-        style={styles.conQuote}
-        onLayout={event => {
+        style={{
+          ...styles.conQuote,
+          width: '100%',
+          borderRadius: 0,
+        }}
+        onLayout={(event: any) => {
           setViewShotLayout(event.nativeEvent.layout);
         }}
         ref={captureRef}
@@ -695,50 +741,225 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           format: 'png',
           quality: 1.0,
         }}>
-        <Image
+        <FastImage
           source={selectBg}
+          resizeMode="cover"
           style={{
             position: 'absolute',
             width: '100%',
             height: '100%',
-            borderRadius: 24,
-            resizeMode: 'cover',
           }}
         />
-        <View style={styles.overlay} />
-        {renderHeaderScreenShot()}
-        {isVisibleFont ? (
-          <TextInput
-            style={{padding: 10, marginTop: 30}}
-            placeholder="Masukkan teks"
-            value={userText}
-            onChangeText={text => setUserText(text)}
-          />
-        ) : null}
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            backgroundColor:
+              selectBg != null ? 'rgba(0, 0, 0, 0.3)' : undefined,
+          }}
+        />
         <TextFontComponent />
         <StickerComponent />
         <Text
           style={{
             ...styles.textQuote,
             fontFamily: fontSelect.value,
-            fontSize: fontSizeDefault,
+            fontSize: moderateScale(16),
+            marginHorizontal: moderateScale(20),
+            color:
+              selectBg === story2 ||
+              selectBg === bg ||
+              selectBg === bgShare2 ||
+              selectBg === bgShare3 ||
+              selectBg === bgShare4
+                ? 'white'
+                : 'black',
           }}>
-          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-            {route?.params?.start}
+          <Text style={[styles.blur, {fontSize: 16}]}>
+            ...{route?.params?.start}
           </Text>{' '}
-          {route?.params?.selectedContent}{' '}
-          <Text style={[styles.blur, {fontSize: fontSizeDefault}]}>
-            {route?.params?.end}
+          {selected}{' '}
+          <Text style={[styles.blur, {fontSize: 16}]}>
+            {route?.params?.end}...
           </Text>
         </Text>
-        <Text style={styles.textMarker}>@EroTales</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              color:
+                selectBg === story2 ||
+                selectBg === bg ||
+                selectBg === bgShare2 ||
+                selectBg === bgShare3 ||
+                selectBg === bgShare4
+                  ? 'white'
+                  : 'black',
+              fontSize: moderateScale(16),
+              fontWeight: '600',
+              textAlign: 'center',
+              bottom: moderateScale(20),
+            }}>
+            @EroTalesApp
+          </Text>
+          <Image
+            source={
+              selectBg === story2 ||
+              selectBg === bg ||
+              selectBg === bgShare2 ||
+              selectBg === bgShare3 ||
+              selectBg === bgShare4
+                ? icon
+                : iconBlack
+            }
+            resizeMode="contain"
+            style={{
+              width: 30,
+              height: 30,
+              marginLeft: 10,
+              bottom: moderateScale(20),
+            }}
+          />
+        </View>
       </ViewShot>
+    </View>
+  );
+
+  const renderLayout = () => {
+    return (
+      <View
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          backgroundColor: code_color.white,
+          borderRadius: moderateScale(24),
+          width: '94%',
+          height: 'auto',
+          marginHorizontal: 'auto',
+          // marginBottom: 20
+          // paddingTop: 40
+        }}>
+        <View style={styles.conQuote}>
+          <FastImage
+            source={selectBg}
+            resizeMode="cover"
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              borderRadius: 24,
+            }}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+              backgroundColor: selectBg != null ? 'rgba(0, 0, 0, 0.3)' : null,
+              borderRadius: moderateScale(24),
+            }}
+          />
+          {isVisibleFont ? (
+            <TextInput
+              style={{
+                padding: 10,
+                marginTop: 30,
+                color: 'white',
+                fontSize: fontSizeDefault,
+                textAlign: 'center',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                width: 'auto',
+                flex: 0,
+              }}
+              autoFocus={true}
+              placeholder=""
+              value={userText}
+              onChangeText={text => setUserText(text)}
+            />
+          ) : null}
+          <TextFontComponent />
+          <StickerComponent />
+          <Text
+            style={{
+              ...styles.textQuote,
+              fontFamily: fontSelect.value,
+              fontSize: moderateScale(16),
+              marginHorizontal: moderateScale(20),
+              color:
+                selectBg === story2 ||
+                selectBg === bg ||
+                selectBg === bgShare2 ||
+                selectBg === bgShare3 ||
+                selectBg === bgShare4
+                  ? 'white'
+                  : 'black',
+            }}>
+            <Text style={[styles.blur, {fontSize: 16}]}>
+              ...{route?.params?.start}
+            </Text>{' '}
+            {selected}{' '}
+            <Text style={[styles.blur, {fontSize: 16}]}>
+              {route?.params?.end}...
+            </Text>
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                color:
+                  selectBg === story2 ||
+                  selectBg === bg ||
+                  selectBg === bgShare2 ||
+                  selectBg === bgShare3 ||
+                  selectBg === bgShare4
+                    ? 'white'
+                    : 'black',
+                fontSize: moderateScale(16),
+                fontWeight: '600',
+                textAlign: 'center',
+                bottom: moderateScale(20),
+              }}>
+              @EroTalesApp
+            </Text>
+            <Image
+              source={
+                selectBg === story2 ||
+                selectBg === bg ||
+                selectBg === bgShare2 ||
+                selectBg === bgShare3 ||
+                selectBg === bgShare4
+                  ? icon
+                  : iconBlack
+              }
+              resizeMode="contain"
+              style={{
+                width: 30,
+                height: 30,
+                marginLeft: 10,
+                bottom: moderateScale(20),
+              }}
+            />
+          </View>
+        </View>
+        {renderHeaderScreenShot()}
+        {renderModalSave()}
+        {/* <View style={styles.overlay} /> */}
+      </View>
     );
   };
-
   const renderHeaderScreenShot = () => {
     return (
-      <View>
+      <View
+        style={{flexDirection: 'row', position: 'absolute', top: 0, right: 0}}>
         {isVisibleFont ? null : (
           <Pressable onPress={() => setVisible(true)}>
             <Image
@@ -750,23 +971,34 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 right: 50,
                 top: 10,
                 resizeMode: 'contain',
+                marginBottom: 10,
               }}
             />
           </Pressable>
         )}
         {isVisibleFont ? (
           <Pressable
+            style={{
+              position: 'absolute',
+              right: 10,
+              top: 5,
+            }}
             onPress={() => {
-              setDraggableItems([...draggableItems, userText]);
-              setUserText('');
-              setVisibleFont(false);
+              if (userText != '') {
+                const value = {text: userText};
+                setDraggableItems([...draggableItems, value]);
+                setUserText('');
+                setVisibleFont(false);
+              } else {
+                setVisibleFont(false);
+              }
             }}>
             <Text
               allowFontScaling={false}
               style={{
                 color: code_color.black,
                 position: 'absolute',
-                right: 10,
+                right: 0,
                 fontSize: 18,
                 top: 5,
               }}>
@@ -819,16 +1051,25 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         desc={
           'Watch a Video to unlock this new Font for Free or go UNLIMITED to unlock everything!'
         }
-        Icon={() => <UnlockFontIcon style={{marginBottom: 20}} width={'50%'} />}
+        Icon={() => (
+          <UnlockFontIcon
+            style={{marginBottom: 20}}
+            width={'50%'}
+            fontBefore={fontSelect.value}
+            fontAfter={selectedFont.value}
+          />
+        )}
+        isLoadingAds={loadingAds}
         onSuccess={() => {
-          setModalUnlockFont(false);
-          setSelectFont(selectedFont);
-          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
-            {
-              text: 'OK',
-              onPress: () => {},
-            },
-          ]);
+          showInterStialFont();
+          // setModalUnlockFont(false);
+          // setSelectFont(selectedFont);
+          // Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+          //   {
+          //     text: 'OK',
+          //     onPress: () => {},
+          //   },
+          // ]);
         }}
       />
       <ModalUnlockPremium
@@ -844,32 +1085,24 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         Icon={() => (
           <UnlockBgShareIcon style={{marginBottom: 20}} width={'50%'} />
         )}
-        onSuccess={() => {
-          setSelectBg(selectedBg);
-          setModalUnlockBg(false);
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: () => {},
-              },
-            ],
-          );
-        }}
+        isLoadingAds={loadingAds}
+        onSuccess={showInterStialBg}
       />
       <View style={styles.row}>
         <Text style={styles.textTitle}>Share Quote</Text>
-        <TouchableOpacity onPress={() => goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            resetParams({selectedContent: null});
+            goBack();
+          }}>
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
       </View>
-      <ScrollView style={{flex: 1, width: '100%'}}>
+
+      <ScrollView style={{flex: 1, width: '100%', marginBottom: 50}}>
         <View style={{flex: 1, alignItems: 'center'}}>
           <View
             style={{
-              flexDirection: isVisibleFont ? 'row' : 'column',
               alignItems: 'center',
             }}>
             {isVisibleFont ? (
@@ -878,8 +1111,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginRight: -20,
-                  marginLeft: -40,
+                  position: 'absolute',
+                  top: moderateScale(50),
+                  left: -80,
+                  zIndex: 1,
                 }}>
                 <Text
                   allowFontScaling={false}
@@ -926,7 +1161,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 </Text>
               </View>
             ) : null}
-            {renderScreenShot()}
+            {/* {renderScreenShot()} */}
+            {renderLayout()}
+            {renderImage()}
           </View>
 
           <View style={styles.conFont}>
@@ -937,9 +1174,9 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               </Text>
               <Pressable onPress={() => setShow(!show)} style={styles.dropDown}>
                 {show ? (
-                  <UpChevron height={10} width={10} />
+                  <UpChevron height={hp(10)} width={hp(10)} />
                 ) : (
-                  <DownChevron height={10} width={10} />
+                  <DownChevron height={hp(10)} width={hp(10)} />
                 )}
               </Pressable>
             </View>
@@ -957,7 +1194,7 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
               <Pressable
                 onPress={() => {
                   setSelectedFont(item);
-                  if (isPremium) {
+                  if (userProfile?.data?.subscription?.plan_id != 1) {
                     setSelectFont(item);
                   } else {
                     setModalUnlockFont(true);
@@ -974,8 +1211,10 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                 <Text
                   allowFontScaling={false}
                   style={{
-                    paddingHorizontal: 20,
+                    paddingHorizontal: hp(20),
                     paddingVertical: 0,
+                    fontFamily: item?.value,
+                    fontSize: moderateScale(14),
                     color:
                       fontSelect.value === item.value
                         ? code_color.blackDark
@@ -983,39 +1222,44 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                   }}>
                   {item.name}
                 </Text>
-                {!isPremium && fontSelect.name !== item.name ? (
+                {userProfile?.data?.subscription?.plan_id === 1 &&
+                fontSelect.name !== item.name ? (
                   <>
                     <View
                       style={{
                         position: 'absolute',
-                        top: -2,
-                        left: -1,
+                        top: hp(-2),
+                        left: hp(-1),
                         backgroundColor: code_color.black,
-                        height: 18,
-                        width: 18,
-                        borderRadius: 10,
+                        height: hp(18),
+                        width: hp(18),
+                        borderRadius: hp(10),
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <Lock width={9} />
+                      <Lock width={hp(9)} />
                     </View>
                     <View
                       style={{
                         position: 'absolute',
-                        bottom: -6,
-                        right: -8,
+                        bottom: hp(-6),
+                        right: hp(-8),
                         backgroundColor: code_color.pink,
-                        borderRadius: 8,
+                        borderRadius: hp(8),
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingHorizontal: 5,
-                        paddingVertical: 2,
+                        paddingHorizontal: hp(5),
+                        paddingVertical: hp(2),
                       }}>
-                      <Watch fill={code_color.white} height={12} width={12} />
+                      <Watch
+                        fill={code_color.white}
+                        height={hp(12)}
+                        width={hp(12)}
+                      />
                       <Text
                         style={{
                           color: code_color.white,
-                          fontSize: 8,
+                          fontSize: moderateScale(8),
                           fontWeight: '700',
                           marginLeft: 2,
                         }}>
@@ -1031,19 +1275,19 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
           <Text style={{...styles.title, textAlign: 'center'}}>
             Choose Background
           </Text>
-          <SafeAreaView style={{width: '100%', height: 80, marginTop: 20}}>
+          <SafeAreaView style={{width: '100%', height: hp(80), marginTop: 20}}>
             <ScrollView horizontal style={styles.horizontalScroll}>
               {backgroundList.map((bgl, idx) => (
                 <TouchableOpacity
                   key={idx}
                   style={{
-                    height: 75,
-                    width: 75,
-                    marginRight: 12,
+                    height: hp(75),
+                    width: hp(75),
+                    marginRight: hp(12),
                   }}
                   onPress={() => {
                     setSelectedBg(bgl);
-                    if (isPremium) {
+                    if (userProfile?.data?.subscription?.plan_id != 1) {
                       setSelectBg(bgl);
                       setSelectedBg(null);
                     } else {
@@ -1056,18 +1300,21 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
                       height: '100%',
                       width: '100%',
                       objectFit: 'cover',
-                      borderRadius: 8,
+                      borderRadius: hp(8),
                       borderColor: code_color.yellow,
                       borderWidth: bgl === selectBg ? 2 : 0,
                     }}
                   />
-                  {!isPremium && bgl !== selectBg ? (
+                  {userProfile?.data?.subscription?.plan_id === 1 &&
+                  bgl !== selectBg ? (
                     <LockFree
                       style={{
                         position: 'absolute',
                         alignSelf: 'center',
                         top: 4,
                       }}
+                      height={hp(20)}
+                      width={hp(70)}
                     />
                   ) : null}
                 </TouchableOpacity>
@@ -1078,7 +1325,6 @@ function ScreenShare({route, stepsTutorial, handleSetSteps, isPremium}) {
         </View>
         {renderCard()}
       </ScrollView>
-      {renderTutorial()}
     </View>
   );
 }

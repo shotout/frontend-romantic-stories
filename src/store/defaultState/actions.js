@@ -17,8 +17,37 @@ export const handleSetStory = payload => ({
   payload,
 });
 
+export const handleNextStory = payload => ({
+  type: types.SET_STORY_NEXT_DATA,
+  payload,
+});
+export const handleStoriesRelate = payload => ({
+  type: types.SET_STORY_RELATE_DATA,
+  payload,
+});
+export const handleLeveling = payload => ({
+  type: types.SET_LEVELING_DATA,
+  payload,
+});
+
+export const handleReadStory = payload => ({
+  type: types.SET_READ_STORY,
+  payload,
+});
+
+export const handleListenStory = payload => ({
+  type: types.SET_LISTEN_STORY,
+  payload,
+});
+
+
 export const handleSetSteps = payload => ({
   type: types.SET_STEP_TUTORIAL,
+  payload,
+});
+
+export const handleSetPage = payload => ({
+  type: types.SET_PAGE,
   payload,
 });
 
@@ -44,5 +73,10 @@ export const handleSetFontSize = payload => ({
 
 export const handleSetPremium = payload => ({
   type: types.SET_USER_PREMIUM,
+  payload,
+});
+
+export const handleSetColor = payload => ({
+  type: types.SET_COLOR_TEXT,
   payload,
 });

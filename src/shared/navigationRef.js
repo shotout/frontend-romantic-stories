@@ -21,6 +21,9 @@ export const push = (...args) => {
 export const replace = (...args) => {
   navigationRef.current?.dispatch(StackActions.replace(...args));
 };
+export const resetParams = (params) => {
+  navigationRef.current?.dispatch(CommonActions.setParams(params));
+};
 
 export const reset = (name, params) => {
   navigationRef.current?.dispatch(

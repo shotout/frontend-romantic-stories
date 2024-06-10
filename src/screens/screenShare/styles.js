@@ -2,6 +2,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 import {isIphoneXorAbove} from '../../utils/devices';
 import {code_color} from '../../utils/colors';
+import { hp } from '../../utils/screen';
 
 const {width} = Dimensions.get('window');
 
@@ -15,6 +16,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingTop: moderateScale(30),
   },
+  conQuoteScreenshot: {
+    position: 'absolute',
+    top: '-200%',
+    flex: 1,
+    backgroundColor: code_color.white,
+  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(255,255,255,0.3)',
@@ -23,12 +30,9 @@ export default StyleSheet.create({
   blur: {
     fontSize: moderateScale(18),
     color: 'grey',
-    textShadowColor: 'rgba(3, 5, 2, 10)',
+    textShadowColor: 'rgba(0, 0, 1, 20)',
     textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 4,
-    // textShadowRadius: 6,
-    // color: 'rgba(0, 0, 0, 0.2)',
-    // textShadowColor: 'rgba(3, 5, 2, 10)',
+    textShadowRadius: 10,
   },
   hr: {
     width: '90%',
@@ -48,7 +52,7 @@ export default StyleSheet.create({
   rowCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: moderateScale(20),
+    paddingHorizontal: hp(20),
   },
   textTitle: {
     fontSize: moderateScale(16),
@@ -61,7 +65,6 @@ export default StyleSheet.create({
     borderRadius: moderateScale(24),
     width: '80%',
     height: 'auto',
-    marginTop: moderateScale(10),
     textAlign: 'center',
   },
   dropDown: {
@@ -80,7 +83,7 @@ export default StyleSheet.create({
     marginHorizontal: moderateScale(20),
     lineHeight: moderateScale(34),
     marginTop: moderateScale(40),
-    marginBottom: moderateScale(70),
+    marginBottom: moderateScale(50),
   },
   textMarker: {
     position: 'absolute',
@@ -103,21 +106,21 @@ export default StyleSheet.create({
   },
   horizontalScroll: {
     width: '100%',
-    height: 75,
+    height: hp(75),
     paddingHorizontal: '5%',
   },
   conListFont: {
     width: '90%',
-    height: 60,
+    height: hp(60),
     marginTop: moderateScale(10),
   },
   btnFont: {
     borderColor: code_color.white,
-    borderWidth: 1,
+    borderWidth: hp(1),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10,
-    margin: 10,
-    height: 40,
+    borderRadius: hp(10),
+    margin: hp(10),
+    height: hp(40),
   },
 });

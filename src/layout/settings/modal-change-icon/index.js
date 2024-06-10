@@ -26,11 +26,21 @@ import {
 } from '../../../assets/icons/app-icon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalUnlockPremium from '../../../components/modal-unlock-premium';
+import {loadRewardedAppIcon} from '../../../helpers/loadReward';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
+import { hp } from '../../../utils/screen';
 
-function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
-  const [selectIcon, setSelectIcon] = useState('default');
+function ModalChangeIcon({
+  isVisible,
+  onClose,
+  isPremium,
+  colorTheme,
+  backgroundColor,
+}) {
+  const [selectIcon, setSelectIcon] = useState('first');
   const [selectedIcon, setSelectedIcon] = useState('');
   const [showModalUnlock, setShowModalUnlock] = useState(false);
+  const [loadingAds, setLoadingAds] = useState(false);
 
   useEffect(() => {
     const getCustomIcon = async () => {
@@ -89,6 +99,7 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
 
   const handleChangeIcon = async icon => {
     const iconName = icon?.name ? icon.name : selectedIcon;
+    console.log(iconName)
     changeIcon(iconName)
       .then(async () => {
         setSelectIcon(iconName);
@@ -105,6 +116,24 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
     setTimeout(() => {
       setShowModalUnlock(false);
     }, 1000);
+  };
+
+  const showIntersialAppIcon = async () => {
+    setLoadingAds(true);
+    const advert = await loadRewardedAppIcon();
+    const pageCountDownReward = advert.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('Earn page countdown reward:', reward);
+        if (reward) {
+          setShowModalUnlock(false);
+          setTimeout(() => {
+            handleChangeIcon(null);
+          }, 500);
+        }
+        setLoadingAds(false);
+      },
+    );
   };
 
   const handleClose = () => {
@@ -127,7 +156,9 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
           'Watch a Video to unlock this App Icon for Free or go UNLIMITED to\r\nunlock everything!'
         }
         Icon={() => <UnlockIcon style={{marginBottom: 20}} />}
-        onSuccess={() => handleChangeIcon(null)}
+        // onSuccess={() => handleChangeIcon(null)}
+        onSuccess={() => showIntersialAppIcon()}
+        isLoadingAds={loadingAds}
       />
       <View
         style={{
@@ -139,23 +170,23 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
-            width: 30,
-            height: 30,
+            backgroundColor: 'white',
+            width: hp(30),
+            height: hp(30),
             borderRadius: 20,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={hp(20)} height={hp(20)} fill={colorTheme} />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Change App Icon
@@ -167,18 +198,19 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: 'white',
       }}>
       <Text
         style={{
-          color: code_color.black,
-          fontSize: 17,
-          marginTop: 10,
+          color: code_color.blackDark,
+          fontSize: moderateScale(17),
+          marginTop: hp(10),
           lineHeight: 24,
           fontWeight: '500',
+          marginBottom: hp(10),
         }}>
         Select your favorite App Icon for your Home Screen.
       </Text>
@@ -227,9 +259,9 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
             />
             {!isPremium && selectIcon !== icon.name ? (
               <LockFree
-                width={60}
-                height={20}
-                style={{position: 'absolute', alignSelf: 'center', top: 8}}
+                width={hp(60)}
+                height={hp(20)}
+                style={{position: 'absolute', alignSelf: 'center', top: hp(8)}}
               />
             ) : null}
             {selectIcon === icon.name && (
@@ -240,12 +272,12 @@ function ModalChangeIcon({isVisible, onClose, isPremium, colorTheme}) {
                   left: 0,
                   height: '100%',
                   width: '100%',
-                  borderWidth: 2,
+                  borderWidth: hp(2),
                   borderColor: code_color.splash,
-                  borderRadius: 15,
+                  borderRadius: hp(15),
                 }}>
                 <Checklist
-                  height={18}
+                  height={hp(18)}
                   style={{position: 'absolute', top: 7, left: -2}}
                 />
               </View>

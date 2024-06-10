@@ -1,4 +1,4 @@
-package com.romanticstory;
+package app.erotales;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

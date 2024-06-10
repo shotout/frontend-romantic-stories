@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg';
 
 function SvgComponent(props) {
-  const {width = 20, height = 20, fill = 'white', style} = props;
+  const {width = 23, height = 23, fill = 'white', style} = props;
   return (
     <Svg
       width={width}

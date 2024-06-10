@@ -74,12 +74,12 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.romanticstory"
+    namespace "app.erotales"
     defaultConfig {
-        applicationId "com.romanticstory"
+        applicationId "app.erotales"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
+        versionCode 10
         versionName "1.0"
         missingDimensionStrategy 'store', 'play' 
     }
@@ -114,13 +114,19 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "org.webkit:android-jsc:+"
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     // Google Play Billing
-    def billingVersion = "6.0.1"
+    def billingVersion = "6.1.0"
     implementation "com.android.billingclient:billing:$billingVersion"
-
+    implementation 'com.google.android.gms:play-services-ads:22.6.0'
+    implementation 'com.facebook.fresco:fresco:2.5.0'
     implementation 'com.facebook.fresco:animated-gif:2.5.0'
+    implementation 'com.facebook.fresco:animated-webp:2.5.0'
+    implementation 'com.facebook.fresco:webpsupport:2.5.0' 
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

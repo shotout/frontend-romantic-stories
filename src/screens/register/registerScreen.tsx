@@ -7,7 +7,6 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  SafeAreaView,
   useColorScheme,
   StatusBar,
   KeyboardAvoidingView,
@@ -35,20 +34,28 @@ import Register8 from '../../layout/register/register8';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
 import {
+  addStory,
   checkDeviceRegister,
   getListAvatar,
+  getListCategory,
   getStoryList,
   postRegister,
+  updateProfile,
 } from '../../shared/request';
 import {connect} from 'react-redux';
 import dispatcher from './dispatcher';
 import states from './states';
 import notifee from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
-import { ONBOARDING_COMPLETE, eventTracking } from '../../helpers/eventTracking';
+import {ONBOARDING_COMPLETE, eventTracking} from '../../helpers/eventTracking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { handlePayment } from '../../helpers/paywall';
-import { moderateScale } from 'react-native-size-matters';
+import {handlePayment} from '../../helpers/paywall';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import Purchasely from 'react-native-purchasely';
+import {SafeAreaView} from 'react-native';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
+import FastImage from 'react-native-fast-image';
+import {BACKEND_URL} from '../../shared/static';
 
 function RegisterScreen({
   handleSetProfile,
@@ -57,12 +64,16 @@ function RegisterScreen({
   handleSetColorTheme,
   handleSetFontFamily,
   handleSetStory,
+  handleSetSteps,
+  userStory,
 }) {
   const [stepRegister, setStepRegister] = useState(1);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
+  // const [isReOnboard, setIsReOnboard] = useState(false);
   const [dataAva, setDataAva] = useState([]);
   const [dataAva2, setDataAva2] = useState([]);
+  const [dataStory, setDataStory] = useState([]);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -78,24 +89,38 @@ function RegisterScreen({
     ),
     fcm_token: '',
     category_id: 1,
-    avatar_male: 1,
-    avatar_female: 1,
+    avatar_male: 2,
+    avatar_female: 5,
     theme_id: 1,
     language_id: 2,
     often: 3,
+    timezone: 'Asia/Jakarta',
+    notif_enable: 1,
+    purchasely_id: '',
   });
 
   useEffect(() => {
     fetchDeviceId();
   }, []);
 
+  useEffect(() => {
+    async function setRegister() {
+      await onSubmit();
+    }
+    if (stepRegister === 8) {
+      setRegister();
+    }
+  }, [stepRegister]);
+
   const fetchDeviceId = async () => {
     const data = await DeviceInfo.getUniqueId();
     const fcmToken = await messaging().getToken();
+    const id = await Purchasely.getAnonymousUserId();
     setFormValues({
       ...values,
       device_id: data,
       fcm_token: fcmToken,
+      purchasely_id: id,
     });
   };
 
@@ -107,10 +132,10 @@ function RegisterScreen({
   };
 
   useEffect(() => {
-    if (!values.gender) {
+    if (values.gender === '') {
       fetchAllAva();
-    } else {
-      fetchAva1(values.gender === 'Male' ? 'male' : 'female');
+    } else if(values.gender != '' && values.gender != null) {
+      fetchAva1(values.gender === 'Female' ? 'female' : 'male');
       fetchAva2(values.gender === 'Male' ? 'female' : 'male');
     }
   }, [values.gender]);
@@ -147,25 +172,113 @@ function RegisterScreen({
       // alert(JSON.stringify(error));
     }
   };
+  useEffect(() => {
+    FastImage.preload([
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/relationship.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/i_miss_u.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/dirty_mind.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/suprise_me.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/4.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/5.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/6.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/3.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/2.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/1.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`,
+      },
+    ]);
+  }, []);
 
+  // const checkReOnboard = async () => {
+  //   const device = await DeviceInfo.getUniqueId();
+  //   try {
+  //     await checkDeviceRegister({
+  //       device_id: device,
+  //     });
+  //     setIsReOnboard(true);
+  //   } catch {
+  //     setIsReOnboard(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkReOnboard();
+  // }, []);
+
+  // const fetchCategory = async () => {
+  //   try {
+  //     const category = await getListCategory();
+  //     alert(JSON.stringify(category))
+  //     setDataStory(category?.data);
+  //   } catch (error) {
+  //     alert(JSON.stringify(error));
+  //   }
+  // };
   const onSubmit = async () => {
-    await notifee.requestPermission();
+    const data = await DeviceInfo.getUniqueId();
+
+    const id = await Purchasely.getAnonymousUserId();
+    // eventTracking(ONBOARDING_COMPLETE);
     try {
-      const res = await postRegister(values);
+      const payload = {
+        name: values?.name,
+        gender: values?.gender,
+        start: values?.start,
+        end: values?.end,
+        device_id: data,
+        fcm_token: values?.fcm_token,
+        category_id: values?.category_id,
+        avatar_male: values?.avatar_male,
+        avatar_female: values?.avatar_female,
+        theme_id: values?.theme_id,
+        language_id: values?.language_id,
+        often: values?.often,
+        timezone: values?.timezone,
+        notif_enable: values?.notif_enable,
+        purchasely_id: id,
+      };
+      const res = await postRegister(payload);
       handleSetProfile(res);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
-      handleSetColorTheme(res?.data?.theme?.theme_color);
+      // handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
+      await AsyncStorage.setItem('isTutorial', 'yes');
+      eventTracking(ONBOARDING_COMPLETE);
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      eventTracking(ONBOARDING_COMPLETE)
-      handlePayment()
-      navigate('Bottom');
     } catch (error) {
-      handlePayment()
       checkDevice();
-      
     }
   };
   const checkDevice = async () => {
@@ -174,23 +287,45 @@ function RegisterScreen({
       const res = await checkDeviceRegister({
         device_id: device,
       });
-      handleSetProfile(res);
+      handleSetProfile({...res, data: {...res?.data, name: values?.name}});
+      const payload = {
+        _method: 'PATCH',
+        name: values?.name,
+        gender: values?.gender,
+        start: values?.start,
+        end: values?.end,
+        device_id: device,
+        fcm_token: values?.fcm_token,
+        category_id: values?.category_id,
+        avatar_male: values?.avatar_male,
+        avatar_female: values?.avatar_female,
+        theme_id: values?.theme_id,
+        language_id: values?.language_id,
+        often: values?.often,
+        timezone: values?.timezone,
+        notif_enable: values?.notif_enable,
+        purchasely_id: values?.purchasely_id,
+      };
+      await updateProfile(payload);
       handleSetBackground(res?.data?.theme?.bg_color);
       handleSetFontSize(res?.data?.theme?.font_size);
-      handleSetColorTheme(res?.data?.theme?.theme_color);
+      // handleSetColorTheme(res?.data?.theme?.theme_color);
       handleSetFontFamily(res?.data?.theme?.font_family);
+      await AsyncStorage.setItem('isTutorial', 'yes');
       const resp = await getStoryList();
       handleSetStory(resp.data);
-      AsyncStorage.setItem("isTutorial", "yes");
-      navigate('Bottom');
-      
     } catch (error) {}
   };
 
   const renderLayout = () => {
     if (stepRegister === 1) {
       return (
-        <View style={{justifyContent: 'center', flex: 0, marginTop: moderateScale(70)}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            flex: 0,
+            marginTop: moderateScale(70),
+          }}>
           <Register1
             setGender={text => {
               handleChange('gender', text), setStepRegister(stepRegister + 1);
@@ -210,6 +345,8 @@ function RegisterScreen({
     } else if (stepRegister === 3) {
       return (
         <Register3
+          dataCategory={dataStory}
+          value={values?.category_id}
           setCategoryId={text => {
             handleChange('category_id', text);
           }}
@@ -217,12 +354,12 @@ function RegisterScreen({
       );
     } else if (stepRegister === 4) {
       return (
-        <Register4
+        <Register5
           gender={values.gender}
-          dataAvatar={dataAva}
+          dataAvatar={dataAva2}
           setAvatar={text =>
             handleChange(
-              values.gender === 'female' ? 'avatar_female' : 'avatar_male',
+              values.gender === 'Female' ? 'avatar_male' : 'avatar_female',
               text,
             )
           }
@@ -230,12 +367,12 @@ function RegisterScreen({
       );
     } else if (stepRegister === 5) {
       return (
-        <Register5
+        <Register4
           gender={values.gender}
-          dataAvatar={dataAva2}
+          dataAvatar={dataAva}
           setAvatar={text =>
             handleChange(
-              values.gender === 'female' ? 'avatar_male' : 'avatar_female',
+              values.gender === 'Female' ? 'avatar_female' : 'avatar_male',
               text,
             )
           }
@@ -244,8 +381,18 @@ function RegisterScreen({
     } else if (stepRegister === 6) {
       return (
         <Register6
+          userStory={userStory}
           gender={values.gender}
-          setTheme={text => handleChange('theme_id', text)}
+          setTheme={text => {
+            handleChange('theme_id', text);
+            // bypass question language
+            handleChange('language_id', 1);
+          }}
+          handleSetColorTheme={value => {
+            handleSetColorTheme(
+              value === undefined ? code_color.splash : value,
+            );
+          }}
         />
       );
     } else if (stepRegister === 7) {
@@ -253,7 +400,17 @@ function RegisterScreen({
         <Register7 languange={text => handleChange('language_id', text)} />
       );
     } else if (stepRegister === 8) {
-      return <Register8 activeNotif={() => onSubmit()} />;
+      return (
+        <Register8
+          activeNotif={async () => {
+            try {
+              await notifee.requestPermission();
+              navigate('Tutorial');
+              handleSetSteps(0);
+            } catch {}
+          }}
+        />
+      );
     }
   };
   return (
@@ -262,106 +419,110 @@ function RegisterScreen({
         barStyle={stepRegister === 8 ? 'dark-content' : 'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        {stepRegister != 8 ? (
-          <View
-            style={{
-              backgroundColor: code_color.headerBlack,
-              paddingTop: isIphoneXorAbove() ? moderateScale(40) : 0,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: moderateScale(20),
-                marginTop: moderateScale(20),
-              }}>
-              {stepRegister > 1 ? (
-                <TouchableOpacity
-                  onPress={() => setStepRegister(stepRegister - 1)}>
-                  <Image source={backLeft} />
-                </TouchableOpacity>
-              ) : null}
 
-              <Text
-                allowFontScaling={false}
-                style={{
-                  color: code_color.white,
-                  textAlign: 'center',
-                  fontSize: moderateScale(18),
-                  flex: 1,
-                }}>
-                {stepRegister === 1
-                  ? titleHeader
-                  : stepRegister === 2
-                  ? 'Be part of the story'
-                  : stepRegister === 3
-                  ? 'Select your favorite genre'
-                  : stepRegister === 4
-                  ? 'Select your look'
-                  : stepRegister === 5
-                  ? 'Select your partner'
-                  : stepRegister === 6
-                  ? 'Customize your page'
-                  : stepRegister === 7
-                  ? 'For effective expression'
-                  : null}
-              </Text>
-            </View>
-            {stepRegister != 8 ? (
-              <HeaderStep currentStep={stepRegister} />
-            ) : null}
-          </View>
-        ) : (
+      {stepRegister != 8 ? (
+        <View
+          style={{
+            backgroundColor: code_color.headerBlack,
+            paddingTop: isIphoneXorAbove() ? wp(40) : 0,
+          }}>
           <View
             style={{
-              backgroundColor: code_color.white,
-              paddingTop: isIphoneXorAbove() ? 40 : 0,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: wp(20),
+              marginTop: wp(20),
             }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 20,
-                marginTop: 20,
-              }}>
+            {stepRegister > 1 ? (
               <TouchableOpacity
-                onPress={() => setStepRegister(stepRegister - 1)}>
-                <BackLeft />
-              </TouchableOpacity>
-
-              <Text
-                allowFontScaling={false}
                 style={{
-                  color: code_color.white,
-                  textAlign: 'center',
-                  fontSize: 18,
-                  flex: 1,
-                }}>
-                {stepRegister === 1
-                  ? titleHeader
-                  : stepRegister === 2
-                  ? 'Be part of the story'
-                  : ''}
-              </Text>
-            </View>
-            {stepRegister != 8 ? (
-              <HeaderStep currentStep={stepRegister} />
+                  height: 20,
+                  width: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => setStepRegister(stepRegister - 1)}>
+                <Image source={backLeft} />
+              </TouchableOpacity>
             ) : null}
-          </View>
-        )}
 
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: fixedFontSize(18),
+                flex: 1,
+              }}>
+              {stepRegister === 1
+                ? titleHeader
+                : stepRegister === 2
+                ? 'Be part of the story'
+                : stepRegister === 3
+                ? 'Select your favorite genre'
+                : stepRegister === 4
+                ? 'Select your partner'
+                : stepRegister === 5
+                ? 'Select your look'
+                : stepRegister === 6
+                ? 'Customize your page'
+                : stepRegister === 7
+                ? 'For effective expression'
+                : null}
+            </Text>
+          </View>
+          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+        </View>
+      ) : (
+        <View
+          style={{
+            backgroundColor: code_color.white,
+            paddingTop: isIphoneXorAbove() ? wp(40) : 0,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: wp(20),
+              marginTop: wp(20),
+            }}>
+            <TouchableOpacity
+              onPress={() =>
+                setStepRegister(stepRegister - (stepRegister === 8 ? 2 : 1))
+              }>
+              <BackLeft />
+            </TouchableOpacity>
+
+            <Text
+              allowFontScaling={false}
+              style={{
+                color: code_color.white,
+                textAlign: 'center',
+                fontSize: fixedFontSize(18),
+                flex: 1,
+              }}>
+              {stepRegister === 1
+                ? titleHeader
+                : stepRegister === 2
+                ? 'Be part of the story'
+                : ''}
+            </Text>
+          </View>
+          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+        </View>
+      )}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
           <Text
             allowFontScaling={false}
             style={{
               color: code_color.blueDark,
-              fontSize: moderateScale(30),
+              fontSize: fixedFontSize(24),
               fontFamily: 'Comfortaa-SemiBold',
               textAlign: 'center',
-              marginTop: moderateScale(20),
+              marginTop: wp(20),
             }}>
             {i18n.t(
               stepRegister === 1
@@ -374,26 +535,42 @@ function RegisterScreen({
             )}
           </Text>
           {renderLayout()}
-          <View style={{position: 'absolute', bottom: moderateScale(10), width: '80%'}}>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: wp(10),
+              width: wp(200),
+            }}>
             {stepRegister <= 2 ? (
               <TouchableOpacity
                 onPress={() => {
-                  handleChange('gender', null);
+                  if (stepRegister === 1) {
+                    handleChange('gender', '');
+                  }
+
                   setStepRegister(stepRegister + 1);
                 }}
                 style={{
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
+                  marginBottom:
+                    stepRegister === 1 && !isIphoneXorAbove()
+                      ? wp(10)
+                      : stepRegister === 1
+                      ? wp(100)
+                      : stepRegister === 2
+                      ? 0
+                      : wp(40),
                 }}>
                 <Text
                   allowFontScaling={false}
                   style={{
                     color: code_color.grey,
-                    fontSize: moderateScale(18),
+                    fontSize: fixedFontSize(14),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginVertical: moderateScale(15),
+                    marginVertical: wp(10),
                   }}>
                   {i18n.t(
                     stepRegister === 1
@@ -406,19 +583,35 @@ function RegisterScreen({
             {stepRegister != 1 ? (
               <Button
                 style={{
-                  backgroundColor: code_color.yellow,
+                  backgroundColor:
+                    (stepRegister == 2 && values.name === '') ||
+                    (stepRegister == 3 && values.category_id === 0)
+                      ? code_color.greyDefault
+                      : code_color.yellow,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  height: moderateScale(52),
-                  borderRadius: moderateScale(12),
+                  height: hp(45),
+                  borderRadius: wp(12),
                   width: '100%',
-                  marginTop: moderateScale(10),
-                  marginBottom: moderateScale(10),
+                  marginTop: wp(10),
+                  marginBottom: wp(20),
                 }}
-                onPress={() => {
-                  stepRegister === 8
-                    ? onSubmit()
-                    : setStepRegister(stepRegister + 1);
+                onPress={async () => {
+                  if (stepRegister === 8) {
+                    try {
+                      await notifee.requestPermission();
+                      navigate('Tutorial');
+                      handleSetSteps(0);
+                    } catch {}
+                  } else if (
+                    (stepRegister == 2 && values.name === '') ||
+                    (stepRegister == 3 && values.category_id === 0)
+                  ) {
+                  } else {
+                    setStepRegister(
+                      stepRegister + (stepRegister === 6 ? 2 : 1),
+                    );
+                  }
                 }}
                 title={
                   stepRegister === 8
@@ -427,21 +620,26 @@ function RegisterScreen({
                 }
               />
             ) : null}
+
             {stepRegister === 8 ? (
               <TouchableOpacity
-                onPress={() => onSubmit()}
+                onPress={async () => {
+                  navigate('Tutorial');
+                  handleSetSteps(0);
+                }}
                 style={{
                   alignItems: 'center',
                   alignContent: 'center',
                   justifyContent: 'center',
+                  marginBottom: wp(60),
                 }}>
                 <Text
                   style={{
                     color: code_color.grey,
-                    fontSize: moderateScale(14),
+                    fontSize: fixedFontSize(14),
                     fontFamily: 'Roboto',
                     textAlign: 'center',
-                    marginTop: moderateScale(10),
+                    marginTop: wp(10),
                   }}>
                   {'Maybe later'}
                 </Text>

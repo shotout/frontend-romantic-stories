@@ -1,12 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import {female, male} from '../../../assets/icons';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {code_color} from '../../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
+import {hp, wp} from '../../utils/screen';
 
-export default function Button({style, onPress, title, colorsText, image}) {
+export default function Button({
+  style,
+  onPress,
+  title,
+  colorsText,
+  image,
+}) {
   return (
     <>
       <TouchableOpacity
@@ -18,23 +23,27 @@ export default function Button({style, onPress, title, colorsText, image}) {
                 backgroundColor: code_color.yellow,
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: moderateScale(52),
-                margin: moderateScale(20),
-                borderRadius: moderateScale(12),
+                height: hp(45),
+                margin: wp(20),
+                borderRadius: wp(12),
                 position: 'absolute',
-                bottom: moderateScale(20),
-                width: '90%',
+                bottom: wp(20),
+                width: hp(320),
               }
         }>
-          <View>
+        <View>
           {image}
-        <Text
-          allowFontScaling={false}
-          style={{fontFamily: 'Robotto', fontWeight: 'bold', fontSize: moderateScale(14), color: !!colorsText ? colorsText : code_color.black}}>
-          {title}
-        </Text>
-          </View>
-         
+          <Text
+            allowFontScaling={false}
+            style={{
+              fontFamily: 'Robotto',
+              fontWeight: 'bold',
+              fontSize: moderateScale(14),
+              color: !!colorsText ? colorsText : code_color.black,
+            }}>
+            {title}
+          </Text>
+        </View>
       </TouchableOpacity>
     </>
   );

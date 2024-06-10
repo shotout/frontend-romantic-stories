@@ -9,8 +9,10 @@
 import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -30,25 +32,46 @@ import PropTypes from 'prop-types';
 import dispatcher from './src/navigators/dispatcher';
 import states from './src/navigators/states';
 import {connect} from 'react-redux';
-import {getStoryList} from './src/shared/request';
+import {getStoryList, updateProfile} from './src/shared/request';
 import i18n from './src/i18n/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APP_INSTALLED, askTrackingPermission, eventTracking } from './src/helpers/eventTracking';
 import { Adjust, AdjustConfig } from 'react-native-adjust';
 import * as Sentry from '@sentry/react-native';
-import { SENTRY_DSN } from './src/shared/static';
-import Purchasely, { RunningMode, LogLevels } from "react-native-purchasely";
+import { BACKEND_URL, SENTRY_DSN } from './src/shared/static';
+import Purchasely, {
+  LogLevels,
+  Attributes,
+  ProductResult,
+  RunningMode,
+  PLYPaywallAction,
+} from 'react-native-purchasely';
+import { handleSetStory } from './src/store/defaultState/actions';
+import store from './src/store/configure-store';
+import { Settings } from "react-native-fbsdk-next";
+import { AppOpenAd } from 'react-native-google-mobile-ads';
+import { getAppOpenID } from './src/shared/adsId';
+import { reloadUserProfile } from './src/utils/user';
+import FastImage from 'react-native-fast-image';
+import messaging from '@react-native-firebase/messaging';
 
-Purchasely.startWithAPIKey(
-  "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
-  ["Google"],
-  null,
-  LogLevels.DEBUG,
-  RunningMode.FULL
-);
+Purchasely.start({
+  apiKey: "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
+  androidStores: ["Google"],
+  storeKit1: false,
+  userId: null,
+  logLevel: LogLevels.DEBUG,
+  runningMode: RunningMode.FULL,
+});
+const adUnitId = getAppOpenID();
+const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ["fashion", "clothing"],
+});
+appOpenAd.load();
 function App({ userProfile }) {
-  
   Sentry.init({
+    // environment: 'production',
     environment: 'development',
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
@@ -57,8 +80,10 @@ function App({ userProfile }) {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
+  Settings.initializeSDK();
+  Settings.setAppID("657475116285203");
   useEffect(() => {
+   
     const handleAppInstalled = async () => {
       const res = await AsyncStorage.getItem('isAppInstalled');
       if (!res) {
@@ -69,39 +94,106 @@ function App({ userProfile }) {
     handleAppInstalled();
   }, []);
   useEffect(() => {
+    FastImage.preload([
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
+      }
+    ]);
     askTrackingPermission();
     getDefaultLanguange();
   }, []);
+  const getToken = async () => {
+    if (Platform.OS === "ios") {
+      // console.log('GET APNS');  // I can see this log
+      const apnsToken = await messaging().getAPNSToken(); 
+      // console.log("==> APNS token", apnsToken); // THIS NEVER GETS CALLED
+      if(apnsToken) {
+        return await messaging().getToken();
+      } else {
+        await messaging().setAPNSToken('randomAPNStoken', 'sandbox').then(async () => {
+         const data = await messaging().getToken();
+         console.log("==> token", data);
+        })
+      };
+    }
+  };
   useEffect(() => {
+    getToken()
+    resetBadge()
     getInitialRoute();
     configTracker()
   }, []);
+
+  const resetBadge = async() => {
+    if(userProfile?.token){
+      const payload = {
+        _method: 'PATCH',
+        notif_count: 0,
+      };
+      try {
+        const data  = await updateProfile(payload);
+       
+      } catch (error) {
+       
+      }
+    }
+    
+   
+  }
   const configTracker = () => {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
-      AdjustConfig.EnvironmentSandbox,
-      // AdjustConfig.EnvironmentProduction,
+        AdjustConfig.EnvironmentSandbox,
+      //  AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
-    console.log("Finish set configtracker");
+    if(__DEV__){
+      console.log("Finish set configtracker");
+    }
+   
   };
   async function getInitialRoute() {
+   
     if (userProfile?.token) {
-    
-      const res = await getStoryList();
-      // // handleSetStory(res.data);
-      setTimeout(() => {
-        navigate('Onboard');
-      }, 500);
+      try {
+        reloadUserProfile()
+        const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
+        if (isFinishTutorial === 'yes') {
+          setTimeout(() => {
+            navigate('Tutorial');
+          }, 500);
+        }else{
+          setTimeout(() => {
+            navigate('Bottom');
+          }, 500);
+        }
+      
+      } catch (error) {
+        setTimeout(() => {
+          navigate('Onboard');
+        }, 500);
+      }
+     
     } else {
       setTimeout(() => {
         navigate('Onboard');
       }, 500);
     }
   }
+  //alert(Dimensions.get('window').width +"==="+ Dimensions.get('window').height)
   return (
     <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
+       {Platform.OS === 'android' ? <StatusBar hidden /> : null } 
       <View
         style={{
           // backgroundColor: code_color.splash,
@@ -122,7 +214,7 @@ function App({ userProfile }) {
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
           }}>
-          {'Romantic Story \n for your everyday fantasy'}
+          {'Exciting Stories \n for your everyday fantasy'}
         </Text>
       </View>
     </ImageBackground>

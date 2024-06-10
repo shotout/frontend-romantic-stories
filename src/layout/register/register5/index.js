@@ -18,31 +18,31 @@ import {avam1, avam2, avam3, avam4} from '../../../assets/images';
 import Carousel from 'react-native-reanimated-carousel';
 import {opacity, useSharedValue} from 'react-native-reanimated';
 import {getListAvatar} from '../../../shared/request';
-import { BACKEND_URL } from '../../../shared/static';
+import {BACKEND_URL} from '../../../shared/static';
+import {moderateScale} from 'react-native-size-matters';
+import {fixedFontSize, hp, wp} from '../../../utils/screen';
+import FastImage from 'react-native-fast-image';
+import Loading from '../../../components/loading';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(dataAvatar);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setProgress(1);
   }, []);
 
-  const fetchCategory = async () => {
-    try {
-      const params = {
-        gender: gender === 'Female' ? 'male' : 'female',
-      };
-      const avatar = await getListAvatar(params);
-      setDataAva(avatar?.data);
-      setProgress(1);
-    } catch (error) {
-      // alert(JSON.stringify(error));
-    }
-  };
+ 
   const handleChange = index => {
     setAvatar(dataAva[index].id);
   };
+  // useEffect(() => {
+  //   setLoading(true)
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 500);
+  
+  //   }, [])
   return (
     <>
       <View
@@ -53,24 +53,22 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
           top: 0,
           width: '100%',
           height: '70%',
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: hp(50),
+          borderBottomLeftRadius: hp(50),
         }}>
         <Text
-        allowFontScaling={false}
+          allowFontScaling={false}
           style={{
-            color: 'black',
-            fontSize: 32,
+            color: 'white',
+            fontSize: fixedFontSize(28),
             fontFamily: 'Comfortaa-SemiBold',
             textAlign: 'center',
-            marginTop: 20,
-          }}>
-          What should your partner look like?
-        </Text>
+            marginTop: hp(20),
+          }}>{`What should your \npartner look like?`}</Text>
         <View style={{flex: 0, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
             defaultIndex={1}
             data={dataAva}
@@ -79,13 +77,13 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
             //   (progressValue.value = absoluteProgress)
 
             // }
-            onSnapToItem={(index) => {
+            onSnapToItem={index => {
               setProgress(index);
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             // style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center'}}
@@ -96,8 +94,8 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
-                  blurRadius={progressValue != index ? 2 : null}
+                {/* <Image
+                  // blurRadius={progressValue != index ? 2 : null}
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -105,15 +103,29 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
                     {
                       height: '100%',
                       width: '10000%',
+                      opacity: progressValue != index ? 0.7 : null
                       // backgroundColor: 'rgba( 0, 0, 0, 0.1 )',
                     },
                   ]}
+                /> */}
+                <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
                 />
               </Pressable>
             )}
           />
         </View>
       </View>
+      <Loading loading={loading} />
     </>
   );
 }

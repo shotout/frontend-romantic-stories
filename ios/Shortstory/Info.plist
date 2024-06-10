@@ -125,11 +125,13 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
-	<string>637815961525510</string>
+	<string>657475116285203</string>
 	<key>FacebookClientToken</key>
-	<string>7f9a55259a5d5e7521c2c9f63b997ae8</string>
+	<string>5b79746c45a04a643ebc2be2040bf6e6</string>
 	<key>FacebookDisplayName</key>
 	<string>Erotales</string>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>itms-apps</string>
@@ -282,6 +284,10 @@
 		</dict>
 		<dict>
 			<key>SKAdNetworkIdentifier</key>
+			<string>47vhws6wlr.skadnetwork</string>
+		</dict>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
 			<string>kbd757ywx3.skadnetwork</string>
 		</dict>
 		<dict>
@@ -376,14 +382,31 @@
 		<string>BigshotOne-Regular.ttf</string>
 		<string>GentiumBookPlus-Regular.ttf</string>
 		<string>GeorgiaEstate-w15Mn.ttf</string>
+		<string>EBGaramond-Regular.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>Merriweather-Regular.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>PlayfairDisplay-Regular.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Quicksand-Regular.ttf</string>
+		<string>Raleway-Regular.ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>Comfortaa-Bold.ttf</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>fetch</string>
+		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string></string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -400,5 +423,59 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>C56D.1</string>
+				<string>CA92.1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>85F4.1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>35F9.1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>C617.1</string>
+				<string>0A2A.1</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string></string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string></string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -16,32 +16,28 @@ import {getListAvatar, updateProfile} from '../../../shared/request';
 import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
+import { hp } from '../../../utils/screen';
 
-function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
+function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setProgress(
-      userProfile.gender === 'Female'
-        ? userProfile.avatar_male - 1
-        : userProfile.avatar_female - 1,
-    );
-  }, [userProfile.gender]);
 
   useEffect(() => {
     fetchAva();
   }, [userProfile.gender]);
 
   const handleSubmit = async () => {
+   
     try {
+    
       setLoading(true);
       const payload = {
         _method: 'PATCH',
-        [userProfile.gender === 'Female' ? 'avatar_male' : 'avatar_female']:
-          avatar,
+        avatar_female: avatar === null ? progressValue + 1 : avatar,
       };
       await updateProfile(payload);
       reloadUserProfile();
@@ -59,12 +55,24 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
         const avaMale = await getListAvatar({gender: 'male'});
         const avaFemale = await getListAvatar({gender: 'female'});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
+        setProgress(
+         
+          userProfile.avatar_female - 1
+        
+     );
+        
       } else {
         const params = {
           gender: userProfile.gender === 'Female' ? 'male' : 'female',
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);
+        setProgress(
+          userProfile.gender != "Male"
+            ? (userProfile.avatar_female > 3 ? userProfile.avatar_female - 4 : userProfile.avatar_female === 0 ? 1 :  userProfile.avatar_female  - 1)
+            : (userProfile.avatar_female > 3 ? userProfile.avatar_female - 4 : userProfile.avatar_female === 0 ? 1 : userProfile.avatar_female - 1),
+        );
+      
       }
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -91,29 +99,29 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginHorizontal: 14,
-          marginVertical: 20,
+          marginHorizontal: hp(14),
+          marginVertical: hp(20),
         }}>
         <Pressable
           onPress={() => onClose()}
           style={{
-            backgroundColor: code_color.white,
-            width: 30,
-            height: 30,
-            borderRadius: 20,
+            backgroundColor: 'white',
+            width: hp(30),
+            height: hp(30),
+            borderRadius: hp(20),
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <BackLeft width={20} height={20} fill={colorTheme} />
+            <BackLeft width={hp(20)} height={hp(20)} />
           </View>
         </Pressable>
         <Text
           allowFontScaling={false}
           style={{
-            color: code_color.white,
+            color: 'white',
             marginLeft: 15,
-            fontSize: 18,
+            fontSize: moderateScale(18),
             fontWeight: 'bold',
           }}>
           Select partner character
@@ -125,10 +133,10 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
   const form = () => (
     <View
       style={{
-        padding: 25,
-        paddingTop: 10,
+        padding: hp(25),
+        paddingTop: hp(10),
         height: '100%',
-        backgroundColor: code_color.white,
+        backgroundColor: 'white',
         width: Dimensions.get('window').width,
       }}>
       <View
@@ -137,36 +145,37 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
           backgroundColor: code_color.splash,
           height: '72%',
           width: Dimensions.get('window').width,
-          borderBottomLeftRadius: 60,
-          borderBottomRightRadius: 60,
+          borderBottomLeftRadius: hp(60),
+          borderBottomRightRadius: hp(60),
         }}
       />
       <Text
+       allowFontScaling={false}
         style={{
-          color: code_color.white,
+          color: 'white',
           fontSize: moderateScale(30),
           textAlign: 'center',
           fontFamily: 'Comfortaa-SemiBold',
           marginTop: moderateScale(10),
-          lineHeight: 50,
+          lineHeight: hp(50),
         }}>
         What should your partner look like?
       </Text>
       {dataAva && (
-        <View style={{flex: 0, alignItems: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
           <Carousel
             loop={false}
-            width={Dimensions.get('window').width / 1.5}
+            width={Dimensions.get('window').width / 1.2}
             height={Dimensions.get('window').height / 2}
-            defaultIndex={1}
+            defaultIndex={progressValue}
             data={dataAva}
             onSnapToItem={index => {
               setProgress(index);
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.8,
-              parallaxScrollingOffset: 160,
+              parallaxScrollingScale: 0.78,
+              parallaxScrollingOffset: moderateScale(210),
             }}
             mode="parallax"
             renderItem={({item, index}) => (
@@ -176,7 +185,19 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                <Image
+                   <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${item?.image?.url}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    height: '100%',
+                    width: '10000%',
+                    opacity: progressValue != index ? 0.7 : null,
+                  }}
+                />
+                {/* <Image
                   source={{uri: `${BACKEND_URL}${item?.image?.url}`}}
                   resizeMode="contain"
                   style={[
@@ -186,27 +207,27 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
                       opacity: progressValue !== index ? 0.5 : 1,
                     },
                   ]}
-                />
+                /> */}
               </Pressable>
             )}
           />
         </View>
       )}
-      <Button
+      {/* <Button
         style={{
           backgroundColor: code_color.yellow,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 52,
-          borderRadius: 10,
+          height: hp(52),
+          borderRadius: hp(10),
           width: '100%',
           marginTop: moderateScale(50),
           marginBottom: moderateScale(10),
           display: dataAva ? undefined : 'none',
         }}
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         title={loading ? 'Loading...' : 'Save'}
-      />
+      /> */}
     </View>
   );
 
@@ -227,6 +248,24 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile}) {
           {header()}
           {form()}
         </View>
+        <Button
+        style={{
+          backgroundColor: code_color.yellow,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(50),
+          borderRadius: 10,
+          width: '95%',
+          marginTop: hp(40),
+          marginBottom: hp(10),
+          position: 'absolute',
+          bottom: 20,
+          left: 10,
+          display: dataAva ? undefined : 'none',
+        }}
+        onPress={handleSubmit}
+        title={loading ? 'Loading...' : 'Save'}
+      />
       </View>
     </Modal>
   );

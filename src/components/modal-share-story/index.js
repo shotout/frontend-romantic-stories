@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Modal,
   View,
   Text,
   Image,
   TouchableOpacity,
-  Clipboard,
   Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -14,7 +13,7 @@ import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
@@ -34,45 +33,76 @@ import AppStore from '../../assets/icons/appStore';
 import {isIphone} from '../../utils/devices';
 import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
-import {logo} from '../../assets/images';
+import {imageShareIgPost, imgShare, logo} from '../../assets/images';
+import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
 
-function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
+function ModalShareStory({isVisible, onClose, storyData, main}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
+  const [dinamicLink, setDinamicLink] = useState('');
   const [showSuccessCopy, setShowSuccessCopy] = useState(false);
-
-  const captureRef = useRef();
-  const captureRefPost = useRef();
-  const base64CaptureImage = useRef(null);
-  const sharedMessage = `The EroTales App has the best Romantic Stories ever! I just found this one: ${storyData?.item?.title_en} Check out the Story here: LINK TO STORY Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
-
-  const handleClose = () => {
-    onClose();
-  };
 
   const generateLink = async () => {
     try {
-      const link = dynamicLinks().buildShortLink(
+      const link = await dynamicLinks().buildShortLink(
         {
-          link: `https://romanticstory.page.link/mVYD?storyId=${storyData?.item?.title_en}`,
-          domainUriPrefix: 'https://romanticstory.page.link',
+          link: `https://erotalesapp.page.link/Tbeh?storyId=${
+            storyData?.item?.id || storyData?.id
+          }`,
+          domainUriPrefix: 'https://erotalesapp.page.link',
           android: {
-            packageName: 'com.romanticstory',
+            packageName: 'app.erotales',
           },
           ios: {
             appStoreId: '6463850368',
             bundleId: 'apps.romanticstory',
+            fallbackUrl: 'https://apps.apple.com/app/id6463850368?efr=1',
+          },
+          navigation: {
+            forcedRedirectEnabled: true
+          },
+          // navigation: true,
+          suffix: {
+            option: 'SHORT',
           },
         },
         dynamicLinks.ShortLinkType.DEFAULT,
       );
       return link;
     } catch (error) {
-      console.log(error);
+      console.error('Error generating link:', error);
+      return ''; // return a default or error value
     }
   };
 
+  useEffect(() => {
+    async function setLinks() {
+      setDinamicLink(await generateLink());
+    }
+    if (isVisible) {
+      setLinks();
+    }
+  }, [isVisible]);
+
+  const captureRef = useRef();
+  const captureRefPost = useRef();
+  const base64CaptureImage = useRef(null);
+  const sharedMessageWa = `The *EroTales App* has the best free Romantic Stories ever! I just found this one:\n*${
+    storyData?.item?.title_en || storyData?.title_en
+  }*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly for free on the AppStore or Google Play.`;
+  const sharedMessageFB = `The *EroTales App* has the best free Romantic Stories ever! I just found this one:\n*${
+    storyData?.item?.title_en || storyData?.title_en
+  }*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly for free on the AppStore or Google Play.`;
+  const sharedMessage = `The *EroTales App* has the best free Romantic Stories ever! I just found this one:\n*${
+    storyData?.item?.title_en || storyData?.title_en
+  }*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly for free on the AppStore or Google Play.`;
+
+  const handleClose = () => {
+    onClose();
+  };
+
   const handleCopyLink = async () => {
+    eventTracking(STORY_SHARED);
     Clipboard.setString(await generateLink());
     setShowSuccessCopy(true);
     setTimeout(() => {
@@ -81,9 +111,22 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
   };
 
   const handleShareOpen = async () => {
+    eventTracking(STORY_SHARED);
     try {
       await Share.open({
         message: sharedMessage,
+        title: 'Shared-Short-Story',
+      });
+    } catch (err) {
+      console.log('Error share whatsapp:', err);
+    }
+  };
+
+  const handleShareOpenWA = async () => {
+    eventTracking(STORY_SHARED);
+    try {
+      await Share.open({
+        message: sharedMessageWa,
         title: 'Shared-Short-Story',
       });
     } catch (err) {
@@ -122,11 +165,13 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
   const handleShareInstagramDefault = async () => {
     handleShare('post');
     Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
+      `The EroTales App has the best free Romantic Stories ever! I just found this one:\n${
+        storyData?.item?.title_en || storyData?.title_en
+      }.\r\n\r\nCheck the EroTales App out now for free for iPhone and Android Phones and discover the best Romantic Stories.`,
     );
     Alert.alert(
       '',
-      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',
@@ -169,28 +214,23 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
   };
 
   const handleShareFacebookDefault = async () => {
-    handleShare('post');
-    Clipboard.setString(
-      `The EroTales App has the best Romantic Stories ever! I just found this once: ${storyData?.item?.title_en}. Check the EroTales App out now for iPhone and Android Phones and discover the best Romantic Stories.`,
-    );
+    Clipboard.setString(sharedMessageFB);
     Alert.alert(
       '',
-      'Copied to your pasteboard Text and hastags ready to be pasted in your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
+      'Copied to your pasteboard\nText and hastags ready to be pasted\nin your caption. \r\n \r\nDon’t forget to tag us at\r\n@EroTalesApp',
       [
         {
           text: 'OK',
           onPress: async () => {
             try {
-              const contentURL = isIphone
-                ? base64CaptureImage.current
-                : captureUri;
               await Share.shareSingle({
-                title: 'Share image to facebook',
-                url: contentURL,
+                message: sharedMessageFB,
                 social: Share.Social.FACEBOOK,
+                title: 'Share to Facebook',
+                url: 'https://EroTalesApp.com',
               });
             } catch (err) {
-              console.log('Err share default fb:', err);
+              console.log('Err share default facebook:', err);
             }
           },
         },
@@ -207,10 +247,10 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
         const nameToChange = uriArray[uriArray.length - 1];
         const renamedURI = uri.replace(
           nameToChange,
-          `EroTales - ${storyData?.item?.title_en?.substring(
-            0,
-            10,
-          )} ${Date.now()}.png`,
+          `EroTales - ${
+            storyData?.item?.title_en?.substring(0, 10) ||
+            storyData?.title_en?.substring(0, 10)
+          } ${Date.now()}.png`,
         );
 
         RNFS.copyFile(uri, renamedURI)
@@ -231,6 +271,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
   };
 
   const handleShare = async share => {
+    eventTracking(STORY_SHARED);
     base64CaptureImage.current = null;
     handleScreenshot(share);
   };
@@ -249,9 +290,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
           quality: 1.0,
         }}>
         <Image
-          source={{
-            uri: `${BACKEND_URL}${storyData?.item?.category?.cover?.url}`,
-          }}
+          source={imgShare}
           style={{
             position: 'absolute',
             width: '100%',
@@ -321,7 +360,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
               fontWeight: '400',
             }}>
             The <Text style={{fontWeight: '700'}}>EroTales App</Text> has the
-            best Romantic Stories ever! I just found this once:
+            best Romantic Stories ever! I just found this one:
           </Text>
           <Text
             style={{
@@ -333,7 +372,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
               lineHeight: moderateScale(35),
               fontWeight: '700',
             }}>
-            {storyData?.item?.title_en}
+            {storyData?.item?.title_en || storyData?.title_en}
           </Text>
           <Text
             style={{
@@ -396,9 +435,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
           quality: 1.0,
         }}>
         <Image
-          source={{
-            uri: `${BACKEND_URL}${storyData?.item?.category?.cover?.url}`,
-          }}
+          source={imageShareIgPost}
           style={{
             position: 'absolute',
             width: '100%',
@@ -460,16 +497,18 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
           <Text
             style={{
               color: code_color.white,
-              marginTop: moderateScale(70),
-              marginBottom: moderateScale(50),
-              marginHorizontal: '10%',
+              marginTop: moderateScale(60),
+              marginHorizontal: '6%',
               fontSize: moderateScale(20),
               textAlign: 'center',
               lineHeight: moderateScale(35),
               fontWeight: '400',
+              fontFamily: 'Comfortaa-Bold',
+              marginBottom: moderateScale(40),
             }}>
-            Romantic Stories for your everyday Fantasy
+            {'Romantic Stories for your\reveryday Fantasy'}
           </Text>
+
           <View
             style={{
               height: moderateScale(34),
@@ -485,6 +524,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
                 color: code_color.white,
                 fontSize: 14,
                 fontWeight: '400',
+                fontFamily: 'Comfortaa-Bold',
                 letterSpacing: 0.28,
               }}>
               https://EroTalesApp.com
@@ -558,7 +598,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
               fontWeight: '400',
               marginBottom: moderateScale(20),
             }}>
-            Share via
+            {'Share this Story via '}
           </Text>
           <TouchableOpacity
             onPress={onClose}
@@ -609,7 +649,7 @@ function ModalShareStory({isVisible, onClose, isPremium, storyData}) {
             </TouchableOpacity>
             <TouchableOpacity
               style={{alignItems: 'center', justifyContent: 'center'}}
-              onPress={handleShareOpen}>
+              onPress={handleShareOpenWA}>
               <WAIcon height={36} bg="#00F356" />
               <Text
                 style={{
