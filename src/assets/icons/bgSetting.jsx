@@ -37,6 +37,7 @@ function SvgComponent(props) {
     levelUrl = '',
     style,
   } = props;
+
   return (
     <Svg
       width={width}
@@ -198,6 +199,8 @@ function SvgComponent(props) {
               : avatar6
           }
           x={
+            Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 &&  width === 480  && profileUrl.includes('2')?
+                '-25' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '-32'
               : Platform.OS === 'android' &&  Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 950

@@ -73,6 +73,7 @@ const SettingsPage = ({
   const [showModalIcon, setShowModalIcon] = useState<boolean>(false);
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
+  const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [menu, setlistMenu] = useState( Platform.OS != 'android' ? [
     {
@@ -387,7 +388,7 @@ const SettingsPage = ({
       }}>
       <ModalChangeIcon
         isVisible={showModalIcon}
-        isPremium={isPremiumAudio || isPremiumStory}
+        isPremium={isPremiumAudio || isPremiumStory || isPremiumMonthly}
         onClose={() => {
           setShowModalIcon(false);
         }}

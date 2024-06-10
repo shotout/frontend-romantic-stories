@@ -122,7 +122,7 @@ const FontScreen = ({
   const [isFinishAds, setIsFinishAds] = useState(false);
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
-
+  const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
   const setBg = value => {
     set_bgColor(value);
     handleSetBackground(value);
@@ -586,7 +586,7 @@ const FontScreen = ({
                 key={index}
                 onPress={() => {
                   setNextFont(item);
-                  if (isPremiumStory || isPremiumAudio) {
+                  if (isPremiumStory || isPremiumAudio || isPremiumMonthly) {
                     handleSetFontFamily(item.value);
                     setSelectFont(item);
                     handleSetFontFamily(item.value);

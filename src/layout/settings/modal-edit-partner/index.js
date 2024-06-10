@@ -162,7 +162,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         What should your partner look like?
       </Text>
       {dataAva && (
-        <View style={{flex: 0, alignItems: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
           <Carousel
             loop={false}
             width={Dimensions.get('window').width / 1.2}

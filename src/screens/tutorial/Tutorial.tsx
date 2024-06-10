@@ -434,7 +434,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                       Dimensions.get('window').width -
                       (Platform.OS === 'ios' ? 0 : 20),
                     height: Dimensions.get('window').height,
-                    marginTop: Platform.OS === 'ios' ? '-13%' : '-5%',
+                    marginTop: Platform.OS === 'ios' ? '-13%' : 0,
                   }}>
                   <View style={{top: wp(50)}}>
                     <Step5 handleNext={() => {}} handlePrev={handlePrev} />
@@ -488,7 +488,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   Dimensions.get('window').width -
                   (Platform.OS === 'ios' ? 0 : 0),
                 height: Dimensions.get('window').height,
-                marginTop: Platform.OS === 'ios' ? '-13%' : '-5%',
+                marginTop: Platform.OS === 'ios' ? '-13%' : 0,
               }}>
               <Step3 handleNext={handleNext} handlePrev={handlePrev} />
             </FastImage>

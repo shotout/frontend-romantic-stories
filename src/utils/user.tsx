@@ -14,6 +14,7 @@ const reloadUserProfile = async (type) => {
         ...res,
       }),
     );
+    // console.log(JSON.stringify(res))
     if(type){
       if(res.data.subscription.type !== 1){
         const objPurchase = JSON.parse(
@@ -31,7 +32,7 @@ const reloadUserProfile = async (type) => {
     
    
   } catch (err) {
-    // console.log(err);
+    console.log(err);
   }
 };
 

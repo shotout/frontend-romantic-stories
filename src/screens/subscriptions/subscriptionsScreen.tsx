@@ -417,8 +417,9 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
               </View>
             </View>
           ) : null}
-
+          
           {userProfile?.data?.subscription?.plan?.id != 1 &&
+           userProfile?.data?.subscription?.plan?.id != 4 &&
           userProfile?.data?.subscription?.plan?.id != 3 ? (
             <View>
               <Pressable
@@ -464,7 +465,7 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
                   }}>
                   {userProfile?.data?.subscription?.plan?.id === 1
                     ? 'Get EroTales UNLIMITED'
-                    : userProfile?.data?.subscription?.plan?.id === 2
+                    : userProfile?.data?.subscription?.plan?.id === 2 
                     ? 'Get EroTales UNLIMITED + Audio'
                     : null}
                 </Text>
@@ -487,7 +488,7 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
               onPress={() => {
                 userProfile?.data?.subscription?.plan?.id === 1
                   ? handleInapp('in_app')
-                  : userProfile?.data?.subscription?.plan?.id === 2
+                  : userProfile?.data?.subscription?.plan?.id === 2 
                   ? setShow(true)
                   : null;
               }}
@@ -638,7 +639,7 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
               </Pressable>
             </View>
           ) : null}
-          {userProfile?.data?.subscription?.plan?.id === 3  ? (
+          {userProfile?.data?.subscription?.plan?.id === 3  || userProfile?.data?.subscription?.plan?.id === 4 ? (
             <View>
               <View
                 style={{

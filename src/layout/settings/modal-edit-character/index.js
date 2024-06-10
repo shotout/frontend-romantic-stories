@@ -171,7 +171,7 @@ function ModalEditCharacter({
       </Text>
       <View style={{flex: 1}}>
       {dataAva && (
-        <View style={{flex: 0, alignItems: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
           <Carousel
             loop={false}
             width={Dimensions.get('window').width / 1.2}

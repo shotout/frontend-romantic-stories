@@ -104,6 +104,7 @@ const MainScreen = ({
   handleSetPage,
   page,
 }) => {
+
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
@@ -164,9 +165,11 @@ const MainScreen = ({
   const [data, setRead] = useState([]);
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
+  const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
+  
   useEffect(() => {
     // if (!__DEV__) {
     async function getPrice() {
@@ -228,18 +231,40 @@ const MainScreen = ({
   }, [showModalCongrats]);
 
   const handleSuccessListen = async () => {
-    const existingEntry = readStory
-      ? readStory.find(
+    const existingEntry = listenStory
+      ? listenStory.find(
           (item: any) =>
             item?.id === dataBook.id && item?.page === textChunks?.length,
         )
       : undefined;
-    const uniqueData = [
-      ...new Map(readStory.map((item: {id: any}) => [item.id, item])).values(),
-    ];
+      let uniqueData = []
+     if(listenStory === null){
+      let data = [
+        {
+          id: dataBook.id,
+        },
+      ];
+      uniqueData = data
+      handleListenStory(data);
+     }else{
+      const existingEntry = listenStory
+        ? listenStory.find((item: any) => item?.id === dataBook.id)
+        : undefined;
+      if (!existingEntry) {
+        const newData = {
+          id: dataBook.id,
+        };
+        uniqueData = [...listenStory, newData]
+        // Dispatch action to update readStory in the Redux store
+        handleListenStory([...listenStory, newData]);
+     
+     }
+    }
+   
     const value = await AsyncStorage.getItem('FINISH_LISTEN_3');
     const value1 = await AsyncStorage.getItem('FINISH_LISTEN_7');
     const value2 = await AsyncStorage.getItem('FINISH_LISTEN_10');
+   
     if(value != 'true'){
       if (uniqueData?.length === 3) {
         eventTracking(FINISH_LISTEN_3);
@@ -272,8 +297,8 @@ const MainScreen = ({
           setShowModalCongrats(true);
         }, 100);
       }
-      checkingRead(textChunks?.length);
-    } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+      // checkingRead(textChunks?.length);
+    } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setTimeout(() => {
         setShowModalNewStory(true);
@@ -284,12 +309,12 @@ const MainScreen = ({
     async function fetchFromParam() {
       if (route?.params?.successListen) {
         // pagerRef.current?.setPage(textChunks?.length - 1);
-        checkingRead(textChunks?.length + 1);
+        // checkingRead(textChunks?.length + 1);
         setScreenNumber(textChunks?.length + 1);
         handleSuccessListen();
       } else if (route?.params?.storyId) {
         setReadLater(true);
-        if (isPremiumStory || isPremiumAudio) {
+        if (isPremiumStory || isPremiumAudio || isPremiumMonthly) {
           // fecthNextStoryPremium(route?.params?.storyId);
           const resp = await getStoryDetail(route?.params?.storyId);
           handleNextStory(resp.data);
@@ -403,16 +428,22 @@ const MainScreen = ({
     const value = await AsyncStorage.getItem('setToday');
     const stringifyDateNow = new Date();
     let strTanggalSekarang = stringifyDateNow.getDate().toString();
+
+    
     if (value != null) {
       if (value != strTanggalSekarang) {
         if (!route?.params?.isFromNotif) {
           AsyncStorage.setItem('setToday', strTanggalSekarang);
         }
         if (userProfile?.data?.subscription?.plan?.id != 1) {
+          
+          setShowModalNewStory(false)
           const res = await getStoryList();
           handleNextStory(res.data);
           setShowModalDay(true);
         } else {
+         
+          setShowModalNewStory(false)
           const res = await getStoryList();
           handleNextStory(res.data);
           setShowModalDay(true);
@@ -429,16 +460,23 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      const payload = {
-        _method: 'PATCH',
-        is_member: 3,
-      };
-      updateProfile(payload);
-      reloadUserProfile();
-    }
-    fetchCheckingDay();
+  
+      setShowModalNewStory(false)
+      if (Platform.OS === 'android') {
+        const payload = {
+          _method: 'PATCH',
+          is_member: 3,
+        }
+        
+        updateProfile(payload);
+      }
+        reloadUserProfile();
+      
+  
+      fetchCheckingDay();
+    
   }, []);
+ 
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
@@ -503,66 +541,6 @@ const MainScreen = ({
     }
   };
 
-  const handleTouchStart = (e: {nativeEvent: {locationX: any}}) => {
-    // Mendapatkan posisi sentuhan
-    const touchX = e.nativeEvent.locationX;
-    // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 2.5;
-    0;
-
-    // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
-    if (touchX < screenWidth) {
-      if (activeStep === 1) {
-      } else {
-        setTutorial({
-          ...isTutorial,
-          step: isTutorial.step - 1,
-        });
-        setActiveStep((prevStep: number) => prevStep - 1);
-        handleSetSteps(activeStep - 1);
-      }
-    } else {
-      handleNext();
-    }
-  };
-
-  const handlePrev = () => {
-    setTutorial({
-      ...isTutorial,
-      step: isTutorial.step - 1,
-    });
-    setActiveStep((prevStep: number) => prevStep - 1);
-    handleSetSteps(activeStep - 1);
-  };
-
-  const handleNext = () => {
-    if (stepsTutorial <= 5) {
-      const content =
-        'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-      setActiveStep(prevStep => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
-      handleSetSteps(stepsTutorial + 1);
-      if (stepsTutorial === 2) {
-        setFinishTutorial(false);
-        setIsRippleAnimate(true);
-        setTimeout(() => {
-          setFinishTutorial(true);
-          setIsRippleAnimate(false);
-        }, 3000);
-        setTimeout(() => {
-          navigate('Media');
-        }, 2500);
-      } else if (stepsTutorial === 5) {
-        handleSetSteps(5 + 1);
-        // navigate('Share', {
-        //   selectedContent:
-        //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-        //   start: content?.substring(0, 30),
-        //   end: content.substring(30, 30 + 30),
-        // });
-      }
-    }
-  };
-
   const startAnimation = () => {
     setFolded(!folded);
 
@@ -589,55 +567,7 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-    // handleSetSteps(0);
-    // AsyncStorage.setItem('isTutorial', 'yes');
     handleThemeAvatar();
-    // AsyncStorage.removeItem('isTutorial');
-    // const checkTutorial = async () => {
-    //   const isFinishTutorial = await AsyncStorage.getItem('isTutorial');
-    //   if (isFinishTutorial === 'yes' && isTutorial.step === 0) {
-    //     setFinishTutorial(true);
-    //     setVisible(true);
-    //     setTimeout(() => {
-    //       setVisible(false);
-    //       setTutorial({
-    //         ...isTutorial,
-    //         step: isTutorial.step + 1,
-    //       });
-    //       setActiveStep(1);
-    //       handleSetSteps(1);
-    //     }, 3500);
-    //   } else if (activeStep === 2 || activeStep === 3) {
-    //     setFinishTutorial(false);
-    //     setIsRippleAnimate(true);
-    //     setTimeout(() => {
-    //       setFinishTutorial(true);
-    //       setIsRippleAnimate(false);
-    //     }, 3000);
-    //     if (route?.name == 'Main') {
-    //       setTimeout(() => {
-    //         navigate('Media');
-    //       }, 2500);
-    //     }
-    //   } else if (activeStep === 4) {
-    //     navigate('ExploreLibrary');
-    //   } else if (
-    //     activeStep === 6 ||
-    //     activeStep === 7 ||
-    //     activeStep === 8 ||
-    //     activeStep === 9
-    //   ) {
-    //     const content =
-    //       'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-    //     // navigate('Share', {
-    //     //   selectedContent:
-    //     //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-    //     //   start: content?.substring(0, 30),
-    //     //   end: content.substring(30, 30 + 30),
-    //     // });
-    //   }
-    // };
-    // checkTutorial();
   }, []);
 
   useEffect(() => {
@@ -652,9 +582,10 @@ const MainScreen = ({
   }, [visible]);
 
   const checkingListen = async () => {
+
     if (listenStory === null) {
       if (
-        userProfile?.data?.subscription?.plan?.id === 2 &&
+        userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
         userProfile?.data?.subscription?.audio_limit != 0
       ) {
         const payload = {
@@ -700,7 +631,7 @@ const MainScreen = ({
         // Dispatch action to update readStory in the Redux store
         handleListenStory([...listenStory, newData]);
         if (
-          userProfile?.data?.subscription?.plan?.id === 2 &&
+          userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
           userProfile?.data?.subscription?.audio_limit != 0
         ) {
           const payload = {
@@ -728,7 +659,7 @@ const MainScreen = ({
         }
       } else {
         if (
-          userProfile?.data?.subscription?.plan?.id === 2 &&
+          userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
           userProfile?.data?.subscription?.audio_limit != 0
         ) {
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
@@ -988,7 +919,28 @@ const MainScreen = ({
     fetchData();
   }, [isFocused]);
   useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/background/) && nextAppState === 'active') {
+        
+          
+            fetchCheckingDay()
+         
+        
+      }
+      setAppState(nextAppState);
+    });
+
+    return () => {
+     
+      subscription.remove();
+    };
+  }, [appState, ]);
+  useEffect(() => {
+    
     setBook(userStory);
+   
+      
+    
   }, [isFocused]);
 
   const handleUnlock = async () => {
@@ -1155,12 +1107,15 @@ const MainScreen = ({
   const reset = async (story: any) => {
     handleSetStory(story);
     setScreenNumber(0);
-    await pagerRef.current?.setPage(0);
+    setTimeout(async() => {
+      await pagerRef.current?.setPage(0);
+    }, 100);
+   
   };
 
   useEffect(() => {
     async function fetchModal() {
-      if (!(isPremiumStory || isPremiumAudio)) {
+      if (!(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
         const userHasRead = readStory?.some(
           (entry: any) =>
             entry?.id === dataBook.id && entry?.page === textChunks?.length,
@@ -1237,27 +1192,6 @@ const MainScreen = ({
                 item?.id === dataBook.id && item?.page === screenNumber + 1,
             )
           : undefined;
-        const value = await AsyncStorage.getItem('FINISH_LISTEN_3');
-        const value1 = await AsyncStorage.getItem('FINISH_LISTEN_7');
-        const value2 = await AsyncStorage.getItem('FINISH_LISTEN_10');
-        if (value != 'true') {
-          if (readStory?.length === 2) {
-            eventTracking(FINISH_LISTEN_3);
-            AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
-          }
-        }
-        if (value1 != 'true') {
-          if (readStory?.length === 6) {
-            eventTracking(FINISH_LISTEN_7);
-            AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
-          }
-        }
-        if (value2 != 'true') {
-          if (readStory?.length === 9) {
-            eventTracking(FINISH_LISTEN_10);
-            AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
-          }
-        }
         if (
           typeof existingEntry === 'undefined' &&
           screenNumber === textChunks?.length - 1
@@ -1285,13 +1219,13 @@ const MainScreen = ({
           } catch (error) {
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
-        } else if (existingEntry && !(isPremiumStory || isPremiumAudio)) {
+        } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
           setTimeout(() => {
             setShowModalNewStory(true);
           }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
-        } else if (existingEntry && (isPremiumStory || isPremiumAudio)) {
+        } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
           setTimeout(() => {
             setShowModalCongrats(true);
           }, 50);
@@ -1314,7 +1248,7 @@ const MainScreen = ({
   }, []);
   const handleSuccessRating = async () => {
     setRating(false);
-    if (isPremiumStory || isPremiumAudio) {
+    if (isPremiumStory || isPremiumAudio || isPremiumMonthly) {
       const res = await getStoryDetail(userStory?.id);
       handleSetStory(res.data);
       setBook(res.data);
@@ -1527,7 +1461,7 @@ const MainScreen = ({
               screenNumber !== 0 &&
               screenNumber !== textChunks?.length - 1
             }
-            isPremium={readLater ? null : isPremiumStory || isPremiumAudio}
+            isPremium={readLater ? null : isPremiumStory || isPremiumAudio || isPremiumMonthly}
             handleRead={(data: any) => {
               handleReadAds(data);
             }}

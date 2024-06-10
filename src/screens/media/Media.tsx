@@ -105,7 +105,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
   }, []);
   useEffect(() => {
     const init = async () => {
-      Platform.OS === 'android' ?  await TrackPlayer.setupPlayer() : null
+     await TrackPlayer.setupPlayer() 
     }
     
     let isPlayerInitialized = false;
@@ -116,7 +116,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
         // Dapatkan URL MP3 terbaru
        
         const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-        Platform.OS === 'ios' ? await TrackPlayer.setupPlayer() : null
+       console.log('MP3'+newMp3Url)
         // Hentikan pemutaran sebelumnya dan reset pemutaran
         await TrackPlayer.stop();
         await TrackPlayer.reset();
