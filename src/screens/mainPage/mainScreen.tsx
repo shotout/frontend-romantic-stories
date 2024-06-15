@@ -611,6 +611,7 @@ const MainScreen = ({
         Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
         navigate('Media');
       } else {
+        eventTracking('OPEN_LISTEN_PAYWALL')
         setShow(true);
       }
       let data = [
@@ -655,6 +656,7 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
+          eventTracking('OPEN_LISTEN_PAYWALL')
           setShow(true);
         }
       } else {
@@ -671,6 +673,7 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
+          eventTracking('OPEN_LISTEN_PAYWALL')
           setShow(true);
         }
       }

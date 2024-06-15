@@ -33,7 +33,8 @@ export const FINISH_LISTEN_7 = '34ukg9';
 export const FINISH_READ_10 = 'vbg4j1';
 export const FINISH_READ_7 = '3pjz0y';
 export const FINISH_READ_3 = 'h2zuqx';
-export const TUTORIAL_FINISH = 'ji0xf4'
+export const TUTORIAL_FINISH = 'ji0xf4';
+export const OPEN_LISTEN_PAYWALL = 'kyu7ae';
 
 const setAdsConversion = async () => {
   await updatePostbackConversionValue(0);
@@ -83,8 +84,10 @@ const getScreenName = id => {
       return 'FINISH_READ_7';
     case FINISH_READ_3:
       return 'FINISH_READ_3';
-      case TUTORIAL_FINISH:
-        return 'TUTORIAL_FINISH';
+    case TUTORIAL_FINISH:
+      return 'TUTORIAL_FINISH';
+    case OPEN_LISTEN_PAYWALL:
+      return 'OPEN_LISTEN_PAYWALL';
     default:
       return id;
   }
@@ -97,16 +100,16 @@ export const eventTracking = async (id, message) => {
       adjustEvent.setCallbackId(message);
     }
     Adjust.trackEvent(adjustEvent);
-    AppEventsLogger.logEvent(getScreenName(id))
+    AppEventsLogger.logEvent(getScreenName(id));
     await analytics().logEvent(getScreenName(id), {
       id,
     });
-    if(__DEV__){
-    console.log('Success tracking:', getScreenName(id));
+    if (__DEV__) {
+      console.log('Success tracking:', getScreenName(id));
     }
   } catch (err) {
-    if(__DEV__){
-    console.log('Err tracking:', err);
+    if (__DEV__) {
+      console.log('Err tracking:', err);
     }
   }
 };

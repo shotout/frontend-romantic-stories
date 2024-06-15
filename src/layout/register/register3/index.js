@@ -22,7 +22,7 @@ import {moderateScale} from 'react-native-size-matters';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
 import Loading from '../../../components/loading';
 import FastImage from 'react-native-fast-image';
-export default function Register3({setCategoryId, value, dataCategory}) {
+export default function Register3({setCategoryId, value, dataCategory, setType}) {
   const [dataStory, setDataStory] = useState([
     {
         "id": 1,
@@ -35,7 +35,7 @@ export default function Register3({setCategoryId, value, dataCategory}) {
             "owner_id": 1,
             "type": "category",
             "name": "relationship.png",
-            "url": "/assets/images/categories/relationship.png",
+            "url": setType === 'realistic' ?  "/assets/images/categories/realistic/relationship.png" : "/assets/images/categories/anime/relationship.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -53,7 +53,7 @@ export default function Register3({setCategoryId, value, dataCategory}) {
             "owner_id": 2,
             "type": "category",
             "name": "i_miss_u.png",
-            "url": "/assets/images/categories/i_miss_u.png",
+            "url":setType === 'realistic' ? "/assets/images/categories/realistic/i_miss_u.png" :  "/assets/images/categories/anime/i_miss_u.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -71,7 +71,7 @@ export default function Register3({setCategoryId, value, dataCategory}) {
             "owner_id": 3,
             "type": "category",
             "name": "dirty_mind.png",
-            "url": "/assets/images/categories/dirty_mind.png",
+            "url": setType === 'realistic' ?  "/assets/images/categories/realistic/dirty_mind.png" :  "/assets/images/categories/anime/dirty_mind.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -89,7 +89,7 @@ export default function Register3({setCategoryId, value, dataCategory}) {
             "owner_id": 4,
             "type": "category",
             "name": "suprise_me.png",
-            "url": "/assets/images/categories/suprise_me.png",
+            "url": setType === 'realistic' ? "/assets/images/categories/realistic/suprise_me.png" : "/assets/images/categories/anime/suprise_me.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",

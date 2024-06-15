@@ -158,3 +158,10 @@ export const level7 = require('./../images/level7.png');
 export const level8 = require('./../images/level8.png');
 export const level9 = require('./../images/level9.png');
 export const level10 = require('./../images/level10.png');
+
+export const real = require('./../images/type-real.png');
+export const anime = require('./../images/type-anime.png');
+export const real_bw = require('./../images/type-real-bw.png');
+export const anime_bw = require('./../images/type-anime-bw.png');
+export const male_r = require('./../images/male_r.png');
+export const female_r = require('./../images/female_r.png');

@@ -24,7 +24,7 @@ import {fixedFontSize, hp, wp} from '../../../utils/screen';
 import FastImage from 'react-native-fast-image';
 import Loading from '../../../components/loading';
 
-export default function Register4({gender, setAvatar, dataAvatar}) {
+export default function Register4({gender, setAvatar, dataAvatar, setType}) {
   const [progressValue, setProgress] = useState(0);
   const [dataAva, setDataAva] = useState(dataAvatar);
   const [loading, setLoading] = useState(false);

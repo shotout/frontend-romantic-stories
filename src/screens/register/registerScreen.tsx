@@ -56,6 +56,7 @@ import {SafeAreaView} from 'react-native';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
 import FastImage from 'react-native-fast-image';
 import {BACKEND_URL} from '../../shared/static';
+import Register0 from '../../layout/register/register0';
 
 function RegisterScreen({
   handleSetProfile,
@@ -67,7 +68,7 @@ function RegisterScreen({
   handleSetSteps,
   userStory,
 }) {
-  const [stepRegister, setStepRegister] = useState(1);
+  const [stepRegister, setStepRegister] = useState(0);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
   // const [isReOnboard, setIsReOnboard] = useState(false);
@@ -79,6 +80,7 @@ function RegisterScreen({
   };
   const [values, setFormValues] = useState({
     name: '',
+    type: '',
     gender: null,
     device_id: '',
     start: moment(new Date(2018, 11, 24, 8, 0, 30, 0)).format(
@@ -101,6 +103,7 @@ function RegisterScreen({
 
   useEffect(() => {
     fetchDeviceId();
+    // fetchCategory()
   }, []);
 
   useEffect(() => {
@@ -142,8 +145,8 @@ function RegisterScreen({
 
   const fetchAllAva = async () => {
     try {
-      const avatarMale = await getListAvatar({gender: 'male'});
-      const avatarFemale = await getListAvatar({gender: 'female'});
+      const avatarMale = await getListAvatar({gender: 'male', type: values.type});
+      const avatarFemale = await getListAvatar({gender: 'female', type: values.type});
       setDataAva([...avatarMale?.data, ...avatarFemale?.data]);
       setDataAva2([...avatarMale?.data, ...avatarFemale?.data]);
     } catch (error) {
@@ -154,6 +157,7 @@ function RegisterScreen({
     try {
       const params = {
         gender: value,
+        type: values.type
       };
       const avatar = await getListAvatar(params);
       setDataAva(avatar?.data);
@@ -165,6 +169,7 @@ function RegisterScreen({
     try {
       const params = {
         gender: value,
+        type: values.type
       };
       const avatar = await getListAvatar(params);
       setDataAva2(avatar?.data);
@@ -175,16 +180,28 @@ function RegisterScreen({
   useEffect(() => {
     FastImage.preload([
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/relationship.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/relationship.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/i_miss_u.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/i_miss_u.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/dirty_mind.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/dirty_mind.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/categories/suprise_me.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/suprise_me.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/relationship.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/i_miss_u.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/dirty_mind.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/suprise_me.png'}`,
       },
       {
         uri: `${BACKEND_URL}${'/assets/images/avatars/4.png'}`,
@@ -235,15 +252,18 @@ function RegisterScreen({
   //   checkReOnboard();
   // }, []);
 
-  // const fetchCategory = async () => {
-  //   try {
-  //     const category = await getListCategory();
-  //     alert(JSON.stringify(category))
-  //     setDataStory(category?.data);
-  //   } catch (error) {
-  //     alert(JSON.stringify(error));
-  //   }
-  // };
+  const fetchCategory = async () => {
+    try {
+      let params = {
+        type: values.type
+      }
+      const category = await getListCategory(params);
+      console.log(JSON.stringify(category))
+      setDataStory(category?.data);
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  };
   const onSubmit = async () => {
     const data = await DeviceInfo.getUniqueId();
 
@@ -318,7 +338,23 @@ function RegisterScreen({
   };
 
   const renderLayout = () => {
-    if (stepRegister === 1) {
+    if (stepRegister === 0) {
+      return (
+        <View
+          style={{
+            justifyContent: 'center',
+            flex: 0,
+            marginTop: 0,
+          }}>
+          <Register0
+            setType={text => {
+              handleChange('type', text), setStepRegister(stepRegister + 1);
+            }}
+            selectedType={values.type}
+          />
+        </View>
+      );
+    }else if (stepRegister === 1) {
       return (
         <View
           style={{
@@ -331,6 +367,7 @@ function RegisterScreen({
               handleChange('gender', text), setStepRegister(stepRegister + 1);
             }}
             selectedGender={values.gender}
+            setType={values.type}
           />
         </View>
       );
@@ -350,6 +387,7 @@ function RegisterScreen({
           setCategoryId={text => {
             handleChange('category_id', text);
           }}
+          setType={values.type}
         />
       );
     } else if (stepRegister === 4) {
@@ -357,6 +395,7 @@ function RegisterScreen({
         <Register5
           gender={values.gender}
           dataAvatar={dataAva2}
+          setType={values.type}
           setAvatar={text =>
             handleChange(
               values.gender === 'Female' ? 'avatar_male' : 'avatar_female',
@@ -420,7 +459,7 @@ function RegisterScreen({
         backgroundColor={backgroundStyle.backgroundColor}
       />
 
-      {stepRegister != 8 ? (
+      {stepRegister != 8  && stepRegister != 0? (
         <View
           style={{
             backgroundColor: code_color.headerBlack,
@@ -476,7 +515,7 @@ function RegisterScreen({
       ) : (
         <View
           style={{
-            backgroundColor: code_color.white,
+            backgroundColor: stepRegister === 0 ? code_color.black : code_color.white,
             paddingTop: isIphoneXorAbove() ? wp(40) : 0,
           }}>
           <View
@@ -486,12 +525,13 @@ function RegisterScreen({
               marginHorizontal: wp(20),
               marginTop: wp(20),
             }}>
+              {stepRegister != 0 ?
             <TouchableOpacity
               onPress={() =>
                 setStepRegister(stepRegister - (stepRegister === 8 ? 2 : 1))
               }>
               <BackLeft />
-            </TouchableOpacity>
+            </TouchableOpacity> : null }
 
             <Text
               allowFontScaling={false}
@@ -501,30 +541,31 @@ function RegisterScreen({
                 fontSize: fixedFontSize(18),
                 flex: 1,
               }}>
-              {stepRegister === 1
+              {stepRegister === 0 ? 'Select your favorite character style' : stepRegister === 1
                 ? titleHeader
                 : stepRegister === 2
                 ? 'Be part of the story'
                 : ''}
             </Text>
           </View>
-          {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
+          {stepRegister != 8 && stepRegister != 0 ? <HeaderStep currentStep={stepRegister} /> : null}
         </View>
       )}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
+        <View style={{flex: 1, backgroundColor: stepRegister === 0 ? 'black' : 'white', alignItems: 'center'}}>
           <Text
             allowFontScaling={false}
             style={{
-              color: code_color.blueDark,
-              fontSize: fixedFontSize(24),
+              color:  stepRegister === 0 ? code_color.white : code_color.blueDark,
+              fontSize: stepRegister === 0 ? fixedFontSize(28) : fixedFontSize(24),
               fontFamily: 'Comfortaa-SemiBold',
               textAlign: 'center',
-              marginTop: wp(20),
+              marginTop: stepRegister === 0 ? wp(40) : wp(20),
             }}>
             {i18n.t(
+              stepRegister === 0 ? '':
               stepRegister === 1
                 ? 'register.titleRegister1'
                 : stepRegister === 2
@@ -541,7 +582,7 @@ function RegisterScreen({
               bottom: wp(10),
               width: wp(200),
             }}>
-            {stepRegister <= 2 ? (
+            {stepRegister <= 2 && stepRegister != 0 ? (
               <TouchableOpacity
                 onPress={() => {
                   if (stepRegister === 1) {
@@ -580,7 +621,7 @@ function RegisterScreen({
                 </Text>
               </TouchableOpacity>
             ) : null}
-            {stepRegister != 1 ? (
+            {stepRegister != 1 && stepRegister != 0 ? (
               <Button
                 style={{
                   backgroundColor:
