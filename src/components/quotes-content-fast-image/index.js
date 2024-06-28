@@ -20,7 +20,7 @@ import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import AnimatedLottieView from 'lottie-react-native';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
-import {ava1, bgStory1, bgStory2, bgStory3, imgLove} from '../../assets/images';
+import {ava1, bgStory1, bgStory2, bgStory3, bg_beach, bg_city, bg_landscape, bg_office, imgLove} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
@@ -68,7 +68,8 @@ function QuotesContent({
   price,
   price2,
   id,
-  titleStory
+  titleStory,
+  typeImage
 }) {
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
@@ -146,7 +147,7 @@ function QuotesContent({
         pageActive === 20 ||
         pageActive === 24 ||
         pageActive === 28
-          ? 'positive'
+          ? typeImage === 'realistic' ? 'beach' : 'positive'
           : pageActive === 1 ||
             pageActive === 9 ||
             pageActive === 13 ||
@@ -154,14 +155,14 @@ function QuotesContent({
             pageActive === 21 ||
             pageActive === 25 ||
             pageActive === 29
-          ? 'think'
+          ? typeImage === 'realistic' ? 'professional' : 'think'
           : pageActive === 2 ||
             pageActive === 5 ||
             pageActive === 12 ||
             pageActive === 15 ||
             pageActive === 28 ||
             pageActive === 21 
-          ? 'inlove'
+          ? typeImage === 'realistic' ? 'sport' : 'inlove'
           : pageActive === 3 ||
             pageActive === 6 ||
             pageActive === 9 ||
@@ -169,8 +170,8 @@ function QuotesContent({
             pageActive === 14 ||
             pageActive === 17 ||
             pageActive === 20 
-          ? 'positive'
-          : 'positive',
+          ?  typeImage === 'realistic' ? 'casual' : 'positive'
+          :  typeImage === 'realistic' ? 'sport': 'positive',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -200,13 +201,13 @@ function QuotesContent({
   const getBackgroundStory = pac => {
     switch (pac) {
       case 1:
-        return bgStory1;
+        return typeImage === 'realistic' ? bg_office :  bgStory1;
       case 4:
-        return bgStory2;
+        return typeImage === 'realistic' ? bg_beach :   bgStory2;
       case 7:
-        return bgStory3;
+        return typeImage === 'realistic' ? bg_city :  bgStory3;
       default:
-        return bgStory1;
+        return typeImage === 'realistic' ? bg_landscape : bgStory1;
     }
   };
 
@@ -264,6 +265,7 @@ function QuotesContent({
       }
     }
   };
+
 
   const renderSelect = useCallback(() => {
     if (Platform.OS === 'ios') {
@@ -371,7 +373,7 @@ function QuotesContent({
     return result;
   }
   const height = Dimensions.get('window').height
-
+  console.log(`${BACKEND_URL}${me}`)
   return (
     <SafeAreaView
       style={{
@@ -669,7 +671,7 @@ function QuotesContent({
                           ? 90
                           : partner === '/assets/images/avatars/2/think.png'
                           ? 135
-                          : 100,
+                          : partner?.includes('realistic') ? 130 : 100,
                       ),
                       left: '40%',
                       zIndex: 1,
@@ -758,7 +760,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(
-                    me === '/assets/images/avatars/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/2/inlove.png' && height > 900  ? -150 : -190,
+                    me === '/assets/images/avatars/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/2/inlove.png' && height > 900  ? -150 : me?.includes('realistic') ? -150 : -190,
                   ),
                   width: wp(100),
                   height: hp(170),
@@ -767,7 +769,7 @@ function QuotesContent({
                 }}>
                 <FastImage
                   source={{
-                    uri: `${BACKEND_URL}/${me}`,
+                    uri: `${BACKEND_URL}${me}`,
                     priority: FastImage.priority.high,
                   }}
                   resizeMode={FastImage.resizeMode.contain}
@@ -786,7 +788,7 @@ function QuotesContent({
                   overflow: 'hidden',
                   marginBottom: wp(-100),
                   width: wp(100),
-                  height: hp(100),
+                  height: hp( me?.includes('realistic') ? 120 :100),
                   left:  Platform.OS === 'android' && height > 1000 ? '30%' : '35%',
                   zIndex: -1,
                 }}>

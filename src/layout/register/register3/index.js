@@ -22,6 +22,7 @@ import {moderateScale} from 'react-native-size-matters';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
 import Loading from '../../../components/loading';
 import FastImage from 'react-native-fast-image';
+import DeviceInfo from 'react-native-device-info';
 export default function Register3({setCategoryId, value, dataCategory, setType}) {
   const [dataStory, setDataStory] = useState([
     {
@@ -36,6 +37,7 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
             "type": "category",
             "name": "relationship.png",
             "url": setType === 'realistic' ?  "/assets/images/categories/realistic/relationship.png" : "/assets/images/categories/anime/relationship.png",
+            //  "url": "/assets/images/categories/relationship.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -54,6 +56,7 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
             "type": "category",
             "name": "i_miss_u.png",
             "url":setType === 'realistic' ? "/assets/images/categories/realistic/i_miss_u.png" :  "/assets/images/categories/anime/i_miss_u.png",
+            // "url": "/assets/images/categories/i_miss_u.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -72,6 +75,7 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
             "type": "category",
             "name": "dirty_mind.png",
             "url": setType === 'realistic' ?  "/assets/images/categories/realistic/dirty_mind.png" :  "/assets/images/categories/anime/dirty_mind.png",
+            // "url": "/assets/images/categories/dirty_mind.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -90,6 +94,7 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
             "type": "category",
             "name": "suprise_me.png",
             "url": setType === 'realistic' ? "/assets/images/categories/realistic/suprise_me.png" : "/assets/images/categories/anime/suprise_me.png",
+            //  "url": "/assets/images/categories/suprise_me.png",
             "audio_en": null,
             "audio_id": null,
             "created_at": "2023-12-06T14:45:21.000000Z",
@@ -107,6 +112,16 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
   //   }, 200);
   
   //   }, [dataCategory])
+
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
+
+    checkIfIPad();
+  }, []);
  
   return (
     <>
@@ -138,8 +153,8 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
                   }}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{
-                    width: hp(320),
-                    height: hp(80),
+                    width: hp(isIPad ? 500 :320),
+                    height: hp(isIPad ? 100 : 80),
                     borderRadius: hp(6),
                   }}
                 />
@@ -164,7 +179,7 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
                   width: hp(25),
                   height: hp(25),
                   position: 'absolute',
-                  top: hp(35),
+                  top: hp(isIPad ? 50 : 35),
                   left: hp(25),
                   alignItems: 'center',
                   justifyContent: 'center',

@@ -7,7 +7,7 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -75,6 +75,7 @@ const SettingsPage = ({
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
   const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
   const [bgTheme, setBgTheme] = useState(colorTheme);
+
   const [menu, setlistMenu] = useState( Platform.OS != 'android' ? [
     {
       name: 'Edit Profile',
@@ -143,9 +144,10 @@ const SettingsPage = ({
       status: false,
     },
   ]);
-
+ 
+  
   const header = () => (
-    <View style={{height: hp(255)}}>
+    <View style={{height: hp(DeviceInfo.isTablet() ? 280 : 255)}}>
       <View
         style={{
           width: Dimensions.get('window').width,
@@ -162,12 +164,13 @@ const SettingsPage = ({
           profileUrl={
             BACKEND_URL + getAvatarMale 
           }
+          isIPad={DeviceInfo.isTablet()}
         />
         <View
           style={{
-            marginTop: Dimensions.get('window').height === 667 ? hp(90) : hp(80),
+            marginTop: Dimensions.get('window').height === 667 ? hp(90) : Dimensions.get('window').height === 932 ? hp(75) : DeviceInfo.isTablet() ?hp(140) : hp(80),
           }}>
-          <View style={{marginTop: hp(Platform.OS === 'android' && Dimensions.get('window').height >= 1005 ? 60 : 20)}}>
+          <View style={{marginTop: hp(Platform.OS === 'android' && Dimensions.get('window').height >= 1005 ? 60 : 30)}}>
             <Text
               allowFontScaling={false}
               style={{
@@ -180,7 +183,7 @@ const SettingsPage = ({
               {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
             </Text>
           </View>
-          <View style={{marginTop: hp(30)}}>
+          <View style={{marginTop: hp(DeviceInfo.isTablet() ? 0 : 30)}}>
             <ProgressBar levelingUser={levelingUser} bgTheme={bgTheme} currentXp={levelingUser?.user_level?.point}/>
             {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
@@ -383,7 +386,7 @@ const SettingsPage = ({
     <View
       style={{
         flex: 0,
-        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 260 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : Dimensions.get('window').height === 844 ? 260 :  208)),
+        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 260 : Dimensions.get('window').height === 932 ? 255 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : Dimensions.get('window').height === 844 ? 260 :  208)),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon

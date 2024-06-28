@@ -583,7 +583,7 @@ function MyTabs(props) {
             tabBarIcon: ({color, focused}) => {
               return (
                 <TouchableOpacity
-                  onPress={() => handleSomeAction('Library')}
+                  // onPress={() => handleSomeAction('Library')}
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -610,13 +610,13 @@ function MyTabs(props) {
               );
             },
           })}
-          // listeners={({route, navigation}) => ({
-          //   state: state => {
-          //     handleSomeAction(
-          //       state.data.state.routes[state.data.state.index].name,
-          //     );
-          //   },
-          // })}
+          listeners={({route, navigation}) => ({
+            state: state => {
+              handleSomeAction(
+                state.data.state.routes[state.data.state.index].name,
+              );
+            },
+          })}
         />
 
         <Tab.Screen

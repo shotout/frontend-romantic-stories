@@ -192,7 +192,7 @@ function App({ userProfile }) {
   }
   //alert(Dimensions.get('window').width +"==="+ Dimensions.get('window').height)
   return (
-    <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
+    <ImageBackground source={bg} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
        {Platform.OS === 'android' ? <StatusBar hidden /> : null } 
       <View
         style={{

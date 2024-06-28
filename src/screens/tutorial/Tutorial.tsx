@@ -66,6 +66,7 @@ import AnimatedLottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import {handlePayment} from '../../helpers/paywall';
 import moment from 'moment';
+import DeviceInfo from 'react-native-device-info';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
@@ -105,6 +106,15 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
       // navigate('Library');
     }
   };
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
+
+    checkIfIPad();
+  }, []);
   const handlePrev = () => {
     if (stepsTutorial > 1) {
       stopTimeout();
@@ -171,11 +181,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const stopTimeout = () => {
     clearTimeout(timeout7SecRef.current); // Stop the active timeout
   };
-  useEffect(() => {
-    if (stepsTutorial < 9) {
-      startTimeout();
-    }
-  }, [stepsTutorial]);
+  // useEffect(() => {
+  //   if (stepsTutorial < 9) {
+  //     startTimeout();
+  //   }
+  // }, [stepsTutorial]);
 
   useEffect(() => {
     // handleSetSteps(0);
@@ -387,7 +397,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                       marginBottom: wp(50),
                     }}>
                     {`Hey, ${
-                      userProfile?.data?.name === null
+                      userProfile?.data?.name === null || userProfile?.data?.name === undefined
                         ? ''
                         : userProfile?.data?.name
                     }\nYou’re all set!`}
@@ -428,13 +438,14 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   backgroundColor: code_color.white,
                 }}>
                 <FastImage
+                  resizeMode={isIPad ? 'contain' : 'contain' }
                   source={imgSelect}
                   style={{
                     width:
                       Dimensions.get('window').width -
                       (Platform.OS === 'ios' ? 0 : 20),
                     height: Dimensions.get('window').height,
-                    marginTop: Platform.OS === 'ios' ? '-13%' : 0,
+                    marginTop: Platform.OS === 'ios' ?  isIPad ? '-5%' : '-13%' : 0,
                   }}>
                   <View style={{top: wp(50)}}>
                     <Step5 handleNext={() => {}} handlePrev={handlePrev} />
@@ -449,7 +460,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   style={{
                     position: 'absolute',
                     bottom: Platform.OS === 'ios' ? -hp(20) : -hp(20),
-                    left: Platform.OS === 'ios' ? hp(40) : hp(40),
+                    left: Platform.OS === 'ios' ? hp(isIPad ? 165 : 40) : hp(40),
                   }}>
                   <AnimatedLottieView
                     source={rippleAnimate}
@@ -483,12 +494,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
             }}>
             <FastImage
               source={audioScreen}
+              resizeMode={isIPad ? 'contain' : 'contain' }
               style={{
                 width:
                   Dimensions.get('window').width -
                   (Platform.OS === 'ios' ? 0 : 0),
                 height: Dimensions.get('window').height,
-                marginTop: Platform.OS === 'ios' ? '-13%' : 0,
+                marginTop: Platform.OS === 'ios' ? isIPad ? '-5%' : '-13%' : 0,
               }}>
               <Step3 handleNext={handleNext} handlePrev={handlePrev} />
             </FastImage>

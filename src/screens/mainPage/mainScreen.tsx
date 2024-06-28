@@ -826,6 +826,7 @@ const MainScreen = ({
   }) => (
     <>
       <QuotesContent
+        typeImage={userProfile?.data?.type}
         id={id}
         item={item}
         isActive={activeSlide === index}
@@ -874,6 +875,7 @@ const MainScreen = ({
 
     return () => backHandler.remove();
   }, []);
+
   const renderFlatList = type => (
     <PagerView
       style={{flex: 1}}

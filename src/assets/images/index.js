@@ -165,3 +165,8 @@ export const real_bw = require('./../images/type-real-bw.png');
 export const anime_bw = require('./../images/type-anime-bw.png');
 export const male_r = require('./../images/male_r.png');
 export const female_r = require('./../images/female_r.png');
+
+export const bg_city = require('./../images/City.png');
+export const bg_landscape = require('./../images/Landscape.png');
+export const bg_office = require('./../images/Office.png');
+export const bg_beach = require('./../images/Beach.png');

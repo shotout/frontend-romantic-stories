@@ -204,22 +204,40 @@ function RegisterScreen({
         uri: `${BACKEND_URL}${'/assets/images/categories/realistic/suprise_me.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/avatars/4.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/4.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/avatars/5.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/5.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/avatars/6.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/6.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/avatars/3.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/3.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/avatars/2.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/2.png'}`,
       },
       {
-        uri: `${BACKEND_URL}${'/assets/images/avatars/1.png'}`,
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/1.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/4.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/5.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/6.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/3.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/2.png'}`,
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/1.png'}`,
       },
       {
         uri: `${BACKEND_URL}${'/assets/images/categories/covers/relationship.png'}`,
@@ -286,6 +304,7 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: id,
+        type: values?.type
       };
       const res = await postRegister(payload);
       handleSetProfile(res);
@@ -325,6 +344,7 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: values?.purchasely_id,
+        type: values?.type
       };
       await updateProfile(payload);
       handleSetBackground(res?.data?.theme?.bg_color);
@@ -538,10 +558,11 @@ function RegisterScreen({
               style={{
                 color: code_color.white,
                 textAlign: 'center',
-                fontSize: fixedFontSize(18),
+                fontSize: stepRegister === 0 ? fixedFontSize(26) : fixedFontSize(18),
+                fontFamily: 'Comfortaa-SemiBold',
                 flex: 1,
               }}>
-              {stepRegister === 0 ? 'Select your favorite character style' : stepRegister === 1
+              {stepRegister === 0 ? 'Which style do\nyou prefer?' : stepRegister === 1
                 ? titleHeader
                 : stepRegister === 2
                 ? 'Be part of the story'

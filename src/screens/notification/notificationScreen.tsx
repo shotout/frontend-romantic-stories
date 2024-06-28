@@ -111,7 +111,7 @@ const NotificationScreen = ({
             marginVertical: hp(10),
           }}>
           <Pressable
-            onPress={() => goBack()}
+            onPress={() => navigate('Settings')}
             style={{
               width: hp(35),
               height: hp(35),

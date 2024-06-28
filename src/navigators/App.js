@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/lib/integration/react';
-import {AppState, LogBox} from 'react-native';
+import {AppState, Dimensions, LogBox} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import notifee, {EventType} from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
@@ -44,12 +44,12 @@ const App = () => {
   useEffect(() => {
     // ACTIVE APP
     const unsubscribeOnMessage = messaging().onMessage(async detail => {
-      if (detail.data?.type === 'paywall') {
+      if (detail?.data?.type === 'paywall') {
         setTimeout(() => {
-          handlePayment(detail.data?.placement, true);
+          handlePayment(detail?.data?.placement, true);
         }, 100);
         eventTracking(OPEN_OFFER_NOTIFICATION);
-      } else if (detail.data?.type === 'story') {
+      } else if (detail?.data?.type === 'story') {
         navigate('Main', {isFromNotif: true});
       }
     });
@@ -66,16 +66,16 @@ const App = () => {
             (type === EventType.ACTION_PRESS || type === EventType.PRESS) &&
             !paymentInProgress // Check if payment is not already in progress
           ) {
-            if (detail.notification.data?.type === 'paywall') {
+            if (detail?.notification?.data?.type === 'paywall') {
               setPaymentCounter((prevCounter) => prevCounter + 1);
               if (paymentCounter === 0) {
                 
                 setPaymentInProgress(true);
-                handlePayment(detail.notification.data?.placement, true);
+                handlePayment(detail?.notification?.data?.placement, true);
                
                 eventTracking(OPEN_OFFER_NOTIFICATION);
               }
-            } else if (detail.notification.data?.type === 'story') {
+            } else if (detail?.notification?.data?.type === 'story') {
               navigate('Main', { isFromNotif: true });
             }
           }

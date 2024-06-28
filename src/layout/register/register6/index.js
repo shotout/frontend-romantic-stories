@@ -34,6 +34,7 @@ import ChecklistSvg from './../../../assets/icons/checklist';
 import {moderateScale} from 'react-native-size-matters';
 import Speaker from '../../../assets/icons/speaker';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
+import DeviceInfo from 'react-native-device-info';
 
 export default function Register5({gender, setTheme, userStory, handleSetColorTheme}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
@@ -83,7 +84,15 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
   useEffect(() => {
     fetchCategory();
   }, []);
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
 
+    checkIfIPad();
+  }, []);
   const fetchCategory = async () => {
     try {
       // const avatar = await getListTheme();
@@ -138,7 +147,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               <Text
                 allowFontScaling={false}
                 style={{
-                  fontSize: fixedFontSize(6),
+                  fontSize: fixedFontSize(isIPad ? 8 :6),
                   color: code_color.grey,
                   paddingHorizontal: wp(10),
                   paddingTop: wp(10),
@@ -148,7 +157,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               <Text
                 allowFontScaling={false}
                 style={{
-                  fontSize: fixedFontSize(7),
+                  fontSize: fixedFontSize(isIPad ? 10 : 7),
                   paddingHorizontal: wp(10),
                   paddingTop: hp(5),
                 }}>
@@ -159,20 +168,20 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
               <TouchableOpacity
                 style={{
                   padding: 1,
-                  paddingHorizontal: hp(7),
+                  paddingHorizontal: hp(isIPad ? 10 :7),
                   borderRadius: hp(20),
                   backgroundColor: colorsDefault,
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Speaker width={8} />
+                <Speaker width={isIPad ?  15 : 8} />
                 <Text
                   allowFontScaling={false}
                   style={{
                     textAlign: 'center',
                     fontWeight: 'bold',
-                    fontSize: fixedFontSize(6),
+                    fontSize: fixedFontSize(isIPad ? 8 :6),
                     color: code_color.white,
                     marginLeft: wp(2),
                   }}>
@@ -193,10 +202,10 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
           <Text
             allowFontScaling={false}
             style={{
-              fontSize: fixedFontSize(7.5),
-              textAlign: 'justify',
+              fontSize: fixedFontSize(isIPad ? 10 : 7.5),
+              textAlign: isIPad ? 'auto' : 'justify',
               paddingHorizontal: wp(10),
-              lineHeight: 13,
+              lineHeight:  isIPad ? 25 : 13,
               fontFamily: 'Roboto',
               color: code_color.grey,
             }}>
@@ -207,7 +216,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
           <Image
             source={imgBottom}
             resizeMode="contain"
-            style={{width: '100%', height: '15%'}}
+            style={{width: '100%', height: isIPad ? '25%': '15%'}}
           />
 
           <View style={{alignItems: 'flex-end'}}>
@@ -242,13 +251,13 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
                     justifyContent: 'center',
                   }}>
                   <item.image
-                    width={hp(13)}
-                    height={hp(13)}
+                    width={hp(isIPad ?  18 : 13)}
+                    height={hp( isIPad ?  18 : 13)}
                     fill={colorsDefault}
                   />
                   <Text
                     allowFontScaling={false}
-                    style={{fontSize: fixedFontSize(6),  color: code_color.grey,}}>
+                    style={{fontSize: fixedFontSize(isIPad ?  8 : 6),  color: code_color.grey,}}>
                     {item.name}
                   </Text>
                 </View>

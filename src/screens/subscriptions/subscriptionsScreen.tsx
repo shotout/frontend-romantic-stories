@@ -217,7 +217,7 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
             marginVertical: 10,
           }}>
           <Pressable
-            onPress={() => goBack()}
+            onPress={() => navigate('Settings')}
             style={{
               width: 35,
               height: 35,

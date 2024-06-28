@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Image, View} from 'react-native';
 import styles from './styles';
 import AnimatedLottieView from 'lottie-react-native';
 import { wp } from '../../../utils/screen';
+import DeviceInfo from 'react-native-device-info';
 
 const activeLamp = require('../../../assets/icons/register_step/singleLove1.png');
 const lampUnactive = require('../../../assets/icons/register_step/unactiveLove1.png');
@@ -10,10 +11,19 @@ const lampUnactive = require('../../../assets/icons/register_step/unactiveLove1.
 const lampActiveAnimation = require('../../../assets/images/heart-progress-bar.gif');
 const love = require('../../../assets/lottie/heart-progress-bar.json');
 export default function HeaderStep({currentStep}) {
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
+
+    checkIfIPad();
+  }, []);
   const activeGift = () => (
     <View style={styles.ctnGift}>
       <AnimatedLottieView
-      style={styles.ctnAnimate}
+      style={isIPad ? styles.ctnAnimateIpad : styles.ctnAnimate}
       source={love}
       // style={{width: 50, height: 50}}
       autoPlay

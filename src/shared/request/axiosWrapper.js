@@ -48,14 +48,14 @@ const request = options => {
  
   const onSuccess = response => {
     if(__DEV__){
-      // console.log(JSON.stringify(response))
+       console.log(JSON.stringify(response))
     }
     return response.data
   };
 
   const onError = error => {
     if(__DEV__){
-    console.log('Error Message:', error);
+    console.log('Error Message:', JSON.stringify(error));
     }
     if (error.response) {
       if (options.handles && error.response.status) {

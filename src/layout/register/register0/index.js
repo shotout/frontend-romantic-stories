@@ -34,7 +34,11 @@ export default function Register0({setType, selectedType}) {
           style={{alignItems: 'center'}}
           onPress={() => setType('realistic')}>
           <ImageBackground
-            source={selectedType === 'realistic' || selectedType == ''  ? real : real_bw}
+            source={
+              selectedType === 'realistic' || selectedType == ''
+                ? real
+                : real_bw
+            }
             style={[
               {
                 width: width,
@@ -51,7 +55,7 @@ export default function Register0({setType, selectedType}) {
               fontSize: fixedFontSize(20),
               position: 'absolute',
               bottom: '25%',
-              left: 50,
+              left: '25%',
             }}>
             Realistic
           </Text>
@@ -61,13 +65,14 @@ export default function Register0({setType, selectedType}) {
           style={{
             height: height,
             width: 15,
-           
           }}></LinearGradient>
         <TouchableOpacity
           style={{alignItems: 'center'}}
           onPress={() => setType('anime')}>
           <ImageBackground
-            source={selectedType === 'anime' || selectedType == '' ? anime : anime_bw}
+            source={
+              selectedType === 'anime' || selectedType == '' ? anime : anime_bw
+            }
             style={{
               width: width,
               height: height,
@@ -81,14 +86,14 @@ export default function Register0({setType, selectedType}) {
               fontSize: fixedFontSize(20),
               position: 'absolute',
               bottom: '25%',
-              left: 50,
+              left: '35%',
             }}>
             Anime
           </Text>
         </TouchableOpacity>
       </LinearGradient>
 
-      <Text
+      {/* <Text
         allowFontScaling={false}
         style={{
           color: code_color.white,
@@ -98,10 +103,10 @@ export default function Register0({setType, selectedType}) {
           // marginTop: wp(40),
           position: 'absolute',
           left: '25%',
-          top: '5%',
+          top: '-%',
         }}>
         {'Which style do\nyou prefer?'}
-      </Text>
+      </Text> */}
     </View>
   );
 }

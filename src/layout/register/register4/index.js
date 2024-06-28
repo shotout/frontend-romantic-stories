@@ -21,6 +21,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {fixedFontSize, hp, wp} from '../../../utils/screen';
 import FastImage from 'react-native-fast-image';
 import Loading from '../../../components/loading';
+import DeviceInfo from 'react-native-device-info';
 
 export default function Register4({gender, setAvatar, dataAvatar}) {
   const [progressValue, setProgress] = useState(0);
@@ -30,7 +31,15 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
   useEffect(() => {
     setProgress(1);
   }, []);
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
 
+    checkIfIPad();
+  }, []);
   // useEffect(() => {
   // setLoading(true)
   // setTimeout(() => {
@@ -96,8 +105,8 @@ export default function Register4({gender, setAvatar, dataAvatar}) {
               handleChange(index);
             }}
             modeConfig={{
-              parallaxScrollingScale: 0.78,
-              parallaxScrollingOffset: moderateScale(210),
+              parallaxScrollingScale:  isIPad ? 0.8 : 0.78,
+              parallaxScrollingOffset: moderateScale( isIPad ? 270 : 210),
             }}
             mode="parallax"
             // style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center'}}
