@@ -23,6 +23,7 @@ import {
   imgUnlockPremium,
   imgRating,
   iconRating,
+  iconRatingReal,
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
 import CloseIcon from '../../assets/icons/close';
@@ -38,7 +39,7 @@ import {BACKEND_URL} from '../../shared/static';
 import StarRating, {StarIconProps} from 'react-native-star-rating-widget';
 import {Path, Svg} from 'react-native-svg';
 
-function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
+function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess, type}) {
   const [rating, setRating] = useState(0);
 
   const handleSubmit = async () => {
@@ -129,7 +130,7 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
             <CloseIcon height={18} width={18} fill={code_color.grey} />
           </TouchableOpacity>
           <Image
-            source={iconRating}
+            source={ type === 'realistic' ?  iconRatingReal : iconRating}
             resizeMode='contain'
             style={{
               height: 120,

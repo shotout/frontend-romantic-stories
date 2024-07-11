@@ -96,7 +96,7 @@ function SvgComponent(props) {
             ? '142'
             : profileUrl.includes('5')
             ? '147'
-            : '138'
+            :  '138'
         }
         y={
           Platform.OS === 'android'
@@ -188,6 +188,14 @@ function SvgComponent(props) {
         <Image
           href={profileUrl}
           x={
+            profileUrl.includes('realistic/1')  ?
+            '143' :
+            profileUrl.includes('realistic/2') || profileUrl.includes('realistic/6') ||  profileUrl.includes('realistic/4')  ?
+            '145' :
+            profileUrl.includes('realistic/3')?
+            '144' :
+            profileUrl.includes('realistic') ?
+            '140' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 &&  width === 480  && profileUrl.includes('2')?
                 '-25' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
@@ -205,6 +213,9 @@ function SvgComponent(props) {
               : '138'
           }
           y={
+            profileUrl.includes('realistic/1')  ||  profileUrl.includes('realistic/3') || profileUrl.includes('realistic/5') || profileUrl.includes('realistic/4') || profileUrl.includes('realistic/6')  ? '-55' :
+            profileUrl.includes('realistic') ?
+            '-30' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '30'
               : Platform.OS === 'android' &&  Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 950
@@ -220,7 +231,7 @@ function SvgComponent(props) {
               : '-40'
           }
           width="100%"
-          height={Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 ? "200" : "300"}
+          height={ Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 ? "200" : "300"}
           rx="28"
         />
       </G>

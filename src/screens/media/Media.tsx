@@ -57,7 +57,7 @@ import {
 import ImageColors from 'react-native-image-colors';
 import { moderateScale } from 'react-native-size-matters';
 
-function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
+function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfile}) {
   const [play, setPlay] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const {position, duration} = useProgress();
@@ -74,7 +74,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
     artwork: 'http://example.com/cover.png',
     duration: 10,
   };
-
+  // console.log(JSON.stringify(userStory))
   const [showModalShareStory, setShowModalShareStory] = useState(false);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -269,6 +269,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
           setShowModalShareStory(false);
           // setSharedStory(null);
         }}
+        type={userProfile?.data?.type}
       />
       <Modal
         visible={visibleModal}
@@ -321,7 +322,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory}) {
       <View>
         <Image
           source={{
-            uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
+            uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/audio/relationship.png'}`,
           }}
           resizeMode="cover"
           style={{

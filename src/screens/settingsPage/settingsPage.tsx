@@ -327,7 +327,7 @@ const SettingsPage = ({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: hp(3),
-                    right: hp(getAvatarMale === '/assets/images/avatars/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0),
+                    right: hp(getAvatarMale?.includes('realistic/4') || getAvatarMale?.includes('realistic/2') || getAvatarMale?.includes('realistic/3')  ? -3 : getAvatarMale?.includes('realistic/5')  ? 2 :  getAvatarMale?.includes('realistic/6')  ? -7 :  getAvatarMale === '/assets/images/avatars/anime/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/anime/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/anime/4.png' ? 2 : 0),
                   }}
                 />
               </View>
@@ -354,7 +354,7 @@ const SettingsPage = ({
                     justifyContent: 'center',
                     position: 'absolute',
                     top: hp(3),
-                    right: hp(getAvatarFemale === '/assets/images/avatars/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/4.png' ? 2 : 0),
+                    right: hp(getAvatarFemale?.includes('realistic/4') || getAvatarFemale?.includes('realistic/2') || getAvatarFemale?.includes('realistic/3')  ? -3 : getAvatarFemale?.includes('realistic/5')  ? 2 :  getAvatarFemale?.includes('realistic/6')  ? -7 : getAvatarFemale === '/assets/images/avatars/anime/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/anime/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/anime/4.png' ? 2 : 0),
                   }}
                 />
               </View>

@@ -263,6 +263,7 @@ const ExploreLibraryScreen = ({
         loadingOne={loadingAds}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
+        type={userProfile?.data?.type}
       />
       <ModalSuccessPurchase
         isVisible={showModalSuccessPurchase}
@@ -271,6 +272,7 @@ const ExploreLibraryScreen = ({
           handleSetStory(nextStory);
           navigate('Main');
         }}
+        userType={userProfile?.data?.type}
       />
       <ModalUnlockPremium
         isVisible={showModalUnlockCategory}
@@ -668,6 +670,7 @@ const ExploreLibraryScreen = ({
           handleSetStory(resp.data);
           navigate('Main');
         }}
+        type={userProfile?.data?.type}
       />
       <Loading loading={load} />
     </SafeAreaView>

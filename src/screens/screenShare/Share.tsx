@@ -60,6 +60,8 @@ import {
   logo,
   icon,
   iconBlack,
+  bgRelationReal,
+  bgMissReal,
 } from '../../assets/images';
 import Card from '../../components/card';
 import {fontList} from '../../utils/constants';
@@ -97,21 +99,25 @@ function ScreenShare({
   isPremium,
   userProfile,
   id,
-  title
+  title,
+  handleSetBgShare,
+  handleSetFontFamily,
+  fontFamily,
+  bgShare
 }) {
   const [isVisibleModal, setVisible] = useState(false);
   const [isVisibleFont, setVisibleFont] = useState(false);
   const [modalUnlockFont, setModalUnlockFont] = useState(false);
   const [modalUnlockBg, setModalUnlockBg] = useState(false);
   const [loadingAds, setLoadingAds] = useState(false);
-  const [selectBg, setSelectBg] = useState(null);
+  const [selectBg, setSelectBg] = useState(bgShare);
   const [selectedBg, setSelectedBg] = useState<any>(null);
   const [show, setShow] = useState(true);
   const [captureUri, setCaptureUri] = useState(null);
   const [fontSizeDefault, setFontSize] = useState(18);
   const [fontSelect, setSelectFont] = useState({
-    name: 'Roboto',
-    value: 'Roboto-Regular',
+    name: fontFamily,
+    value: `${fontFamily}`,
   });
   const [selectedFont, setSelectedFont] = useState({
     name: '',
@@ -147,7 +153,7 @@ function ScreenShare({
   const captureRef = useRef();
   const base64CaptureImage = useRef(null);
   const [viewShotLayout, setViewShotLayout] = useState(null);
-  const backgroundList = [bg, story2, bgShare2, bgShare3, bgShare4];
+  const backgroundList = [ userProfile.data?.type === 'realistic' ? bgRelationReal : bg, userProfile.data?.type === 'realistic'? bgMissReal : story2, bgShare2, bgShare3, bgShare4];
   const downloadText = `The *EroTales App* has the best free Romantic Stories ever! I just found this one:\n*${route?.params?.title}*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly *for free* on the AppStore or Google Play.`;
   const downloadTextFb = `The EroTales App has the best free Romantic Stories ever! I just found this one:\n*${route?.params?.title}*\nCheck out the Story here:\n${dinamicLink}\n\nCheck the EroTales App out now for free on https://EroTalesApp.com or Download the App directly for free on the AppStore or Google Play.`;
   // const downloadText = `The EroTales App has the best Romantic Stories ever! I just found this one:${route?.params?.title} Check the EroTales App out now on https://EroTalesApp.com or Download the App directly on the AppStore or Google Play.`;
@@ -163,6 +169,12 @@ function ScreenShare({
     },
   });
 
+  const isSameFont = (name: string) => {
+    return fontSelect.name
+      ?.toUpperCase()
+      ?.replace(/ /g, '')
+      .includes(name?.toUpperCase()?.replace(/ /g, ''));
+  };
   // PanResponder untuk resizing
   const resizePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -202,6 +214,7 @@ function ScreenShare({
               text: 'OK',
               onPress: () => {
                 setSelectFont(selectedFont);
+                handleSetFontFamily(selectedFont.value);
                 setModalUnlockFont(false);
               },
             },
@@ -228,6 +241,7 @@ function ScreenShare({
                 text: 'OK',
                 onPress: () => {
                   setSelectBg(selectedBg);
+                  handleSetBgShare(selectedBg)
                   setModalUnlockBg(false);
                 },
               },
@@ -332,7 +346,7 @@ function ScreenShare({
     try {
       const link = await dynamicLinks().buildShortLink(
         {
-          link: `https://erotalesapp.page.link/Tbeh?storyId=${id}`,
+          link: userProfile.data?.type === 'realistic' ? `https://erotalesapp.page.link/dhgB?storyId=${id}` :`https://erotalesapp.page.link/Tbeh?storyId=${id}`,
           domainUriPrefix: 'https://erotalesapp.page.link',
           android: {
             packageName: 'app.erotales',
@@ -772,7 +786,9 @@ function ScreenShare({
               selectBg === bg ||
               selectBg === bgShare2 ||
               selectBg === bgShare3 ||
-              selectBg === bgShare4
+              selectBg === bgShare4 ||
+              selectBg === bgMissReal ||
+              selectBg === bgRelationReal 
                 ? 'white'
                 : 'black',
           }}>
@@ -797,7 +813,9 @@ function ScreenShare({
                 selectBg === bg ||
                 selectBg === bgShare2 ||
                 selectBg === bgShare3 ||
-                selectBg === bgShare4
+                selectBg === bgShare4 ||
+                selectBg === bgMissReal ||
+                selectBg === bgRelationReal 
                   ? 'white'
                   : 'black',
               fontSize: moderateScale(16),
@@ -813,7 +831,9 @@ function ScreenShare({
               selectBg === bg ||
               selectBg === bgShare2 ||
               selectBg === bgShare3 ||
-              selectBg === bgShare4
+              selectBg === bgShare4 ||
+              selectBg === bgMissReal ||
+              selectBg === bgRelationReal 
                 ? icon
                 : iconBlack
             }
@@ -895,7 +915,9 @@ function ScreenShare({
                 selectBg === bg ||
                 selectBg === bgShare2 ||
                 selectBg === bgShare3 ||
-                selectBg === bgShare4
+                selectBg === bgShare4 ||
+                selectBg === bgMissReal ||
+                selectBg === bgRelationReal 
                   ? 'white'
                   : 'black',
             }}>
@@ -920,7 +942,9 @@ function ScreenShare({
                   selectBg === bg ||
                   selectBg === bgShare2 ||
                   selectBg === bgShare3 ||
-                  selectBg === bgShare4
+                  selectBg === bgShare4 ||
+                  selectBg === bgMissReal ||
+                  selectBg === bgRelationReal 
                     ? 'white'
                     : 'black',
                 fontSize: moderateScale(16),
@@ -936,7 +960,9 @@ function ScreenShare({
                 selectBg === bg ||
                 selectBg === bgShare2 ||
                 selectBg === bgShare3 ||
-                selectBg === bgShare4
+                selectBg === bgShare4 ||
+                selectBg === bgMissReal ||
+                selectBg === bgRelationReal 
                   ? icon
                   : iconBlack
               }
@@ -1195,8 +1221,9 @@ function ScreenShare({
                 onPress={() => {
                   setSelectedFont(item);
                   if (userProfile?.data?.subscription?.plan_id != 1) {
+                    handleSetFontFamily(item.value);
                     setSelectFont(item);
-                  } else {
+                  } else if (!isSameFont(item.name)) {
                     setModalUnlockFont(true);
                   }
                 }}
@@ -1204,7 +1231,7 @@ function ScreenShare({
                 style={{
                   ...styles.btnFont,
                   backgroundColor:
-                    fontSelect.value === item.value
+                  fontSelect.value === item.value
                       ? code_color.white
                       : undefined,
                 }}>
@@ -1216,14 +1243,14 @@ function ScreenShare({
                     fontFamily: item?.value,
                     fontSize: moderateScale(14),
                     color:
-                      fontSelect.value === item.value
+                    fontSelect.value === item.value
                         ? code_color.blackDark
                         : code_color.white,
                   }}>
                   {item.name}
                 </Text>
                 {userProfile?.data?.subscription?.plan_id === 1 &&
-                fontSelect.name !== item.name ? (
+                !isSameFont(item.name) ? (
                   <>
                     <View
                       style={{
@@ -1289,8 +1316,9 @@ function ScreenShare({
                     setSelectedBg(bgl);
                     if (userProfile?.data?.subscription?.plan_id != 1) {
                       setSelectBg(bgl);
+                      handleSetBgShare(bgl)
                       setSelectedBg(null);
-                    } else {
+                    } else if(bgl !== selectBg) {
                       setModalUnlockBg(true);
                     }
                   }}>

@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {code_color} from '../../utils/colors';
-import {bgNewStory, imgLoveLeft, imgLoveRight} from '../../assets/images';
+import {bgNewStory, bgNewStoryReal, imgLoveLeft, imgLoveRight} from '../../assets/images';
 import Button from '../buttons/Button';
 import {moderateScale} from 'react-native-size-matters';
 import {book} from '../../assets/icons';
@@ -146,11 +146,11 @@ function ModalNewStory({
                 ),
               }}>
               <Image
-                source={bgNewStory}
+                source={userProfile?.data?.type === 'realistic' ? bgNewStoryReal : bgNewStory}
                 resizeMode="contain"
                 style={{
                   width: '100%',
-                  top: hp(-150),
+                  top: hp(userProfile?.data?.type === 'realistic' ? -30 : -150),
                   maxHeight: sizing.getDimensionHeight(1),
                   // position: 'absolute',
                 }}

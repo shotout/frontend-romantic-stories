@@ -589,7 +589,6 @@ const FontScreen = ({
                   if (isPremiumStory || isPremiumAudio || isPremiumMonthly) {
                     handleSetFontFamily(item.value);
                     setSelectFont(item);
-                    handleSetFontFamily(item.value);
                   } else if (!isSameFont(item.name)) {
                     setModalUnlockFont(true);
                   }

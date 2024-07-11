@@ -24,6 +24,7 @@ import Loading from '../../../components/loading';
 import FastImage from 'react-native-fast-image';
 import DeviceInfo from 'react-native-device-info';
 export default function Register3({setCategoryId, value, dataCategory, setType}) {
+// alert(setType)
   const [dataStory, setDataStory] = useState([
     {
         "id": 1,
@@ -146,6 +147,7 @@ export default function Register3({setCategoryId, value, dataCategory, setType})
                 justifyContent: 'center',
               }}>
                 <FastImage
+                  
                  key={index}
                   source={{
                     uri: `${BACKEND_URL}${item.image?.url}`,

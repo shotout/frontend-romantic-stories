@@ -182,12 +182,12 @@ function ModalCongrats({
             style={{
               width: hp(80),
               height: hp(
-                getAvatarMale === '/assets/images/avatars/2.png'
+                getAvatarMale === '/assets/images/avatars/anime/2.png'
                   ? 350
-                  : getAvatarMale === '/assets/images/avatars/3.png' ||
-                    getAvatarMale === '/assets/images/avatars/4.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/3.png' ||
+                    getAvatarMale === '/assets/images/avatars/anime/4.png'
                   ? 350
-                  : getAvatarMale === '/assets/images/avatars/1.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/1.png'
                   ? 280
                   : 250,
               ),
@@ -195,24 +195,27 @@ function ModalCongrats({
               justifyContent: 'center',
               position: 'absolute',
               top: hp(
-                getAvatarMale === '/assets/images/avatars/1.png'
+                getAvatarMale === '/assets/images/avatars/anime/1.png'
                   ? 5
-                  : getAvatarMale === '/assets/images/avatars/6.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/6.png'
                   ? 5
-                  : getAvatarMale === '/assets/images/avatars/4.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/4.png'
                   ? 5
                   : 0,
               ),
               right:
-                getAvatarMale === '/assets/images/avatars/5.png'
+                getAvatarMale?.includes('realistic/5') ? -5 : 
+                getAvatarMale?.includes('realistic/4') ||  getAvatarMale?.includes('realistic/1') ||  getAvatarMale?.includes('realistic/2') ||  getAvatarMale?.includes('realistic/3')? -8 :
+                getAvatarMale?.includes('realistic') ? -18 :
+                getAvatarMale === '/assets/images/avatars/anime/5.png'
                   ? -15
-                  : getAvatarMale === '/assets/images/avatars/3.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/3.png'
                   ? -3
-                  : getAvatarMale === '/assets/images/avatars/1.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/1.png'
                   ? 2
-                  : getAvatarMale === '/assets/images/avatars/2.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/2.png'
                   ? -5
-                  : getAvatarMale === '/assets/images/avatars/6.png'
+                  : getAvatarMale === '/assets/images/avatars/anime/6.png'
                   ? -4
                   : 0,
             }}

@@ -67,6 +67,7 @@ function RegisterScreen({
   handleSetStory,
   handleSetSteps,
   userStory,
+  resetParams
 }) {
   const [stepRegister, setStepRegister] = useState(0);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
@@ -75,6 +76,7 @@ function RegisterScreen({
   const [dataAva, setDataAva] = useState([]);
   const [dataAva2, setDataAva2] = useState([]);
   const [dataStory, setDataStory] = useState([]);
+  const [type, setType] = useState('');
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -145,8 +147,8 @@ function RegisterScreen({
 
   const fetchAllAva = async () => {
     try {
-      const avatarMale = await getListAvatar({gender: 'male', type: values.type});
-      const avatarFemale = await getListAvatar({gender: 'female', type: values.type});
+      const avatarMale = await getListAvatar({gender: 'male', type: type});
+      const avatarFemale = await getListAvatar({gender: 'female', type: type});
       setDataAva([...avatarMale?.data, ...avatarFemale?.data]);
       setDataAva2([...avatarMale?.data, ...avatarFemale?.data]);
     } catch (error) {
@@ -157,7 +159,7 @@ function RegisterScreen({
     try {
       const params = {
         gender: value,
-        type: values.type
+        type: type
       };
       const avatar = await getListAvatar(params);
       setDataAva(avatar?.data);
@@ -169,7 +171,7 @@ function RegisterScreen({
     try {
       const params = {
         gender: value,
-        type: values.type
+        type: type
       };
       const avatar = await getListAvatar(params);
       setDataAva2(avatar?.data);
@@ -273,13 +275,13 @@ function RegisterScreen({
   const fetchCategory = async () => {
     try {
       let params = {
-        type: values.type
+        type: type
       }
       const category = await getListCategory(params);
-      console.log(JSON.stringify(category))
+      // console.log(JSON.stringify(category))
       setDataStory(category?.data);
     } catch (error) {
-      console.log(JSON.stringify(error));
+      // console.log(JSON.stringify(error));
     }
   };
   const onSubmit = async () => {
@@ -304,7 +306,7 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: id,
-        type: values?.type
+        type: type
       };
       const res = await postRegister(payload);
       handleSetProfile(res);
@@ -344,19 +346,35 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: values?.purchasely_id,
-        type: values?.type
+        type: type
       };
-      await updateProfile(payload);
-      handleSetBackground(res?.data?.theme?.bg_color);
-      handleSetFontSize(res?.data?.theme?.font_size);
-      // handleSetColorTheme(res?.data?.theme?.theme_color);
-      handleSetFontFamily(res?.data?.theme?.font_family);
-      await AsyncStorage.setItem('isTutorial', 'yes');
-      const resp = await getStoryList();
-      handleSetStory(resp.data);
+      const response = await updateProfile(payload);
+      if(response){
+        const userProfileWithToken = {
+          ...response,
+          token: res?.token,
+        };
+          // alert(JSON.stringify(response))
+        handleSetProfile(userProfileWithToken)
+        handleSetBackground(res?.data?.theme?.bg_color);
+        handleSetFontSize(res?.data?.theme?.font_size);
+        // handleSetColorTheme(res?.data?.theme?.theme_color);
+        handleSetFontFamily(res?.data?.theme?.font_family);
+        await AsyncStorage.setItem('isTutorial', 'yes');
+        const resp = await getStoryList();
+        handleSetStory(resp.data);
+      }
+  
+      
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if(type != ''){
+      setStepRegister(stepRegister + 1);
+    }
+
+  }, [type])
   const renderLayout = () => {
     if (stepRegister === 0) {
       return (
@@ -368,9 +386,9 @@ function RegisterScreen({
           }}>
           <Register0
             setType={text => {
-              handleChange('type', text), setStepRegister(stepRegister + 1);
+              setType(text)
             }}
-            selectedType={values.type}
+            selectedType={type}
           />
         </View>
       );
@@ -387,7 +405,7 @@ function RegisterScreen({
               handleChange('gender', text), setStepRegister(stepRegister + 1);
             }}
             selectedGender={values.gender}
-            setType={values.type}
+            setType={type}
           />
         </View>
       );
@@ -407,7 +425,7 @@ function RegisterScreen({
           setCategoryId={text => {
             handleChange('category_id', text);
           }}
-          setType={values.type}
+          setType={type}
         />
       );
     } else if (stepRegister === 4) {
@@ -415,7 +433,7 @@ function RegisterScreen({
         <Register5
           gender={values.gender}
           dataAvatar={dataAva2}
-          setType={values.type}
+          setType={type}
           setAvatar={text =>
             handleChange(
               values.gender === 'Female' ? 'avatar_male' : 'avatar_female',
@@ -440,6 +458,7 @@ function RegisterScreen({
     } else if (stepRegister === 6) {
       return (
         <Register6
+          type={type}
           userStory={userStory}
           gender={values.gender}
           setTheme={text => {
@@ -464,7 +483,7 @@ function RegisterScreen({
           activeNotif={async () => {
             try {
               await notifee.requestPermission();
-              navigate('Tutorial');
+              navigate('Tutorial', { type: type });
               handleSetSteps(0);
             } catch {}
           }}
@@ -533,6 +552,7 @@ function RegisterScreen({
           {stepRegister != 8 ? <HeaderStep currentStep={stepRegister} /> : null}
         </View>
       ) : (
+        stepRegister != 0 ?
         <View
           style={{
             backgroundColor: stepRegister === 0 ? code_color.black : code_color.white,
@@ -570,12 +590,13 @@ function RegisterScreen({
             </Text>
           </View>
           {stepRegister != 8 && stepRegister != 0 ? <HeaderStep currentStep={stepRegister} /> : null}
-        </View>
+        </View> : null 
       )}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: stepRegister === 0 ? 'black' : 'white', alignItems: 'center'}}>
+          {stepRegister === 0 ? null :
           <Text
             allowFontScaling={false}
             style={{
@@ -595,7 +616,7 @@ function RegisterScreen({
                 ? 'register.wyfs'
                 : 'What should your character look like?',
             )}
-          </Text>
+          </Text> }
           {renderLayout()}
           <View
             style={{
@@ -662,7 +683,7 @@ function RegisterScreen({
                   if (stepRegister === 8) {
                     try {
                       await notifee.requestPermission();
-                      navigate('Tutorial');
+                      navigate('Tutorial', { type: type });
                       handleSetSteps(0);
                     } catch {}
                   } else if (
@@ -686,7 +707,7 @@ function RegisterScreen({
             {stepRegister === 8 ? (
               <TouchableOpacity
                 onPress={async () => {
-                  navigate('Tutorial');
+                  navigate('Tutorial', { type: type });
                   handleSetSteps(0);
                 }}
                 style={{

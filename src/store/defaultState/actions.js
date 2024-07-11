@@ -7,6 +7,11 @@ export const setStorageStatus = payload => ({
   payload,
 });
 
+export const resetParams = payload => ({
+  type: types.RESET_PARAMS,
+  payload,
+});
+
 export const handleSetProfile = payload => ({
   type: types.SET_PROFILE_DATA,
   payload,
@@ -62,6 +67,11 @@ export const handleSetColorTheme = payload => ({
 });
 
 export const handleSetFontFamily = payload => ({
+  type: types.SET_FONT_FAMILY,
+  payload,
+});
+
+export const handleSetBgShare = payload => ({
   type: types.SET_FONT_FAMILY,
   payload,
 });

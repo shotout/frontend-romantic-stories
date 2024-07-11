@@ -71,6 +71,7 @@ function QuotesContent({
   titleStory,
   typeImage
 }) {
+  // console.log(userProfile)
   const [isRepeat, setRepeat] = useState(
     item?.repeat?.time != undefined || item?.isRepeat ? true : false,
   );
@@ -373,7 +374,7 @@ function QuotesContent({
     return result;
   }
   const height = Dimensions.get('window').height
-  console.log(`${BACKEND_URL}${me}`)
+
   return (
     <SafeAreaView
       style={{
@@ -435,6 +436,7 @@ function QuotesContent({
         handleListen={() => {
           handleSuccessAudio();
         }}
+        userType={userProfile?.data?.type}
       />
       <ModalAudioUnlock
         isVisible={show}
@@ -468,7 +470,7 @@ function QuotesContent({
               alignItems: 'center',
               position: 'absolute',
               bottom: 0,
-              left: '15%',
+              left: me?.includes('realistic') ? '5%' : '15%',
               // left: 0,
               justifyContent: 'center',
               flexDirection: 'row',
@@ -480,7 +482,7 @@ function QuotesContent({
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: wp(100),
+                width: wp(me?.includes('realistic') ? 150 : 100),
                 height: hp(300),
                 opacity: 0.3,
               }}
@@ -492,7 +494,7 @@ function QuotesContent({
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: wp(100),
+                width: wp(me?.includes('realistic') ? 150 :100),
                 height: hp(300),
                 opacity: 0.3,
               }}
@@ -567,12 +569,12 @@ function QuotesContent({
             pageActive === 26 ||
             pageActive === 29) ? (
             <>
-              <View>
+              <View >
                 <ImageBackground
                   source={getBackgroundStory(pageActive)}
                   resizeMode="contain"
                   style={{
-                    borderRadius: wp(100),
+                    borderRadius: 100,
                     height: hp(100),
                     marginBottom:
                       Dimensions.get('window').height <= 667 ? wp(-10) : wp(5),
@@ -584,45 +586,46 @@ function QuotesContent({
                       // bottom: 0,
                       overflow: 'hidden',
                       marginBottom:
-                        me === '/assets/images/avatars/1/think.png' ||
-                        me === '/assets/images/avatars/3/think.png' ||
-                        me === '/assets/images/avatars/4/think.png'
+                        me === '/assets/images/avatars/anime/1/think.png' ||
+                        me === '/assets/images/avatars/anime/3/think.png' ||
+                        me === '/assets/images/avatars/anime/4/think.png'
                           ? -83.3
                           : -83.3,
 
                       // marginBottom: Dimensions.get('window').height <= 667 && me === '/assets/images/avatars/2/think.png' ?  wp(-190) :  Dimensions.get('window').height === 844 && partner === '/assets/images/avatars/5/think.png' ? wp(-185) : Dimensions.get('window').height <= 667 ?  wp(-210) : Dimensions.get('window').height === 844 &&  me === '/assets/images/avatars/2/think.png' ? wp(-200) : me === '/assets/images/avatars/2/think.png' ? wp(-185) :  me === '/assets/images/avatars/3/think.png'  ? wp( Dimensions.get('window').height > 812 ? -200 : -185) : me === '/assets/images/avatars/4/think.png' ? wp(-180) : me === '/assets/images/avatars/1/think.png' ? wp(-185) :  wp(-200),
                       height:
                         Dimensions.get('window').height <= 667 &&
-                        me === '/assets/images/avatars/2/think.png'
+                        me === '/assets/images/avatars/anime/2/think.png'
                           ? hp(170)
                           : hp(
+                            me?.includes('realistic') ? 155 :
                               Dimensions.get('window').height === 844 &&
-                                me === '/assets/images/avatars/2/think.png'
+                                me === '/assets/images/avatars/anime/2/think.png'
                                 ? 180
                                 : Dimensions.get('window').height === 812 &&
-                                  me === '/assets/images/avatars/2/think.png'
+                                  me === '/assets/images/avatars/anime/2/think.png'
                                 ? 180
-                                : me === '/assets/images/avatars/2/think.png'
+                                : me === '/assets/images/avatars/anime/2/think.png'
                                 ? 150
-                                : me === '/assets/images/avatars/4/think.png'
+                                : me === '/assets/images/avatars/anime/4/think.png'
                                 ? 110
-                                : me === '/assets/images/avatars/3/think.png' &&
+                                : me === '/assets/images/avatars/anime/3/think.png' &&
                                   Dimensions.get('window').height <= 667
                                 ? 130
-                                : me === '/assets/images/avatars/3/think.png'
+                                : me === '/assets/images/avatars/anime/3/think.png'
                                 ? 120
-                                : me != '/assets/images/avatars/2/think.png' &&
+                                : me != '/assets/images/avatars/anime/2/think.png' &&
                                   me?.includes('think')
                                 ? 100
-                                : me === '/assets/images/avatars/2/positive.png'
+                                : me === '/assets/images/avatars/anime/2/positive.png'
                                 ? 150
                                 : me?.includes('positive')
                                 ? 120
-                                : me === '/assets/images/avatars/3/friendly.png'
+                                : me === '/assets/images/avatars/anime/3/friendly.png'
                                 ? 110
                                 : 150,
                             ),
-                      width: wp(100),
+                      width: wp(me?.includes('realistic') ? 120 :100),
                       left: 20,
                       zIndex: 1,
                       bottom: 90,
@@ -634,20 +637,20 @@ function QuotesContent({
                       }}
                       resizeMode={FastImage.resizeMode.contain}
                       style={{
-                        width: wp(100),
+                        width: wp(me?.includes('realistic') ? 140 : 100),
                         height: hp(
-                          me === '/assets/images/avatars/3/positive.png' ||
-                            me === '/assets/images/avatars/1/positive.png'  && Platform.OS === 'android' && height > 1000 
+                          me === '/assets/images/avatars/anime/3/positive.png' ||
+                            me === '/assets/images/avatars/anime/1/positive.png'  && Platform.OS === 'android' && height > 1000 
                             ? 400 :
-                            me === '/assets/images/avatars/1/positive.png' 
+                            me === '/assets/images/avatars/anime/1/positive.png' 
                             ? 350
-                            : me === '/assets/images/avatars/2/positive.png' && Platform.OS === 'android' && height > 1000 
+                            : me === '/assets/images/avatars/anime/2/positive.png' && Platform.OS === 'android' && height > 1000 
                             ? 480 
-                            : me === '/assets/images/avatars/2/positive.png' 
+                            : me === '/assets/images/avatars/anime/2/positive.png' 
                             ? 450 
-                            : me != '/assets/images/avatars/2/positive.png'
+                            : me != '/assets/images/avatars/anime/2/positive.png'
                             ? 400
-                            : 360,
+                            : me?.includes('realistic') ? 400 : 360,
                         ),
                       }}
                     />
@@ -657,29 +660,29 @@ function QuotesContent({
                       position: 'absolute',
                       overflow: 'hidden',
                       marginBottom:
-                      Platform.OS === 'android' && Dimensions.get('window').height < 840 && partner === '/assets/images/avatars/5/think.png'
-                          ? 8 :  partner === '/assets/images/avatars/5/think.png' ? 12 
+                      Platform.OS === 'android' && Dimensions.get('window').height < 840 && partner === '/assets/images/avatars/anime/5/think.png'
+                          ? 8 :  partner === '/assets/images/avatars/anime/5/think.png' ? 12 
                           : 21.7,
                       // marginBottom: wp(
                       //   partner === '/assets/images/avatars/5/think.png'
                       //     ? -90
                       //     : -85,
                       // ),
-                      width: wp(100),
+                      width: wp(me?.includes('realistic') ? 140 :100),
                       height: hp(
-                        partner === '/assets/images/avatars/5/think.png'
+                        partner === '/assets/images/avatars/anime/5/think.png'
                           ? 90
-                          : partner === '/assets/images/avatars/2/think.png'
+                          : partner === '/assets/images/avatars/anime/2/think.png'
                           ? 135
-                          : partner?.includes('realistic') ? 130 : 100,
+                          : partner?.includes('realistic') ? 160 : 100,
                       ),
-                      left: '40%',
+                      left:  partner?.includes('realistic') ? '27%' : '40%',
                       zIndex: 1,
                       bottom:
-                        partner === '/assets/images/avatars/5/think.png' &&
+                        partner === '/assets/images/avatars/anime/5/think.png' &&
                         Platform.OS === 'ios'
                           ? -5
-                          : partner === '/assets/images/avatars/5/think.png' &&
+                          : partner === '/assets/images/avatars/anime/5/think.png' &&
                             Platform.OS === 'android'
                           ? -5
                           : -15,
@@ -691,12 +694,12 @@ function QuotesContent({
                       }}
                       resizeMode={FastImage.resizeMode.contain}
                       style={{
-                        width: wp(100),
+                        width: wp(me?.includes('realistic') ? 150 : 100),
                         height: hp(
-                          partner === '/assets/images/avatars/4/positive.png' ||
-                            partner === '/assets/images/avatars/6/positive.png'
+                          partner === '/assets/images/avatars/anime/4/positive.png' ||
+                            partner === '/assets/images/avatars/anime/6/positive.png'
                             ? 330
-                            : 340,
+                            :me?.includes('realistic') ? 430 : 350,
                         ),
                       }}
                     />
@@ -760,7 +763,7 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(
-                    me === '/assets/images/avatars/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/2/inlove.png' && height > 900  ? -150 : me?.includes('realistic') ? -150 : -190,
+                    me === '/assets/images/avatars/anime/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/anime/2/inlove.png' && height > 900  ? -150 : me?.includes('realistic') ? -150 : -190,
                   ),
                   width: wp(100),
                   height: hp(170),
@@ -776,8 +779,8 @@ function QuotesContent({
                   style={{
 
                    
-                    width: wp(100),
-                    height: Platform.OS === 'android' && height > 1000 ? hp(200) : hp(300),
+                    width: wp(me?.includes('realistic') ? 130 :100),
+                    height: Platform.OS === 'android' && height > 1000 ? hp(200) : hp(330),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -787,9 +790,9 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(-100),
-                  width: wp(100),
-                  height: hp( me?.includes('realistic') ? 120 :100),
-                  left:  Platform.OS === 'android' && height > 1000 ? '30%' : '35%',
+                  width: wp(partner?.includes('realistic') ? 140 :100),
+                  height: hp( partner?.includes('realistic') ? 120 :100),
+                  left:  Platform.OS === 'android' && height > 1000 ? '30%' :  me?.includes('realistic') ? '28%'  :'35%',
                   zIndex: -1,
                 }}>
                 <FastImage
@@ -799,8 +802,8 @@ function QuotesContent({
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
-                    width: wp(100),
-                    height: hp(300),
+                    width: wp(partner?.includes('realistic') ? 150 : 100),
+                    height: hp(partner?.includes('realistic') ? 310 :300),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -829,7 +832,7 @@ function QuotesContent({
                     width: '75%',
                     height: hp(100),
                     marginLeft: wp(20),
-                    zIndex: -1,
+                    // zIndex: -1,
                     backgroundColor: 'Transparent',
                   }}>
                   <View

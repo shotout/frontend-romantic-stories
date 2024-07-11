@@ -18,7 +18,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import {bg, logo} from '../../assets/images';
+import {bg, bg_real, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import {getDefaultLanguange} from '../../utils/devices';
@@ -39,7 +39,7 @@ const OnboardScreen = (props: any) => {
   }, []);
   return (
     <ImageBackground
-      source={bg}
+      source={bg_real}
       resizeMode={isIPad ? 'cover' : 'cover' }
       style={{
         width: Dimensions.get('window').width,
@@ -54,9 +54,10 @@ const OnboardScreen = (props: any) => {
       allowFontScaling={false}
         style={{
           color: 'white',
-          fontSize: fixedFontSize(28),
+          fontSize: fixedFontSize(25),
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
+          marginBottom: 40
         }}>
         {'Exciting Stories \n for your everyday fantasy'}
       </Text>

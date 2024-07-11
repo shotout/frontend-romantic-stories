@@ -442,6 +442,7 @@ function MyTabs(props) {
                   onClose={() => {
                     setVisibleShare(false);
                   }}
+                  type={props?.userProfile?.data?.type}
                 />
                 <ShareSvg
                   width={wp(20)}
@@ -583,7 +584,7 @@ function MyTabs(props) {
             tabBarIcon: ({color, focused}) => {
               return (
                 <TouchableOpacity
-                  // onPress={() => handleSomeAction('Library')}
+                  onPress={() => handleSomeAction('Library')}
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -734,7 +735,7 @@ class MyTabsComponent extends Component {
     this.forceUpdate();
   };
   render() {
-    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText} =
+    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText, userProfile} =
       this.props;
     const tapProps = {
       colorTheme,
@@ -743,6 +744,7 @@ class MyTabsComponent extends Component {
       userStory,
       backgroundColor,
       colorText,
+      userProfile
     };
     return <MyTabs {...tapProps} />;
   }

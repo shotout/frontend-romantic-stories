@@ -19,7 +19,8 @@ export const handlePayment = async (vendorId, notif, cb,) =>
       const set10min = await AsyncStorage.getItem('firstInstall');
       const main10 = reformatDate(parseFloat(set10min));
       const data = checkDays(main10)
-   
+      const user = store.getState().defaultState.userProfile;
+      
       if(vendorId === 'unsubscribe_placement' || notif){
         stringVendor = vendorId
       }else if(data === 'kurang' ){
@@ -27,15 +28,15 @@ export const handlePayment = async (vendorId, notif, cb,) =>
       // }else if(data === 'antara'){
       //   stringVendor = 'offer_75'
       }else if(data === 'lebih'){
-        stringVendor = 'offer_50'
+        stringVendor =  'offer_50'
       }
       console.log('OPEN Purchasely', stringVendor);
       const res = await Purchasely.presentPresentationForPlacement({
-        placementVendorId: notif ? vendorId :  stringVendor,
+        placementVendorId: notif ? user?.data?.type === 'realistic' ? `${vendorId}_realistic` : vendorId : user?.data?.type === 'realistic' ? `${stringVendor}_realistic` :  stringVendor,
         isFullscreen: true,
       });
       console.log('Purchasely result:', JSON.stringify(res));
-      const user = store.getState().defaultState.userProfile;
+      
       // console.log('Check user data purchase:', user);
       switch (res.result) {
         case ProductResult.PRODUCT_RESULT_PURCHASED:

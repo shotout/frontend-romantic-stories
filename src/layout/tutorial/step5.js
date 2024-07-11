@@ -9,8 +9,9 @@ import quoteAnimate from '../../assets/lottie/quote.json';
 import {hp} from '../../utils/screen';
 import {moderateScale} from 'react-native-size-matters';
 import { step5 } from '../../assets/icons';
+import { quoteReal } from '../../assets/images';
 
-const Step5 = ({handleNext, handlePrev}) => {
+const Step5 = ({handleNext, handlePrev, type}) => {
   // return <></>;
   return (
     <View
@@ -34,7 +35,7 @@ const Step5 = ({handleNext, handlePrev}) => {
           borderColor: '#3F58DD',
           borderWidth: hp(4),
         }}>
-          {Platform.OS === 'ios'  ?
+          {Platform.OS === 'ios' && type != 'realistic'  ?
         <AnimatedLottieView
           source={quoteAnimate}
           autoPlay={true}
@@ -48,7 +49,7 @@ const Step5 = ({handleNext, handlePrev}) => {
             zIndex: 1
           }}
         /> : 
-        <Image source={step5}  style={{ height: hp(72), width: hp(72)}}/> }
+        <Image source={quoteReal} resizeMode='contain'  style={{ height: hp(72), width: hp(72), borderRadius: 100}}/> }
       </View>
       <Animatable.Text
         delay={1500}

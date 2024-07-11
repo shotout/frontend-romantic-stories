@@ -9,12 +9,12 @@ import states from './states';
 import {code_color} from '../../utils/colors';
 import {cover1, imgLoveLeft, imgLoveRight} from '../../assets/images';
 import {moderateScale} from 'react-native-size-matters';
-import {successPurchase} from '../../assets/icons';
+import {successPurchase, successPurchaseReal} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
 import ListenIcon from '../../assets/icons/listen';
 import LoveIcon from '../../assets/icons/loveOutline';
 
-function ModalSuccessPurchaseAudio({isVisible, onClose, title, handleListen}) {
+function ModalSuccessPurchaseAudio({isVisible, onClose, title, handleListen, type}) {
   const handleClose = () => {
     onClose();
   };
@@ -38,7 +38,7 @@ function ModalSuccessPurchaseAudio({isVisible, onClose, title, handleListen}) {
             borderRadius: moderateScale(24),
           }}>
           <Image
-            source={successPurchase}
+            source={type === 'realistic' ? successPurchaseReal : successPurchase}
             style={{
               height: 150,
               aspectRatio: '1.15/1',

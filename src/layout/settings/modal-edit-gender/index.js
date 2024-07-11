@@ -107,6 +107,7 @@ function ModalEditGender({isVisible, onClose, colorTheme, userProfile, backgroun
         <Register1
           setGender={data => setGender(data)}
           selectedGender={gender}
+          setType={userProfile?.type}
         />
       </View>
       <TouchableOpacity onPress={() => setGender(null)}>

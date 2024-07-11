@@ -76,7 +76,10 @@ const CategoriesScreen = ({
 
   const fetchCategory = async () => {
     try {
-      const category = await getListCategory();
+      const params = {
+        type : userProfile?.type
+      }
+      const category = await getListCategory(params);
       setDataStory(category?.data);
       setLoading(false);
     } catch (error) {

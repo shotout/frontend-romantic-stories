@@ -1110,11 +1110,13 @@ const MainScreen = ({
     reset(story);
   };
   const reset = async (story: any) => {
-    handleSetStory(story);
-    setScreenNumber(0);
     setTimeout(async() => {
       await pagerRef.current?.setPage(0);
+      await pagerRef.current?.setPage(0);
     }, 100);
+    handleSetStory(story);
+    setScreenNumber(0);
+    
    
   };
 
@@ -1454,8 +1456,10 @@ const MainScreen = ({
             onClose={() => setShowModalDay(false)}
             handleRead={() => handleReadAds()}
             handleLater={() => handleLater()}
+            type={userProfile?.data?.type}
           />
           <ModalStoryUnlock
+            type={userProfile?.data?.type}
             isVisible={showModal}
             onClose={() => setShowModal(false)}
             data={undefined}
@@ -1485,6 +1489,7 @@ const MainScreen = ({
             }}
           />
           <ModalAppRating
+           type={userProfile?.data?.type}
             isVisible={showRatingApp}
             onClose={() => {
               setRatingApp(false);
@@ -1533,6 +1538,7 @@ const MainScreen = ({
               addStory(nextStory.id);
               setShowModalSuccessPurchase(false);
             }}
+            userType={userProfile?.data?.type}
           />
           <ModalGetPremium
             isVisible={showModalGetPremium}
@@ -1655,6 +1661,7 @@ const MainScreen = ({
             loadingOne={loadingAds}
             price={price}
             onGetUnlimit={() => handleUnlimited()}
+            type={userProfile?.data?.type}
           />
           {showModalCongrats && (
             <ModalCongrats

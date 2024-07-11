@@ -9,12 +9,12 @@ import states from './states';
 import {code_color} from '../../utils/colors';
 import {imgLoveLeft, imgLoveRight} from '../../assets/images';
 import {moderateScale} from 'react-native-size-matters';
-import {successPurchase} from '../../assets/icons';
+import {successPurchase, successPurchaseReal} from '../../assets/icons';
 import ReadingIcon from '../../assets/icons/reading';
 import {BACKEND_URL} from '../../shared/static';
 import {hp} from '../../utils/screen';
 
-function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
+function ModalSuccessPurchase({isVisible, onClose, nextStory, type, userType}) {
   const handleClose = () => {
     onClose();
   };
@@ -38,7 +38,7 @@ function ModalSuccessPurchase({isVisible, onClose, nextStory, type}) {
             borderRadius: moderateScale(24),
           }}>
           <Image
-            source={successPurchase}
+            source={userType === 'realistic' ? successPurchaseReal : successPurchase}
             style={{
               height: hp(140),
               aspectRatio: '1.15/1',

@@ -343,6 +343,7 @@ const DetailCategoryScreen = ({
         loadingOne={loading2}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
+        type={userProfile?.data?.type}
       />
       <ModalUnlockPremium
         isVisible={showModalUnlockCategory}
@@ -647,6 +648,7 @@ const DetailCategoryScreen = ({
           handleSetStory(resp.data);
           navigate('Main');
         }}
+        type={userProfile?.data?.type}
       />
       <Loading loading={load} />
     </SafeAreaView>

@@ -52,8 +52,8 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
   const fetchAva = async value => {
     try {
       if (!userProfile.gender) {
-        const avaMale = await getListAvatar({gender: 'male'});
-        const avaFemale = await getListAvatar({gender: 'female'});
+        const avaMale = await getListAvatar({gender: 'male', type: userProfile.type});
+        const avaFemale = await getListAvatar({gender: 'female', type: userProfile.type});
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
         setProgress(
          
@@ -64,6 +64,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
       } else {
         const params = {
           gender: userProfile.gender === 'Female' ? 'male' : 'female',
+          type: userProfile.type
         };
         const avatar = await getListAvatar(params);
         setDataAva(avatar?.data);

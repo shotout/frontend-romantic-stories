@@ -22,7 +22,7 @@ import {
 } from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import i18n from '../../../i18n/index';
-import {ava1, ava2, ava3, imgBottom} from '../../../assets/images';
+import {ava1, ava2, ava3, imgBottom, imgBottom_real} from '../../../assets/images';
 import Carousel from 'react-native-reanimated-carousel';
 import {opacity, useSharedValue} from 'react-native-reanimated';
 import LoveSvg from '../../../assets/icons/bottom/love.jsx';
@@ -36,7 +36,7 @@ import Speaker from '../../../assets/icons/speaker';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
 import DeviceInfo from 'react-native-device-info';
 
-export default function Register5({gender, setTheme, userStory, handleSetColorTheme}) {
+export default function Register5({gender, setTheme, userStory, handleSetColorTheme, type}) {
   const [colorsDefault, setColorsDefault] = useState(code_color.splash);
 
   const [colorsBg, setColorsBg] = useState([
@@ -214,7 +214,7 @@ export default function Register5({gender, setTheme, userStory, handleSetColorTh
           </Text>
 
           <Image
-            source={imgBottom}
+            source={type === 'realistic' ? imgBottom_real : imgBottom}
             resizeMode="contain"
             style={{width: '100%', height: isIPad ? '25%': '15%'}}
           />
