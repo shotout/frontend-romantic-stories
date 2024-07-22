@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {code_color} from '../../utils/colors';
-import {bgGetUnlimit} from '../../assets/images';
+import {bgGetUnlimit, bgGetUnlimitReal} from '../../assets/images';
 import {moderateScale} from 'react-native-size-matters';
 import GetUnlimitIcon from '../../assets/icons/getUnlimit';
 import CheckIcon from '../../assets/icons/checklist';
@@ -38,7 +38,7 @@ function ModalGetPremium({isVisible, onClose, onGotIt, userProfile}) {
             alignItems: 'center',
           }}>
           <Image
-            source={bgGetUnlimit}
+            source={userProfile?.data?.type === 'realistic' ? bgGetUnlimitReal : bgGetUnlimit}
             resizeMode="cover"
             style={{
               position: 'absolute',
@@ -68,9 +68,10 @@ function ModalGetPremium({isVisible, onClose, onGotIt, userProfile}) {
             }}>
             {userProfile?.data?.subscription?.plan?.title}
           </Text>
+          {userProfile?.data?.type === 'realistic' ? null : 
           <GetUnlimitIcon
             style={{position: 'absolute', bottom: 0, width: '100%'}}
-          />
+          /> }
         </View>
         <View
           style={{

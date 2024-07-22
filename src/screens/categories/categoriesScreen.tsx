@@ -76,7 +76,10 @@ const CategoriesScreen = ({
 
   const fetchCategory = async () => {
     try {
-      const category = await getListCategory();
+      const params = {
+        type : userProfile?.type
+      }
+      const category = await getListCategory(params);
       setDataStory(category?.data);
       setLoading(false);
     } catch (error) {
@@ -130,7 +133,7 @@ const CategoriesScreen = ({
             marginVertical: hp(10),
           }}>
           <Pressable
-            onPress={() => goBack()}
+            onPress={() => navigate('Settings')}
             style={{
               width: hp(35),
               height: hp(35),

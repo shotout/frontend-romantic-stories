@@ -20,7 +20,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import {bg_notif, cover2, imgNotif, imgStep4} from '../../assets/images';
+import {bg_notif, cover2, imgNotif, imgNotifReal, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
 import LockFree from '../../assets/icons/lockFree';
@@ -70,9 +70,10 @@ const NotificationScreen = ({
     handleThemeAvatar();
   }, []);
   const handleThemeAvatar = async () => {
+    // alert(userProfile?.data?.type)
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
-      flag: 'notif',
+      flag: userProfile?.data?.type === 'realistic' ? 'beach' : 'notif',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -111,7 +112,7 @@ const NotificationScreen = ({
             marginVertical: hp(10),
           }}>
           <Pressable
-            onPress={() => goBack()}
+            onPress={() => navigate('Settings')}
             style={{
               width: hp(35),
               height: hp(35),
@@ -198,7 +199,16 @@ const NotificationScreen = ({
             value={promotions}
           />
         </View>
-
+        {userProfile?.data?.type === 'realistic'  ? <Image
+              source={imgNotifReal}
+              resizeMode="contain"
+              style={{
+                width: '100%',
+                height: hp(300),
+                borderRadius: hp(20),
+                marginTop: 20
+              }}
+            />  :
         <View
           style={{
             position: 'relative',
@@ -240,10 +250,10 @@ const NotificationScreen = ({
               resizeMode="cover"
               style={{
                 width: hp(
-                  me === '/assets/images/avatars/2/positive.png' ? 130 : 150,
+                  me === '/assets/images/avatars/anime/2/positive.png' ? 130 : 150,
                 ),
                 height: hp(
-                  me === '/assets/images/avatars/1/positive.png' ? 440 : 420,
+                  me === '/assets/images/avatars/anime/1/positive.png' ? 440 : 420,
                 ),
               }}
             />
@@ -273,7 +283,10 @@ const NotificationScreen = ({
               />
             </View>
           </View>
-        </View>
+        </View>  }
+        <View>
+
+        </View> 
       </ScrollView>
     </SafeAreaView>
   );

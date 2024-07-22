@@ -33,10 +33,10 @@ import AppStore from '../../assets/icons/appStore';
 import {isIphone} from '../../utils/devices';
 import {BACKEND_URL} from '../../shared/static';
 import styles from './styles';
-import {imageShareIgPost, imgShare, logo} from '../../assets/images';
+import {imageShareIgPost, imgShare, imgShareReal, imageShareIgPostReal, logo} from '../../assets/images';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
 
-function ModalShareStory({isVisible, onClose, storyData, main}) {
+function ModalShareStory({isVisible, onClose, storyData, main, type}) {
   const [viewShotLayout, setViewShotLayout] = useState(null);
   const [captureUri, setCaptureUri] = useState(null);
   const [dinamicLink, setDinamicLink] = useState('');
@@ -46,7 +46,9 @@ function ModalShareStory({isVisible, onClose, storyData, main}) {
     try {
       const link = await dynamicLinks().buildShortLink(
         {
-          link: `https://erotalesapp.page.link/Tbeh?storyId=${
+          link: type === 'realistic' ?`https://erotalesapp.page.link/dhgB?storyId=${
+            storyData?.item?.id || storyData?.id
+          }` : `https://erotalesapp.page.link/Tbeh?storyId=${
             storyData?.item?.id || storyData?.id
           }`,
           domainUriPrefix: 'https://erotalesapp.page.link',
@@ -290,7 +292,7 @@ function ModalShareStory({isVisible, onClose, storyData, main}) {
           quality: 1.0,
         }}>
         <Image
-          source={imgShare}
+          source={type === 'realistic' ? imgShareReal : imgShare}
           style={{
             position: 'absolute',
             width: '100%',
@@ -435,7 +437,7 @@ function ModalShareStory({isVisible, onClose, storyData, main}) {
           quality: 1.0,
         }}>
         <Image
-          source={imageShareIgPost}
+          source={type === 'realistic' ? imageShareIgPostReal: imageShareIgPost}
           style={{
             position: 'absolute',
             width: '100%',

@@ -35,13 +35,14 @@ function SvgComponent(props) {
     bgTheme = '#3F58DD',
     profileUrl = '',
     levelUrl = '',
+    isIPad,
     style,
   } = props;
 
   return (
     <Svg
       width={width}
-      height={Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&   Dimensions.get('window').height < 960 ? height + 20 :  height}
+      height={isIPad ? height + 300 : Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Dimensions.get('window').height === 932 ? height + 20 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&   Dimensions.get('window').height < 960 ? height + 20  :  height}
       viewBox="0 0 390 264"
       fill="none"
       style={style}
@@ -95,7 +96,7 @@ function SvgComponent(props) {
             ? '142'
             : profileUrl.includes('5')
             ? '147'
-            : '138'
+            :  '138'
         }
         y={
           Platform.OS === 'android'
@@ -185,20 +186,16 @@ function SvgComponent(props) {
           style={{ width: '10%', height: '10%', borderRadius: 28 }} // Ganti width dan height menjadi '100%' dan tambahkan borderRadius
         /> */}
         <Image
-          href={
-            profileUrl.includes('1')
-              ? avatar1
-              : profileUrl.includes('2')
-              ? avatar2
-              : profileUrl.includes('3')
-              ? avatar3
-              : profileUrl.includes('4')
-              ? avatar4
-              : profileUrl.includes('5')
-              ? avatar5
-              : avatar6
-          }
+          href={profileUrl}
           x={
+            profileUrl.includes('realistic/1')  ?
+            '143' :
+            profileUrl.includes('realistic/2') || profileUrl.includes('realistic/6') ||  profileUrl.includes('realistic/4')  ?
+            '145' :
+            profileUrl.includes('realistic/3')?
+            '144' :
+            profileUrl.includes('realistic') ?
+            '140' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 &&  width === 480  && profileUrl.includes('2')?
                 '-25' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
@@ -216,6 +213,9 @@ function SvgComponent(props) {
               : '138'
           }
           y={
+            profileUrl.includes('realistic/1')  ||  profileUrl.includes('realistic/3') || profileUrl.includes('realistic/5') || profileUrl.includes('realistic/4') || profileUrl.includes('realistic/6')  ? '-55' :
+            profileUrl.includes('realistic') ?
+            '-30' :
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '30'
               : Platform.OS === 'android' &&  Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 950
@@ -231,7 +231,7 @@ function SvgComponent(props) {
               : '-40'
           }
           width="100%"
-          height={Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 ? "200" : "300"}
+          height={ Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 ? "200" : "300"}
           rx="28"
         />
       </G>

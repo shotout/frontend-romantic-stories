@@ -26,6 +26,15 @@ import {
   tips_step4,
   tips_step5,
   xpAndLevel,
+  xpAndLevelReal,
+  real_bgtutor1,
+  real_tutor,
+  main_bg,
+  audioScreenReal,
+  tips_step4_real,
+  tips_step5_real,
+  imgQuoteNewReal,
+  imgSelectReal
 } from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
 import {connect} from 'react-redux';
@@ -66,11 +75,12 @@ import AnimatedLottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import {handlePayment} from '../../helpers/paywall';
 import moment from 'moment';
+import DeviceInfo from 'react-native-device-info';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
 
-function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
+function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -94,17 +104,32 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const halfScreenWidth = Dimensions.get('window').width / 2.5;
-
+  
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
-      handlePrev();
+      setTimeout(() => {
+        handlePrev();
+      }, 100);
+     
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
+      setTimeout(() => {
       handleNext();
+      }, 100)
       // navigate('Library');
     }
   };
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
+
+    checkIfIPad();
+  }, []);
+
   const handlePrev = () => {
     if (stepsTutorial > 1) {
       stopTimeout();
@@ -193,38 +218,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
             ...isTutorial,
             step: isTutorial.step + 1,
           });
-          setActiveStep(1);
           handleSetSteps(1);
+          setActiveStep(1);
+          
         }, 3500);
-      } else if (activeStep === 2 || activeStep === 3) {
-        // setFinishTutorial(false);
-        // setIsRippleAnimate(true);
-        // setTimeout(() => {
-        //   setFinishTutorial(true);
-        //   setIsRippleAnimate(false);
-        // }, 3000);
-        // if (route?.name == 'Main') {
-        //   setTimeout(() => {
-        //     navigate('Media');
-        //   }, 2500);
-        // }
-      } else if (activeStep === 4) {
-        // navigate('ExploreLibrary');
-      } else if (
-        activeStep === 6 ||
-        activeStep === 7 ||
-        activeStep === 8 ||
-        activeStep === 9
-      ) {
-        const content =
-          'Being the youngest one in my crew, and in my twenties, with a pretty much an old school mindset is kinda hard as I find difficulties to actually fit in. I’ve been there before: the loyal friend who has to be there for her girlfriends when they get dumped for the silliest and dumbest reasons. these days isn’t worth a single teardrop, and most importantly, having to hear them crying which deliberately forces me to come up with stories and jokes in order to cheer them up.';
-        // navigate('Share', {
-        //   selectedContent:
-        //     ' To be completely and shamelessly honest, I was against getting into a relationship for a number of reasons.',
-        //   start: content?.substring(0, 30),
-        //   end: content.substring(30, 30 + 30),
-        // });
-      }
+      } 
     };
     checkTutorial();
   }, []);
@@ -271,7 +269,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
         getDataStory();
         navigate('Bottom');
       }
-    }, 20);
+    }, 100);
    
   };
   const checkInstall = async () => {
@@ -291,7 +289,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
             transparent
             onDismiss={() => setVisible(false)}>
             <ImageBackground
-              source={imgBgTips}
+              source={ route?.params?.type === 'realistic' ? real_bgtutor1 : imgBgTips}
               resizeMode="cover"
               style={{
                 width: Dimensions.get('window').width,
@@ -305,13 +303,13 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                     bottom: '-50%',
                   },
                   to: {
-                    bottom: '0%',
+                    bottom: route?.params?.type === 'realistic' ? '20%' : '0%',
                   },
                   easing: 'ease-out-back',
                 }}
                 delay={200}
                 duration={800}
-                source={imgBgAvaTips}
+                source={route?.params?.type === 'realistic' ? real_tutor : imgBgAvaTips}
                 resizeMode="contain"
                 style={{width: '80%', height: '100%'}}
               />
@@ -387,7 +385,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                       marginBottom: wp(50),
                     }}>
                     {`Hey, ${
-                      userProfile?.data?.name === null
+                      userProfile?.data?.name === null || userProfile?.data?.name === undefined
                         ? ''
                         : userProfile?.data?.name
                     }\nYou’re all set!`}
@@ -428,16 +426,17 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   backgroundColor: code_color.white,
                 }}>
                 <FastImage
-                  source={imgSelect}
+                  resizeMode={isIPad ? 'contain' : 'contain' }
+                  source={ route?.params?.type === 'realistic'  ? imgSelectReal : imgSelect}
                   style={{
                     width:
                       Dimensions.get('window').width -
                       (Platform.OS === 'ios' ? 0 : 20),
                     height: Dimensions.get('window').height,
-                    marginTop: Platform.OS === 'ios' ? '-13%' : 0,
+                    marginTop: Platform.OS === 'ios' ?  isIPad ? '-5%' : '-13%' : 0,
                   }}>
                   <View style={{top: wp(50)}}>
-                    <Step5 handleNext={() => {}} handlePrev={handlePrev} />
+                    <Step5 type={route?.params?.type} handleNext={() => {}} handlePrev={handlePrev} />
                   </View>
                 </FastImage>
               </View>
@@ -449,7 +448,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
                   style={{
                     position: 'absolute',
                     bottom: Platform.OS === 'ios' ? -hp(20) : -hp(20),
-                    left: Platform.OS === 'ios' ? hp(40) : hp(40),
+                    left: Platform.OS === 'ios' ? hp(isIPad ? 165 : 40) : hp(40),
                   }}>
                   <AnimatedLottieView
                     source={rippleAnimate}
@@ -482,15 +481,16 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
               backgroundColor: code_color.white,
             }}>
             <FastImage
-              source={audioScreen}
+              source={ route?.params?.type === 'realistic' ? audioScreenReal : audioScreen}
+              resizeMode={isIPad ? 'contain' : 'contain' }
               style={{
                 width:
                   Dimensions.get('window').width -
                   (Platform.OS === 'ios' ? 0 : 0),
                 height: Dimensions.get('window').height,
-                marginTop: Platform.OS === 'ios' ? '-13%' : 0,
+                marginTop: Platform.OS === 'ios' ? isIPad ? '-5%' : '-13%' : 0,
               }}>
-              <Step3 handleNext={handleNext} handlePrev={handlePrev} />
+              <Step3 type={route?.params?.type} handleNext={handleNext} handlePrev={handlePrev} />
             </FastImage>
           </View>
         );
@@ -543,17 +543,17 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const getImageBasedOnStep = (step: number) => {
     switch (step) {
       case 3:
-        return tips_step1;
+        return route?.params?.type === 'realistic' ? main_bg : tips_step1;
       case 4:
-        return tips_step4;
+        return route?.params?.type === 'realistic' ? tips_step4_real: tips_step4  ;
       case 5:
-        return tips_step5;
+        return route?.params?.type === 'realistic' ? tips_step5_real : tips_step5;
       case 7:
-        return imgQuoteNew;
+        return  route?.params?.type === 'realistic' ? imgQuoteNewReal : imgQuoteNew;
       case 8:
-        return xpAndLevel;
+        return route?.params?.type === 'realistic' ?  xpAndLevelReal : xpAndLevel;
       default:
-        return tips_step1;
+        return route?.params?.type === 'realistic' ? main_bg : tips_step1;
     }
   };
 

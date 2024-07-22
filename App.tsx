@@ -25,7 +25,7 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {code_color} from './src/utils/colors';
-import {bg, bg_splash, logo} from './src/assets/images';
+import {bg, bg_real, bg_splash, logo} from './src/assets/images';
 import {navigate} from './src/shared/navigationRef';
 import {getDefaultLanguange} from './src/utils/devices';
 import PropTypes from 'prop-types';
@@ -71,8 +71,8 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
 appOpenAd.load();
 function App({ userProfile }) {
   Sentry.init({
-    // environment: 'production',
-    environment: 'development',
+    environment: 'production',
+    // environment: 'development',
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
   });
@@ -152,8 +152,8 @@ function App({ userProfile }) {
   const configTracker = () => {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
-        AdjustConfig.EnvironmentSandbox,
-      //  AdjustConfig.EnvironmentProduction,
+        // AdjustConfig.EnvironmentSandbox,
+       AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
@@ -192,7 +192,7 @@ function App({ userProfile }) {
   }
   //alert(Dimensions.get('window').width +"==="+ Dimensions.get('window').height)
   return (
-    <ImageBackground source={bg} style={{width: '100%', height: '100%'}}>
+    <ImageBackground source={bg_real} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
        {Platform.OS === 'android' ? <StatusBar hidden /> : null } 
       <View
         style={{

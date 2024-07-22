@@ -442,6 +442,7 @@ function MyTabs(props) {
                   onClose={() => {
                     setVisibleShare(false);
                   }}
+                  type={props?.userProfile?.data?.type}
                 />
                 <ShareSvg
                   width={wp(20)}
@@ -610,13 +611,13 @@ function MyTabs(props) {
               );
             },
           })}
-          // listeners={({route, navigation}) => ({
-          //   state: state => {
-          //     handleSomeAction(
-          //       state.data.state.routes[state.data.state.index].name,
-          //     );
-          //   },
-          // })}
+          listeners={({route, navigation}) => ({
+            state: state => {
+              handleSomeAction(
+                state.data.state.routes[state.data.state.index].name,
+              );
+            },
+          })}
         />
 
         <Tab.Screen
@@ -734,7 +735,7 @@ class MyTabsComponent extends Component {
     this.forceUpdate();
   };
   render() {
-    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText} =
+    const {colorTheme, stepsTutorial, userStory, backgroundColor, colorText, userProfile} =
       this.props;
     const tapProps = {
       colorTheme,
@@ -743,6 +744,7 @@ class MyTabsComponent extends Component {
       userStory,
       backgroundColor,
       colorText,
+      userProfile
     };
     return <MyTabs {...tapProps} />;
   }

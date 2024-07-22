@@ -11,6 +11,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {hp, wp} from '../../utils/screen';
 import {code_color} from '../../utils/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import DeviceInfo from 'react-native-device-info';
 
 const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
   const [scrollOffset, setScrollOffset] = useState(currentXp ? currentXp : 0);
@@ -122,6 +123,15 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
       value_desc: '1800 XP',
     },
   ];
+  // const [isIPad, setIsIPad] = useState(false);
+  // useEffect(() => {
+  //   const checkIfIPad = async () => {
+  //     const isTablet = DeviceInfo.isTablet();
+  //     setIsIPad(isTablet);
+  //   };
+
+  //   checkIfIPad();
+  // }, []);
   const progress = levelingUser?.user_level?.point;
   const levelCount = levels.length;
   const progressBarWidth = 1800;
@@ -225,7 +235,7 @@ const GojekProgressBar = ({levelingUser, bgTheme, currentXp}) => {
       <View style={styles.container}>
         <Animated.View
           style={[
-            styles.progressBar,
+            DeviceInfo.isTablet() ? styles.progressBarIpad : styles.progressBar,
             {
               width: hp(950),
               backgroundColor: code_color.greyDefault,
@@ -266,6 +276,13 @@ const styles = StyleSheet.create({
     height: wp(10),
     position: 'absolute',
     top: '25%',
+    left: 0,
+    borderRadius: 10,
+  },
+  progressBarIpad: {
+    height: wp(10),
+    position: 'absolute',
+    top: '20%',
     left: 0,
     borderRadius: 10,
   },

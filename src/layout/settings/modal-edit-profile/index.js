@@ -171,18 +171,22 @@ function ModalEditProfile({
                   style={{
                     width: hp(40),
                     height: hp(
-                      edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
+                      edit.value === '/assets/images/avatars/anime/2.png' ? 160 : 150,
                     ),
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
                     top: hp(3),
                     right: hp(
-                      edit.value === '/assets/images/avatars/5.png'
+                     
+                      edit.value?.includes('realistic/6') ? -7 :
+                      edit.value?.includes('realistic/4') || edit.value?.includes('realistic/2')  ||   edit.value?.includes('realistic/3') ? -3 :
+                      edit.value?.includes('realistic/5') ? 2 :
+                      edit.value === '/assets/images/avatars/anime/5.png'
                         ? -7
-                        : edit.value === '/assets/images/avatars/1.png'
+                        : edit.value === '/assets/images/avatars/anime/1.png'
                         ? 3.5
-                        : edit.value === '/assets/images/avatars/4.png'
+                        : edit.value === '/assets/images/avatars/anime/4.png'
                         ? 2
                         : 0,
                     ),
@@ -206,18 +210,21 @@ function ModalEditProfile({
                   style={{
                     width: hp(40),
                     height: hp(
-                      edit.value === '/assets/images/avatars/2.png' ? 160 : 150,
+                      edit.value === '/assets/images/avatars/anime/2.png' ? 160 : 150,
                     ),
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'absolute',
                     top: hp(3),
                     right: hp(
-                      edit.value === '/assets/images/avatars/5.png'
+                      edit.value?.includes('realistic/6')  ? -7 :
+                      edit.value?.includes('realistic/4') || edit.value?.includes('realistic/2')  ||   edit.value?.includes('realistic/3') ? -3 :
+                      edit.value?.includes('realistic/5')  ? 2 :
+                      edit.value === '/assets/images/avatars/anime/5.png'
                         ? -7
-                        : edit.value === '/assets/images/avatars/1.png'
+                        : edit.value === '/assets/images/avatars/anime/1.png'
                         ? 3.5
-                        : edit.value === '/assets/images/avatars/4.png'
+                        : edit.value === '/assets/images/avatars/anime/4.png'
                         ? 2
                         : 0,
                     ),

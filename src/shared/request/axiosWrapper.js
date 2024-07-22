@@ -55,7 +55,7 @@ const request = options => {
 
   const onError = error => {
     if(__DEV__){
-    console.log('Error Message:', error);
+    // console.log('Error Message:', JSON.stringify(error));
     }
     if (error.response) {
       if (options.handles && error.response.status) {

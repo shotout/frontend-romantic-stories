@@ -611,6 +611,7 @@ const MainScreen = ({
         Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
         navigate('Media');
       } else {
+        eventTracking('OPEN_LISTEN_PAYWALL')
         setShow(true);
       }
       let data = [
@@ -655,6 +656,7 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
+          eventTracking('OPEN_LISTEN_PAYWALL')
           setShow(true);
         }
       } else {
@@ -671,6 +673,7 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
+          eventTracking('OPEN_LISTEN_PAYWALL')
           setShow(true);
         }
       }
@@ -823,6 +826,7 @@ const MainScreen = ({
   }) => (
     <>
       <QuotesContent
+        typeImage={userProfile?.data?.type}
         id={id}
         item={item}
         isActive={activeSlide === index}
@@ -871,6 +875,7 @@ const MainScreen = ({
 
     return () => backHandler.remove();
   }, []);
+
   const renderFlatList = type => (
     <PagerView
       style={{flex: 1}}
@@ -1105,11 +1110,13 @@ const MainScreen = ({
     reset(story);
   };
   const reset = async (story: any) => {
-    handleSetStory(story);
-    setScreenNumber(0);
     setTimeout(async() => {
       await pagerRef.current?.setPage(0);
+      await pagerRef.current?.setPage(0);
     }, 100);
+    handleSetStory(story);
+    setScreenNumber(0);
+    
    
   };
 
@@ -1449,8 +1456,10 @@ const MainScreen = ({
             onClose={() => setShowModalDay(false)}
             handleRead={() => handleReadAds()}
             handleLater={() => handleLater()}
+            type={userProfile?.data?.type}
           />
           <ModalStoryUnlock
+            type={userProfile?.data?.type}
             isVisible={showModal}
             onClose={() => setShowModal(false)}
             data={undefined}
@@ -1480,6 +1489,7 @@ const MainScreen = ({
             }}
           />
           <ModalAppRating
+           type={userProfile?.data?.type}
             isVisible={showRatingApp}
             onClose={() => {
               setRatingApp(false);
@@ -1528,6 +1538,7 @@ const MainScreen = ({
               addStory(nextStory.id);
               setShowModalSuccessPurchase(false);
             }}
+            userType={userProfile?.data?.type}
           />
           <ModalGetPremium
             isVisible={showModalGetPremium}
@@ -1650,6 +1661,7 @@ const MainScreen = ({
             loadingOne={loadingAds}
             price={price}
             onGetUnlimit={() => handleUnlimited()}
+            type={userProfile?.data?.type}
           />
           {showModalCongrats && (
             <ModalCongrats

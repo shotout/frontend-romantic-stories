@@ -43,6 +43,7 @@ const INITIAL_STATE = {
   userStory: null,
   colorTheme: null,
   fontFamily: null,
+  bgShare: null,
   fontSize: 16,
   backgroundColor: null,
   isPremium: false,
@@ -287,6 +288,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         fontFamily: action.payload,
       };
+    case types.SET_BG_SHARE:
+      return {
+        ...state,
+        bgShare: action.payload,
+      };
     case types.SET_FONT_SIZE:
       return {
         ...state,
@@ -354,6 +360,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         page: action.payload,
       };
+    case types.RESET_PARAMS:
+      return {
+        ...state,
+        userProfile: {},
+      }
     default:
       return state;
   }

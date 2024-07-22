@@ -12,4 +12,5 @@ export const paper = require('./paper.png');
 export const settings = require('./settings.png');
 export const book = require('./book.png');
 export const successPurchase = require('./successPurchase.png');
+export const successPurchaseReal = require('./successPurchaseReal.png');
 export const step5 = require('./step5.png');

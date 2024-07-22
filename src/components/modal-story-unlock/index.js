@@ -20,6 +20,7 @@ import {
   imgLoveLeft,
   imgLoveRight,
   imgUnlockPremium,
+  imgUnlockPremiumReal
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
 import Reading from '../../assets/icons/reading.jsx';
@@ -49,6 +50,7 @@ function ModalUnlockStory({
   handleReadOther,
   handleLater,
   relateStory,
+  type
 }) {
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   const handleClose = () => {
@@ -89,7 +91,7 @@ function ModalUnlockStory({
             borderRadius: moderateScale(24),
           }}>
           <Image
-            source={imgUnlockPremium}
+            source={type === 'realistic' ? imgUnlockPremiumReal : imgUnlockPremium}
             style={{
               height: hp(100),
               aspectRatio: '1.7/1',
@@ -350,7 +352,7 @@ function ModalUnlockStory({
                 borderRadius: moderateScale(24),
               }}>
               <Image
-                source={imgUnlockPremium}
+                source={type === 'realistic' ? imgUnlockPremiumReal : imgUnlockPremium}
                 style={{
                   height: hp(150),
                   aspectRatio: '1.7/1',

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Image, View} from 'react-native';
-import {imgStep2} from '../../assets/images';
+import {imgStep2, listenReal} from '../../assets/images';
 import * as Animatable from 'react-native-animatable';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
@@ -10,7 +10,7 @@ import listenAnimate from '../../assets/lottie/listen.json';
 import {hp} from '../../utils/screen';
 import {moderateScale} from 'react-native-size-matters';
 
-const Step3 = ({handleNext, handlePrev}) => {
+const Step3 = ({handleNext, handlePrev, type}) => {
   return (
     <>
       <Animatable.View
@@ -38,6 +38,7 @@ const Step3 = ({handleNext, handlePrev}) => {
             borderColor: '#3F58DD',
             borderWidth: hp(4),
           }}>
+            {type === 'realistic' ? <Image source={listenReal} resizeMode='contain'  style={{ height: hp(72), width: hp(72), borderRadius: 100}}/> : 
           <AnimatedLottieView
             style={{
               height: hp(90),
@@ -49,7 +50,7 @@ const Step3 = ({handleNext, handlePrev}) => {
             autoPlay={true}
             duration={2000}
             loop={false}
-          />
+          /> }
         </View>
         <Animatable.Text
           delay={1500}

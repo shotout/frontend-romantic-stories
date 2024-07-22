@@ -4,6 +4,7 @@ import {isIphoneXorAbove} from '../../../shared/devices';
 import { code_color } from '../../../utils/colors';
 import { hp, wp } from '../../../utils/screen';
 
+
 export default StyleSheet.create({
   ctnRoot: {
     margin: 20,
@@ -33,6 +34,13 @@ export default StyleSheet.create({
     height: 48,
     resizeMode: 'contain',
     marginTop: Platform.OS === 'android' ? -7 : wp(-4.5),
+    marginLeft: Platform.OS === 'android' ? -16 : -10
+
+  },
+  ctnAnimateIpad: {
+    height: 48,
+    resizeMode: 'contain',
+    marginTop: Platform.OS === 'android' ? -7 : wp(-2.5),
     marginLeft: Platform.OS === 'android' ? -16 : -10
 
   },

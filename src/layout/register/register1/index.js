@@ -6,15 +6,16 @@ import {female, male} from '../../../assets/icons';
 import {code_color} from '../../../utils/colors';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { fixedFontSize, hp, wp } from '../../../utils/screen';
+import { female_r, male_r } from '../../../assets/images';
 
-export default function Register1({setGender, selectedGender}) {
+export default function Register1({setGender, selectedGender, setType}) {
   return (
     <>
       <TouchableOpacity
         style={{marginBottom: hp(30), alignItems: 'center'}}
         onPress={() => setGender('Male')}>
         <Image
-          source={male}
+          source={setType === 'realistic' ? male_r : male}
           style={
             selectedGender === 'Male'
               ? styles.borderBlue
@@ -41,7 +42,7 @@ export default function Register1({setGender, selectedGender}) {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setGender('Female')}>
         <Image
-          source={female}
+          source={setType === 'realistic' ? female_r : female}
           style={
             selectedGender === 'Female'
               ? styles.borderBlue

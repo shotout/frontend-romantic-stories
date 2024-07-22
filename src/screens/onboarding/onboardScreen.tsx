@@ -15,33 +15,49 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Dimensions,
+  Platform,
 } from 'react-native';
-import {bg, logo} from '../../assets/images';
+import {bg, bg_real, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import i18n from '../../i18n/index';
 import {getDefaultLanguange} from '../../utils/devices';
 import Button from '../../components/buttons/Button';
 import {navigate} from '../../shared/navigationRef';
 import { fixedFontSize, hp, wp } from '../../utils/screen';
+import DeviceInfo from 'react-native-device-info';
 
 const OnboardScreen = (props: any) => {
+  const [isIPad, setIsIPad] = useState(false);
+  useEffect(() => {
+    const checkIfIPad = async () => {
+      const isTablet = DeviceInfo.isTablet();
+      setIsIPad(isTablet);
+    };
+
+    checkIfIPad();
+  }, []);
   return (
     <ImageBackground
-      source={bg}
+      source={bg_real}
+      resizeMode={isIPad ? 'cover' : 'cover' }
       style={{
-        width: '100%',
-        height: '100%',
+        width: Dimensions.get('window').width,
+        height:  Dimensions.get('window').height ,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        // aspectRatio:  1 / 2
+       
       }}>
       <Text
       allowFontScaling={false}
         style={{
           color: 'white',
-          fontSize: fixedFontSize(28),
+          fontSize: fixedFontSize(25),
           fontFamily: 'Comfortaa-SemiBold',
           textAlign: 'center',
+          marginBottom: 40
         }}>
         {'Exciting Stories \n for your everyday fantasy'}
       </Text>

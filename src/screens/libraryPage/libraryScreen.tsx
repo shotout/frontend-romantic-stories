@@ -282,6 +282,7 @@ const LibraryScreen = ({
     }
   };
   const renderContent = (item, rowMap) => {
+     console.log(`${BACKEND_URL}${item?.item?.category?.cover?.url}`,)
     if (detail != null) {
       return (
         <Pressable onPress={() => handleReadDetail(item?.item?.story)}>
@@ -519,6 +520,7 @@ const LibraryScreen = ({
     }
   };
   const renderContentSearch = (item, rowMap) => {
+    console.log(`${BACKEND_URL}${item?.item?.category?.cover?.url}`,)
     if (detail != null) {
       return (
         <Pressable onPress={() => handleRead(item)}>
@@ -1105,6 +1107,7 @@ const LibraryScreen = ({
           handleSetStory(resp.data);
           navigate('Main', {isFromLibrary: true});
         }}
+        type={userProfile?.data?.type}
       />
       <ModalUnlockStory
         isLoading={loading}
@@ -1118,6 +1121,7 @@ const LibraryScreen = ({
         }}
         price={price}
         onGetUnlimit={() => handleUnlimited()}
+        type={userProfile?.data?.type}
       />
       <ModalSuccessPurchase
         isVisible={showModalSuccessPurchase}
@@ -1127,6 +1131,7 @@ const LibraryScreen = ({
           handleSetStory(nextStory);
           navigate('Main', {isFromLibrary: true});
         }}
+        userType={userProfile?.data?.type}
       />
       <ModalSuccessPurchase
         isVisible={showModalSuccessPurchaseNative}
@@ -1136,6 +1141,7 @@ const LibraryScreen = ({
           handleSetPage(0);
           navigate('Main', {isFromLibrary: true});
         }}
+        userType={userProfile?.data?.type}
       />
       <View style={{flex: 0, height: hp( Dimensions.get('window').height === 667 ? 400 : 480), backgroundColor: bgTheme}}>
         <ModalLibrary
@@ -1173,6 +1179,7 @@ const LibraryScreen = ({
             setShowModalShareStory(false);
             setSharedStory(null);
           }}
+          type={userProfile?.data?.type}
         />
         <ModalNewStory
           isLoading={loading}

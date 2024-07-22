@@ -34,6 +34,7 @@ function ModalUnlockStory({
   price,
   isLoading,
   loadingOne,
+  type
 }) {
   const handleClose = () => {
     onClose();

@@ -19,6 +19,7 @@ import {
   imgLoveLeft,
   imgLoveRight,
   imgUnlockPremium,
+  imgUnlockPremiumReal
 } from '../../assets/images';
 import LibrarySvg from '../../assets/icons/libraryAdd';
 import Reading from '../../assets/icons/reading.jsx';
@@ -33,6 +34,7 @@ function ModalUnlockStoryDay({
   nextStory,
   handleRead,
   handleLater,
+  type
 }) {
   const handleClose = () => {
     onClose();
@@ -53,7 +55,7 @@ function ModalUnlockStoryDay({
             borderRadius: moderateScale(24),
           }}>
           <Image
-            source={imgUnlockPremium}
+            source={type === 'realistic' ?  imgUnlockPremiumReal : imgUnlockPremium}
             style={{
               height: 120,
               aspectRatio: '1.7/1',
