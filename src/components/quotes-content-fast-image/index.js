@@ -470,7 +470,7 @@ function QuotesContent({
               alignItems: 'center',
               position: 'absolute',
               bottom: 0,
-              left: me?.includes('realistic') ? '5%' : '15%',
+              left:  me?.includes('realistic') ? '5%' : '15%',
               // left: 0,
               justifyContent: 'center',
               flexDirection: 'row',
@@ -482,7 +482,7 @@ function QuotesContent({
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: wp(me?.includes('realistic') ? 150 : 100),
+                width: wp( height > 1000 && height < 1020 && Platform.OS === 'android' && me?.includes('realistic') ? 120 : me?.includes('realistic') ? 150 : 100),
                 height: hp(300),
                 opacity: 0.3,
               }}
@@ -494,7 +494,7 @@ function QuotesContent({
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: wp(me?.includes('realistic') ? 150 :100),
+                width: wp(height > 1000 && height < 1020 && Platform.OS === 'android' && me?.includes('realistic') ? 120 : me?.includes('realistic') ? 150 :100),
                 height: hp(300),
                 opacity: 0.3,
               }}
@@ -637,8 +637,9 @@ function QuotesContent({
                       }}
                       resizeMode={FastImage.resizeMode.contain}
                       style={{
-                        width: wp(me?.includes('realistic') ? 140 : 100),
+                        width: wp( height > 1000 && height < 1020 && Platform.OS === 'android' && me?.includes('realistic') ? 120 : me?.includes('realistic') ? 140 : 100),
                         height: hp(
+                          
                           me === '/assets/images/avatars/anime/3/positive.png' ||
                             me === '/assets/images/avatars/anime/1/positive.png'  && Platform.OS === 'android' && height > 1000 
                             ? 400 :
@@ -650,7 +651,7 @@ function QuotesContent({
                             ? 450 
                             : me != '/assets/images/avatars/anime/2/positive.png'
                             ? 400
-                            : me?.includes('realistic') ? 400 : 360,
+                            : me?.includes('realistic') ? 300 : 360,
                         ),
                       }}
                     />
@@ -668,13 +669,13 @@ function QuotesContent({
                       //     ? -90
                       //     : -85,
                       // ),
-                      width: wp(me?.includes('realistic') ? 140 :100),
+                      width: wp(partner?.includes('realistic') ? 140 :100),
                       height: hp(
                         partner === '/assets/images/avatars/anime/5/think.png'
                           ? 90
                           : partner === '/assets/images/avatars/anime/2/think.png'
                           ? 135
-                          : partner?.includes('realistic') ? 160 : 100,
+                          : height > 1000 && height < 1020 && Platform.OS === 'android' && me?.includes('realistic') ? 130 :  partner?.includes('realistic') ? 160 : 100,
                       ),
                       left:  partner?.includes('realistic') ? '27%' : '40%',
                       zIndex: 1,
@@ -758,57 +759,6 @@ function QuotesContent({
             </>
           ) : type === 'main' ? (
             <>
-              <View
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  marginBottom: wp(
-                    me === '/assets/images/avatars/anime/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/anime/2/inlove.png' && height > 900  ? -150 : me?.includes('realistic') ? -150 : -190,
-                  ),
-                  width: wp(100),
-                  height: hp(170),
-                  left: '10%',
-                  zIndex: -1,
-                }}>
-                <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}${me}`,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  style={{
-
-                   
-                    width: wp(me?.includes('realistic') ? 130 :100),
-                    height: Platform.OS === 'android' && height > 1000 ? hp(200) : hp(330),
-                    backgroundColor: 'Transparent',
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  marginBottom: wp(-100),
-                  width: wp(partner?.includes('realistic') ? 140 :100),
-                  height: hp( partner?.includes('realistic') ? 120 :100),
-                  left:  Platform.OS === 'android' && height > 1000 ? '30%' :  me?.includes('realistic') ? '28%'  :'35%',
-                  zIndex: -1,
-                }}>
-                <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}/${partner}`,
-                    priority: FastImage.priority.high,
-                  }}
-                  resizeMode={FastImage.resizeMode.contain}
-                  style={{
-                    width: wp(partner?.includes('realistic') ? 150 : 100),
-                    height: hp(partner?.includes('realistic') ? 310 :300),
-                    backgroundColor: 'Transparent',
-                  }}
-                />
-              </View>
-
               <AnimatedLottieView
                 source={loveAnimate}
                 style={{
@@ -835,6 +785,55 @@ function QuotesContent({
                     // zIndex: -1,
                     backgroundColor: 'Transparent',
                   }}>
+                    <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: wp(
+                    me === '/assets/images/avatars/anime/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/anime/2/inlove.png' && height > 900  ? -150 : me?.includes('realistic') ? -150 : -190,
+                  ),
+                  width: wp(100),
+                  height: hp(height > 950 && height < 960 ? 155 :170),
+                  // left: height > 1000 && height < 1020 && Platform.OS === 'android' && me?.includes('realistic') ? '0%' : '10%',
+                  left: Platform.OS != 'android' ? '10%' : null,
+                  zIndex: 1,
+                }}>
+                <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}${me}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    width: wp(me?.includes('realistic') ? 130 :100),
+                    height: Platform.OS === 'android' ? hp(330) : hp(300),
+                    backgroundColor: 'Transparent',
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  marginBottom: wp(-100),
+                  width: wp(partner?.includes('realistic') ? 140 :100),
+                  height: hp( partner?.includes('realistic') ? 120 :100),
+                  left: Platform.OS === 'android' && height > 1000 && height < 1020 && me?.includes('realistic') ? '25%'  : Platform.OS === 'android' && height > 1020 ? '30%' :  me?.includes('realistic') ? '28%'  :'35%',
+                  zIndex: 1,
+                }}>
+                <FastImage
+                  source={{
+                    uri: `${BACKEND_URL}/${partner}`,
+                    priority: FastImage.priority.high,
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    width: wp(Platform.OS === 'android' && height > 1000 && height < 1020 && me?.includes('realistic') ? 105 :partner?.includes('realistic') ? 150 : 100),
+                    height: hp( partner?.includes('realistic') ? 310 :300),
+                    backgroundColor: 'Transparent',
+                  }}
+                />
+              </View>
                   <View
                     style={{
                       backgroundColor: bgTheme,
@@ -855,6 +854,8 @@ function QuotesContent({
                   </View>
                 </ImageBackground>
               </View>
+               
+              
             </>
           ) : null}
         </View>

@@ -721,6 +721,8 @@ const MainScreen = ({
     // iphone xr = 896
 
     const {height, fontScale} = Dimensions.get('window');
+
+   
     const size = Number(fontSize) - 1;
     const charactersPerLine = Math.floor(
       height / (size * (fontScale + (height > 840 ? -0.147 : 0))),
@@ -780,11 +782,59 @@ const MainScreen = ({
         ? 3.5
         : (Platform.OS === 'android' && height >= 840) ||
           (Platform.OS === 'android' && height < 840 && Number(fontSize) === 16)
-        ? 3.5
+        ? 3.7
         : (Platform.OS === 'android' && height >= 840) ||
           (Platform.OS === 'android' && height < 840 && Number(fontSize) === 20)
         ? 3
         : 4.1);
+        // alert(      (fontFamily === 'Montserrat-Regular' && Number(fontSize) === 16
+        // ? 4.7
+        // : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 18
+        // ? 4.7
+        // : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 14
+        // ? 5.3
+        // : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 14
+        // ? 5.3
+        // : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16
+        // ? 4.7
+        // : fontFamily === 'Poppins-Regular' &&
+        //   Number(fontSize) === 14 &&
+        //   height >= 844 &&
+        //   height < 850
+        // ? 5.8
+        // : fontFamily === 'Poppins-Regular' &&
+        //   Number(fontSize) === 14 &&
+        //   height >= 850
+        // ? 5.3
+        // : fontFamily === 'Poppins-Regular' &&
+        //   Number(fontSize) === 16 &&
+        //   height >= 844 &&
+        //   height < 850
+        // ? 5.2
+        // : fontFamily === 'Poppins-Regular' &&
+        //   Number(fontSize) === 16 &&
+        //   height >= 850
+        // ? 5.1
+        // : fontFamily === 'Poppins-Regular' &&
+        //   Number(fontSize) === 18 &&
+        //   height >= 844 &&
+        //   height < 850
+        // ? 4.5
+        // : fontFamily === 'Poppins-Regular' &&
+        //   Number(fontSize) === 18 &&
+        //   height >= 850
+        // ? 4.9
+        // : Number(fontSize) === 14
+        // ? 4.8
+        // : height >= 890 && Number(fontSize) === 18
+        // ? 3.5
+        // : (Platform.OS === 'android' && height >= 840) ||
+        //   (Platform.OS === 'android' && height < 840 && Number(fontSize) === 16)
+        // ? 3.5
+        // : (Platform.OS === 'android' && height >= 840) ||
+        //   (Platform.OS === 'android' && height < 840 && Number(fontSize) === 20)
+        // ? 3
+        // : 4.1))
     // const totalCharacters =
     //   (charactersPerLine * linesPerPage) /
     //   (Number(fontSize) === 14 && fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && height === 844 ? 4.5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 890 ? 5.3 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 840 ? 5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 812 ? 5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16 && Platform.OS === 'ios' ?  5.1 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Number(fontSize) === 18 ? 5 :
@@ -1348,6 +1398,7 @@ const MainScreen = ({
             //marginTop: 20,
           }}>
           <StatusBar
+           hidden={false}
             barStyle={'dark-content'}
             backgroundColor={backgroundColor}
           />
@@ -1441,6 +1492,7 @@ const MainScreen = ({
             // paddingTop: 20,
           }}>
           <StatusBar
+           hidden={false}
             barStyle={'dark-content'}
             backgroundColor={backgroundColor}
           />

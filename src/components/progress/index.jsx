@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   levelContainer: {
-    width: moderateScale(100),
+    width: moderateScale(110),
     justifyContent: 'center',
     alignItems: 'center',
     left: -3,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',
     marginRight: 30,
-    fontSize: moderateScale(13),
+    fontSize: moderateScale(12),
     left: Dimensions.get('screen').width > 380 ? -hp(20) : -hp(30),
   },
   point: {

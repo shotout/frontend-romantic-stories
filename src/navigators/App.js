@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/lib/integration/react';
-import {AppState, Dimensions, LogBox} from 'react-native';
+import {Alert, AppState, Dimensions, LogBox} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import notifee, {EventType} from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
@@ -22,12 +22,12 @@ const App = () => {
   const [paymentCounter, setPaymentCounter] = useState(0);
   const [paymentInProgress, setPaymentInProgress] = useState(false);
   // KILLED APP
-  
+
   async function bootstrap() {
     const detail = await notifee.getInitialNotification();
     if (detail) {
      
-      notifee.setBadgeCount(Number(detail?.notification?.data?.badge)).then(() => console.log('Badge count set!'));
+      // notifee.setBadgeCount(Number(detail?.notification?.data?.badge)).then(() => console.log('Badge count set!'));
       if (detail?.notification?.data?.type === 'paywall') {
         setTimeout(() => {
           handlePayment(detail?.notification?.data?.placement, true);
@@ -49,7 +49,6 @@ const App = () => {
   useEffect(() => {
     // ACTIVE APP
     const unsubscribeOnMessage = messaging().onMessage(async detail => {
-      notifee.setBadgeCount(1).then(() => console.log('Badge count set!'));
       if (detail?.data?.type === 'paywall') {
         setTimeout(() => {
           handlePayment(detail?.data?.placement, true);
@@ -68,7 +67,6 @@ const App = () => {
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (appState.match(/background/) && nextAppState === 'active') {
         notifee.onForegroundEvent(async ({ type, detail }) => {
-          console.log('masuk data')
           notifee.setBadgeCount(Number(detail?.notification?.data?.badge)).then(() => console.log('Badge count set!'));
           if (
             (type === EventType.ACTION_PRESS || type === EventType.PRESS) &&
@@ -97,17 +95,7 @@ const App = () => {
       subscription.remove();
     };
   }, [appState, paymentInProgress, paymentCounter]);
-  notifee.onBackgroundEvent(async ({ type, detail }) => {
-    const { notification, pressAction } = detail;
-    console.log(detail)
-    // Check if the user pressed the "Mark as read" action
-    // if (type === EventType.ACTION_PRESS && pressAction.id === 'mark-as-read') {
-    //   // Update external API
-     
-    //   // Remove the notification
-    //   await notifee.cancelNotification(notification.id);
-    // }
-  });
+
   useEffect(() => {
     if (appState === 'active') {
       const clearNotifications = async () => {

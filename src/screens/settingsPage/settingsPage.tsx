@@ -381,14 +381,14 @@ const SettingsPage = ({
       ))}
     </View>
   );
-
+ 
   return (
     <View
-      style={{
+      style={[{
         flex: 0,
-        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 260 : Dimensions.get('window').height === 932 ? 255 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : Dimensions.get('window').height === 844 ? 260 :  208)),
         backgroundColor: bgTheme,
-      }}>
+      }, 
+      Platform.OS === 'android' && Dimensions.get('window').height > 800 && Dimensions.get('window').height < 1020 ? null : { height:  hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 260 : Dimensions.get('window').height === 932 ? 255 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : Dimensions.get('window').height === 844 ? 260 :  208))}]}>
       <ModalChangeIcon
         isVisible={showModalIcon}
         isPremium={isPremiumAudio || isPremiumStory || isPremiumMonthly}

@@ -28,6 +28,8 @@ import {
   level8,
   level9,
 } from '../images';
+import { hp } from '../../utils/screen';
+import { code_color } from '../../utils/colors';
 function SvgComponent(props) {
   const {
     width = Dimensions.get('window').width,
@@ -42,7 +44,7 @@ function SvgComponent(props) {
   return (
     <Svg
       width={width}
-      height={isIPad ? height + 300 : Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Dimensions.get('window').height === 932 ? height + 20 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&   Dimensions.get('window').height < 960 ? height + 20  :  height}
+      height={isIPad ? height + 300 : Platform.OS === 'android' && Dimensions.get('window').height > 1000 ? height + 100 : Dimensions.get('window').height === 932 ? height + 20 : Platform.OS === 'android' && Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 960 ? height + 20  :  height}
       viewBox="0 0 390 264"
       fill="none"
       style={style}
@@ -176,18 +178,32 @@ function SvgComponent(props) {
         stroke="black"
         strokeWidth="0.2"
       /> */}
-      <G clipPath="url(#clip0_2133_2044)">
+      {/* <G clipPath="url(#clip0_2133_2044)">
         <Rect x="142" y="25" width="56" height="56" rx="28" fill="#FFD12F" />
-        {/* <FastImage // Mengganti Image dengan FastImage
-          source={{
-            uri: profileUrl,
-            priority: FastImage.priority.high, // Prioritas tinggi
-          }}
-          style={{ width: '10%', height: '10%', borderRadius: 28 }} // Ganti width dan height menjadi '100%' dan tambahkan borderRadius
-        /> */}
+       
         <Image
           href={profileUrl}
           x={
+            Platform.OS === 'android' && Dimensions.get('window').height > 1000 && Dimensions.get('window').height < 1020 && profileUrl.includes('realistic/2')  ?
+            '-22' :
+            Platform.OS === 'android' && Dimensions.get('window').height > 1000 && Dimensions.get('window').height < 1020 && profileUrl.includes('realistic/1') ?
+            '-25' :
+            Platform.OS === 'android' && Dimensions.get('window').height > 1000 && Dimensions.get('window').height < 1020 && profileUrl.includes('realistic/5') ?
+            '-27' :
+            Platform.OS === 'android' && Dimensions.get('window').height > 1000 && Dimensions.get('window').height < 1020 && profileUrl.includes('realistic/4') || profileUrl.includes('realistic/3') ?
+            '-18' :
+            Platform.OS === 'android' && Dimensions.get('window').height > 1000 && Dimensions.get('window').height < 1020 && profileUrl.includes('realistic/6') ?
+            '-16' :
+            Platform.OS === 'android' && width < 450 &&  profileUrl.includes('realistic/2')  ?
+            '-21' :
+            Platform.OS === 'android' && width < 450 &&  profileUrl.includes('realistic/3') || profileUrl.includes('realistic/4')  ?
+            '-18' :
+            Platform.OS === 'android' && width < 450 &&  profileUrl.includes('realistic/5')   ?
+            '-28' :
+            Platform.OS === 'android' && width < 450 &&  profileUrl.includes('realistic/1')   ?
+            '-25' :
+            Platform.OS === 'android' && width < 450 &&  profileUrl.includes('realistic/6')   ?
+            '-13' :
             profileUrl.includes('realistic/1')  ?
             '143' :
             profileUrl.includes('realistic/2') || profileUrl.includes('realistic/6') ||  profileUrl.includes('realistic/4')  ?
@@ -213,28 +229,62 @@ function SvgComponent(props) {
               : '138'
           }
           y={
-            profileUrl.includes('realistic/1')  ||  profileUrl.includes('realistic/3') || profileUrl.includes('realistic/5') || profileUrl.includes('realistic/4') || profileUrl.includes('realistic/6')  ? '-55' :
-            profileUrl.includes('realistic') ?
-            '-30' :
+           
             Platform.OS === 'android' &&  Dimensions.get('window').height > 1000
               ? '30'
               : Platform.OS === 'android' &&  Dimensions.get('window').height > 900 &&  Dimensions.get('window').height < 950
               ? '25'
+              : Platform.OS === 'android' && profileUrl.includes('realistic')
+              ? '20'
               : Platform.OS === 'android' 
-              ? '15'
+              ? '20' 
               : profileUrl.includes('3')
               ? '-18'
               : profileUrl.includes('2')
               ? '-15'
               : profileUrl.includes('4')
               ? '-20'
-              : '-40'
+              : profileUrl.includes('realistic/1')  ||  profileUrl.includes('realistic/3') || profileUrl.includes('realistic/5') || profileUrl.includes('realistic/4') || profileUrl.includes('realistic/6')  ? '-55' :
+              profileUrl.includes('realistic') ?
+              '-30' : '-40'
           }
           width="100%"
           height={ Platform.OS === 'android' &&  Dimensions.get('window').height > 1000 ? "200" : "300"}
           rx="28"
         />
-      </G>
+      </G> */}
+         <View
+         
+                style={{
+                  width: hp(50),
+                  height: hp(49),
+                  borderRadius: hp(200),
+                 
+                  // marginLeft: 'auto',
+                  backgroundColor: code_color.yellow,
+                  justifyContent: 'center',
+                  position: 'absolute',
+                  overflow: 'hidden',
+                  alignContent: 'center',
+                  right: '49.7%',
+                  top: 33
+                }}>
+                <FastImage
+                  source={{
+                    uri:
+                    profileUrl
+                  }}
+                  style={{
+                    width: hp(42),
+                    height: hp(182),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: hp(3),
+                    right: hp(profileUrl?.includes('realistic/4') || profileUrl?.includes('realistic/2') || profileUrl?.includes('realistic/3')  ? 0 : profileUrl?.includes('realistic/5')  ? 7 :  profileUrl?.includes('realistic/6')  ? -4 :  profileUrl === '/assets/images/avatars/anime/5.png' ? -7 : profileUrl  === '/assets/images/avatars/anime/1.png' ? 4 : profileUrl === '/assets/images/avatars/anime/4.png' ? 2 : 4),
+                  }}
+                />
+              </View>
       <Rect
         x="143"
         y="26"

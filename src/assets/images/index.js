@@ -190,6 +190,7 @@ export const real_bgtutor1 = require('./../images/bg_office.png');
 
 export const main_bg = require('./../images/MainScreen_bg.png');
 export const quoteReal = require('./../images/quoteReal.gif');
+export const imgHead = require('./../images/imgHead.png');
 export const listenReal = require('./../images/listenReal.gif');
 
 export const bgMissReal = require('./../images/bgMissReal.png');

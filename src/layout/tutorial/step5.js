@@ -9,7 +9,7 @@ import quoteAnimate from '../../assets/lottie/quote.json';
 import {hp} from '../../utils/screen';
 import {moderateScale} from 'react-native-size-matters';
 import { step5 } from '../../assets/icons';
-import { quoteReal } from '../../assets/images';
+import { imgHead, quoteReal } from '../../assets/images';
 
 const Step5 = ({handleNext, handlePrev, type}) => {
   // return <></>;
@@ -46,10 +46,11 @@ const Step5 = ({handleNext, handlePrev, type}) => {
             width: hp(92),
             left: hp(-3.6),
             top: hp(-3.6),
-            zIndex: 1
+            zIndex: 1,
+            borderRadius: 100,
           }}
         /> : 
-        <Image source={quoteReal} resizeMode='contain'  style={{ height: hp(72), width: hp(72), borderRadius: 100}}/> }
+        <Image source={imgHead} resizeMode='cover'  style={{ height: hp(72), width: hp(72), borderRadius: 100}}/> }
       </View>
       <Animatable.Text
         delay={1500}
