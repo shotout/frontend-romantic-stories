@@ -1107,17 +1107,18 @@ const MainScreen = ({
     setShowModalDay(false);
     setShowModal(false);
     setShowPreview(false);
+    pagerRef.current?.setPage(0)
     reset(story);
   };
   const reset = async (story: any) => {
     setTimeout(async() => {
       await pagerRef.current?.setPage(0);
+    }, 0);
+    setTimeout(async() => {
       await pagerRef.current?.setPage(0);
     }, 100);
     handleSetStory(story);
     setScreenNumber(0);
-    
-   
   };
 
   useEffect(() => {

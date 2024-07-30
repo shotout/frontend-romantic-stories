@@ -14,13 +14,23 @@ import {
   TouchableWithoutFeedback,
   View,
   Modal,
-  TextInput
+  TextInput,
 } from 'react-native';
 import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import AnimatedLottieView from 'lottie-react-native';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
-import {ava1, bgStory1, bgStory2, bgStory3, bg_beach, bg_city, bg_landscape, bg_office, imgLove} from '../../assets/images';
+import {
+  ava1,
+  bgStory1,
+  bgStory2,
+  bgStory3,
+  bg_beach,
+  bg_city,
+  bg_landscape,
+  bg_office,
+  imgLove,
+} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
 import {STORY_SHARED, eventTracking} from '../../helpers/eventTracking';
@@ -69,7 +79,7 @@ function QuotesContent({
   price2,
   id,
   titleStory,
-  typeImage
+  typeImage,
 }) {
   // console.log(userProfile)
   const [isRepeat, setRepeat] = useState(
@@ -141,38 +151,99 @@ function QuotesContent({
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
     let params = {
       flag:
-        pageActive === 0 ||
-        pageActive === 4 ||
-        pageActive === 8 ||
-        pageActive === 16 ||
-        pageActive === 20 ||
-        pageActive === 24 ||
-        pageActive === 28
-          ? typeImage === 'realistic' ? 'beach' : 'positive'
+        typeImage != 'realistic'
+          ? pageActive === 0 ||
+            pageActive === 4 ||
+            pageActive === 8 ||
+            pageActive === 16 ||
+            pageActive === 20 ||
+            pageActive === 24 ||
+            pageActive === 28
+            ? 'positive'
+            : pageActive === 1 ||
+              pageActive === 9 ||
+              pageActive === 13 ||
+              pageActive === 17 ||
+              pageActive === 21 ||
+              pageActive === 25 ||
+              pageActive === 29
+            ? 'think'
+            : pageActive === 2 ||
+              pageActive === 5 ||
+              pageActive === 12 ||
+              pageActive === 15 ||
+              pageActive === 28 ||
+              pageActive === 21
+            ? 'inlove'
+            : pageActive === 3 ||
+              pageActive === 6 ||
+              pageActive === 9 ||
+              pageActive === 11 ||
+              pageActive === 14 ||
+              pageActive === 17 ||
+              pageActive === 20
+            ? 'positive'
+            : 'positive'
+          : pageActive === 0 ||
+            pageActive === 10 ||
+            pageActive === 20 ||
+            pageActive === 30 ||
+            pageActive === 40
+          ? 'casual'
           : pageActive === 1 ||
-            pageActive === 9 ||
-            pageActive === 13 ||
-            pageActive === 17 ||
-            pageActive === 21 ||
-            pageActive === 25 ||
-            pageActive === 29
-          ? typeImage === 'realistic' ? 'professional' : 'think'
-          : pageActive === 2 ||
-            pageActive === 5 ||
-            pageActive === 12 ||
-            pageActive === 15 ||
-            pageActive === 28 ||
-            pageActive === 21 
-          ? typeImage === 'realistic' ? 'sport' : 'inlove'
-          : pageActive === 3 ||
-            pageActive === 6 ||
-            pageActive === 9 ||
             pageActive === 11 ||
+            pageActive === 21 ||
+            pageActive === 31 ||
+            pageActive === 41
+          ? 'professional'
+          : pageActive === 2 ||
+            pageActive === 12 ||
+            pageActive === 22 ||
+            pageActive === 32 ||
+            pageActive === 42
+          ? 'beach'
+          : pageActive === 3 ||
+            pageActive === 13 ||
+            pageActive === 23 ||
+            pageActive === 33 ||
+            pageActive === 43
+          ? 'sport'
+          : pageActive === 4 ||
             pageActive === 14 ||
+            pageActive === 24 ||
+            pageActive === 34 ||
+            pageActive === 44
+          ? 'winter'
+          : pageActive === 5 ||
+            pageActive === 15 ||
+            pageActive === 25 ||
+            pageActive === 35 ||
+            pageActive === 45
+          ? 'relaxed'
+          : pageActive === 6 ||
+            pageActive === 16 ||
+            pageActive === 26 ||
+            pageActive === 36 ||
+            pageActive === 46
+          ? 'travelling' : 
+          pageActive === 7 ||
             pageActive === 17 ||
-            pageActive === 20 
-          ?  typeImage === 'realistic' ? 'casual' : 'positive'
-          :  typeImage === 'realistic' ? 'sport': 'positive',
+            pageActive === 27 ||
+            pageActive === 37 ||
+            pageActive === 47
+            ? 'autumn'
+            : pageActive === 8 ||
+              pageActive === 18 ||
+              pageActive === 28 ||
+              pageActive === 38 ||
+              pageActive === 48
+            ? 'street'
+            : pageActive === 9 ||
+            pageActive === 19 ||
+            pageActive === 29 ||
+            pageActive === 39 ||
+            pageActive === 49 ? 'cocktail'
+           : 'travelling',
     };
     try {
       const data = await getListAvatarTheme(params);
@@ -202,11 +273,11 @@ function QuotesContent({
   const getBackgroundStory = pac => {
     switch (pac) {
       case 1:
-        return typeImage === 'realistic' ? bg_office :  bgStory1;
+        return typeImage === 'realistic' ? bg_office : bgStory1;
       case 4:
-        return typeImage === 'realistic' ? bg_beach :   bgStory2;
+        return typeImage === 'realistic' ? bg_beach : bgStory2;
       case 7:
-        return typeImage === 'realistic' ? bg_city :  bgStory3;
+        return typeImage === 'realistic' ? bg_city : bgStory3;
       default:
         return typeImage === 'realistic' ? bg_landscape : bgStory1;
     }
@@ -257,16 +328,15 @@ function QuotesContent({
       const {start, end} = selection;
       const selected = item?.slice(start, end);
       if (selected != '' && selected.length != 0) {
-        setEnd(end)
-        setStart(start)
-        setSelectedText(selected)
+        setEnd(end);
+        setStart(start);
+        setSelectedText(selected);
         setModalVisible(true);
 
         // eventTracking(STORY_SHARED);
       }
     }
   };
-
 
   const renderSelect = useCallback(() => {
     if (Platform.OS === 'ios') {
@@ -318,8 +388,8 @@ function QuotesContent({
               themeUser?.content_en === '2'
                 ? item?.substring(selectionEnd - 50, selectionEnd)
                 : item?.substring(selectionEnd - 50, selectionEnd),
-              title: titleStory,
-              id: id
+            title: titleStory,
+            id: id,
           });
           // eventTracking(STORY_SHARED);
         }}
@@ -373,7 +443,7 @@ function QuotesContent({
     }
     return result;
   }
-  const height = Dimensions.get('window').height
+  const height = Dimensions.get('window').height;
 
   return (
     <SafeAreaView
@@ -399,15 +469,21 @@ function QuotesContent({
               // backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
             <View
-              style={{backgroundColor: bg === code_color.blackDark
-                ? code_color.white
-                : code_color.blackDark,   shadowColor: code_color.grey,
+              style={{
+                backgroundColor:
+                  bg === code_color.blackDark
+                    ? code_color.white
+                    : code_color.blackDark,
+                shadowColor: code_color.grey,
                 shadowOffset: {width: 5, height: 5},
                 shadowRadius: 5,
-                shadowOpacity: 1, padding: 10, borderRadius: 10}}>
+                shadowOpacity: 1,
+                padding: 10,
+                borderRadius: 10,
+              }}>
               <TouchableOpacity
                 onPress={() => {
-                  setModalVisible(false)
+                  setModalVisible(false);
                   navigate('Share', {
                     selectedContent: selectedText,
                     start:
@@ -419,11 +495,13 @@ function QuotesContent({
                         ? item?.substring(end + 50, end)
                         : item?.substring(end + 50, end),
                     title: titleStory,
-                    id: id
+                    id: id,
                   });
                   setSelectedText('');
                 }}>
-                <Text allowFontScaling={false} style={{ color: bg }}>Share</Text>
+                <Text allowFontScaling={false} style={{color: bg}}>
+                  Share
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -454,17 +532,17 @@ function QuotesContent({
           width: sizing.getDimensionWidth(0.89),
           transform: [{translateY: translateX}],
         }}>
-        {type === 'main' && (
-          pageActive === 0||
-        pageActive === 3 ||
-        pageActive === 6 ||
-        pageActive === 9 || 
-        pageActive == 12 ||
-        pageActive == 15 ||
-        pageActive == 18 ||
-        pageActive == 21 ||
-        pageActive == 24 ||
-        pageActive == 27 )? (
+        {type === 'main' &&
+        (pageActive === 0 ||
+          pageActive === 3 ||
+          pageActive === 6 ||
+          pageActive === 9 ||
+          pageActive == 12 ||
+          pageActive == 15 ||
+          pageActive == 18 ||
+          pageActive == 21 ||
+          pageActive == 24 ||
+          pageActive == 27) ? (
           <View
             style={{
               alignItems: 'center',
@@ -494,7 +572,7 @@ function QuotesContent({
               }}
               resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: wp(me?.includes('realistic') ? 150 :100),
+                width: wp(me?.includes('realistic') ? 150 : 100),
                 height: hp(300),
                 opacity: 0.3,
               }}
@@ -530,16 +608,17 @@ function QuotesContent({
               )}
             </View>
           </View>
-          {type === 'main' && (pageActive === 0||
-        pageActive === 3 ||
-        pageActive === 6 ||
-        pageActive === 9 || 
-        pageActive == 12 ||
-        pageActive == 15 ||
-        pageActive == 18 ||
-        pageActive == 21 ||
-        pageActive == 24 ||
-        pageActive == 27 ) ? (
+          {type === 'main' &&
+          (pageActive === 0 ||
+            pageActive === 3 ||
+            pageActive === 6 ||
+            pageActive === 9 ||
+            pageActive == 12 ||
+            pageActive == 15 ||
+            pageActive == 18 ||
+            pageActive == 21 ||
+            pageActive == 24 ||
+            pageActive == 27) ? (
             <View style={{alignItems: 'center'}}>
               <View
                 style={{
@@ -558,18 +637,19 @@ function QuotesContent({
                 </Text>
               </View>
             </View>
-          ) : type === 'main' && (pageActive === 1 ||
-            pageActive === 4 ||
-            pageActive === 7 ||
-            pageActive === 10 ||
-            pageActive === 13 ||
-            pageActive === 17 ||
-            pageActive === 20 ||
-            pageActive === 23 ||
-            pageActive === 26 ||
-            pageActive === 29) ? (
+          ) : type === 'main' &&
+            (pageActive === 1 ||
+              pageActive === 4 ||
+              pageActive === 7 ||
+              pageActive === 10 ||
+              pageActive === 13 ||
+              pageActive === 17 ||
+              pageActive === 20 ||
+              pageActive === 23 ||
+              pageActive === 26 ||
+              pageActive === 29) ? (
             <>
-              <View >
+              <View>
                 <ImageBackground
                   source={getBackgroundStory(pageActive)}
                   resizeMode="contain"
@@ -598,34 +678,44 @@ function QuotesContent({
                         me === '/assets/images/avatars/anime/2/think.png'
                           ? hp(170)
                           : hp(
-                            me?.includes('realistic') ? 155 :
-                              Dimensions.get('window').height === 844 &&
-                                me === '/assets/images/avatars/anime/2/think.png'
+                              me?.includes('realistic')
+                                ? 155
+                                : Dimensions.get('window').height === 844 &&
+                                  me ===
+                                    '/assets/images/avatars/anime/2/think.png'
                                 ? 180
                                 : Dimensions.get('window').height === 812 &&
-                                  me === '/assets/images/avatars/anime/2/think.png'
+                                  me ===
+                                    '/assets/images/avatars/anime/2/think.png'
                                 ? 180
-                                : me === '/assets/images/avatars/anime/2/think.png'
+                                : me ===
+                                  '/assets/images/avatars/anime/2/think.png'
                                 ? 150
-                                : me === '/assets/images/avatars/anime/4/think.png'
+                                : me ===
+                                  '/assets/images/avatars/anime/4/think.png'
                                 ? 110
-                                : me === '/assets/images/avatars/anime/3/think.png' &&
+                                : me ===
+                                    '/assets/images/avatars/anime/3/think.png' &&
                                   Dimensions.get('window').height <= 667
                                 ? 130
-                                : me === '/assets/images/avatars/anime/3/think.png'
+                                : me ===
+                                  '/assets/images/avatars/anime/3/think.png'
                                 ? 120
-                                : me != '/assets/images/avatars/anime/2/think.png' &&
+                                : me !=
+                                    '/assets/images/avatars/anime/2/think.png' &&
                                   me?.includes('think')
                                 ? 100
-                                : me === '/assets/images/avatars/anime/2/positive.png'
+                                : me ===
+                                  '/assets/images/avatars/anime/2/positive.png'
                                 ? 150
                                 : me?.includes('positive')
                                 ? 120
-                                : me === '/assets/images/avatars/anime/3/friendly.png'
+                                : me ===
+                                  '/assets/images/avatars/anime/3/friendly.png'
                                 ? 110
                                 : 150,
                             ),
-                      width: wp(me?.includes('realistic') ? 120 :100),
+                      width: wp(me?.includes('realistic') ? 120 : 100),
                       left: 20,
                       zIndex: 1,
                       bottom: 90,
@@ -639,18 +729,30 @@ function QuotesContent({
                       style={{
                         width: wp(me?.includes('realistic') ? 140 : 100),
                         height: hp(
-                          me === '/assets/images/avatars/anime/3/positive.png' ||
-                            me === '/assets/images/avatars/anime/1/positive.png'  && Platform.OS === 'android' && height > 1000 
-                            ? 400 :
-                            me === '/assets/images/avatars/anime/1/positive.png' 
-                            ? 350
-                            : me === '/assets/images/avatars/anime/2/positive.png' && Platform.OS === 'android' && height > 1000 
-                            ? 480 
-                            : me === '/assets/images/avatars/anime/2/positive.png' 
-                            ? 450 
-                            : me != '/assets/images/avatars/anime/2/positive.png'
+                          me ===
+                            '/assets/images/avatars/anime/3/positive.png' ||
+                            (me ===
+                              '/assets/images/avatars/anime/1/positive.png' &&
+                              Platform.OS === 'android' &&
+                              height > 1000)
                             ? 400
-                            : me?.includes('realistic') ? 400 : 360,
+                            : me ===
+                              '/assets/images/avatars/anime/1/positive.png'
+                            ? 350
+                            : me ===
+                                '/assets/images/avatars/anime/2/positive.png' &&
+                              Platform.OS === 'android' &&
+                              height > 1000
+                            ? 480
+                            : me ===
+                              '/assets/images/avatars/anime/2/positive.png'
+                            ? 450
+                            : me !=
+                              '/assets/images/avatars/anime/2/positive.png'
+                            ? 400
+                            : me?.includes('realistic')
+                            ? 400
+                            : 360,
                         ),
                       }}
                     />
@@ -660,29 +762,39 @@ function QuotesContent({
                       position: 'absolute',
                       overflow: 'hidden',
                       marginBottom:
-                      Platform.OS === 'android' && Dimensions.get('window').height < 840 && partner === '/assets/images/avatars/anime/5/think.png'
-                          ? 8 :  partner === '/assets/images/avatars/anime/5/think.png' ? 12 
+                        Platform.OS === 'android' &&
+                        Dimensions.get('window').height < 840 &&
+                        partner === '/assets/images/avatars/anime/5/think.png'
+                          ? 8
+                          : partner ===
+                            '/assets/images/avatars/anime/5/think.png'
+                          ? 12
                           : 21.7,
                       // marginBottom: wp(
                       //   partner === '/assets/images/avatars/5/think.png'
                       //     ? -90
                       //     : -85,
                       // ),
-                      width: wp(me?.includes('realistic') ? 140 :100),
+                      width: wp(me?.includes('realistic') ? 140 : 100),
                       height: hp(
                         partner === '/assets/images/avatars/anime/5/think.png'
                           ? 90
-                          : partner === '/assets/images/avatars/anime/2/think.png'
+                          : partner ===
+                            '/assets/images/avatars/anime/2/think.png'
                           ? 135
-                          : partner?.includes('realistic') ? 160 : 100,
+                          : partner?.includes('realistic')
+                          ? 160
+                          : 100,
                       ),
-                      left:  partner?.includes('realistic') ? '27%' : '40%',
+                      left: partner?.includes('realistic') ? '27%' : '40%',
                       zIndex: 1,
                       bottom:
-                        partner === '/assets/images/avatars/anime/5/think.png' &&
+                        partner ===
+                          '/assets/images/avatars/anime/5/think.png' &&
                         Platform.OS === 'ios'
                           ? -5
-                          : partner === '/assets/images/avatars/anime/5/think.png' &&
+                          : partner ===
+                              '/assets/images/avatars/anime/5/think.png' &&
                             Platform.OS === 'android'
                           ? -5
                           : -15,
@@ -696,10 +808,14 @@ function QuotesContent({
                       style={{
                         width: wp(me?.includes('realistic') ? 150 : 100),
                         height: hp(
-                          partner === '/assets/images/avatars/anime/4/positive.png' ||
-                            partner === '/assets/images/avatars/anime/6/positive.png'
+                          partner ===
+                            '/assets/images/avatars/anime/4/positive.png' ||
+                            partner ===
+                              '/assets/images/avatars/anime/6/positive.png'
                             ? 330
-                            :me?.includes('realistic') ? 430 : 350,
+                            : me?.includes('realistic')
+                            ? 430
+                            : 350,
                         ),
                       }}
                     />
@@ -763,7 +879,15 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(
-                    me === '/assets/images/avatars/anime/2/inlove.png' ? -160 : Platform.OS === 'android' && me !== '/assets/images/avatars/anime/2/inlove.png' && height > 900  ? -150 : me?.includes('realistic') ? -150 : -190,
+                    me === '/assets/images/avatars/anime/2/inlove.png'
+                      ? -160
+                      : Platform.OS === 'android' &&
+                        me !== '/assets/images/avatars/anime/2/inlove.png' &&
+                        height > 900
+                      ? -150
+                      : me?.includes('realistic')
+                      ? -150
+                      : -190,
                   ),
                   width: wp(100),
                   height: hp(170),
@@ -777,10 +901,11 @@ function QuotesContent({
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
-
-                   
-                    width: wp(me?.includes('realistic') ? 130 :100),
-                    height: Platform.OS === 'android' && height > 1000 ? hp(200) : hp(330),
+                    width: wp(me?.includes('realistic') ? 130 : 100),
+                    height:
+                      Platform.OS === 'android' && height > 1000
+                        ? hp(200)
+                        : hp(330),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -790,9 +915,14 @@ function QuotesContent({
                   position: 'relative',
                   overflow: 'hidden',
                   marginBottom: wp(-100),
-                  width: wp(partner?.includes('realistic') ? 140 :100),
-                  height: hp( partner?.includes('realistic') ? 120 :100),
-                  left:  Platform.OS === 'android' && height > 1000 ? '30%' :  me?.includes('realistic') ? '28%'  :'35%',
+                  width: wp(partner?.includes('realistic') ? 140 : 100),
+                  height: hp(partner?.includes('realistic') ? 120 : 100),
+                  left:
+                    Platform.OS === 'android' && height > 1000
+                      ? '30%'
+                      : me?.includes('realistic')
+                      ? '28%'
+                      : '35%',
                   zIndex: -1,
                 }}>
                 <FastImage
@@ -803,7 +933,7 @@ function QuotesContent({
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(partner?.includes('realistic') ? 150 : 100),
-                    height: hp(partner?.includes('realistic') ? 310 :300),
+                    height: hp(partner?.includes('realistic') ? 310 : 300),
                     backgroundColor: 'Transparent',
                   }}
                 />
@@ -863,9 +993,7 @@ function QuotesContent({
   );
 }
 
-QuotesContent.propTypes = {
-  
-};
+QuotesContent.propTypes = {};
 
 QuotesContent.defaultProps = {};
 
