@@ -322,7 +322,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
       <View>
         <Image
           source={{
-            uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/audio/relationship.png'}`,
+            uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
           }}
           resizeMode="cover"
           style={{
