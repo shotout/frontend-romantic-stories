@@ -1303,7 +1303,7 @@ function ScreenShare({
             Choose Background
           </Text>
           <SafeAreaView style={{width: '100%', height: hp(80), marginTop: 20}}>
-            <ScrollView horizontal style={styles.horizontalScroll}>
+            <ScrollView horizontal style={[styles.horizontalScroll, {marginRight: 20}]}>
               {backgroundList.map((bgl, idx) => (
                 <TouchableOpacity
                   key={idx}
@@ -1316,8 +1316,8 @@ function ScreenShare({
                     setSelectedBg(bgl);
                     if (userProfile?.data?.subscription?.plan_id != 1) {
                       setSelectBg(bgl);
-                      handleSetBgShare(bgl)
-                      setSelectedBg(null);
+                      // handleSetBgShare(bgl)
+                      // setSelectedBg(null);
                     } else if(bgl !== selectBg) {
                       setModalUnlockBg(true);
                     }

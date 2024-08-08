@@ -12,6 +12,7 @@ import {
   AppState,
   ScrollView,
   Platform,
+  Pressable,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -116,7 +117,6 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
         // Dapatkan URL MP3 terbaru
        
         const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-       console.log('MP3'+newMp3Url)
         // Hentikan pemutaran sebelumnya dan reset pemutaran
         await TrackPlayer.stop();
         await TrackPlayer.reset();
@@ -153,6 +153,7 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
           //     AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
           // },
         });
+        console.log(userStory?.category?.cover_audio)
         await TrackPlayer.add({
           id: 'track1',
           url: newMp3Url,
@@ -308,9 +309,14 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
           </View>
         </View>
       </Modal>
-      <View style={styles.row}>
+      <Pressable onPress={() => {
+            goBack();
+            TrackPlayer.stop();
+            Platform.OS === 'android' ?   TrackPlayer.reset() : null
+          }} style={styles.row}>
         <Text style={styles.textTitle} />
         <TouchableOpacity
+        
           onPress={() => {
             goBack();
             TrackPlayer.stop();
@@ -318,11 +324,11 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
           }}>
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
-      </View>
+      </Pressable>
       <View>
         <Image
           source={{
-            uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/audio/relationship.png'}`,
+            uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
           }}
           resizeMode="cover"
           style={{

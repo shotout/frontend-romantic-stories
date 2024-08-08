@@ -81,8 +81,9 @@ function ModalGetPremium({isVisible, onClose, onGotIt, userProfile}) {
             alignItems: 'center',
           }}>
           <View style={{marginTop: 30, width: '90%'}}>
-            {userProfile?.data?.subscription?.plan?.notes.map(item => (
+            {userProfile?.data?.subscription?.plan?.notes.map((item, i )=> (
               <View
+              key={i}
                 style={{
                   flexDirection: 'row',
                   marginVertical: 5,

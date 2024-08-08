@@ -50,7 +50,7 @@ import {
   Step7,
   Step8,
 } from '../../layout/tutorial';
-import {fixedFontSize, hp, wp} from '../../utils/screen';
+import {fixedFontSize, height, hp, wp} from '../../utils/screen';
 import {
   addStory,
   deleteMyStory,
@@ -250,14 +250,19 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
           setShowModal2Step7(false);
         }
       } else {
-        checkInstall();
-        AsyncStorage.removeItem('isTutorial');
-        handleSetSteps(0);
         const finish = await AsyncStorage.getItem('finish');
         if(finish != 'yes'){
           eventTracking(TUTORIAL_FINISH);
           AsyncStorage.setItem('finish', 'yes');
         }
+        handleSetSteps(0);
+        AsyncStorage.removeItem('isTutorial');
+        navigate('Bottom');
+        checkInstall();
+       
+        
+       
+       
        
         // setTimeout(() => {
         //     handlePayment('onboarding');
@@ -267,7 +272,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
           handleSetStory(res.data);
         }
         getDataStory();
-        navigate('Bottom');
+        
       }
     }, 100);
    
@@ -556,7 +561,7 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
         return route?.params?.type === 'realistic' ? main_bg : tips_step1;
     }
   };
-
+ 
   return (
     <>
     {Platform.OS === 'ios' ? 
@@ -566,8 +571,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
         resizeMode={FastImage.resizeMode.contain}
       /> :  
       <FastImage
+    
       source={imageSource}
-      style={{width: '100%', height: '100%'}} />  }
+      resizeMode={Platform.OS === 'android' && Dimensions.get('window').height >= 1280 ? FastImage.resizeMode.contain :  FastImage.resizeMode.cover}
+      style={{width: '100%', height: '100%'}} /> 
+       }
       <SafeAreaView
         onTouchStart={handleTouchStart}
         pointerEvents="box-only"

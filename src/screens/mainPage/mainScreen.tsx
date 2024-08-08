@@ -112,7 +112,7 @@ const MainScreen = ({
   const [loadingAds, setLoadingAds] = useState(false);
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [click, setClick] = useState(1);
-  const [products, setProducts] = useState([]);
+  const [load, setLoad] = useState(false);
   const [isTutorial, setTutorial] = useState({
     visible: false,
     step: stepsTutorial,
@@ -460,21 +460,16 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
-  
       setShowModalNewStory(false)
       if (Platform.OS === 'android') {
         const payload = {
           _method: 'PATCH',
           is_member: 3,
         }
-        
         updateProfile(payload);
       }
-        reloadUserProfile();
-      
-  
+      reloadUserProfile();
       fetchCheckingDay();
-    
   }, []);
  
 
@@ -894,7 +889,7 @@ const MainScreen = ({
         titleCategory={category}
         show={show}
         setShow={() => setShow(false)}
-        handleListen={() => handleListening()}
+        handleListen={() => load ? null : handleListening()}
         type={type}
         isRippleAnimate={isRippleAnimate}
         userProfile={userProfile}
@@ -1235,6 +1230,7 @@ const MainScreen = ({
   );
 
   const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
+    setLoad(true)
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const screenWidth = Dimensions.get('window').width / 1.5;
@@ -1265,9 +1261,10 @@ const MainScreen = ({
               // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
-                setTimeout(() => {
+                // setTimeout(() => {
+                  setLoad(false)
                   setShowModalCongrats(true);
-                }, 50);
+                // }, 50);
               }
               checkingRead(screenNumber + 1);
             } catch (error) {
@@ -1277,15 +1274,17 @@ const MainScreen = ({
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
         } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          setTimeout(() => {
+          // setTimeout(() => {
+            setLoad(false)
             setShowModalNewStory(true);
-          }, 50);
+          // }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
         } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          setTimeout(() => {
+          // setTimeout(() => {
+            setLoad(false)
             setShowModalCongrats(true);
-          }, 50);
+          // }, 50);
           // await fecthNextStory();
         }
       }

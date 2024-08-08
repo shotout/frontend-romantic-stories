@@ -708,6 +708,7 @@ function ModalCongrats({
                   />
                 </View>
                 <ScrollView style={{flex: 0, paddingBottom: 300}}>
+                  <Pressable    onPress={() => onGotIt()}>
                   <Text
                     style={{
                       color: code_color.grey,
@@ -722,6 +723,8 @@ function ModalCongrats({
                     Stay tuned for more exclusive features for our Experienced
                     Members!
                   </Text>
+                  </Pressable>
+                  
 
                   <Button
                     title={'Got it'}

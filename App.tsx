@@ -54,6 +54,8 @@ import { getAppOpenID } from './src/shared/adsId';
 import { reloadUserProfile } from './src/utils/user';
 import FastImage from 'react-native-fast-image';
 import messaging from '@react-native-firebase/messaging';
+import moment from 'moment-timezone';
+
 
 Purchasely.start({
   apiKey: "e25a76b7-ffc7-435e-a817-c75d7be0dcfb",
@@ -70,6 +72,7 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
 });
 appOpenAd.load();
 function App({ userProfile }) {
+
   Sentry.init({
     // environment: 'production',
     environment: 'development',
@@ -138,10 +141,10 @@ function App({ userProfile }) {
       const payload = {
         _method: 'PATCH',
         notif_count: 0,
+        timezone: moment.tz.guess(),
       };
       try {
         const data  = await updateProfile(payload);
-       
       } catch (error) {
        
       }

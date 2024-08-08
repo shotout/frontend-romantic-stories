@@ -87,7 +87,7 @@ function ModalUnlockStory({
             backgroundColor: code_color.blueDark,
             width: '100%',
             height: '100%',
-            paddingTop: 50,
+            paddingTop: 30,
             borderRadius: moderateScale(24),
           }}>
           <Image
@@ -118,7 +118,7 @@ function ModalUnlockStory({
               height: hp(150),
               position: 'absolute',
               left: 0,
-              top: hp(150),
+              top: hp(130),
             }}
           />
 
@@ -130,22 +130,27 @@ function ModalUnlockStory({
               height: hp(150),
               position: 'absolute',
               right: 0,
-              top: hp(150),
+              top: hp(130),
             }}
           />
+         
           <View
             style={{
               alignItems: 'center',
+              justifyContent: 'center',
               backgroundColor: code_color.white,
               borderRadius: moderateScale(24),
-              flex: 1,
+             flex: 1
             }}>
-            <View
+               <ScrollView horizontal={false} style={{flex: 1,}}>
+               <View
               style={{
                 width: '100%',
                 padding: moderateScale(20),
                 paddingHorizontal: moderateScale(30),
                 borderRadius: moderateScale(8),
+                alignItems: 'center',
+                flex: 1
               }}>
               <View style={{flexDirection: 'row'}}>
                 <FastImage
@@ -223,7 +228,8 @@ function ModalUnlockStory({
                 backgroundColor: '#F0F2FF',
                 borderRadius: moderateScale(24),
                 paddingBottom: 10,
-                width: sizing.getDimensionWidth(1) - hp(30),
+                marginHorizontal: 15
+                // width: 
               }}>
               <Text
                 style={{
@@ -324,7 +330,11 @@ function ModalUnlockStory({
                 </Text>
               </TouchableOpacity>
             </View>
+               </ScrollView>
+          
           </View>
+          
+         
         </View>
       </View>
     );

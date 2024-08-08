@@ -57,7 +57,7 @@ import {fixedFontSize, hp, wp} from '../../utils/screen';
 import FastImage from 'react-native-fast-image';
 import {BACKEND_URL} from '../../shared/static';
 import Register0 from '../../layout/register/register0';
-
+import momentTz from 'moment-timezone';
 function RegisterScreen({
   handleSetProfile,
   handleSetBackground,
@@ -69,6 +69,7 @@ function RegisterScreen({
   userStory,
   resetParams
 }) {
+ 
   const [stepRegister, setStepRegister] = useState(0);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
   const isDarkMode = useColorScheme() === 'dark';
@@ -98,7 +99,7 @@ function RegisterScreen({
     theme_id: 1,
     language_id: 2,
     often: 3,
-    timezone: 'Asia/Jakarta',
+    timezone: momentTz.tz.guess(),
     notif_enable: 1,
     purchasely_id: '',
   });
