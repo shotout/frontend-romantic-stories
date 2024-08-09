@@ -570,10 +570,10 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
         style={{width: '100%', height: '100%'}}
         resizeMode={FastImage.resizeMode.contain}
       /> :  
-      <FastImage
+      <Image
     
       source={imageSource}
-      resizeMode={Platform.OS === 'android' && Dimensions.get('window').height >= 1280 ? FastImage.resizeMode.contain :  FastImage.resizeMode.cover}
+      resizeMode={Platform.OS === 'android' && Dimensions.get('window').height >= 1280 ? 'contain' :  'cover'}
       style={{width: '100%', height: '100%'}} /> 
        }
       <SafeAreaView

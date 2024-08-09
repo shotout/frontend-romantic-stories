@@ -123,10 +123,10 @@ dependencies {
     def billingVersion = "6.1.0"
     implementation "com.android.billingclient:billing:$billingVersion"
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
-    implementation 'com.facebook.fresco:fresco:2.5.0'
-    implementation 'com.facebook.fresco:animated-gif:2.5.0'
-    implementation 'com.facebook.fresco:animated-webp:2.5.0'
-    implementation 'com.facebook.fresco:webpsupport:2.5.0' 
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'com.facebook.fresco:animated-gif:2.6.0'
+    implementation 'com.facebook.fresco:animated-webp:2.6.0'
+    implementation 'com.facebook.fresco:webpsupport:2.6.0' 
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

@@ -486,7 +486,10 @@ function RegisterScreen({
               await notifee.requestPermission();
               navigate('Tutorial', { type: type });
               handleSetSteps(0);
-            } catch {}
+            } catch(e) {
+              navigate('Tutorial', { type: type });
+              handleSetSteps(0);
+            }
           }}
         />
       );
@@ -686,7 +689,10 @@ function RegisterScreen({
                       await notifee.requestPermission();
                       navigate('Tutorial', { type: type });
                       handleSetSteps(0);
-                    } catch {}
+                    } catch {
+                      navigate('Tutorial', { type: type });
+                      handleSetSteps(0);
+                    }
                   } else if (
                     (stepRegister == 2 && values.name === '') ||
                     (stepRegister == 3 && values.category_id === 0)

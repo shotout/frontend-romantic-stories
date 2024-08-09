@@ -1261,10 +1261,10 @@ const MainScreen = ({
               // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
-                // setTimeout(() => {
+                setTimeout(() => {
                   setLoad(false)
                   setShowModalCongrats(true);
-                // }, 50);
+                }, 50);
               }
               checkingRead(screenNumber + 1);
             } catch (error) {
@@ -1274,17 +1274,17 @@ const MainScreen = ({
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
         } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          // setTimeout(() => {
+          setTimeout(() => {
             setLoad(false)
             setShowModalNewStory(true);
-          // }, 50);
+          }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
         } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          // setTimeout(() => {
+          setTimeout(() => {
             setLoad(false)
             setShowModalCongrats(true);
-          // }, 50);
+          }, 50);
           // await fecthNextStory();
         }
       }

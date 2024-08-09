@@ -65,7 +65,8 @@ function ModalCongrats({
   const newImgLvl = levelingUser?.user_level?.level?.image?.url;
   const [imgPopup, setImgPopup] = useState(currentImgLvl);
   const [lottieStart, setLottieStart] = useState(false);
-
+  const animationRef = useRef(null);
+  const animationRef2 = useRef(null);
   const handleClose = () => {
     onClose();
   };
@@ -87,7 +88,12 @@ function ModalCongrats({
   const scrollToBottomPopup = () => {
     scrollViewRefPopup.current?.scrollToEnd({animated: true});
   };
-
+  useEffect(() => {
+    animationRef.current?.play();
+    animationRef.current?.play(0, 3000);
+    animationRef2.current?.play();
+    animationRef2.current?.play(0, 3000);
+  }, []);
   useEffect(() => {
     if (isVisible) {
       setTimeout(() => {
@@ -480,18 +486,21 @@ function ModalCongrats({
                         width: hp(130),
                         height: hp(130),
                       }}
-                      autoPlay={true}
-                      duration={3000}
+                      ref={animationRef2}
+                      autoPlay={false}
+                      duration={2000}
                       loop={false}
                     />
                     <AnimatedLottieView
+                    
                       source={starAnimate}
                       style={{
                         width: hp(200),
                         height: hp(200),
                         position: 'absolute',
                       }}
-                      autoPlay={true}
+                      ref={animationRef}
+                      autoPlay={false}
                       duration={2000}
                       loop={false}
                     />
@@ -506,6 +515,7 @@ function ModalCongrats({
                       <Animatable.Text
                         delay={1000}
                         duration={500}
+                        loop={false}
                         animation="slideInUp"
                         style={{
                           fontWeight: 'bold',
