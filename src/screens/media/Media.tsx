@@ -222,7 +222,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
     if (position != 0) {
       setLoading(false);
     }
-    if (position != 0 && position === duration) {
+    
+    if (position != 0 && position === duration || position >= duration) {
       TrackPlayer.seekTo(0);
       setLoading(false);
       TrackPlayer.reset();

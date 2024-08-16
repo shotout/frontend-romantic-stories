@@ -293,9 +293,9 @@ const MainScreen = ({
       const resp = await addPastLevel(data);
       if (resp?.data) {
         handleLeveling(resp?.data);
-        setTimeout(() => {
+        // setTimeout(() => {
           setShowModalCongrats(true);
-        }, 100);
+        // }, 50);
       }
       // checkingRead(textChunks?.length);
     } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
@@ -477,14 +477,15 @@ const MainScreen = ({
     const pageNumber = e.nativeEvent.position;
     handleSetPage(pageNumber);
     setScreenNumber(pageNumber);
-    const timeoutLove = setTimeout(() => {
-      if (pageNumber === textChunks?.length - 1) {
-        setIsLoveAnimate(false);
-      }
-    }, 3000);
+    // const timeoutLove = setTimeout(() => {
+    //   if (pageNumber === textChunks?.length - 1) {
+    //     setIsLoveAnimate(false);
+    //   }
+    // }, 3000);
 
     checkingRead(pageNumber);
-    if (pageNumber === 2 || pageNumber === 5 || pageNumber === 8) {
+    // checkingLast()
+    if (pageNumber === 2 || pageNumber === 5 || pageNumber === 8 ||  pageNumber === 11 ||  pageNumber === 14 ||  pageNumber === 17) {
       setIsLoveAnimate(true);
       if (isLoveAnimate !== 'stop') {
         setTimeout(() => {
@@ -497,12 +498,13 @@ const MainScreen = ({
         }
       }, 3200);
       setTimeout(() => {}, 3400);
+     
     }
-    const existingEntry = readStory
-      ? readStory.find(
-          (item: any) => item?.id === dataBook.id && item?.page === pageNumber,
-        )
-      : undefined;
+    // const existingEntry = readStory
+    //   ? readStory.find(
+    //       (item: any) => item?.id === dataBook.id && item?.page === pageNumber,
+    //     )
+    //   : undefined;
     // if (!existingEntry && pageNumber === textChunks?.length + 1 - 1) {
     //   await addPastStory(dataBook.id);
     //   const data = {
@@ -523,19 +525,73 @@ const MainScreen = ({
     //   //jika tidak premium maka akan terus menampilan modal setiap terakhir
     //   // setShowModalCongrats(true);
     // }
-    if (pageNumber === textChunks?.length - 1) {
-    }
+    // if (pageNumber === textChunks?.length - 1) {
+    // }
 
     setActiveSlide(pageNumber - 1);
-
     startAnimation();
-    handleLoadMore(pageNumber);
+    // handleLoadMore(pageNumber);
 
     if (pageNumber - 1 !== activeSlide && !isUserHasScroll) {
       setUserScrollQuotes(true);
     }
   };
+  const checkingLast = async() => {
+    if(Platform.OS === 'android' && !showModalCongrats){
+   
+      if (page === textChunks?.length - 1) {
+    
+        const existingEntry = readStory
+          ? readStory.find(
+              (item: any) =>
+                item?.id === dataBook.id && item?.page === screenNumber + 1,
+            )
+          : undefined;
+        if (
+          typeof existingEntry === 'undefined' &&
+          screenNumber === textChunks?.length - 1
+        ) {
+          // jika nanti pertama kali melakukan update data terakhir
+          try {
+            const res = await addPastStory(dataBook.id);
+            // console.log(JSON.stringify(res))
+            try {
+              const data = {
+                value: textChunks?.length,
+              };
+              const resp = await addPastLevel(data);
+              // console.log(JSON.stringify(resp))
+              if (resp?.data) {
+                handleLeveling(resp?.data);
+                // setTimeout(() => {
+                  setLoad(false)
+                  setShowModalCongrats(true);
+                // }, 50);
+              }
+              checkingRead(screenNumber + 1);
+            } catch (error) {
+              console.log('ERROR PAS LEVEL', JSON.stringify(error));
+            }
+          } catch (error) {
+            console.log('ERROR PAS STORY', JSON.stringify(error));
+          }
+        } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+          // setTimeout(() => {
+            setLoad(false)
+            setShowModalNewStory(true);
+          // }, 50);
 
+          //jika tidak premium maka akan terus menampilan modal setiap terakhir
+        } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+          // setTimeout(() => {
+            setLoad(false)
+            setShowModalCongrats(true);
+          // }, 50);
+          // await fecthNextStory();
+        }
+      }
+    }
+  }
   const startAnimation = () => {
     setFolded(!folded);
 
@@ -545,7 +601,7 @@ const MainScreen = ({
       useNativeDriver: false, // Set this to true for better performance, but note that not all properties are supported with native driver
     }).start();
   };
-  const handleLoadMore = async (value: number) => {};
+  // const handleLoadMore = async (value: number) => {};
 
   const handleThemeAvatar = async () => {
     // (angry,confused,cry,dizzy,excited,friendly,inlove,positive.scare,think)
@@ -970,27 +1026,18 @@ const MainScreen = ({
   }, [isFocused]);
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.match(/background/) && nextAppState === 'active') {
-        
-          
+      if (appState.match(/background/) && nextAppState === 'active') {    
             fetchCheckingDay()
-         
-        
       }
       setAppState(nextAppState);
     });
-
     return () => {
-     
       subscription.remove();
     };
   }, [appState, ]);
+
   useEffect(() => {
-    
     setBook(userStory);
-   
-      
-    
   }, [isFocused]);
 
   const handleUnlock = async () => {
@@ -1089,11 +1136,6 @@ const MainScreen = ({
     // setShowModalGetPremium(true);
   };
 
-  const renderProgress = () => (
-    <StepHeader
-      currentStep={stepsTutorial === 5 ? stepsTutorial + 2 : stepsTutorial + 1}
-    />
-  );
 
   const reloadWatch = async () => {
     const advert = await loadRewarded2();
@@ -1161,8 +1203,6 @@ const MainScreen = ({
     }, 100);
     handleSetStory(story);
     setScreenNumber(0);
-    
-   
   };
 
   useEffect(() => {
@@ -1233,9 +1273,9 @@ const MainScreen = ({
     setLoad(true)
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 1.5;
+    const screenWidth = Dimensions.get('window').width / 3;
+  
     // Jika sentuhan terjadi di sebelah kanan
-
     if (touchX > screenWidth && !showModalCongrats) {
       // setTimeout(async () => {
       if (screenNumber === textChunks?.length - 1) {
@@ -1261,10 +1301,10 @@ const MainScreen = ({
               // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
-                setTimeout(() => {
+                // setTimeout(() => {
                   setLoad(false)
                   setShowModalCongrats(true);
-                }, 50);
+                // }, 50);
               }
               checkingRead(screenNumber + 1);
             } catch (error) {
@@ -1274,17 +1314,17 @@ const MainScreen = ({
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
         } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          setTimeout(() => {
+          // setTimeout(() => {
             setLoad(false)
             setShowModalNewStory(true);
-          }, 50);
+          // }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
         } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          setTimeout(() => {
+          // setTimeout(() => {
             setLoad(false)
             setShowModalCongrats(true);
-          }, 50);
+          // }, 50);
           // await fecthNextStory();
         }
       }
@@ -1321,20 +1361,18 @@ const MainScreen = ({
     } else {
       try {
         const res = await getStoryDetail(userStory?.id);
-        console.log('SUKSES GET DETAIL' + JSON.stringify(res));
         handleSetStory(res.data);
         setBook(res.data);
         if (res.data) {
           setShowModalNewStory(true);
         }
       } catch (error) {
-        console.log('ERROR GET DETAIL' + JSON.stringify(error));
         const res = await getStoryDetail(userStory?.id);
         handleSetStory(res.data);
         setBook(res.data);
-        setTimeout(() => {
+        // setTimeout(() => {
           setShowModalNewStory(true);
-        }, 50);
+        // }, 50);
       }
     }
   };
@@ -1484,6 +1522,7 @@ const MainScreen = ({
       return (
         <View
           onTouchStart={touchEndStory}
+          pointerEvents='box-none'
           style={{
             backgroundColor: backgroundColor,
             flex: 1,

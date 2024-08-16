@@ -9,6 +9,7 @@ import {
   Modal,
   ImageBackground,
   Platform,
+  NativeModules,
 } from 'react-native';
 import dispatcher from './dispatcher';
 import states from './states';
@@ -34,7 +35,7 @@ import {
   tips_step4_real,
   tips_step5_real,
   imgQuoteNewReal,
-  imgSelectReal
+  imgSelectReal,
 } from '../../assets/images';
 import {goBack, navigate} from '../../shared/navigationRef';
 import {connect} from 'react-redux';
@@ -76,11 +77,13 @@ import FastImage from 'react-native-fast-image';
 import {handlePayment} from '../../helpers/paywall';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
+import GifImage from '@lowkey/react-native-gif';
+import KeepAwake from 'react-native-keep-awake';
 
 const confettiAnimate = require('../../assets/lottie/confetti.json');
 const rippleAnimate = require('../../assets/lottie/ripple.json');
 
-function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
+function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile}) {
   const [activeStep, setActiveStep] = useState(stepsTutorial);
   const [isFinishTutorial, setFinishTutorial] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -104,19 +107,18 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
     const halfScreenWidth = Dimensions.get('window').width / 2.5;
-  
+
     // Jika sentuhan terjadi di sebelah kiri, set isSwipingLeft ke true
     if (touchX < halfScreenWidth) {
       setTimeout(() => {
         handlePrev();
       }, 100);
-     
     }
     // Jika sentuhan terjadi di sebelah kanan, set isSwipingRight ke true
     else {
       setTimeout(() => {
-      handleNext();
-      }, 100)
+        handleNext();
+      }, 100);
       // navigate('Library');
     }
   };
@@ -197,7 +199,9 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
     clearTimeout(timeout7SecRef.current); // Stop the active timeout
   };
   useEffect(() => {
+    KeepAwake.activate();
     if (stepsTutorial < 9) {
+     
       startTimeout();
     }
   }, [stepsTutorial]);
@@ -220,17 +224,16 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
           });
           handleSetSteps(1);
           setActiveStep(1);
-          
         }, 3500);
-      } 
+      }
     };
     checkTutorial();
   }, []);
 
   const renderProgress = () => <StepHeader currentStep={stepsTutorial + 1} />;
 
-  const handleNext = async() => {
-    setTimeout(async() => {
+  const handleNext = async () => {
+    setTimeout(async () => {
       if (stepsTutorial < 8) {
         handleSetSteps(stepsTutorial + 1);
         setActiveStep((prevStep: number) => prevStep + 1); // Menambahkan 1 ke langkah saat mengklik "Next"
@@ -251,19 +254,16 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
         }
       } else {
         const finish = await AsyncStorage.getItem('finish');
-        if(finish != 'yes'){
+        if (finish != 'yes') {
           eventTracking(TUTORIAL_FINISH);
           AsyncStorage.setItem('finish', 'yes');
         }
         handleSetSteps(0);
         AsyncStorage.removeItem('isTutorial');
+        KeepAwake.deactivate();
         navigate('Bottom');
         checkInstall();
-       
-        
-       
-       
-       
+
         // setTimeout(() => {
         //     handlePayment('onboarding');
         // }, 200);
@@ -272,10 +272,8 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
           handleSetStory(res.data);
         }
         getDataStory();
-        
       }
     }, 100);
-   
   };
   const checkInstall = async () => {
     const getFirstInstall = await AsyncStorage.getItem('firstInstall');
@@ -294,7 +292,9 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
             transparent
             onDismiss={() => setVisible(false)}>
             <ImageBackground
-              source={ route?.params?.type === 'realistic' ? real_bgtutor1 : imgBgTips}
+              source={
+                route?.params?.type === 'realistic' ? real_bgtutor1 : imgBgTips
+              }
               resizeMode="cover"
               style={{
                 width: Dimensions.get('window').width,
@@ -314,7 +314,11 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
                 }}
                 delay={200}
                 duration={800}
-                source={route?.params?.type === 'realistic' ? real_tutor : imgBgAvaTips}
+                source={
+                  route?.params?.type === 'realistic'
+                    ? real_tutor
+                    : imgBgAvaTips
+                }
                 resizeMode="contain"
                 style={{width: '80%', height: '100%'}}
               />
@@ -390,7 +394,8 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
                       marginBottom: wp(50),
                     }}>
                     {`Hey, ${
-                      userProfile?.data?.name === null || userProfile?.data?.name === undefined
+                      userProfile?.data?.name === null ||
+                      userProfile?.data?.name === undefined
                         ? ''
                         : userProfile?.data?.name
                     }\nYou’re all set!`}
@@ -431,17 +436,26 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
                   backgroundColor: code_color.white,
                 }}>
                 <FastImage
-                  resizeMode={isIPad ? 'contain' : 'contain' }
-                  source={ route?.params?.type === 'realistic'  ? imgSelectReal : imgSelect}
+                  resizeMode={isIPad ? 'contain' : 'contain'}
+                  source={
+                    route?.params?.type === 'realistic'
+                      ? imgSelectReal
+                      : imgSelect
+                  }
                   style={{
                     width:
                       Dimensions.get('window').width -
                       (Platform.OS === 'ios' ? 0 : 20),
                     height: Dimensions.get('window').height,
-                    marginTop: Platform.OS === 'ios' ?  isIPad ? '-5%' : '-13%' : 0,
+                    marginTop:
+                      Platform.OS === 'ios' ? (isIPad ? '-5%' : '-13%') : 0,
                   }}>
                   <View style={{top: wp(50)}}>
-                    <Step5 type={route?.params?.type} handleNext={() => {}} handlePrev={handlePrev} />
+                    <Step5
+                      type={route?.params?.type}
+                      handleNext={() => {}}
+                      handlePrev={handlePrev}
+                    />
                   </View>
                 </FastImage>
               </View>
@@ -453,7 +467,8 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
                   style={{
                     position: 'absolute',
                     bottom: Platform.OS === 'ios' ? -hp(20) : -hp(20),
-                    left: Platform.OS === 'ios' ? hp(isIPad ? 165 : 40) : hp(40),
+                    left:
+                      Platform.OS === 'ios' ? hp(isIPad ? 165 : 40) : hp(40),
                   }}>
                   <AnimatedLottieView
                     source={rippleAnimate}
@@ -486,16 +501,25 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
               backgroundColor: code_color.white,
             }}>
             <FastImage
-              source={ route?.params?.type === 'realistic' ? audioScreenReal : audioScreen}
-              resizeMode={isIPad ? 'contain' : 'contain' }
+              source={
+                route?.params?.type === 'realistic'
+                  ? audioScreenReal
+                  : audioScreen
+              }
+              resizeMode={isIPad ? 'contain' : 'contain'}
               style={{
                 width:
                   Dimensions.get('window').width -
                   (Platform.OS === 'ios' ? 0 : 0),
                 height: Dimensions.get('window').height,
-                marginTop: Platform.OS === 'ios' ? isIPad ? '-5%' : '-13%' : 0,
+                marginTop:
+                  Platform.OS === 'ios' ? (isIPad ? '-5%' : '-13%') : 0,
               }}>
-              <Step3 type={route?.params?.type} handleNext={handleNext} handlePrev={handlePrev} />
+              <Step3
+                type={route?.params?.type}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+              />
             </FastImage>
           </View>
         );
@@ -543,6 +567,8 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
   };
   useEffect(() => {
     setImageSource(getImageBasedOnStep(stepsTutorial));
+    FastImage.clearDiskCache();
+    FastImage.clearMemoryCache();
   }, [stepsTutorial, activeStep]);
 
   const getImageBasedOnStep = (step: number) => {
@@ -550,32 +576,45 @@ function ScreenTutorial({route, stepsTutorial, handleSetSteps, userProfile, }) {
       case 3:
         return route?.params?.type === 'realistic' ? main_bg : tips_step1;
       case 4:
-        return route?.params?.type === 'realistic' ? tips_step4_real: tips_step4  ;
+        return route?.params?.type === 'realistic'
+          ? tips_step4_real
+          : tips_step4;
       case 5:
-        return route?.params?.type === 'realistic' ? tips_step5_real : tips_step5;
+        return route?.params?.type === 'realistic'
+          ? tips_step5_real
+          : tips_step5;
       case 7:
-        return  route?.params?.type === 'realistic' ? imgQuoteNewReal : imgQuoteNew;
+        return route?.params?.type === 'realistic'
+          ? imgQuoteNewReal
+          : imgQuoteNew;
       case 8:
-        return route?.params?.type === 'realistic' ?  xpAndLevelReal : xpAndLevel;
+        return route?.params?.type === 'realistic'
+          ? xpAndLevelReal
+          : xpAndLevel;
       default:
         return route?.params?.type === 'realistic' ? main_bg : tips_step1;
     }
   };
- 
+
   return (
     <>
-    {Platform.OS === 'ios' ? 
-      <FastImage
-        source={imageSource}
-        style={{width: '100%', height: '100%'}}
-        resizeMode={FastImage.resizeMode.contain}
-      /> :  
-      <Image
-    
-      source={imageSource}
-      resizeMode={Platform.OS === 'android' && Dimensions.get('window').height >= 1280 ? 'contain' :  'cover'}
-      style={{width: '100%', height: '100%'}} /> 
-       }
+      {Platform.OS === 'ios' ? (
+        <FastImage
+          source={imageSource}
+          style={{width: '100%', height: '100%'}}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      ) : (
+        <GifImage
+          source={imageSource}
+          resizeMode={
+            Platform.OS === 'android' && Dimensions.get('window').height >= 1280
+              ? 'contain'
+              : 'cover'
+          }
+          style={{width: '100%', height: '100%'}}
+        />
+      )}
       <SafeAreaView
         onTouchStart={handleTouchStart}
         pointerEvents="box-only"

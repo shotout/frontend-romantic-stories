@@ -11,6 +11,7 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import {bg, logo} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -257,22 +258,6 @@ function RegisterScreen({
     ]);
   }, []);
 
-  // const checkReOnboard = async () => {
-  //   const device = await DeviceInfo.getUniqueId();
-  //   try {
-  //     await checkDeviceRegister({
-  //       device_id: device,
-  //     });
-  //     setIsReOnboard(true);
-  //   } catch {
-  //     setIsReOnboard(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   checkReOnboard();
-  // }, []);
-
   const fetchCategory = async () => {
     try {
       let params = {
@@ -309,6 +294,7 @@ function RegisterScreen({
         purchasely_id: id,
         type: type
       };
+      
       const res = await postRegister(payload);
       handleSetProfile(res);
       handleSetBackground(res?.data?.theme?.bg_color);

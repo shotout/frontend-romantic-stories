@@ -100,6 +100,7 @@ export default function Register4({gender, setAvatar, dataAvatar, setType}) {
             // style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center'}}
             renderItem={({item, index}) => (
               <Pressable
+              key={index}
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',

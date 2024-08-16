@@ -39,9 +39,7 @@ const App = () => {
     }
   }
 
-  useEffect(async() => {
-  
-   
+  useEffect(() => {
     bootstrap();
     Notifications.removeAllDeliveredNotifications();
   }, []);
