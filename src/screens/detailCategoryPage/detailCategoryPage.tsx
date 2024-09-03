@@ -18,6 +18,7 @@ import {
   Dimensions,
   Alert,
   PanResponder,
+  Platform,
 } from 'react-native';
 import {code_color} from '../../utils/colors';
 import SearchSvg from '../../assets/icons/search.jsx';
@@ -90,7 +91,7 @@ const DetailCategoryScreen = ({
   const showWatchAds = async () => {
     setLoading2(true);
     const advert = await loadRewarded();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
       setLoading2(false);
       setShowModalUnlock(false);
       setTimeout(async () => {
@@ -175,7 +176,7 @@ const DetailCategoryScreen = ({
     if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
-          skus: ['unlock_story_1_week_only'],
+          skus: [ Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
         });
         setPrice(products[0].localizedPrice);
       }
@@ -188,7 +189,7 @@ const DetailCategoryScreen = ({
     const advert = await loadRewardedCategory();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (reward: any) => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
           Alert.alert('Congrats! You have unlocked the selected Topic.', '', [
@@ -230,7 +231,7 @@ const DetailCategoryScreen = ({
   const handleNative = async () => {
     setLoading(true);
     const data = await handleNativePayment(
-      'unlock_story_1_week_only',
+      Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
       selectedStory?.id,
     );
     if (data) {

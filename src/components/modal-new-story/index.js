@@ -75,7 +75,7 @@ function ModalNewStory({
     if (!__DEV__) {
       async function getProductPrice() {
         const products = await IAP.getProducts({
-          skus: ['unlock_story_1_week_only'],
+          skus: [ Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
         });
 
         setPrice(products[0].localizedPrice);
@@ -371,7 +371,7 @@ function ModalNewStory({
                     </>
                   )}
                 </Pressable>
-                {Platform.OS === 'android' ? null : (
+              
                   <Pressable
                     disabled={isLoading}
                     onPress={() => onUnlock()}
@@ -420,7 +420,7 @@ function ModalNewStory({
                       </Text>
                     )}
                   </Pressable>
-                )}
+             
                 <View
                   style={{
                     flexDirection: 'row',

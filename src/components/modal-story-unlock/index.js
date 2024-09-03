@@ -110,7 +110,7 @@ function ModalUnlockStory({
             }}>
             {'New Story unlocked'}
           </Text>
-          <Image
+          <FastImage
             source={imgLoveLeft}
             resizeMode="contain"
             style={{
@@ -122,7 +122,7 @@ function ModalUnlockStory({
             }}
           />
 
-          <Image
+          <FastImage
             source={imgLoveRight}
             resizeMode="contain"
             style={{

@@ -95,11 +95,19 @@ function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
                 borderRadius: hp(10),
                 padding: hp(10),
               }}>
-              <Pressable
-                onPress={() => handleClose()}
-                style={{alignItems: 'flex-end'}}>
-                <CloseSvg width={hp(15)} height={hp(15)} />
-              </Pressable>
+              <View style={{alignItems: 'flex-end'}}>
+                <Pressable
+                  onPress={() => handleClose()}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 30,
+                    width: 30,
+                  }}>
+                  <CloseSvg width={hp(15)} height={hp(15)} />
+                </Pressable>
+              </View>
+
               <View style={{alignItems: 'center', flex: 1}}>
                 <LibrarySvg
                   fill={code_color.splash}
@@ -134,7 +142,7 @@ function ModaNewLibrary({isVisible, onClose, restart, edit, data}) {
                     borderRadius: hp(10),
                     width: '90%',
                     marginVertical: hp(20),
-                    color: code_color.grey
+                    color: code_color.grey,
                   }}
                   value={collect}
                   placeholder="Collection name"

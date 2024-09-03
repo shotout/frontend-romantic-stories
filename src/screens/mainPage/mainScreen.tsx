@@ -24,6 +24,7 @@ import {
   TouchableOpacity,
   AppState,
   BackHandler,
+  Alert,
 } from 'react-native';
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -78,8 +79,11 @@ import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
 import {moderateScale} from 'react-native-size-matters';
 import TrackPlayer from 'react-native-track-player';
-
+import {fetch} from '@react-native-community/netinfo';
+import {BACKEND_URL} from '../../shared/static';
+import RNFS from 'react-native-fs';
 const MainScreen = ({
+  relateStory,
   userProfile,
   levelingUser,
   userStory,
@@ -104,7 +108,6 @@ const MainScreen = ({
   handleSetPage,
   page,
 }) => {
-
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
@@ -169,7 +172,7 @@ const MainScreen = ({
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
-  
+
   useEffect(() => {
     // if (!__DEV__) {
     async function getPrice() {
@@ -177,7 +180,11 @@ const MainScreen = ({
         skus: ['unlock_10_audio_stories'],
       });
       const products1 = await IAP.getProducts({
-        skus: ['unlock_5_audio_stories'],
+        skus: [
+          Platform.OS === 'ios'
+            ? 'unlock_5_audio_stories'
+            : 'unlock_50_audio_stories',
+        ],
       });
 
       setPriceAudio1(products1[0].localizedPrice);
@@ -237,16 +244,16 @@ const MainScreen = ({
             item?.id === dataBook.id && item?.page === textChunks?.length,
         )
       : undefined;
-      let uniqueData = []
-     if(listenStory === null){
+    let uniqueData = [];
+    if (listenStory === null) {
       let data = [
         {
           id: dataBook.id,
         },
       ];
-      uniqueData = data
+      uniqueData = data;
       handleListenStory(data);
-     }else{
+    } else {
       const existingEntry = listenStory
         ? listenStory.find((item: any) => item?.id === dataBook.id)
         : undefined;
@@ -254,35 +261,34 @@ const MainScreen = ({
         const newData = {
           id: dataBook.id,
         };
-        uniqueData = [...listenStory, newData]
+        uniqueData = [...listenStory, newData];
         // Dispatch action to update readStory in the Redux store
         handleListenStory([...listenStory, newData]);
-     
-     }
+      }
     }
-   
+
     const value = await AsyncStorage.getItem('FINISH_LISTEN_3');
     const value1 = await AsyncStorage.getItem('FINISH_LISTEN_7');
     const value2 = await AsyncStorage.getItem('FINISH_LISTEN_10');
-   
-    if(value != 'true'){
+
+    if (value != 'true') {
       if (uniqueData?.length === 3) {
         eventTracking(FINISH_LISTEN_3);
         AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
       }
     }
-    if(value1 != 'true'){
-    if (uniqueData?.length === 7) {
-      eventTracking(FINISH_LISTEN_7);
-      AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
+    if (value1 != 'true') {
+      if (uniqueData?.length === 7) {
+        eventTracking(FINISH_LISTEN_7);
+        AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
+      }
     }
-  }
-  if(value2 != 'true'){
-    if (uniqueData?.length === 10) {
-      eventTracking(FINISH_LISTEN_10);
-      AsyncStorage.setItem('FINISH_LISTEN_10', 'true');
+    if (value2 != 'true') {
+      if (uniqueData?.length === 10) {
+        eventTracking(FINISH_LISTEN_10);
+        AsyncStorage.setItem('FINISH_LISTEN_10', 'true');
+      }
     }
-  }
     if (typeof existingEntry === 'undefined') {
       // jika nanti pertama kali melakukan update data terakhir
 
@@ -294,11 +300,14 @@ const MainScreen = ({
       if (resp?.data) {
         handleLeveling(resp?.data);
         // setTimeout(() => {
-          setShowModalCongrats(true);
+        setShowModalCongrats(true);
         // }, 50);
       }
       // checkingRead(textChunks?.length);
-    } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+    } else if (
+      existingEntry &&
+      !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
+    ) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setTimeout(() => {
         setShowModalNewStory(true);
@@ -407,8 +416,7 @@ const MainScreen = ({
   }, [userStory]);
 
   useEffect(() => {
-    if(page === 0){
-
+    if (page === 0) {
       async function setToFirstPage() {
         setScreenNumber(0);
         pagerRef.current?.setPage(0);
@@ -429,21 +437,18 @@ const MainScreen = ({
     const stringifyDateNow = new Date();
     let strTanggalSekarang = stringifyDateNow.getDate().toString();
 
-    
     if (value != null) {
       if (value != strTanggalSekarang) {
         if (!route?.params?.isFromNotif) {
           AsyncStorage.setItem('setToday', strTanggalSekarang);
         }
         if (userProfile?.data?.subscription?.plan?.id != 1) {
-          
-          setShowModalNewStory(false)
+          setShowModalNewStory(false);
           const res = await getStoryList();
           handleNextStory(res.data);
           setShowModalDay(true);
         } else {
-         
-          setShowModalNewStory(false)
+          setShowModalNewStory(false);
           const res = await getStoryList();
           handleNextStory(res.data);
           setShowModalDay(true);
@@ -460,18 +465,17 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
-      setShowModalNewStory(false)
-      if (Platform.OS === 'android') {
-        const payload = {
-          _method: 'PATCH',
-          is_member: 3,
-        }
-        updateProfile(payload);
-      }
-      reloadUserProfile();
-      fetchCheckingDay();
+    setShowModalNewStory(false);
+    if (Platform.OS === 'android') {
+      const payload = {
+        _method: 'PATCH',
+        is_member: 3,
+      };
+      updateProfile(payload);
+    }
+    reloadUserProfile();
+    fetchCheckingDay();
   }, []);
- 
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
@@ -485,7 +489,14 @@ const MainScreen = ({
 
     checkingRead(pageNumber);
     // checkingLast()
-    if (pageNumber === 2 || pageNumber === 5 || pageNumber === 8 ||  pageNumber === 11 ||  pageNumber === 14 ||  pageNumber === 17) {
+    if (
+      pageNumber === 2 ||
+      pageNumber === 5 ||
+      pageNumber === 8 ||
+      pageNumber === 11 ||
+      pageNumber === 14 ||
+      pageNumber === 17
+    ) {
       setIsLoveAnimate(true);
       if (isLoveAnimate !== 'stop') {
         setTimeout(() => {
@@ -498,7 +509,6 @@ const MainScreen = ({
         }
       }, 3200);
       setTimeout(() => {}, 3400);
-     
     }
     // const existingEntry = readStory
     //   ? readStory.find(
@@ -536,11 +546,9 @@ const MainScreen = ({
       setUserScrollQuotes(true);
     }
   };
-  const checkingLast = async() => {
-    if(Platform.OS === 'android' && !showModalCongrats){
-   
+  const checkingLast = async () => {
+    if (Platform.OS === 'android' && !showModalCongrats) {
       if (page === textChunks?.length - 1) {
-    
         const existingEntry = readStory
           ? readStory.find(
               (item: any) =>
@@ -564,8 +572,8 @@ const MainScreen = ({
               if (resp?.data) {
                 handleLeveling(resp?.data);
                 // setTimeout(() => {
-                  setLoad(false)
-                  setShowModalCongrats(true);
+                setLoad(false);
+                setShowModalCongrats(true);
                 // }, 50);
               }
               checkingRead(screenNumber + 1);
@@ -575,23 +583,29 @@ const MainScreen = ({
           } catch (error) {
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
-        } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+        } else if (
+          existingEntry &&
+          !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
+        ) {
           // setTimeout(() => {
-            setLoad(false)
-            setShowModalNewStory(true);
+          setLoad(false);
+          setShowModalNewStory(true);
           // }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
-        } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+        } else if (
+          existingEntry &&
+          (isPremiumStory || isPremiumAudio || isPremiumMonthly)
+        ) {
           // setTimeout(() => {
-            setLoad(false)
-            setShowModalCongrats(true);
+          setLoad(false);
+          setShowModalCongrats(true);
           // }, 50);
           // await fecthNextStory();
         }
       }
     }
-  }
+  };
   const startAnimation = () => {
     setFolded(!folded);
 
@@ -633,11 +647,11 @@ const MainScreen = ({
   }, [visible]);
 
   const checkingListen = async () => {
-
     if (listenStory === null) {
       if (
-        userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
-        userProfile?.data?.subscription?.audio_limit != 0
+        userProfile?.data?.subscription?.plan?.id === 2 ||
+        (userProfile?.data?.subscription?.plan?.id === 4 &&
+          userProfile?.data?.subscription?.audio_limit != 0)
       ) {
         const payload = {
           _method: 'PATCH',
@@ -662,7 +676,7 @@ const MainScreen = ({
         Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
         navigate('Media');
       } else {
-        eventTracking('OPEN_LISTEN_PAYWALL')
+        eventTracking('OPEN_LISTEN_PAYWALL');
         setShow(true);
       }
       let data = [
@@ -683,8 +697,9 @@ const MainScreen = ({
         // Dispatch action to update readStory in the Redux store
         handleListenStory([...listenStory, newData]);
         if (
-          userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
-          userProfile?.data?.subscription?.audio_limit != 0
+          userProfile?.data?.subscription?.plan?.id === 2 ||
+          (userProfile?.data?.subscription?.plan?.id === 4 &&
+            userProfile?.data?.subscription?.audio_limit != 0)
         ) {
           const payload = {
             _method: 'PATCH',
@@ -707,13 +722,14 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
-          eventTracking('OPEN_LISTEN_PAYWALL')
+          eventTracking('OPEN_LISTEN_PAYWALL');
           setShow(true);
         }
       } else {
         if (
-          userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
-          userProfile?.data?.subscription?.audio_limit != 0
+          userProfile?.data?.subscription?.plan?.id === 2 ||
+          (userProfile?.data?.subscription?.plan?.id === 4 &&
+            userProfile?.data?.subscription?.audio_limit != 0)
         ) {
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
@@ -724,18 +740,48 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
-          eventTracking('OPEN_LISTEN_PAYWALL')
+          eventTracking('OPEN_LISTEN_PAYWALL');
           setShow(true);
         }
       }
     }
   };
+
+  const checkInternetConnection = async () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        navigate('Media');
+      } else {
+        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // const fileExists = await RNFS.exists(destinationPath);
+        // if (fileExists) {
+
+        //   navigate('Media');
+        // } else {
+
+        Alert.alert(
+          'Info',
+          'Please check your internet connection before playing this Audio Story',
+          [
+            {
+              text: 'OK',
+              onPress: async () => ({}),
+            },
+          ],
+        );
+
+        // }
+      }
+    });
+  };
   const handleListening = async () => {
     if (userProfile?.data?.subscription?.plan?.id === 3) {
-      navigate('Media');
+      checkInternetConnection();
     } else {
       if (dataBook?.audio_enable != null) {
-        navigate('Media');
+        checkInternetConnection();
       } else {
         checkingListen();
       }
@@ -762,18 +808,13 @@ const MainScreen = ({
 
     return resultArray;
   };
-  // const textChunks = splitTextIntoArray(
-  //   dataBook?.content_en,
-  //   Dimensions.get('window').height <= 667 ? 630 : 800,
-  // );
-  const height = Dimensions.get('window').height;
+
   useEffect(() => {
     // height iphone 13 = 844
     // iphone xr = 896
 
     const {height, fontScale} = Dimensions.get('window');
 
-   
     const size = Number(fontSize) - 1;
     const charactersPerLine = Math.floor(
       height / (size * (fontScale + (height > 840 ? -0.147 : 0))),
@@ -838,54 +879,54 @@ const MainScreen = ({
           (Platform.OS === 'android' && height < 840 && Number(fontSize) === 20)
         ? 3
         : 4.1);
-        // alert(      (fontFamily === 'Montserrat-Regular' && Number(fontSize) === 16
-        // ? 4.7
-        // : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 18
-        // ? 4.7
-        // : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 14
-        // ? 5.3
-        // : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 14
-        // ? 5.3
-        // : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16
-        // ? 4.7
-        // : fontFamily === 'Poppins-Regular' &&
-        //   Number(fontSize) === 14 &&
-        //   height >= 844 &&
-        //   height < 850
-        // ? 5.8
-        // : fontFamily === 'Poppins-Regular' &&
-        //   Number(fontSize) === 14 &&
-        //   height >= 850
-        // ? 5.3
-        // : fontFamily === 'Poppins-Regular' &&
-        //   Number(fontSize) === 16 &&
-        //   height >= 844 &&
-        //   height < 850
-        // ? 5.2
-        // : fontFamily === 'Poppins-Regular' &&
-        //   Number(fontSize) === 16 &&
-        //   height >= 850
-        // ? 5.1
-        // : fontFamily === 'Poppins-Regular' &&
-        //   Number(fontSize) === 18 &&
-        //   height >= 844 &&
-        //   height < 850
-        // ? 4.5
-        // : fontFamily === 'Poppins-Regular' &&
-        //   Number(fontSize) === 18 &&
-        //   height >= 850
-        // ? 4.9
-        // : Number(fontSize) === 14
-        // ? 4.8
-        // : height >= 890 && Number(fontSize) === 18
-        // ? 3.5
-        // : (Platform.OS === 'android' && height >= 840) ||
-        //   (Platform.OS === 'android' && height < 840 && Number(fontSize) === 16)
-        // ? 3.5
-        // : (Platform.OS === 'android' && height >= 840) ||
-        //   (Platform.OS === 'android' && height < 840 && Number(fontSize) === 20)
-        // ? 3
-        // : 4.1))
+    // alert(      (fontFamily === 'Montserrat-Regular' && Number(fontSize) === 16
+    // ? 4.7
+    // : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 18
+    // ? 4.7
+    // : fontFamily === 'Montserrat-Regular' && Number(fontSize) === 14
+    // ? 5.3
+    // : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 14
+    // ? 5.3
+    // : fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16
+    // ? 4.7
+    // : fontFamily === 'Poppins-Regular' &&
+    //   Number(fontSize) === 14 &&
+    //   height >= 844 &&
+    //   height < 850
+    // ? 5.8
+    // : fontFamily === 'Poppins-Regular' &&
+    //   Number(fontSize) === 14 &&
+    //   height >= 850
+    // ? 5.3
+    // : fontFamily === 'Poppins-Regular' &&
+    //   Number(fontSize) === 16 &&
+    //   height >= 844 &&
+    //   height < 850
+    // ? 5.2
+    // : fontFamily === 'Poppins-Regular' &&
+    //   Number(fontSize) === 16 &&
+    //   height >= 850
+    // ? 5.1
+    // : fontFamily === 'Poppins-Regular' &&
+    //   Number(fontSize) === 18 &&
+    //   height >= 844 &&
+    //   height < 850
+    // ? 4.5
+    // : fontFamily === 'Poppins-Regular' &&
+    //   Number(fontSize) === 18 &&
+    //   height >= 850
+    // ? 4.9
+    // : Number(fontSize) === 14
+    // ? 4.8
+    // : height >= 890 && Number(fontSize) === 18
+    // ? 3.5
+    // : (Platform.OS === 'android' && height >= 840) ||
+    //   (Platform.OS === 'android' && height < 840 && Number(fontSize) === 16)
+    // ? 3.5
+    // : (Platform.OS === 'android' && height >= 840) ||
+    //   (Platform.OS === 'android' && height < 840 && Number(fontSize) === 20)
+    // ? 3
+    // : 4.1))
     // const totalCharacters =
     //   (charactersPerLine * linesPerPage) /
     //   (Number(fontSize) === 14 && fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && height === 844 ? 4.5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 890 ? 5.3 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 840 ? 5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Platform.OS === 'ios' && Number(fontSize) === 14 && height >= 812 ? 5 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Number(fontSize) === 16 && Platform.OS === 'ios' ?  5.1 : fontFamily === 'Poppins-Regular' || fontFamily === 'Merriweather-Regular' && Number(fontSize) === 18 ? 5 :
@@ -945,7 +986,7 @@ const MainScreen = ({
         titleCategory={category}
         show={show}
         setShow={() => setShow(false)}
-        handleListen={() => load ? null : handleListening()}
+        handleListen={() => (load ? null : handleListening())}
         type={type}
         isRippleAnimate={isRippleAnimate}
         userProfile={userProfile}
@@ -1026,15 +1067,15 @@ const MainScreen = ({
   }, [isFocused]);
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.match(/background/) && nextAppState === 'active') {    
-            fetchCheckingDay()
+      if (appState.match(/background/) && nextAppState === 'active') {
+        fetchCheckingDay();
       }
       setAppState(nextAppState);
     });
     return () => {
       subscription.remove();
     };
-  }, [appState, ]);
+  }, [appState]);
 
   useEffect(() => {
     setBook(userStory);
@@ -1045,7 +1086,9 @@ const MainScreen = ({
     const res = await getStoryList();
     handleNextStory(res.data);
     const data = await handleNativePayment(
-      'unlock_story_1_week_only',
+      Platform.OS === 'ios'
+        ? 'unlock_story_1_week_only'
+        : 'unlock_stories_1week',
       res?.data?.id,
     );
 
@@ -1136,7 +1179,6 @@ const MainScreen = ({
     // setShowModalGetPremium(true);
   };
 
-
   const reloadWatch = async () => {
     const advert = await loadRewarded2();
     setShowModalCongrats(false);
@@ -1197,7 +1239,7 @@ const MainScreen = ({
     reset(story);
   };
   const reset = async (story: any) => {
-    setTimeout(async() => {
+    setTimeout(async () => {
       await pagerRef.current?.setPage(0);
       await pagerRef.current?.setPage(0);
     }, 100);
@@ -1251,7 +1293,7 @@ const MainScreen = ({
           page: -1,
         },
       );
-        
+
     function setLastPage() {
       if (!userHasRead) {
         setTimeout(async () => {
@@ -1268,14 +1310,27 @@ const MainScreen = ({
       (entry?.page === textChunks?.length - 1 ||
         entry?.page > textChunks?.length - 1),
   );
-
+  const initNextStory = async () => {
+    const res = await getStoryDetail(userStory?.id);
+    handleSetStory(res.data);
+    setBook(res.data);
+    const response = await getStoryList();
+    handleNextStory(response.data);
+    let params = {
+      search: '',
+      column: 'title_en',
+      dir: 'asc',
+    };
+    const respon = await getExploreStory(params);
+    handleStoriesRelate(respon);
+  };
   const touchEndStory = async (e: {nativeEvent: {locationX: any}}) => {
-    setLoad(true)
+    setLoad(true);
     const touchX = e.nativeEvent.locationX;
     // Menghitung setengah lebar layar
-    const screenWidth = Dimensions.get('window').width / 3;
-  
-    // Jika sentuhan terjadi di sebelah kanan
+    const screenWidth = Dimensions.get('window').width / 3.7;
+    //Jika sentuhan terjadi di sebelah kanan
+
     if (touchX > screenWidth && !showModalCongrats) {
       // setTimeout(async () => {
       if (screenNumber === textChunks?.length - 1) {
@@ -1302,8 +1357,9 @@ const MainScreen = ({
               if (resp?.data) {
                 handleLeveling(resp?.data);
                 // setTimeout(() => {
-                  setLoad(false)
-                  setShowModalCongrats(true);
+                setLoad(false);
+                setShowModalCongrats(true);
+                initNextStory()
                 // }, 50);
               }
               checkingRead(screenNumber + 1);
@@ -1313,67 +1369,85 @@ const MainScreen = ({
           } catch (error) {
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
-        } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+        } else if (
+          existingEntry &&
+          !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
+        ) {
           // setTimeout(() => {
-            setLoad(false)
-            setShowModalNewStory(true);
+          setLoad(false);
+          setShowModalNewStory(true);
+          initNextStory()
           // }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
-        } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+        } else if (
+          existingEntry &&
+          (isPremiumStory || isPremiumAudio || isPremiumMonthly)
+        ) {
           // setTimeout(() => {
-            setLoad(false)
-            setShowModalCongrats(true);
+          setLoad(false);
+          setShowModalCongrats(true);
+          initNextStory()
           // }, 50);
           // await fecthNextStory();
         }
       }
+    } else if (
+      touchX < screenWidth &&
+      screenNumber === textChunks?.length - 1 &&
+      !showModalCongrats
+    ) {
+      pagerRef?.current?.setPage(screenNumber - 1);
     }
   };
 
   useEffect(() => {
-    if (!__DEV__) {
-      async function getPrice() {
+    // if (!__DEV__) {
+    async function getPrice() {
+      try {
         const products = await IAP.getProducts({
-          skus: ['unlock_story_1_week_only'],
+          skus: [
+            Platform.OS === 'ios'
+              ? 'unlock_story_1_week_only'
+              : 'unlock_stories_1week',
+          ],
         });
+
         setPrice(products[0].localizedPrice);
-      }
-      getPrice();
+      } catch (error) {}
     }
+    getPrice();
+    // }
   }, []);
   const handleSuccessRating = async () => {
     setRating(false);
     if (isPremiumStory || isPremiumAudio || isPremiumMonthly) {
-      const res = await getStoryDetail(userStory?.id);
-      handleSetStory(res.data);
-      setBook(res.data);
-      const response = await getStoryList();
-      handleNextStory(response.data);
-      let params = {
-        search: '',
-        column: 'title_en',
-        dir: 'asc',
-      };
-      const resp = await getExploreStory(params);
-      handleStoriesRelate(resp);
-      setShowModal(true);
+      if(relateStory != null){
+        setShowModal(true);
+      }else{
+        initNextStory()
+        setTimeout(() => {
+          setShowModal(true);
+        }, 200);
+      } 
     } else {
-      try {
-        const res = await getStoryDetail(userStory?.id);
-        handleSetStory(res.data);
-        setBook(res.data);
-        if (res.data) {
-          setShowModalNewStory(true);
-        }
-      } catch (error) {
-        const res = await getStoryDetail(userStory?.id);
-        handleSetStory(res.data);
-        setBook(res.data);
-        // setTimeout(() => {
-          setShowModalNewStory(true);
-        // }, 50);
-      }
+     
+      setShowModalNewStory(true)
+      // try {
+      //   // const res = await getStoryDetail(userStory?.id);
+      //   // handleSetStory(res.data);
+      //   // setBook(res.data);
+      //   // if (res.data) {
+      //   //   setShowModalNewStory(true);
+      //   // }
+      // } catch (error) {
+      //   // const res = await getStoryDetail(userStory?.id);
+      //   // handleSetStory(res.data);
+      //   // setBook(res.data);
+      //   // setTimeout(() => {
+      //   setShowModalNewStory(true);
+      //   // }, 50);
+      // }
     }
   };
   const handleLater = async () => {
@@ -1384,7 +1458,9 @@ const MainScreen = ({
   const handleNative = async () => {
     setLoadingStory(true);
     const data = await handleNativePayment(
-      'unlock_story_1_week_only',
+      Platform.OS === 'ios'
+        ? 'unlock_story_1_week_only'
+        : 'unlock_stories_1week',
       route?.params?.storyId,
     );
     if (data) {
@@ -1435,7 +1511,7 @@ const MainScreen = ({
             //marginTop: 20,
           }}>
           <StatusBar
-           hidden={false}
+            hidden={false}
             barStyle={'dark-content'}
             backgroundColor={backgroundColor}
           />
@@ -1522,7 +1598,7 @@ const MainScreen = ({
       return (
         <View
           onTouchStart={touchEndStory}
-          pointerEvents='box-none'
+          pointerEvents="auto"
           style={{
             backgroundColor: backgroundColor,
             flex: 1,
@@ -1530,7 +1606,7 @@ const MainScreen = ({
             // paddingTop: 20,
           }}>
           <StatusBar
-           hidden={false}
+            hidden={false}
             barStyle={'dark-content'}
             backgroundColor={backgroundColor}
           />
@@ -1560,7 +1636,11 @@ const MainScreen = ({
               screenNumber !== 0 &&
               screenNumber !== textChunks?.length - 1
             }
-            isPremium={readLater ? null : isPremiumStory || isPremiumAudio || isPremiumMonthly}
+            isPremium={
+              readLater
+                ? null
+                : isPremiumStory || isPremiumAudio || isPremiumMonthly
+            }
             handleRead={(data: any) => {
               handleReadAds(data);
             }}
@@ -1579,7 +1659,7 @@ const MainScreen = ({
             }}
           />
           <ModalAppRating
-           type={userProfile?.data?.type}
+            type={userProfile?.data?.type}
             isVisible={showRatingApp}
             onClose={() => {
               setRatingApp(false);
@@ -1688,35 +1768,36 @@ const MainScreen = ({
                 {dataBook?.title_en}
               </Text>
             </View>
-
-            <TouchableOpacity
-              onPress={async () => {
-                handleListening();
-              }}
-              style={{
-                marginLeft: 5,
-                padding: hp(5),
-                paddingHorizontal: hp(10),
-                borderRadius: hp(20),
-                backgroundColor: colorTheme,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Speaker />
-              <Text
-                allowFontScaling={false}
+            <View>
+              <TouchableOpacity
+                onPress={async () => {
+                  handleListening();
+                }}
                 style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: moderateScale(Number(14)),
-                  fontFamily: fontFamily,
-                  color: code_color.white,
-                  marginLeft: wp(5),
+                  marginLeft: 5,
+                  padding: hp(7),
+                  paddingHorizontal: hp(12),
+                  borderRadius: hp(20),
+                  backgroundColor: colorTheme,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                Listen
-              </Text>
-            </TouchableOpacity>
+                <Speaker />
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: moderateScale(Number(14)),
+                    fontFamily: fontFamily,
+                    color: code_color.white,
+                    marginLeft: wp(5),
+                  }}>
+                  Listen
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
           {/* {isRippleAnimate && (
             <Animatable.View

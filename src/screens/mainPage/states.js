@@ -13,4 +13,5 @@ export default states => ({
   levelingUser: states.defaultState.levelingUser,
   colorText: states.defaultState.colorText,
   page: states.defaultState.page,
+  relateStory: states.defaultState.relateStory,
 });

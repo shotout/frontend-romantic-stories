@@ -103,7 +103,7 @@ const CategoriesScreen = ({
     const advert = await loadRewardedCategory();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (reward: any) => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
           Alert.alert('Congrats! You have unlocked the selected Topic.', '', [

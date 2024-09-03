@@ -117,15 +117,20 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess}) {
             width: '90%',
             borderRadius: moderateScale(24),
           }}>
-          <TouchableOpacity
+            <View style={{ alignItems: 'flex-end',}}>
+            <TouchableOpacity
             onPress={handleSuccess}
             style={{
-              marginLeft: 'auto',
-              paddingTop: hp(12),
-              paddingRight: hp(12),
+              // backgroundColor: 'red',
+              alignContent: 'center',
+              // marginLeft: 'auto',
+              padding: hp(20),
+              // paddingRight: hp(20),
             }}>
             <CloseIcon height={hp(18)} width={hp(18)} fill={code_color.grey} />
           </TouchableOpacity>
+            </View>
+        
           <Image
             source={imgRating}
             style={{

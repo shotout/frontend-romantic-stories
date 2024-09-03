@@ -2,6 +2,9 @@ import { Platform } from 'react-native';
 import { TestIds } from 'react-native-google-mobile-ads';
 
 export const getAppOpenID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
   if (Platform.OS === 'ios') {
      return 'ca-app-pub-1891825795064804/1249922350';
   } else {
@@ -10,6 +13,9 @@ export const getAppOpenID = () => {
 };
 
 export const getAdaptiveBannerID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
  if (Platform.OS === 'ios') {
     return 'ca-app-pub-1891825795064804/2659244938';
   } else {
@@ -18,7 +24,11 @@ export const getAdaptiveBannerID = () => {
 };
 
 
+
 export const getRewardedColorThemeID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
  if (Platform.OS === 'ios') {
    return 'ca-app-pub-1891825795064804/3572833361';
   } else {
@@ -27,6 +37,9 @@ export const getRewardedColorThemeID = () => {
 };
 
 export const getRewardedFontThemeID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
   if (Platform.OS === 'ios') {
     return 'ca-app-pub-1891825795064804/7436040842';
   } else {
@@ -35,6 +48,9 @@ export const getRewardedFontThemeID = () => {
 };
 
 export const getRewardedImageID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
   if (Platform.OS === 'ios') {
    return 'ca-app-pub-1891825795064804/7128934991';
   } else {
@@ -43,6 +59,9 @@ export const getRewardedImageID = () => {
 };
 
 export const getRewardedBgColorID = () => {
+  if (__DEV__) {
+    return TestIds.REWARDED;
+  }
    if (Platform.OS === 'ios') {
   return 'ca-app-pub-1891825795064804/2842189712';
   } else {
@@ -51,17 +70,23 @@ export const getRewardedBgColorID = () => {
 };
 
 export const getRewardedInsterstialStoryID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
  if (Platform.OS === 'ios') {
     return 'ca-app-pub-1891825795064804/5276184232'
   } else {
-    return 'ca-app-pub-1891825795064804/8174407440';
+    return 'ca-app-pub-1891825795064804/9564245502';
   }
 };
 
 export const getRewardedInsterstial12HID = () => {
+  // if (__DEV__) {
+  //   return TestIds.REWARDED;
+  // }
  if (Platform.OS === 'ios') {
     return 'ca-app-pub-1891825795064804/5276184232'
   } else {
-    return 'ca-app-pub-1891825795064804/9096622780';
+    return 'ca-app-pub-1891825795064804/6991458026';
   }
 };

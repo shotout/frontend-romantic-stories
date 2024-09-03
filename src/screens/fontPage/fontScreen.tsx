@@ -123,7 +123,7 @@ const FontScreen = ({
   const isPremiumStory = userProfile?.data?.subscription?.plan?.id === 2;
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
   const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
-  const setBg = value => {
+  const setBg = (value: string) => {
     set_bgColor(value);
     handleSetBackground(value);
     handleSetColor(
@@ -139,7 +139,7 @@ const FontScreen = ({
   };
 
 
-  const handleFont = value => {
+  const handleFont = (value: number) => {
    
     if (value === 0) {
       setFontSize( height > 1000 && Platform.OS === 'android' ? 17 : 14);
@@ -165,19 +165,24 @@ const FontScreen = ({
     const advert = await loadRewardedFont();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (      reward: any) => {
         console.log('Earn page countdown reward:', reward);
+
         if (reward) {
-          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
-            {
-              text: 'OK',
-              onPress: () => {
-                setSelectFont(nextFont);
-                handleSetFontFamily(nextFont.value);
-                setModalUnlockFont(false);
+          setModalUnlockFont(false);
+          setTimeout(() => {
+            Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  setSelectFont(nextFont);
+                  handleSetFontFamily(nextFont.value);
+                  setModalUnlockFont(false);
+                },
               },
-            },
-          ]);
+            ]);
+          }, 100);
+     
         }
         setLoadingAds(false);
       },
@@ -187,28 +192,33 @@ const FontScreen = ({
   const showIntersialBg = async () => {
     setLoadingAds(true);
     const advert = await loadRewardedColorBg();
+   
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (reward: any) => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: async () => {
-                  setBg(
-                    bg_color === code_color.blackDark
-                      ? code_color.white
-                      : code_color.blackDark,
-                  );
-                  setModalUnlockBg(false);
+          setModalUnlockBg(false);
+          setTimeout(() => {
+            Alert.alert(
+              'Congrats! You have unlocked the selected Background.',
+              '',
+              [
+                {
+                  text: 'OK',
+                  onPress: async () => {
+                    setBg(
+                      bg_color === code_color.blackDark
+                        ? code_color.white
+                        : code_color.blackDark,
+                    );
+                    setModalUnlockBg(false);
+                  },
                 },
-              },
-            ],
-          );
+              ],
+            );
+          }, 100);
+       
         }
         setLoadingAds(false);
       },
@@ -220,18 +230,22 @@ const FontScreen = ({
     const advert = await loadRewardedColorTheme();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
-        console.log('Earn page countdown reward:', reward);
+      (      reward: any) => {
+     
         if (reward) {
-          Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
-            {
-              text: 'OK',
-              onPress: () => {
-                handleBgThemeColor(selectedBgTheme.code);
-                setModalUnlockTheme(false);
+          setModalUnlockTheme(false);
+          setTimeout(() => {
+            Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  handleBgThemeColor(selectedBgTheme.code);
+                  setModalUnlockTheme(false);
+                },
               },
-            },
-          ]);
+            ]);
+          }, 200)
+        
         }
         setLoadingAds(false);
       },

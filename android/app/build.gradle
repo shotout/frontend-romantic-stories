@@ -71,15 +71,23 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
+    flavorDimensions "appstore"
     compileSdkVersion rootProject.ext.compileSdkVersion
-
-    namespace "app.erotales"
+    productFlavors {
+    googlePlay {
+      dimension "appstore"
+      missingDimensionStrategy "store", "play"
+     }
+     }
+    buildFeatures {
+        buildConfig true
+    }
+    namespace "com.appsromanticstories"
     defaultConfig {
-        applicationId "app.erotales"
+        applicationId "com.appsromanticstories"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
+        versionCode 1
         versionName "1.0"
         missingDimensionStrategy 'store', 'play' 
     }
@@ -127,7 +135,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.6.0'
     implementation 'com.facebook.fresco:animated-webp:2.6.0'
     implementation 'com.facebook.fresco:webpsupport:2.6.0' 
-
+    implementation project(':react-native-iap')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'

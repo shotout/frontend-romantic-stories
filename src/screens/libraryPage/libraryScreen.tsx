@@ -20,6 +20,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from 'react-native';
 import {
   imgSearchNull,
@@ -133,7 +134,7 @@ const LibraryScreen = ({
   const showWatchAds = async () => {
     setLoadingOne(true);
     const advert = await loadRewarded();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
       setShowModalUnlock(false);
       setLoadingOne(false);
       setTimeout(async () => {
@@ -155,7 +156,7 @@ const LibraryScreen = ({
   const fecthProduct = async () => {
     if (!__DEV__) {
       const products = await IAP.getProducts({
-        skus: ['unlock_story_1_week_only'],
+        skus: [Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
       });
       if (products) {
         setPrice(products[0].localizedPrice);
@@ -1056,7 +1057,7 @@ const LibraryScreen = ({
   const handleNative = async () => {
     setLoading(true);
     const data = await handleNativePayment(
-      'unlock_story_1_week_only',
+      Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
       selectedStory?.id,
     );
     if (data) {

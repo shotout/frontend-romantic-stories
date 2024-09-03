@@ -47,6 +47,7 @@ function ModalAudioStory({
   price2,
   subs
 }) {
+
   const [collect, setCollect] = useState(!data?.name ? '' : data?.name);
   // const [price, setPrice] = useState('');
   // const [price2, setPrice2] = useState('');
@@ -358,7 +359,7 @@ function ModalAudioStory({
               }}>
               {'Lean back and listen to this Story as Audio Book.'}
             </Text>
-            {Platform.OS === 'android' ? null : (
+          
               <Pressable
                 disabled={isLoading}
                 onPress={() => onGetAudio1()}
@@ -377,8 +378,8 @@ function ModalAudioStory({
                   </Text>
                 )}
               </Pressable>
-            )}
-            {Platform.OS === 'android' ? null : (
+           
+           
               <Pressable
                 disabled={isLoading2}
                 onPress={() => onGetAudio()}
@@ -413,8 +414,8 @@ function ModalAudioStory({
                   </Text>
                 )}
               </Pressable>
-            )}
-            {Platform.OS === 'android' ? null : (
+           
+           
               <View
                 style={{
                   flexDirection: 'row',
@@ -439,7 +440,7 @@ function ModalAudioStory({
                   }}
                 />
               </View>
-            )}
+            
             <Pressable
               onPress={() => {
                 onClose();

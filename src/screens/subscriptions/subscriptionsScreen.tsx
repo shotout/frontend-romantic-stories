@@ -20,6 +20,7 @@ import {
   Dimensions,
   ImageBackground,
   Linking,
+  Platform,
 } from 'react-native';
 import {cover2, imgNotif, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -85,7 +86,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
           skus: ['unlock_10_audio_stories'],
         });
         const products1 = await IAP.getProducts({
-          skus: ['unlock_5_audio_stories'],
+          skus: [Platform.OS === 'ios' ? 'unlock_5_audio_stories' : 'unlock_50_audio_stories'],
         });
   
         setPriceAudio1(products1[0].localizedPrice);
@@ -144,7 +145,7 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
     setLoading2(true);
-    const data = await handleNativePayment('unlock_5_audio_stories');
+    const data = await handleNativePayment(Platform.OS === 'ios' ? 'unlock_5_audio_stories' : 'unlock_50_audio_stories');
     if (data) {
       setShow(false);
       setTimeout(async () => {

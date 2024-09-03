@@ -53,7 +53,7 @@ function ModalCongrats({
   pastLevel,
 }) {
   const [leveling, setLeveling] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
   const scrollViewRef = useRef(null);
   const scrollViewRefRight = useRef(null);
   const scrollViewRefPopup = useRef(null);
@@ -393,7 +393,7 @@ function ModalCongrats({
           width: sizing.getWindowWidth(0.8),
           justifyContent: 'center',
           alignItems: 'center',
-          height: hp(40),
+          height: hp(55),
           borderRadius: hp(6),
         }}>
         <Text
@@ -439,12 +439,14 @@ function ModalCongrats({
               height: '100%',
             }}>
             <View style={{backgroundColor: code_color.blueDark, flex: 1}}>
+              <View style={{alignItems: 'flex-end', alignContent: 'center', justifyContent: 'center'}}>
               <Pressable
                 onPress={() => handleClose()}
                 style={{
-                  alignItems: 'flex-end',
-                  paddingRight: wp(20),
-                  paddingTop: wp(20),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 50,
+                  width: 50
                 }}>
                 <CloseSvg
                   width={wp(15)}
@@ -452,6 +454,8 @@ function ModalCongrats({
                   fill={code_color.white}
                 />
               </Pressable>
+              </View>
+             
               <View style={{flex: 1, backgroundColor: code_color.blueDark}}>
                 <View style={{alignItems: 'center'}}>
                   <Text
@@ -744,6 +748,7 @@ function ModalCongrats({
                       justifyContent: 'center',
                       // height: 52,
                       padding: wp(10),
+                      paddingVertical: 19,
                       borderRadius: wp(8),
                       // width: '90%',
                       marginTop: wp(20),

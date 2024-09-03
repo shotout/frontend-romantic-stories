@@ -119,7 +119,7 @@ function QuotesContent({
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
     setLoading2(true);
-    const data = await handleNativePayment('unlock_5_audio_stories');
+    const data = await handleNativePayment(Platform.OS === 'ios' ? 'unlock_5_audio_stories' : 'unlock_50_audio_stories');
     if (data) {
       setShow();
       setTimeout(async () => {

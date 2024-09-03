@@ -19,6 +19,7 @@ import {
   SafeAreaView,
   Dimensions,
   Alert,
+  Platform,
 } from 'react-native';
 import {imgStep4_2} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -191,7 +192,7 @@ const ExploreLibraryScreen = ({
     if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
-          skus: ['unlock_story_1_week_only'],
+          skus: [ Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
         });
         console.log('Products:', products);
         setPrice(products[0].localizedPrice);
@@ -205,9 +206,10 @@ const ExploreLibraryScreen = ({
     const advert = await loadRewardedCategory();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (reward: any) => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
+          
           Alert.alert('Congrats! You have unlocked the selected Topic.', '', [
             {
               text: 'OK',
@@ -222,7 +224,7 @@ const ExploreLibraryScreen = ({
   const handleNative = async () => {
     setLoading(true);
     const data = await handleNativePayment(
-      'unlock_story_1_week_only',
+      Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
       selectedStory?.id,
     );
     if (data) {

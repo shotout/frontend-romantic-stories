@@ -124,11 +124,14 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess, type}) 
             width: '90%',
             borderRadius: moderateScale(24),
           }}>
-          <TouchableOpacity
+            <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+            <TouchableOpacity
             onPress={handleSuccess}
-            style={{marginLeft: 'auto', paddingTop: 12, paddingRight: 12}}>
+            style={{ alignItems: 'center', justifyContent: 'center', height: 30, width: 30, marginRight: 10, marginTop: 10}}>
             <CloseIcon height={18} width={18} fill={code_color.grey} />
           </TouchableOpacity>
+            </View>
+         
           <Image
             source={ type === 'realistic' ?  iconRatingReal : iconRating}
             resizeMode='contain'
@@ -199,6 +202,7 @@ function ModalStoryRating({isVisible, onClose, nextStory, handleSuccess, type}) 
                   backgroundColor: rating === 0 ? code_color.grey : code_color.yellow,
                   marginTop: moderateScale(20),
                   padding: moderateScale(12),
+                  paddingVertical: 19,
                   alignItems: 'center',
                   borderRadius: 8,
                   width: moderateScale(280),

@@ -9,6 +9,7 @@ import * as IAP from 'react-native-iap';
 import {updateProfile} from '../shared/request';
 import {reloadUserProfile} from '../utils/user';
 import { checkDays, reformatDate } from '../utils/helper';
+import { Platform } from 'react-native';
 
 export const handlePayment = async (vendorId, notif, cb,) =>
   new Promise(async (resolve, reject) => {
@@ -92,27 +93,34 @@ export const handleNativePayment = async (sku, storyId) => {
   try {
     // const products = await IAP.getProducts({ skus: ['unlock_story_1_week_only'] });
     // console.log('Products:', products);
-    const result = await IAP.requestPurchase({
-      sku: sku ? sku : 'unlock_story_1_week_only',
-    });
+    const params = Platform.select({
+      ios: {
+        sku:  sku ? sku :  Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
+      },
+      android: {
+        skus: sku ? ['unlock_stories_1week'] :  Platform.OS === 'ios' ? 'unlock_story_1_week_only' : ['unlock_stories_1week'],
+      }
+    })
+    const result = await IAP.requestPurchase(params);
+   
     const payload = {
       _method: 'PATCH',
       is_audio: 1,
-      audio_limit: sku === 'unlock_10_audio_stories' ? 10 : 'unlock_5_audio_stories' ? 50 : 0,
+      audio_limit: sku === 'unlock_10_audio_stories' ? 10 : sku === 'unlock_5_audio_stories' || sku === 'unlock_50_audio_stories' ? 50 : 0,
     };
     const payloadStory = {
       _method: 'PATCH',
       story_id: storyId,
       expire: 7,
     };
-    eventTracking(sku === 'unlock_10_audio_stories' ? BUY_10_AUDIO : sku === 'unlock_5_audio_stories' ? BUY_50_AUDIO : null)
+    eventTracking(sku === 'unlock_10_audio_stories' ? BUY_10_AUDIO : sku === 'unlock_5_audio_stories' || sku === 'unlock_50_audio_stories' ? BUY_50_AUDIO : null)
     await updateProfile(
-      sku === 'unlock_story_1_week_only' ? payloadStory : payload,
+      sku === 'unlock_story_1_week_only' ||  sku === 'unlock_stories_1week'? payloadStory : payload,
     );
     reloadUserProfile();
     await AsyncStorage.setItem(
       'subscribtions',
-      sku ? sku : 'unlock_story_1_week_only',
+      sku ? sku : Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
     );
 
     // Operasi selesai dengan sukses, return true

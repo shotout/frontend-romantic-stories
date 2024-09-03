@@ -19,6 +19,7 @@ import {
   SafeAreaView,
   Dimensions,
   ImageBackground,
+  Switch
 } from 'react-native';
 import {bg_notif, cover2, imgNotif, imgNotifReal, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -43,7 +44,7 @@ import {handleSetSteps} from '../../store/defaultState/actions';
 import i18n from '../../i18n';
 import Button from '../../components/buttons/Button';
 import StepHeader from '../../layout/step/stepHeader';
-import {Switch} from 'react-native-gesture-handler';
+// import {Switch} from 'react-native-gesture-handler';
 import {reloadUserProfile} from '../../utils/user';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
@@ -170,7 +171,7 @@ const NotificationScreen = ({
             New Stories
           </Text>
           <Switch
-            style={{marginLeft: 'auto'}}
+            style={{marginLeft: 'auto', marginRight: 20, transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]}}
             trackColor={{false: '#767577', true: '#00B781'}}
             thumbColor={newStories ? '#fff' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
@@ -191,7 +192,7 @@ const NotificationScreen = ({
             Promotions
           </Text>
           <Switch
-            style={{marginLeft: 'auto'}}
+            style={{marginLeft: 'auto', marginRight: 20, transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]}}
             trackColor={{false: '#767577', true: '#00B781'}}
             thumbColor={promotions ? '#fff' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"

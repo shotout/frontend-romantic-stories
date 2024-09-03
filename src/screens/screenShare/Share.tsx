@@ -206,19 +206,23 @@ function ScreenShare({
     const advert = await loadRewarded();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (reward: any) => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
-          Alert.alert('Congrats! You have unlocked the selected Font.', '', [
-            {
-              text: 'OK',
-              onPress: () => {
-                setSelectFont(selectedFont);
-                handleSetFontFamily(selectedFont.value);
-                setModalUnlockFont(false);
+          setModalUnlockFont(false);
+          setTimeout(() => {
+            Alert.alert('Congrats! You have unlocked the selected Font.', '', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  setSelectFont(selectedFont);
+                  handleSetFontFamily(selectedFont.value);
+                  setModalUnlockFont(false);
+                },
               },
-            },
-          ]);
+            ]);
+          }, 100);
+          
         }
         setLoadingAds(false);
       },
@@ -230,23 +234,27 @@ function ScreenShare({
     const advert = await loadRewardedImage();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      (reward: any) => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: () => {
-                  setSelectBg(selectedBg);
-                  handleSetBgShare(selectedBg)
-                  setModalUnlockBg(false);
+          setModalUnlockBg(false);
+          setTimeout(() => {
+            Alert.alert(
+              'Congrats! You have unlocked the selected Background.',
+              '',
+              [
+                {
+                  text: 'OK',
+                  onPress: () => {
+                    setSelectBg(selectedBg);
+                    handleSetBgShare(selectedBg)
+                    setModalUnlockBg(false);
+                  },
                 },
-              },
-            ],
-          );
+              ],
+            );
+          }, 100);
+         
         }
         setLoadingAds(false);
       },
