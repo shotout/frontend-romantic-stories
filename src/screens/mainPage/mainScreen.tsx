@@ -24,6 +24,7 @@ import {
   TouchableOpacity,
   AppState,
   BackHandler,
+  Alert,
 } from 'react-native';
 import {navigate} from '../../shared/navigationRef';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -78,6 +79,7 @@ import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
 import {moderateScale} from 'react-native-size-matters';
 import TrackPlayer from 'react-native-track-player';
+import { fetch } from '@react-native-community/netinfo';
 
 const MainScreen = ({
   userProfile,
@@ -681,10 +683,10 @@ const MainScreen = ({
   };
   const handleListening = async () => {
     if (userProfile?.data?.subscription?.plan?.id === 3) {
-      navigate('Media');
+      checkInternetConnection();
     } else {
       if (dataBook?.audio_enable != null) {
-        navigate('Media');
+        checkInternetConnection();
       } else {
         checkingListen();
       }
@@ -1254,6 +1256,35 @@ const MainScreen = ({
       getPrice();
     }
   }, []);
+  const checkInternetConnection = async () => {
+    fetch().then(async state => {
+      if (!state.isConnected) {
+        navigate('Media');
+      } else {
+        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // const fileExists = await RNFS.exists(destinationPath);
+        // if (fileExists) {
+
+        //   navigate('Media');
+        // } else {
+
+        Alert.alert(
+          '',
+          'Please check your internet connection before playing this Audio Story',
+          [
+            {
+              text: 'OK',
+              onPress: async () => ({}),
+            },
+          ],
+        );
+
+        // }
+      }
+    });
+  };
   const handleSuccessRating = async () => {
     setRating(false);
     if (isPremiumStory || isPremiumAudio || isPremiumMonthly) {

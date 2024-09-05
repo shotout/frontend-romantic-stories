@@ -569,6 +569,8 @@ PODS:
     - FBSDKGamingServicesKit (~> 16.3.1)
     - FBSDKShareKit (~> 16.3.1)
     - React-Core
+  - react-native-netinfo (11.3.2):
+    - React-Core
   - react-native-notifications (5.1.0):
     - React-Core
   - react-native-pager-view (5.4.17):
@@ -708,7 +710,7 @@ PODS:
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
-    - SDWebImage (~> 5.12.1)
+    - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFBAnalytics (18.7.3):
     - Firebase/Analytics (= 10.19.0)
@@ -762,9 +764,9 @@ PODS:
     - React-Core
   - RNSVG (13.14.0):
     - React-Core
-  - SDWebImage (5.12.6):
-    - SDWebImage/Core (= 5.12.6)
-  - SDWebImage/Core (5.12.6)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
@@ -831,6 +833,7 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - react-native-change-icon (from `../node_modules/react-native-change-icon`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-purchasely (from `../node_modules/react-native-purchasely`)
@@ -981,6 +984,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-change-icon"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-pager-view:
@@ -1140,6 +1145,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
   react-native-change-icon: ea9bb7255b09e89f41cbf282df16eade91ab1833
   react-native-fbsdk-next: fcecfa33c37ce63bcda9cd24766ee9d345463230
+  react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
   react-native-notifications: 4601a5a8db4ced6ae7cfc43b44d35fe437ac50c4
   react-native-pager-view: 90de13b1dbf368a4d486f532d72e5f54d479a986
   react-native-purchasely: 5bd66fee0d0307e504109432403ee3d9569d9815
@@ -1169,7 +1175,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
-  RNFastImage: 65fc4932ac71ad7569adc60b66db6a6ed30dad89
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBAnalytics: fdecb8b774abd12f9ed79675794159d1a0fadc6c
   RNFBApp: 5ee688b07ed0fa692a3a8fd07df6d6ae41e4c3a0
   RNFBDynamicLinks: da53ab706665e2e3db2d0371484f80067b200051
@@ -1185,7 +1191,7 @@ SPEC CHECKSUMS:
   RNSentry: 7ae2a06a5563de39ec09dcb1e751ac0c67f1883c
   RNShare: 36aa3e6958373a0ad1c95a1c960adef589da3794
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
-  SDWebImage: a47aea9e3d8816015db4e523daff50cfd294499d
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Sentry: 2f6baed15a3f8056b875fc903dc3dcb2903117f4
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
