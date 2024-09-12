@@ -76,6 +76,7 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
             handleSelect(item);
           }}
           style={{
+            padding: 10,
             flexDirection: 'row',
             alignItems: 'center',
             marginHorizontal: 20,
@@ -83,11 +84,11 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
             paddingBottom: 10,
             marginVertical: 10,
           }}>
-          <item.icon fill={colorTheme} width={24} height={24} />
+          <item.icon fill={colorTheme} width={30} height={30} />
 
           <Text
             allowFontScaling={false}
-            style={{flex: 1, marginLeft: 10, color: code_color.blackDark}}>
+            style={{flex: 1, fontSize: 16, marginLeft: 10, color: code_color.blackDark}}>
             {item.name}
           </Text>
 
@@ -99,8 +100,8 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
               borderWidth: 1,
               borderColor: select === item.name ? colorTheme : '#B2B6BB',
               backgroundColor: select === item.name ? colorTheme : null,
-              width: 22,
-              height: 22,
+              width: 30,
+              height: 30,
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: 'center',
@@ -148,18 +149,26 @@ function ModalSorting({isVisible, onClose, items, colorTheme}) {
                 borderRadius: 10,
                 padding: 10,
               }}>
-              <Pressable
-                onPress={() => handleClose()}
-                style={{alignItems: 'flex-end'}}>
-                <CloseSvg width={15} height={15} />
-              </Pressable>
+              <View style={{alignItems: 'flex-end'}}>
+                <Pressable
+                  onPress={() => handleClose()}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 30,
+                    width: 30,
+                  }}>
+                  <CloseSvg width={20} height={20} />
+                </Pressable>
+              </View>
+
               <View style={{alignItems: 'center', flex: 1}}>
                 <Text
                   style={{
                     color: code_color.blackDark,
                     marginVertical: 10,
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: 18,
                   }}>
                   Sort by
                 </Text>

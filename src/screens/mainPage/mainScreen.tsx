@@ -424,6 +424,14 @@ const MainScreen = ({
       setTimeout(() => {
         setToFirstPage();
       }, 300);
+    }else{
+      async function setToFirstPage() {
+        setScreenNumber(0);
+        pagerRef.current?.setPage(0);
+      }
+      setTimeout(() => {
+        setToFirstPage();
+      }, 300);
     }
   }, [dataBook?.title_en]);
 
@@ -762,7 +770,7 @@ const MainScreen = ({
         // } else {
 
         Alert.alert(
-          'Info',
+          'YOU SEEM TO BE OFFLINE',
           'Please check your internet connection before playing this Audio Story',
           [
             {
@@ -1823,7 +1831,10 @@ const MainScreen = ({
           <ModalUnlockStory
             isLoading={loadingStory}
             isVisible={showStoryFree}
-            onClose={() => setShowStoryFree(false)}
+            onClose={() => {
+              pagerRef.current?.setPage(0)
+              setShowStoryFree(false)
+            }}
             data={nextStory}
             onWatchAds={showWatchAdsFree}
             onUnlock={() => {

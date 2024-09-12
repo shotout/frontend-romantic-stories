@@ -53,7 +53,7 @@ function ModalCongrats({
   pastLevel,
 }) {
   const [leveling, setLeveling] = useState(null);
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const scrollViewRef = useRef(null);
   const scrollViewRefRight = useRef(null);
   const scrollViewRefPopup = useRef(null);

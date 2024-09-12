@@ -240,7 +240,7 @@ const ExploreLibraryScreen = ({
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: bgTheme}}>
+    <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
       <ModalGetPremium
         isVisible={showModalGetPremium}
         onGotIt={() => {
@@ -347,11 +347,19 @@ const ExploreLibraryScreen = ({
           </Pressable>
         </View>
       </View>
+      {data?.status != 'success' && !load?
+        <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white', justifyContent: 'center', }}>
+          <Text>Failed to load data</Text>
+          <Pressable onPress={() => handleRestart()} style={{ backgroundColor: bgTheme, padding: 10, marginTop: 20, borderRadius: 20, paddingHorizontal: 30}}>
+            <Text style={{color: 'white'}}>Refresh Page</Text>
+          </Pressable>
+        </View> :
       <ScrollView
         style={{
           backgroundColor: 'white',
           height: '100%',
         }}>
+       
         {data?.most_read?.length > 0 && (
           <View style={{flex: 0, height: 'auto'}}>
             <View
@@ -629,6 +637,8 @@ const ExploreLibraryScreen = ({
             </View>
           </View>
         )}
+        
+       
         {/* <View
           style={{
             height: moderateScale(100),
@@ -647,7 +657,7 @@ const ExploreLibraryScreen = ({
             loop={true}
           />
         </View> */}
-      </ScrollView>
+      </ScrollView> }
       {/* {renderTutorial()} */}
       <ModalUnlockedStory
         restart
