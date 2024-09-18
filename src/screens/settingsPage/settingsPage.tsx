@@ -18,6 +18,7 @@ import {
   Pressable,
   Linking,
   Platform,
+  Alert,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {bgSettings} from '../../assets/images';
@@ -55,6 +56,7 @@ import { fixedFontSize, hp, wp } from '../../utils/screen';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
 import FastImage from 'react-native-fast-image';
+import { fetch } from '@react-native-community/netinfo';
 
 const SettingsPage = ({
   colorTheme,
@@ -76,6 +78,31 @@ const SettingsPage = ({
   const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
   const [bgTheme, setBgTheme] = useState(colorTheme);
 
+  const offline = () => {
+
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+      } else {
+          offline()
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetchOnline()
+  }, [])
   const [menu, setlistMenu] = useState( Platform.OS != 'android' ? [
     {
       name: 'Edit Profile',

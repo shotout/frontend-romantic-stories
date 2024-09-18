@@ -77,6 +77,7 @@ import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
 import { reloadUserProfile } from '../../utils/user';
+import { fetch } from '@react-native-community/netinfo';
 
 const LibraryScreen = ({
   colorTheme,
@@ -130,6 +131,31 @@ const LibraryScreen = ({
       translateX.setValue(0); // Set the animation value to the current value
     });
   };
+  const offline = () => {
+
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+      } else {
+          offline()
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetchOnline()
+  }, [])
   const showWatchAds = async () => {
     setLoadingOne(true);
     const advert = await loadRewarded();

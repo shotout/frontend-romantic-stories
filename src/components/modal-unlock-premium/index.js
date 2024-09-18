@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -19,6 +20,7 @@ import PlayIcon from '../../assets/icons/play';
 import CloseIcon from '../../assets/icons/close';
 import {handlePayment} from '../../helpers/paywall';
 import {hp} from '../../utils/screen';
+import { fetch } from '@react-native-community/netinfo';
 function ModalUnlockPremium({
   isLoadingAds,
   isVisible,
@@ -31,7 +33,28 @@ function ModalUnlockPremium({
   const handleClose = () => {
     onClose();
   };
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        handlePayment('in_app')
+      } else {
+          offline()
+      }
+    });
+  }
+  const offline = () => {
 
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
   return (
     <Modal
       visible={isVisible}
@@ -87,7 +110,7 @@ function ModalUnlockPremium({
           </Text>
           <View style={{flexDirection: 'row', gap: hp(10), marginTop: hp(20)}}>
             <TouchableOpacity
-              onPress={() => handlePayment('in_app')}
+              onPress={() => fetchOnline()}
               style={{
                 backgroundColor: '#009A37',
                 flex: 1,

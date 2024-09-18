@@ -65,6 +65,7 @@ import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
 import {hp} from '../../utils/screen';
+import { fetch } from '@react-native-community/netinfo';
 
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
@@ -129,7 +130,19 @@ const ExploreLibraryScreen = ({
       setShowUnlockedStory(true);
     }, 500);
   };
+  const offline = () => {
 
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
   const handleUnlimited = async () => {
     //
     try {
@@ -171,6 +184,30 @@ const ExploreLibraryScreen = ({
     setLoad(true);
     fetchData();
   };
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+
+      } else {
+        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // const fileExists = await RNFS.exists(destinationPath);
+        // if (fileExists) {
+
+        //   navigate('Media');
+        // } else {
+          offline()
+
+
+        // }
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetchOnline()
+  }, [])
   useEffect(() => {
     handleRestart();
   }, [keyword, items]);

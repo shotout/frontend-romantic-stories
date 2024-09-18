@@ -569,9 +569,35 @@ const MainScreen = ({
   };
 
   useEffect(() => {
+   
     handleThemeAvatar();
+  
+   
   }, []);
 
+  useEffect(() => {
+    fetchOnline()
+  }, [])
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+
+      } else {
+        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // const fileExists = await RNFS.exists(destinationPath);
+        // if (fileExists) {
+
+        //   navigate('Media');
+        // } else {
+          offline()
+
+
+        // }
+      }
+    });
+  }
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -682,15 +708,33 @@ const MainScreen = ({
     }
   };
   const handleListening = async () => {
-    if (userProfile?.data?.subscription?.plan?.id === 3) {
-      checkInternetConnection();
-    } else {
-      if (dataBook?.audio_enable != null) {
-        checkInternetConnection();
+    fetch().then(async state => {
+      if (state.isConnected) {
+        if (userProfile?.data?.subscription?.plan?.id === 3) {
+          checkInternetConnection();
+        } else {
+          if (dataBook?.audio_enable != null) {
+            checkInternetConnection();
+          } else {
+            checkingListen();
+          }
+        }
       } else {
-        checkingListen();
+        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // const fileExists = await RNFS.exists(destinationPath);
+        // if (fileExists) {
+
+        //   navigate('Media');
+        // } else {
+          offlineMedia()
+
+
+        // }
       }
-    }
+    });
+    
   };
 
   const splitTextIntoArray = (text: string, chunkLength: number) => {
@@ -1256,9 +1300,37 @@ const MainScreen = ({
       getPrice();
     }
   }, []);
+
+  const offline = () => {
+
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
+
+  const offlineMedia = () => {
+
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection before playing this Audio Story.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
   const checkInternetConnection = async () => {
     fetch().then(async state => {
-      if (!state.isConnected) {
+      if (state.isConnected) {
         navigate('Media');
       } else {
         // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
@@ -1269,18 +1341,7 @@ const MainScreen = ({
 
         //   navigate('Media');
         // } else {
-
-        Alert.alert(
-          '',
-          'Please check your internet connection before playing this Audio Story',
-          [
-            {
-              text: 'OK',
-              onPress: async () => ({}),
-            },
-          ],
-        );
-
+          offlineMedia()
         // }
       }
     });

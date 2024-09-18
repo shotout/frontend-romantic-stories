@@ -15,6 +15,7 @@ import {
   View,
   Modal,
   TextInput,
+  Alert,
 } from 'react-native';
 import {SelectableText} from '@astrocoders/react-native-selectable-text';
 import AnimatedLottieView from 'lottie-react-native';
@@ -30,6 +31,67 @@ import {
   bg_landscape,
   bg_office,
   imgLove,
+  realistic_autumn_1,
+  realistic_autumn_2,
+  realistic_autumn_3,
+  realistic_autumn_4,
+  realistic_autumn_5,
+  realistic_autumn_6,
+  realistic_beach_1,
+  realistic_beach_2,
+  realistic_beach_3,
+  realistic_beach_4,
+  realistic_beach_5,
+  realistic_beach_6,
+  realistic_casual_1,
+  realistic_casual_2,
+  realistic_casual_3,
+  realistic_casual_4,
+  realistic_casual_5,
+  realistic_casual_6,
+  realistic_cocktail_1,
+  realistic_cocktail_2,
+  realistic_cocktail_3,
+  realistic_cocktail_4,
+  realistic_cocktail_5,
+  realistic_cocktail_6,
+  realistic_professional_1,
+  realistic_professional_2,
+  realistic_professional_3,
+  realistic_professional_4,
+  realistic_professional_5,
+  realistic_professional_6,
+  realistic_relaxed_1,
+  realistic_relaxed_2,
+  realistic_relaxed_3,
+  realistic_relaxed_4,
+  realistic_relaxed_5,
+  realistic_relaxed_6,
+  realistic_sport_1,
+  realistic_sport_2,
+  realistic_sport_3,
+  realistic_sport_4,
+  realistic_sport_5,
+  realistic_sport_6,
+  realistic_street_1,
+  realistic_street_2,
+  realistic_street_3,
+  realistic_street_4,
+  realistic_street_5,
+  realistic_street_6,
+  realistic_travelling_1,
+  realistic_travelling_2,
+  realistic_travelling_3,
+  realistic_travelling_4,
+  realistic_travelling_5,
+  realistic_travelling_6,
+  realistic_winter_1,
+  realistic_winter_2,
+  realistic_winter_3,
+  realistic_winter_4,
+  realistic_winter_5,
+  realistic_winter_6,
+  
 } from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {BACKEND_URL} from '../../shared/static';
@@ -54,6 +116,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import states from './states';
 import dispatcher from './dispatcher';
+import {fetch} from '@react-native-community/netinfo';
 // import {TextInput} from 'react-native-paper';
 const loveAnimate = require('../../assets/lottie/love.json');
 
@@ -88,11 +151,16 @@ function QuotesContent({
   const isFocused = useIsFocused();
   const [color, setColor] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [online, setOnline] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [title, setTitle] = useState('10/10 Audio Stories');
   const [showAudio, setShowAudio] = useState(false);
-  const [me, setMe] = useState(null);
-  const [partner, setPartner] = useState(null);
+  const [me, setMe] = useState(
+    `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+  );
+  const [partner, setPartner] = useState(
+    `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+  );
   const [playLoveAnimate, setPlayLoveAnimate] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
@@ -144,6 +212,53 @@ function QuotesContent({
     } else {
       setShow();
       setLoading(false);
+    }
+  };
+
+  const fecthOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        setOnline(true);
+      } else {
+        setOnline(false);
+        offline();
+      }
+    });
+  };
+  useEffect(() => {
+    fecthOnline();
+  }, [pageActive, userProfile]);
+
+  const offline = () => {
+    if (userProfile?.data?.gender === 'Female') {
+      if (
+        pageActive === 0 ||
+        pageActive === 10 ||
+        pageActive === 20 ||
+        pageActive === 30 ||
+        pageActive === 40
+      ) {
+        setMe(
+          `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+        );
+        setPartner(
+          `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+        );
+
+        // setMe(data?.data?.partner);
+      }
+      // setMe(data?.data?.partner);
+      // setPartner(data?.data?.me);
+    } else {
+      setMe(
+        `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+      );
+      setPartner(
+        `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+      );
+
+      // setMe(data?.data?.me);
+      // setPartner(data?.data?.partner);
     }
   };
 
@@ -225,26 +340,28 @@ function QuotesContent({
             pageActive === 26 ||
             pageActive === 36 ||
             pageActive === 46
-          ? 'travelling' : 
-          pageActive === 7 ||
+          ? 'travelling'
+          : pageActive === 7 ||
             pageActive === 17 ||
             pageActive === 27 ||
             pageActive === 37 ||
             pageActive === 47
-            ? 'autumn'
-            : pageActive === 8 ||
-              pageActive === 18 ||
-              pageActive === 28 ||
-              pageActive === 38 ||
-              pageActive === 48
-            ? 'street'
-            : pageActive === 9 ||
+          ? 'autumn'
+          : pageActive === 8 ||
+            pageActive === 18 ||
+            pageActive === 28 ||
+            pageActive === 38 ||
+            pageActive === 48
+          ? 'street'
+          : pageActive === 9 ||
             pageActive === 19 ||
             pageActive === 29 ||
             pageActive === 39 ||
-            pageActive === 49 ? 'cocktail'
-           : 'travelling',
+            pageActive === 49
+          ? 'cocktail'
+          : 'travelling',
     };
+
     try {
       const data = await getListAvatarTheme(params);
       if (data?.data) {
@@ -421,30 +538,175 @@ function QuotesContent({
     // }
   }, [color, isActive, fontColor, item]);
 
-  function customSplit(text, maxLength) {
-    const words = text.split(' ');
-    let result = '';
-    let count = 0;
-
-    for (let i = 0; i < words.length; i++) {
-      // Tambahkan spasi sebelum kata kecuali untuk kata pertama
-      if (i !== 0) {
-        result += ' ';
-      }
-      const word = words[i];
-      // Jika panjang kata lebih dari sisa karakter yang diperbolehkan,
-      // tambahkan \n dan reset count
-      if (count + word.length > maxLength) {
-        result += '\n';
-        count = 0;
-      }
-      result += word;
-      count += word.length;
-    }
-    return result;
-  }
+ 
   const height = Dimensions.get('window').height;
 
+  const isPageActive = (page) => {
+    return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(page);
+  };
+  
+  const getImageByAvatarAndPage = (avatarMale, pageActive) => {
+    if (isPageActive(pageActive)) {
+      if (avatarMale === 1) return realistic_casual_1;
+      if (avatarMale === 2) return realistic_casual_2;
+      if (avatarMale === 3) return realistic_casual_3;
+      if (avatarMale === 4) return realistic_casual_4;
+      if (avatarMale === 5) return realistic_casual_5;
+      if (avatarMale === 6) return realistic_casual_6;
+    } else if ([1, 11, 21, 31, 41, 51, 61, 71].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_professional_1;
+      if (avatarMale === 2) return realistic_professional_2;
+      if (avatarMale === 3) return realistic_professional_3;
+      if (avatarMale === 4) return realistic_professional_4;
+      if (avatarMale === 5) return realistic_professional_5;
+      if (avatarMale === 6) return realistic_professional_6;
+    } else if ([2, 12, 22, 32, 42, 52, 62, 72,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_beach_1;
+      if (avatarMale === 2) return realistic_beach_2;
+      if (avatarMale === 3) return realistic_beach_3;
+      if (avatarMale === 4) return realistic_beach_4;
+      if (avatarMale === 5) return realistic_beach_5;
+      if (avatarMale === 6) return realistic_beach_6;
+    } else if ([3, 13, 23, 33, 43, 53, 63, 73,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_sport_1;
+      if (avatarMale === 2) return realistic_sport_2;
+      if (avatarMale === 3) return realistic_sport_3;
+      if (avatarMale === 4) return realistic_sport_4;
+      if (avatarMale === 5) return realistic_sport_5;
+      if (avatarMale === 6) return realistic_sport_6;
+    } else if ([4, 14, 24, 34, 44, 54, 64, 74,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_winter_1;
+      if (avatarMale === 2) return realistic_winter_2;
+      if (avatarMale === 3) return realistic_winter_3;
+      if (avatarMale === 4) return realistic_winter_4;
+      if (avatarMale === 5) return realistic_winter_5;
+      if (avatarMale === 6) return realistic_winter_6;
+    } else if ([5, 15, 25, 35, 45, 55, 65, 75,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_relaxed_1;
+      if (avatarMale === 2) return realistic_relaxed_2;
+      if (avatarMale === 3) return realistic_relaxed_3;
+      if (avatarMale === 4) return realistic_relaxed_4;
+      if (avatarMale === 5) return realistic_relaxed_5;
+      if (avatarMale === 6) return realistic_relaxed_6;
+    } else if ([6, 16, 26, 36, 46, 56, 66, 76,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_travelling_1;
+      if (avatarMale === 2) return realistic_travelling_2;
+      if (avatarMale === 3) return realistic_travelling_3;
+      if (avatarMale === 4) return realistic_travelling_4;
+      if (avatarMale === 5) return realistic_travelling_5;
+      if (avatarMale === 6) return realistic_travelling_6;
+    } else if ([7, 17, 27, 37, 47, 57, 67, 77,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_autumn_1;
+      if (avatarMale === 2) return realistic_autumn_2;
+      if (avatarMale === 3) return realistic_autumn_3;
+      if (avatarMale === 4) return realistic_autumn_4;
+      if (avatarMale === 5) return realistic_autumn_5;
+      if (avatarMale === 6) return realistic_autumn_6;
+    } else if ([8, 18, 28, 38, 48, 58, 68, 78,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_street_1;
+      if (avatarMale === 2) return realistic_street_2;
+      if (avatarMale === 3) return realistic_street_3;
+      if (avatarMale === 4) return realistic_street_4;
+      if (avatarMale === 5) return realistic_street_5;
+      if (avatarMale === 6) return realistic_street_6;
+    } else if ([9, 19, 29, 39, 49, 59, 69, 79,].includes(pageActive)) {
+      if (avatarMale === 1) return realistic_cocktail_1;
+      if (avatarMale === 2) return realistic_cocktail_2;
+      if (avatarMale === 3) return realistic_cocktail_3;
+      if (avatarMale === 4) return realistic_cocktail_4;
+      if (avatarMale === 5) return realistic_cocktail_5;
+      if (avatarMale === 6) return realistic_cocktail_6;
+    }
+    
+    return null; // Default or fallback image if no conditions match
+  };
+
+  const getImageByAvatarAndPagePartner = (avatarMale, pageActive) => {
+    if (isPageActive(pageActive)) {
+      if (avatarMale === 4) return realistic_casual_4;
+      if (avatarMale === 5) return realistic_casual_5;
+      if (avatarMale === 6) return realistic_casual_6;
+    } else if ([1, 11, 21, 31, 41, 51, 61, 71].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_professional_4;
+      if (avatarMale === 5) return realistic_professional_5;
+      if (avatarMale === 6) return realistic_professional_6;
+    } else if ([2, 12, 22, 32, 42, 52, 62, 72,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_beach_4;
+      if (avatarMale === 5) return realistic_beach_5;
+      if (avatarMale === 6) return realistic_beach_6;
+    } else if ([3, 13, 23, 33, 43, 53, 63, 73,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_sport_4;
+      if (avatarMale === 5) return realistic_sport_5;
+      if (avatarMale === 6) return realistic_sport_6;
+    } else if ([4, 14, 24, 34, 44, 54, 64, 74,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_winter_4;
+      if (avatarMale === 5) return realistic_winter_5;
+      if (avatarMale === 6) return realistic_winter_6;
+    } else if ([5, 15, 25, 35, 45, 55, 65, 75,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_relaxed_4;
+      if (avatarMale === 5) return realistic_relaxed_5;
+      if (avatarMale === 6) return realistic_relaxed_6;
+    } else if ([6, 16, 26, 36, 46, 56, 66, 76,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_travelling_4;
+      if (avatarMale === 5) return realistic_travelling_5;
+      if (avatarMale === 6) return realistic_travelling_6;
+    } else if ([7, 17, 27, 37, 47, 57, 67, 77,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_autumn_4;
+      if (avatarMale === 5) return realistic_autumn_5;
+      if (avatarMale === 6) return realistic_autumn_6;
+    } else if ([8, 18, 28, 38, 48, 58, 68, 78,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_street_4;
+      if (avatarMale === 5) return realistic_street_5;
+      if (avatarMale === 6) return realistic_street_6;
+    } else if ([9, 19, 29, 39, 49, 59, 69, 79,].includes(pageActive)) {
+      if (avatarMale === 4) return realistic_cocktail_4;
+      if (avatarMale === 5) return realistic_cocktail_5;
+      if (avatarMale === 6) return realistic_cocktail_6;
+    }
+    
+    return null; // Default or fallback image if no conditions match
+  };
+  const fetchImage = (me) => {
+    let imageSource;
+  
+    if (online) {
+      imageSource = {
+        uri: `${BACKEND_URL}/${me}`,
+        priority: FastImage.priority.high,
+      };
+    } else {
+      const { gender, avatar_male, avatar_female } = userProfile?.data || {};
+      
+      if (gender === 'Female' && typeImage.trim() === 'realistic') {
+        imageSource = getImageByAvatarAndPage(avatar_male, pageActive);
+      } else if (typeImage.trim() === 'realistic') {
+        imageSource = getImageByAvatarAndPage(avatar_male, pageActive);
+      }
+    }
+  
+    return imageSource;
+  };
+  const fetchImagePartner = (me) => {
+  
+    let imageSource;
+  
+    if (online) {
+      imageSource = {
+        uri: `${BACKEND_URL}/${me}`,
+        priority: FastImage.priority.high,
+      };
+    } else {
+      const { gender, avatar_male, avatar_female } = userProfile?.data || {};
+      if (gender === 'Female' && typeImage.trim() === 'realistic') {
+        imageSource = getImageByAvatarAndPage(avatar_female, pageActive);
+      } else if (typeImage.trim() === 'realistic') {
+        imageSource = getImageByAvatarAndPage(avatar_female, pageActive);
+      }
+    }
+  
+    return imageSource;
+  };
+  
   return (
     <SafeAreaView
       style={{
@@ -554,10 +816,7 @@ function QuotesContent({
               flexDirection: 'row',
             }}>
             <FastImage
-              source={{
-                uri: `${BACKEND_URL}/${me}`,
-                priority: FastImage.priority.high,
-              }}
+              source={fetchImage(me)}
               resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: wp(me?.includes('realistic') ? 150 : 100),
@@ -565,11 +824,11 @@ function QuotesContent({
                 opacity: 0.3,
               }}
             />
+
             <FastImage
-              source={{
-                uri: `${BACKEND_URL}/${partner}`,
-                priority: FastImage.priority.high,
-              }}
+              source={
+                fetchImagePartner(partner)
+              }
               resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: wp(me?.includes('realistic') ? 150 : 100),
@@ -721,10 +980,7 @@ function QuotesContent({
                       bottom: 90,
                     }}>
                     <FastImage
-                      source={{
-                        uri: `${BACKEND_URL}/${me}`,
-                        priority: FastImage.priority.high,
-                      }}
+                      source={fetchImage(me)}
                       resizeMode={FastImage.resizeMode.contain}
                       style={{
                         width: wp(me?.includes('realistic') ? 140 : 100),
@@ -800,10 +1056,7 @@ function QuotesContent({
                           : -15,
                     }}>
                     <FastImage
-                      source={{
-                        uri: `${BACKEND_URL}/${partner}`,
-                        priority: FastImage.priority.high,
-                      }}
+                        source={fetchImagePartner(partner)}
                       resizeMode={FastImage.resizeMode.contain}
                       style={{
                         width: wp(me?.includes('realistic') ? 150 : 100),
@@ -895,10 +1148,7 @@ function QuotesContent({
                   zIndex: -1,
                 }}>
                 <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}${me}`,
-                    priority: FastImage.priority.high,
-                  }}
+                    source={fetchImage(me)}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(me?.includes('realistic') ? 130 : 100),
@@ -926,10 +1176,7 @@ function QuotesContent({
                   zIndex: -1,
                 }}>
                 <FastImage
-                  source={{
-                    uri: `${BACKEND_URL}/${partner}`,
-                    priority: FastImage.priority.high,
-                  }}
+                   source={fetchImagePartner(partner)}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     width: wp(partner?.includes('realistic') ? 150 : 100),

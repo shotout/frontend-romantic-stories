@@ -58,6 +58,7 @@ import {
 import LoadingFullScreen from '../../components/loading-fullscreen';
 import {hp, wp} from '../../utils/screen';
 import { moderateScale } from 'react-native-size-matters';
+import { fetch } from '@react-native-community/netinfo';
 const adUnitId = getRewardedFontThemeID();
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -155,14 +156,56 @@ const FontScreen = ({
     }
     // setFontSize(fontSizeDefault)
   };
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        showIntersialBg()
+      } else {
+          offline()
+      }
+    });
+  }
 
+  const fetchOnlineFont = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        showInterStialFont()
+      } else {
+          offline()
+      }
+    });
+  }
+  const fetchOnlineTheme = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        showIntersialTheme()
+      } else {
+          offline()
+      }
+    });
+  }
+
+  const offline = () => {
+
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
   const handleBgThemeColor = (code: string | null) => {
     setBgTheme(code ? code : selectedBgTheme.code);
     handleSetColorTheme(code ? code : selectedBgTheme.code);
   };
   const showInterStialFont = async () => {
     setLoadingAds(true);
-    const advert = await loadRewardedFont();
+    try {
+      const advert = await loadRewardedFont();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
@@ -182,60 +225,74 @@ const FontScreen = ({
         setLoadingAds(false);
       },
     );
+    } catch (error) {
+      setLoadingAds(false);
+    }
+    
   };
 
   const showIntersialBg = async () => {
     setLoadingAds(true);
-    const advert = await loadRewardedColorBg();
-    const pageCountDownReward = advert.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      reward => {
-        console.log('Earn page countdown reward:', reward);
-        if (reward) {
-          Alert.alert(
-            'Congrats! You have unlocked the selected Background.',
-            '',
-            [
-              {
-                text: 'OK',
-                onPress: async () => {
-                  setBg(
-                    bg_color === code_color.blackDark
-                      ? code_color.white
-                      : code_color.blackDark,
-                  );
-                  setModalUnlockBg(false);
+    try {
+      const advert = await loadRewardedColorBg();
+      const pageCountDownReward = advert.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD,
+        reward => {
+          console.log('Earn page countdown reward:', reward);
+          if (reward) {
+            Alert.alert(
+              'Congrats! You have unlocked the selected Background.',
+              '',
+              [
+                {
+                  text: 'OK',
+                  onPress: async () => {
+                    setBg(
+                      bg_color === code_color.blackDark
+                        ? code_color.white
+                        : code_color.blackDark,
+                    );
+                    setModalUnlockBg(false);
+                  },
                 },
-              },
-            ],
-          );
-        }
-        setLoadingAds(false);
-      },
-    );
+              ],
+            );
+          }
+          setLoadingAds(false);
+        },
+      );
+    } catch (error) {
+      setLoadingAds(false);
+    }
+   
   };
 
   const showIntersialTheme = async () => {
     setLoadingAds(true);
-    const advert = await loadRewardedColorTheme();
-    const pageCountDownReward = advert.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      reward => {
-        console.log('Earn page countdown reward:', reward);
-        if (reward) {
-          Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
-            {
-              text: 'OK',
-              onPress: () => {
-                handleBgThemeColor(selectedBgTheme.code);
-                setModalUnlockTheme(false);
+    try {
+      const advert = await loadRewardedColorTheme();
+      const pageCountDownReward = advert.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD,
+        reward => {
+          console.log('Earn page countdown reward:', reward);
+          if (reward) {
+            Alert.alert('Congrats! You have unlocked the selected Theme.', '', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  handleBgThemeColor(selectedBgTheme.code);
+                  setModalUnlockTheme(false);
+                },
               },
-            },
-          ]);
-        }
-        setLoadingAds(false);
-      },
-    );
+            ]);
+          }
+          setLoadingAds(false);
+        },
+      );
+    } catch (error) {
+      setLoadingAds(false);
+    }
+   
   };
   useEffect(() => {
     // Handle interstial reward quote ads
@@ -300,7 +357,7 @@ const FontScreen = ({
         }
         Icon={() => <UnlockBgIcon style={{marginBottom: 20}} width={'50%'} />}
         isLoadingAds={loadingAds}
-        onSuccess={showIntersialBg}
+        onSuccess={fetchOnline}
       />
       <ModalUnlockPremium
         isVisible={modalUnlockFont}
@@ -320,7 +377,7 @@ const FontScreen = ({
           />
         )}
         isLoadingAds={loadingAds}
-        onSuccess={async () => showInterStialFont()}
+        onSuccess={async () => fetchOnlineFont()}
       />
       <ModalUnlockPremium
         isVisible={modalUnlockTheme}
@@ -335,7 +392,7 @@ const FontScreen = ({
           <UnlockThemeIcon style={{marginBottom: 20}} width={'50%'} />
         )}
         isLoadingAds={loadingAds}
-        onSuccess={() => showIntersialTheme()}
+        onSuccess={() =>  fetchOnlineTheme()}
       />
       <View
         style={{
