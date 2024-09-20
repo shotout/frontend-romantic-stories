@@ -87,7 +87,11 @@ const LibraryScreen = ({
   handleNextStory,
   nextStory,
   userStory,
-  handleSetPage
+  handleSetPage,
+  handleSetCollectionList,
+  dataListCollection,
+  handleSetListLibrary,
+  dataListLibrary
 }) => {
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
@@ -308,7 +312,7 @@ const LibraryScreen = ({
     }
   };
   const renderContent = (item, rowMap) => {
-     console.log(`${BACKEND_URL}${item?.item?.category?.cover?.url}`,)
+  
     if (detail != null) {
       return (
         <Pressable onPress={() => handleReadDetail(item?.item?.story)}>
@@ -546,7 +550,7 @@ const LibraryScreen = ({
     }
   };
   const renderContentSearch = (item, rowMap) => {
-    console.log(`${BACKEND_URL}${item?.item?.category?.cover?.url}`,)
+  
     if (detail != null) {
       return (
         <Pressable onPress={() => handleRead(item)}>
@@ -906,8 +910,8 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
-
-    
+      handleSetCollectionList(res.data)
+      handleSetListLibrary(res.outsides)
       setListCollection(res.data);
       setListLibrary(res.outsides);
       setLoadingList(false);

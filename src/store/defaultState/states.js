@@ -54,6 +54,8 @@ const INITIAL_STATE = {
   levelingUser: null,
   colorText: '',
   page: 0,
+  dataListCollection: null,
+  dataListLibrary: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -360,11 +362,21 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         page: action.payload,
       };
+    case types.SET_LIST_COLLECTION:
+      return {
+        ...state,
+        dataListCollection: action.payload,
+      };
+    case types.SET_LIST_LIBRARY:
+      return {
+        ...state,
+        dataListLibrary: action.payload,
+      };
     case types.RESET_PARAMS:
       return {
         ...state,
         userProfile: {},
-      }
+      };
     default:
       return state;
   }

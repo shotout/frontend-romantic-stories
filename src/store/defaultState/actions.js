@@ -90,3 +90,13 @@ export const handleSetColor = payload => ({
   type: types.SET_COLOR_TEXT,
   payload,
 });
+
+export const handleSetListCollection = payload => ({
+  type: types.SET_LIST_COLLECTION,
+  payload,
+});
+
+export const handleSetListLibrary = payload => ({
+  type: types.SET_LIST_LIBRARY,
+  payload,
+});

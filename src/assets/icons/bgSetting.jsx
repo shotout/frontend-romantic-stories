@@ -27,6 +27,15 @@ import {
   level7,
   level8,
   level9,
+  realistic_autumn_1,
+  realistic_beach_1,
+  realistic_beach_2,
+  realistic_beach_4,
+  realistic_casual_1,
+  realistic_casual_3,
+  realistic_cocktail_2,
+  realistic_cocktail_5,
+  realistic_professional_6,
 } from '../images';
 function SvgComponent(props) {
   const {
@@ -37,8 +46,45 @@ function SvgComponent(props) {
     levelUrl = '',
     isIPad,
     style,
+    typeImage
   } = props;
+    const [online, setOnline] = React.useState(false)
+  const getImageByAvatarAndPage = (avatarMale) => {
+   
+    if(typeImage === 'realistic'){
+      if (avatarMale.includes('realistic/1')) return realistic_beach_1;
+      if (avatarMale.includes('realistic/2')) return realistic_cocktail_2;
+      if (avatarMale.includes('realistic/3')) return realistic_casual_3;
+      if (avatarMale.includes('realistic/4')) return realistic_beach_4;
+      if (avatarMale.includes('realistic/5')) return realistic_cocktail_5;
+      if (avatarMale.includes('realistic/6')) return realistic_professional_6;
+    }else{
+      if (avatarMale.includes('anime/1')) return avatar1;
+      if (avatarMale.includes('anime/2')) return avatar2;
+      if (avatarMale.includes('anime/3')) return avatar3;
+      if (avatarMale.includes('anime/4')) return avatar4;
+      if (avatarMale.includes('anime/5')) return avatar5;
+      if (avatarMale.includes('anime/6')) return avatar6;
+    }
+     
+     
+    
+   // Default or fallback image if no conditions match
+  };
 
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        setOnline(true)
+      } else {
+        setOnline(false)
+      }
+    });
+  }
+
+  React.useEffect(() => {
+    fetchOnline()
+  }, [])
   return (
     <Svg
       width={width}
@@ -186,7 +232,8 @@ function SvgComponent(props) {
           style={{ width: '10%', height: '10%', borderRadius: 28 }} // Ganti width dan height menjadi '100%' dan tambahkan borderRadius
         /> */}
         <Image
-          href={profileUrl}
+          
+          href={online ? profileUrl : getImageByAvatarAndPage(profileUrl)}
           x={
             profileUrl.includes('realistic/1')  ?
             '143' :

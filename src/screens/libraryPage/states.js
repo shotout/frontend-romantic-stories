@@ -8,4 +8,6 @@ export default states => ({
   colorTheme: states.defaultState.colorTheme,
   stepsTutorial: states.defaultState.stepsTutorial,
   nextStory: states.defaultState.nextStory,
+  dataListCollection:  states.defaultState.dataListCollection,
+  dataListLibrary:  states.defaultState.dataListLibrary,
 });

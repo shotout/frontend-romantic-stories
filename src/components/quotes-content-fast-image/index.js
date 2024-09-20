@@ -22,6 +22,24 @@ import AnimatedLottieView from 'lottie-react-native';
 import styles from './styles';
 import {sizing} from '../../utils/styling';
 import {
+  anime_inlove_1,
+  anime_inlove_2,
+  anime_inlove_3,
+  anime_inlove_4,
+  anime_inlove_5,
+  anime_inlove_6,
+  anime_positive_1,
+  anime_positive_2,
+  anime_positive_3,
+  anime_positive_4,
+  anime_positive_5,
+  anime_positive_6,
+  anime_think_1,
+  anime_think_2,
+  anime_think_3,
+  anime_think_4,
+  anime_think_5,
+  anime_think_6,
   ava1,
   bgStory1,
   bgStory2,
@@ -156,10 +174,10 @@ function QuotesContent({
   const [title, setTitle] = useState('10/10 Audio Stories');
   const [showAudio, setShowAudio] = useState(false);
   const [me, setMe] = useState(
-    `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+   null
   );
   const [partner, setPartner] = useState(
-    `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+   null
   );
   const [playLoveAnimate, setPlayLoveAnimate] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
@@ -230,7 +248,7 @@ function QuotesContent({
   }, [pageActive, userProfile]);
 
   const offline = () => {
-    if (userProfile?.data?.gender === 'Female') {
+    if (userProfile?.data?.gender === 'Female' && typeImage === 'realistic') {
       if (
         pageActive === 0 ||
         pageActive === 10 ||
@@ -239,26 +257,50 @@ function QuotesContent({
         pageActive === 40
       ) {
         setMe(
-          `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+          `/assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
         );
         setPartner(
-          `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+          `/assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
         );
 
         // setMe(data?.data?.partner);
       }
       // setMe(data?.data?.partner);
       // setPartner(data?.data?.me);
-    } else {
+    } else if(typeImage.trim() != 'realistic') {
+     if(isPageActiveAnime(pageActive)){
       setMe(
-        `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/positive.png`,
       );
       setPartner(
-        `../../assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_female}/positive.png`,
       );
+     }
+     if(isPageActiveAnime1(pageActive)){
+      setMe(
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/think.png`,
+      );
+      setPartner(
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_female}/think.png`,
+      );
+     }
+     if(isPageActiveAnime2(pageActive)){
 
-      // setMe(data?.data?.me);
-      // setPartner(data?.data?.partner);
+      setMe(
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/inlove.png`,
+      );
+      setPartner(
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_female}/inlove.png`,
+      );
+     if(isPageActiveAnime3(pageActive)){
+      setMe(
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/positive.png`,
+      );
+      setPartner(
+        `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_female}/positive.png`,
+      );
+     }
+    }
     }
   };
 
@@ -364,6 +406,7 @@ function QuotesContent({
 
     try {
       const data = await getListAvatarTheme(params);
+      console.log(JSON.stringify(data))
       if (data?.data) {
         if (userProfile?.data?.gender === 'Female') {
           setMe(data?.data?.partner);
@@ -544,7 +587,17 @@ function QuotesContent({
   const isPageActive = (page) => {
     return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(page);
   };
+  const isPageActiveAnime = (page) => {
+    return [0, 3, 6, 9, 12, 15, 18, 21, 24, 27].includes(page);
+  };
   
+  const isPageActiveAnime1 = (page) => {
+    return [1, 4, 7, 10, 13, 16, 19, 22, 25, 28].includes(page);
+  };
+  const isPageActiveAnime2 = (page) => {
+    return [2, 5, 8, 11, 14, 17, 20, 23, 26, 29].includes(page);
+  };
+ 
   const getImageByAvatarAndPage = (avatarMale, pageActive) => {
     if (isPageActive(pageActive)) {
       if (avatarMale === 1) return realistic_casual_1;
@@ -621,48 +674,36 @@ function QuotesContent({
     return null; // Default or fallback image if no conditions match
   };
 
-  const getImageByAvatarAndPagePartner = (avatarMale, pageActive) => {
-    if (isPageActive(pageActive)) {
-      if (avatarMale === 4) return realistic_casual_4;
-      if (avatarMale === 5) return realistic_casual_5;
-      if (avatarMale === 6) return realistic_casual_6;
-    } else if ([1, 11, 21, 31, 41, 51, 61, 71].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_professional_4;
-      if (avatarMale === 5) return realistic_professional_5;
-      if (avatarMale === 6) return realistic_professional_6;
-    } else if ([2, 12, 22, 32, 42, 52, 62, 72,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_beach_4;
-      if (avatarMale === 5) return realistic_beach_5;
-      if (avatarMale === 6) return realistic_beach_6;
-    } else if ([3, 13, 23, 33, 43, 53, 63, 73,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_sport_4;
-      if (avatarMale === 5) return realistic_sport_5;
-      if (avatarMale === 6) return realistic_sport_6;
-    } else if ([4, 14, 24, 34, 44, 54, 64, 74,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_winter_4;
-      if (avatarMale === 5) return realistic_winter_5;
-      if (avatarMale === 6) return realistic_winter_6;
-    } else if ([5, 15, 25, 35, 45, 55, 65, 75,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_relaxed_4;
-      if (avatarMale === 5) return realistic_relaxed_5;
-      if (avatarMale === 6) return realistic_relaxed_6;
-    } else if ([6, 16, 26, 36, 46, 56, 66, 76,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_travelling_4;
-      if (avatarMale === 5) return realistic_travelling_5;
-      if (avatarMale === 6) return realistic_travelling_6;
-    } else if ([7, 17, 27, 37, 47, 57, 67, 77,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_autumn_4;
-      if (avatarMale === 5) return realistic_autumn_5;
-      if (avatarMale === 6) return realistic_autumn_6;
-    } else if ([8, 18, 28, 38, 48, 58, 68, 78,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_street_4;
-      if (avatarMale === 5) return realistic_street_5;
-      if (avatarMale === 6) return realistic_street_6;
-    } else if ([9, 19, 29, 39, 49, 59, 69, 79,].includes(pageActive)) {
-      if (avatarMale === 4) return realistic_cocktail_4;
-      if (avatarMale === 5) return realistic_cocktail_5;
-      if (avatarMale === 6) return realistic_cocktail_6;
-    }
+  const getImageByAvatarAndPageAnime = (avatarMale, pageActive) => {
+    if (isPageActiveAnime(pageActive)) {
+      if (avatarMale === 1) return anime_positive_1;
+      if (avatarMale === 2) return anime_positive_2;
+      if (avatarMale === 3) return anime_positive_3;
+      if (avatarMale === 4) return anime_positive_4;
+      if (avatarMale === 5) return anime_positive_5;
+      if (avatarMale === 6) return anime_positive_6;
+    } else if (isPageActiveAnime1(pageActive)) {
+      if (avatarMale === 1) return anime_think_1;
+      if (avatarMale === 2) return anime_think_2;
+      if (avatarMale === 3) return anime_think_3;
+      if (avatarMale === 4) return anime_think_4;
+      if (avatarMale === 5) return anime_think_5;
+      if (avatarMale === 6) return anime_think_6;
+    } else if (isPageActiveAnime2(pageActive)) {
+      if (avatarMale === 1) return anime_inlove_1;
+      if (avatarMale === 2) return anime_inlove_2;
+      if (avatarMale === 3) return anime_inlove_3;
+      if (avatarMale === 4) return anime_inlove_4;
+      if (avatarMale === 5) return anime_inlove_5;
+      if (avatarMale === 6) return anime_inlove_6;
+    } else  {
+      if (avatarMale === 1) return anime_positive_1;
+      if (avatarMale === 2) return anime_positive_2;
+      if (avatarMale === 3) return anime_positive_3;
+      if (avatarMale === 4) return anime_positive_4;
+      if (avatarMale === 5) return anime_positive_5;
+      if (avatarMale === 6) return anime_positive_6;
+    } 
     
     return null; // Default or fallback image if no conditions match
   };
@@ -681,6 +722,8 @@ function QuotesContent({
         imageSource = getImageByAvatarAndPage(avatar_male, pageActive);
       } else if (typeImage.trim() === 'realistic') {
         imageSource = getImageByAvatarAndPage(avatar_male, pageActive);
+      } else if (typeImage.trim() === 'anime') {
+        imageSource = getImageByAvatarAndPageAnime(avatar_male, pageActive);
       }
     }
   
@@ -701,7 +744,9 @@ function QuotesContent({
         imageSource = getImageByAvatarAndPage(avatar_female, pageActive);
       } else if (typeImage.trim() === 'realistic') {
         imageSource = getImageByAvatarAndPage(avatar_female, pageActive);
-      }
+       } else if (typeImage.trim() === 'anime') {
+          imageSource = getImageByAvatarAndPageAnime(avatar_female, pageActive);
+        }
     }
   
     return imageSource;

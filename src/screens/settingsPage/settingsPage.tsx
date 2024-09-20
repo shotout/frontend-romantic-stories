@@ -21,7 +21,7 @@ import {
   Alert,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {bgSettings} from '../../assets/images';
+import {avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, bgSettings, realistic_beach_1, realistic_beach_4, realistic_casual_3, realistic_cocktail_2, realistic_cocktail_5, realistic_professional_6} from '../../assets/images';
 import BgSettings from '../../assets/icons/bgSetting';
 import {code_color} from '../../utils/colors';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
@@ -77,6 +77,7 @@ const SettingsPage = ({
   const isPremiumAudio = userProfile?.data?.subscription?.plan?.id === 3;
   const isPremiumMonthly = userProfile?.data?.subscription?.plan?.id === 4;
   const [bgTheme, setBgTheme] = useState(colorTheme);
+  const [online, setOnline] = useState(false);
 
   const offline = () => {
 
@@ -94,7 +95,9 @@ const SettingsPage = ({
   const fetchOnline = () => {
     fetch().then(async state => {
       if (state.isConnected) {
+        setOnline(true)
       } else {
+        setOnline(false)
           offline()
       }
     });
@@ -171,7 +174,30 @@ const SettingsPage = ({
       status: false,
     },
   ]);
+  const getImageByAvatarAndPage = (avatarMale: any) => {
+   
+    if (avatarMale.includes('realistic/1')) return realistic_beach_1;
+    if (avatarMale.includes('realistic/2')) return realistic_cocktail_2;
+    if (avatarMale.includes('realistic/3')) return realistic_casual_3;
+    if (avatarMale.includes('realistic/4')) return realistic_beach_4;
+    if (avatarMale.includes('realistic/5')) return realistic_cocktail_5;
+    if (avatarMale.includes('realistic/6')) return realistic_professional_6;
+   
+  
+  return null; // Default or fallback image if no conditions match
+};
+const getImageByAvatarAndPageAnime = (avatarMale: any) => {
+   
+  if (avatarMale.includes('anime/1')) return avatar1;
+  if (avatarMale.includes('anime/2')) return avatar2;
+  if (avatarMale.includes('anime/3')) return avatar3;
+  if (avatarMale.includes('anime/4')) return avatar4;
+  if (avatarMale.includes('anime/5')) return avatar5;
+  if (avatarMale.includes('anime/6')) return avatar6;
  
+
+return null; // Default or fallback image if no conditions match
+};
   
   const header = () => (
     <View style={{height: hp(DeviceInfo.isTablet() ? 280 : 255)}}>
@@ -191,6 +217,7 @@ const SettingsPage = ({
           profileUrl={
             BACKEND_URL + getAvatarMale 
           }
+          typeImage={userProfile?.data?.type}
           isIPad={DeviceInfo.isTablet()}
         />
         <View
@@ -297,6 +324,26 @@ const SettingsPage = ({
     }
   };
 
+  const fetchImage = (me: any) => {
+    let imageSource;
+  
+    if (online) {
+      imageSource = {
+        uri: `${BACKEND_URL}/${me}`,
+        priority: FastImage.priority.high,
+      };
+    } else {
+      
+      
+      if (me.includes('realistic')) {
+        imageSource = getImageByAvatarAndPage(me);
+      }else{
+        imageSource = getImageByAvatarAndPageAnime(me);  
+      }
+    }
+  
+    return imageSource;
+  };
   const listMenu = () => (
     <View>
       {/* <TouchableOpacity
@@ -343,10 +390,7 @@ const SettingsPage = ({
                   right: hp(-5),
                 }}>
                 <FastImage
-                  source={{
-                    uri:
-                     BACKEND_URL + getAvatarMale
-                  }}
+                  source={fetchImage(getAvatarMale)}
                   style={{
                     width: hp(40),
                     height: hp(160),
@@ -371,9 +415,7 @@ const SettingsPage = ({
                   marginRight: moderateScale(10),
                 }}>
                 <FastImage
-                  source={{
-                    uri: BACKEND_URL + getAvatarFemale
-                  }}
+                   source={fetchImage(getAvatarFemale)}
                   style={{
                     width: hp(40),
                     height: hp(160),
@@ -434,6 +476,8 @@ const SettingsPage = ({
         isVisible={showModalProfile}
         onClose={() => setShowModalProfile(false)}
         handleOpenModal={tab => handleOpenModal(tab)}
+        online={online}
+        typeImage={userProfile?.data?.type}
       />
       <ModalEditGender
         isVisible={showModalGender}
