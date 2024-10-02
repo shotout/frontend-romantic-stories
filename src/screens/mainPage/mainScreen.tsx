@@ -522,8 +522,8 @@ const MainScreen = ({
     reloadUserProfile();
 
     fetchCheckingDay();
-    // fetchCategory();
-    // fetchCategoryOnline();
+    fetchCategory();
+    fetchCategoryOnline();
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {

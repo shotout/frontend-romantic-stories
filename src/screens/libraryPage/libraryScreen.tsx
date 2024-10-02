@@ -104,14 +104,14 @@ const LibraryScreen = ({
   const [sharedStory, setSharedStory] = useState<any>(null);
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(null);
-  // const [listCollection, setListCollection] = useState(dataListCollection);
-  const [listCollection, setListCollection] = useState([]);
+  const [listCollection, setListCollection] = useState(dataListCollection);
+  // const [listCollection, setListCollection] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [items, setItems] = useState(null);
   const [detail, setDetail] = useState(null);
   const [detailCollection, setDetailCollection] = useState(null);
-  // const [listLibrary, setListLibrary] = useState(dataListLibrary);
-  const [listLibrary, setListLibrary] = useState([]);
+  const [listLibrary, setListLibrary] = useState(dataListLibrary);
+  // const [listLibrary, setListLibrary] = useState([]);
   const [listLibraryDetail, setListLibraryDetail] = useState([]);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
@@ -156,7 +156,7 @@ const LibraryScreen = ({
   };
 
   useEffect(() => {
-    fetchOnline();
+    // fetchOnline();
   }, []);
   const showWatchAds = async () => {
     fetch().then(async state => {

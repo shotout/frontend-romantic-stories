@@ -92,10 +92,10 @@ const ExploreLibraryScreen = ({
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
-  // const [data, setData] = useState<any>(dataExplore);
-  const [data, setData] = useState<any>();
-  // const [dataCategory, setDataCategory] = useState<any>(dataExploreCategory);
-  const [dataCategory, setDataCategory] = useState<any>([]);
+  const [data, setData] = useState<any>(dataExplore);
+  // const [data, setData] = useState<any>();
+  const [dataCategory, setDataCategory] = useState<any>(dataExploreCategory);
+  // const [dataCategory, setDataCategory] = useState<any>([]);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
@@ -235,8 +235,8 @@ const ExploreLibraryScreen = ({
     }
   }
   useEffect(() => {
-    // fetchCategory()
-    fetchOnline();
+    fetchCategory()
+    // fetchOnline();
   }, []);
   useEffect(() => {
     handleRestart();
@@ -517,7 +517,7 @@ const ExploreLibraryScreen = ({
           </View>
         )}
 
-        {data?.category?.length > 0 && (
+        {/* {data?.category?.length > 0 && (
           <View style={{flex: 0, height: hp(250)}}>
             <View
               style={{
@@ -550,38 +550,8 @@ const ExploreLibraryScreen = ({
                         idx + 1 === data?.category?.length ? 0 : hp(16),
                     }}
                     key={idx}>
-                    {/* <View
-                      style={{
-                        height: 18,
-                        width: 18,
-                        backgroundColor:
-                          itm.id === selectStory
-                            ? code_color.blueDark
-                            : code_color.white,
-                        borderRadius: 15,
-                        position: 'absolute',
-                        top: 4,
-                        right: 4,
-                        zIndex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      {itm.id === selectStory ? (
-                        <ChecklistSvg width={10} />
-                      ) : null}
-                    </View> */}
-                    {/* { userProfile?.data?.subscription?.plan_id != 2 && userProfile?.data?.subscription?.plan_id != 3  && (
-                      <LockFree
-                        height={16}
-                        width={55}
-                        style={{
-                          marginBottom: -20,
-                          marginTop: 4,
-                          marginLeft: 4,
-                          zIndex: 1,
-                        }}
-                      />
-                    )} */}
+                    
+                   
                     <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm.cover?.url}`,
@@ -605,8 +575,8 @@ const ExploreLibraryScreen = ({
               </ScrollView>
             </View>
           </View>
-        )}
-        {/* <View>
+        )} */}
+    
         {dataCategory?.data?.length > 0 && (
           <View style={{flex: 0, height: hp(250)}}>
             <View
@@ -665,7 +635,7 @@ const ExploreLibraryScreen = ({
             </View>
           </View>
         )}
-        </View> */}
+       
 
 
         {data?.most_share?.length > 0 && (

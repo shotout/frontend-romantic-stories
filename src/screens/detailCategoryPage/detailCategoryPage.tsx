@@ -73,8 +73,8 @@ const DetailCategoryScreen = ({
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [data, setData] = useState<any>();
-  //const [data, setData] = useState<any>(route?.params?.categoryId);
+  // const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>(route?.params?.categoryId);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
@@ -179,7 +179,7 @@ const DetailCategoryScreen = ({
     fetchData();
   };
   useEffect(() => {
-    handleRestart();
+    // handleRestart();
   }, [keyword, items, route?.params?.categoryId]);
 
   const fetchUpdate = async () => {
@@ -301,20 +301,20 @@ const DetailCategoryScreen = ({
   // const combinedData = filteredData ? filteredData.concat(remainingData) : data?.data;
 
   // ini untuk mode hybrid jika di buka
-  // const filteredDataSelected = selectedAlphabet
-  //   ? data?.stories?.filter(item => item.title_en[0] === selectedAlphabet)
-  //   : [];
-
   const filteredDataSelected = selectedAlphabet
-    ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
+    ? data?.stories?.filter(item => item.title_en[0] === selectedAlphabet)
     : [];
+
+  // const filteredDataSelected = selectedAlphabet
+  //   ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
+  //   : [];
     // ini juga untuk  mode hybrid
-    // const filteredDataOthers = selectedAlphabet
-    // ? data?.stories?.filter(item => item.title_en[0] !== selectedAlphabet)
-    // : data?.stories;
-  const filteredDataOthers = selectedAlphabet
-    ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
-    :data?.data;
+    const filteredDataOthers = selectedAlphabet
+    ? data?.stories?.filter(item => item.title_en[0] !== selectedAlphabet)
+    : data?.stories;
+  // const filteredDataOthers = selectedAlphabet
+  //   ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
+  //   :data?.data;
 
   const combinedData = filteredDataSelected.concat(filteredDataOthers);
   const alphabets = [
