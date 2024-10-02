@@ -21,7 +21,21 @@ import {
   Alert,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, bgSettings, realistic_beach_1, realistic_beach_4, realistic_casual_3, realistic_cocktail_2, realistic_cocktail_5, realistic_professional_6} from '../../assets/images';
+import {
+  avatar1,
+  avatar2,
+  avatar3,
+  avatar4,
+  avatar5,
+  avatar6,
+  bgSettings,
+  realistic_beach_1,
+  realistic_beach_4,
+  realistic_casual_3,
+  realistic_cocktail_2,
+  realistic_cocktail_5,
+  realistic_professional_6,
+} from '../../assets/images';
 import BgSettings from '../../assets/icons/bgSetting';
 import {code_color} from '../../utils/colors';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
@@ -52,11 +66,11 @@ import {BACKEND_URL} from '../../shared/static';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import {Image} from 'react-native';
 import ProgressBar from '../../components/progress';
-import { fixedFontSize, hp, wp } from '../../utils/screen';
+import {fixedFontSize, hp, wp} from '../../utils/screen';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
 import FastImage from 'react-native-fast-image';
-import { fetch } from '@react-native-community/netinfo';
+import {fetch} from '@react-native-community/netinfo';
 
 const SettingsPage = ({
   colorTheme,
@@ -80,7 +94,6 @@ const SettingsPage = ({
   const [online, setOnline] = useState(false);
 
   const offline = () => {
-
     Alert.alert(
       'YOU SEEM TO BE OFFLINE',
       'Please check your internet connection and try again.',
@@ -91,50 +104,66 @@ const SettingsPage = ({
         },
       ],
     );
-  }
+  };
   const fetchOnline = () => {
     fetch().then(async state => {
       if (state.isConnected) {
-        setOnline(true)
+        setOnline(true);
       } else {
-        setOnline(false)
-          offline()
+        setOnline(false);
+        offline();
       }
     });
-  }
+  };
 
   useEffect(() => {
-    fetchOnline()
-  }, [])
-  const [menu, setlistMenu] = useState( Platform.OS != 'android' ? [
-    {
-      name: 'Edit Profile',
-      icon: <UserSvg width={hp(20)} height={hp(20)} />,
-      action: 'editProfile',
-    },
-    {
-      name: 'My Library',
-      icon: <LibrarySvg fill={code_color.white} width={hp(20)} height={hp(20)} />,
-      action: 'myLibrary',
-    },
-    
-    {
-      name: 'Subscription',
-      icon: <LockSvg width={hp(20)} height={hp(20)} />,
-      action: 'subscription',
-    },
-  ] : [
-    {
-      name: 'Edit Profile',
-      icon: <UserSvg width={hp(20)} height={hp(20)} />,
-      action: 'editProfile',
-    },
-    {
-      name: 'My Library',
-      icon: <LibrarySvg fill={code_color.white} width={hp(20)} height={hp(20)} />,
-      action: 'myLibrary',
-    },
-  ]);
+    // fetchOnline()
+  }, []);
+  const [menu, setlistMenu] = useState(
+    Platform.OS != 'android'
+      ? [
+          {
+            name: 'Edit Profile',
+            icon: <UserSvg width={hp(20)} height={hp(20)} />,
+            action: 'editProfile',
+          },
+          {
+            name: 'My Library',
+            icon: (
+              <LibrarySvg
+                fill={code_color.white}
+                width={hp(20)}
+                height={hp(20)}
+              />
+            ),
+            action: 'myLibrary',
+          },
+
+          {
+            name: 'Subscription',
+            icon: <LockSvg width={hp(20)} height={hp(20)} />,
+            action: 'subscription',
+          },
+        ]
+      : [
+          {
+            name: 'Edit Profile',
+            icon: <UserSvg width={hp(20)} height={hp(20)} />,
+            action: 'editProfile',
+          },
+          {
+            name: 'My Library',
+            icon: (
+              <LibrarySvg
+                fill={code_color.white}
+                width={hp(20)}
+                height={hp(20)}
+              />
+            ),
+            action: 'myLibrary',
+          },
+        ],
+  );
 
   // alert(JSON.stringify(userProfile?.data?.gender))
   const [menuTwo, setlistMenuTwo] = useState([
@@ -175,30 +204,26 @@ const SettingsPage = ({
     },
   ]);
   const getImageByAvatarAndPage = (avatarMale: any) => {
-   
     if (avatarMale.includes('realistic/1')) return realistic_beach_1;
     if (avatarMale.includes('realistic/2')) return realistic_cocktail_2;
     if (avatarMale.includes('realistic/3')) return realistic_casual_3;
     if (avatarMale.includes('realistic/4')) return realistic_beach_4;
     if (avatarMale.includes('realistic/5')) return realistic_cocktail_5;
     if (avatarMale.includes('realistic/6')) return realistic_professional_6;
-   
-  
-  return null; // Default or fallback image if no conditions match
-};
-const getImageByAvatarAndPageAnime = (avatarMale: any) => {
-   
-  if (avatarMale.includes('anime/1')) return avatar1;
-  if (avatarMale.includes('anime/2')) return avatar2;
-  if (avatarMale.includes('anime/3')) return avatar3;
-  if (avatarMale.includes('anime/4')) return avatar4;
-  if (avatarMale.includes('anime/5')) return avatar5;
-  if (avatarMale.includes('anime/6')) return avatar6;
- 
 
-return null; // Default or fallback image if no conditions match
-};
-  
+    return null; // Default or fallback image if no conditions match
+  };
+  const getImageByAvatarAndPageAnime = (avatarMale: any) => {
+    if (avatarMale.includes('anime/1')) return avatar1;
+    if (avatarMale.includes('anime/2')) return avatar2;
+    if (avatarMale.includes('anime/3')) return avatar3;
+    if (avatarMale.includes('anime/4')) return avatar4;
+    if (avatarMale.includes('anime/5')) return avatar5;
+    if (avatarMale.includes('anime/6')) return avatar6;
+
+    return null; // Default or fallback image if no conditions match
+  };
+
   const header = () => (
     <View style={{height: hp(DeviceInfo.isTablet() ? 280 : 255)}}>
       <View
@@ -213,18 +238,36 @@ return null; // Default or fallback image if no conditions match
         <BgSettings
           style={{position: 'absolute', top: 0}}
           bgTheme={bgTheme}
-          levelUrl={BACKEND_URL + (levelingUser === null ? userProfile?.data?.user_level?.level?.image?.url : levelingUser?.user_level?.level?.image?.url)}
-          profileUrl={
-            BACKEND_URL + getAvatarMale 
+          levelUrl={
+            BACKEND_URL +
+            (levelingUser === null
+              ? userProfile?.data?.user_level?.level?.image?.url
+              : levelingUser?.user_level?.level?.image?.url)
           }
+          profileUrl={BACKEND_URL + getAvatarMale}
           typeImage={userProfile?.data?.type}
           isIPad={DeviceInfo.isTablet()}
         />
         <View
           style={{
-            marginTop: Dimensions.get('window').height === 667 ? hp(90) : Dimensions.get('window').height === 932 ? hp(75) : DeviceInfo.isTablet() ?hp(140) : hp(80),
+            marginTop:
+              Dimensions.get('window').height === 667
+                ? hp(90)
+                : Dimensions.get('window').height === 932
+                ? hp(75)
+                : DeviceInfo.isTablet()
+                ? hp(140)
+                : hp(80),
           }}>
-          <View style={{marginTop: hp(Platform.OS === 'android' && Dimensions.get('window').height >= 1005 ? 60 : 30)}}>
+          <View
+            style={{
+              marginTop: hp(
+                Platform.OS === 'android' &&
+                  Dimensions.get('window').height >= 1005
+                  ? 60
+                  : 30,
+              ),
+            }}>
             <Text
               allowFontScaling={false}
               style={{
@@ -233,12 +276,22 @@ return null; // Default or fallback image if no conditions match
                 fontSize: fixedFontSize(14),
               }}>
               {userProfile?.data?.name} •{' '}
-              {levelingUser?.user_level?.level?.desc  ? levelingUser?.user_level?.level?.desc  : userProfile?.data?.user_level?.level?.desc} •{' '}
-              {levelingUser?.user_level?.point ? levelingUser?.user_level?.point : 0} XP
+              {levelingUser?.user_level?.level?.desc
+                ? levelingUser?.user_level?.level?.desc
+                : userProfile?.data?.user_level?.level?.desc}{' '}
+              •{' '}
+              {levelingUser?.user_level?.point
+                ? levelingUser?.user_level?.point
+                : 0}{' '}
+              XP
             </Text>
           </View>
           <View style={{marginTop: hp(DeviceInfo.isTablet() ? 0 : 30)}}>
-            <ProgressBar levelingUser={levelingUser} bgTheme={bgTheme} currentXp={levelingUser?.user_level?.point}/>
+            <ProgressBar
+              levelingUser={levelingUser}
+              bgTheme={bgTheme}
+              currentXp={levelingUser?.user_level?.point}
+            />
             {/* // <ProgressBar bgTheme={bgTheme} levelingUser={levelingUser} /> */}
           </View>
         </View>
@@ -282,20 +335,52 @@ return null; // Default or fallback image if no conditions match
         setShowModalProfile(true);
         break;
       case 'Edit Name':
-        setShowModalProfile(false);
-        setShowModalName(true);
+        fetch().then(async state => {
+          if (state.isConnected) {
+            setShowModalProfile(false);
+            setShowModalName(true);
+          } else {
+            setShowModalProfile(false);
+            offline();
+          }
+        });
+
         break;
       case 'Gender':
-        setShowModalProfile(false);
-        setShowModalGender(true);
+        fetch().then(async state => {
+          if (state.isConnected) {
+            setShowModalProfile(false);
+            setShowModalGender(true);
+          } else {
+            setShowModalProfile(false);
+            offline();
+          }
+        });
+
         break;
       case 'Select your character':
-        setShowModalProfile(false);
-        setShowModalCharacter(true);
+        fetch().then(async state => {
+          if (state.isConnected) {
+            setShowModalProfile(false);
+            setShowModalCharacter(true);
+          } else {
+            setShowModalProfile(false);
+            offline();
+          }
+        });
+
         break;
       case 'Select partner character':
-        setShowModalProfile(false);
-        setShowModalPartner(true);
+        fetch().then(async state => {
+          if (state.isConnected) {
+            setShowModalProfile(false);
+            setShowModalPartner(true);
+          } else {
+            setShowModalProfile(false);
+            offline();
+          }
+        });
+
         break;
       case 'Select language':
         setShowModalProfile(false);
@@ -308,16 +393,37 @@ return null; // Default or fallback image if no conditions match
         navigate('Font');
         break;
       case 'Notifications':
-        navigate('Notification');
+        fetch().then(async state => {
+          if (state.isConnected) {
+            navigate('Notification');
+          } else {
+            offline();
+          }}
+        )
+       
         break;
       case 'Change Categories':
-        navigate('Categories');
+        fetch().then(async state => {
+          if (state.isConnected) {
+            navigate('Categories');
+          } else {
+            offline();
+          }}
+        )
+        
         break;
       case 'Subscription':
         navigate('Subscriptions');
         break;
       case 'App Icon':
-        setShowModalIcon(true);
+        fetch().then(async state => {
+          if (state.isConnected) {
+            setShowModalIcon(true);
+          } else {
+            offline();
+          }}
+        )
+        
         break;
       default:
         break;
@@ -326,22 +432,20 @@ return null; // Default or fallback image if no conditions match
 
   const fetchImage = (me: any) => {
     let imageSource;
-  
+
     if (online) {
       imageSource = {
         uri: `${BACKEND_URL}/${me}`,
         priority: FastImage.priority.high,
       };
     } else {
-      
-      
       if (me.includes('realistic')) {
         imageSource = getImageByAvatarAndPage(me);
-      }else{
-        imageSource = getImageByAvatarAndPageAnime(me);  
+      } else {
+        imageSource = getImageByAvatarAndPageAnime(me);
       }
     }
-  
+
     return imageSource;
   };
   const listMenu = () => (
@@ -367,7 +471,12 @@ return null; // Default or fallback image if no conditions match
           {item.icon}
           <Text
             allowFontScaling={false}
-            style={{marginLeft: hp(10), color: code_color.white, flex: 1, fontSize: moderateScale(14)}}>
+            style={{
+              marginLeft: hp(10),
+              color: code_color.white,
+              flex: 1,
+              fontSize: moderateScale(14),
+            }}>
             {item.name}
           </Text>
           {item.name === 'Edit Profile' ? (
@@ -398,7 +507,23 @@ return null; // Default or fallback image if no conditions match
                     justifyContent: 'center',
                     position: 'absolute',
                     top: hp(3),
-                    right: hp(getAvatarMale?.includes('realistic/4') || getAvatarMale?.includes('realistic/2') || getAvatarMale?.includes('realistic/3')  ? -3 : getAvatarMale?.includes('realistic/5')  ? 2 :  getAvatarMale?.includes('realistic/6')  ? -7 :  getAvatarMale === '/assets/images/avatars/anime/5.png' ? -7 : getAvatarMale  === '/assets/images/avatars/anime/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/anime/4.png' ? 2 : 0),
+                    right: hp(
+                      getAvatarMale?.includes('realistic/4') ||
+                        getAvatarMale?.includes('realistic/2') ||
+                        getAvatarMale?.includes('realistic/3')
+                        ? -3
+                        : getAvatarMale?.includes('realistic/5')
+                        ? 2
+                        : getAvatarMale?.includes('realistic/6')
+                        ? -7
+                        : getAvatarMale === '/assets/images/avatars/anime/5.png'
+                        ? -7
+                        : getAvatarMale === '/assets/images/avatars/anime/1.png'
+                        ? 4
+                        : getAvatarMale === '/assets/images/avatars/anime/4.png'
+                        ? 2
+                        : 0,
+                    ),
                   }}
                 />
               </View>
@@ -415,7 +540,7 @@ return null; // Default or fallback image if no conditions match
                   marginRight: moderateScale(10),
                 }}>
                 <FastImage
-                   source={fetchImage(getAvatarFemale)}
+                  source={fetchImage(getAvatarFemale)}
                   style={{
                     width: hp(40),
                     height: hp(160),
@@ -423,7 +548,25 @@ return null; // Default or fallback image if no conditions match
                     justifyContent: 'center',
                     position: 'absolute',
                     top: hp(3),
-                    right: hp(getAvatarFemale?.includes('realistic/4') || getAvatarFemale?.includes('realistic/2') || getAvatarFemale?.includes('realistic/3')  ? -3 : getAvatarFemale?.includes('realistic/5')  ? 2 :  getAvatarFemale?.includes('realistic/6')  ? -7 : getAvatarFemale === '/assets/images/avatars/anime/5.png' ? -7 :  getAvatarFemale  === '/assets/images/avatars/anime/1.png' ? 4 : getAvatarMale === '/assets/images/avatars/anime/4.png' ? 2 : 0),
+                    right: hp(
+                      getAvatarFemale?.includes('realistic/4') ||
+                        getAvatarFemale?.includes('realistic/2') ||
+                        getAvatarFemale?.includes('realistic/3')
+                        ? -3
+                        : getAvatarFemale?.includes('realistic/5')
+                        ? 2
+                        : getAvatarFemale?.includes('realistic/6')
+                        ? -7
+                        : getAvatarFemale ===
+                          '/assets/images/avatars/anime/5.png'
+                        ? -7
+                        : getAvatarFemale ===
+                          '/assets/images/avatars/anime/1.png'
+                        ? 4
+                        : getAvatarMale === '/assets/images/avatars/anime/4.png'
+                        ? 2
+                        : 0,
+                    ),
                   }}
                 />
               </View>
@@ -435,19 +578,28 @@ return null; // Default or fallback image if no conditions match
   );
   const listMenuTwo = () => (
     <View>
-      {menuTwo.map((item, i) => (
-       Platform.OS === 'android' && item.name === 'App Icon' ? null :
-        <Pressable
-          onPress={() => handleOpenModal(item.name)}
-          style={{flexDirection: 'row', margin: moderateScale(10), alignItems: 'center'}}>
-          {item.icon}
-          <Text
-            allowFontScaling={false}
-            style={{marginLeft: moderateScale(10), color: code_color.white, fontSize: moderateScale(14)}}>
-            {item.name}
-          </Text>
-        </Pressable>
-      ))}
+      {menuTwo.map((item, i) =>
+        Platform.OS === 'android' && item.name === 'App Icon' ? null : (
+          <Pressable
+            onPress={() => handleOpenModal(item.name)}
+            style={{
+              flexDirection: 'row',
+              margin: moderateScale(10),
+              alignItems: 'center',
+            }}>
+            {item.icon}
+            <Text
+              allowFontScaling={false}
+              style={{
+                marginLeft: moderateScale(10),
+                color: code_color.white,
+                fontSize: moderateScale(14),
+              }}>
+              {item.name}
+            </Text>
+          </Pressable>
+        ),
+      )}
     </View>
   );
 
@@ -455,7 +607,28 @@ return null; // Default or fallback image if no conditions match
     <View
       style={{
         flex: 0,
-        height: hp( Dimensions.get('window').height - hp(Dimensions.get('window').height === 896 ? 260 : Dimensions.get('window').height === 932 ? 255 : Platform.OS == 'android' && Dimensions.get('window').height > 1005 && Dimensions.get('window').height < 1006  ? 320 : Platform.OS == 'android' && Dimensions.get('window').height > 900 && Dimensions.get('window').height < 960 ? 280 : Dimensions.get('window').height > 1006 ? 360 : Dimensions.get('window').height === 844 ? 260 :  208)),
+        height: hp(
+          Dimensions.get('window').height -
+            hp(
+              Dimensions.get('window').height === 896
+                ? 260
+                : Dimensions.get('window').height === 932
+                ? 255
+                : Platform.OS == 'android' &&
+                  Dimensions.get('window').height > 1005 &&
+                  Dimensions.get('window').height < 1006
+                ? 320
+                : Platform.OS == 'android' &&
+                  Dimensions.get('window').height > 900 &&
+                  Dimensions.get('window').height < 960
+                ? 280
+                : Dimensions.get('window').height > 1006
+                ? 360
+                : Dimensions.get('window').height === 844
+                ? 260
+                : 208,
+            ),
+        ),
         backgroundColor: bgTheme,
       }}>
       <ModalChangeIcon
@@ -510,9 +683,21 @@ return null; // Default or fallback image if no conditions match
       {header()}
       <ScrollView>
         {listMenu()}
-        <View style={{borderColor: 'white', borderWidth: 0.5, margin: moderateScale(10)}} />
+        <View
+          style={{
+            borderColor: 'white',
+            borderWidth: 0.5,
+            margin: moderateScale(10),
+          }}
+        />
         {listMenuTwo()}
-        <View style={{borderColor: 'white', borderWidth: 0.5, margin: moderateScale(10)}} />
+        <View
+          style={{
+            borderColor: 'white',
+            borderWidth: 0.5,
+            margin: moderateScale(10),
+          }}
+        />
         <View>
           {/* <View style={{margin: 10}}>
             <Text
@@ -540,7 +725,11 @@ return null; // Default or fallback image if no conditions match
             </View>
           </View> */}
           {/* <View style={{borderColor: '#778DFF', borderWidth: 1, margin: 10}} /> */}
-          <View style={{margin: moderateScale(10), marginBottom: moderateScale(40)}}>
+          <View
+            style={{
+              margin: moderateScale(10),
+              marginBottom: moderateScale(40),
+            }}>
             <TouchableOpacity
               onPress={() =>
                 Linking.openURL('Https://erotalesapp.com/privacy')
@@ -561,7 +750,11 @@ return null; // Default or fallback image if no conditions match
               onPress={() => Linking.openURL('https://erotalesapp.com/terms')}>
               <Text
                 allowFontScaling={false}
-                style={{marginLeft: moderateScale(10), color: code_color.white, fontSize: moderateScale(14)}}>
+                style={{
+                  marginLeft: moderateScale(10),
+                  color: code_color.white,
+                  fontSize: moderateScale(14),
+                }}>
                 Terms & Conditions
               </Text>
             </TouchableOpacity>

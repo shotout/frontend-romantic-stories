@@ -213,6 +213,13 @@ export const getExploreStory = (params = {}) =>
     params,
   });
 
+  export const getExploreStoryOffline = (params = {}) =>
+  Wrap({
+    url: '/offline/stories/all',
+    method: 'get',
+    params,
+  });
+
 export const getCategoryDetail = (id = 1, params = {}) =>
   Wrap({
     url: `/stories/category/${id}`,

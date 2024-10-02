@@ -9,4 +9,5 @@ export default states => ({
   categories: states.defaultState.defaultData.categories,
   stepsTutorial: states.defaultState.stepsTutorial,
   nextStory: states.defaultState.nextStory,
+  dataDetailCategory: states.defaultState.dataDetailCategory,
 });

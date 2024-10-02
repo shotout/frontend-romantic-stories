@@ -20,6 +20,7 @@ import {
   Dimensions,
   ImageBackground,
   Linking,
+  Alert,
 } from 'react-native';
 import {cover2, imgNotif, imgStep4} from '../../assets/images';
 import {code_color} from '../../utils/colors';
@@ -48,6 +49,7 @@ import ModalAudioUnlock from '../../components/modal-audio-unlock';
 import moment from 'moment';
 import ModalGetPremium from '../../components/modal-get-premium';
 import * as IAP from 'react-native-iap';
+import { fetch } from '@react-native-community/netinfo';
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
 const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
@@ -140,7 +142,20 @@ const SubscriptionsScreen = ({colorTheme, userProfile, backgroundColor}) => {
     //     Linking.openURL(`https://play.google.com/store/apps/details?id=${packageName}`);
     //   });
   };
+  const offline = () => {
 
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
+ 
   const handleAudio = async () => {
     setTitle('50/50 Audio Stories');
     setLoading2(true);
@@ -424,11 +439,18 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
             <View>
               <Pressable
                 onPress={() => {
-                  userProfile?.data?.subscription?.plan?.id === 1
+                  fetch().then(async state => {
+                    if (state.isConnected) {
+                      userProfile?.data?.subscription?.plan?.id === 1
                     ? handleInapp('in_app')
                     : userProfile?.data?.subscription?.plan?.id === 2
                     ?  handleInapp('upgrade_to_unlimited_audio_story')
                     : null;
+                    } else {
+                      offline()
+                    }}
+                    )
+                 
                 }}
                 style={{
                   backgroundColor: '#009A37',
@@ -470,7 +492,16 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
                     : null}
                 </Text>
               </Pressable>
-              <Pressable onPress={() => handleInapp('unsubscribe_placement')}>
+              <Pressable onPress={() => {
+                fetch().then(async state => {
+                  if (state.isConnected) {
+                    handleInapp('unsubscribe_placement')
+                  } else {
+                    offline()
+                  }}
+                  )
+              }
+               }>
                 <Text
                   allowFontScaling={false}
                   style={{
@@ -486,11 +517,18 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
           ) : userProfile?.data?.subscription?.plan?.id === 1 ? (
             <Pressable
               onPress={() => {
-                userProfile?.data?.subscription?.plan?.id === 1
+                fetch().then(async state => {
+                  if (state.isConnected) {
+                    userProfile?.data?.subscription?.plan?.id === 1
                   ? handleInapp('in_app')
                   : userProfile?.data?.subscription?.plan?.id === 2 
                   ? setShow(true)
                   : null;
+                  } else {
+                    offline()
+                  }}
+                  )
+                
               }}
               style={{
                 backgroundColor: '#009A37',
@@ -550,7 +588,14 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
               </Text>
               <Pressable
                 onPress={() => {
-                  handleInapp('inapp_paywall_a');
+                  fetch().then(async state => {
+                    if (state.isConnected) {
+                      handleInapp('inapp_paywall_a');
+                    } else {
+                      offline()
+                    }}
+                    )
+                  
                 }}
                 style={{
                   backgroundColor: '#D8DEFD',
@@ -689,7 +734,14 @@ const result = audioLimit !== 0 ? 1 - (audioTake / audioLimit) : 0;
                 </Text>
                 <Pressable
                   onPress={() => {
-                    handleInapp('inapp_paywall_a');
+                    fetch().then(async state => {
+                      if (state.isConnected) {
+                        handleInapp('inapp_paywall_a');
+                      } else {
+                        offline()
+                      }}
+                      )
+                   
                   }}
                   style={{
                     backgroundColor: '#DDDEE3',

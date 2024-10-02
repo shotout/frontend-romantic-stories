@@ -72,7 +72,7 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
 appOpenAd.load();
 function App({ userProfile }) {
   Sentry.init({
-    //environment: 'production',
+    // environment: 'production',
     environment: 'development',
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
@@ -107,7 +107,32 @@ function App({ userProfile }) {
       },
       {
         uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
-      }
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/suprise_me.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/suprise_me.png'}`
+      },
+      
     ]);
     askTrackingPermission();
     getDefaultLanguange();
@@ -155,7 +180,7 @@ function App({ userProfile }) {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
         AdjustConfig.EnvironmentSandbox,
-      //AdjustConfig.EnvironmentProduction,
+      // AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);

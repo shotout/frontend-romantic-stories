@@ -38,6 +38,7 @@ import {
   addPastStory,
   addStory,
   getExploreStory,
+  getExploreStoryOffline,
   getListAvatarTheme,
   getStoryDetail,
   getStoryList,
@@ -79,7 +80,9 @@ import ModalStoryPreview from '../../components/modal-story-preview';
 import ModalStorySave from '../../components/modal-story-save';
 import {moderateScale} from 'react-native-size-matters';
 import TrackPlayer from 'react-native-track-player';
-import { fetch } from '@react-native-community/netinfo';
+import {fetch} from '@react-native-community/netinfo';
+import RNFS from 'react-native-fs';
+import {BACKEND_URL} from '../../shared/static';
 
 const MainScreen = ({
   userProfile,
@@ -105,8 +108,9 @@ const MainScreen = ({
   handleListenStory,
   handleSetPage,
   page,
+  handleSetExploreCategory,
+  handleSetExplore,
 }) => {
-
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
   const [showMedia, setShowMedia] = useState(false);
@@ -152,6 +156,7 @@ const MainScreen = ({
   const [me, setMe] = useState(null);
   const [partner, setPartner] = useState(null);
   const [screenNumber, setScreenNumber] = useState(0);
+
   const [readLater, setReadLater] = useState(false);
   const [isLoveAnimate, setIsLoveAnimate] = useState<boolean | string>(false);
   const [isRippleAnimate, setIsRippleAnimate] = useState<boolean>(false);
@@ -171,7 +176,7 @@ const MainScreen = ({
   const currentXp = userProfile?.data?.user_level?.point;
   const newXp = levelingUser?.user_level?.point;
   const [textChunks, setTextChunks] = useState([]);
-  
+ 
   useEffect(() => {
     // if (!__DEV__) {
     async function getPrice() {
@@ -239,16 +244,16 @@ const MainScreen = ({
             item?.id === dataBook.id && item?.page === textChunks?.length,
         )
       : undefined;
-      let uniqueData = []
-     if(listenStory === null){
+    let uniqueData = [];
+    if (listenStory === null) {
       let data = [
         {
           id: dataBook.id,
         },
       ];
-      uniqueData = data
+      uniqueData = data;
       handleListenStory(data);
-     }else{
+    } else {
       const existingEntry = listenStory
         ? listenStory.find((item: any) => item?.id === dataBook.id)
         : undefined;
@@ -256,35 +261,34 @@ const MainScreen = ({
         const newData = {
           id: dataBook.id,
         };
-        uniqueData = [...listenStory, newData]
+        uniqueData = [...listenStory, newData];
         // Dispatch action to update readStory in the Redux store
         handleListenStory([...listenStory, newData]);
-     
-     }
+      }
     }
-   
+
     const value = await AsyncStorage.getItem('FINISH_LISTEN_3');
     const value1 = await AsyncStorage.getItem('FINISH_LISTEN_7');
     const value2 = await AsyncStorage.getItem('FINISH_LISTEN_10');
-   
-    if(value != 'true'){
+
+    if (value != 'true') {
       if (uniqueData?.length === 3) {
         eventTracking(FINISH_LISTEN_3);
         AsyncStorage.setItem('FINISH_LISTEN_3', 'true');
       }
     }
-    if(value1 != 'true'){
-    if (uniqueData?.length === 7) {
-      eventTracking(FINISH_LISTEN_7);
-      AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
+    if (value1 != 'true') {
+      if (uniqueData?.length === 7) {
+        eventTracking(FINISH_LISTEN_7);
+        AsyncStorage.setItem('FINISH_LISTEN_7', 'true');
+      }
     }
-  }
-  if(value2 != 'true'){
-    if (uniqueData?.length === 10) {
-      eventTracking(FINISH_LISTEN_10);
-      AsyncStorage.setItem('FINISH_LISTEN_10', 'true');
+    if (value2 != 'true') {
+      if (uniqueData?.length === 10) {
+        eventTracking(FINISH_LISTEN_10);
+        AsyncStorage.setItem('FINISH_LISTEN_10', 'true');
+      }
     }
-  }
     if (typeof existingEntry === 'undefined') {
       // jika nanti pertama kali melakukan update data terakhir
 
@@ -300,13 +304,17 @@ const MainScreen = ({
         }, 100);
       }
       // checkingRead(textChunks?.length);
-    } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+    } else if (
+      existingEntry &&
+      !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
+    ) {
       //jika tidak premium maka akan terus menampilan modal setiap terakhir
       setTimeout(() => {
         setShowModalNewStory(true);
       }, 50);
     }
   };
+
   useEffect(() => {
     async function fetchFromParam() {
       if (route?.params?.successListen) {
@@ -388,7 +396,24 @@ const MainScreen = ({
     const resp = await getStoryList();
     handleSetStory(resp.data);
   };
-
+  const fetchCategoryOnline = async () => {
+    let params = {
+      search: '',
+      column: 'title_en',
+      dir: 'desc',
+    };
+    const res = await getExploreStory(params);
+    handleSetExplore(res);
+  };
+  const fetchCategory = async () => {
+    let params = {
+      search: '',
+      column: 'title_en',
+      dir: 'desc',
+    };
+    const res = await getExploreStoryOffline(params);
+    handleSetExploreCategory(res);
+  };
   useEffect(() => {
     // fetchStory()
     if (readStory === null && dataBook) {
@@ -409,8 +434,14 @@ const MainScreen = ({
   }, [userStory]);
 
   useEffect(() => {
-    if(page === 0){
-
+    if (page === 0) {
+      handleSetPage(0);
+      if (pagerRef.current) {
+        
+        pagerRef.current.setPage(0);
+        setScreenNumber(0);
+        handleSetPage(0);
+      }
       async function setToFirstPage() {
         setScreenNumber(0);
         pagerRef.current?.setPage(0);
@@ -418,8 +449,28 @@ const MainScreen = ({
       setTimeout(() => {
         setToFirstPage();
       }, 300);
+      setScreenNumber(0);
+    } else {
+
+      if (pagerRef.current) {
+        pagerRef.current.setPage(0);
+        setScreenNumber(0);
+        handleSetPage(0);
+      }
+      
+
+      // async function setToFirstPage() {
+      //   setTimeout(() => {
+
+      //   }, 100);
+      //   setScreenNumber(0);
+      //   pagerRef.current?.setPage(0);
+      // }
+      // setTimeout(() => {
+      //   setToFirstPage();
+      // }, 300);
     }
-  }, [dataBook?.title_en]);
+  }, [dataBook?.title_en, isFocused]);
 
   // useEffect(() => {
   //   pagerRef.current?.setPage(page);
@@ -431,21 +482,18 @@ const MainScreen = ({
     const stringifyDateNow = new Date();
     let strTanggalSekarang = stringifyDateNow.getDate().toString();
 
-    
     if (value != null) {
       if (value != strTanggalSekarang) {
         if (!route?.params?.isFromNotif) {
           AsyncStorage.setItem('setToday', strTanggalSekarang);
         }
         if (userProfile?.data?.subscription?.plan?.id != 1) {
-          
-          setShowModalNewStory(false)
+          setShowModalNewStory(false);
           const res = await getStoryList();
           handleNextStory(res.data);
           setShowModalDay(true);
         } else {
-         
-          setShowModalNewStory(false)
+          setShowModalNewStory(false);
           const res = await getStoryList();
           handleNextStory(res.data);
           setShowModalDay(true);
@@ -462,27 +510,26 @@ const MainScreen = ({
     setShowModal(true);
   };
   useEffect(() => {
-  
-      setShowModalNewStory(false)
-      if (Platform.OS === 'android') {
-        const payload = {
-          _method: 'PATCH',
-          is_member: 3,
-        }
-        
-        updateProfile(payload);
-      }
-        reloadUserProfile();
-      
-  
-      fetchCheckingDay();
-    
+    setShowModalNewStory(false);
+    if (Platform.OS === 'android') {
+      const payload = {
+        _method: 'PATCH',
+        is_member: 3,
+      };
+
+      updateProfile(payload);
+    }
+    reloadUserProfile();
+
+    fetchCheckingDay();
+    // fetchCategory();
+    // fetchCategoryOnline();
   }, []);
- 
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
     const pageNumber = e.nativeEvent.position;
     handleSetPage(pageNumber);
+
     setScreenNumber(pageNumber);
     const timeoutLove = setTimeout(() => {
       if (pageNumber === textChunks?.length - 1) {
@@ -569,19 +616,12 @@ const MainScreen = ({
   };
 
   useEffect(() => {
-   
     handleThemeAvatar();
-  
-   
   }, []);
 
-  useEffect(() => {
-    fetchOnline()
-  }, [])
   const fetchOnline = () => {
     fetch().then(async state => {
       if (state.isConnected) {
-
       } else {
         // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
         // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
@@ -591,13 +631,12 @@ const MainScreen = ({
 
         //   navigate('Media');
         // } else {
-          offline()
-
+        offline();
 
         // }
       }
     });
-  }
+  };
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -610,11 +649,11 @@ const MainScreen = ({
   }, [visible]);
 
   const checkingListen = async () => {
-
     if (listenStory === null) {
       if (
-        userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
-        userProfile?.data?.subscription?.audio_limit != 0
+        userProfile?.data?.subscription?.plan?.id === 2 ||
+        (userProfile?.data?.subscription?.plan?.id === 4 &&
+          userProfile?.data?.subscription?.audio_limit != 0)
       ) {
         const payload = {
           _method: 'PATCH',
@@ -639,7 +678,7 @@ const MainScreen = ({
         Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
         navigate('Media');
       } else {
-        eventTracking('OPEN_LISTEN_PAYWALL')
+        eventTracking('OPEN_LISTEN_PAYWALL');
         setShow(true);
       }
       let data = [
@@ -660,8 +699,9 @@ const MainScreen = ({
         // Dispatch action to update readStory in the Redux store
         handleListenStory([...listenStory, newData]);
         if (
-          userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
-          userProfile?.data?.subscription?.audio_limit != 0
+          userProfile?.data?.subscription?.plan?.id === 2 ||
+          (userProfile?.data?.subscription?.plan?.id === 4 &&
+            userProfile?.data?.subscription?.audio_limit != 0)
         ) {
           const payload = {
             _method: 'PATCH',
@@ -684,13 +724,14 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
-          eventTracking('OPEN_LISTEN_PAYWALL')
+          eventTracking('OPEN_LISTEN_PAYWALL');
           setShow(true);
         }
       } else {
         if (
-          userProfile?.data?.subscription?.plan?.id === 2 || userProfile?.data?.subscription?.plan?.id === 4 &&
-          userProfile?.data?.subscription?.audio_limit != 0
+          userProfile?.data?.subscription?.plan?.id === 2 ||
+          (userProfile?.data?.subscription?.plan?.id === 4 &&
+            userProfile?.data?.subscription?.audio_limit != 0)
         ) {
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
@@ -701,7 +742,7 @@ const MainScreen = ({
           Platform.OS === 'android' ? await TrackPlayer.setupPlayer() : null;
           navigate('Media');
         } else {
-          eventTracking('OPEN_LISTEN_PAYWALL')
+          eventTracking('OPEN_LISTEN_PAYWALL');
           setShow(true);
         }
       }
@@ -720,21 +761,16 @@ const MainScreen = ({
           }
         }
       } else {
-        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
-        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-        // const fileExists = await RNFS.exists(destinationPath);
-        // if (fileExists) {
-
-        //   navigate('Media');
-        // } else {
-          offlineMedia()
-
-
-        // }
+        const fileName = `${dataBook?.title_en}.mp3`; // Nama file yang diinginkan
+        const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        const fileExists = await RNFS.exists(destinationPath);
+        if (fileExists) {
+          navigate('Media');
+        } else {
+          offlineMedia();
+        }
       }
     });
-    
   };
 
   const splitTextIntoArray = (text: string, chunkLength: number) => {
@@ -972,26 +1008,17 @@ const MainScreen = ({
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (appState.match(/background/) && nextAppState === 'active') {
-        
-          
-            fetchCheckingDay()
-         
-        
+        fetchCheckingDay();
       }
       setAppState(nextAppState);
     });
 
     return () => {
-     
       subscription.remove();
     };
-  }, [appState, ]);
+  }, [appState]);
   useEffect(() => {
-    
     setBook(userStory);
-   
-      
-    
   }, [isFocused]);
 
   const handleUnlock = async () => {
@@ -1153,14 +1180,14 @@ const MainScreen = ({
     setShowModalDay(false);
     setShowModal(false);
     setShowPreview(false);
-    pagerRef.current?.setPage(0)
+    pagerRef.current?.setPage(0);
     reset(story);
   };
   const reset = async (story: any) => {
-    setTimeout(async() => {
+    setTimeout(async () => {
       await pagerRef.current?.setPage(0);
     }, 0);
-    setTimeout(async() => {
+    setTimeout(async () => {
       await pagerRef.current?.setPage(0);
     }, 100);
     handleSetStory(story);
@@ -1213,16 +1240,16 @@ const MainScreen = ({
           page: -1,
         },
       );
-        
+
     function setLastPage() {
-      if (!userHasRead) {
+      if (!userHasRead && !route?.params?.isFromLibrary) {
         setTimeout(async () => {
           await pagerRef?.current?.setPage(lastRead?.page ? lastRead?.page : 0);
-        }, 500);
+        }, 300);
       }
     }
     setLastPage();
-  }, [dataBook, textChunks]);
+  }, [dataBook, textChunks, route?.params]);
 
   const userFinishedRead = readStory?.some(
     (entry: any) =>
@@ -1268,21 +1295,46 @@ const MainScreen = ({
               }
               checkingRead(screenNumber + 1);
             } catch (error) {
+              fetchOnline();
               console.log('ERROR PAS LEVEL', JSON.stringify(error));
             }
           } catch (error) {
+            fetchOnline();
             console.log('ERROR PAS STORY', JSON.stringify(error));
           }
-        } else if (existingEntry && !(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+        } else if (
+          existingEntry &&
+          !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
+        ) {
           setTimeout(() => {
             setShowModalNewStory(true);
           }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
-        } else if (existingEntry && (isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-          setTimeout(() => {
-            setShowModalCongrats(true);
-          }, 50);
+        } else if (
+          existingEntry &&
+          (isPremiumStory || isPremiumAudio || isPremiumMonthly)
+        ) {
+          fetch().then(async state => {
+            if (state.isConnected) {
+              setTimeout(() => {
+                setShowModalCongrats(true);
+              }, 50);
+            } else {
+              // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+              // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+              // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+              // const fileExists = await RNFS.exists(destinationPath);
+              // if (fileExists) {
+
+              //   navigate('Media');
+              // } else {
+              offline();
+
+              // }
+            }
+          });
+
           // await fecthNextStory();
         }
       }
@@ -1302,7 +1354,6 @@ const MainScreen = ({
   }, []);
 
   const offline = () => {
-
     Alert.alert(
       'YOU SEEM TO BE OFFLINE',
       'Please check your internet connection and try again.',
@@ -1313,10 +1364,9 @@ const MainScreen = ({
         },
       ],
     );
-  }
+  };
 
   const offlineMedia = () => {
-
     Alert.alert(
       'YOU SEEM TO BE OFFLINE',
       'Please check your internet connection before playing this Audio Story.',
@@ -1327,7 +1377,7 @@ const MainScreen = ({
         },
       ],
     );
-  }
+  };
   const checkInternetConnection = async () => {
     fetch().then(async state => {
       if (state.isConnected) {
@@ -1341,7 +1391,7 @@ const MainScreen = ({
 
         //   navigate('Media');
         // } else {
-          offlineMedia()
+        offlineMedia();
         // }
       }
     });
@@ -1563,7 +1613,11 @@ const MainScreen = ({
               screenNumber !== 0 &&
               screenNumber !== textChunks?.length - 1
             }
-            isPremium={readLater ? null : isPremiumStory || isPremiumAudio || isPremiumMonthly}
+            isPremium={
+              readLater
+                ? null
+                : isPremiumStory || isPremiumAudio || isPremiumMonthly
+            }
             handleRead={(data: any) => {
               handleReadAds(data);
             }}
@@ -1582,7 +1636,7 @@ const MainScreen = ({
             }}
           />
           <ModalAppRating
-           type={userProfile?.data?.type}
+            type={userProfile?.data?.type}
             isVisible={showRatingApp}
             onClose={() => {
               setRatingApp(false);

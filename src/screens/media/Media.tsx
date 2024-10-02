@@ -12,6 +12,7 @@ import {
   AppState,
   ScrollView,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -56,6 +57,8 @@ import {
 } from '../../helpers/eventTracking';
 import ImageColors from 'react-native-image-colors';
 import { moderateScale } from 'react-native-size-matters';
+import RNFS from 'react-native-fs';
+import FastImage from 'react-native-fast-image';
 
 function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfile}) {
   const [play, setPlay] = useState(false);
@@ -103,6 +106,95 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
       remotePlayListener.remove();
     };
   }, []);
+  const downloadMp3 = async () => {
+    const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+    const fileName = `${userStory?.title_id}.mp3`; // Nama file yang diinginkan
+    const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+    FastImage.preload([
+      {
+        uri: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
+      },
+    ]);
+    const fileExists = await RNFS.exists(destinationPath);
+    if (fileExists) {
+      setInfo(destinationPath);
+      await TrackPlayer.add({
+        id: 'track1',
+        url: destinationPath,
+        title: userStory?.category?.name,
+        artist: userStory?.title_id,
+        album: 'While(1<2)',
+        genre: 'Progressive House, Electro House',
+        date: '2014-05-20T07:00:00+00:00',
+        artwork: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
+        duration: 10,
+      });
+      setLoading(false);
+      return; // Keluar dari fungsi jika file sudah ada
+    } else {
+      try {
+        // Mulai proses download
+        const downloadResult = await RNFS.downloadFile({
+          fromUrl: newMp3Url,
+          toFile: destinationPath,
+        }).promise;
+
+        if (downloadResult.statusCode === 200) {
+          setInfo(destinationPath);
+          await TrackPlayer.add({
+            id: 'track1',
+            url: destinationPath,
+            title: userStory?.category?.name,
+            artist: userStory?.title_id,
+            album: 'While(1<2)',
+            genre: 'Progressive House, Electro House',
+            date: '2014-05-20T07:00:00+00:00',
+            artwork: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
+            duration: 10,
+          });
+          setLoading(false);
+          console.log(
+            'File berhasil diunduh dan disimpan di:',
+            destinationPath,
+          );
+        } else {
+          setLoading(false);
+       
+          console.error(
+            'Gagal mengunduh file, status code:',
+            downloadResult.statusCode,
+          );
+        }
+      } catch (error) {
+        setLoading(false);
+     
+        console.error('Error saat mengunduh file:', error);
+      }
+    }
+  };
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission',
+            message: 'App needs access to your storage to download files',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Storage permission granted');
+        } else {
+          console.log('Storage permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
   useEffect(() => {
     const init = async () => {
      await TrackPlayer.setupPlayer() 
@@ -165,6 +257,8 @@ function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfi
           duration: 10,
         });
       
+         await requestStoragePermission();
+        downloadMp3();
         // Jalankan pemutaran baru
         setLoading(false);
       

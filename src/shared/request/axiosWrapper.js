@@ -33,7 +33,7 @@ const request = options => {
   const userCredential = userCredentialSelector(appState);
   // const userCredential = null;
   let tokenParam = {};
-  // console.log('Check userCredential', userCredential);
+  // console.log('Check userCredential', userCredential.token);
   if (userCredential) {
     tokenParam = {
       Authorization: `Bearer ${userCredential.token}`,

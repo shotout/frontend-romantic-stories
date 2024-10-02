@@ -248,7 +248,7 @@ function QuotesContent({
   }, [pageActive, userProfile]);
 
   const offline = () => {
-    if (userProfile?.data?.gender === 'Female' && typeImage === 'realistic') {
+    if (userProfile?.data?.gender === 'Female' && typeImage.trim() === 'realistic') {
       if (
         pageActive === 0 ||
         pageActive === 10 ||
@@ -257,16 +257,32 @@ function QuotesContent({
         pageActive === 40
       ) {
         setMe(
-          `/assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_female}.png`,
+          `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/positive.png`,
         );
+
         setPartner(
-          `/assets/avatar/${typeImage}/casual/${userProfile?.data?.avatar_male}.png`,
+          `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_female}/positive.png`,
+        
         );
 
         // setMe(data?.data?.partner);
       }
       // setMe(data?.data?.partner);
       // setPartner(data?.data?.me);
+    } else if( typeImage.trim() === 'realistic'){
+
+     
+        setMe(
+          `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/positive.png`,
+        );
+
+        setPartner(
+          `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_female}/positive.png`,
+        
+        );
+
+        // setMe(data?.data?.partner);
+      
     } else if(typeImage.trim() != 'realistic') {
      if(isPageActiveAnime(pageActive)){
       setMe(
@@ -406,7 +422,6 @@ function QuotesContent({
 
     try {
       const data = await getListAvatarTheme(params);
-      console.log(JSON.stringify(data))
       if (data?.data) {
         if (userProfile?.data?.gender === 'Female') {
           setMe(data?.data?.partner);
@@ -586,6 +601,35 @@ function QuotesContent({
 
   const isPageActive = (page) => {
     return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(page);
+  };
+
+  const isPageActiveReal2 = (page) => {
+    return [1, 11, 21, 31, 41, 51, 61, 71].includes(page);
+  };
+
+  const isPageActiveReal3 = (page) => {
+    return [2, 12, 22, 32, 42, 52, 62, 72,].includes(page);
+  };
+  const isPageActiveReal4 = (page) => {
+    return [3, 13, 23, 33, 43, 53, 63, 73,].includes(page);
+  };
+  const isPageActiveReal5 = (page) => {
+    return [4, 14, 24, 34, 44, 54, 64, 74,].includes(page);
+  };
+  const isPageActiveReal6 = (page) => {
+    return [5, 15, 25, 35, 45, 55, 65, 75,].includes(page);
+  };
+  const isPageActiveReal7 = (page) => {
+    return [6, 16, 26, 36, 46, 56, 66, 76,].includes(page);
+  };
+  const isPageActiveReal8 = (page) => {
+    return [7, 17, 27, 37, 47, 57, 67, 77,].includes(page);
+  };
+  const isPageActiveReal9 = (page) => {
+    return [8, 18, 28, 38, 48, 58, 68, 78,].includes(page);
+  };
+  const isPageActiveReal10 = (page) => {
+    return [9, 19, 29, 39, 49, 59, 69, 79,].includes(page);
   };
   const isPageActiveAnime = (page) => {
     return [0, 3, 6, 9, 12, 15, 18, 21, 24, 27].includes(page);

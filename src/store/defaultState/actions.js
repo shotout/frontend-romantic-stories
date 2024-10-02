@@ -100,3 +100,18 @@ export const handleSetListLibrary = payload => ({
   type: types.SET_LIST_LIBRARY,
   payload,
 });
+
+export const handleSetExplore = payload => ({
+  type: types.SET_EXPLORE_LIBRARY,
+  payload,
+});
+
+export const handleSetDetailCategory = payload => ({
+  type: types.SET_DETAIL_CATEGORY,
+  payload,
+});
+
+export const handleSetExploreCategory = payload => ({
+  type: types.SET_EXPLORE_CATEGORY,
+  payload,
+});

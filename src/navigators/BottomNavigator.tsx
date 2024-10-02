@@ -60,6 +60,7 @@ import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {moderateScale} from 'react-native-size-matters';
 import ModalShareStory from '../components/modal-share-story';
+import { fetch } from '@react-native-community/netinfo';
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -355,27 +356,60 @@ function MyTabs(props) {
       }, 1000);
     });
   };
+  const offline = () => {
+
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  }
   const handleFetchSave = async () => {
     if (props.userStory?.is_collection === null) {
-      setIsSaved(true);
-      const response = await addStory(props.userStory?.id);
-      if (response.status === 'success') {
-        setVisibleModal(true);
-        setTimeout(() => {
-          handleFetchSaveAnim();
-        }, 500);
-        setTimeout(() => {
-          setVisibleModal(false);
-        }, 1600);
-        try {
-          const resp = await getStoryDetail(props.userStory?.id);
-          eventTracking(ADD_STORY_TO_LIBRARY);
-          eventTracking(STORY_LIKED);
-          store.dispatch(handleSetStory(resp.data));
-        } catch (error) {}
-      }
+     
+      fetch().then(async state => {
+        if (state.isConnected) {
+          setIsSaved(true);
+          const response = await addStory(props.userStory?.id);
+          if (response.status === 'success') {
+            setVisibleModal(true);
+            setTimeout(() => {
+              handleFetchSaveAnim();
+            }, 500);
+            setTimeout(() => {
+              setVisibleModal(false);
+            }, 1600);
+            try {
+              const resp = await getStoryDetail(props.userStory?.id);
+              eventTracking(ADD_STORY_TO_LIBRARY);
+              eventTracking(STORY_LIKED);
+              store.dispatch(handleSetStory(resp.data));
+            } catch (error) {}
+          }
+        } else {
+          // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+          // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+          // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+          // const fileExists = await RNFS.exists(destinationPath);
+          // if (fileExists) {
+  
+          //   navigate('Media');
+          // } else {
+            offline()
+  
+  
+          // }
+        }
+      });
     } else {
-      setIsSaved(false);
+      fetch().then(async state => {
+        if (state.isConnected) {
+          setIsSaved(false);
       const data = await deleteMyStory(props.userStory?.id);
       setTitle('save');
       if (data.status === 'success') {
@@ -384,6 +418,11 @@ function MyTabs(props) {
           store.dispatch(handleSetStory(resp.data));
         } catch (error) {}
       }
+        }else{
+          offline()
+        }
+      })
+      
     }
   };
   const love = require('../assets/lottie/ripple.json');

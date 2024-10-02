@@ -25,6 +25,7 @@ import {BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import {hp} from '../../../utils/screen';
 import { avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, realistic_beach_1, realistic_beach_4, realistic_casual_3, realistic_cocktail_2, realistic_cocktail_5, realistic_professional_6 } from '../../../assets/images';
+import FastImage from 'react-native-fast-image';
 
 function ModalEditProfile({
   isVisible,
@@ -162,7 +163,7 @@ return null; // Default or fallback image if no conditions match
     if (online) {
       imageSource = {
         uri: `${BACKEND_URL}/${me}`,
-        priority: FastImage.priority.high,
+        // priority: FastImage.priority.high,
       };
     } else {
       if (me.includes('realistic')) {

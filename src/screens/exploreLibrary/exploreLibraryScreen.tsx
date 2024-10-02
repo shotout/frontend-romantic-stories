@@ -36,6 +36,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {
   addStory,
   getExploreStory,
+  getExploreStoryOffline,
   getStoryDetail,
   updateProfile,
 } from '../../shared/request';
@@ -65,7 +66,7 @@ import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
 import {hp} from '../../utils/screen';
-import { fetch } from '@react-native-community/netinfo';
+import {fetch} from '@react-native-community/netinfo';
 
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
@@ -80,13 +81,21 @@ const ExploreLibraryScreen = ({
   backgroundColor,
   userProfile,
   nextStory,
+  handleSetExplore,
+  dataExplore,
+  handleSetExploreCategory,
+  dataExploreCategory
 }) => {
+
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
+  // const [data, setData] = useState<any>(dataExplore);
   const [data, setData] = useState<any>();
+  // const [dataCategory, setDataCategory] = useState<any>(dataExploreCategory);
+  const [dataCategory, setDataCategory] = useState<any>([]);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
@@ -102,25 +111,32 @@ const ExploreLibraryScreen = ({
     useState(false);
 
   const showWatchAds = async () => {
-    setLoadingAds(true);
-    const advert = await loadRewardedWatch();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
-      setShowModalUnlock(false);
-      setLoadingAds(false);
-      setTimeout(async () => {
-        const resp = await getStoryDetail(selectedStory?.id);
-        const payloadStory = {
-          _method: 'PATCH',
-          story_id: selectedStory?.id,
-          expire: 1,
-        };
-
-        await updateProfile(payloadStory);
-        reloadUserProfile();
-        handleNextStory(resp.data);
-        setShowUnlockedStory(true);
-      }, 500);
+    fetch().then(async state => {
+      if (state.isConnected) {
+        setLoadingAds(true);
+        const advert = await loadRewardedWatch();
+        advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+          setShowModalUnlock(false);
+          setLoadingAds(false);
+          setTimeout(async () => {
+            const resp = await getStoryDetail(selectedStory?.id);
+            const payloadStory = {
+              _method: 'PATCH',
+              story_id: selectedStory?.id,
+              expire: 1,
+            };
+    
+            await updateProfile(payloadStory);
+            reloadUserProfile();
+            handleNextStory(resp.data);
+            setShowUnlockedStory(true);
+          }, 500);
+        });
+      } else {
+        offline();
+      }
     });
+    
   };
 
   const handlePremium = async itm => {
@@ -131,7 +147,6 @@ const ExploreLibraryScreen = ({
     }, 500);
   };
   const offline = () => {
-
     Alert.alert(
       'YOU SEEM TO BE OFFLINE',
       'Please check your internet connection and try again.',
@@ -142,26 +157,32 @@ const ExploreLibraryScreen = ({
         },
       ],
     );
-  }
+  };
   const handleUnlimited = async () => {
-    //
-    try {
-      const paymentResult = await handlePayment('in_app');
-      if (paymentResult.success) {
-        setShowUnlockedStory(false);
-        setShowModalGetPremium(true);
-        console.log('Pembayaran berhasil:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran berhasil
-      } else {
-        setShowUnlockedStory(false);
-        console.log('Pembayaran gagal:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran gagal
+    fetch().then(async state => {
+      if (state.isConnected) {
+        try {
+          const paymentResult = await handlePayment('in_app');
+          if (paymentResult.success) {
+            setShowUnlockedStory(false);
+            setShowModalGetPremium(true);
+            console.log('Pembayaran berhasil:', paymentResult.result);
+            // Lakukan tindakan setelah pembayaran berhasil
+          } else {
+            setShowUnlockedStory(false);
+            console.log('Pembayaran gagal:', paymentResult.result);
+            // Lakukan tindakan setelah pembayaran gagal
+          }
+        } catch (error) {
+          setShowUnlockedStory(false);
+          console.error('Terjadi kesalahan:', error);
+          // Tangani kesalahan yang mungkin terjadi
+        }
+      }else{
+        offline()
       }
-    } catch (error) {
-      setShowUnlockedStory(false);
-      console.error('Terjadi kesalahan:', error);
-      // Tangani kesalahan yang mungkin terjadi
-    }
+    })
+   
     // setShowModalGetPremium(true);
   };
 
@@ -174,10 +195,11 @@ const ExploreLibraryScreen = ({
           dir: items?.value,
         };
         const res = await getExploreStory(params);
+        handleSetExplore(res);
         setData(res);
         setLoad(false);
       } catch (error) {
-        setData(null);
+        // setData(null);
         setLoad(false);
       }
     }
@@ -189,25 +211,33 @@ const ExploreLibraryScreen = ({
       if (state.isConnected) {
 
       } else {
-        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
-        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-        // const fileExists = await RNFS.exists(destinationPath);
-        // if (fileExists) {
-
-        //   navigate('Media');
-        // } else {
-          offline()
-
-
-        // }
+       
+        offline()
+      
       }
     });
-  }
+  };
 
+  const fetchCategory = async () => {
+    try {
+      let params = {
+        search: keyword,
+        column: items?.column === 'name' ? 'title_en' : items?.column,
+        dir: items?.value,
+      };
+      const res = await getExploreStoryOffline(params);
+      handleSetExploreCategory(res);
+      setDataCategory(res);
+      setLoad(false);
+    } catch (error) {
+      // setData(null);
+      setLoad(false);
+    }
+  }
   useEffect(() => {
-    fetchOnline()
-  }, [])
+    // fetchCategory()
+    fetchOnline();
+  }, []);
   useEffect(() => {
     handleRestart();
   }, [keyword, items]);
@@ -295,7 +325,13 @@ const ExploreLibraryScreen = ({
         data={selectedStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          handleNative();
+          fetch().then(async state => {
+            if (state.isConnected) {
+              handleNative();
+            } else {
+              offline();
+            }
+          });
         }}
         loadingOne={loadingAds}
         price={price}
@@ -503,7 +539,7 @@ const ExploreLibraryScreen = ({
                 📚 Try a different category
               </Text>
               <ScrollView horizontal>
-                {data?.category.map((itm: any, idx: number) => (
+                {data?.category?.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() =>
                       navigate('CategoryDetail', {categoryId: itm.id})
@@ -570,6 +606,67 @@ const ExploreLibraryScreen = ({
             </View>
           </View>
         )}
+        {/* <View>
+        {dataCategory?.data?.length > 0 && (
+          <View style={{flex: 0, height: hp(250)}}>
+            <View
+              style={{
+                backgroundColor: '#F0F2FF',
+                marginTop: hp(13),
+                marginHorizontal: hp(13),
+                height: hp(230),
+                minWidth: Dimensions.get('screen').width - hp(26),
+                borderRadius: hp(8),
+                padding: hp(16),
+              }}>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  fontWeight: '600',
+                  color: code_color.black,
+                  marginBottom: hp(16),
+                }}>
+                📚 Try a different category
+              </Text>
+              <ScrollView horizontal>
+                {dataCategory?.data?.map((itm: any, idx: number) => (
+                  <Pressable
+                    onPress={() =>
+                      navigate('CategoryDetail', {categoryId: itm})
+                    }
+                    style={{
+                      width: hp(95),
+                      marginRight:
+                        idx + 1 === data?.category?.length ? 0 : hp(16),
+                    }}
+                    key={idx}>
+                  
+                    <FastImage
+                      source={{
+                        uri: `${BACKEND_URL}${itm.cover?.url}`,
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.cover}
+                      style={{height: hp(130), width: hp(95), borderRadius: 6}}
+                    />
+
+                    <Text
+                      style={{
+                        fontSize: moderateScale(10),
+                        fontWeight: '600',
+                        marginTop: hp(6),
+                        color: code_color.black,
+                      }}>
+                      {itm.name}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        )}
+        </View> */}
+
 
         {data?.most_share?.length > 0 && (
           <View style={{flex: 0, height: hp(270), marginBottom: hp(50)}}>

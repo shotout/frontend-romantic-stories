@@ -10,6 +10,7 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -17,7 +18,12 @@ import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
 import states from './states';
 import {code_color} from '../../utils/colors';
-import {bgNewStory, bgNewStoryReal, imgLoveLeft, imgLoveRight} from '../../assets/images';
+import {
+  bgNewStory,
+  bgNewStoryReal,
+  imgLoveLeft,
+  imgLoveRight,
+} from '../../assets/images';
 import Button from '../buttons/Button';
 import {moderateScale} from 'react-native-size-matters';
 import {book} from '../../assets/icons';
@@ -28,6 +34,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import {fixedFontSize, hp, wp} from '../../utils/screen';
 import {sizing} from '../../shared/styling';
 import Close from '../../assets/icons/close';
+import {fetch} from '@react-native-community/netinfo';
 function ModalNewStory({
   isVisible,
   onClose,
@@ -99,6 +106,36 @@ function ModalNewStory({
       }
     }
   };
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+      } else {
+        // const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+        // const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+        // const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        // const fileExists = await RNFS.exists(destinationPath);
+        // if (fileExists) {
+
+        //   navigate('Media');
+        // } else {
+        offline();
+
+        // }
+      }
+    });
+  };
   return (
     <Modal
       visible={isVisible}
@@ -146,7 +183,11 @@ function ModalNewStory({
                 ),
               }}>
               <Image
-                source={userProfile?.data?.type === 'realistic' ? bgNewStoryReal : bgNewStory}
+                source={
+                  userProfile?.data?.type === 'realistic'
+                    ? bgNewStoryReal
+                    : bgNewStory
+                }
                 resizeMode="contain"
                 style={{
                   width: '100%',
@@ -296,7 +337,15 @@ function ModalNewStory({
 
                 <Pressable
                   disabled={loadingAds}
-                  onPress={onWatchAds}
+                  onPress={() => {
+                    fetch().then(async state => {
+                      if (state.isConnected) {
+                        onWatchAds();
+                      } else {
+                        offline();
+                      }
+                    });
+                  }}
                   style={{
                     backgroundColor: '#ED5267',
                     width: '90%',
@@ -374,7 +423,15 @@ function ModalNewStory({
                 {Platform.OS === 'android' ? null : (
                   <Pressable
                     disabled={isLoading}
-                    onPress={() => onUnlock()}
+                    onPress={() => {
+                      fetch().then(async state => {
+                        if (state.isConnected) {
+                          onUnlock();
+                        } else {
+                          offline();
+                        }
+                      });
+                    }}
                     style={{
                       backgroundColor: '#009A37',
                       width: '90%',
@@ -453,7 +510,15 @@ function ModalNewStory({
                   />
                 </View>
                 <Pressable
-                  onPress={() => onGetUnlimit()}
+                  onPress={() => {
+                    fetch().then(async state => {
+                      if (state.isConnected) {
+                        onGetUnlimit();
+                      } else {
+                        offline();
+                      }
+                    });
+                  }}
                   style={{
                     backgroundColor: '#ADC3D2',
                     width: '90%',

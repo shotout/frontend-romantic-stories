@@ -54,8 +54,11 @@ const INITIAL_STATE = {
   levelingUser: null,
   colorText: '',
   page: 0,
-  dataListCollection: null,
+  dataListCollection: [],
   dataListLibrary: [],
+  dataExplore: null,
+  dataDetailCategory: null,
+  dataExploreCategory: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -371,6 +374,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dataListLibrary: action.payload,
+      };
+    case types.SET_EXPLORE_LIBRARY:
+      return {
+        ...state,
+        dataExplore: action.payload,
+      };
+    case types.SET_DETAIL_CATEGORY:
+      return {
+        ...state,
+        dataDetailCategory: action.payload,
+      };
+    case types.SET_EXPLORE_CATEGORY:
+      return {
+        ...state,
+        dataExploreCategory: action.payload,
       };
     case types.RESET_PARAMS:
       return {

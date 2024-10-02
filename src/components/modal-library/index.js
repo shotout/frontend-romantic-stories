@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, View, Text, Pressable, Image, TextInput} from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  Image,
+  TextInput,
+  Alert,
+} from 'react-native';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import dispatcher from './dispatcher';
@@ -18,6 +26,7 @@ import ModalSorting from '../modal-sorting';
 import ModalNewLibrary from '../modal-new-library';
 import {hp} from '../../utils/screen';
 import {moderateScale} from 'react-native-size-matters';
+import {fetch} from '@react-native-community/netinfo';
 
 function ModalLibrary({
   isVisible,
@@ -40,6 +49,18 @@ function ModalLibrary({
     // }
   };
 
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
   useEffect(() => {}, [keyword]);
   const header = () => (
     <View style={{backgroundColor: colorTheme}}>
@@ -77,7 +98,15 @@ function ModalLibrary({
           marginHorizontal: hp(10),
         }}>
         <Pressable
-          onPress={() => setShowModalNew(true)}
+          onPress={() => {
+            fetch().then(async state => {
+              if (state.isConnected) {
+                setShowModalNew(true);
+              } else {
+                offline();
+              }
+            });
+          }}
           style={{
             height: hp(30),
             width: hp(30),
@@ -113,7 +142,15 @@ function ModalLibrary({
             style={{marginLeft: hp(10), fontSize: moderateScale(16)}}
           />
         </View>
-        <Pressable onPress={() => setShowModalSort(true)}>
+        <Pressable onPress={() => {
+            fetch().then(async state => {
+              if (state.isConnected) {
+                setShowModalSort(true);
+              } else {
+                offline();
+              }
+            });
+          }}>
           <DescendingSvg
             fill={code_color.white}
             height={hp(30)}
@@ -145,7 +182,11 @@ function ModalLibrary({
             />
             <Text
               allowFontScaling={false}
-              style={{marginLeft: hp(20), flex: 1, color: code_color.blackDark,}}>
+              style={{
+                marginLeft: hp(20),
+                flex: 1,
+                color: code_color.blackDark,
+              }}>
               {item.name}
             </Text>
             <Pressable
