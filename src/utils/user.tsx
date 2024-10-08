@@ -7,7 +7,7 @@ const reloadUserProfile = async (type) => {
   try {
     const res = await getUserProfile();
     const currentUserProfile = store.getState().defaultState.userProfile;
-    //console.log(JSON.stringify(currentUserProfile))
+    // console.log(JSON.stringify(currentUserProfile))
     store.dispatch(
       handleSetProfile({
         ...currentUserProfile,

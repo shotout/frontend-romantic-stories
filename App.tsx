@@ -72,8 +72,8 @@ const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
 appOpenAd.load();
 function App({ userProfile }) {
   Sentry.init({
-    // environment: 'production',
-    environment: 'development',
+    environment: 'production',
+    // environment: 'development',
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
   });
@@ -133,6 +133,42 @@ function App({ userProfile }) {
         uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/suprise_me.png'}`
       },
       
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/1.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/2.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/3.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/4.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/5.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/6.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/1.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/2.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/3.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/4.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/5.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/6.png'}`
+      },
     ]);
     askTrackingPermission();
     getDefaultLanguange();
@@ -179,8 +215,8 @@ function App({ userProfile }) {
   const configTracker = () => {
     const adjustConfig = new AdjustConfig(
       'tuqglinbysxs',
-        AdjustConfig.EnvironmentSandbox,
-      // AdjustConfig.EnvironmentProduction,
+        // AdjustConfig.EnvironmentSandbox,
+      AdjustConfig.EnvironmentProduction,
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);

@@ -185,13 +185,14 @@ function ModalNewStory({
               <Image
                 source={
                   userProfile?.data?.type === 'realistic'
-                    ? bgNewStoryReal
-                    : bgNewStory
+                    ? bgNewStoryReal :
+                   bgNewStory
                 }
-                resizeMode="contain"
+                resizeMode={ userProfile?.data?.type === 'realistic' ? 'cover' : 'contain'}
                 style={{
-                  width: '100%',
-                  top: hp(userProfile?.data?.type === 'realistic' ? -30 : -150),
+                 
+                  width: '100%' + 10,
+                  top: hp(userProfile?.data?.type === 'realistic' ? -20 : -150),
                   maxHeight: sizing.getDimensionHeight(1),
                   // position: 'absolute',
                 }}

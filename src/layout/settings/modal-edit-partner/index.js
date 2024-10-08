@@ -1,7 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {Modal, View, Text, Pressable, Image, Dimensions} from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  Image,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -17,63 +25,100 @@ import {reloadUserProfile} from '../../../utils/user';
 import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
-import { hp } from '../../../utils/screen';
+import {hp} from '../../../utils/screen';
+import {fetch} from '@react-native-community/netinfo';
 
-function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgroundColor}) {
+function ModalEditPartner({
+  isVisible,
+  onClose,
+  colorTheme,
+  userProfile,
+  backgroundColor,
+  handleSetPartnerAva,
+  partnerAva,
+  handleSetCharacterPartner,
+  handleSetPartner,
+  characterPartnerAva,
+  characterAva
+}) {
   const [progressValue, setProgress] = useState(0);
-  const [dataAva, setDataAva] = useState(null);
-  const [avatar, setAvatar] = useState(null);
+  const [dataAva, setDataAva] = useState(partnerAva);
+  const [avatar, setAvatar] = useState(characterPartnerAva);
   const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     fetchAva();
   }, [userProfile.gender]);
 
   const handleSubmit = async () => {
-   
-    try {
-    
-      setLoading(true);
-      const payload = {
-        _method: 'PATCH',
-        avatar_female: avatar === null ? progressValue + 1 : avatar,
-      };
-      await updateProfile(payload);
-      reloadUserProfile();
-      setLoading(false);
-      handleClose();
-    } catch (err) {
-      setLoading(false);
-      console.log('Error select:', err);
-    }
+    fetch().then(async state => {
+      if (state.isConnected) {
+        try {
+          setLoading(true);
+          const payload = {
+            _method: 'PATCH',
+            avatar_female: avatar === null ? progressValue + 1 : avatar,
+          };
+          await updateProfile(payload);
+          reloadUserProfile();
+          setLoading(false);
+          handleClose();
+        } catch (err) {
+          setLoading(false);
+          console.log('Error select:', err);
+        }
+      } else {
+        offline();
+      }
+    });
   };
-
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
   const fetchAva = async value => {
     try {
       if (!userProfile.gender) {
-        const avaMale = await getListAvatar({gender: 'male', type: userProfile.type});
-        const avaFemale = await getListAvatar({gender: 'female', type: userProfile.type});
+        const avaMale = await getListAvatar({
+          gender: 'male',
+          type: userProfile.type,
+        });
+        const avaFemale = await getListAvatar({
+          gender: 'female',
+          type: userProfile.type,
+        });
+        handleSetPartnerAva([...avaMale?.data, ...avaFemale?.data]);
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
-        setProgress(
-         
-          userProfile.avatar_female - 1
-        
-     );
-        
+        setProgress(userProfile.avatar_female - 1);
       } else {
         const params = {
           gender: userProfile.gender === 'Female' ? 'male' : 'female',
-          type: userProfile.type
+          type: userProfile.type,
         };
         const avatar = await getListAvatar(params);
+        handleSetPartnerAva(avatar?.data);
         setDataAva(avatar?.data);
         setProgress(
-          userProfile.gender != "Male"
-            ? (userProfile.avatar_female > 3 ? userProfile.avatar_female - 4 : userProfile.avatar_female === 0 ? 1 :  userProfile.avatar_female  - 1)
-            : (userProfile.avatar_female > 3 ? userProfile.avatar_female - 4 : userProfile.avatar_female === 0 ? 1 : userProfile.avatar_female - 1),
+          userProfile.gender != 'Male'
+            ? userProfile.avatar_female > 3
+              ? userProfile.avatar_female - 4
+              : userProfile.avatar_female === 0
+              ? 1
+              : userProfile.avatar_female - 1
+            : userProfile.avatar_female > 3
+            ? userProfile.avatar_female - 4
+            : userProfile.avatar_female === 0
+            ? 1
+            : userProfile.avatar_female - 1,
         );
-      
       }
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -151,7 +196,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
         }}
       />
       <Text
-       allowFontScaling={false}
+        allowFontScaling={false}
         style={{
           color: 'white',
           fontSize: moderateScale(30),
@@ -186,7 +231,7 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
                   alignItems: 'center',
                   opacity: 1,
                 }}>
-                   <FastImage
+                <FastImage
                   source={{
                     uri: `${BACKEND_URL}${item?.image?.url}`,
                     priority: FastImage.priority.high,
@@ -250,23 +295,23 @@ function ModalEditPartner({isVisible, onClose, colorTheme, userProfile, backgrou
           {form()}
         </View>
         <Button
-        style={{
-          backgroundColor: code_color.yellow,
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: hp(50),
-          borderRadius: 10,
-          width: '95%',
-          marginTop: hp(40),
-          marginBottom: hp(10),
-          position: 'absolute',
-          bottom: 20,
-          left: 10,
-          display: dataAva ? undefined : 'none',
-        }}
-        onPress={handleSubmit}
-        title={loading ? 'Loading...' : 'Save'}
-      />
+          style={{
+            backgroundColor: code_color.yellow,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: hp(50),
+            borderRadius: 10,
+            width: '95%',
+            marginTop: hp(40),
+            marginBottom: hp(10),
+            position: 'absolute',
+            bottom: 20,
+            left: 10,
+            display: dataAva ? undefined : 'none',
+          }}
+          onPress={handleSubmit}
+          title={loading ? 'Loading...' : 'Save'}
+        />
       </View>
     </Modal>
   );

@@ -59,6 +59,10 @@ const INITIAL_STATE = {
   dataExplore: null,
   dataDetailCategory: null,
   dataExploreCategory: null,
+  mainAva: null,
+  partnerAva: null,
+  characterAva: null,
+  characterPartnerAva: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -389,6 +393,26 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dataExploreCategory: action.payload,
+      };
+    case types.SET_MAIN_AVA:
+      return {
+        ...state,
+        mainAva: action.payload,
+      };
+    case types.SET_PARTNER_AVA:
+      return {
+        ...state,
+        partnerAva: action.payload,
+      };
+    case types.SET_CHARACTER_AVA:
+      return {
+        ...state,
+        characterAva: action.payload,
+      };
+    case types.SET_CHARACTER_PARTNER_AVA:
+      return {
+        ...state,
+        characterPartnerAva: action.payload,
       };
     case types.RESET_PARAMS:
       return {

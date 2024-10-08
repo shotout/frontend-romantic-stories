@@ -161,6 +161,8 @@ function QuotesContent({
   id,
   titleStory,
   typeImage,
+  characterPartnerAva,
+  characterAva
 }) {
   // console.log(userProfile)
   const [isRepeat, setRepeat] = useState(
@@ -179,6 +181,7 @@ function QuotesContent({
   const [partner, setPartner] = useState(
    null
   );
+  console.log(me)
   const [playLoveAnimate, setPlayLoveAnimate] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
@@ -256,6 +259,7 @@ function QuotesContent({
         pageActive === 30 ||
         pageActive === 40
       ) {
+       
         setMe(
           `/assets/images/avatars/${typeImage}/${userProfile?.data?.avatar_male}/positive.png`,
         );
@@ -603,34 +607,6 @@ function QuotesContent({
     return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(page);
   };
 
-  const isPageActiveReal2 = (page) => {
-    return [1, 11, 21, 31, 41, 51, 61, 71].includes(page);
-  };
-
-  const isPageActiveReal3 = (page) => {
-    return [2, 12, 22, 32, 42, 52, 62, 72,].includes(page);
-  };
-  const isPageActiveReal4 = (page) => {
-    return [3, 13, 23, 33, 43, 53, 63, 73,].includes(page);
-  };
-  const isPageActiveReal5 = (page) => {
-    return [4, 14, 24, 34, 44, 54, 64, 74,].includes(page);
-  };
-  const isPageActiveReal6 = (page) => {
-    return [5, 15, 25, 35, 45, 55, 65, 75,].includes(page);
-  };
-  const isPageActiveReal7 = (page) => {
-    return [6, 16, 26, 36, 46, 56, 66, 76,].includes(page);
-  };
-  const isPageActiveReal8 = (page) => {
-    return [7, 17, 27, 37, 47, 57, 67, 77,].includes(page);
-  };
-  const isPageActiveReal9 = (page) => {
-    return [8, 18, 28, 38, 48, 58, 68, 78,].includes(page);
-  };
-  const isPageActiveReal10 = (page) => {
-    return [9, 19, 29, 39, 49, 59, 69, 79,].includes(page);
-  };
   const isPageActiveAnime = (page) => {
     return [0, 3, 6, 9, 12, 15, 18, 21, 24, 27].includes(page);
   };
@@ -752,8 +728,9 @@ function QuotesContent({
     return null; // Default or fallback image if no conditions match
   };
   const fetchImage = (me) => {
+   
     let imageSource;
-  
+
     if (online) {
       imageSource = {
         uri: `${BACKEND_URL}/${me}`,
@@ -761,7 +738,7 @@ function QuotesContent({
       };
     } else {
       const { gender, avatar_male, avatar_female } = userProfile?.data || {};
-      
+    
       if (gender === 'Female' && typeImage.trim() === 'realistic') {
         imageSource = getImageByAvatarAndPage(avatar_male, pageActive);
       } else if (typeImage.trim() === 'realistic') {
@@ -770,7 +747,7 @@ function QuotesContent({
         imageSource = getImageByAvatarAndPageAnime(avatar_male, pageActive);
       }
     }
-  
+
     return imageSource;
   };
   const fetchImagePartner = (me) => {

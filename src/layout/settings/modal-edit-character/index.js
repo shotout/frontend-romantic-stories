@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {Modal, View, Text, Pressable, Image, Dimensions} from 'react-native';
+import {Modal, View, Text, Pressable, Image, Dimensions, Alert} from 'react-native';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -18,6 +18,7 @@ import {isIphoneXorAbove} from '../../../utils/devices';
 import {moderateScale} from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
 import { hp } from '../../../utils/screen';
+import { fetch } from '@react-native-community/netinfo';
 
 function ModalEditCharacter({
   isVisible,
@@ -25,10 +26,17 @@ function ModalEditCharacter({
   colorTheme,
   userProfile,
   backgroundColor,
+  mainAva,
+  handleSetMainAva,
+  handleSetCharacterPartner,
+  handleSetPartner,
+  handleSetCharacter,
+  characterPartnerAva,
+  characterAva
 }) {
   const [progressValue, setProgress] = useState(0);
-  const [dataAva, setDataAva] = useState(null);
-  const [avatar, setAvatar] = useState(null);
+  const [dataAva, setDataAva] = useState(mainAva);
+  const [avatar, setAvatar] = useState(characterAva);
   const [loading, setLoading] = useState(false);
 
   // useEffect(() => {
@@ -43,23 +51,43 @@ function ModalEditCharacter({
   useEffect(() => {
     fetchAva();
   }, [userProfile.gender]);
-
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
   const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      
-      const payload = {
-        avatar_male: avatar === null ? progressValue + 1 : avatar,
-        _method: 'PATCH',
-      };
-      await updateProfile(payload);
-      reloadUserProfile();
-      setLoading(false);
-      handleClose();
-    } catch (err) {
-      setLoading(false);
-      console.log('Error select:', err);
-    }
+   
+    fetch().then(async state => {
+      if (state.isConnected) {
+       
+        try {
+          setLoading(true);
+          
+          const payload = {
+            avatar_male: avatar === null ? progressValue + 1 : avatar,
+            _method: 'PATCH',
+          };
+          await updateProfile(payload);
+          reloadUserProfile();
+          setLoading(false);
+          handleClose();
+        } catch (err) {
+          setLoading(false);
+          console.log('Error select:', err);
+        }
+      }else{
+        offline()
+      }
+    })
+   
   };
 
   const fetchAva = async value => {
@@ -67,6 +95,8 @@ function ModalEditCharacter({
       if (!userProfile.gender) {
         const avaMale = await getListAvatar({gender: 'male', type: userProfile.type});
         const avaFemale = await getListAvatar({gender: 'female', type: userProfile.type});
+       
+        handleSetMainAva([...avaMale?.data, ...avaFemale?.data])
         setDataAva([...avaMale?.data, ...avaFemale?.data]);
         setProgress(userProfile.avatar_male - 1);
       } else {
@@ -75,6 +105,7 @@ function ModalEditCharacter({
           type: userProfile?.type
         };
         const avatar = await getListAvatar(params);
+        handleSetMainAva((avatar?.data))
         setDataAva(avatar?.data);
 
         setProgress(
@@ -252,7 +283,7 @@ function ModalEditCharacter({
           left: 10,
           display: dataAva ? undefined : 'none',
         }}
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         title={loading ? 'Loading...' : 'Save'}
       />
       </View>

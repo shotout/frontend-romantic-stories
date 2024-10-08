@@ -7,6 +7,10 @@ import {
   handleSetStory,
   handleSetSteps,
   resetParams,
+  handleSetCharacter,
+  handleSetCharacterPartner,
+  handleSetMainAva,
+  handleSetPartnerAva
 } from '../../store/defaultState/actions';
 
 export default dispatch => ({
@@ -18,4 +22,8 @@ export default dispatch => ({
   handleSetFontSize: (...args) => dispatch(handleSetFontSize(...args)),
   handleSetSteps: (...args) => dispatch(handleSetSteps(...args)),
   resetParams: (...args) => dispatch(resetParams(...args)),
+  handleSetCharacter: (...args) => dispatch(handleSetCharacter(...args)),
+  handleSetCharacterPartner: (...args) => dispatch(handleSetCharacterPartner(...args)),
+  handleSetMainAva: (...args) => dispatch(handleSetMainAva(...args)),
+  handleSetPartnerAva: (...args) => dispatch(handleSetPartnerAva(...args)),
 });

@@ -67,7 +67,11 @@ function RegisterScreen({
   handleSetStory,
   handleSetSteps,
   userStory,
-  resetParams
+  resetParams,
+  handleSetCharacterPartner,
+  handleSetCharacter,
+  handleSetMainAva,
+  handleSetPartnerAva
 }) {
   const [stepRegister, setStepRegister] = useState(0);
   const [titleHeader, setTitleHeader] = useState('Let’s get to know you');
@@ -150,6 +154,8 @@ function RegisterScreen({
       const avatarMale = await getListAvatar({gender: 'male', type: type});
       const avatarFemale = await getListAvatar({gender: 'female', type: type});
       setDataAva([...avatarMale?.data, ...avatarFemale?.data]);
+      handleSetPartnerAva([...avatarMale?.data, ...avatarFemale?.data])
+      handleSetMainAva([...avatarMale?.data, ...avatarFemale?.data])
       setDataAva2([...avatarMale?.data, ...avatarFemale?.data]);
     } catch (error) {
       // alert(JSON.stringify(error));
@@ -163,6 +169,8 @@ function RegisterScreen({
       };
       const avatar = await getListAvatar(params);
       setDataAva(avatar?.data);
+      handleSetPartnerAva(avatar?.data)
+
     } catch (error) {
       // alert(JSON.stringify(error));
     }
@@ -175,6 +183,7 @@ function RegisterScreen({
       };
       const avatar = await getListAvatar(params);
       setDataAva2(avatar?.data);
+      handleSetMainAva(avatar?.data)
     } catch (error) {
       // alert(JSON.stringify(error));
     }
@@ -434,11 +443,14 @@ function RegisterScreen({
           gender={values.gender}
           dataAvatar={dataAva2}
           setType={type}
-          setAvatar={text =>
+          setAvatar={text => {
             handleChange(
               values.gender === 'Female' ? 'avatar_male' : 'avatar_female',
               text,
             )
+            handleSetCharacter(text)
+          }
+            
           }
         />
       );
@@ -448,10 +460,15 @@ function RegisterScreen({
           gender={values.gender}
           dataAvatar={dataAva}
           setAvatar={text =>
-            handleChange(
-              values.gender === 'Female' ? 'avatar_female' : 'avatar_male',
-              text,
-            )
+            {
+              handleChange(
+                values.gender === 'Female' ? 'avatar_female' : 'avatar_male',
+                text,
+              );
+              handleSetCharacterPartner(text)
+            }
+            
+
           }
         />
       );

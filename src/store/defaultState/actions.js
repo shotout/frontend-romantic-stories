@@ -115,3 +115,23 @@ export const handleSetExploreCategory = payload => ({
   type: types.SET_EXPLORE_CATEGORY,
   payload,
 });
+
+export const handleSetMainAva = payload => ({
+  type: types.SET_MAIN_AVA,
+  payload,
+});
+
+export const handleSetPartnerAva = payload => ({
+  type: types.SET_PARTNER_AVA,
+  payload,
+});
+
+export const handleSetCharacter = payload => ({
+  type: types.SET_CHARACTER_AVA,
+  payload,
+});
+
+export const handleSetCharacterPartner = payload => ({
+  type: types.SET_CHARACTER_PARTNER_AVA,
+  payload,
+});
