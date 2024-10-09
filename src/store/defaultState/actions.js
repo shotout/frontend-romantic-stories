@@ -90,3 +90,48 @@ export const handleSetColor = payload => ({
   type: types.SET_COLOR_TEXT,
   payload,
 });
+
+export const handleSetListCollection = payload => ({
+  type: types.SET_LIST_COLLECTION,
+  payload,
+});
+
+export const handleSetListLibrary = payload => ({
+  type: types.SET_LIST_LIBRARY,
+  payload,
+});
+
+export const handleSetExplore = payload => ({
+  type: types.SET_EXPLORE_LIBRARY,
+  payload,
+});
+
+export const handleSetDetailCategory = payload => ({
+  type: types.SET_DETAIL_CATEGORY,
+  payload,
+});
+
+export const handleSetExploreCategory = payload => ({
+  type: types.SET_EXPLORE_CATEGORY,
+  payload,
+});
+
+export const handleSetMainAva = payload => ({
+  type: types.SET_MAIN_AVA,
+  payload,
+});
+
+export const handleSetPartnerAva = payload => ({
+  type: types.SET_PARTNER_AVA,
+  payload,
+});
+
+export const handleSetCharacter = payload => ({
+  type: types.SET_CHARACTER_AVA,
+  payload,
+});
+
+export const handleSetCharacterPartner = payload => ({
+  type: types.SET_CHARACTER_PARTNER_AVA,
+  payload,
+});

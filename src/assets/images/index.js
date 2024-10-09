@@ -190,8 +190,102 @@ export const real_bgtutor1 = require('./../images/bg_office.png');
 
 export const main_bg = require('./../images/MainScreen_bg.png');
 export const quoteReal = require('./../images/quoteReal.gif');
-export const imgHead = require('./../images/imgHead.png');
 export const listenReal = require('./../images/listenReal.gif');
 
 export const bgMissReal = require('./../images/bgMissReal.png');
 export const bgRelationReal = require('./../images/bgRelationReal.png');
+
+// avatar
+
+export const realistic_autumn_1 = require('./../avatar/realistic/autumn/1.png');
+export const realistic_autumn_2 = require('./../avatar/realistic/autumn/2.png');
+export const realistic_autumn_3 = require('./../avatar/realistic/autumn/3.png');
+export const realistic_autumn_4 = require('./../avatar/realistic/autumn/4.png');
+export const realistic_autumn_5 = require('./../avatar/realistic/autumn/5.png');
+export const realistic_autumn_6 = require('./../avatar/realistic/autumn/6.png');
+
+export const realistic_beach_1 = require('./../avatar/realistic/beach/1.png');
+export const realistic_beach_2 = require('./../avatar/realistic/beach/2.png');
+export const realistic_beach_3 = require('./../avatar/realistic/beach/3.png');
+export const realistic_beach_4 = require('./../avatar/realistic/beach/4.png');
+export const realistic_beach_5 = require('./../avatar/realistic/beach/5.png');
+export const realistic_beach_6 = require('./../avatar/realistic/beach/6.png');
+
+export const realistic_casual_1 = require('./../avatar/realistic/casual/1.png');
+export const realistic_casual_2 = require('./../avatar/realistic/casual/2.png');
+export const realistic_casual_3 = require('./../avatar/realistic/casual/3.png');
+export const realistic_casual_4 = require('./../avatar/realistic/casual/4.png');
+export const realistic_casual_5 = require('./../avatar/realistic/casual/5.png');
+export const realistic_casual_6 = require('./../avatar/realistic/casual/6.png');
+
+export const realistic_cocktail_1 = require('./../avatar/realistic/cocktail/1.png');
+export const realistic_cocktail_2 = require('./../avatar/realistic/cocktail/2.png');
+export const realistic_cocktail_3 = require('./../avatar/realistic/cocktail/3.png');
+export const realistic_cocktail_4 = require('./../avatar/realistic/cocktail/4.png');
+export const realistic_cocktail_5 = require('./../avatar/realistic/cocktail/5.png');
+export const realistic_cocktail_6 = require('./../avatar/realistic/cocktail/6.png');
+
+export const realistic_professional_1 = require('./../avatar/realistic/professional/1.png');
+export const realistic_professional_2 = require('./../avatar/realistic/professional/2.png');
+export const realistic_professional_3 = require('./../avatar/realistic/professional/3.png');
+export const realistic_professional_4 = require('./../avatar/realistic/professional/4.png');
+export const realistic_professional_5 = require('./../avatar/realistic/professional/5.png');
+export const realistic_professional_6 = require('./../avatar/realistic/professional/6.png');
+
+export const realistic_relaxed_1 = require('./../avatar/realistic/relaxed/1.png');
+export const realistic_relaxed_2 = require('./../avatar/realistic/relaxed/2.png');
+export const realistic_relaxed_3 = require('./../avatar/realistic/relaxed/3.png');
+export const realistic_relaxed_4 = require('./../avatar/realistic/relaxed/4.png');
+export const realistic_relaxed_5 = require('./../avatar/realistic/relaxed/5.png');
+export const realistic_relaxed_6 = require('./../avatar/realistic/relaxed/6.png');
+
+export const realistic_sport_1 = require('./../avatar/realistic/sport/1.png');
+export const realistic_sport_2 = require('./../avatar/realistic/sport/2.png');
+export const realistic_sport_3 = require('./../avatar/realistic/sport/3.png');
+export const realistic_sport_4 = require('./../avatar/realistic/sport/4.png');
+export const realistic_sport_5 = require('./../avatar/realistic/sport/5.png');
+export const realistic_sport_6 = require('./../avatar/realistic/sport/6.png');
+
+export const realistic_street_1 = require('./../avatar/realistic/street/1.png');
+export const realistic_street_2 = require('./../avatar/realistic/street/2.png');
+export const realistic_street_3 = require('./../avatar/realistic/street/3.png');
+export const realistic_street_4 = require('./../avatar/realistic/street/4.png');
+export const realistic_street_5 = require('./../avatar/realistic/street/5.png');
+export const realistic_street_6 = require('./../avatar/realistic/street/6.png');
+
+export const realistic_travelling_1 = require('./../avatar/realistic/travelling/1.png');
+export const realistic_travelling_2 = require('./../avatar/realistic/travelling/2.png');
+export const realistic_travelling_3 = require('./../avatar/realistic/travelling/3.png');
+export const realistic_travelling_4 = require('./../avatar/realistic/travelling/4.png');
+export const realistic_travelling_5 = require('./../avatar/realistic/travelling/5.png');
+export const realistic_travelling_6 = require('./../avatar/realistic/travelling/6.png');
+
+export const realistic_winter_1 = require('./../avatar/realistic/winter/1.png');
+export const realistic_winter_2 = require('./../avatar/realistic/winter/2.png');
+export const realistic_winter_3 = require('./../avatar/realistic/winter/3.png');
+export const realistic_winter_4 = require('./../avatar/realistic/winter/4.png');
+export const realistic_winter_5 = require('./../avatar/realistic/winter/5.png');
+export const realistic_winter_6 = require('./../avatar/realistic/winter/6.png');
+
+
+
+export const anime_think_1 = require('./../avatar/anime/think/1.png');
+export const anime_think_2 = require('./../avatar/anime/think/2.png');
+export const anime_think_3 = require('./../avatar/anime/think/3.png');
+export const anime_think_4 = require('./../avatar/anime/think/4.png');
+export const anime_think_5 = require('./../avatar/anime/think/5.png');
+export const anime_think_6 = require('./../avatar/anime/think/6.png');
+
+export const anime_inlove_1 = require('./../avatar/anime/inlove/1.png');
+export const anime_inlove_2 = require('./../avatar/anime/inlove/2.png');
+export const anime_inlove_3 = require('./../avatar/anime/inlove/3.png');
+export const anime_inlove_4 = require('./../avatar/anime/inlove/4.png');
+export const anime_inlove_5 = require('./../avatar/anime/inlove/5.png');
+export const anime_inlove_6 = require('./../avatar/anime/inlove/6.png');
+
+export const anime_positive_1 = require('./../avatar/anime/positive/1.png');
+export const anime_positive_2 = require('./../avatar/anime/positive/2.png');
+export const anime_positive_3 = require('./../avatar/anime/positive/3.png');
+export const anime_positive_4 = require('./../avatar/anime/positive/4.png');
+export const anime_positive_5 = require('./../avatar/anime/positive/5.png');
+export const anime_positive_6 = require('./../avatar/anime/positive/6.png');

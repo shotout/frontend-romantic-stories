@@ -5,4 +5,6 @@ export default states => ({
   nextStory: states.defaultState.nextStory,
   userStory: states.defaultState.userStory,
   colorText: states.defaultState.colorText,
+  characterPartnerAva: states.defaultState.characterPartnerAva,
+  characterAva: states.defaultState.characterAva,
 });

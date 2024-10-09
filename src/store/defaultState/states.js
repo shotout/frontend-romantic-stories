@@ -54,6 +54,15 @@ const INITIAL_STATE = {
   levelingUser: null,
   colorText: '',
   page: 0,
+  dataListCollection: [],
+  dataListLibrary: [],
+  dataExplore: null,
+  dataDetailCategory: null,
+  dataExploreCategory: null,
+  mainAva: null,
+  partnerAva: null,
+  characterAva: null,
+  characterPartnerAva: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -360,11 +369,56 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         page: action.payload,
       };
+    case types.SET_LIST_COLLECTION:
+      return {
+        ...state,
+        dataListCollection: action.payload,
+      };
+    case types.SET_LIST_LIBRARY:
+      return {
+        ...state,
+        dataListLibrary: action.payload,
+      };
+    case types.SET_EXPLORE_LIBRARY:
+      return {
+        ...state,
+        dataExplore: action.payload,
+      };
+    case types.SET_DETAIL_CATEGORY:
+      return {
+        ...state,
+        dataDetailCategory: action.payload,
+      };
+    case types.SET_EXPLORE_CATEGORY:
+      return {
+        ...state,
+        dataExploreCategory: action.payload,
+      };
+    case types.SET_MAIN_AVA:
+      return {
+        ...state,
+        mainAva: action.payload,
+      };
+    case types.SET_PARTNER_AVA:
+      return {
+        ...state,
+        partnerAva: action.payload,
+      };
+    case types.SET_CHARACTER_AVA:
+      return {
+        ...state,
+        characterAva: action.payload,
+      };
+    case types.SET_CHARACTER_PARTNER_AVA:
+      return {
+        ...state,
+        characterPartnerAva: action.payload,
+      };
     case types.RESET_PARAMS:
       return {
         ...state,
         userProfile: {},
-      }
+      };
     default:
       return state;
   }
