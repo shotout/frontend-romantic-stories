@@ -511,14 +511,14 @@ const MainScreen = ({
   };
   useEffect(() => {
     setShowModalNewStory(false);
-    // if (Platform.OS === 'android') {
+    if (Platform.OS === 'android') {
       const payload = {
         _method: 'PATCH',
         is_member: 3,
       };
 
       updateProfile(payload);
-    // }
+    }
     reloadUserProfile();
 
     fetchCheckingDay();
