@@ -12,9 +12,7 @@ import {
   AppState,
   ScrollView,
   Platform,
-  Pressable,
   PermissionsAndroid,
-  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -58,23 +56,28 @@ import {
   eventTracking,
 } from '../../helpers/eventTracking';
 import ImageColors from 'react-native-image-colors';
-import {moderateScale} from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import RNFS from 'react-native-fs';
 import FastImage from 'react-native-fast-image';
 
-function ScreenMedia({
-  route,
-  stepsTutorial,
-  handleSetSteps,
-  userStory,
-  userProfile,
-}) {
+function ScreenMedia({route, stepsTutorial, handleSetSteps, userStory, userProfile}) {
   const [play, setPlay] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const {position, duration} = useProgress();
   const [loading, setLoading] = useState(false);
   const [colors, setColors] = useState(null);
-  const [info, setInfo] = useState('');
+  const [info, setInfo] = useState({});
+  const track1 = {
+    url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
+    title: userStory?.category?.name,
+    artist: userStory?.title_id,
+    album: 'While(1<2)',
+    genre: 'Progressive House, Electro House',
+    date: '2014-05-20T07:00:00+00:00',
+    artwork: 'http://example.com/cover.png',
+    duration: 10,
+  };
+  // console.log(JSON.stringify(userStory))
   const [showModalShareStory, setShowModalShareStory] = useState(false);
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -83,54 +86,29 @@ function ScreenMedia({
       remainingSeconds,
     ).padStart(2, '0')}`;
   }
-
+  
+  
   useEffect(() => {
-    const remoteDuckListener = TrackPlayer.addEventListener(
-      Event.RemotePause,
-      () => {
-        TrackPlayer.pause();
-      },
+    const remoteDuckListener = TrackPlayer.addEventListener(Event.RemotePause, () => {
+      TrackPlayer.pause();
+    }
     );
-
+  
     const remotePlayListener = TrackPlayer.addEventListener(
       Event.RemotePlay,
       () => {
         TrackPlayer.play();
-      },
+      }
     );
-
+  
     return () => {
       remoteDuckListener.remove();
       remotePlayListener.remove();
     };
   }, []);
-
-  const requestStoragePermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'Storage Permission',
-            message: 'App needs access to your storage to download files',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Storage permission granted');
-        } else {
-          console.log('Storage permission denied');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-  };
   const downloadMp3 = async () => {
     const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
-    const fileName = `${userStory?.category?.name}.mp3`; // Nama file yang diinginkan
+    const fileName = `${userStory?.title_id}.mp3`; // Nama file yang diinginkan
     const destinationPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
     FastImage.preload([
       {
@@ -194,25 +172,51 @@ function ScreenMedia({
       }
     }
   };
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission',
+            message: 'App needs access to your storage to download files',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Storage permission granted');
+        } else {
+          console.log('Storage permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
   useEffect(() => {
     const init = async () => {
-      await TrackPlayer.setupPlayer();
-    };
-
+     await TrackPlayer.setupPlayer() 
+    }
+    
     let isPlayerInitialized = false;
     const fetchMedia = async () => {
+     
       try {
         setLoading(true);
         // Dapatkan URL MP3 terbaru
-
+       
         const newMp3Url = `${BACKEND_URL}${userStory?.audio?.audio_en}`;
+       console.log('MP3'+newMp3Url)
         // Hentikan pemutaran sebelumnya dan reset pemutaran
         await TrackPlayer.stop();
         await TrackPlayer.reset();
-
+       
         // Tambahkan dan konfigurasi lagu baru
-
+        
         await TrackPlayer.updateOptions({
+        
           capabilities: [
             Capability.Play,
             Capability.Pause,
@@ -243,32 +247,33 @@ function ScreenMedia({
         });
         await TrackPlayer.add({
           id: 'track1',
-          url: `${BACKEND_URL}${userStory?.audio?.audio_en}`,
+          url: newMp3Url,
           title: userStory?.category?.name,
           artist: userStory?.title_id,
           album: 'While(1<2)',
           genre: 'Progressive House, Electro House',
           date: '2014-05-20T07:00:00+00:00',
-          artwork: `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
+          artwork:  `${BACKEND_URL}${userStory?.category?.cover_audio?.url}`,
           duration: 10,
         });
-        // await requestStoragePermission();
-        // downloadMp3();
-
+      
+         await requestStoragePermission();
+        downloadMp3();
         // Jalankan pemutaran baru
-
+        setLoading(false);
+      
         await TrackPlayer.play();
         isPlayerInitialized = true;
-        setPlay(true);
+        setPlay(true)
       } catch (error) {
         console.error('Error setting up media player:', error);
-        init();
-        fetchMedia();
+        init()
+        fetchMedia()
       } finally {
         setLoading(false);
       }
     };
-    init();
+    init()
     fetchMedia();
   }, []);
 
@@ -286,6 +291,7 @@ function ScreenMedia({
   }, []);
 
   const playing = async () => {
+   
     try {
       if (play) {
         eventTracking(AUDIO_PLAYED);
@@ -295,7 +301,9 @@ function ScreenMedia({
       }
     } catch (error) {
       // console.error('Error handling playback:', error);
+    
       //   Platform.OS === 'android' ?  await TrackPlayer.setupPlayer() : null
+     
     }
   };
 
@@ -307,8 +315,7 @@ function ScreenMedia({
     if (position != 0) {
       setLoading(false);
     }
-
-    if ((position != 0 && position === duration) || position > duration) {
+    if (position != 0 && position === duration) {
       TrackPlayer.seekTo(0);
       setLoading(false);
       TrackPlayer.reset();
@@ -340,13 +347,13 @@ function ScreenMedia({
       }
     }
   };
-  const width = Dimensions.get('window').width;
-  const height = Dimensions.get('window').height;
+  const width = Dimensions.get('window').width
+  const height = Dimensions.get('window').height
 
   return (
     // <LinearGradient colors={['#E4B099', '#6B7C8C']} style={styles.ctnContent}>
 
-    <LinearGradient
+<LinearGradient
       colors={[colors || '#E4B099', '#6B7C8C']}
       style={styles.ctnContent}>
       <ModalShareStory
@@ -395,23 +402,17 @@ function ScreenMedia({
           </View>
         </View>
       </Modal>
-      <Pressable
-        onPress={() => {
-          goBack();
-          TrackPlayer.stop();
-          Platform.OS === 'android' ? TrackPlayer.reset() : null;
-        }}
-        style={styles.row}>
+      <View style={styles.row}>
         <Text style={styles.textTitle} />
         <TouchableOpacity
           onPress={() => {
             goBack();
             TrackPlayer.stop();
-            Platform.OS === 'android' ? TrackPlayer.reset() : null;
+            Platform.OS === 'android' ?   TrackPlayer.reset() : null
           }}>
           <CloseIcon fill={code_color.white} />
         </TouchableOpacity>
-      </Pressable>
+      </View>
       <View>
         <Image
           source={{
@@ -546,6 +547,8 @@ function ScreenMedia({
         </View>
       </Modal>
     </LinearGradient>
+  
+    
   );
 }
 

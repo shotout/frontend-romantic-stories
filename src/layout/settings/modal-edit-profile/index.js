@@ -24,6 +24,8 @@ import FlagSvg from '../../../assets/icons/flag';
 import {BACKEND_URL} from '../../../shared/static';
 import {moderateScale} from 'react-native-size-matters';
 import {hp} from '../../../utils/screen';
+import { avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, realistic_beach_1, realistic_beach_4, realistic_casual_3, realistic_cocktail_2, realistic_cocktail_5, realistic_professional_6 } from '../../../assets/images';
+import FastImage from 'react-native-fast-image';
 
 function ModalEditProfile({
   isVisible,
@@ -34,6 +36,8 @@ function ModalEditProfile({
   getAvatarMale,
   colorTheme,
   backgroundColor,
+  online,
+  typeImage
 }) {
   const handleClose = () => {
     if (typeof onClose === 'function') {
@@ -46,7 +50,30 @@ function ModalEditProfile({
       handleOpenModal(tab);
     }
   };
+  const getImageByAvatarAndPage = (avatarMale) => {
+   
+    if (avatarMale.includes('realistic/1')) return realistic_beach_1;
+    if (avatarMale.includes('realistic/2')) return realistic_cocktail_2;
+    if (avatarMale.includes('realistic/3')) return realistic_casual_3;
+    if (avatarMale.includes('realistic/4')) return realistic_beach_4;
+    if (avatarMale.includes('realistic/5')) return realistic_cocktail_5;
+    if (avatarMale.includes('realistic/6')) return realistic_professional_6;
+   
+  
+  return null; // Default or fallback image if no conditions match
+};
+const getImageByAvatarAndPageAnime = (avatarMale) => {
+   
+  if (avatarMale.includes('anime/1')) return avatar1;
+  if (avatarMale.includes('anime/2')) return avatar2;
+  if (avatarMale.includes('anime/3')) return avatar3;
+  if (avatarMale.includes('anime/4')) return avatar4;
+  if (avatarMale.includes('anime/5')) return avatar5;
+  if (avatarMale.includes('anime/6')) return avatar6;
+ 
 
+return null; // Default or fallback image if no conditions match
+};
   const header = () => (
     <View
       style={{
@@ -130,7 +157,25 @@ function ModalEditProfile({
     //   value: userProfile?.language?.name,
     // },
   ];
-
+  const fetchImage = (me) => {
+    let imageSource;
+  
+    if (online) {
+      imageSource = {
+        uri: `${BACKEND_URL}/${me}`,
+        // priority: FastImage.priority.high,
+      };
+    } else {
+      if (me.includes('realistic')) {
+        imageSource = getImageByAvatarAndPage(me);
+      }else{
+         imageSource = getImageByAvatarAndPageAnime(me);
+        
+      }
+    }
+  
+    return imageSource;
+  };
   const form = () => (
     <View
       style={{
@@ -167,7 +212,7 @@ function ModalEditProfile({
                   alignItems: 'center',
                 }}>
                 <Image
-                  source={{uri: `${BACKEND_URL}${edit.value}`}}
+                  source={fetchImage(edit.value)}
                   style={{
                     width: hp(40),
                     height: hp(
@@ -206,7 +251,7 @@ function ModalEditProfile({
                   alignItems: 'center',
                 }}>
                 <Image
-                  source={{uri: `${BACKEND_URL}${edit.value}`}}
+                  source={fetchImage(edit.value)}
                   style={{
                     width: hp(40),
                     height: hp(

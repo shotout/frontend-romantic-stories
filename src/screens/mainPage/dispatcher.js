@@ -6,7 +6,9 @@ import {
   handleStoriesRelate,
   handleLeveling,
   handleListenStory,
-  handleSetPage
+  handleSetPage,
+  handleSetExploreCategory,
+  handleSetExplore
 } from '../../store/defaultState/actions';
 
 export default dispatch => ({
@@ -18,4 +20,6 @@ export default dispatch => ({
   handleNextStory: (...args) => dispatch(handleNextStory(...args)),
   handleStoriesRelate: (...args) => dispatch(handleStoriesRelate(...args)),
   handleLeveling: (...args) => dispatch(handleLeveling(...args)),
+  handleSetExplore: (...args) => dispatch(handleSetExplore(...args)),
+  handleSetExploreCategory: (...args) => dispatch(handleSetExploreCategory(...args)),
 });

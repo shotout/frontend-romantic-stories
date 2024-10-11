@@ -37,6 +37,7 @@ import {moderateScale} from 'react-native-size-matters';
 import {
   addStory,
   getExploreStory,
+  getExploreStoryOffline,
   getStoryDetail,
   updateProfile,
 } from '../../shared/request';
@@ -66,6 +67,7 @@ import Loading from '../../components/loading';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
 import {hp} from '../../utils/screen';
+import {fetch} from '@react-native-community/netinfo';
 
 const swipeupIcon = require('../../assets/lottie/swipe_up.json');
 
@@ -80,13 +82,21 @@ const ExploreLibraryScreen = ({
   backgroundColor,
   userProfile,
   nextStory,
+  handleSetExplore,
+  dataExplore,
+  handleSetExploreCategory,
+  dataExploreCategory
 }) => {
+
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>(dataExplore);
+  // const [data, setData] = useState<any>();
+  const [dataCategory, setDataCategory] = useState<any>(dataExploreCategory);
+  // const [dataCategory, setDataCategory] = useState<any>([]);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
@@ -102,25 +112,32 @@ const ExploreLibraryScreen = ({
     useState(false);
 
   const showWatchAds = async () => {
-    setLoadingAds(true);
-    const advert = await loadRewardedWatch();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
-      setShowModalUnlock(false);
-      setLoadingAds(false);
-      setTimeout(async () => {
-        const resp = await getStoryDetail(selectedStory?.id);
-        const payloadStory = {
-          _method: 'PATCH',
-          story_id: selectedStory?.id,
-          expire: 1,
-        };
-
-        await updateProfile(payloadStory);
-        reloadUserProfile();
-        handleNextStory(resp.data);
-        setShowUnlockedStory(true);
-      }, 500);
+    fetch().then(async state => {
+      if (state.isConnected) {
+        setLoadingAds(true);
+        const advert = await loadRewardedWatch();
+        advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+          setShowModalUnlock(false);
+          setLoadingAds(false);
+          setTimeout(async () => {
+            const resp = await getStoryDetail(selectedStory?.id);
+            const payloadStory = {
+              _method: 'PATCH',
+              story_id: selectedStory?.id,
+              expire: 1,
+            };
+    
+            await updateProfile(payloadStory);
+            reloadUserProfile();
+            handleNextStory(resp.data);
+            setShowUnlockedStory(true);
+          }, 500);
+        });
+      } else {
+        offline();
+      }
     });
+    
   };
 
   const handlePremium = async itm => {
@@ -130,26 +147,43 @@ const ExploreLibraryScreen = ({
       setShowUnlockedStory(true);
     }, 500);
   };
-
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
   const handleUnlimited = async () => {
-    //
-    try {
-      const paymentResult = await handlePayment('in_app');
-      if (paymentResult.success) {
-        setShowUnlockedStory(false);
-        setShowModalGetPremium(true);
-        console.log('Pembayaran berhasil:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran berhasil
-      } else {
-        setShowUnlockedStory(false);
-        console.log('Pembayaran gagal:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran gagal
+    fetch().then(async state => {
+      if (state.isConnected) {
+        try {
+          const paymentResult = await handlePayment('in_app');
+          if (paymentResult.success) {
+            setShowUnlockedStory(false);
+            setShowModalGetPremium(true);
+            console.log('Pembayaran berhasil:', paymentResult.result);
+            // Lakukan tindakan setelah pembayaran berhasil
+          } else {
+            setShowUnlockedStory(false);
+            console.log('Pembayaran gagal:', paymentResult.result);
+            // Lakukan tindakan setelah pembayaran gagal
+          }
+        } catch (error) {
+          setShowUnlockedStory(false);
+          console.error('Terjadi kesalahan:', error);
+          // Tangani kesalahan yang mungkin terjadi
+        }
+      }else{
+        offline()
       }
-    } catch (error) {
-      setShowUnlockedStory(false);
-      console.error('Terjadi kesalahan:', error);
-      // Tangani kesalahan yang mungkin terjadi
-    }
+    })
+   
     // setShowModalGetPremium(true);
   };
 
@@ -162,16 +196,49 @@ const ExploreLibraryScreen = ({
           dir: items?.value,
         };
         const res = await getExploreStory(params);
+        handleSetExplore(res);
         setData(res);
         setLoad(false);
       } catch (error) {
-        setData(null);
+        // setData(null);
         setLoad(false);
       }
     }
     setLoad(true);
     fetchData();
   };
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+
+      } else {
+       
+        offline()
+      
+      }
+    });
+  };
+
+  const fetchCategory = async () => {
+    try {
+      let params = {
+        search: keyword,
+        column: items?.column === 'name' ? 'title_en' : items?.column,
+        dir: items?.value,
+      };
+      const res = await getExploreStoryOffline(params);
+      handleSetExploreCategory(res);
+      setDataCategory(res);
+      setLoad(false);
+    } catch (error) {
+      // setData(null);
+      setLoad(false);
+    }
+  }
+  useEffect(() => {
+    fetchCategory()
+    // fetchOnline();
+  }, []);
   useEffect(() => {
     handleRestart();
   }, [keyword, items]);
@@ -192,8 +259,9 @@ const ExploreLibraryScreen = ({
     if (!__DEV__) {
       async function getPrice() {
         const products = await IAP.getProducts({
-          skus: [ Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
+          skus: [Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
         });
+  
         console.log('Products:', products);
         setPrice(products[0].localizedPrice);
       }
@@ -206,10 +274,9 @@ const ExploreLibraryScreen = ({
     const advert = await loadRewardedCategory();
     const pageCountDownReward = advert.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
-      (reward: any) => {
+      reward => {
         console.log('Earn page countdown reward:', reward);
         if (reward) {
-          
           Alert.alert('Congrats! You have unlocked the selected Topic.', '', [
             {
               text: 'OK',
@@ -224,7 +291,7 @@ const ExploreLibraryScreen = ({
   const handleNative = async () => {
     setLoading(true);
     const data = await handleNativePayment(
-      Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
+      'unlock_story_1_week_only',
       selectedStory?.id,
     );
     if (data) {
@@ -240,7 +307,7 @@ const ExploreLibraryScreen = ({
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: bgTheme, flex: 1}}>
+    <SafeAreaView style={{backgroundColor: bgTheme}}>
       <ModalGetPremium
         isVisible={showModalGetPremium}
         onGotIt={() => {
@@ -260,7 +327,13 @@ const ExploreLibraryScreen = ({
         data={selectedStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          handleNative();
+          fetch().then(async state => {
+            if (state.isConnected) {
+              handleNative();
+            } else {
+              offline();
+            }
+          });
         }}
         loadingOne={loadingAds}
         price={price}
@@ -347,19 +420,11 @@ const ExploreLibraryScreen = ({
           </Pressable>
         </View>
       </View>
-      {data?.status != 'success' && !load?
-        <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white', justifyContent: 'center', }}>
-          <Text>Failed to load data</Text>
-          <Pressable onPress={() => handleRestart()} style={{ backgroundColor: bgTheme, padding: 10, marginTop: 20, borderRadius: 20, paddingHorizontal: 30}}>
-            <Text style={{color: 'white'}}>Refresh Page</Text>
-          </Pressable>
-        </View> :
       <ScrollView
         style={{
           backgroundColor: 'white',
           height: '100%',
         }}>
-       
         {data?.most_read?.length > 0 && (
           <View style={{flex: 0, height: 'auto'}}>
             <View
@@ -454,7 +519,7 @@ const ExploreLibraryScreen = ({
           </View>
         )}
 
-        {data?.category?.length > 0 && (
+        {/* {data?.category?.length > 0 && (
           <View style={{flex: 0, height: hp(250)}}>
             <View
               style={{
@@ -476,7 +541,7 @@ const ExploreLibraryScreen = ({
                 📚 Try a different category
               </Text>
               <ScrollView horizontal>
-                {data?.category.map((itm: any, idx: number) => (
+                {data?.category?.map((itm: any, idx: number) => (
                   <Pressable
                     onPress={() =>
                       navigate('CategoryDetail', {categoryId: itm.id})
@@ -487,38 +552,67 @@ const ExploreLibraryScreen = ({
                         idx + 1 === data?.category?.length ? 0 : hp(16),
                     }}
                     key={idx}>
-                    {/* <View
+                    
+                   
+                    <FastImage
+                      source={{
+                        uri: `${BACKEND_URL}${itm.cover?.url}`,
+                        priority: FastImage.priority.high,
+                      }}
+                      resizeMode={FastImage.resizeMode.cover}
+                      style={{height: hp(130), width: hp(95), borderRadius: 6}}
+                    />
+
+                    <Text
                       style={{
-                        height: 18,
-                        width: 18,
-                        backgroundColor:
-                          itm.id === selectStory
-                            ? code_color.blueDark
-                            : code_color.white,
-                        borderRadius: 15,
-                        position: 'absolute',
-                        top: 4,
-                        right: 4,
-                        zIndex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        fontSize: moderateScale(10),
+                        fontWeight: '600',
+                        marginTop: hp(6),
+                        color: code_color.black,
                       }}>
-                      {itm.id === selectStory ? (
-                        <ChecklistSvg width={10} />
-                      ) : null}
-                    </View> */}
-                    {/* { userProfile?.data?.subscription?.plan_id != 2 && userProfile?.data?.subscription?.plan_id != 3  && (
-                      <LockFree
-                        height={16}
-                        width={55}
-                        style={{
-                          marginBottom: -20,
-                          marginTop: 4,
-                          marginLeft: 4,
-                          zIndex: 1,
-                        }}
-                      />
-                    )} */}
+                      {itm.name}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        )} */}
+    
+        {dataCategory?.data?.length > 0 && (
+          <View style={{flex: 0, height: hp(250)}}>
+            <View
+              style={{
+                backgroundColor: '#F0F2FF',
+                marginTop: hp(13),
+                marginHorizontal: hp(13),
+                height: hp(230),
+                minWidth: Dimensions.get('screen').width - hp(26),
+                borderRadius: hp(8),
+                padding: hp(16),
+              }}>
+              <Text
+                style={{
+                  fontSize: moderateScale(16),
+                  fontWeight: '600',
+                  color: code_color.black,
+                  marginBottom: hp(16),
+                }}>
+                📚 Try a different category
+              </Text>
+              <ScrollView horizontal>
+                {dataCategory?.data?.map((itm: any, idx: number) => (
+                  <Pressable
+                    onPress={() =>
+                      navigate('CategoryDetail', {categoryId: itm})
+                    }
+                    style={{
+                      width: hp(95),
+                      marginRight:
+                        idx + 1 === data?.category?.length ? 0 : hp(16),
+                    }}
+                    key={idx}>
+                  
                     <FastImage
                       source={{
                         uri: `${BACKEND_URL}${itm.cover?.url}`,
@@ -543,6 +637,8 @@ const ExploreLibraryScreen = ({
             </View>
           </View>
         )}
+       
+
 
         {data?.most_share?.length > 0 && (
           <View style={{flex: 0, height: hp(270), marginBottom: hp(50)}}>
@@ -637,8 +733,6 @@ const ExploreLibraryScreen = ({
             </View>
           </View>
         )}
-        
-       
         {/* <View
           style={{
             height: moderateScale(100),
@@ -657,7 +751,7 @@ const ExploreLibraryScreen = ({
             loop={true}
           />
         </View> */}
-      </ScrollView> }
+      </ScrollView>
       {/* {renderTutorial()} */}
       <ModalUnlockedStory
         restart

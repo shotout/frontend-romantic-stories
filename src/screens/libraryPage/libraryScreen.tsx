@@ -22,10 +22,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import {
-  imgSearchNull,
-  libraryAdd,
-} from '../../assets/images';
+import {imgSearchNull, libraryAdd} from '../../assets/images';
 import {code_color} from '../../utils/colors';
 import {goBack, navigate} from '../../shared/navigationRef';
 import LibrarySvg from '../../assets/icons/bottom/library.jsx';
@@ -67,9 +64,7 @@ import LockFree from '../../assets/icons/lockFree';
 import ModalUnlockStory from '../../components/modal-unlock-story';
 import ModalUnlockedStory from '../../components/modal-story-unlock';
 import {loadRewarded} from '../../helpers/loadReward';
-import {
-  RewardedAdEventType,
-} from 'react-native-google-mobile-ads';
+import {RewardedAdEventType} from 'react-native-google-mobile-ads';
 import ModalSuccessPurchase from '../../components/modal-success-purchase';
 import * as IAP from 'react-native-iap';
 import {Animated} from 'react-native';
@@ -77,7 +72,9 @@ import {hp, wp} from '../../utils/screen';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
-import { reloadUserProfile } from '../../utils/user';
+import {reloadUserProfile} from '../../utils/user';
+import {fetch} from '@react-native-community/netinfo';
+import PagerView from 'react-native-pager-view';
 
 const LibraryScreen = ({
   colorTheme,
@@ -87,8 +84,13 @@ const LibraryScreen = ({
   handleNextStory,
   nextStory,
   userStory,
-  handleSetPage
+  handleSetPage,
+  handleSetCollectionList,
+  dataListCollection,
+  handleSetListLibrary,
+  dataListLibrary,
 }) => {
+  const pagerRef = useRef<PagerView>(null);
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
@@ -103,12 +105,14 @@ const LibraryScreen = ({
   const [sharedStory, setSharedStory] = useState<any>(null);
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState(null);
-  const [listCollection, setListCollection] = useState([]);
+  const [listCollection, setListCollection] = useState(dataListCollection);
+  // const [listCollection, setListCollection] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [items, setItems] = useState(null);
   const [detail, setDetail] = useState(null);
   const [detailCollection, setDetailCollection] = useState(null);
-  const [listLibrary, setListLibrary] = useState([]);
+  const [listLibrary, setListLibrary] = useState(dataListLibrary);
+  // const [listLibrary, setListLibrary] = useState([]);
   const [listLibraryDetail, setListLibraryDetail] = useState([]);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
   const [showModalNewStory, setShowModalNewStory] = useState(false);
@@ -131,26 +135,57 @@ const LibraryScreen = ({
       translateX.setValue(0); // Set the animation value to the current value
     });
   };
-  const showWatchAds = async () => {
-    setLoadingOne(true);
-    const advert = await loadRewarded();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
-      setShowModalUnlock(false);
-      setLoadingOne(false);
-      setTimeout(async () => {
-        const resp = await getStoryDetail(selectedStory?.id);
-        const payloadStory = {
-          _method: 'PATCH',
-          story_id: selectedStory?.id,
-          expire: 1,
-        };
-      
-        await updateProfile(payloadStory);
-        reloadUserProfile();
-        handleNextStory(resp.data);
-        setShowModalSuccessPurchase(true);
-      }, 500);
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
+  const fetchOnline = () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+      } else {
+        offline();
+      }
     });
+  };
+
+  useEffect(() => {
+    // fetchOnline();
+  }, []);
+  const showWatchAds = async () => {
+    fetch().then(async state => {
+      if (state.isConnected) {
+        setLoadingOne(true);
+        const advert = await loadRewarded();
+        advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+          setShowModalUnlock(false);
+          setLoadingOne(false);
+          setTimeout(async () => {
+            const resp = await getStoryDetail(selectedStory?.id);
+            const payloadStory = {
+              _method: 'PATCH',
+              story_id: selectedStory?.id,
+              expire: 1,
+            };
+    
+            await updateProfile(payloadStory);
+            reloadUserProfile();
+            handleNextStory(resp.data);
+            setShowModalSuccessPurchase(true);
+          }, 500);
+        });
+      } else {
+        offline();
+      }
+    });
+   
   };
 
   const fecthProduct = async () => {
@@ -158,6 +193,7 @@ const LibraryScreen = ({
       const products = await IAP.getProducts({
         skus: [Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week'],
       });
+
       if (products) {
         setPrice(products[0].localizedPrice);
       }
@@ -172,46 +208,69 @@ const LibraryScreen = ({
     setSelectedStory(item?.item);
 
     if (userStory?.id === (item?.item?.id ? item?.item?.id : item?.id)) {
-      const resp = await getStoryDetail(item?.item?.id);
-      handleSetStory(resp.data);
-      navigate('Main', {isFromLibrary: true});
-    } else if (
-      userProfile?.data?.subscription?.plan?.id != 1 
-    ) {
-      const resp = await getStoryDetail(item?.item?.id);
-      handleSetStory(resp.data);
-      navigate('Main', {isFromLibrary: true});
-    } else if (
-      userProfile?.data?.subscription?.plan?.id === 1 &&
-      item?.item?.expire != null &&
-      new Date(item?.item?.expire) > new Date() || item?.item?.is_read_later === 1 
-    ) {
-      const resp = await getStoryDetail(item?.item?.id);
-      handleSetStory(resp.data);
-      navigate('Main', {isFromLibrary: true});
-    } else {
-      const resp = await getStoryDetail(item?.item?.id);
-      handleNextStory(resp.data);
-      setShowModalUnlock(true);
-    }
-    // if (
-    //   // userProfile?.data?.subscription?.plan?.id != 1 ||
-    //   // userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
-    //   // (item?.item?.expire != null &&   new Date() > new Date(item?.item?.expire))
-    //   userProfile?.data?.subscription?.plan?.id != 1 &&
-    //           userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) &&
-    //           item?.item?.expire === null &&
-    //           new Date() > new Date(item?.item?.expire)
-    // ) {
+     
+      fetch().then(async state => {
+        if (state.isConnected) {
+          const resp = await getStoryDetail(item?.item?.id);
+          handleSetStory(resp.data);
+          pagerRef.current?.setPage(0);
+          navigate('Main', {isFromLibrary: true});
+        } else {
+          handleSetStory(item?.item);
+          pagerRef.current?.setPage(0);
+          navigate('Main', {isFromLibrary: true});
+        }
+      });
+    } else if (userProfile?.data?.subscription?.plan?.id != 1) {
 
-    //   const resp = await getStoryDetail(item?.item?.id);
-    //   handleSetStory(resp.data);
-    //   navigate('Main');
-    // } else {
-    //   const resp = await getStoryDetail(item?.item?.id);
-    //   handleNextStory(resp.data);
-    //   setShowModalUnlock(true);
-    // }
+  
+      fetch().then(async state => {
+        if (state.isConnected) {
+          const resp = await getStoryDetail(item?.item?.id);
+          handleSetStory(resp.data);
+          pagerRef.current?.setPage(0);
+          navigate('Main', {isFromLibrary: true});
+        } else {
+          handleSetStory(item?.item);
+          pagerRef.current?.setPage(0);
+          navigate('Main', {isFromLibrary: true});
+        }
+      });
+    } else if (
+      (userProfile?.data?.subscription?.plan?.id === 1 &&
+        item?.item?.expire != null &&
+        new Date(item?.item?.expire) > new Date()) ||
+      item?.item?.is_read_later === 1
+    ) {
+      fetch().then(async state => {
+        if (state.isConnected) {
+          const resp = await getStoryDetail(item?.item?.id);
+          handleSetStory(resp.data);
+          pagerRef.current?.setPage(0);
+          navigate('Main', {isFromLibrary: true});
+        } else {
+          handleSetStory(item?.item);
+          pagerRef.current?.setPage(0);
+          navigate('Main', {isFromLibrary: true});
+        }
+      });
+    } else {
+      fetch().then(async state => {
+        if (state.isConnected) {
+          try {
+            const resp = await getStoryDetail(item?.item?.id);
+            handleNextStory(resp.data);
+            setShowModalUnlock(true);
+          } catch (error) {
+            handleNextStory(item?.item);
+            setShowModalUnlock(true);
+          }
+        } else {
+          handleNextStory(item?.item);
+          setShowModalUnlock(true);
+        }
+      });
+    }
   };
 
   const calculateRemainingTime = (targetDateTime: string) => {
@@ -235,13 +294,21 @@ const LibraryScreen = ({
       item?.item?.is_read_later === 1 ||
       userProfile?.data?.subscription?.plan?.id != 1 ||
       userStory?.id === (item?.item?.id ? item?.item?.id : item?.id) ||
-      new Date() > new Date(item?.item?.expire) 
-      
+      new Date() > new Date(item?.item?.expire)
     ) {
-      const resp = await getStoryDetail(item?.id);
-      handleSetStory(resp.data);
-      navigate('Main', {isFromLibrary: true});
-      setDetail(null);
+      fetch().then(async state => {
+        if (state.isConnected) {
+          const resp = await getStoryDetail(item?.id);
+          handleSetStory(resp.data);
+          navigate('Main', {isFromLibrary: true});
+          setDetail(null);
+        }else{
+          handleSetStory(item?.item);
+          navigate('Main', {isFromLibrary: true});
+          setDetail(null);
+        }
+      })
+     
     } else {
       const resp = await getStoryDetail(item?.id);
       handleNextStory(resp.data);
@@ -283,7 +350,6 @@ const LibraryScreen = ({
     }
   };
   const renderContent = (item, rowMap) => {
-     console.log(`${BACKEND_URL}${item?.item?.category?.cover?.url}`,)
     if (detail != null) {
       return (
         <Pressable onPress={() => handleReadDetail(item?.item?.story)}>
@@ -316,7 +382,7 @@ const LibraryScreen = ({
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                 userProfile?.data?.subscription?.plan?.id != 3 &&
                 userStory?.id != item?.item?.story?.id &&
-                item?.item?.expire === null && 
+                item?.item?.expire === null &&
                 item?.item?.is_read_later != 1 &&
                 new Date() > new Date(item?.item?.expire) ? (
                   <LockFree height={hp(16)} width={hp(55)} />
@@ -521,7 +587,6 @@ const LibraryScreen = ({
     }
   };
   const renderContentSearch = (item, rowMap) => {
-    console.log(`${BACKEND_URL}${item?.item?.category?.cover?.url}`,)
     if (detail != null) {
       return (
         <Pressable onPress={() => handleRead(item)}>
@@ -555,7 +620,8 @@ const LibraryScreen = ({
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id &&  item?.item?.is_read_later != 1 && (
+                  userStory?.id != item?.item?.id &&
+                  item?.item?.is_read_later != 1 && (
                     <LockFree height={hp(16)} width={hp(55)} />
                   )}
               </FastImage>
@@ -658,7 +724,8 @@ const LibraryScreen = ({
                 resizeMode="contain">
                 {userProfile?.data?.subscription?.plan?.id != 2 &&
                   userProfile?.data?.subscription?.plan?.id != 3 &&
-                  userStory?.id != item?.item?.id &&  item?.item?.is_read_later != 1 && (
+                  userStory?.id != item?.item?.id &&
+                  item?.item?.is_read_later != 1 && (
                     <LockFree height={hp(16)} width={hp(55)} />
                   )}
               </FastImage>
@@ -829,24 +896,38 @@ const LibraryScreen = ({
   };
 
   const deleteRowCollection = async rowMap => {
-    try {
-      const res = await deleteMyCollection(rowMap.item.id);
-      handleRestart();
-    } catch (error) {}
+    fetch().then(async state => {
+      if (state.isConnected) {
+        try {
+          const res = await deleteMyCollection(rowMap.item.id);
+          handleRestart();
+        } catch (error) {}
+      } else {
+        offline();
+      }
+    });
+    
   };
   const deleteRowStory = async rowMap => {
-    if (detail != null) {
-      try {
-        const res = await deleteStoryCollection(detail, rowMap.item.story?.id);
-        handleRestart();
-        fetchDetail(detail);
-      } catch (error) {}
-    } else {
-      try {
-        const res = await deleteMyStory(rowMap.item.id);
-        handleRestart();
-      } catch (error) {}
-    }
+    fetch().then(async state => {
+      if (state.isConnected) {
+        if (detail != null) {
+          try {
+            const res = await deleteStoryCollection(detail, rowMap.item.story?.id);
+            handleRestart();
+            fetchDetail(detail);
+          } catch (error) {}
+        } else {
+          try {
+            const res = await deleteMyStory(rowMap.item.id);
+            handleRestart();
+          } catch (error) {}
+        }
+      } else {
+        offline();
+      }
+    });
+    
   };
   const handleEditCollect = rowMap => {
     setId(rowMap.item);
@@ -881,8 +962,8 @@ const LibraryScreen = ({
         dir: items?.value,
       };
       const res = await getMyCollection(params);
-
-    
+      handleSetCollectionList(res.data);
+      handleSetListLibrary(res.outsides);
       setListCollection(res.data);
       setListLibrary(res.outsides);
       setLoadingList(false);
@@ -908,25 +989,33 @@ const LibraryScreen = ({
     }
   };
   const handleUnlimited = async () => {
-    //
-    try {
-      const paymentResult = await handlePayment('in_app');
-      if (paymentResult.success) {
-        setShowModalNewStory(false);
-        setShowModalGetPremium(true);
-        console.log('Pembayaran berhasil:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran berhasil
-      } else {
-        setShowModalNewStory(false);
-        console.log('Pembayaran gagal:', paymentResult.result);
-        // Lakukan tindakan setelah pembayaran gagal
+    fetch().then(async state => {
+      if (state.isConnected) {
+        try {
+          const paymentResult = await handlePayment('in_app');
+          if (paymentResult.success) {
+            setShowModalNewStory(false);
+            setShowModalGetPremium(true);
+            console.log('Pembayaran berhasil:', paymentResult.result);
+            // Lakukan tindakan setelah pembayaran berhasil
+          } else {
+            setShowModalNewStory(false);
+            console.log('Pembayaran gagal:', paymentResult.result);
+            // Lakukan tindakan setelah pembayaran gagal
+          }
+        } catch (error) {
+          setShowModalNewStory(false);
+          console.error('Terjadi kesalahan:', error);
+          // Tangani kesalahan yang mungkin terjadi
+        }
+        // setShowModalGetPremium(true);
+      }else{
+        offline()
       }
-    } catch (error) {
-      setShowModalNewStory(false);
-      console.error('Terjadi kesalahan:', error);
-      // Tangani kesalahan yang mungkin terjadi
-    }
-    // setShowModalGetPremium(true);
+    })
+
+    //
+  
   };
 
   const renderEmpty = () => (
@@ -940,8 +1029,7 @@ const LibraryScreen = ({
       <EmptyLibrary />
       <Text
         style={{
-          color:
-           code_color.white,
+          color: code_color.white,
           fontSize: 14,
           fontWeight: '400',
           textAlign: 'center',
@@ -1055,29 +1143,35 @@ const LibraryScreen = ({
   );
 
   const handleNative = async () => {
-    setLoading(true);
-    const data = await handleNativePayment(
-      Platform.OS === 'ios' ? 'unlock_story_1_week_only' : 'unlock_stories_1week',
-      selectedStory?.id,
-    );
-    if (data) {
-      setLoading(false);
-      setShowModalUnlock(false);
-      setShowModalNewStory(false);
-      const resp = await getStoryDetail(selectedStory?.id);
-      handleNextStory(resp.data);
-      setShowModalSuccessPurchaseNative(true);
-    } else {
-      // setLoading(false);
-      // setShowModalUnlock(false);
-      // setShowModalNewStory(false);
-      // const resp = await getStoryDetail(selectedStory?.id);
-      // handleNextStory(resp.data);
-      // setShowModalSuccessPurchaseNative(true);
-      setLoading(false);
-      setShowModalUnlock(false);
-      setShowModalNewStory(false);
-    }
+    fetch().then(async state => {
+      if (state.isConnected) {
+        setLoading(true);
+        const data = await handleNativePayment(
+          'unlock_story_1_week_only',
+          selectedStory?.id,
+        );
+        if (data) {
+          setLoading(false);
+          setShowModalUnlock(false);
+          setShowModalNewStory(false);
+          const resp = await getStoryDetail(selectedStory?.id);
+          handleNextStory(resp.data);
+          setShowModalSuccessPurchaseNative(true);
+        } else {
+          // setLoading(false);
+          // setShowModalUnlock(false);
+          // setShowModalNewStory(false);
+          // const resp = await getStoryDetail(selectedStory?.id);
+          // handleNextStory(resp.data);
+          // setShowModalSuccessPurchaseNative(true);
+          setLoading(false);
+          setShowModalUnlock(false);
+          setShowModalNewStory(false);
+        }
+      } else {
+        offline();
+      }
+    });
   };
 
   return (
@@ -1144,7 +1238,12 @@ const LibraryScreen = ({
         }}
         userType={userProfile?.data?.type}
       />
-      <View style={{flex: 0, height: hp( Dimensions.get('window').height === 667 ? 400 : 480), backgroundColor: bgTheme}}>
+      <View
+        style={{
+          flex: 0,
+          height: hp(Dimensions.get('window').height === 667 ? 400 : 480),
+          backgroundColor: bgTheme,
+        }}>
         <ModalLibrary
           isVisible={showModal}
           onClose={() => {
@@ -1204,7 +1303,15 @@ const LibraryScreen = ({
             marginHorizontal: hp(10),
           }}>
           <Pressable
-            onPress={() => setShowModalNew(true)}
+            onPress={() => {
+              fetch().then(async state => {
+                if (state.isConnected) {
+                  setShowModalNew(true);
+                } else {
+                  offline();
+                }
+              });
+            }}
             style={{
               height: hp(30),
               width: hp(30),
@@ -1254,7 +1361,16 @@ const LibraryScreen = ({
               }}
             />
           </Pressable>
-          <Pressable onPress={() => setShowModalSort(true)}>
+          <Pressable
+            onPress={() => {
+              fetch().then(async state => {
+                if (state.isConnected) {
+                  setShowModalSort(true);
+                } else {
+                  offline();
+                }
+              });
+            }}>
             <DescendingSvg
               fill={code_color.white}
               height={hp(30)}

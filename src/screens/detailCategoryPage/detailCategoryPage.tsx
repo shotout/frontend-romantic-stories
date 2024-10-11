@@ -52,6 +52,7 @@ import FastImage from 'react-native-fast-image';
 import ModalGetPremium from '../../components/modal-get-premium';
 import {hp} from '../../utils/screen';
 import {moderateScale} from 'react-native-size-matters';
+import { fetch } from '@react-native-community/netinfo';
 
 const DetailCategoryScreen = ({
   route,
@@ -63,6 +64,8 @@ const DetailCategoryScreen = ({
   backgroundColor,
   userProfile,
   nextStory,
+  handleSetDetailCategory,
+  dataDetailCategory,
 }) => {
   const [showModalGetPremium, setShowModalGetPremium] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,7 +74,8 @@ const DetailCategoryScreen = ({
   const [bgTheme, setBgTheme] = useState(colorTheme);
   const [showModalSort, setShowModalSort] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [data, setData] = useState<any>();
+  // const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>(route?.params?.categoryId);
   const [showModalUnlock, setShowModalUnlock] = useState(false);
   const [showModalUnlockCategory, setShowModalUnlockCategory] = useState(false);
   const [showUnlockedStory, setShowUnlockedStory] = useState(false);
@@ -88,27 +92,34 @@ const DetailCategoryScreen = ({
     ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
     : data?.data;
 
-  const showWatchAds = async () => {
-    setLoading2(true);
-    const advert = await loadRewarded();
-    advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
-      setLoading2(false);
-      setShowModalUnlock(false);
-      setTimeout(async () => {
-        const resp = await getStoryDetail(selectedStory?.id);
-        const payloadStory = {
-          _method: 'PATCH',
-          story_id: selectedStory?.id,
-          expire: 1,
-        };
-
-        await updateProfile(payloadStory);
-        reloadUserProfile();
-        handleNextStory(resp.data);
-        setShowUnlockedStory(true);
-      }, 500);
-    });
-  };
+    const showWatchAds = async () => {
+      fetch().then(async state => {
+        if (state.isConnected) {
+          setLoading2(true);
+          const advert = await loadRewarded();
+          advert.addAdEventListener(RewardedAdEventType.EARNED_REWARD, reward => {
+            setLoading2(false);
+            setShowModalUnlock(false);
+            setTimeout(async () => {
+              const resp = await getStoryDetail(selectedStory?.id);
+              const payloadStory = {
+                _method: 'PATCH',
+                story_id: selectedStory?.id,
+                expire: 1,
+              };
+      
+              await updateProfile(payloadStory);
+              reloadUserProfile();
+              handleNextStory(resp.data);
+              setShowUnlockedStory(true);
+            }, 500);
+          });
+        } else {
+          offline()
+        }
+      })
+     
+    };
 
   const handlePremium = async () => {
     setTimeout(async () => {
@@ -126,17 +137,24 @@ const DetailCategoryScreen = ({
     }, 500);
   };
   const handleUnlimited = async () => {
-    try {
-      const paymentResult = await handlePayment('in_app');
-      if (paymentResult.success) {
-        setShowModalGetPremium(true);
-        setShowUnlockedStory(false);
+    fetch().then(async state => {
+      if (state.isConnected) {
+        try {
+          const paymentResult = await handlePayment('in_app');
+          if (paymentResult.success) {
+            setShowModalGetPremium(true);
+            setShowUnlockedStory(false);
+          } else {
+            setShowUnlockedStory(false);
+          }
+        } catch (error) {
+          setShowUnlockedStory(false);
+        }
       } else {
-        setShowUnlockedStory(false);
+        offline()
       }
-    } catch (error) {
-      setShowUnlockedStory(false);
-    }
+    });
+    
     // setShowModalGetPremium(true);
   };
 
@@ -160,7 +178,7 @@ const DetailCategoryScreen = ({
     fetchData();
   };
   useEffect(() => {
-    handleRestart();
+    // handleRestart();
   }, [keyword, items, route?.params?.categoryId]);
 
   const fetchUpdate = async () => {
@@ -282,12 +300,12 @@ const DetailCategoryScreen = ({
   // const combinedData = filteredData ? filteredData.concat(remainingData) : data?.data;
 
   const filteredDataSelected = selectedAlphabet
-    ? data?.data?.filter(item => item.title_en[0] === selectedAlphabet)
+    ? data?.stories?.filter(item => item.title_en[0] === selectedAlphabet)
     : [];
 
   const filteredDataOthers = selectedAlphabet
-    ? data?.data?.filter(item => item.title_en[0] !== selectedAlphabet)
-    : data?.data;
+    ? data?.stories?.filter(item => item.title_en[0] !== selectedAlphabet)
+    : data?.stories;
 
   const combinedData = filteredDataSelected.concat(filteredDataOthers);
   const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
@@ -312,12 +330,34 @@ const DetailCategoryScreen = ({
           } else {
             setShowUnlockedStory(true);
           }
-        } catch (error) {}
+        } catch (error) {
+          handleSetStory(selectedStory);
+          handleNextStory(selectedStory);
+          if (userProfile?.data?.subscription?.plan_id === 1) {
+            setTimeout(() => {
+              setShowModalUnlock(true);
+            }, 200);
+          } else {
+            setShowUnlockedStory(true);
+          }
+        }
       }
     };
     fetchData();
   }, [selectedStory]);
 
+  const offline = () => {
+    Alert.alert(
+      'YOU SEEM TO BE OFFLINE',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+          onPress: async () => ({}),
+        },
+      ],
+    );
+  };
   return (
     <SafeAreaView style={{backgroundColor: bgTheme}}>
       <ModalSorting
@@ -339,7 +379,13 @@ const DetailCategoryScreen = ({
         data={nextStory}
         onWatchAds={showWatchAds}
         onUnlock={() => {
-          handleNative();
+          fetch().then(async state => {
+            if (state.isConnected) {
+              handleNative();
+            } else {
+              offline()
+            }
+          });
         }}
         loadingOne={loading2}
         price={price}

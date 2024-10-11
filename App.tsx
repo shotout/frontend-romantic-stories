@@ -109,7 +109,68 @@ function App({ userProfile }) {
       },
       {
         uri: `${BACKEND_URL}${'/assets/images/categories/covers/suprise_me.png'}`
-      }
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/anime/covers/suprise_me.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/relationship.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/i_miss_u.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/dirty_mind.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/categories/realistic/covers/suprise_me.png'}`
+      },
+      
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/1.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/2.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/3.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/4.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/5.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/realistic/6.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/1.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/2.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/3.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/4.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/5.png'}`
+      },
+      {
+        uri: `${BACKEND_URL}${'/assets/images/avatars/anime/6.png'}`
+      },
     ]);
     askTrackingPermission();
     getDefaultLanguange();

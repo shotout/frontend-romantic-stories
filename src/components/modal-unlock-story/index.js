@@ -147,7 +147,7 @@ function ModalUnlockStory({
               }}>
               {'To unlock this story, choose one of the\r\nfollowing options:'}
             </Text>
-            {Platform.OS === 'android' ? null : (
+            
               <Pressable
                 disabled={isLoading}
                 onPress={onUnlock}
@@ -195,7 +195,7 @@ function ModalUnlockStory({
                   </Text>
                 )}
               </Pressable>
-            )}
+            
             <Pressable
               disabled={loadingOne}
               onPress={onWatchAds}

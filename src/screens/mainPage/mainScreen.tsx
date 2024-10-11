@@ -38,6 +38,7 @@ import {
   addPastStory,
   addStory,
   getExploreStory,
+  getExploreStoryOffline,
   getListAvatarTheme,
   getStoryDetail,
   getStoryList,
@@ -107,6 +108,8 @@ const MainScreen = ({
   handleListenStory,
   handleSetPage,
   page,
+  handleSetExploreCategory,
+  handleSetExplore,
 }) => {
   const [loadingStory, setLoadingStory] = useState(false);
   const [showStoryFree, setShowStoryFree] = useState(false);
@@ -231,6 +234,24 @@ const MainScreen = ({
     handleOpenNotif();
   }, [route?.params]);
 
+  const fetchCategoryOnline = async () => {
+    let params = {
+      search: '',
+      column: 'title_en',
+      dir: 'desc',
+    };
+    const res = await getExploreStory(params);
+    handleSetExplore(res);
+  };
+  const fetchCategory = async () => {
+    let params = {
+      search: '',
+      column: 'title_en',
+      dir: 'desc',
+    };
+    const res = await getExploreStoryOffline(params);
+    handleSetExploreCategory(res);
+  };
   useEffect(() => {
     if (!showModalCongrats && currentXp !== newXp) {
       reloadUserProfile(null);
@@ -474,15 +495,17 @@ const MainScreen = ({
   };
   useEffect(() => {
     setShowModalNewStory(false);
-    if (Platform.OS === 'android') {
-      const payload = {
-        _method: 'PATCH',
-        is_member: 3,
-      };
-      updateProfile(payload);
-    }
+    // if (Platform.OS === 'android') {
+    //   const payload = {
+    //     _method: 'PATCH',
+    //     is_member: 3,
+    //   };
+    //   updateProfile(payload);
+    // }
     reloadUserProfile();
     fetchCheckingDay();
+    fetchCategory();
+    fetchCategoryOnline();
   }, []);
 
   const onScroll = async (e: PagerViewOnPageSelectedEvent) => {
