@@ -320,9 +320,9 @@ const MainScreen = ({
       const resp = await addPastLevel(data);
       if (resp?.data) {
         handleLeveling(resp?.data);
-        // setTimeout(() => {
+        setTimeout(() => {
         setShowModalCongrats(true);
-        // }, 50);
+        }, 50);
       }
       // checkingRead(textChunks?.length);
     } else if (
@@ -539,7 +539,9 @@ const MainScreen = ({
           setIsLoveAnimate('false');
         }
       }, 3200);
-      setTimeout(() => {}, 3400);
+      setTimeout(() => {
+
+      }, 3400);
     }
     // const existingEntry = readStory
     //   ? readStory.find(
@@ -602,10 +604,10 @@ const MainScreen = ({
               // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
-                // setTimeout(() => {
+                setTimeout(() => {
                 setLoad(false);
                 setShowModalCongrats(true);
-                // }, 50);
+                }, 50);
               }
               checkingRead(screenNumber + 1);
             } catch (error) {
@@ -618,20 +620,20 @@ const MainScreen = ({
           existingEntry &&
           !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
         ) {
-          // setTimeout(() => {
+          setTimeout(() => {
           setLoad(false);
           setShowModalNewStory(true);
-          // }, 50);
+          }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
         } else if (
           existingEntry &&
           (isPremiumStory || isPremiumAudio || isPremiumMonthly)
         ) {
-          // setTimeout(() => {
+          setTimeout(() => {
           setLoad(false);
           setShowModalCongrats(true);
-          // }, 50);
+          }, 50);
           // await fecthNextStory();
         }
       }
@@ -1278,37 +1280,41 @@ const MainScreen = ({
     setScreenNumber(0);
   };
 
-  useEffect(() => {
-    async function fetchModal() {
-      if (!(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
-        const userHasRead = readStory?.some(
-          (entry: any) =>
-            entry?.id === dataBook.id && entry?.page === textChunks?.length,
-        );
+  // useEffect(() => {
+  //   async function fetchModal() {
+  //     if (!(isPremiumStory || isPremiumAudio || isPremiumMonthly)) {
+  //       const userHasRead = readStory?.some(
+  //         (entry: any) =>
+  //           entry?.id === dataBook.id && entry?.page === textChunks?.length,
+  //       );
 
-        if (
-          !route?.params?.isFromLibrary &&
-          !route?.params?.isFromBottomBar &&
-          userHasRead &&
-          textChunks?.length > 0
-        ) {
-          const value = await AsyncStorage.getItem('setToday');
-          const stringifyDateNow = new Date();
-          let strTanggalSekarang = stringifyDateNow.getDate().toString();
-          if (value != null) {
-            if (value === strTanggalSekarang) {
-              setShowModalNewStory(true);
-              setTimeout(() => {
-                pagerRef?.current?.setPage(textChunks.length - 1);
-              }, 200);
-            }
-          }
-        }
-      }
-    }
+  //       if (
+  //         !route?.params?.isFromLibrary &&
+  //         !route?.params?.isFromBottomBar &&
+  //         userHasRead &&
+  //         textChunks?.length > 0
+  //       ) {
+  //         alert(userHasRead)
+  //         const value = await AsyncStorage.getItem('setToday');
+  //         const stringifyDateNow = new Date();
+  //         let strTanggalSekarang = stringifyDateNow.getDate().toString();
+  //         if (value != null) {
+  //           if (value === strTanggalSekarang) {
+  //             if(!showModalCongrats){
+  //               setShowModalNewStory(true);
+  //               setTimeout(() => {
+  //                 pagerRef?.current?.setPage(textChunks.length - 1);
+  //               }, 200);
+  //             }
+             
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
 
-    fetchModal();
-  }, [dataBook, route?.params, textChunks]);
+  //   fetchModal();
+  // }, [dataBook, route?.params, textChunks]);
 
   useEffect(() => {
     const userHasRead = readStory?.some(
@@ -1387,11 +1393,11 @@ const MainScreen = ({
               // console.log(JSON.stringify(resp))
               if (resp?.data) {
                 handleLeveling(resp?.data);
-                // setTimeout(() => {
+                setTimeout(() => {
                 setLoad(false);
                 setShowModalCongrats(true);
                 initNextStory()
-                // }, 50);
+                }, 50);
               }
               checkingRead(screenNumber + 1);
             } catch (error) {
@@ -1404,22 +1410,22 @@ const MainScreen = ({
           existingEntry &&
           !(isPremiumStory || isPremiumAudio || isPremiumMonthly)
         ) {
-          // setTimeout(() => {
+          setTimeout(() => {
           setLoad(false);
           setShowModalNewStory(true);
           initNextStory()
-          // }, 50);
+          }, 50);
 
           //jika tidak premium maka akan terus menampilan modal setiap terakhir
         } else if (
           existingEntry &&
           (isPremiumStory || isPremiumAudio || isPremiumMonthly)
         ) {
-          // setTimeout(() => {
+          setTimeout(() => {
           setLoad(false);
           setShowModalCongrats(true);
           initNextStory()
-          // }, 50);
+          }, 50);
           // await fecthNextStory();
         }
       }
@@ -1462,23 +1468,23 @@ const MainScreen = ({
         }, 200);
       } 
     } else {
-     
-      setShowModalNewStory(true)
-      // try {
-      //   // const res = await getStoryDetail(userStory?.id);
-      //   // handleSetStory(res.data);
-      //   // setBook(res.data);
-      //   // if (res.data) {
-      //   //   setShowModalNewStory(true);
-      //   // }
-      // } catch (error) {
-      //   // const res = await getStoryDetail(userStory?.id);
-      //   // handleSetStory(res.data);
-      //   // setBook(res.data);
-      //   // setTimeout(() => {
-      //   setShowModalNewStory(true);
-      //   // }, 50);
-      // }
+      try {
+        const res = await getStoryDetail(userStory?.id);
+        console.log('SUKSES GET DETAIL' + JSON.stringify(res));
+        handleSetStory(res.data);
+        setBook(res.data);
+        if (res.data) {
+          setShowModalNewStory(true);
+        }
+      } catch (error) {
+        console.log('ERROR GET DETAIL' + JSON.stringify(error));
+        const res = await getStoryDetail(userStory?.id);
+        handleSetStory(res.data);
+        setBook(res.data);
+        setTimeout(() => {
+          setShowModalNewStory(true);
+        }, 50);
+      }
     }
   };
   const handleLater = async () => {
