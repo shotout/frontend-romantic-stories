@@ -139,11 +139,11 @@ const SettingsPage = ({
             action: 'myLibrary',
           },
 
-          {
-            name: 'Subscription',
-            icon: <LockSvg width={hp(20)} height={hp(20)} />,
-            action: 'subscription',
-          },
+          // {
+          //   name: 'Subscription',
+          //   icon: <LockSvg width={hp(20)} height={hp(20)} />,
+          //   action: 'subscription',
+          // },
         ]
       : [
           {

@@ -7396,6 +7396,11 @@ react-native-purchasely@^4.3.3:
   resolved "https://registry.yarnpkg.com/react-native-purchasely/-/react-native-purchasely-4.3.3.tgz#15fb2defd77fdb17ee6f95c511f929d4032a6e95"
   integrity sha512-P+I6ERsi1iQfJNkwa8ueI/YeWtBHHamg6jy4NBJp5mBIo8gu+DcWjdPGXdWSPZAgGCN8t36uWl4mzfa6GW3Dpw==
 
+react-native-pure-jwt@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-pure-jwt/-/react-native-pure-jwt-3.0.2.tgz#ad6fca13467fb6ac562a3e2900aa7830c61e0160"
+  integrity sha512-TbZ9JLCC33Ew2ENjovlDTFnNR7evUu5yKF4X5vLO5uO8FMMnBxS0mOUuUtAzlNPZ+tJQOKEoCyo43Hs1pTy+hA==
+
 react-native-reanimated-carousel@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/react-native-reanimated-carousel/-/react-native-reanimated-carousel-3.5.1.tgz#3605b9959ffc0aa1c6b8b8736d98f91f46e36b17"

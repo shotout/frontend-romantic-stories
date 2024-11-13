@@ -58,6 +58,7 @@ import FastImage from 'react-native-fast-image';
 import {BACKEND_URL} from '../../shared/static';
 import Register0 from '../../layout/register/register0';
 import momentTz from 'moment-timezone';
+import { sign } from 'react-native-pure-jwt';
 function RegisterScreen({
   handleSetProfile,
   handleSetBackground,
@@ -84,6 +85,7 @@ function RegisterScreen({
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const [token, setToken] = useState('');
   const [values, setFormValues] = useState({
     name: '',
     type: '',
@@ -105,9 +107,29 @@ function RegisterScreen({
     timezone: momentTz.tz.guess(),
     notif_enable: 1,
     purchasely_id: '',
+    platform: Platform.OS,
   });
 
+  const createToken = async() => {
+    try {
+      const token = await sign(
+        {
+          name: ''
+        },
+        'pEsR74eADk6PTuvcOwPtUt16f8=', // Secret Key
+        {
+          alg: "HS256", // Algoritma
+        }
+      );
+      setToken(token)
+      return token;
+    } catch (error) {
+     
+      console.error("Error generating token:", error);
+    }
+  }
   useEffect(() => {
+    createToken()
     fetchDeviceId();
     // fetchCategory()
   }, []);
@@ -315,7 +337,9 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: id,
-        type: type
+        type: type,
+        platform: Platform.OS,
+        token: token
       };
       const res = await postRegister(payload);
       handleSetProfile(res);
@@ -355,7 +379,9 @@ function RegisterScreen({
         timezone: values?.timezone,
         notif_enable: values?.notif_enable,
         purchasely_id: values?.purchasely_id,
-        type: type
+        type: type,
+        platform: Platform.OS,
+        token: token
       };
       const response = await updateProfile(payload);
       if(response){
