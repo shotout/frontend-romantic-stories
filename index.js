@@ -12,7 +12,7 @@ import notifee, { EventType } from '@notifee/react-native';
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
     const { notification, pressAction } = detail;
-  console.log('apaaaaa')
+
     // Check if the user pressed the "Mark as read" action
     if (type === EventType.ACTION_PRESS && pressAction.id === 'mark-as-read') {
       // Update external API

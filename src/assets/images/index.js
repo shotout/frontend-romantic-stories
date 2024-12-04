@@ -289,3 +289,13 @@ export const anime_positive_3 = require('./../avatar/anime/positive/3.png');
 export const anime_positive_4 = require('./../avatar/anime/positive/4.png');
 export const anime_positive_5 = require('./../avatar/anime/positive/5.png');
 export const anime_positive_6 = require('./../avatar/anime/positive/6.png');
+
+
+export const categori_anime_1 = require('./../categories/anime/relationship_anime.png');
+export const categori_anime_2 = require('./../categories/anime/i_miss_u_anime.png');
+export const categori_anime_3 = require('./../categories/anime/dirty_mind_anime.png');
+export const categori_anime_4 = require('./../categories/anime/suprise_me_anime.png');
+export const categori_1 = require('./../categories/realistic/relationship.png');
+export const categori_2 = require('./../categories/realistic/i_miss_u.png');
+export const categori_3 = require('./../categories/realistic/dirty_mind.png');
+export const categori_4 = require('./../categories/realistic/suprise_me.png');

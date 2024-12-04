@@ -360,6 +360,7 @@ function RegisterScreen({
     try {
       const res = await checkDeviceRegister({
         device_id: device,
+        platform: Platform.OS
       });
       handleSetProfile({...res, data: {...res?.data, name: values?.name}});
       const payload = {

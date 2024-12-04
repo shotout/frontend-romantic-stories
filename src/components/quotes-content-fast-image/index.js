@@ -181,7 +181,7 @@ function QuotesContent({
   const [partner, setPartner] = useState(
    null
   );
-  console.log(me)
+
   const [playLoveAnimate, setPlayLoveAnimate] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const counter = useRef(0);
